@@ -23,13 +23,10 @@ import {
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../../../utils/helpers/applicant.helper';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantService } from '../../../../services/applicant.service';
 
 // store
@@ -182,7 +179,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                     license: lastLicenseAdded?.licenseNumber,
                     state: lastLicenseAdded?.state?.stateShortName,
                     classType: lastLicenseAdded?.classType.name,
-                    expDate: convertDateFromBackend(lastLicenseAdded?.expDate),
+                    expDate: MethodsCalculationsHelper.convertDateFromBackend(
+                        lastLicenseAdded?.expDate
+                    ),
                 };
 
                 if (res.trafficViolation) {
@@ -228,7 +227,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                         id: item.id,
                         reviewId: item.trafficViolationItemReview?.id,
                         isEditingViolation: false,
-                        date: convertDateFromBackend(item.date),
+                        date: MethodsCalculationsHelper.convertDateFromBackend(
+                            item.date
+                        ),
                         vehicleType: item.vehicleType.name,
                         vehicleTypeLogoName: item.vehicleType.logoName,
                         location: item.location,
@@ -246,7 +247,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                 reviewId:
                     lastItemInViolationsArray.trafficViolationItemReview?.id,
                 isEditingViolation: false,
-                date: convertDateFromBackend(lastItemInViolationsArray.date),
+                date: MethodsCalculationsHelper.convertDateFromBackend(
+                    lastItemInViolationsArray.date
+                ),
                 vehicleType: lastItemInViolationsArray.vehicleType.name,
                 vehicleTypeLogoName:
                     lastItemInViolationsArray.vehicleType.logoName,
@@ -859,9 +862,10 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                         o[keyName] = this.stepValues[i][match];
 
                         if (keyName === 'date') {
-                            o['date'] = convertDateFromBackend(
-                                this.stepValues[i].date
-                            );
+                            o['date'] =
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    this.stepValues[i].date
+                                );
                         }
 
                         if (keyName === 'location') {
@@ -1002,7 +1006,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                           }
                         : null,
                 }),
-                date: convertDateToBackend(item.date),
+                date: MethodsCalculationsHelper.convertDateToBackend(item.date),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) => vehicleItem.name === item.vehicleType
                 ).id,
@@ -1031,7 +1035,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                           }
                         : null,
                 }),
-                date: convertDateToBackend(this.lastViolationsCard.date),
+                date: MethodsCalculationsHelper.convertDateToBackend(
+                    this.lastViolationsCard.date
+                ),
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) =>
                         vehicleItem.name === this.lastViolationsCard.vehicleType

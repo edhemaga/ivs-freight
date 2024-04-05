@@ -10,7 +10,6 @@ import {
     Input,
     OnDestroy,
     OnInit,
-    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { merge, Subject, takeUntil } from 'rxjs';
@@ -29,10 +28,9 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     ssnNumberRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 //Components
 import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
-import { TabSwitcherComponent } from '../../../../core/components/switchers/tab-switcher/tab-switcher.component';
 import { TrailerModalComponent } from '../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -52,11 +50,11 @@ import {
 } from 'appcoretruckassist';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { OwnerService } from 'src/app/pages/owner/services/owner.service';
-import { BankVerificationService } from '../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { BankVerificationService } from '../../../../shared/services/bank-verification.service';
+import { FormService } from '../../../../shared/services/form.service';
 
 @Component({
     selector: 'app-owner-modal',
@@ -83,8 +81,6 @@ import { FormService } from '../../../../core/services/form/form.service';
     ],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
-    @ViewChild(TabSwitcherComponent) tabSwitcher: any;
-
     @Input() editData: any;
 
     public ownerForm: UntypedFormGroup;

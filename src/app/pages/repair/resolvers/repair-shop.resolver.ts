@@ -3,11 +3,14 @@ import { Resolve } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // Store
-import { RepairShopState, RepairShopStore } from '../state/repair-shop-state/repair-shop.store';
+import {
+    RepairShopState,
+    RepairShopStore,
+} from '../state/repair-shop-state/repair-shop.store';
 
 // Services
 import { RepairService } from '../../../shared/services/repair.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',

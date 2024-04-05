@@ -20,11 +20,11 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -41,9 +41,9 @@ import { tab_modal_animation } from '../../../../../core/components/shared/anima
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // components
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
@@ -54,11 +54,7 @@ import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-che
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 // utils
-import {
-    calculateParkingSlot,
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-terminal-modal',
@@ -413,10 +409,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
-                this.parkingSlots[0].value = calculateParkingSlot(
-                    value,
-                    this.terminalForm.get('terminalParkingSlot')
-                );
+                this.parkingSlots[0].value =
+                    MethodsCalculationsHelper.calculateParkingSlot(
+                        value,
+                        this.terminalForm.get('terminalParkingSlot')
+                    );
             });
     }
 
@@ -426,10 +423,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
-                this.parkingSlots[1].value = calculateParkingSlot(
-                    value,
-                    this.terminalForm.get('terminalFullParkingSlot')
-                );
+                this.parkingSlots[1].value =
+                    MethodsCalculationsHelper.calculateParkingSlot(
+                        value,
+                        this.terminalForm.get('terminalFullParkingSlot')
+                    );
             });
     }
 
@@ -456,7 +454,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             id: id,
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -514,7 +514,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         const newData: CreateTerminalCommand = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -626,7 +628,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                         fuelStationChecked: res.fuelStationChecked,
                         // Additional tab
                         rent: res.rent
-                            ? convertNumberInThousandSep(res.rent)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

@@ -33,7 +33,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomPeriodRangeComponent } from 'src/app/shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { TaCarrierSearchTwoComponent } from 'src/app/shared/components/ta-carrier-search-two/ta-carrier-search-two.component';
+import { TaSearchV2Component } from 'src/app/shared/components/ta-search-v2/ta-search-v2.component';
 import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';
 @NgModule({
     declarations: [
@@ -71,7 +71,7 @@ import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spin
         TaInputDropdownComponent,
         TaCustomPeriodRangeComponent,
         TaChartComponent,
-        TaCarrierSearchTwoComponent,
+        TaSearchV2Component,
         TaSpinnerComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

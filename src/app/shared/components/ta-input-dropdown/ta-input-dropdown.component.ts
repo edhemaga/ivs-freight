@@ -29,13 +29,13 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // animation
-import { input_dropdown_animation } from './input-dropdown.animation';
+import { inputDropdownAnimation } from './animations/input-dropdown.animation';
 
 // uuid
 import { v4 as uuidv4 } from 'uuid';
 
 // config
-import { ITaInput } from '../ta-input/ta-input.config';
+import { ITaInput } from '../ta-input/config/ta-input.config';
 
 // components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
@@ -44,11 +44,11 @@ import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-i
 import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 
 // utils
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // pipes
-import { FormControlPipe } from '../ta-input/form-control.pipe';
-import { DropdownCountPipe } from './dropdown-count.pipe';
+import { FormControlPipe } from '../ta-input/pipes/form-control.pipe';
+import { DropdownCountPipe } from './pipes/dropdown-count.pipe';
 import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
@@ -64,7 +64,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
     styleUrls: ['./ta-input-dropdown.component.scss'],
     providers: [FormControlPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [input_dropdown_animation('showHideDropdownOptions')],
+    animations: [inputDropdownAnimation('showHideDropdownOptions')],
     standalone: true,
     imports: [
         // Module

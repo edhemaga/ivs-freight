@@ -11,8 +11,8 @@ import { UntypedFormControl } from '@angular/forms';
 import { LoadResponse } from 'appcoretruckassist';
 
 //Services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 //Store
 import { LoadMinimalListQuery } from '../../../../state/load-details-state/load-minimal-list-state/load-details-minimal.query';
@@ -33,7 +33,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     constructor(
         private lmquery: LoadMinimalListQuery,
         private detailsPageDriverSer: DetailsPageService,
-        public imageBase64Service: ImageBase64Service,
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     ngOnChanges(): void {
@@ -100,7 +100,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                         this.loadList[currentIndex].id
                     );
                     this.onSelectLoad({ id: this.loadList[currentIndex].id });
-                    this.currentLoadIndex = currentIndex; 
+                    this.currentLoadIndex = currentIndex;
                 }
                 break;
             }

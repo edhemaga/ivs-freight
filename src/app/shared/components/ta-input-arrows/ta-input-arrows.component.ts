@@ -6,7 +6,7 @@ import {
     NgControl,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ITaInput } from '../ta-input/ta-input.config';
+import { ITaInput } from '../ta-input/config/ta-input.config';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 

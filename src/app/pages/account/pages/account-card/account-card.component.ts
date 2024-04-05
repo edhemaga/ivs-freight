@@ -20,7 +20,7 @@ import { tableBodyColorLabel } from 'src/app/core/components/shared/model/tableB
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-account-card',

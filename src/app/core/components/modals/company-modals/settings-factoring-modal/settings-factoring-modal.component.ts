@@ -2,7 +2,7 @@ import { AddressEntity } from '../../../../../../../appcoretruckassist/model/add
 import {
     addressUnitValidation,
     addressValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -14,10 +14,10 @@ import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { phoneFaxRegex } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { phoneFaxRegex } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+import { FormService } from 'src/app/shared/services/form.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';

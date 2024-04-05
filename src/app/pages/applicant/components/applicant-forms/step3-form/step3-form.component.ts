@@ -29,8 +29,8 @@ import {
 import moment from 'moment';
 
 // services
-import { FormService } from 'src/app/core/services/form/form.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 
 // store
 import { ApplicantQuery } from '../../../state/applicant.query';

@@ -31,12 +31,12 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { ConfirmationResetService } from '../../../modals/confirmation-modal/state/state/services/confirmation-reset.service';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // components
 import { ToolbarFiltersComponent } from './toolbar-filters/toolbar-filters.component';
@@ -46,7 +46,7 @@ import { LoadCardsModalComponent } from '../../../modals/cards-modal/load-cards-
 import { ConfirmationModalResetComponent } from '../../../modals/confirmation-modal/confirmation-modal-reset/confirmation-modal-reset.component';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { TableType } from 'appcoretruckassist';
@@ -96,7 +96,7 @@ export class TruckassistTableToolbarComponent
     public tableLocked: boolean = true;
     public optionsPopupContent: optionsPopupContent[] = [
         {
-            text: ConstantStringTableComponentsEnum.COLUMNS,
+            text: TableStringEnum.COLUMNS,
             svgPath: 'assets/svg/truckassist-table/columns-new.svg',
             active: false,
             hide: false,
@@ -106,27 +106,27 @@ export class TruckassistTableToolbarComponent
                 'assets/svg/truckassist-table/arrow-back-to-list.svg',
         },
         {
-            text: ConstantStringTableComponentsEnum.UNLOCK_TABLE,
+            text: TableStringEnum.UNLOCK_TABLE,
             svgPath: 'assets/svg/truckassist-table/lock-new.svg',
             active: false,
             hide: false,
         },
         {
-            text: ConstantStringTableComponentsEnum.RESET_TABLE,
+            text: TableStringEnum.RESET_TABLE,
             svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
             isInactive: true,
             active: false,
             hide: false,
         },
         {
-            text: ConstantStringTableComponentsEnum.IMPORT,
+            text: TableStringEnum.IMPORT,
             svgPath: 'assets/svg/truckassist-table/import-new.svg',
             active: false,
             hide: false,
             hasTopBorder: true,
         },
         {
-            text: ConstantStringTableComponentsEnum.EXPORT,
+            text: TableStringEnum.EXPORT,
             svgPath: 'assets/svg/truckassist-table/export-new.svg',
             active: false,
             hide: false,
@@ -207,7 +207,7 @@ export class TruckassistTableToolbarComponent
 
     public openCards(): void {
         this.modalService.openModal(LoadCardsModalComponent, {
-            size: ConstantStringTableComponentsEnum.SMALL,
+            size: TableStringEnum.SMALL,
         });
 
         this.popover.close();
@@ -299,8 +299,7 @@ export class TruckassistTableToolbarComponent
                 if (viewMode.active) {
                     this.selectedViewMode = viewMode.name;
 
-                    this.isMapShowning =
-                        viewMode.name === ConstantStringTableComponentsEnum.MAP;
+                    this.isMapShowning = viewMode.name === TableStringEnum.MAP;
                 }
             });
         }
@@ -325,15 +324,12 @@ export class TruckassistTableToolbarComponent
         let activeCard = false;
 
         this.options.toolbarActions.viewModeOptions.filter((viewMode) => {
-            if (
-                viewMode.name === ConstantStringTableComponentsEnum.CARD &&
-                viewMode.active
-            )
+            if (viewMode.name === TableStringEnum.CARD && viewMode.active)
                 activeCard = true;
         });
 
         if (activeCard) {
-            this.toolbarWidth = ConstantStringTableComponentsEnum.NUMBER_100;
+            this.toolbarWidth = TableStringEnum.NUMBER_100;
         } else {
             this.columns.map((column) => {
                 if (!column.hidden) {
@@ -342,26 +338,16 @@ export class TruckassistTableToolbarComponent
                             ? column.minWidth
                             : column.width;
                     if (
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.CHECKBOX &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.ATTACHMENTS &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.MEDIA &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.INSURANCE &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.COMMENT &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.HIRE &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.FAVORITE &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.NOTE &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.ACTIONS &&
-                        column.ngTemplate !==
-                            ConstantStringTableComponentsEnum.USER_CHECKBOX
+                        column.ngTemplate !== TableStringEnum.CHECKBOX &&
+                        column.ngTemplate !== TableStringEnum.ATTACHMENTS &&
+                        column.ngTemplate !== TableStringEnum.MEDIA &&
+                        column.ngTemplate !== TableStringEnum.INSURANCE &&
+                        column.ngTemplate !== TableStringEnum.COMMENT &&
+                        column.ngTemplate !== TableStringEnum.HIRE &&
+                        column.ngTemplate !== TableStringEnum.FAVORITE &&
+                        column.ngTemplate !== TableStringEnum.NOTE &&
+                        column.ngTemplate !== TableStringEnum.ACTIONS &&
+                        column.ngTemplate !== TableStringEnum.USER_CHECKBOX
                     ) {
                         columnsSumWidth += 6;
                     }
@@ -370,26 +356,16 @@ export class TruckassistTableToolbarComponent
                 if (column.minWidth) hasMinWidth = true;
 
                 if (
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.CHECKBOX &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.ATTACHMENTS &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.MEDIA &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.INSURANCE &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.COMMENT &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.HIRE &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.FAVORITE &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.NOTE &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.ACTIONS &&
-                    column.ngTemplate !==
-                        ConstantStringTableComponentsEnum.USER_CHECKBOX
+                    column.ngTemplate !== TableStringEnum.CHECKBOX &&
+                    column.ngTemplate !== TableStringEnum.ATTACHMENTS &&
+                    column.ngTemplate !== TableStringEnum.MEDIA &&
+                    column.ngTemplate !== TableStringEnum.INSURANCE &&
+                    column.ngTemplate !== TableStringEnum.COMMENT &&
+                    column.ngTemplate !== TableStringEnum.HIRE &&
+                    column.ngTemplate !== TableStringEnum.FAVORITE &&
+                    column.ngTemplate !== TableStringEnum.NOTE &&
+                    column.ngTemplate !== TableStringEnum.ACTIONS &&
+                    column.ngTemplate !== TableStringEnum.USER_CHECKBOX
                 ) {
                     this.columnsOptions.push(column);
                 }
@@ -398,7 +374,7 @@ export class TruckassistTableToolbarComponent
             this.setColumnsOptionsGroups();
 
             this.toolbarWidth = hasMinWidth
-                ? columnsSumWidth + 26 + ConstantStringTableComponentsEnum.PX
+                ? columnsSumWidth + 26 + TableStringEnum.PX
                 : 100 + '%';
         }
     }
@@ -452,9 +428,7 @@ export class TruckassistTableToolbarComponent
 
     public onSelectTab(selectedTabData: any): void {
         if (this.tableRowsSelected.length) {
-            this.tableService.sendSelectOrDeselect(
-                ConstantStringTableComponentsEnum.DESELECT
-            );
+            this.tableService.sendSelectOrDeselect(TableStringEnum.DESELECT);
         }
 
         localStorage.setItem(
@@ -466,7 +440,7 @@ export class TruckassistTableToolbarComponent
         );
 
         this.toolBarAction.emit({
-            action: ConstantStringTableComponentsEnum.TAB_SELECTED,
+            action: TableStringEnum.TAB_SELECTED,
             tabData: selectedTabData,
         });
     }
@@ -479,7 +453,7 @@ export class TruckassistTableToolbarComponent
 
     public onToolBarSelectAction(actionType: string): void {
         this.toolBarAction.emit({
-            action: ConstantStringTableComponentsEnum.SELECT_ACTION,
+            action: TableStringEnum.SELECT_ACTION,
             data: actionType,
         });
     }
@@ -487,15 +461,13 @@ export class TruckassistTableToolbarComponent
     // Chnage View Mode
     public changeModeView(modeView: any): void {
         if (this.tableRowsSelected.length) {
-            this.tableService.sendSelectOrDeselect(
-                ConstantStringTableComponentsEnum.DESELECT
-            );
+            this.tableService.sendSelectOrDeselect(TableStringEnum.DESELECT);
         }
 
         this.selectedViewMode = modeView.mode;
 
         this.toolBarAction.emit({
-            action: ConstantStringTableComponentsEnum.VIEW_MODE,
+            action: TableStringEnum.VIEW_MODE,
             mode: modeView.mode,
         });
 
@@ -507,8 +479,7 @@ export class TruckassistTableToolbarComponent
             })
         );
 
-        this.isMapShowning =
-            modeView.mode === ConstantStringTableComponentsEnum.MAP;
+        this.isMapShowning = modeView.mode === TableStringEnum.MAP;
     }
 
     public deleteSelectedRows(): void {
@@ -517,7 +488,7 @@ export class TruckassistTableToolbarComponent
 
     public activeSelectedRows(): void {
         this.toolBarAction.emit({
-            action: ConstantStringTableComponentsEnum.ACTIVATE_ITEM,
+            action: TableStringEnum.ACTIVATE_ITEM,
             tabData: {
                 data: this.tableRowsSelected.map((data) => data.tableData.id),
             },
@@ -536,7 +507,7 @@ export class TruckassistTableToolbarComponent
     public onShowOptions(optionsPopup): void {
         this.optionsPopupContent[0].active = false;
         this.optionsPopupContent.map((option) => {
-            if (option.text !== ConstantStringTableComponentsEnum.COLUMNS) {
+            if (option.text !== TableStringEnum.COLUMNS) {
                 option.hide = false;
             }
 
@@ -559,17 +530,17 @@ export class TruckassistTableToolbarComponent
     //  On Toolbar Option Actions
     public onOptions(action: any): void {
         if (
-            (action.text === ConstantStringTableComponentsEnum.UNLOCK_TABLE ||
-                action.text === ConstantStringTableComponentsEnum.LOCK_TABLE) &&
-            this.selectedViewMode === ConstantStringTableComponentsEnum.LIST
+            (action.text === TableStringEnum.UNLOCK_TABLE ||
+                action.text === TableStringEnum.LOCK_TABLE) &&
+            this.selectedViewMode === TableStringEnum.LIST
         ) {
             action.active = !action.active;
 
             this.tableLocked = !this.tableLocked;
 
             this.optionsPopupContent[1].text = this.tableLocked
-                ? ConstantStringTableComponentsEnum.UNLOCK_TABLE
-                : ConstantStringTableComponentsEnum.LOCK_TABLE;
+                ? TableStringEnum.UNLOCK_TABLE
+                : TableStringEnum.LOCK_TABLE;
 
             this.optionsPopupContent[1].svgPath = this.tableLocked
                 ? 'assets/svg/truckassist-table/lock-new.svg'
@@ -591,34 +562,32 @@ export class TruckassistTableToolbarComponent
                     })
                     .subscribe(() => {});
             }
-        } else if (action.text === ConstantStringTableComponentsEnum.COLUMNS) {
+        } else if (action.text === TableStringEnum.COLUMNS) {
             action.active = !action.active;
 
             this.checkAreAllSelectedInGroup();
 
             this.optionsPopupContent.map((option) => {
-                if (option.text !== ConstantStringTableComponentsEnum.COLUMNS) {
+                if (option.text !== TableStringEnum.COLUMNS) {
                     option.hide = action.active;
                 }
 
                 return option;
             });
         } else if (
-            action.text === ConstantStringTableComponentsEnum.RESET_TABLE &&
+            action.text === TableStringEnum.RESET_TABLE &&
             !this.optionsPopupContent[2].isInactive
         ) {
             this.onShowOptions(this.optionsPopup);
 
             this.modalService.openModal(
                 ConfirmationModalResetComponent,
-                { size: ConstantStringTableComponentsEnum.SMALL },
+                { size: TableStringEnum.SMALL },
                 {
-                    template: ConstantStringTableComponentsEnum.RESET_MODAL,
-                    type: ConstantStringTableComponentsEnum.RESET,
-                    modalTitle:
-                        ConstantStringTableComponentsEnum.RESET_MODAL_CONTACTS_TITLE,
-                    tableType:
-                        ConstantStringTableComponentsEnum.RESET_MODAL_CONTACTS_TABLE_TYPE,
+                    template: TableStringEnum.RESET_MODAL,
+                    type: TableStringEnum.RESET,
+                    modalTitle: TableStringEnum.RESET_MODAL_CONTACTS_TITLE,
+                    tableType: TableStringEnum.RESET_MODAL_CONTACTS_TABLE_TYPE,
                 }
             );
         }

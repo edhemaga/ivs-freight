@@ -18,7 +18,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng5SliderModule } from 'ng5-slider';
 
 //Enums
-import { SliderTemplate } from './state/enums/slider.enum';
+import { SliderTemplateEnum } from './enums/slider-template.enum';
 
 @Component({
     selector: 'app-ta-ngx-slider',
@@ -36,7 +36,7 @@ import { SliderTemplate } from './state/enums/slider.enum';
     ],
 })
 export class TaNgxSliderComponent {
-    @Input() sliderTemplate: string = SliderTemplate.COMMISSION;
+    @Input() sliderTemplate: string = SliderTemplateEnum.COMMISSION;
     @Input() sliderName: string = null;
     @Input() sliderOptions: Options;
     @Input() startedValue: number = 50;
@@ -59,7 +59,7 @@ export class TaNgxSliderComponent {
 
     public userChangeEnd(changes: ChangeContext) {
         if (changes) {
-            if (this.sliderTemplate === SliderTemplate.RANGE_SLIDER)
+            if (this.sliderTemplate === SliderTemplateEnum.RANGE_SLIDER)
                 this.onUserValueChange.emit(changes);
             else this.onUserValueChange.emit(changes.value);
         }

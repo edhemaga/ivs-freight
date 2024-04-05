@@ -12,9 +12,9 @@ import { Subject, takeUntil } from 'rxjs';
 
 // serivces
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // state
 import { CompanyStore } from '../../../../state/company-state/company-settings.store';

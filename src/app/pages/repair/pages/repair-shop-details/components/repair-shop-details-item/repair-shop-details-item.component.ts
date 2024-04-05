@@ -1,0 +1,353 @@
+import {
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    ViewEncapsulation,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+
+// Models
+import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
+
+// Services
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+
+// Helpers
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+
+// Store
+import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
+
+// Components
+import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+
+// Animations
+import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+
+@Component({
+    selector: 'app-repair-shop-details-item',
+    templateUrl: './repair-shop-details-item.component.html',
+    encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./repair-shop-details-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [card_component_animation('showHideCardBody', '0px', '0px')],
+})
+export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
+    @Input() repairShopItem: RepairShopResponse | any = null;
+    @Input() customClass: string | any = '';
+    public repairListData: any;
+    public repairedVehicleListData: any;
+    public data;
+    public dummyData: any;
+    public reviewsRepair: any = [];
+    public repairShopLikes: number;
+    public repairShopDislike: number;
+    public showRepairItems: boolean[] = [];
+    private destroy$ = new Subject<void>();
+    public repairsTest: any;
+
+    constructor(
+        // Services
+        private dropDownService: DropDownService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService,
+        private reviewRatingService: ReviewsRatingService,
+        private tableService: TruckassistTableService,
+
+        // Store
+        private repairDetailsQuery: RepairDetailsQuery,
+
+        // Ref
+        private cdr: ChangeDetectorRef
+    ) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes.repairShopItem?.currentValue?.data !=
+            changes.repairShopItem?.previousValue?.data
+        ) {
+            this.repairShopLikes =
+                changes.repairShopItem?.currentValue?.data.upCount;
+            this.repairShopDislike =
+                changes.repairShopItem?.currentValue?.data.downCount;
+            this.getReviews(changes.repairShopItem?.currentValue?.data);
+            this.initTableOptions();
+            this.repairDetailsQuery.repairList$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(
+                    (item) => (
+                        (this.repairListData = item.pagination.data),
+                        this.cdr.detectChanges()
+                    )
+                );
+            this.repairDetailsQuery.repairedVehicleList$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(
+                    (item) => (
+                        (this.repairedVehicleListData = item.pagination.data),
+                        this.cdr.detectChanges()
+                    )
+                );
+            this.repairListData?.map((item) => {
+                this.showRepairItems[item.id] = false;
+            });
+        }
+    }
+    ngOnInit(): void {
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case 'delete': {
+                            // if (res.template === 'repair') {
+                            //   this.deleteRepairByIdFunction(res.id);
+                            // }
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
+            });
+
+        this.initTableOptions();
+
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if (res.animation && res.tab === 'repair') {
+                    let index = -1;
+                    this.repairListData.map((item, inx) => {
+                        if (item.id == res.id) {
+                            index = inx;
+                        }
+                    });
+
+                    if (index > -1) {
+                        this.repairListData[index] = {
+                            ...this.repairListData[index],
+                            ...res.data,
+                        };
+                        this.cdr.detectChanges();
+                    }
+                }
+            });
+    }
+
+    public toggleRepairs(index: number, event?: any) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.showRepairItems[index] = !this.showRepairItems[index];
+    }
+
+    public optionsEvent(eventData: any, action: string) {
+        if (eventData.type == 'finish order') {
+            this.finishOrder(eventData.id, eventData.data, undefined, 'bill');
+        }
+
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
+        setTimeout(() => {
+            this.dropDownService.dropActions(
+                eventData,
+                name,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                eventData,
+                null,
+                null
+            );
+        }, 100);
+    }
+
+    public finishOrder(
+        repairId: number,
+        data: any,
+        event?: any,
+        subType?: any
+    ) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+
+        this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'small' },
+            {
+                id: data.id,
+                payload: data,
+                file_id: repairId,
+                type: 'edit',
+                modal: 'repair',
+                subTypeOpened: subType ? subType : '',
+            }
+        );
+    }
+    /**Function for dots in cards */
+    public initTableOptions(): void {
+        this.dummyData = {
+            disabledMutedStyle: null,
+            toolbarActions: {
+                hideViewMode: false,
+            },
+            config: {
+                showSort: true,
+                sortBy: '',
+                sortDirection: '',
+                disabledColumns: [0],
+                minWidth: 60,
+            },
+            actions: [
+                {
+                    title: 'Edit',
+                    name: 'edit',
+                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    show: true,
+                    iconName: 'edit',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'View Details',
+                    name: 'view-details',
+                    svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: 'view-details',
+                    show: true,
+                },
+                {
+                    title: 'Finish Order',
+                    name: 'finish order',
+                    iconName: 'finish-order',
+                    blueIcon: true,
+                },
+                {
+                    title: 'All Bills',
+                    name: 'all bills',
+                    iconName: 'ic_truck',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Share',
+                    name: 'share',
+                    svg: 'assets/svg/common/share-icon.svg',
+                    show: true,
+                    iconName: 'share',
+                },
+                {
+                    title: 'Print',
+                    name: 'print',
+                    svg: 'assets/svg/common/ic_fax.svg',
+                    show: true,
+                    iconName: 'print',
+                },
+                {
+                    title: 'border',
+                },
+                {
+                    title: 'Delete',
+                    name: 'delete-item',
+                    type: 'driver',
+                    text: 'Are you sure you want to delete driver(s)?',
+                    svg: 'assets/svg/common/ic_trash.svg',
+                    danger: true,
+                    show: true,
+                    iconName: 'delete',
+                    redIcon: true,
+                },
+            ],
+            export: true,
+        };
+    }
+    public getReviews(reviewsData: RepairShopResponse) {
+        this.reviewsRepair = reviewsData?.reviews?.map((item) => {
+            return {
+                ...item,
+                companyUser: {
+                    ...item.companyUser,
+                    avatar: item.companyUser.avatar
+                        ? item.companyUser.avatar
+                        : 'assets/svg/common/ic_profile.svg',
+                },
+                commentContent: item.comment,
+                rating: item.ratingFromTheReviewer,
+            };
+        });
+    }
+
+    /**Function return id */
+    public identity(index: number, item: any): number {
+        return item.id;
+    }
+
+    public changeReviewsEvent(reviews: { data: any; action: string }) {
+        if (reviews.action == 'update') {
+            const review: UpdateReviewCommand = {
+                id: reviews.data.id,
+                comment: reviews.data.commentContent,
+            };
+
+            this.reviewRatingService
+                .updateReview(review)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        } else if (reviews.action == 'delete') {
+            this.reviewRatingService
+                .deleteReview(reviews.data)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe();
+        }
+        //this.reviewsRepair = [...reviews.data];
+        // TODO: API CREATE OR DELETE
+    }
+
+    public openRepairDetail(repair) {
+        if (this.showRepairItems[repair.id]) {
+            this.showRepairItems[repair.id] = false;
+        } else {
+            if (repair?.items?.length > 0) {
+                this.showRepairItems[repair.id] = true;
+            }
+        }
+    }
+
+    public stopClick(ev, data) {
+        ev.stopPropagation();
+        ev.preventDefault();
+
+        if (data.truckId) {
+            this.dummyData.actions[4]['iconName'] = 'ic_truck';
+        } else if (data.trailerId) {
+            this.dummyData.actions[4]['iconName'] = 'ic_trailer';
+        }
+
+        if (data.repairType.name != 'Bill') {
+            this.dummyData.actions[3]['hide'] = false;
+            this.dummyData.actions[4]['title'] = 'All Orders';
+        } else {
+            this.dummyData.actions[3]['hide'] = true;
+            this.dummyData.actions[4]['title'] = 'All Bills';
+        }
+    }
+}

@@ -9,12 +9,12 @@ import { TtTitleModalComponent } from 'src/app/core/components/modals/common-tru
 
 // services
 import { TrailerService } from '../../../../shared/services/trailer.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store
 import { TrailerItemStore } from '../../state/trailer-details-state/trailer-details.store';
@@ -23,7 +23,7 @@ import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state
 import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { TableOptions } from 'src/app/core/model/table.model';
@@ -377,13 +377,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case ConstantStringTableComponentsEnum.DELETE:
+                        case TableStringEnum.DELETE:
                             if (res.template === 'trailer')
                                 this.deleteTrailerById(res?.id);
                             break;
 
-                        case ConstantStringTableComponentsEnum.ACTIVATE:
-                        case ConstantStringTableComponentsEnum.DEACTIVATE:
+                        case TableStringEnum.ACTIVATE:
+                        case TableStringEnum.DEACTIVATE:
                             this.changeTrailerStatus(res?.id);
                             break;
 

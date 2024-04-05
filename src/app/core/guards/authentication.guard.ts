@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 
 // services
-import { NotificationService } from '../services/notification/notification.service';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {

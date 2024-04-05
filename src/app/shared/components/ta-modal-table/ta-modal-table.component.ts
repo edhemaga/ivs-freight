@@ -27,21 +27,21 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 // services
-import { TaInputService } from '../ta-input/ta-input.service';
+import { TaInputService } from '../ta-input/services/ta-input.service';
 import { ContactsService } from 'src/app/shared/services/contacts.service';
 import { RepairService } from '../../services/repair.service';
 
 // constants
-import { ModalTableConstants } from 'src/app/core/utils/constants/ta-modal-table.constants';
+import { ModalTableConstants } from 'src/app/shared/components/ta-modal-table/utils/constants/modal-table.constants';
 
 // enums
-import { ConstantStringEnum } from 'src/app/core/utils/enums/ta-modal-table.enum';
+import { TaModalTableStringEnum } from 'src/app/shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
 // validations
 import {
     phoneExtension,
     phoneFaxRegex,
-} from '../ta-input/ta-input.regex-validations';
+} from '../ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -162,11 +162,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         index?: number
     ): void {
         switch (action) {
-            case ConstantStringEnum.CONTACT_PHONE_TYPE:
+            case TaModalTableStringEnum.CONTACT_PHONE_TYPE:
                 this.selectedContactPhoneType[index] = event;
 
                 break;
-            case ConstantStringEnum.CONTACT_EMAIL_TYPE:
+            case TaModalTableStringEnum.CONTACT_EMAIL_TYPE:
                 this.selectedContactEmailType[index] = event;
 
                 break;
@@ -223,24 +223,24 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public getFormArray(): UntypedFormArray {
         if (this.isPhoneTable)
             return this.modalTableForm.get(
-                ConstantStringEnum.PHONE_TABLE_ITEMS
+                TaModalTableStringEnum.PHONE_TABLE_ITEMS
             ) as UntypedFormArray;
 
         if (this.isEmailTable) {
             return this.modalTableForm.get(
-                ConstantStringEnum.EMAIL_TABLE_ITEMS
+                TaModalTableStringEnum.EMAIL_TABLE_ITEMS
             ) as UntypedFormArray;
         }
 
         if (this.isDescriptionTable) {
             return this.modalTableForm.get(
-                ConstantStringEnum.DESCRIPTION_TABLE_ITEMS
+                TaModalTableStringEnum.DESCRIPTION_TABLE_ITEMS
             ) as UntypedFormArray;
         }
 
         if (this.isContactTable) {
             return this.modalTableForm.get(
-                ConstantStringEnum.CONTACT_TABLE_ITEMS
+                TaModalTableStringEnum.CONTACT_TABLE_ITEMS
             ) as UntypedFormArray;
         }
     }
@@ -269,8 +269,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             });
 
             this.inputService.customInputValidator(
-                newFormArrayRow.get(ConstantStringEnum.EMAIL),
-                ConstantStringEnum.EMAIL,
+                newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
+                TaModalTableStringEnum.EMAIL,
                 this.destroy$
             );
         }
@@ -299,8 +299,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             ];
 
             this.inputService.customInputValidator(
-                newFormArrayRow.get(ConstantStringEnum.EMAIL),
-                ConstantStringEnum.EMAIL,
+                newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
+                TaModalTableStringEnum.EMAIL,
                 this.destroy$
             );
         }
@@ -312,7 +312,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public calculateSubtotal(): void {
         this.modalTableForm
-            .get(ConstantStringEnum.DESCRIPTION_TABLE_ITEMS)
+            .get(TaModalTableStringEnum.DESCRIPTION_TABLE_ITEMS)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 distinctUntilChanged(),
@@ -416,8 +416,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 this.inputService.customInputValidator(
-                    this.getFormArray().at(i).get(ConstantStringEnum.EMAIL),
-                    ConstantStringEnum.EMAIL,
+                    this.getFormArray().at(i).get(TaModalTableStringEnum.EMAIL),
+                    TaModalTableStringEnum.EMAIL,
                     this.destroy$
                 );
 
@@ -451,7 +451,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.getModalTableDataValue();
 
                     if (
-                        this.getFormArray().status === ConstantStringEnum.VALID
+                        this.getFormArray().status ===
+                        TaModalTableStringEnum.VALID
                     ) {
                         this.modalTableValidStatusEmitter.emit(true);
                     } else {

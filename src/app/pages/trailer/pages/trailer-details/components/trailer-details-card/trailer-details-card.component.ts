@@ -11,8 +11,8 @@ import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // animations
 import {

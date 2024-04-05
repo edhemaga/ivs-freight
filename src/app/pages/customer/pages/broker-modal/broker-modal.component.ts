@@ -25,21 +25,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
 
 // Helpers
-import {
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Services
-import { FormService } from '../../../../core/services/form/form.service';
-import { ReviewsRatingService } from '../../../../core/services/reviews-rating/reviewsRating.service';
+import { FormService } from '../../../../shared/services/form.service';
+import { ReviewsRatingService } from '../../../../shared/services/reviews-rating.service';
 import {
     LikeDislikeModel,
     TaLikeDislikeService,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { BrokerService } from 'src/app/pages/customer/services/broker.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // Models
 import {
@@ -66,7 +63,7 @@ import {
     mcFFValidation,
     phoneExtension,
     phoneFaxRegex,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Components
 import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';
@@ -82,11 +79,11 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
+import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 
-import {
-    TaUserReviewComponent,
-    ReviewCommentModal,
-} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+// models
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+
 @Component({
     selector: 'app-broker-modal',
     templateUrl: './broker-modal.component.html',
@@ -651,7 +648,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -762,7 +759,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewCommentModal) {
+    private addReview(reviews: ReviewComment) {
         const review: CreateReviewCommand = {
             entityTypeReviewId: 1,
             entityTypeId: this.editData.id,
@@ -790,7 +787,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -799,7 +796,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
@@ -1200,7 +1197,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         creditType: reasponse.creditType,
                         creditLimit:
                             reasponse.creditType.name === 'Custom'
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       reasponse.creditLimit
                                   )
                                 : null,
@@ -1735,7 +1732,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         let limit = this.brokerForm.get('creditLimit').value;
 
         if (limit) {
-            limit = convertThousanSepInNumber(limit);
+            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
             this.brokerService
                 .availableCreditBroker({
                     id: this.editData?.id ? this.editData.id : null,
@@ -1747,7 +1744,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         this.brokerForm
                             .get('creditLimit')
                             .patchValue(
-                                convertNumberInThousandSep(res.creditLimit)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    res.creditLimit
+                                )
                             );
 
                         this.brokerForm

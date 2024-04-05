@@ -16,10 +16,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import {
     filterUnceckedRadiosId,
     isAnyRadioInArrayUnChecked,
@@ -30,10 +27,10 @@ import {
     phoneFaxRegex,
     addressValidation,
     addressUnitValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { ApplicantSphService } from '../../services/applicant-sph.service';
 
 // store
@@ -305,8 +302,14 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
 
         if (!notSubjectToDot) {
             this.drugAndAlcoholTestingHistoryForm.patchValue({
-                employmentFromDate: convertDateFromBackend(employmentFrom),
-                employmentToDate: convertDateFromBackend(employmentTo),
+                employmentFromDate:
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        employmentFrom
+                    ),
+                employmentToDate:
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        employmentTo
+                    ),
                 alcoholTest: higherAlcoholConcentration,
                 controledSubstances: positiveDrugTest,
                 refusedToSubmit: refusedToSubmitTest,
@@ -609,10 +612,14 @@ export class Step3Component implements OnInit, AfterViewInit, OnDestroy {
             notSubjectToDot: applicantNotSubject,
             employmentFrom: applicantNotSubject
                 ? null
-                : convertDateToBackend(employmentFromDate),
+                : MethodsCalculationsHelper.convertDateToBackend(
+                      employmentFromDate
+                  ),
             employmentTo: applicantNotSubject
                 ? null
-                : convertDateToBackend(employmentToDate),
+                : MethodsCalculationsHelper.convertDateToBackend(
+                      employmentToDate
+                  ),
             higherAlcoholConcentration: applicantNotSubject
                 ? null
                 : alcoholTest,

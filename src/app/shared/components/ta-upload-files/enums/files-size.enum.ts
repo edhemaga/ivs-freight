@@ -1,4 +1,4 @@
-export enum FilesSize {
+export enum FilesSizeEnum {
     SMALL = 'small',
     MEDIUM = 'medium',
     LARGE = 'large',

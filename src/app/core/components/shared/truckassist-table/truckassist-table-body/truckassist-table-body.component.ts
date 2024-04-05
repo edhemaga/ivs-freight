@@ -34,13 +34,13 @@ import { CommonModule } from '@angular/common';
 import { TableStrategy } from './table_strategy';
 
 // services
-import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
-import { SharedService } from '../../../../services/shared/shared.service';
-import { DetailsDataService } from '../../../../services/details-data/details-data.service';
-import { FilesService } from 'src/app/core/services/shared/files.service';
+import { TruckassistTableService } from '../../../../../shared/services/truckassist-table.service';
+import { SharedService } from '../../../../../shared/services/shared.service';
+import { DetailsDataService } from '../../../../../shared/services/details-data.service';
+import { FilesService } from 'src/app/shared/services/files.service';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // components
 import { CustomScrollbarComponent } from '../../custom-scrollbar/custom-scrollbar.component';
@@ -60,12 +60,12 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 
 // pipes
-import { TableHighlightSearchTextPipe } from 'src/app/core/pipes/table-highlight-search-text.pipe';
-import { TableTextCountPipe } from 'src/app/core/pipes/table-text-count.pipe';
-import { ContactPhoneEmailIconPipe } from 'src/app/core/pipes/contact-phone-email-icon.pipe';
+import { TableHighlightSearchTextPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/table-highlight-search-text.pipe';
+import { TableTextCountPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/table-text-count.pipe';
+import { ContactPhoneEmailIconPipe } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/pipes/contact-phone-email-icon.pipe';
 
 // enums
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
@@ -435,11 +435,10 @@ export class TruckassistTableBodyComponent
             let entity = this.activeTableData?.gridNameTitle;
 
             if (
-                entity === ConstantStringTableComponentsEnum.REPAIR &&
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+                entity === TableStringEnum.REPAIR &&
+                this.selectedTab === TableStringEnum.REPAIR_SHOP
             )
-                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
+                entity = TableStringEnum.REPAIR_SHOP_2;
 
             this.filesService
                 .getFiles(entity, this.activeAttachment)
@@ -875,11 +874,10 @@ export class TruckassistTableBodyComponent
             let entity = this.activeTableData?.gridNameTitle?.toLowerCase();
 
             if (
-                entity === ConstantStringTableComponentsEnum.REPAIR &&
-                this.selectedTab ===
-                    ConstantStringTableComponentsEnum.REPAIR_SHOP
+                entity === TableStringEnum.REPAIR &&
+                this.selectedTab === TableStringEnum.REPAIR_SHOP
             )
-                entity = ConstantStringTableComponentsEnum.REPAIR_SHOP_2;
+                entity = TableStringEnum.REPAIR_SHOP_2;
 
             this.filesService.getFiles(entity, row.id).subscribe((res) => {
                 if (res?.length) {

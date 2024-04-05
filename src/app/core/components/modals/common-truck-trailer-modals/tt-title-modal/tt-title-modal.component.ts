@@ -6,17 +6,14 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 import { Subject, takeUntil } from 'rxjs';
-import { FormService } from '../../../../services/form/form.service';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../utils/methods.calculations';
+import { FormService } from '../../../../../shared/services/form.service';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
@@ -173,8 +170,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            issueDate: convertDateToBackend(issueDate),
-            purchaseDate: convertDateToBackend(purchaseDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            purchaseDate:
+                MethodsCalculationsHelper.convertDateToBackend(purchaseDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             trailerId:
                 this.editData.modal === 'trailer'
@@ -219,8 +218,10 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: this.editData.file_id,
             ...form,
-            issueDate: convertDateToBackend(issueDate),
-            purchaseDate: convertDateToBackend(purchaseDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            purchaseDate:
+                MethodsCalculationsHelper.convertDateToBackend(purchaseDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             files: documents ? documents : this.ttTitleForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -257,10 +258,14 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                         number: res.number,
                         stateId: res.state ? res.state.stateShortName : null,
                         purchaseDate: res.purchaseDate
-                            ? convertDateFromBackend(res.purchaseDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.purchaseDate
+                              )
                             : null,
                         issueDate: res.issueDate
-                            ? convertDateFromBackend(res.issueDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.issueDate
+                              )
                             : null,
                         note: res.note,
                         files: res.files.length

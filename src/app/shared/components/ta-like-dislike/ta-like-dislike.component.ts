@@ -12,18 +12,18 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-// service
+// services
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
-} from './ta-like-dislike.service';
-import { DetailsDataService } from '../../../core/services/details-data/details-data.service';
+} from './services/ta-like-dislike.service';
+import { DetailsDataService } from '../../services/details-data.service';
 
-// model
+// models
 import { SendDataCard } from '../../models/card-table-data.model';
 
-// enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+// enums
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-like-dislike',
@@ -89,18 +89,18 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
 
         if (this.isCard) {
             this.likesDislakes.emit({
-                type: ConstantStringTableComponentsEnum.RATING,
+                type: TableStringEnum.RATING,
                 subType: type,
             });
         } else {
-            if (type === ConstantStringTableComponentsEnum.LIKED) {
+            if (type === TableStringEnum.LIKED) {
                 this.isLiked = !this.isLiked;
 
                 if (this.isDisliked) {
                     this.taDislikes--;
                     this.isDisliked = false;
                     this.DetailsDataService.changeRateStatus(
-                        ConstantStringTableComponentsEnum.DISLIKE,
+                        TableStringEnum.DISLIKE,
                         this.isDisliked
                     );
                 }
@@ -117,7 +117,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
                 });
 
                 this.DetailsDataService.changeRateStatus(
-                    ConstantStringTableComponentsEnum.LIKE,
+                    TableStringEnum.LIKE,
                     this.isLiked
                 );
             } else {
@@ -126,7 +126,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
                     this.taLikes--;
                     this.isLiked = false;
                     this.DetailsDataService.changeRateStatus(
-                        ConstantStringTableComponentsEnum.LIKE,
+                        TableStringEnum.LIKE,
                         this.isLiked
                     );
                 }
@@ -143,7 +143,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
                 });
 
                 this.DetailsDataService.changeRateStatus(
-                    ConstantStringTableComponentsEnum.DISLIKE,
+                    TableStringEnum.DISLIKE,
                     this.isDisliked
                 );
             }

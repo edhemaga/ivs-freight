@@ -2,16 +2,12 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject, tap } from 'rxjs';
 
 //Models
-import {
-    MedicalResponse,
-    MedicalService,
-} from 'appcoretruckassist';
-
+import { MedicalResponse, MedicalService } from 'appcoretruckassist';
 
 //Services
 import { DriverService } from './driver.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Store
 import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';

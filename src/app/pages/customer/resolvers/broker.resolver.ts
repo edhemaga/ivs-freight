@@ -4,7 +4,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { BrokerService } from '../services/broker.service';
 
 // Store
@@ -20,7 +20,7 @@ export class BrokerResolver implements Resolve<BrokerState> {
         private tableService: TruckassistTableService,
 
         // Store
-        private brokerStore: BrokerStore,
+        private brokerStore: BrokerStore
     ) {}
     resolve(): Observable<any> {
         return forkJoin([

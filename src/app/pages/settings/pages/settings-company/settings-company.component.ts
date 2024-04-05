@@ -10,11 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { SettingsCompanyService } from '../../services/settings-company.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // store
 import { CompanyQuery } from '../../state/company-state/company-settings.query';

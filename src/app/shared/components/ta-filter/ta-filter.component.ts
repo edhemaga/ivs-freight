@@ -25,7 +25,7 @@ import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 
 // validators
-import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,25 +40,23 @@ import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // services
-import { FilterStateService } from './state/filter-state.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { FilterStateService } from './services/filter-state.service';
+import { TruckassistTableService } from '../../services/truckassist-table.service';
 
 // constants
-import { DirectiveConstants } from './state/constants/filter.constants';
-import { filterConfig } from './state/constants/filter_config.constants';
+import { DirectiveConstants } from './utils/constants/directive.constants';
+import { FilterConfigConstants } from './utils/constants/filter-config.constants';
 
 // animations
-import {
-    area_left_side_animation,
-    area_right_side_animation,
-    close_form,
-    in_out_animation,
-    show_animation,
-    state_header,
-} from './state/animations/filter.animation';
 
+import { areaLeftSideAnimation } from './animations/area-left-side.animation';
+import { areaRightSideAnimation } from './animations/area-right-side.animation';
+import { closeForm } from './animations/close-form.animation';
+import { inOutAnimation } from './animations/in-out.animation';
+import { showAnimation } from './animations/show.animation';
+import { stateHeader } from './animations/state-header.animation';
 // models
-import { ArrayStatus } from './state/model/filter.models';
+import { ArrayStatus } from './model/array-status.model';
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -88,12 +86,12 @@ import { ArrayStatus } from './state/model/filter.models';
     providers: [NgbDropdownConfig, ThousandSeparatorPipe, TaSvgPipe],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        close_form('closeForm'),
-        in_out_animation('inOutAnimation'),
-        state_header('stateHeader'),
-        show_animation('showAnimation'),
-        area_right_side_animation('areaRightSideAnimation'),
-        area_left_side_animation('areaLeftSideAnimation'),
+        closeForm('closeForm'),
+        inOutAnimation('inOutAnimation'),
+        stateHeader('stateHeader'),
+        showAnimation('showAnimation'),
+        areaRightSideAnimation('areaRightSideAnimation'),
+        areaLeftSideAnimation('areaLeftSideAnimation'),
     ],
 })
 export class TaFilterComponent implements OnInit {
@@ -199,13 +197,14 @@ export class TaFilterComponent implements OnInit {
     public hoverClose: any = false;
     public areaFilterSelected: any = 'Location';
 
-    public sliderData: Options = filterConfig.SLIDER_DATA;
+    public sliderData: Options = FilterConfigConstants.SLIDER_DATA;
 
-    public locationSliderData: Options = filterConfig.LOACTION_SLIDER_DATA;
+    public locationSliderData: Options =
+        FilterConfigConstants.LOACTION_SLIDER_DATA;
 
-    public paySliderData: Options = filterConfig.PAY_SLIDER_DATA;
+    public paySliderData: Options = FilterConfigConstants.PAY_SLIDER_DATA;
 
-    public milesSliderData: Options = filterConfig.MILES_SLIDER_DATA;
+    public milesSliderData: Options = FilterConfigConstants.MILES_SLIDER_DATA;
 
     public minValueRange: string = '0';
     public maxValueRange: string = '5,000';

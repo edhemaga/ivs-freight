@@ -1,13 +1,16 @@
+import { Injectable } from '@angular/core';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+
+// models
 import {
     PasswordResponse,
     UpdateUserCommand,
     UserResponse,
     UserService,
     ValidatePasswordCommand,
+    CheckUserByEmailResponse,
 } from 'appcoretruckassist';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CheckUserByEmailResponse } from '../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 @Injectable({
     providedIn: 'root',

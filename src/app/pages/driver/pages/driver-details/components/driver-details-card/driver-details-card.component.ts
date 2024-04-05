@@ -12,6 +12,9 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
+// moment
+import moment from 'moment';
+
 //Pipes
 import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
@@ -19,22 +22,20 @@ import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
 
 //Helpers
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import moment from 'moment';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 //Services
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
 import { DriverMvrService } from '../../../../services/driver-mvr.service';
 import { DriverTestService } from '../../../../services/driver-test.service';
 import { DriverService } from '../../../../services/driver.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 
 //Components
 import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
@@ -47,18 +48,15 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
 import { DriversMinimalListQuery } from '../../../../state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from './enums/driver-details-card-string.enum';
 import { DriverImagesStringEnum } from './enums/driver-images-string.enum';
 import { BrokerTabStringEnum } from 'src/app/pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 //Models
 import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from 'src/app/shared/components/ta-chart/models/chart-models';
-
+import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
@@ -70,7 +68,7 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from 'src/app/shared/components/ta-tab-switch/state/models/tab-options.models';
+import { TabOptions } from 'src/app/shared/components/ta-tab-switch/models/tab-options.models';
 import { DriverDropdown } from './models/driver-dropdown.model';
 import { DriverDateInfo } from '../../../../models/driver-date-info.model';
 
@@ -356,7 +354,10 @@ export class DriverDetailsCardComponent
         );
     }
     public optionsEvent(eventData: Event, action: string): void {
-        const name = dropActionNameDriver(eventData, action);
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            action
+        );
         this.dropDownService.dropActions(
             eventData,
             name,
@@ -739,7 +740,7 @@ export class DriverDetailsCardComponent
             (driver) => driver.id === this.driver.id
         );
         switch (action) {
-            case ArrowActionsEnum.PREVIOUS:
+            case ArrowActionsStringEnum.PREVIOUS:
                 currentIndex = --currentIndex;
                 if (currentIndex !== -1) {
                     this.detailsPageDriverSer.getDataDetailId(
@@ -752,7 +753,7 @@ export class DriverDetailsCardComponent
                     this.currentDriverIndex = currentIndex;
                 }
                 break;
-            case ArrowActionsEnum.NEXT:
+            case ArrowActionsStringEnum.NEXT:
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&
@@ -772,9 +773,6 @@ export class DriverDetailsCardComponent
             default:
                 break;
         }
-    }
-    public onFileAction(action: string): void {
-        onFileActionMethods(action);
     }
 
     private chartDataSet(

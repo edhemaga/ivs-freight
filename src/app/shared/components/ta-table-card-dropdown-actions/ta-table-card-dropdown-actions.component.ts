@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { TableCardDropdownActionsService } from './table-card-dropdown-actions.service';
+import { DetailsDataService } from '../../services/details-data.service';
+import { TableCardDropdownActionsService } from './services/table-card-dropdown-actions.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';

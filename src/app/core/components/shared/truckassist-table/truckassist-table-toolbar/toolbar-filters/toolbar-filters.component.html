@@ -72,12 +72,12 @@
     </ng-container>
 
     <!-- SEARCH -->
-    <app-ta-carrier-search
+    <app-ta-search
         *ngIf="!options.toolbarActions.hideSearch"
         [searchType]="'tabel'"
         [selectedTabData]="activeTableData"
         [toolbarSearch]="true"
-    ></app-ta-carrier-search>
+    ></app-ta-search>
 
     <!-- SEARCH BORDER ONLY -->
     <ng-container *ngIf="!options.toolbarActions.hideSearch">

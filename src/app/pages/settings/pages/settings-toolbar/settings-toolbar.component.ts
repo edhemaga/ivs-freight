@@ -10,7 +10,7 @@ import { CompanyRepairShopStore } from '../../state/setting-reapir-shop-state/co
 import { TerminalStore } from '../../state/settings-terminal-state/company-terminal.store';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-settings-toolbar',

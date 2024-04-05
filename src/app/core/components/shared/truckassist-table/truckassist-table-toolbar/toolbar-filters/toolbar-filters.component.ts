@@ -13,19 +13,19 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
 //Components
-import { TaCarrierSearchComponent } from 'src/app/shared/components/ta-carrier-search/ta-carrier-search.component';
+import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from '../../../../../../shared/components/ta-filter/ta-filter.component';
 import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
 
-//Enum
-import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/table-components.enum';
+// enums
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
-//Pipe
-import { MoneyFilterPipe } from 'src/app/core/pipes/money-filter.pipe';
+// pipes
+import { MoneyFilterPipe } from 'src/app/shared/pipes/money-filter.pipe';
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
-//Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+// services
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-toolbar-filters',
@@ -35,7 +35,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
     imports: [
         CommonModule,
         FormsModule,
-        TaCarrierSearchComponent,
+        TaSearchComponent,
         TaFilterComponent,
         AngularSvgIconModule,
         FormatCurrency,
@@ -49,15 +49,15 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     @Input() activeTableData: any;
     public loadFilterData: { name: string; active: boolean }[] = [
         {
-            name: ConstantStringTableComponentsEnum.ALL,
+            name: TableStringEnum.ALL,
             active: true,
         },
         {
-            name: ConstantStringTableComponentsEnum.FTL,
+            name: TableStringEnum.FTL,
             active: false,
         },
         {
-            name: ConstantStringTableComponentsEnum.LTL,
+            name: TableStringEnum.LTL,
             active: false,
         },
     ];
@@ -104,17 +104,13 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.loadFilterData.map((filterData) => {
             filterData.active = filterData.name === event ?? false;
             if (filterData.active) {
-                if (filterData.name == ConstantStringTableComponentsEnum.ALL) {
+                if (filterData.name == TableStringEnum.ALL) {
                     this.showFtl = true;
                     this.showLtl = true;
-                } else if (
-                    filterData.name == ConstantStringTableComponentsEnum.FTL
-                ) {
+                } else if (filterData.name == TableStringEnum.FTL) {
                     this.showFtl = true;
                     this.showLtl = false;
-                } else if (
-                    filterData.name == ConstantStringTableComponentsEnum.LTL
-                ) {
+                } else if (filterData.name == TableStringEnum.LTL) {
                     this.showFtl = false;
                     this.showLtl = true;
                 }
@@ -131,43 +127,39 @@ export class ToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public onSpecialFilter(event: any, data: string): void {
         if (this.activeTableData?.ftlArray)
             this.activeTableData.ftlArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.FTL_ARRAY ?? false;
+                data == TableStringEnum.FTL_ARRAY ?? false;
 
         if (this.activeTableData?.ltlArray)
             this.activeTableData.ltlArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.LTL_ARRAY ?? false;
+                data == TableStringEnum.LTL_ARRAY ?? false;
 
         if (this.activeTableData?.repairArray)
             this.activeTableData.repairArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.REPAIR_ARRAY ?? false;
+                data == TableStringEnum.REPAIR_ARRAY ?? false;
 
         if (this.activeTableData?.fuelArray)
             this.activeTableData.fuelArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.FUEL_ARRAY ?? false;
+                data == TableStringEnum.FUEL_ARRAY ?? false;
 
         if (this.activeTableData?.closedArray)
             this.activeTableData.closedArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.CLOSED_ARRAY ?? false;
+                data == TableStringEnum.CLOSED_ARRAY ?? false;
 
         if (this.activeTableData?.driverArhivedArray)
             this.activeTableData.driverArhivedArray.selectedFilter =
-                data ==
-                    ConstantStringTableComponentsEnum.DRIVER_ARCHIVED_ARRAY ??
-                false;
+                data == TableStringEnum.DRIVER_ARCHIVED_ARRAY ?? false;
 
         if (this.activeTableData?.deactivatedUserArray)
             this.activeTableData.deactivatedUserArray.selectedFilter =
-                data ==
-                    ConstantStringTableComponentsEnum.DEACTIVATED_ARHIVED_ARRAY ??
-                false;
+                data == TableStringEnum.DEACTIVATED_ARHIVED_ARRAY ?? false;
 
         if (this.activeTableData?.bannedArray)
             this.activeTableData.bannedArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.BAN;
+                data == TableStringEnum.BAN;
 
         if (this.activeTableData?.dnuArray)
             this.activeTableData.dnuArray.selectedFilter =
-                data == ConstantStringTableComponentsEnum.DNU;
+                data == TableStringEnum.DNU;
 
         if (
             this.activeTableData?.dnuArray ||

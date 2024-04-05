@@ -4,11 +4,14 @@ import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { PmService } from '../services/pm.service';
 
 // Store
-import { PmTrailerState, PmTrailerStore } from '../state/pm-trailer-state/pm-trailer.store';
+import {
+    PmTrailerState,
+    PmTrailerStore,
+} from '../state/pm-trailer-state/pm-trailer.store';
 
 @Injectable({
     providedIn: 'root',

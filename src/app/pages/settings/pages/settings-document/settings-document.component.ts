@@ -2,9 +2,9 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { EditTagsService } from 'src/app/core/services/shared/editTags.service';
+import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 import { SettingsCompanyService } from '../../services/settings-company.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // model
 import { File } from 'src/app/shared/models/card-table-data.model';
@@ -12,7 +12,7 @@ import { FileEvent } from 'src/app/core/model/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
 import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
 
-import { UploadFile } from 'src/app/shared/components/ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { UploadFile } from 'src/app/shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     CreateWithUploadsResponse,
     FileResponse,

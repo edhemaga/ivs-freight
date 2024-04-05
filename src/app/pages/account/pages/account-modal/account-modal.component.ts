@@ -17,10 +17,10 @@ import {
 import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // services
-import { TaInputService } from '../../../../shared/components/ta-input/ta-input.service';
+import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
 import { AccountService } from 'src/app/pages/account/services/account.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
-import { FormService } from '../../../../core/services/form/form.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // validations
 import {
@@ -28,7 +28,7 @@ import {
     urlValidation,
     usernameValidation,
     passwordAccountValidation,
-} from '../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
 import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';

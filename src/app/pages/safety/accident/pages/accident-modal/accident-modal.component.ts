@@ -18,18 +18,18 @@ import {
     phoneFaxRegex,
     addressValidation,
     vinNumberValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // helpers
-import { convertDateFromBackend } from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
 // components
@@ -308,14 +308,18 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                             ? res.addressAccident.address
                             : null,
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         time: res.time,
                         driverName: res.driver_FullName,
                         driverLicenceNumber: res.driver_LicenceNo,
                         driverState: res.driver_State,
                         driverDOB: res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.driver_DateOfBirth
+                              )
                             : null,
                         truckUnit: res.truck_Unit,
                         truckType: res.truck_Type,

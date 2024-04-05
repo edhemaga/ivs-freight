@@ -1,5 +1,5 @@
-import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import {
     AfterViewInit,
     Component,
@@ -24,11 +24,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
-} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+} from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 
@@ -36,7 +36,7 @@ import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipe
-import { LogoSliderPipe } from './logoSlider.pipe';
+import { LogoSliderPipe } from './pipes/logo-slider.pipe';
 
 @Component({
     selector: 'app-ta-logo-change',

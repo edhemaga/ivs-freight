@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil, take, Subject } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { RoadsideService } from '../../services/roadside.service';
 
 // store

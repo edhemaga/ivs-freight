@@ -6,7 +6,7 @@ import {
 } from '../../../core/components/shared/model/card-data.model';
 
 // enums
-import { ConstantStringTableComponentsEnum } from '../../../core/utils/enums/table-components.enum';
+import { TableStringEnum } from '../../enums/table-string.enum';
 
 // pipes
 import { FormatCurrency } from '../../pipes/format-currency.pipe';
@@ -53,24 +53,14 @@ export class CardHelper {
                     let key: string;
 
                     if (row.key) {
-                        if (
-                            row.title ===
-                            ConstantStringTableComponentsEnum.PHONE_2
-                        ) {
-                            row.key = ConstantStringTableComponentsEnum.PHONE;
+                        if (row.title === TableStringEnum.PHONE_2) {
+                            row.key = TableStringEnum.PHONE;
                         }
-                        if (
-                            row.title ===
-                            ConstantStringTableComponentsEnum.TYPE_2
-                        ) {
-                            row.key =
-                                ConstantStringTableComponentsEnum.TEXT_TYPE;
+                        if (row.title === TableStringEnum.TYPE_2) {
+                            row.key = TableStringEnum.TEXT_TYPE;
                         }
-                        if (
-                            row.title ===
-                            ConstantStringTableComponentsEnum.SSN_2
-                        ) {
-                            row.key = ConstantStringTableComponentsEnum.SSN_EIN;
+                        if (row.title === TableStringEnum.SSN_2) {
+                            row.key = TableStringEnum.SSN_EIN;
                         }
                         key = this.getValueByStringPath(card, row.key);
                     }
@@ -115,57 +105,63 @@ export class CardHelper {
         ObjKey: string,
         format?: string
     ): string {
-        if (ObjKey === ConstantStringTableComponentsEnum.NO_ENDPOINT)
-            return ConstantStringTableComponentsEnum.NO_ENDPOINT_2;
+        if (ObjKey === TableStringEnum.NO_ENDPOINT)
+            return TableStringEnum.NO_ENDPOINT_2;
 
-        const isValueOfKey = !ObjKey?.split(
-            ConstantStringTableComponentsEnum.DOT_1
-        ).reduce((acc, part) => acc && acc[part], obj);
+        const isValueOfKey = !ObjKey?.split(TableStringEnum.DOT_1).reduce(
+            (acc, part) => acc && acc[part],
+            obj
+        );
         const isNotZeroValueOfKey =
-            ObjKey.split(ConstantStringTableComponentsEnum.DOT_1).reduce(
+            ObjKey.split(TableStringEnum.DOT_1).reduce(
                 (acc, part) => acc && acc[part],
                 obj
             ) !== 0;
 
         switch (format) {
-            case ConstantStringTableComponentsEnum.MONEY:
+            case TableStringEnum.MONEY:
                 return this.formatCurrencyPipe.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
+                    ObjKey.split(TableStringEnum.DOT_1).reduce(
+                        (acc, part) => acc && acc[part],
+                        obj
+                    )
                 );
 
             // Transform to date format
-            case ConstantStringTableComponentsEnum.DATE:
+            case TableStringEnum.DATE:
                 return this.formatDatePipe.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
+                    ObjKey.split(TableStringEnum.DOT_1).reduce(
+                        (acc, part) => acc && acc[part],
+                        obj
+                    )
                 );
 
             // Transform to miles format
-            case ConstantStringTableComponentsEnum.MILES_3:
+            case TableStringEnum.MILES_3:
                 return this.formatNumberMi.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
+                    ObjKey.split(TableStringEnum.DOT_1).reduce(
+                        (acc, part) => acc && acc[part],
+                        obj
+                    )
                 );
 
             // Transform 24h time to am-pm
-            case ConstantStringTableComponentsEnum.AM_PM:
+            case TableStringEnum.AM_PM:
                 return this.timeFormatPipe.transform(
-                    ObjKey.split(
-                        ConstantStringTableComponentsEnum.DOT_1
-                    ).reduce((acc, part) => acc && acc[part], obj)
+                    ObjKey.split(TableStringEnum.DOT_1).reduce(
+                        (acc, part) => acc && acc[part],
+                        obj
+                    )
                 );
 
             default:
                 if (isValueOfKey && isNotZeroValueOfKey)
-                    return ConstantStringTableComponentsEnum.SLASH;
+                    return TableStringEnum.SLASH;
 
-                return ObjKey.split(
-                    ConstantStringTableComponentsEnum.DOT_1
-                ).reduce((acc, part) => acc && acc[part], obj);
+                return ObjKey.split(TableStringEnum.DOT_1).reduce(
+                    (acc, part) => acc && acc[part],
+                    obj
+                );
         }
     }
 
@@ -188,8 +184,7 @@ export class CardHelper {
     // Setting count number for each card on page
     public calculateItemsToFit(container: HTMLElement, renderer): void {
         const content =
-            container?.textContent ||
-            ConstantStringTableComponentsEnum.EMPTY_STRING_PLACEHOLDER;
+            container?.textContent || TableStringEnum.EMPTY_STRING_PLACEHOLDER;
 
         const containerWidth = container?.offsetWidth;
 
@@ -205,11 +200,9 @@ export class CardHelper {
 
             const content = contentSentences
                 .slice(0, i + 1)
-                .join(ConstantStringTableComponentsEnum.SEPARATOR); // Reconstructing sentences
+                .join(TableStringEnum.SEPARATOR); // Reconstructing sentences
 
-            const element = renderer.createElement(
-                ConstantStringTableComponentsEnum.SPAN
-            );
+            const element = renderer.createElement(TableStringEnum.SPAN);
 
             element.textContent = content;
 
@@ -226,23 +219,20 @@ export class CardHelper {
                     contentSentences.length - visibleSentencesCount;
 
                 const existingNewElement = container.parentNode.querySelector(
-                    ConstantStringTableComponentsEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
+                    TableStringEnum.CONTAINER_COUNT_TA_FONT_MEDIUM
                 );
 
                 if (existingNewElement)
                     renderer.removeChild(container, existingNewElement);
 
-                const newElement = renderer.createElement(
-                    ConstantStringTableComponentsEnum.DIV
-                );
+                const newElement = renderer.createElement(TableStringEnum.DIV);
 
                 newElement.className =
                     'container-count ta-font-medium d-flex justify-content-center align-items-center';
 
                 if (remainingSentences > 0) {
                     const text = renderer.createText(
-                        ConstantStringTableComponentsEnum.PLUS +
-                            remainingSentences
+                        TableStringEnum.PLUS + remainingSentences
                     );
 
                     renderer.appendChild(newElement, text);

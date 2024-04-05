@@ -3,14 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 // services
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
-
-//Model
-
-import {
-    Comment,
-    DeleteComment,
-} from 'src/app/shared/models/card-table-data.model';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 // models
 import {
@@ -28,6 +21,11 @@ import {
     RoutingService,
     RoutingResponse,
 } from 'appcoretruckassist';
+
+import {
+    Comment,
+    DeleteComment,
+} from 'src/app/shared/models/card-table-data.model';
 import { Load } from 'src/app/pages/load/models/load.model';
 
 @Injectable({

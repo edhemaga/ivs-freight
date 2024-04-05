@@ -14,11 +14,11 @@ import {
     phoneExtension,
     addressValidation,
     addressUnitValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     repairShopValidation,
     rentValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -31,10 +31,10 @@ import {
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // services
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { FormService } from '../../../../../shared/services/form.service';
 
 // components
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
@@ -48,10 +48,7 @@ import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-che
 import { ActiveItemsPipe } from '../../../../../shared/pipes/active-Items.pipe';
 
 // utils
-import {
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-repairshop-modal',
@@ -259,7 +256,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
             id: id,
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -311,7 +310,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
-            rent: rent ? convertThousanSepInNumber(rent) : null,
+            rent: rent
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
                 : null,
@@ -393,7 +394,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                         phoneExt: res.phoneExt,
                         email: res.email,
                         rent: res.rent
-                            ? convertNumberInThousandSep(res.rent)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name

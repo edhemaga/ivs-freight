@@ -9,7 +9,7 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
+import { DetailsDataService } from '../../../../shared/services/details-data.service';
 import {
     animate,
     style,
@@ -85,7 +85,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
-    
+
     @Input() options: any;
     @Input() id: number;
     @Input() customClassDropDown: string;
@@ -119,7 +119,11 @@ export class DetailsDropdownComponent implements OnInit, OnChanges, OnDestroy {
         this.DetailsDataService.dropdownOpenedChange
             .pipe(takeUntil(this.destroy$))
             .subscribe((tooltip) => {
-                if ( this.tooltip && this.tooltip._ngbPopoverWindowId != tooltip._ngbPopoverWindowId ) {
+                if (
+                    this.tooltip &&
+                    this.tooltip._ngbPopoverWindowId !=
+                        tooltip._ngbPopoverWindowId
+                ) {
                     this.tooltip.close();
                     this.dropDownActive = -1;
                 }

@@ -6,16 +6,13 @@ import {
     RegistrationModalResponse,
     RegistrationResponse,
 } from 'appcoretruckassist';
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
 import { Subject, takeUntil } from 'rxjs';
-import { licensePlateValidation } from '../../../../../shared/components/ta-input/ta-input.regex-validations';
-import { FormService } from '../../../../services/form/form.service';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../utils/methods.calculations';
+import { licensePlateValidation } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+import { FormService } from 'src/app/shared/services/form.service';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
@@ -179,8 +176,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: this.editData.file_id,
             ...form,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             files: documents ? documents : this.registrationForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -219,8 +217,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             trailerId:
                 this.editData.modal === 'trailer'
@@ -260,8 +259,14 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RegistrationResponse) => {
                     this.registrationForm.patchValue({
-                        issueDate: convertDateFromBackend(res.issueDate),
-                        expDate: convertDateFromBackend(res.expDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
+                        expDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.expDate
+                            ),
                         licensePlate: res.licensePlate,
                         stateId: res.state ? res.state.stateShortName : null,
                         note: res.note,

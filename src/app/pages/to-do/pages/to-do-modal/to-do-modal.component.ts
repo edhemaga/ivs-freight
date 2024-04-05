@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,25 +11,21 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TodoService } from 'src/app/pages/to-do/services/to-do.service';
-import {
-    ReviewCommentModal,
-    TaUserReviewComponent,
-} from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
+import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+
 import {
     departmentValidation,
     descriptionValidation,
     titleValidation,
     urlValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { CommentsService } from '../../../../core/services/comments/comments.service';
-import { FormService } from '../../../../core/services/form/form.service';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../core/utils/methods.calculations';
+import { CommentsService } from '../../../../shared/services/comments.service';
+import { FormService } from '../../../../shared/services/form.service';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -183,7 +179,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public changeCommentsEvent(comments: ReviewCommentModal) {
+    public changeCommentsEvent(comments: ReviewComment) {
         switch (comments.action) {
             case 'delete': {
                 this.deleteComment(comments);
@@ -223,7 +219,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private addComment(comments: ReviewCommentModal) {
+    private addComment(comments: ReviewComment) {
         const comment: CreateCommentCommand = {
             entityTypeCommentId: 1,
             entityTypeId: this.editData.id,
@@ -249,7 +245,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateComment(comments: ReviewCommentModal) {
+    private updateComment(comments: ReviewComment) {
         this.comments = comments.sortData;
 
         const comment: UpdateCommentCommand = {
@@ -263,7 +259,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private deleteComment(comments: ReviewCommentModal) {
+    private deleteComment(comments: ReviewComment) {
         this.comments = comments.sortData;
         this.commentsService
             .deleteCommentById(comments.data)
@@ -311,7 +307,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             ...form,
-            deadline: deadline ? convertDateToBackend(deadline) : null,
+            deadline: deadline
+                ? MethodsCalculationsHelper.convertDateToBackend(deadline)
+                : null,
             departmentIds: this.selectedDepartments
                 ? this.selectedDepartments.map((item) => item.id)
                 : [],
@@ -353,7 +351,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
         const newData: any = {
             ...form,
-            deadline: deadline ? convertDateToBackend(deadline) : null,
+            deadline: deadline
+                ? MethodsCalculationsHelper.convertDateToBackend(deadline)
+                : null,
             departmentIds: this.selectedDepartments
                 ? this.selectedDepartments.map((item) => item.id)
                 : [],
@@ -432,7 +432,9 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                         description: res.description,
                         url: res.url,
                         deadline: res.deadline
-                            ? convertDateFromBackend(res.deadline)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.deadline
+                              )
                             : null,
                         departmentIds: null,
                         departmentIdsHelper: res.departments.length

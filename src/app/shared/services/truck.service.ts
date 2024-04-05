@@ -14,8 +14,8 @@ import { TruckItemStore } from '../../pages/truck/state/truck-details-state/truc
 import { TrucksDetailsListStore } from '../../pages/truck/state/truck-details-list-state/truck-details-list.store';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 // models
 import {

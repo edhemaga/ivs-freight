@@ -33,11 +33,11 @@ import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 import { imageMapType } from 'src/assets/utils/methods-global';
 
 //Services
-import { MapsService } from 'src/app/core/services/shared/maps.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { MapsService } from 'src/app/shared/services/maps.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { DetailsDataService } from 'src/app/core/services/details-data/details-data.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
 import { RoutingStateService } from '../../../../shared/services/routing-state.service';
 
 //States
@@ -47,7 +47,7 @@ import { RoutingStateQuery } from '../../state/routing-state/routing-state.query
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 //Validators
-import { addressValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 //Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';

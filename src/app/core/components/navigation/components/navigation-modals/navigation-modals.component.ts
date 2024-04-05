@@ -20,7 +20,7 @@ import {
 } from '../../utils/constants/navigation-data.constants';
 //Services
 import { NavigationService } from '../../services/navigation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 //Components
 
@@ -43,9 +43,9 @@ import { ApplicantModalComponent } from 'src/app/core/components/modals/applican
 import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
-import { PayrollBonusModalComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollCreditBonusComponent } from 'src/app/pages/accounting/pages/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollBonusModalComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollCreditBonusComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
 
 @Component({

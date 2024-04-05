@@ -33,19 +33,20 @@ import {
     UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { RepairTypes } from '../repair-order-modal/models/repair-types.model';
+import { ReviewComment } from '../../../../../shared/models/review-comment.model';
 
 // Services
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
-import { BankVerificationService } from '../../../../../core/services/BANK-VERIFICATION/bankVerification.service';
-import { FormService } from '../../../../../core/services/form/form.service';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
+import { FormService } from 'src/app/shared/services/form.service';
+import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 
 import {
     TaLikeDislikeService,
     LikeDislikeModel,
-} from 'src/app/shared/components/ta-like-dislike/ta-like-dislike.service';
+} from 'src/app/shared/components/ta-like-dislike/services/ta-like-dislike.service';
 // Validators
 import {
     accountBankValidation,
@@ -56,17 +57,16 @@ import {
     phoneFaxRegex,
     repairShopValidation,
     routingBankValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
-import { convertTimeFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // Animation
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // Component
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
-import { ReviewCommentModal } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -87,7 +87,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Constants
-import { RepairOrder } from '../repair-order-modal/utils/constants/repair-order.constant';
+import { RepairOrderConstants } from '../repair-order-modal/utils/constants/repair-order.constant';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -184,7 +184,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public latitude: number;
     private destroy$ = new Subject<void>();
 
-    public repairTypes: RepairTypes[] = RepairOrder.REPAIR_TYPES;
+    public repairTypes: RepairTypes[] = RepairOrderConstants.REPAIR_TYPES;
     public isSelectedRepairType: RepairTypes = null;
 
     public repairShopName: string = null;
@@ -366,13 +366,21 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             if (item.get('isDay').value) {
                 item.get('startTime').patchValue(
                     event.check
-                        ? convertTimeFromBackend('0:00:00 AM')
-                        : convertTimeFromBackend('8:00:00 AM')
+                        ? MethodsCalculationsHelper.convertTimeFromBackend(
+                              '0:00:00 AM'
+                          )
+                        : MethodsCalculationsHelper.convertTimeFromBackend(
+                              '8:00:00 AM'
+                          )
                 );
                 item.get('endTime').patchValue(
                     event.check
-                        ? convertTimeFromBackend('0:00:00 AM')
-                        : convertTimeFromBackend('5:00:00 PM')
+                        ? MethodsCalculationsHelper.convertTimeFromBackend(
+                              '0:00:00 AM'
+                          )
+                        : MethodsCalculationsHelper.convertTimeFromBackend(
+                              '5:00:00 PM'
+                          )
                 );
             }
         });
@@ -388,11 +396,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.openHours
                         .at(index)
                         .get('startTime')
-                        .patchValue(convertTimeFromBackend('8:00:00 AM'));
+                        .patchValue(
+                            MethodsCalculationsHelper.convertTimeFromBackend(
+                                '8:00:00 AM'
+                            )
+                        );
                     this.openHours
                         .at(index)
                         .get('endTime')
-                        .patchValue(convertTimeFromBackend('5:00:00 PM'));
+                        .patchValue(
+                            MethodsCalculationsHelper.convertTimeFromBackend(
+                                '5:00:00 PM'
+                            )
+                        );
                 } else {
                     this.openHours.at(index).get('startTime').patchValue(null);
                     this.openHours.at(index).get('endTime').patchValue(null);
@@ -554,7 +570,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     // Reviews
-    public changeReviewsEvent(reviews: ReviewCommentModal) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
                 this.deleteReview(reviews);
@@ -810,8 +826,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 el,
                                 true,
                                 index - 1,
-                                convertTimeFromBackend(res.startTimeAllDays),
-                                convertTimeFromBackend(res.endTimeAllDays)
+                                MethodsCalculationsHelper.convertTimeFromBackend(
+                                    res.startTimeAllDays
+                                ),
+                                MethodsCalculationsHelper.convertTimeFromBackend(
+                                    res.endTimeAllDays
+                                )
                             );
                         });
 
@@ -826,14 +846,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 if (item.get('dayOfWeek').value === 0) {
                                     item.get('startTime').patchValue(
                                         sunday.startTime
-                                            ? convertTimeFromBackend(
+                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
                                                   sunday.startTime
                                               )
                                             : null
                                     );
                                     item.get('endTime').patchValue(
                                         sunday.endTime
-                                            ? convertTimeFromBackend(
+                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
                                                   sunday.endTime
                                               )
                                             : null
@@ -843,7 +863,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 if (item.get('dayOfWeek').value === 6) {
                                     item.get('startTime').patchValue(
                                         saturday.startTime
-                                            ? convertTimeFromBackend(
+                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
                                                   saturday.startTime
                                               )
                                             : null
@@ -856,7 +876,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                     );
                                     item.get('endTime').patchValue(
                                         saturday.endTime
-                                            ? convertTimeFromBackend(
+                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
                                                   saturday.endTime
                                               )
                                             : null
@@ -870,8 +890,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 sunday.dayOfWeek,
                                 !!(sunday.startTime && sunday.endTime),
                                 0,
-                                convertTimeFromBackend(sunday.startTime),
-                                convertTimeFromBackend(sunday.endTime)
+                                MethodsCalculationsHelper.convertTimeFromBackend(
+                                    sunday.startTime
+                                ),
+                                MethodsCalculationsHelper.convertTimeFromBackend(
+                                    sunday.endTime
+                                )
                             );
                         }
                     } else {
@@ -880,11 +904,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             true,
                             -1,
                             res.openAlways
-                                ? convertTimeFromBackend('00:00:00 AM')
-                                : convertTimeFromBackend('8:00:00 AM'),
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                      '00:00:00 AM'
+                                  )
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      '8:00:00 AM'
+                                  ),
                             res.openAlways
-                                ? convertTimeFromBackend('00:00:00 PM')
-                                : convertTimeFromBackend('5:00:00 PM')
+                                ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                      '00:00:00 PM'
+                                  )
+                                : MethodsCalculationsHelper.convertTimeFromBackend(
+                                      '5:00:00 PM'
+                                  )
                         );
                         this.isDaysVisible = true;
                         res.openHours.forEach((el) => {
@@ -893,10 +925,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 !!(el.startTime && el.endTime),
                                 this.openHoursDays.indexOf(el.dayOfWeek) - 1,
                                 el.startTime
-                                    ? convertTimeFromBackend(el.startTime)
+                                    ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                          el.startTime
+                                      )
                                     : null,
                                 el.endTime
-                                    ? convertTimeFromBackend(el.endTime)
+                                    ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                          el.endTime
+                                      )
                                     : null
                             );
                         });
@@ -1040,11 +1076,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         //                             i - 1,
         //                             i !== this.openHoursDays.length - 1 ||
         //                                 i !== this.openHoursDays.length - 2
-        //                                 ? convertTimeFromBackend('8:00:00 AM')
+        //                                 ? MethodsCalculationsHelper.convertTimeFromBackend('8:00:00 AM')
         //                                 : null,
         //                             i !== this.openHoursDays.length - 1 ||
         //                                 i !== this.openHoursDays.length - 2
-        //                                 ? convertTimeFromBackend('5:00:00 PM')
+        //                                 ? MethodsCalculationsHelper.convertTimeFromBackend('5:00:00 PM')
         //                                 : null
         //                         );
         //                     }
@@ -1257,10 +1293,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                                 i - 1,
                                 i == this.openHoursDays.length - 1
                                     ? null
-                                    : convertTimeFromBackend('8:00:00 AM'),
+                                    : MethodsCalculationsHelper.convertTimeFromBackend(
+                                          '8:00:00 AM'
+                                      ),
                                 i == this.openHoursDays.length - 1
                                     ? null
-                                    : convertTimeFromBackend('5:00:00 AM')
+                                    : MethodsCalculationsHelper.convertTimeFromBackend(
+                                          '5:00:00 AM'
+                                      )
                             );
                         }
                         this.openHours.removeAt(1);
@@ -1352,7 +1392,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addReview(reviews: ReviewCommentModal) {
+    private addReview(reviews: ReviewComment) {
         const review: CreateReviewCommand = {
             entityTypeReviewId: 2,
             entityTypeId: this.editData.id,
@@ -1380,7 +1420,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewCommentModal) {
+    private deleteReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -1389,7 +1429,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewCommentModal) {
+    private updateReview(reviews: ReviewComment) {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,

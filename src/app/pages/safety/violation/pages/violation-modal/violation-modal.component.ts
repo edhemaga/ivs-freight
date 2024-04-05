@@ -15,9 +15,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
 
 // services
-import { TaInputService } from '../../../../../shared/components/ta-input/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/modal.service';
-import { FormService } from '../../../../../core/services/form/form.service';
+import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
+import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
+import { FormService } from 'src/app/shared/services/form.service';
 import { RoadsideService } from 'src/app/pages/safety/violation/services/roadside.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
@@ -32,7 +32,7 @@ import {
     fullNameValidation,
     phoneFaxRegex,
     vinNumberValidation,
-} from '../../../../../shared/components/ta-input/ta-input.regex-validations';
+} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
@@ -43,17 +43,14 @@ import { TaCustomCardComponent } from '../../../../../shared/components/ta-custo
 import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
 
 // helpers
-import {
-    convertDateFromBackend,
-    convertTimeFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // models
 import {
     AccidentModalResponse,
     RoadsideInspectionResponse,
 } from 'appcoretruckassist';
-import { ITaInput } from '../../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-violation-modal',
@@ -515,13 +512,19 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             ? res.state.stateShortName
                             : null,
                         startTime: res.startTime
-                            ? convertTimeFromBackend(res.startTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.startTime
+                              )
                             : null,
                         endTime: res.endTime
-                            ? convertTimeFromBackend(res.endTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.endTime
+                              )
                             : null,
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         // Driver
                         driverName: res.driver
@@ -535,19 +538,23 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             : res.driver_State,
                         driverDOB: res.driver
                             ? res.driver?.dateOfBirth
-                                ? convertDateFromBackend(
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
                                       res.driver?.dateOfBirth
                                   )
                                 : null
                             : res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.driver_DateOfBirth
+                              )
                             : null,
                         // Co Driver
                         coDriverName: res.coDriver_FullName,
                         coDriverLicenceNumber: res.coDriver_LicenceNo,
                         coDriverState: res.coDriver_State,
                         coDriverDOB: res.coDriver_DateOfBirth
-                            ? convertDateFromBackend(res.coDriver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.coDriver_DateOfBirth
+                              )
                             : null,
                         // Truck
                         truck_Unit: res.truck

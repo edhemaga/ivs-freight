@@ -21,9 +21,9 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { TruckService } from '../../../../../../shared/services/truck.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
@@ -32,11 +32,8 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
 import { TrucksMinimalListQuery } from '../../../../state/truck-details-minima-list-state/truck-details-minimal.query';
 
 // enums
-import {
-    AxisPositionEnum,
-    ChartLegendDataEnum,
-} from 'src/app/shared/components/ta-chart/enums/chart-enums';
-
+import { ChartAxisPositionEnum } from 'src/app/shared/components/ta-chart/enums/chart-axis-position-string.enum';
+import { ChartLegendDataStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-legend-data-string.enum';
 // constants
 import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
 
@@ -47,11 +44,8 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
 import { TruckResponse } from 'appcoretruckassist';
 import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-import {
-    ChartApiCall,
-    LegendAttributes,
-} from 'src/app/shared/components/ta-chart/models/chart-models';
-
+import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
 @Component({
     selector: 'app-truck-details-card',
     templateUrl: './truck-details-card.component.html',
@@ -257,7 +251,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             title: 'Cost Per Gallon',
             value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataEnum.DOLLAR,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 0,
         },
     ];
@@ -274,7 +268,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             title: 'Revenue',
             value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataEnum.DOLLAR,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 0,
         },
     ];
@@ -284,20 +278,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             title: 'Fuel Cost',
             value: 0,
             image: 'assets/svg/common/round_yellow.svg',
-            prefix: ChartLegendDataEnum.DOLLAR,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 0,
         },
         {
             title: 'Repair Cost',
             value: 0,
             image: 'assets/svg/common/round_blue.svg',
-            prefix: ChartLegendDataEnum.DOLLAR,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 1,
         },
         {
             title: 'Total Cost',
             value: 0,
-            prefix: ChartLegendDataEnum.DOLLAR,
+            prefix: ChartLegendDataStringEnum.DOLLAR,
             elementId: 'total',
         },
     ];
@@ -319,7 +313,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
@@ -341,7 +335,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };
@@ -363,7 +357,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         },
         horizontalAxes: {
             visible: true,
-            position: AxisPositionEnum.BOTTOM,
+            position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
     };

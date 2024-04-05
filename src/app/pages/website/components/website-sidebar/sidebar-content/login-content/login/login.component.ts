@@ -8,11 +8,11 @@ import {
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
 import { WebsiteAuthService } from '../../../../../services/website-auth.service';
 
 // validations
-import { passwordValidation } from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+import { passwordValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // enums
 import { WebsiteStringEnum } from '../../../../../enums/website-string.enum';

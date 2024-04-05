@@ -4,8 +4,8 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // store
 import { RoadsideInactiveState } from '../../state/roadside-state/roadside-inactive/roadside-inactive.store';

@@ -15,17 +15,17 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 
 // services
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/modal.service';
+import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // pipes
 import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
 
 // enums
 import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-string.enum';
-import { ArrowActionsEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
 
 //Components
 import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
@@ -204,7 +204,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         );
 
         switch (action) {
-            case ArrowActionsEnum.PREVIOUS: {
+            case ArrowActionsStringEnum.PREVIOUS: {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     const data = this._optionsCompany[currentIndex];
@@ -213,7 +213,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 break;
             }
-            case ArrowActionsEnum.NEXT: {
+            case ArrowActionsStringEnum.NEXT: {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&

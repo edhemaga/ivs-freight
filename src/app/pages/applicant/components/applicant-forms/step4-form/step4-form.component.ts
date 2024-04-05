@@ -33,7 +33,7 @@ import moment from 'moment';
 import {
     addressValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/ta-input.regex-validations';
+} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
 import {
@@ -42,10 +42,8 @@ import {
 } from '../../../utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/ta-input.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-
-import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { FormService } from 'src/app/shared/services/form.service';
 
 // store
 import { ApplicantQuery } from '../../../state/applicant.query';
@@ -60,6 +58,7 @@ import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
 import { AccidentModel } from '../../../models/accident.model';
 
 // components
+import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @Component({
     selector: 'app-step4-form',

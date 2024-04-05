@@ -19,7 +19,7 @@ import {
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 
 // Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-pm-card',

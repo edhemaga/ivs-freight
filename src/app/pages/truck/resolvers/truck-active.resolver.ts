@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TruckService } from '../../../shared/services/truck.service';
 
 // store

@@ -15,8 +15,8 @@ import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive
 import { OwnerInactiveStore } from '../state/owner-inactive-state/owner-inactive.store';
 
 //Services
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { FormDataService } from 'src/app/core/services/formData/form-data.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Enums
 import { ComponentsTableEnum } from 'src/app/core/model/enums';

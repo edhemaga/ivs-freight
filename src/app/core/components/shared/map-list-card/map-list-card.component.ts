@@ -9,10 +9,10 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { MapsService } from '../../../services/shared/maps.service';
+import { MapsService } from '../../../../shared/services/maps.service';
 import { Subject, takeUntil } from 'rxjs';
-import { DetailsDataService } from '../../../services/details-data/details-data.service';
-import { ModalService } from '../../../../shared/components/ta-modal/modal.service';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,7 +20,7 @@ import { DetailsDropdownComponent } from '../details-page-dropdown/details-dropd
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ProfileImagesComponent } from '../profile-images/profile-images.component';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
 
 @Component({
     selector: 'app-map-list-card',

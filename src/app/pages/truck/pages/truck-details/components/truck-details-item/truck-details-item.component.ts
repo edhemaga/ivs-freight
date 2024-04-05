@@ -23,22 +23,21 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // moment
 import moment from 'moment';
 
 // services
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
 import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
 
 // helpers
-import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
-import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // animations
 import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
@@ -275,7 +274,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 
@@ -286,7 +285,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     public optionsEvent(file: any, data: any, action: string) {
         data = this.truck[0]?.data;
-        const name = dropActionNameTrailerTruck(file, action);
+        const name = DropActionNameHelper.dropActionNameTrailerTruck(
+            file,
+            action
+        );
         this.dropDownService.dropActions(
             file,
             name,
@@ -319,9 +321,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-    public onFileAction(action: string) {
-        onFileActionMethods(action);
     }
 
     public hiddenPassword(value: any, numberOfCharacterToHide: number) {
@@ -381,7 +380,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public formatDate(mod) {
-        return convertDateFromBackend(mod);
+        return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 
     ngOnDestroy(): void {

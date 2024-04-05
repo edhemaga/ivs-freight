@@ -27,10 +27,10 @@ import {
 } from '@angular/forms';
 
 //Config
-import { ITaInput } from '../../../../shared/components/ta-input/ta-input.config';
+import { ITaInput } from '../../../../shared/components/ta-input/config/ta-input.config';
 
 //Services
-import { AddressService } from 'src/app/core/services/shared/address.service';
+import { AddressService } from 'src/app/shared/services/address.service';
 
 //Components
 import { AppTooltipComponent } from '../app-tooltip/app-tooltip.component';
@@ -60,7 +60,7 @@ import {
     templateUrl: './input-address-dropdown.component.html',
     styleUrls: [
         './input-address-dropdown.component.scss',
-        '../ta-input/ta-input.component.scss',
+        //'/src/app/shared/components/ta-input/ta-input.component.scss',
     ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
