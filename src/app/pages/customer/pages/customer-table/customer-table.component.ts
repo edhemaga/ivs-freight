@@ -43,7 +43,7 @@ import {
 import {
     CardRows,
     TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import { CustomerBodyResponse } from './models/customer-body-response.model';
 import { CustomerUpdateRating } from './models/customer-update-rating.model';
 import { CustomerViewDataResponse } from './models/customer-viewdata-response.model';

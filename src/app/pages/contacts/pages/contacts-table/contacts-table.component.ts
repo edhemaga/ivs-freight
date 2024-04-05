@@ -52,7 +52,7 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-data.model';
 import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 
 @Component({

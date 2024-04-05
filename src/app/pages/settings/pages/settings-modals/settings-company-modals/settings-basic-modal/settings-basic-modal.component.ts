@@ -35,7 +35,7 @@ import { TaCheckboxComponent } from '../../../../../../shared/components/ta-chec
 import { TaNgxSliderComponent } from '../../../../../../shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // animations
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
 
 // utils
 import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
@@ -93,15 +93,15 @@ import {
     EnumValue,
 } from 'appcoretruckassist';
 import { CroppieOptions } from 'croppie';
-import { Tabs } from '../../../../../../core/components/shared/model/modal-tabs';
-import { EditData } from '../../../../../../shared/models/edit-data.model';
-import { AnimationObject } from 'src/app/core/model/animation-object.model';
+import { Tabs } from 'src/app/shared/models/tabs.model';
+import { EditData } from 'src/app/shared/models/edit-data.model';
+import { AnimationOptions } from 'src/app/shared/models/animation-options.model';
 
 @Component({
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
     styleUrls: ['./settings-basic-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
     imports: [
@@ -153,7 +153,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     public dropZoneConfig: DropZoneConfig;
 
-    public animationObject: AnimationObject;
+    public animationObject: AnimationOptions;
 
     // basic tab
     public selectedAddress: AddressEntity;

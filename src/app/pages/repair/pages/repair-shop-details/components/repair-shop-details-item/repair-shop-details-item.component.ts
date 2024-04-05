@@ -30,7 +30,7 @@ import { RepairDetailsQuery } from '../../../../state/repair-details-state/repai
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // Animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 @Component({
     selector: 'app-repair-shop-details-item',
@@ -38,7 +38,7 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./repair-shop-details-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [card_component_animation('showHideCardBody', '0px', '0px')],
+    animations: [cardComponentAnimation('showHideCardBody', '0px', '0px')],
 })
 export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
     @Input() repairShopItem: RepairShopResponse | any = null;

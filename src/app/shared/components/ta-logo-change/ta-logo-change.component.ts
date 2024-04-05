@@ -24,7 +24,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
@@ -37,6 +36,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipe
 import { LogoSliderPipe } from './pipes/logo-slider.pipe';
+
+// models
+import { UploadFile } from '../ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-logo-change',

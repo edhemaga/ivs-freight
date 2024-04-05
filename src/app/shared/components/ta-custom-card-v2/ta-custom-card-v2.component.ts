@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 // animations
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // components
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
@@ -24,7 +24,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     selector: 'app-ta-custom-card-v2',
     templateUrl: './ta-custom-card-v2.component.html',
     styleUrls: ['./ta-custom-card-v2.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [

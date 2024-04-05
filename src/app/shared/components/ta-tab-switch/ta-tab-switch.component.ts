@@ -20,7 +20,7 @@ import { TaAutoclosePopoverComponent } from '../ta-autoclose-popover/ta-autoclos
 import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custom-period-range.component';
 
 // models
-import { Tabs } from '../../../core/components/shared/model/modal-tabs';
+import { Tabs } from '../../models/tabs.model';
 import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
 import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
 

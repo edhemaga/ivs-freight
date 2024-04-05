@@ -21,7 +21,7 @@ import {
 import { phoneFaxRegex } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
-import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
@@ -53,7 +53,7 @@ import {
     selector: 'app-navigation-profile-update-modal',
     templateUrl: './navigation-profile-update-modal.component.html',
     styleUrls: ['./navigation-profile-update-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [FormService, ModalService],
     standalone: true,
     imports: [
@@ -350,13 +350,7 @@ export class NavigationProfileUpdateModalComponent
     }
 
     private updateUserProfile() {
-        const {
-            addressUnit,
-            createNewPassword,
-            oldPassword,
-            newPassword,
-            ...form
-        } = this.profileUserForm.value;
+        const { addressUnit, ...form } = this.profileUserForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {

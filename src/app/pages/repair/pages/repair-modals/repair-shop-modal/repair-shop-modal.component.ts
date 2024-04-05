@@ -63,7 +63,7 @@ import {
 import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // Animation
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // Component
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
@@ -93,7 +93,7 @@ import { RepairOrderConstants } from '../repair-order-modal/utils/constants/repa
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
     styleUrls: ['./repair-shop-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,

@@ -96,17 +96,17 @@ import {
 import { ITaInput } from 'src/app/shared/components/ta-input/config/ta-input.config';
 import { LoadBilling } from './models/load-billing.model';
 import { LoadPayment } from './models/load-payment.model';
-import { MapRouteModel } from '../../../../core/components/shared/model/map-route';
+import { MapRoute } from '../../../../shared/models/map-route.model';
 import { LoadStopRoutes } from './models/load-stop-routes.model';
 import { LoadModalTab } from './models/load-modal-tab.model';
 import { Load } from '../../models/load.model';
 import { Tags } from '../../../../shared/models/tags.model';
 import { CommentCompanyUser } from '../../../../shared/models/comment-company-user.model';
-import { CommentData } from 'src/app/core/model/comment-data';
+import { CommentData } from 'src/app/shared/models/comment-data.model';
 import { LoadStopItemDropdownLists } from './models/load-stop-item-dropdowns-list.model';
 import { LoadItemStop } from './models/load-item-stop.model';
 import { EditData } from '../../../../shared/models/edit-data.model';
-import { FileEvent } from 'src/app/core/model/file-event.model';
+import { FileEvent } from 'src/app/shared/models/file-event.model';
 import { LoadAdditionalBilling } from './models/load-additional-billing.model';
 import { LoadYearDropdown } from './models/load-year-dropdown.model';
 
@@ -292,7 +292,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isCommentEdited: boolean = false;
 
     // map routes
-    public loadStopRoutes: MapRouteModel[] = [];
+    public loadStopRoutes: MapRoute[] = [];
 
     // hazardous dropdown
     public isHazardousPicked: boolean = false;

@@ -28,7 +28,7 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // decorators
 import { Titles } from 'src/app/core/decorators/titles.decorator';
@@ -49,7 +49,7 @@ import { TableOptions } from 'src/app/core/model/table.model';
     styleUrls: ['./trailer-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardAnimation', [
             state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [

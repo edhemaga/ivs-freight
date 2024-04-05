@@ -33,7 +33,7 @@ import { ConfirmationService } from '../../../core/components/modals/ta-confirma
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
 
 // models
-import { MapRouteModel } from '../../../core/components/shared/model/map-route';
+import { MapRoute } from '../../models/map-route.model';
 import { Confirmation } from '../../../core/components/modals/ta-confirmation-modal/models/confirmation.model';
 
 // components
@@ -96,7 +96,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
         // });
     }
     @Input() mapType: string = 'shipper'; // shipper, repairShop, fuelStop, accident, inspection, routing
-    @Input() routes: Array<MapRouteModel> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
+    @Input() routes: Array<MapRoute> = []; // array of stops to be shown on map, ex. - [{routeColor: #3074D3, stops: [{lat: 39.353087, long: -84.299328, stopColor: #EF5350, empty: true}, {lat: 39.785871, long: -86.143448, stopColor: #26A690, empty: false}]]
     @Input() darkMode: boolean = false;
     @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
     @Output() updateMapList: EventEmitter<any> = new EventEmitter();

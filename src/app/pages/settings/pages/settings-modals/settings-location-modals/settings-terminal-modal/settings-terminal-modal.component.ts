@@ -34,10 +34,9 @@ import {
     TerminalResponse,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { Address } from '../../../../../../core/components/shared/model/address';
 
 // animation
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
@@ -60,7 +59,7 @@ import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helper
     selector: 'app-settings-terminal-modal',
     templateUrl: './settings-terminal-modal.component.html',
     styleUrls: ['./settings-terminal-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
@@ -139,7 +138,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         params: { height: '0px' },
     };
 
-    public selectedAddress: Address | AddressEntity = null;
+    public selectedAddress: AddressEntity = null;
 
     public payPeriods: any[] = [];
     public selectedPayPeriod: any = null;

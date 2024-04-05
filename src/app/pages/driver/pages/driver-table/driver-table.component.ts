@@ -59,7 +59,7 @@ import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-col
 
 // Globals
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-data.model';
 
 import {
     DropdownItem,

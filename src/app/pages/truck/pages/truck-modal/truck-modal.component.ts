@@ -33,7 +33,7 @@ import { FormService } from '../../../../shared/services/form.service';
 import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 
 // animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // validations
 import {
@@ -73,7 +73,7 @@ import {
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
     styleUrls: ['./truck-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaInputService, FormService],
     standalone: true,

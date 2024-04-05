@@ -1,10 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 // models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 import { CardDetails } from 'src/app/shared/models/card-table-data.model';
 
 // helpers

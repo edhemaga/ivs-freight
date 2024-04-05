@@ -19,15 +19,13 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
 import { TaUploadDropzoneComponent } from './components/ta-upload-dropzone/ta-upload-dropzone.component';
-import {
-    UploadFile,
-    TaUploadFileComponent,
-} from './components/ta-upload-file/ta-upload-file.component';
+import { TaUploadFileComponent } from './components/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
-import { FileEvent } from 'src/app/core/model/file-event.model';
+import { FileEvent } from 'src/app/shared/models/file-event.model';
 import { Tags } from '../../models/tags.model';
+import { UploadFile } from './models/upload-file.model';
 
 //Services
 import { TaUploadFileService } from './services/ta-upload-file.service';

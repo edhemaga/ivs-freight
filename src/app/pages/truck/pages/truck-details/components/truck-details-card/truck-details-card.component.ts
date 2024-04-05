@@ -26,7 +26,7 @@ import { TruckService } from '../../../../../../shared/services/truck.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // store
 import { TrucksMinimalListQuery } from '../../../../state/truck-details-minima-list-state/truck-details-minimal.query';
@@ -52,7 +52,7 @@ import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/lege
     styleUrls: ['./truck-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('ownerDetailsAnimation', [
             state(
                 'true',

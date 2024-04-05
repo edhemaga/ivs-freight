@@ -23,10 +23,7 @@ import {
     CardDetails,
     SendDataCard,
 } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 
 // Services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';

@@ -52,7 +52,7 @@ import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
 // models
 import { CommentCompanyUser } from '../../models/comment-company-user.model';
-import { CommentData } from 'src/app/core/model/comment-data';
+import { CommentData } from 'src/app/shared/models/comment-data.model';
 import { Comment } from '../../models/card-table-data.model';
 
 @Component({

@@ -30,7 +30,7 @@ import {
     CardRows,
     Search,
     TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     FilterOptionsLoad,

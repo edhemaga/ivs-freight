@@ -36,7 +36,7 @@ import {
 import {
     TableOptionsInterface,
     CardRows,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import {
     TableColumnConfig,
     DataForCardsAndTables,

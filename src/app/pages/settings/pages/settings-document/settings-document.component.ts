@@ -8,16 +8,15 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 
 // model
 import { File } from 'src/app/shared/models/card-table-data.model';
-import { FileEvent } from 'src/app/core/model/file-event.model';
+import { FileEvent } from 'src/app/shared/models/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
 import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
-
-import { UploadFile } from 'src/app/shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { UploadFile } from 'src/app/shared/components/ta-upload-files/models/upload-file.model';
 import {
     CreateWithUploadsResponse,
     FileResponse,
 } from 'appcoretruckassist/model/models';
-import { DocumentActionConfig } from 'src/app/core/model/document-action-config';
+import { DocumentActionConfig } from 'src/app/pages/settings/pages/settings-document/models/document-action-config';
 
 // constants
 import { SettingsDocumentsConstants } from './utils/constants/settings-document.constants';
