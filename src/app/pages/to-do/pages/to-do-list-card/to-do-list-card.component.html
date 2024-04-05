@@ -345,7 +345,7 @@
                                                 </svg>
                                             </div>
                                             <div class="icon-box dots">
-                                                <app-details-page-dropdown
+                                                <app-ta-details-page-dropdown
                                                     (click)="
                                                         toggleDropdownActions(
                                                             item
@@ -369,7 +369,7 @@
                                                         'drop-down-details-single'
                                                     "
                                                 >
-                                                </app-details-page-dropdown>
+                                                </app-ta-details-page-dropdown>
                                             </div>
                                         </div>
                                     </div>
@@ -423,7 +423,7 @@
                                                     class="user_profile_image"
                                                     *ngIf="!user.avatar"
                                                 >
-                                                    <app-profile-images
+                                                    <app-ta-profile-images
                                                         [indx]="indx"
                                                         [name]="
                                                             user.firstName +
@@ -433,7 +433,7 @@
                                                         [size]="'medium'"
                                                         [type]="'user'"
                                                     >
-                                                    </app-profile-images>
+                                                    </app-ta-profile-images>
                                                 </div>
                                             </div>
                                         </div>
@@ -602,7 +602,7 @@
                                     [class.done]="item.status?.name == 'Done'"
                                     *ngIf="item.deadline"
                                 >
-                                    <app-truckassist-progress-expiration
+                                    <app-ta-truckassist-progress-expiration
                                         *ngIf="item.status?.name == 'Done'"
                                         [expireDate]="
                                             item.deadline | formatDateP
@@ -615,8 +615,8 @@
                                         "
                                         [expiresSettings]="'todo-list'"
                                     >
-                                    </app-truckassist-progress-expiration>
-                                    <app-truckassist-progress-expiration
+                                    </app-ta-truckassist-progress-expiration>
+                                    <app-ta-truckassist-progress-expiration
                                         *ngIf="item.status?.name != 'Done'"
                                         [expireDate]="
                                             item.deadline | formatDateP
@@ -626,7 +626,7 @@
                                         "
                                         [expiresSettings]="'todo-list'"
                                     >
-                                    </app-truckassist-progress-expiration>
+                                    </app-ta-truckassist-progress-expiration>
                                 </div>
                             </div>
                         </smooth-dnd-draggable>

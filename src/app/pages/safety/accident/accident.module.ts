@@ -9,12 +9,12 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 
 // components
 import { AccidentTableComponent } from './pages/accident-table/accident-table.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
-import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
-import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
+import { TaTruckassistTableToolbarComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-toolbar/ta-truckassist-table-toolbar.component';
+import { TaTruckassistTableBodyComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-body/ta-truckassist-table-body.component';
+import { TaTruckassistTableHeadComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-head/ta-truckassist-table-head.component';
+import { TaMapListCardComponent } from 'src/app/shared/components/ta-map-list-card/ta-map-list-card.component';
+import { TaMapListComponent } from 'src/app/shared/components/ta-map-list/ta-map-list.component';
+import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.component';
 
 @NgModule({
     declarations: [AccidentTableComponent],
@@ -24,12 +24,12 @@ import { MapsComponent } from 'src/app/core/components/shared/maps/maps.componen
         AgmSnazzyInfoWindowModule,
         AgmCoreModule,
         SharedModule,
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
-        MapListComponent,
-        MapListCardComponent,
-        MapsComponent,
+        TaTruckassistTableToolbarComponent,
+        TaTruckassistTableBodyComponent,
+        TaTruckassistTableHeadComponent,
+        TaMapListComponent,
+        TaMapListCardComponent,
+        TaMapsComponent,
     ],
 })
 export class AccidentModule {}

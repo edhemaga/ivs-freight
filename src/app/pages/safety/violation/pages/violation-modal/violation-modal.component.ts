@@ -40,7 +40,7 @@ import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-sw
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // helpers
 import {
@@ -74,7 +74,7 @@ import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-in
         TaInputComponent,
         TaInputDropdownComponent,
         TaCustomCardComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {

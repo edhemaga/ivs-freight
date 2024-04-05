@@ -14,9 +14,9 @@ import { AccountingPayrollComponent } from './pages/accounting-payroll/accountin
 import { PayrollTableComponent } from './pages/payroll/payroll/payroll-table/payroll-table.component';
 import { PayrollReportComponent } from './pages/payroll/payroll/payroll-report/payroll-report.component';
 import { PayrollSmallTablesComponent } from './pages/payroll/payroll/payroll-small-tables/payroll-small-tables.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TaTruckassistTableToolbarComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-toolbar/ta-truckassist-table-toolbar.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from 'src/app/shared/components/ta-profile-images/ta-profile-images.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
 //Helpers
@@ -40,9 +40,9 @@ import { PayrollRowBorderTablePipe } from './pipes/payroll-row-border.pipe';
         SharedModule,
         AngularSvgIconModule,
         AgmCoreModule,
-        TruckassistTableToolbarComponent,
+        TaTruckassistTableToolbarComponent,
         TaInputComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         TaCustomCardComponent,
     ],
     exports: [AccountingIndexComponent, PayrollTableComponent],

@@ -6,9 +6,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { ContactsTableComponent } from './pages/contacts-table/contacts-table.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTruckassistTableToolbarComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-toolbar/ta-truckassist-table-toolbar.component';
+import { TaTruckassistTableBodyComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-body/ta-truckassist-table-body.component';
+import { TaTruckassistTableHeadComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-head/ta-truckassist-table-head.component';
 import { ContactsCardComponent } from './pages/contacts-card/contacts-card.component';
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
 import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
@@ -24,9 +24,9 @@ import { TaInputDropdownLabelComponent } from 'src/app/shared/components/ta-inpu
         AngularSvgIconModule,
 
         // components
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTruckassistTableToolbarComponent,
+        TaTruckassistTableBodyComponent,
+        TaTruckassistTableHeadComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaInputDropdownTableComponent,

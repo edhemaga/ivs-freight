@@ -19,7 +19,7 @@ import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from 'src/app/shared/components/ta-input-arrows/ta-input-arrows.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +44,7 @@ import { InputAddressDropdownComponent } from 'src/app/core/components/shared/in
         TaInputDropdownComponent,
         TaInputArrowsComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class ApplicantSphFormModule {}

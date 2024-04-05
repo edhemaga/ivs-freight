@@ -63,7 +63,7 @@
 
         <div class="d-flex">
             <div class="group address-group">
-                <app-input-address-dropdown
+                <app-ta-input-address-dropdown
                     #inputAddress
                     formControlName="address"
                     [inputConfig]="{
@@ -79,7 +79,7 @@
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="handleAddressChange($event)"
-                ></app-input-address-dropdown>
+                ></app-ta-input-address-dropdown>
             </div>
 
             <div class="group address-unit-group">

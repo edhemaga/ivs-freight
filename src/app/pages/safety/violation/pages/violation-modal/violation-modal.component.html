@@ -559,7 +559,7 @@
                         <div
                             class="violation-modal-autority-details-row violation-modal-autority-details-row-second"
                         >
-                            <app-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 (selectedAddress)="
                                     onHandleAddress($event, 'address-authority')
                                 "
@@ -576,7 +576,7 @@
                                 }"
                                 [placeholderType]="'longAddress'"
                                 formControlName="address"
-                            ></app-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                             <app-ta-input
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -647,7 +647,7 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <app-input-address-dropdown
+                                <app-ta-input-address-dropdown
                                     (selectedAddress)="
                                         onHandleAddress(
                                             $event,
@@ -667,10 +667,10 @@
                                     }"
                                     [placeholderType]="'longAddress'"
                                     formControlName="origin"
-                                ></app-input-address-dropdown>
+                                ></app-ta-input-address-dropdown>
                             </div>
                             <div class="col-6">
-                                <app-input-address-dropdown
+                                <app-ta-input-address-dropdown
                                     (selectedAddress)="
                                         onHandleAddress(
                                             $event,
@@ -692,7 +692,7 @@
                                     }"
                                     [placeholderType]="'longAddress'"
                                     formControlName="destination"
-                                ></app-input-address-dropdown>
+                                ></app-ta-input-address-dropdown>
                             </div>
                         </div>
                         <div

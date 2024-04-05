@@ -24,7 +24,7 @@ import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-i
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaNoticeOfAsignmentComponent } from '../../../../../shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
 import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
 
@@ -47,7 +47,7 @@ import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-
         TaModalComponent,
         TaNoticeOfAsignmentComponent,
         TaInputNoteComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
     ],
 })

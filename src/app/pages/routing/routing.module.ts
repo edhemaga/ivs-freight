@@ -22,8 +22,8 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 //Components
 import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/ta-map-toolbar.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
-import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown';
 
 @NgModule({
     declarations: [RoutingMapComponent],
@@ -43,8 +43,8 @@ import { DetailsDropdownComponent } from 'src/app/core/components/shared/details
         // Components
         TaMapToolbarComponent,
         AppTooltipComponent,
-        InputAddressDropdownComponent,
-        DetailsDropdownComponent,
+        TaInputAddressDropdownComponent,
+        TaDetailsDropdownComponent,
 
         // Pipes
         ThousandSeparatorPipe,

@@ -11,7 +11,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 // components
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
@@ -45,7 +45,7 @@ import { ViolationDetailsCardComponent } from './components/violation-details-ca
         FormatDatePipe,
         TaCounterComponent,
         TaUploadFilesComponent,
-        TruckassistProgressExpirationComponent,
+        TaTruckassistProgressExpirationComponent,
         TaCommonCardComponent,
         TaDetailsHeaderComponent,
     ],

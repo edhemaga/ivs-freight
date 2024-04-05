@@ -13,7 +13,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { ProfileImagesComponent } from '../../shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from '../../../../shared/components/ta-profile-images/ta-profile-images.component';
 
 // services
 import { ImageBase64Service } from '../../../utils/base64.image';
@@ -46,7 +46,7 @@ import { Confirmation } from './state/models/confirmation.model';
         // components
         TaModalComponent,
         TaInputDropdownComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
 
         // pipes
         FormatDatePipe,

@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
 
 // components
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -41,7 +41,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         FormsModule,
         AngularSvgIconModule,
         AppTooltipComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         NgbModule,
     ],
 })

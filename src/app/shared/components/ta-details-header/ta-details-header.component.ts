@@ -8,7 +8,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { DetailsDropdownComponent } from '../../../core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { TaFilterComponent } from '../ta-filter/ta-filter.component';
 
@@ -28,7 +28,7 @@ import { FormatCurrency } from '../../pipes/format-currency.pipe';
         FormsModule,
         NgbModule,
         TaAppTooltipComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
         TaCounterComponent,
         AngularSvgIconModule,
         TaFilterComponent,

@@ -18,7 +18,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
 
 // components
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
@@ -79,7 +79,7 @@ import { tab_modal_animation } from 'src/app/core/components/shared/animations/t
         TaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {

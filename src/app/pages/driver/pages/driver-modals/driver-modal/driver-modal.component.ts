@@ -68,7 +68,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
 
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '../../../../../core/components/modals/confirmation-modal/confirmation-modal.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -101,7 +101,7 @@ import { ConstantStringTableComponentsEnum } from 'src/app/core/utils/enums/tabl
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaNgxSliderComponent,

@@ -16,7 +16,10 @@
                 [dateChecked]="'5 days ago'"
             >
                 <div class="repair-information-wrapper">
-                    <div class="repair-information-item" *ngIf="fuel?.data?.phone">
+                    <div
+                        class="repair-information-item"
+                        *ngIf="fuel?.data?.phone"
+                    >
                         <svg-icon
                             class="repair-icon"
                             src="assets/svg/common/ic_phone.svg"
@@ -24,7 +27,10 @@
                         <p class="repair-value">{{ fuel?.data?.phone }}</p>
                     </div>
 
-                    <div class="repair-information-item address-cont" *ngIf="fuel?.data?.address?.address">
+                    <div
+                        class="repair-information-item address-cont"
+                        *ngIf="fuel?.data?.address?.address"
+                    >
                         <svg-icon
                             class="repair-icon"
                             src="assets/svg/common/ic_address.svg"
@@ -45,7 +51,7 @@
                         marginTop: '0px',
                         marginBottom: '10px'
                     }"
-                    [customClass]="'detailsPadding'" 
+                    [customClass]="'detailsPadding'"
                 >
                     <div class="fuel-price-template">
                         <div class="fuel-price-wrapper">
@@ -175,7 +181,7 @@
                         marginTop: '0px',
                         marginBottom: '10px'
                     }"
-                    [customClass]="'detailsPadding'" 
+                    [customClass]="'detailsPadding'"
                 >
                     <div class="charts-template perfomance">
                         <app-ta-tab-switch
@@ -350,13 +356,13 @@
                                         'dots-top-fuel': dummy.blue_back == true
                                     }"
                                 >
-                                    <app-details-page-dropdown
+                                    <app-ta-details-page-dropdown
                                         [options]="dummyData.actions"
                                         [customClassDropDown]="
                                             'drop-down-details-single'
                                         "
                                     >
-                                    </app-details-page-dropdown>
+                                    </app-ta-details-page-dropdown>
                                 </div>
                             </div>
 

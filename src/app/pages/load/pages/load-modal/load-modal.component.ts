@@ -48,7 +48,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
+import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from 'src/app/shared/components/ta-comment/ta-comment.component';
 
 // services
@@ -139,7 +139,7 @@ import { LoadYearDropdown } from './models/load-year-dropdown.model';
         LoadModalFinancialComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        MapsComponent,
+        TaMapsComponent,
         TaCommentComponent,
         LoadModalStopItemsComponent,
 

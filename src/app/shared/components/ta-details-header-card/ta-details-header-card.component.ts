@@ -28,7 +28,7 @@ import { DriversItemStore } from 'src/app/pages/driver/state/driver-details-stat
 // compoents
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
-import { DetailsDropdownComponent } from '../../../core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -44,7 +44,7 @@ import { DetailsDropdownComponent } from '../../../core/components/shared/detail
         AngularSvgIconModule,
         DetailsActiveItemPipe,
         TaInputDropdownComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
         NgbPopoverModule,
         NgbModule,
     ],

@@ -218,13 +218,13 @@
                     (click)="removeFromSelectedUser(item, indx)"
                 >
                     <div class="user-profile-img" *ngIf="type == 'userFilter'">
-                        <app-profile-images
+                        <app-ta-profile-images
                             *ngIf="!item.avatar"
                             [indx]="indx"
                             [size]="'small'"
                             [type]="'user'"
                             [name]="item.name"
-                        ></app-profile-images>
+                        ></app-ta-profile-images>
                         <div
                             class="user_avatar"
                             *ngIf="item.avatar"
@@ -240,14 +240,14 @@
                         class="user-profile-img"
                         *ngIf="type == 'driverFilter'"
                     >
-                        <app-profile-images
+                        <app-ta-profile-images
                             *ngIf="!item.avatar"
                             [indx]="indx"
                             [size]="'small'"
                             [type]="'driver'"
                             [name]="item.name"
                         >
-                        </app-profile-images>
+                        </app-ta-profile-images>
                         <div
                             class="user_avatar driver_avatar"
                             *ngIf="item.avatar"
@@ -434,14 +434,14 @@
                         class="user-main-holder"
                     >
                         <div class="user-profile-img">
-                            <app-profile-images
+                            <app-ta-profile-images
                                 *ngIf="!item.avatar"
                                 [indx]="indx"
                                 [size]="'small'"
                                 [type]="'user'"
                                 [name]="item.name"
                             >
-                            </app-profile-images>
+                            </app-ta-profile-images>
                             <div
                                 class="user_avatar"
                                 *ngIf="item.avatar"
@@ -780,14 +780,14 @@
                         class="user-main-holder"
                     >
                         <div class="user-profile-img">
-                            <app-profile-images
+                            <app-ta-profile-images
                                 *ngIf="!item.avatar"
                                 [indx]="indx"
                                 [size]="'small'"
                                 [type]="'driver'"
                                 [name]="item.name"
                             >
-                            </app-profile-images>
+                            </app-ta-profile-images>
                             <div
                                 class="user_avatar driver_avatar"
                                 *ngIf="item.avatar"
@@ -1659,7 +1659,7 @@
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
                         <div class="area-single-form-holder">
-                            <app-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 formControlName="origin"
                                 [inputConfig]="{
                                     name: 'Address',
@@ -1675,10 +1675,10 @@
                                 }"
                                 [placeholderType]="'shortAddress'"
                                 (selectedAddress)="handleOriginSelect($event)"
-                            ></app-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                         </div>
                         <div class="area-single-form-holder">
-                            <app-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 formControlName="destination"
                                 [inputConfig]="{
                                     name: 'Address',
@@ -1696,7 +1696,7 @@
                                 (selectedAddress)="
                                     handleDestinationSelect($event)
                                 "
-                            ></app-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                         </div>
                     </div>
                 </div>
@@ -1714,7 +1714,7 @@
                         *ngIf="type == 'locationFilter'"
                         [@showAnimation]="activeFilter ? 'true' : 'false'"
                     >
-                        <app-input-address-dropdown
+                        <app-ta-input-address-dropdown
                             formControlName="address"
                             [inputConfig]="{
                                 name: 'Address',
@@ -1730,7 +1730,7 @@
                             }"
                             [placeholderType]="'shortAddress'"
                             (selectedAddress)="handleInputSelect($event)"
-                        ></app-input-address-dropdown>
+                        ></app-ta-input-address-dropdown>
                     </div>
                     <div
                         class="filter-middle-holder location-slider-middle-padding"

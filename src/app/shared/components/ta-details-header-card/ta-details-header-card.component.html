@@ -124,13 +124,13 @@
             </span>
         </div>
         <div *ngIf="hasArrow" class="vertical-dots-header">
-            <app-details-page-dropdown
+            <app-ta-details-page-dropdown
                 [options]="optionsDrop.actions"
                 [id]="optionsId"
                 [placement]="'bottom-right'"
                 (dropDownActions)="dropAct($event)"
             >
-            </app-details-page-dropdown>
+            </app-ta-details-page-dropdown>
         </div>
     </div>
 

@@ -51,7 +51,7 @@ import { TaInputDropdownComponent } from '../../../../../shared/components/ta-in
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // utils
 import {
@@ -80,7 +80,7 @@ import {
         TaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {

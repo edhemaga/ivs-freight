@@ -1,40 +1,40 @@
 <div class="table-container">
-    <app-truckassist-table-toolbar
+    <app-ta-truckassist-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [columns]="columns"
-    ></app-truckassist-table-toolbar>
+    ></app-ta-truckassist-table-toolbar>
 
     <ng-container *ngIf="activeViewMode === 'List'">
-        <app-truckassist-table-head
+        <app-ta-truckassist-table-head
             [options]="tableOptions"
             [viewData]="viewData"
             [columns]="columns"
             [tableData]="tableData"
             (headActions)="onTableHeadActions($event)"
-        ></app-truckassist-table-head>
+        ></app-ta-truckassist-table-head>
 
-        <app-truckassist-table-body
+        <app-ta-truckassist-table-body
             [viewData]="viewData"
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
             (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
-        ></app-truckassist-table-body>
+        ></app-ta-truckassist-table-body>
     </ng-container>
 
     <ng-container *ngIf="activeViewMode === 'Map'">
         <div class="customer-map-container">
-            <app-map-list
+            <app-ta-map-list
                 [type]="'fuelStop'"
                 [columns]="columns"
                 [mapListContent]="mapListData"
                 (headActions)="onTableHeadActions($event)"
             >
-                <app-map-list-card
+                <app-ta-map-list-card
                     *ngFor="let latlong of mapListData; let i = index"
                     #listCard
                     [title]="latlong?.businessName"
@@ -56,17 +56,17 @@
                                 ? 'none'
                                 : 'block'
                     }"
-                ></app-map-list-card>
-            </app-map-list>
+                ></app-ta-map-list-card>
+            </app-ta-map-list>
 
-            <app-maps
+            <app-ta-maps
                 #mapsComponent
                 [_viewData]="[]"
                 [mapType]="'fuelStop'"
                 (callDropDownAction)="onTableBodyActions($event)"
                 (updateMapList)="updateMapList($event)"
                 (selectMarker)="selectItem($event)"
-            ></app-maps>
+            ></app-ta-maps>
         </div>
     </ng-container>
 </div>

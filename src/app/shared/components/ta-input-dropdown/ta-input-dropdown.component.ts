@@ -40,7 +40,7 @@ import { ITaInput } from '../ta-input/config/ta-input.config';
 // components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
 import { TaInputComponent } from '../ta-input/ta-input.component';
-import { ProfileImagesComponent } from 'src/app/core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from 'src/app/shared/components/ta-profile-images/ta-profile-images.component';
 import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 
 // utils
@@ -78,7 +78,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
         // Component
         TaInputComponent,
         TaAppTooltipComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         LoadModalProgressBarComponent,
 
         // Pipe

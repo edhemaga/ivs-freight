@@ -20,7 +20,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown';
 
 // Pipes
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
@@ -52,7 +52,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         TaTabSwitchComponent,
         TaInputNoteComponent,
         TaDetailsHeaderComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
 
         // Pipes
         FormatCurrency,

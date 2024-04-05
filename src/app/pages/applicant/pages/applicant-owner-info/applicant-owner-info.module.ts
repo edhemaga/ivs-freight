@@ -9,7 +9,7 @@ import { ApplicantModule } from '../../applicant.module';
 // components
 import { ApplicantOwnerInfoComponent } from './applicant-owner-info.component';
 
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -25,7 +25,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
         ApplicantModule,
 
         // components
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaInputComponent,
         TaInputDropdownComponent,

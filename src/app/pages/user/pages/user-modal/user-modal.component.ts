@@ -78,7 +78,7 @@ import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -104,7 +104,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,

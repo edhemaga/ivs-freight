@@ -84,12 +84,12 @@
                 *ngIf="editData?.image && !editData?.data?.avatar"
                 class="no-profile-image"
             >
-                <app-profile-images
+                <app-ta-profile-images
                     [indx]="0"
                     [size]="'confirmation'"
                     [name]="editData?.data?.name"
                 >
-                </app-profile-images>
+                </app-ta-profile-images>
             </div>
             <!---------------------------------------------- Different templates for body --------------------------------------------->
 
@@ -392,12 +392,12 @@
                     *ngIf="editData?.image && !item?.data?.avatar"
                     class="no-profile-image"
                 >
-                    <app-profile-images
+                    <app-ta-profile-images
                         [indx]="0"
                         [size]="'confirmation'"
                         [name]="item?.data?.name"
                     >
-                    </app-profile-images>
+                    </app-ta-profile-images>
                 </div>
                 <!---------------------------------------------- Different templates for body --------------------------------------------->
 

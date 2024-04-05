@@ -7,18 +7,30 @@
             <div class="report-count-item-load d-flex">
                 <div class="d-flex">
                     <div class="report-count-item-load-left d-flex normal">
-                        <div class="count">{{reportMainData.stopsCount}}</div>
+                        <div class="count">{{ reportMainData.stopsCount }}</div>
                         <div class="title">Stop</div>
                     </div>
                     <div class="report-count-item-load-left d-flex normal">
-                        <div class="count">{{reportMainData.loadsCount}}</div>
+                        <div class="count">{{ reportMainData.loadsCount }}</div>
                         <div class="title">Load</div>
                     </div>
                 </div>
-              
+
                 <div class="report-count-item-load-right d-flex">
-                    <div class="report-tickets">Empty <span>{{ reportMainData.driver?.solo?.emptyMile | currency : 'USD' }}</span></div>
-                    <div class="report-tickets">Loaded <span>{{ reportMainData.driver?.solo?.loadedMile | currency : 'USD' }}</span></div>
+                    <div class="report-tickets">
+                        Empty
+                        <span>{{
+                            reportMainData.driver?.solo?.emptyMile
+                                | currency : 'USD'
+                        }}</span>
+                    </div>
+                    <div class="report-tickets">
+                        Loaded
+                        <span>{{
+                            reportMainData.driver?.solo?.loadedMile
+                                | currency : 'USD'
+                        }}</span>
+                    </div>
                     <!-- <div class="report-tickets">Commission <span>7%</span></div> -->
 
                     <div class="edit">
@@ -28,7 +40,7 @@
                             "
                         ></svg-icon>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="border-item"></div>
             <app-payroll-table
@@ -143,12 +155,12 @@
                 <div class="border-item"></div>
                 <div class="payroll-item-info d-flex">
                     <div class="payroll-item-info-img no-bc">
-                        <app-profile-images
+                        <app-ta-profile-images
                             [indx]="0"
                             [name]="reportMainData.driver.fullName"
                             [size]="'large'"
                             [withTooltip]="true"
-                        ></app-profile-images>
+                        ></app-ta-profile-images>
                     </div>
                     <div class="payroll-item-info-details">
                         <div class="payroll-item-details-numb">

@@ -73,7 +73,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -112,7 +112,7 @@ import { RepairOrder } from '../repair-order-modal/utils/constants/repair-order.
         TaInputComponent,
         TaCustomCardComponent,
         TaInputDropdownComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaInputNoteComponent,
         TaCheckboxComponent,
         TaUploadFilesComponent,

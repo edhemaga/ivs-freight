@@ -27,7 +27,7 @@ import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-i
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { InputAddressDropdownComponent } from '../../../shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '../../../../../shared/components/ta-logo-change/ta-logo-change.component';
@@ -124,7 +124,7 @@ import { AnimationObject } from 'src/app/core/model/animation-object.model';
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaLogoChangeComponent,
     ],

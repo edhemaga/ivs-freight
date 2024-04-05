@@ -44,11 +44,11 @@
                             />
                         </ng-container>
                         <ng-container *ngIf="!driver?.avatar">
-                            <app-profile-images
+                            <app-ta-profile-images
                                 [indx]="0"
                                 [size]="'large'"
                                 [type]="'driver'"
-                            ></app-profile-images>
+                            ></app-ta-profile-images>
                         </ng-container>
                     </div>
                     <div class="driver-information">
@@ -1181,7 +1181,7 @@
                                                     <div
                                                         class="card-details-progress-container"
                                                     >
-                                                        <app-truckassist-progress-expiration
+                                                        <app-ta-truckassist-progress-expiration
                                                             [expireDate]="
                                                                 cdl?.expDate
                                                                     | formatDateP
@@ -1198,7 +1198,7 @@
                                                             "
                                                             [darkText]="true"
                                                         >
-                                                        </app-truckassist-progress-expiration>
+                                                        </app-ta-truckassist-progress-expiration>
                                                     </div>
                                                     <ng-container
                                                         *ngIf="
@@ -1533,7 +1533,7 @@
                                                     <div
                                                         class="card-details-progress-container"
                                                     >
-                                                        <app-truckassist-progress-expiration
+                                                        <app-ta-truckassist-progress-expiration
                                                             [expireDate]="
                                                                 med?.expDate
                                                                     | formatDateP
@@ -1547,7 +1547,7 @@
                                                             "
                                                             [darkText]="true"
                                                         >
-                                                        </app-truckassist-progress-expiration>
+                                                        </app-ta-truckassist-progress-expiration>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1705,7 +1705,7 @@
                                                     <div
                                                         class="card-details-progress-container"
                                                     >
-                                                        <app-truckassist-progress-expiration
+                                                        <app-ta-truckassist-progress-expiration
                                                             [startDate]="
                                                                 mvr?.issueDate
                                                                     | formatDateP
@@ -1719,7 +1719,7 @@
                                                             "
                                                             [darkText]="true"
                                                         >
-                                                        </app-truckassist-progress-expiration>
+                                                        </app-ta-truckassist-progress-expiration>
                                                     </div>
                                                 </div>
                                             </div>

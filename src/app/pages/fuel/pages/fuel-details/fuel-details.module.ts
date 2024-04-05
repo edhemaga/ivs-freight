@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 
 import { FuelDetailsRoutes } from './fuel-details.routing';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTruckassistTableBodyComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-body/ta-truckassist-table-body.component';
+import { TaTruckassistTableHeadComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-head/ta-truckassist-table-head.component';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 @NgModule({
@@ -18,8 +18,8 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         CommonModule,
         SharedModule,
         FuelDetailsRoutes,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTruckassistTableBodyComponent,
+        TaTruckassistTableHeadComponent,
         FormatDatePipe,
     ],
 })

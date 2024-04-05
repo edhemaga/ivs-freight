@@ -187,7 +187,7 @@
                                     focusedDeviceId == location.deviceId
                             }"
                         >
-                            <app-map-marker-dropdown
+                            <app-ta-map-marker-dropdown
                                 [title]="
                                     location?.driver
                                         ? location.driver
@@ -198,7 +198,7 @@
                                 (assignUnitToDevice)="
                                     assignUnitFromMarker($event)
                                 "
-                            ></app-map-marker-dropdown>
+                            ></app-ta-map-marker-dropdown>
                         </div>
                     </ng-template>
                 </agm-snazzy-info-window>
@@ -645,12 +645,12 @@
                                             src="assets/svg/common/ic_hyperlink.svg"
                                         >
                                         </svg-icon>
-                                        <app-gps-progressbar
+                                        <app-ta-gps-progressbar
                                             *ngIf="
                                                 column.progressComponent &&
                                                 location?.destination
                                             "
-                                        ></app-gps-progressbar>
+                                        ></app-ta-gps-progressbar>
                                         <span
                                             *ngIf="
                                                 !column.progressComponent &&

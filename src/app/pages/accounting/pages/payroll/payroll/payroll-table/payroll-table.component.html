@@ -42,7 +42,16 @@
                     [cdkDragDisabled]="true"
                     cdkDragPreviewContainer="parent"
                     cdkDragBoundary=".payroll-table-main"
-                    [ngStyle]="{ 'border-color': (tr | payrollrowbordertablepipe : _tableData : rowIndex : 'border') ? '#eeeeee' : 'transparent' }"
+                    [ngStyle]="{
+                        'border-color':
+                            (tr
+                            | payrollrowbordertablepipe
+                                : _tableData
+                                : rowIndex
+                                : 'border')
+                                ? '#eeeeee'
+                                : 'transparent'
+                    }"
                 >
                     <ng-container *ngFor="let h of tableSettings">
                         <td
@@ -76,7 +85,8 @@
                                                 tr.payDeadline?.period ==
                                                 'Pending',
                                             'status-template-ready':
-                                                tr.payDeadline?.period == 'Ready'
+                                                tr.payDeadline?.period ==
+                                                'Ready'
                                         }"
                                     >
                                         <svg-icon
@@ -87,7 +97,8 @@
                                         ></svg-icon>
                                         <svg-icon
                                             *ngIf="
-                                                tr.payDeadline?.period == 'Ready'
+                                                tr.payDeadline?.period ==
+                                                'Ready'
                                             "
                                             src="assets/svg/applicant/confirm-circle.svg"
                                         ></svg-icon>
@@ -112,7 +123,8 @@
                                         >
                                         <span
                                             *ngIf="
-                                                tr.payDeadline?.period == 'Ready'
+                                                tr.payDeadline?.period ==
+                                                'Ready'
                                             "
                                         >
                                             READY
@@ -126,12 +138,12 @@
                                     }}"
                                     *ngSwitchCase="'bold-image-template'"
                                 >
-                                    <app-profile-images
+                                    <app-ta-profile-images
                                         [indx]="rowIndex"
                                         [name]="tr | payrolltablepipe : h"
                                         [size]="'small'"
                                         [withTooltip]="false"
-                                    ></app-profile-images>
+                                    ></app-ta-profile-images>
                                     <div
                                         class="bold-normal-template image-right"
                                         [innerHTML]="tr | payrolltablepipe : h"
@@ -178,9 +190,7 @@
                                         "
                                         ></svg-icon>
                                         <svg-icon
-                                            *ngIf="
-                                                tr.type.name == 'Repair'
-                                            "
+                                            *ngIf="tr.type.name == 'Repair'"
                                             src="
                                             assets/svg/svg_numbers/repear.svg
                                         "

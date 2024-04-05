@@ -31,7 +31,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
 import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from 'src/app/shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
 
@@ -94,7 +94,7 @@ import { EditData } from '../../../../shared/models/edit-data.model';
         TaLogoChangeComponent,
         TaInputNoteComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
     ],
