@@ -12,7 +12,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
@@ -39,7 +39,7 @@ import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.compo
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCommonCardComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaCounterComponent,
         FormatDatePipe,
         TaDetailsHeaderComponent,

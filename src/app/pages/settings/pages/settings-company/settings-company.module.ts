@@ -28,7 +28,7 @@ import { TaNoticeOfAsignmentComponent } from 'src/app/shared/components/ta-notic
 import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 // Pipes
 import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
@@ -67,7 +67,7 @@ import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
         TaCommonCardComponent,
         TaLogoChangeComponent,
         TaCounterComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
 
         // PIPES
         HidePasswordPipe,

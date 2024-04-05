@@ -12,10 +12,10 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
-import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown';
+import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from 'src/app/shared/components/ta-filter/ta-filter.component';
@@ -38,7 +38,7 @@ import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.c
         AppTooltipComponent,
         TaUploadFilesComponent,
         TaDetailsDropdownComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaUserReviewComponent,
 
         //Pipes

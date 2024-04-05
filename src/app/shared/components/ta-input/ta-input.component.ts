@@ -27,7 +27,7 @@ import {
     NgbModule,
     NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarDateTimePicker } from '../ta-custom-datetime-pickers/services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '../ta-custom-datetime-pickers/services/calendar-datetime-picker.service';
 import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
@@ -55,7 +55,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
     styleUrls: ['./ta-input.component.scss'],
     providers: [
         NgbDropdownConfig,
-        CalendarDateTimePicker,
+        CalendarDateTimePickerService,
         ThousandSeparatorPipe,
         InputTypePipe,
     ],
@@ -229,7 +229,7 @@ export class TaInputComponent
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
-        private calendarService: CalendarDateTimePicker,
+        private calendarService: CalendarDateTimePickerService,
         private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,

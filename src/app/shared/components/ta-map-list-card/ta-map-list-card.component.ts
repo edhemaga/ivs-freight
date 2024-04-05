@@ -9,18 +9,26 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { MapsService } from '../../services/maps.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+
+// icon
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
+import { MapsService } from '../../services/maps.service';
 import { DetailsDataService } from '../../services/details-data.service';
 import { ModalService } from '../ta-modal/services/modal.service';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 import { DropDownService } from '../../services/drop-down.service';
+
+// pipes
+import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+
+// components
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 
 @Component({
     selector: 'app-ta-map-list-card',
@@ -150,7 +158,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         //     };
 
         //     this.modalService.openModal(
-        //         ConfirmationModalComponent,
+        //         TaConfirmationModalComponent,
         //         { size: 'small' },
         //         {
         //             ...shipperData,

@@ -14,8 +14,8 @@ import { TaMapMarkerDropdownComponent } from 'src/app/shared/components/ta-map-m
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaTruckassistTableBodyComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-body/ta-truckassist-table-body.component';
-import { TaTruckassistTableHeadComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-head/ta-truckassist-table-head.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/ta-map-toolbar.component';
 
 @NgModule({
@@ -33,8 +33,8 @@ import { TaMapToolbarComponent } from 'src/app/shared/components/ta-map-toolbar/
 
         // Components
         TaMapToolbarComponent,
-        TaTruckassistTableBodyComponent,
-        TaTruckassistTableHeadComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,

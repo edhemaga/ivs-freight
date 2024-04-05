@@ -1,12 +1,12 @@
 <div class="table-container">
     <div class="documents_toolbar">
-        <app-ta-truckassist-table-toolbar
+        <app-ta-table-toolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
             [tableData]="tableData"
             [columns]="[]"
             [selectedTab]="selectedTab"
-        ></app-ta-truckassist-table-toolbar>
+        ></app-ta-table-toolbar>
     </div>
     <app-ta-upload-files-no-slider
         [files]="documents"

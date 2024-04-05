@@ -10,38 +10,43 @@ import {
 } from '@angular/core';
 import { FormsModule, UntypedFormGroup } from '@angular/forms';
 import { AgmCoreModule } from '@agm/core';
-import * as AppConst from 'src/app/const';
-import { MapsService } from '../../services/maps.service';
-
-import { Subject, takeUntil } from 'rxjs';
-import { MapRouteModel } from '../../../core/components/shared/model/map-route';
-
 import { CommonModule } from '@angular/common';
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
-import { AgmDirectionModule } from 'agm-direction';
-import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TruckassistTableService } from '../../services/truckassist-table.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AgmDirectionModule } from 'agm-direction';
+import { Subject, takeUntil } from 'rxjs';
+
+// const
+import * as AppConst from 'src/app/const';
+
+// services
+import { MapsService } from '../../services/maps.service';
+import { TruckassistTableService } from '../../services/truckassist-table.service';
 import { DropDownService } from '../../services/drop-down.service';
 import { DetailsDataService } from '../../services/details-data.service';
-import { Confirmation } from '../../../core/components/modals/confirmation-modal/state/models/confirmation.model';
 import { FuelService } from 'src/app/shared/services/fuel.service';
 import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
 import { RepairService } from 'src/app/shared/services/repair.service';
 import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
-import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from '../../../core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
+
+// models
+import { MapRouteModel } from '../../../core/components/shared/model/map-route';
+import { Confirmation } from '../../../core/components/modals/ta-confirmation-modal/models/confirmation.model';
+
+// components
+import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
+
+// icon
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-ta-maps',
     templateUrl: './ta-maps.component.html',
-    styleUrls: [
-        './ta-maps.component.scss',
-        '../../../../../assets/scss/maps.scss',
-    ],
+    styleUrls: ['./ta-maps.component.scss', '/src/assets/scss/maps.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
@@ -564,7 +569,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
         //     };
 
         //     this.modalService.openModal(
-        //         ConfirmationModalComponent,
+        //         TaConfirmationModalComponent,
         //         { size: 'small' },
         //         {
         //             ...shipperData,

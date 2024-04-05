@@ -1,9 +1,9 @@
-import type { TruckAdditionalData } from './truck-additional-data.model';
-import type { TruckFHWA } from './truck-fhwa.model';
-import type { TruckLeasePurchase } from './truck-lease-purchase.model';
-import type { TruckOwner } from './truck-owner.model';
-import type { TruckRegistration } from './truck-registration.model';
-import type { TruckTitle } from './truck-title.model';
+import { TruckAdditionalData } from './truck-additional-data.model';
+import { TruckFHWA } from './truck-fhwa.model';
+import { TruckLeasePurchase } from './truck-lease-purchase.model';
+import { TruckOwner } from './truck-owner.model';
+import { TruckRegistration } from './truck-registration.model';
+import { TruckTitle } from './truck-title.model';
 
 export interface Truck {
     id: number;

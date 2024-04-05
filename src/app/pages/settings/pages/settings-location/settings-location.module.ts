@@ -28,7 +28,7 @@ import { SettingsParkingComponent } from './components/settings-parking/settings
 import { SettingsOfficeComponent } from './components/settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './components/settings-terminal/settings-terminal.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 @NgModule({
     imports: [
@@ -45,7 +45,7 @@ import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/compone
         TaCommonCardComponent,
         TaCopyComponent,
         TaCustomCardComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         FormatDatePipe,
     ],
     declarations: [

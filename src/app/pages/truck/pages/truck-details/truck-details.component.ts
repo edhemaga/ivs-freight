@@ -10,7 +10,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store

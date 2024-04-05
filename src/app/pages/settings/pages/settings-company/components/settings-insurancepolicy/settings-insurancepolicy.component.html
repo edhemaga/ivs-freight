@@ -389,12 +389,12 @@
                 </div>
                 <div class="divider"></div>
                 <div class="settings-progress-container">
-                    <app-ta-truckassist-progress-expiration
+                    <app-ta-progress-expiration
                         [expireDate]="insurance.expires | formatDateP"
                         [startDate]="insurance.issued | formatDateP"
                         [expiresSettings]="'settings-insurance-policy'"
                         [darkText]="true"
-                    ></app-ta-truckassist-progress-expiration>
+                    ></app-ta-progress-expiration>
                 </div>
                 <div
                     [ngClass]="{ 'body-show': toggler[i] }"

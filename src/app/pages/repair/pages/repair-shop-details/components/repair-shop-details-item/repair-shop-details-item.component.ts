@@ -15,7 +15,7 @@ import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
 
 // Services
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';

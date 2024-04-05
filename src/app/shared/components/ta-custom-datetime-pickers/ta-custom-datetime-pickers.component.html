@@ -2,14 +2,14 @@
     <div>
         <div class="pickers_holder dark_picker">
             <div *ngIf="calendarMainType == 'date'" class="date_picker">
-                <app-date-calendars
+                <app-ta-custom-datetime-pickers-date-calendars
                     [listPreview]="listPreview"
                     [dateTime]="dateTime"
                     [isMonthAndYearOnly]="
                         _inputConfig.name === 'datepickerBankCard'
                     "
                     (setListPreviewValue)="setListPreview($event)"
-                ></app-date-calendars>
+                ></app-ta-custom-datetime-pickers-date-calendars>
             </div>
             <div *ngIf="calendarMainType == 'time'" class="time_picker">
                 <div class="time_picker_head d-flex">
@@ -113,10 +113,16 @@
                         </div>
                     </div>
                     <div class="picker_buttons">
-                        <div (click)="closePopup()" class="pick_button ta-font-bold">
+                        <div
+                            (click)="closePopup()"
+                            class="pick_button ta-font-bold"
+                        >
                             Cancel
                         </div>
-                        <div (click)="setTime()" class="pick_button set_button ta-font-bold">
+                        <div
+                            (click)="setTime()"
+                            class="pick_button set_button ta-font-bold"
+                        >
                             Set
                         </div>
                     </div>

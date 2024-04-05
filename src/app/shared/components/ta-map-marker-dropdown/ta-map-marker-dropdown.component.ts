@@ -8,20 +8,30 @@ import {
     ChangeDetectionStrategy,
     ViewChild,
 } from '@angular/core';
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
-import { DetailsDataService } from '../../services/details-data.service';
-import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 import { Router } from '@angular/router';
-import { MapsService } from '../../services/maps.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+
+// animation
+import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+
+// services
+import { MapsService } from '../../services/maps.service';
+import { DetailsDataService } from '../../services/details-data.service';
+
+// pipes
+import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
+
+// icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
+
+// components
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { TaGpsProgressbarComponent } from '../ta-gps-progressbar/ta-gps-progressbar.component';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-ta-map-marker-dropdown',

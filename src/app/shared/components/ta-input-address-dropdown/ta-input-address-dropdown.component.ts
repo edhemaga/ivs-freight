@@ -44,14 +44,14 @@ import { CommonModule } from '@angular/common';
 
 //Models
 
-import { InputAddressCommandsStringEnum } from './enum/input-address-commands-string.enum';
-import { InputAddressStopTypesStringEnum } from './enum/input-address-stop-types-string.enum';
-import { InputAddressTypeStringEnum } from './enum/input-address-type-string.enum';
-import { InputAddressLayersStringEnum } from './enum/input-address-layers-string.enum';
+import { InputAddressCommandsStringEnum } from './enums/input-address-commands-string.enum';
+import { InputAddressStopTypesStringEnum } from './enums/input-address-stop-types-string.enum';
+import { InputAddressTypeStringEnum } from './enums/input-address-type-string.enum';
+import { InputAddressLayersStringEnum } from './enums/input-address-layers-string.enum';
 
-import { AddressData } from './model/address-data.model';
-import { AddressList } from './model/address-list.model';
-import { CommandsHandler } from './model/commands-handler.model';
+import { AddressData } from './models/address-data.model';
+import { AddressList } from './models/address-list.model';
+import { CommandsHandler } from './models/commands-handler.model';
 
 @Component({
     selector: 'app-ta-input-address-dropdown',

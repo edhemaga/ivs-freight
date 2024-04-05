@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root',
 })
-export class CalendarDateTimePicker {
+export class CalendarDateTimePickerService {
     public index$ = new Subject<any>();
     public indexAuto$ = new Subject<any>();
     public scrollToDate = new Subject<any>();

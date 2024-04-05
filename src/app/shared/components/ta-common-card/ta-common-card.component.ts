@@ -24,7 +24,7 @@ import { DetailsDataService } from '../../services/details-data.service';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';

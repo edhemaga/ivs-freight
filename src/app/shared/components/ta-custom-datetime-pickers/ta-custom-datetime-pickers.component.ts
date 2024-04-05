@@ -17,10 +17,10 @@ import { FormsModule } from '@angular/forms';
 import moment from 'moment';
 
 // services
-import { CalendarDateTimePicker } from './services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from './services/calendar-datetime-picker.service';
 
 // components
-import { DateCalendarsComponent } from './components/date-calendars/date-calendars.component';
+import { TaCustomDateTimePickersDateCalendarsComponent } from './components/ta-custom-datetime-pickers-date-calendars/ta-custom-datetime-pickers-date-calendars.component';
 
 // models
 import { ITaInput } from '../ta-input/config/ta-input.config';
@@ -30,7 +30,11 @@ import { ITaInput } from '../ta-input/config/ta-input.config';
     templateUrl: './ta-custom-datetime-pickers.component.html',
     styleUrls: ['./ta-custom-datetime-pickers.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, DateCalendarsComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        TaCustomDateTimePickersDateCalendarsComponent,
+    ],
 })
 export class TaCustomDatetimePickersComponent
     implements OnInit, OnDestroy, AfterViewInit
@@ -49,8 +53,8 @@ export class TaCustomDatetimePickersComponent
     selectedDateTime: any;
     calendarMainType: string;
     outputType: any;
-    @ViewChild(DateCalendarsComponent)
-    dateCalendar: DateCalendarsComponent;
+    @ViewChild(TaCustomDateTimePickersDateCalendarsComponent)
+    dateCalendar: TaCustomDateTimePickersDateCalendarsComponent;
     @ViewChild('pmAmScroll') pmAmScroll: ElementRef;
     @ViewChild('minutesScroll') minutesScroll: ElementRef;
     @ViewChild('hourScroll') hourScroll: ElementRef;
@@ -99,7 +103,7 @@ export class TaCustomDatetimePickersComponent
     focusedElementInput: any;
     previousRangeSide: boolean;
 
-    constructor(private calendarService: CalendarDateTimePicker) {}
+    constructor(private calendarService: CalendarDateTimePickerService) {}
 
     @Input()
     set calendarType(calendarType: string) {

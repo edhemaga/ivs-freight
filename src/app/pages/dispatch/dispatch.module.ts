@@ -11,7 +11,7 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { DispatchComponent } from './pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from './pages/dispatch/components/dispatch-table/dispatch-table.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaTruckassistTableToolbarComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-toolbar/ta-truckassist-table-toolbar.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaStatusSwitchComponent } from 'src/app/shared/components/ta-status-switch/ta-status-switch.component';
@@ -55,7 +55,7 @@ import { HosTimePipe } from 'src/app/pages/dispatch/pipes/hos-time.pipe';
 
         // Components
         AppTooltipComponent,
-        TaTruckassistTableToolbarComponent,
+        TaTableToolbarComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,
         TaStatusSwitchComponent,

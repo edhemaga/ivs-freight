@@ -11,9 +11,9 @@ import { DriverCardComponent } from './pages/driver-card/driver-card.component';
 
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 
-import { TaTruckassistTableToolbarComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-toolbar/ta-truckassist-table-toolbar.component';
-import { TaTruckassistTableBodyComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-body/ta-truckassist-table-body.component';
-import { TaTruckassistTableHeadComponent } from 'src/app/shared/components/ta-truckassist-table/ta-truckassist-table-head/ta-truckassist-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 
@@ -26,7 +26,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
 
@@ -49,9 +49,9 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
         //components
         AppTooltipComponent,
-        TaTruckassistTableToolbarComponent,
-        TaTruckassistTableBodyComponent,
-        TaTruckassistTableHeadComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
         TaDetailsHeaderCardComponent,
         TaProfileImagesComponent,
         TaCopyComponent,
@@ -59,7 +59,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCommonCardComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaCounterComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,

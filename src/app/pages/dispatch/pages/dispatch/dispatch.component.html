@@ -1,5 +1,5 @@
 <div class="table-container dispatch-board-main-table">
-    <app-ta-truckassist-table-toolbar
+    <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
@@ -7,7 +7,7 @@
         [columns]="columns"
         [selectedDispatcher]="selectedDispatcher"
         [dispathcboardTableLocked]="isBoardLocked"
-    ></app-ta-truckassist-table-toolbar>
+    ></app-ta-table-toolbar>
     <div
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"

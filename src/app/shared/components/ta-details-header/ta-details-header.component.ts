@@ -8,7 +8,7 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { TaFilterComponent } from '../ta-filter/ta-filter.component';
 

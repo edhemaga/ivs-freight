@@ -1,9 +1,15 @@
-import { NameInitialsPipe } from '../../pipes/name-initials.pipe';
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+
+//  bootstrap
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+//  pipes
+import { NameInitialsPipe } from '../../pipes/name-initials.pipe';
+
+//  components
+import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
 
 @Component({
     selector: 'app-ta-profile-images',

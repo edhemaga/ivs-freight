@@ -21,7 +21,7 @@ import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-detai
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaTruckassistProgressExpirationComponent } from 'src/app/shared/components/ta-truckassist-progress-expiration/ta-truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
 import { TrailerDetailsCardComponent } from './components/trailer-details-card/trailer-details-card.component';
 import { TrailerDetailsItemComponent } from './components/trailer-details-item/trailer-details-item.component';
@@ -42,7 +42,7 @@ import { TrailerDetailsComponent } from './trailer-details.component';
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaCommonCardComponent,
-        TaTruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaCounterComponent,
         FormatDatePipe,
         TaDetailsHeaderComponent,
