@@ -222,6 +222,9 @@
             &.flip_arrow {
                 transform: scaleX(-1);
             }
+            &.regular_icon {
+                transform: scaleX(1);
+            }
             svg-icon {
                 svg {
                     display: flex;

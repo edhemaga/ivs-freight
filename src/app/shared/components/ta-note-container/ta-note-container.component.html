@@ -104,6 +104,11 @@
                         (!popoverNote && showCollorPattern) ||
                         (popoverNote && !showCollorPattern)
                     "
+                    [class.regular_icon]="
+                        !popoverNote &&
+                        showCollorPattern &&
+                        !hoveringArrowPicker
+                    "
                     [class.active]="showCollorPattern"
                     [class.hovering_picker]="
                         !hoveringArrowPicker && showCollorPattern

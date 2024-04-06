@@ -37,7 +37,7 @@ import { FormsModule } from '@angular/forms';
 import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 
 //components
-import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
+import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
@@ -154,12 +154,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('window:resize', ['$event'])
-    onWindowResize(event: Event) {
+    onWindowResize() {
         if (this.isDispatch) {
             this.setNoteParentWidth();
         }
     }
 
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngAfterViewInit(): void {
         this.value = this._note;
         this.setNoteParentWidth();
@@ -297,12 +298,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
-        if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
-        else
-            this.saveNoteValue.emit({
-                note: this.value,
-                dispatchIndex: this.dispatchIndex,
-            });
     }
 
     private closeNote(): void {
@@ -312,6 +307,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
+
+        this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(
@@ -407,6 +404,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public onPaste(event: ClipboardEvent): void {
         CopyPasteHelper.onPaste(event);
+    }
+
+    private transferNoteData(): void {
+        if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
+        else
+            this.saveNoteValue.emit({
+                note: this.value,
+                dispatchIndex: this.dispatchIndex,
+            });
     }
 
     public ngOnDestroy(): void {

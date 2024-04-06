@@ -106,8 +106,18 @@
                     [selectedEditor]="main_editor?.nativeElement"
                     [type]="'dark'"
                 ></app-ta-note-container>
-                <ng-container *ngIf="!savingNote && _note && _note != ''">
-                    <svg-icon src="assets/svg/common/trash.svg" (click)="valueChange('')"></svg-icon>
+                <ng-container *ngIf="!savingNote && _note && _note !== ''">
+                    <div
+                        [tooltipBackground]="'#424242'"
+                        ngbTooltip
+                        [mainTooltip]="'Delete'"
+                        position="bottom"
+                    >
+                        <svg-icon
+                            src="assets/svg/common/trash.svg"
+                            (click)="valueChange('')"
+                        ></svg-icon>
+                    </div>
                 </ng-container>
             </div>
         </div>

@@ -25,7 +25,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
 import { PayrollStatusesComponent } from '../../../core/components/shared/payroll-statuses/payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
-import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
+import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
 
 @Component({
     selector: 'app-ta-custom-card',
