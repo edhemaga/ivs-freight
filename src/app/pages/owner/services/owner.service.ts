@@ -19,7 +19,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Enums
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
+import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -49,14 +49,14 @@ export class OwnerService {
 
                         const ownerCount = JSON.parse(
                             localStorage.getItem(
-                                ComponentsTableEnum.OWNER_TABLE_COUNT
+                                TableActionsStringEnum.OWNER_TABLE_COUNT
                             )
                         );
 
                         ownerCount.inactive++;
 
                         localStorage.setItem(
-                            ComponentsTableEnum.OWNER_TABLE_COUNT,
+                            TableActionsStringEnum.OWNER_TABLE_COUNT,
                             JSON.stringify({
                                 active: ownerCount.active,
                                 inactive: ownerCount.inactive,
@@ -64,7 +64,7 @@ export class OwnerService {
                         );
 
                         this.tableService.sendActionAnimation({
-                            animation: ComponentsTableEnum.ADD,
+                            animation: TableActionsStringEnum.ADD,
                             data: owner,
                             id: owner.id,
                         });
@@ -104,11 +104,11 @@ export class OwnerService {
                         }
 
                         this.tableService.sendActionAnimation({
-                            animation: ComponentsTableEnum.UPDATE,
+                            animation: TableActionsStringEnum.UPDATE,
                             tab:
                                 !owner.truckCount && !owner.trailerCount
-                                    ? ComponentsTableEnum.INACTIVE
-                                    : ComponentsTableEnum.ACTIVE,
+                                    ? TableActionsStringEnum.INACTIVE
+                                    : TableActionsStringEnum.ACTIVE,
                             data: owner,
                             id: owner.id,
                         });
@@ -173,14 +173,14 @@ export class OwnerService {
         return this.ownerService.apiOwnerListDelete(ids).pipe(
             tap(() => {
                 let storeOwners =
-                    selectedTab === ComponentsTableEnum.ACTIVE
+                    selectedTab === TableActionsStringEnum.ACTIVE
                         ? this.ownerActiveQuery.getAll()
                         : this.ownerInactiveQuery.getAll();
 
                 storeOwners.map((owner: any) => {
                     ids.map((d) => {
                         if (d === owner.id) {
-                            selectedTab === ComponentsTableEnum.ACTIVE
+                            selectedTab === TableActionsStringEnum.ACTIVE
                                 ? this.ownerActiveStore.remove(
                                       ({ id }) => id === owner.id
                                   )
@@ -192,18 +192,20 @@ export class OwnerService {
                 });
 
                 const ownerCount = JSON.parse(
-                    localStorage.getItem(ComponentsTableEnum.OWNER_TABLE_COUNT)
+                    localStorage.getItem(
+                        TableActionsStringEnum.OWNER_TABLE_COUNT
+                    )
                 );
 
                 localStorage.setItem(
-                    ComponentsTableEnum.OWNER_TABLE_COUNT,
+                    TableActionsStringEnum.OWNER_TABLE_COUNT,
                     JSON.stringify({
                         active:
-                            selectedTab === ComponentsTableEnum.ACTIVE
+                            selectedTab === TableActionsStringEnum.ACTIVE
                                 ? storeOwners.length - ids.length
                                 : ownerCount.active,
                         inactive:
-                            selectedTab === ComponentsTableEnum.INACTIVE
+                            selectedTab === TableActionsStringEnum.INACTIVE
                                 ? storeOwners.length - ids.length
                                 : ownerCount.inactive,
                     })
@@ -220,21 +222,25 @@ export class OwnerService {
         return this.ownerService.apiOwnerIdDelete(ownerId).pipe(
             tap(() => {
                 const ownerCount = JSON.parse(
-                    localStorage.getItem(ComponentsTableEnum.OWNER_TABLE_COUNT)
+                    localStorage.getItem(
+                        TableActionsStringEnum.OWNER_TABLE_COUNT
+                    )
                 );
 
-                if (tableSelectedTab === ComponentsTableEnum.ACTIVE) {
+                if (tableSelectedTab === TableActionsStringEnum.ACTIVE) {
                     this.ownerActiveStore.remove(({ id }) => id === ownerId);
 
                     ownerCount.active--;
-                } else if (tableSelectedTab === ComponentsTableEnum.INACTIVE) {
+                } else if (
+                    tableSelectedTab === TableActionsStringEnum.INACTIVE
+                ) {
                     this.ownerInactiveStore.remove(({ id }) => id === ownerId);
 
                     ownerCount.inactive--;
                 }
 
                 localStorage.setItem(
-                    ComponentsTableEnum.OWNER_TABLE_COUNT,
+                    TableActionsStringEnum.OWNER_TABLE_COUNT,
                     JSON.stringify({
                         active: ownerCount.active,
                         inactive: ownerCount.inactive,
@@ -256,13 +262,13 @@ export class OwnerService {
         value: string;
     }): void {
         const storeOwners =
-            data.selectedTab === ComponentsTableEnum.ACTIVE
+            data.selectedTab === TableActionsStringEnum.ACTIVE
                 ? this.ownerActiveQuery.getAll()
                 : this.ownerInactiveQuery.getAll();
 
         storeOwners.map((owner: OwnerResponse) => {
             if (data.id === owner.id) {
-                data.selectedTab === ComponentsTableEnum.ACTIVE
+                data.selectedTab === TableActionsStringEnum.ACTIVE
                     ? this.ownerActiveStore.update(owner.id, (entity) => ({
                           ...entity,
                           note: data.value,

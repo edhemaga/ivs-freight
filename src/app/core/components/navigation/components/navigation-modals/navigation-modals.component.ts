@@ -39,7 +39,7 @@ import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-mod
 import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { ApplicantModalComponent } from 'src/app/core/components/modals/applicant-modal/applicant-modal.component';
+import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
 import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';

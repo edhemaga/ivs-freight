@@ -10,7 +10,7 @@ import { OwnerService } from '../../services/owner.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 //Enums
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
+import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -38,7 +38,7 @@ export class OwnerInactiveResolver implements Resolve<OwnerInactiveState> {
         ]).pipe(
             tap(([ownerPagination, tableConfig]) => {
                 localStorage.setItem(
-                    ComponentsTableEnum.OWNER_TABLE_COUNT,
+                    TableActionsStringEnum.OWNER_TABLE_COUNT,
                     JSON.stringify({
                         active: ownerPagination.activeCount,
                         inactive: ownerPagination.inactiveCount,

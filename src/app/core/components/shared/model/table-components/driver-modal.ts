@@ -1,3 +1,4 @@
+import { AddressEntity } from 'appcoretruckassist';
 import { DropdownItem } from '../../../../../shared/models/card-table-data.model';
 
 export interface DriverModal {
@@ -86,7 +87,7 @@ export interface Owner {
     bank: Bank;
     accountNumber: string;
     routingNumber: string;
-    address: Address;
+    address: AddressEntity;
     files: File[];
     fileCount: number;
     createdAt: string;

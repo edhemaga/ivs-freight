@@ -47,7 +47,7 @@ import { Step2FormComponent } from './components/applicant-forms/step2-form/step
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from 'src/app/shared/components/ta-input-arrows/ta-input-arrows.component';
@@ -99,7 +99,7 @@ import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-file
         /* COMPONENTS */
 
         AppTooltipComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaInputRadiobuttonsComponent,
         TaInputComponent,

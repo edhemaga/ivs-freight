@@ -22,7 +22,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // Helpers
 import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
@@ -71,7 +71,7 @@ import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCurrencyProgressBarComponent } from 'src/app/shared/components/ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -88,7 +88,7 @@ import { ReviewComment } from 'src/app/shared/models/review-comment.model';
     selector: 'app-broker-modal',
     templateUrl: './broker-modal.component.html',
     styleUrls: ['./broker-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaLikeDislikeService, FormService],
     standalone: true,
@@ -105,7 +105,7 @@ import { ReviewComment } from 'src/app/shared/models/review-comment.model';
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaCurrencyProgressBarComponent,
         TaUploadFilesComponent,

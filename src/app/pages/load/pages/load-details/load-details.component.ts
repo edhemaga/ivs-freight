@@ -8,7 +8,7 @@ import { LoadService } from '../../../../shared/services/load.service';
 
 //Models
 import { LoadResponse } from 'appcoretruckassist';
-import { MapRouteModel } from 'src/app/core/components/shared/model/map-route';
+import { MapRoute } from 'src/app/shared/models/map-route.model';
 
 //Store
 import { LoadDetailsListQuery } from '../../state/load-details-state/load-details-list-state/load-d-list.query';
@@ -32,7 +32,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public statusIsClosed: boolean;
     public dataTest: any;
-    public loadStopRoutes: MapRouteModel[] = [];
+    public loadStopRoutes: MapRoute[] = [];
     constructor(
         private activated_route: ActivatedRoute,
         private detailsPageService: DetailsPageService,

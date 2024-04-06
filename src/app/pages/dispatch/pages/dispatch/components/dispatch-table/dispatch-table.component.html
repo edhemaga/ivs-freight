@@ -607,7 +607,7 @@
                         "
                     >
                         <div class="padding-inside">
-                            <app-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 *ngIf="showAddAddressField == rowIndex"
                                 [formControl]="truckAddress"
                                 [inputConfig]="{
@@ -631,7 +631,7 @@
                                     handleInputSelect($event, 'ADDRESS')
                                 "
                                 (closeDropdown)="onHideDropdown($event)"
-                            ></app-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                             <div
                                 class="info-item"
                                 *ngIf="
@@ -803,7 +803,7 @@
                     <div class="main_inside filled">
                         <div class="padding-inside">
                             <div class="info-item p-0 w-100">
-                                <app-gps-progressbar></app-gps-progressbar>
+                                <app-ta-gps-progressbar></app-ta-gps-progressbar>
                             </div>
                         </div>
                     </div>
@@ -875,14 +875,14 @@
                     <div class="main_inside filled">
                         <div class="padding-inside">
                             <div class="info-item justify-content-center">
-                                <app-profile-images
+                                <app-ta-profile-images
                                     [indx]="rowIndex"
                                     [name]="'Slavisa Markovic'"
                                     [size]="'small'"
                                     [type]="'user'"
                                     [withTooltip]="true"
                                 >
-                                </app-profile-images>
+                                </app-ta-profile-images>
                             </div>
                         </div>
                     </div>
@@ -1157,7 +1157,7 @@
                         [class.filled]="showAddAddressField == -2"
                     >
                         <div class="padding-inside">
-                            <app-input-address-dropdown
+                            <app-ta-input-address-dropdown
                                 *ngIf="showAddAddressField == -2"
                                 [formControl]="truckAddress"
                                 [inputConfig]="{
@@ -1181,7 +1181,7 @@
                                     handleInputSelect($event, 'ADDRESS')
                                 "
                                 (closeDropdown)="onHideDropdown($event)"
-                            ></app-input-address-dropdown>
+                            ></app-ta-input-address-dropdown>
                         </div>
                     </div>
                 </td>

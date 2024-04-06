@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
 
 // Services
 import { RepairService } from '../../../../shared/services/repair.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
@@ -36,7 +36,7 @@ import {
 import {
     TableOptionsInterface,
     CardRows,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import {
     TableColumnConfig,
     DataForCardsAndTables,
@@ -77,7 +77,7 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // Components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
@@ -1184,7 +1184,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             switch (this.selectedTab) {
                 case TableStringEnum.REPAIR_SHOP:
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1204,7 +1204,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 default:
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1239,7 +1239,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         : TableStringEnum.CLOSE,
             };
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

@@ -19,7 +19,7 @@ import {
 import moment from 'moment';
 
 // animations
-import { card_modal_animation } from '../../../core/components/shared/animations/card-modal.animation';
+import { cardModalAnimation } from '../../animations/card-modal.animation';
 
 // pipes
 import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
@@ -44,7 +44,7 @@ import { CopyPasteHelper } from 'src/app/shared/utils/helpers/copy-paste.helper'
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',
     styleUrls: ['./ta-input-note.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [cardModalAnimation('showHideCardBody')],
     standalone: true,
     imports: [
         // Module

@@ -25,7 +25,7 @@ import { VinDecoderService } from '../../../../shared/services/vin-decoder.servi
 import { FormService } from '../../../../shared/services/form.service';
 
 // animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // validations
 import {
@@ -71,7 +71,7 @@ import {
     selector: 'app-trailer-modal',
     templateUrl: './trailer-modal.component.html',
     styleUrls: ['./trailer-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
     standalone: true,

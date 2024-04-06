@@ -27,7 +27,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Components
-import { ProfileUpdateModalComponent } from 'src/app/core/components/modals/profile-update-modal/profile-update-modal.component';
+import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -96,9 +96,12 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     public onAction(data: NavigationUserPanel) {
         switch (data.action) {
             case 'update': {
-                this.modalService.openModal(ProfileUpdateModalComponent, {
-                    size: 'medium',
-                });
+                this.modalService.openModal(
+                    NavigationProfileUpdateModalComponent,
+                    {
+                        size: 'medium',
+                    }
+                );
                 break;
             }
             case 'status': {

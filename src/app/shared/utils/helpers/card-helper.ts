@@ -1,9 +1,6 @@
 // models
 import { CardDetails } from '../../models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from '../../../core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from '../../models/card-data.model';
 
 // enums
 import { TableStringEnum } from '../../enums/table-string.enum';

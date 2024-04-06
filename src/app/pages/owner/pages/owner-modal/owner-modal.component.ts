@@ -36,7 +36,7 @@ import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.co
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { InputAddressDropdownComponent } from '../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -74,7 +74,7 @@ import { FormService } from '../../../../shared/services/form.service';
         TaTabSwitchComponent,
         TaInputComponent,
         TaInputDropdownComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
         TaUploadFilesComponent,

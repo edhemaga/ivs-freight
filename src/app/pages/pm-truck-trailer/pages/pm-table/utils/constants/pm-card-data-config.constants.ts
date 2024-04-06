@@ -1,4 +1,4 @@
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-data.model';
 
 export class PmCardDataConfigConstants {
     static ROWS: number = 4;

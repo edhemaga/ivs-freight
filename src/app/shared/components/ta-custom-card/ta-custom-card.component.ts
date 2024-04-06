@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 
 // animations
-import { card_modal_animation } from '../../../core/components/shared/animations/card-modal.animation';
+import { cardModalAnimation } from '../../animations/card-modal.animation';
 
 // services
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
@@ -23,7 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // components
 import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '../ta-counter/ta-counter.component';
-import { PayrollStatusesComponent } from '../../../core/components/shared/payroll-statuses/payroll-statuses.component';
+import { TaPayrollStatusesComponent } from '../ta-payroll-statuses/ta-payroll-statuses.component';
 import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
 import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
 
@@ -31,7 +31,7 @@ import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
     styleUrls: ['./ta-custom-card.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [cardModalAnimation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     standalone: true,
@@ -45,7 +45,7 @@ import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container
         // components
         TaCheckboxComponent,
         TaCounterComponent,
-        PayrollStatusesComponent,
+        TaPayrollStatusesComponent,
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
     ],

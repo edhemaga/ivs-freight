@@ -4,14 +4,14 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { ContactsModalComponent } from '../contacts-modal/contacts-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 // service
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 
 // store
 import { ContactState } from '../../state/contact.store';
@@ -52,7 +52,7 @@ import {
     TableHeadActionContract,
     TableToolBarActionActionsContract,
 } from 'src/app/core/model/contact';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-data.model';
 import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
 
 @Component({
@@ -299,7 +299,7 @@ export class ContactsTableComponent
                     });
 
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -690,7 +690,7 @@ export class ContactsTableComponent
             );
         } else if (event.type === TableStringEnum.DELTETE_CONTACT) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

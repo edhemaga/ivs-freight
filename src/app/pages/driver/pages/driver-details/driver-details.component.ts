@@ -14,7 +14,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { DriverService } from '../../services/driver.service';
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { DriverCdlService } from '../../services/driver-cdl.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
@@ -555,7 +555,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         },
                     };
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: 'small' },
                         {
                             data: {

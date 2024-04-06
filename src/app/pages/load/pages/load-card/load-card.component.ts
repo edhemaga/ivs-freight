@@ -15,10 +15,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { FormatMilesPipe } from 'src/app/shared/pipes/format-miles.pipe';
 
 // models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';

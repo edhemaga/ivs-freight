@@ -9,9 +9,9 @@ import {
 
 // animations
 import {
-    card_modal_animation,
-    card_modal_animation_false,
-} from '../../../core/components/shared/animations/card-modal.animation';
+    cardModalAnimation,
+    cardModalAnimationFalse,
+} from '../../animations/card-modal.animation';
 
 // components
 import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
@@ -35,8 +35,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         TaCheckboxComponent,
     ],
     animations: [
-        card_modal_animation('showHideCardBody'),
-        card_modal_animation_false('showHideCardBodyFalsy'),
+        cardModalAnimation('showHideCardBody'),
+        cardModalAnimationFalse('showHideCardBodyFalsy'),
     ],
 })
 export class TaCheckboxCardComponent implements ControlValueAccessor {

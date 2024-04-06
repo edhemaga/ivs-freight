@@ -13,14 +13,14 @@ import { Subject, takeUntil } from 'rxjs';
 // serivces
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // state
 import { CompanyStore } from '../../../../state/company-state/company-settings.store';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 @Component({
     selector: 'app-settings-factoring',
@@ -84,7 +84,7 @@ export class SettingsFactoringComponent
 
     public onDeleteFactoringCompany() {
         this.modalService.openModal(
-            ConfirmationModalComponent,
+            TaConfirmationModalComponent,
             { size: 'small' },
             {
                 id: this.factoringData.id,

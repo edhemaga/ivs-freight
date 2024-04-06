@@ -13,7 +13,7 @@ import {
 import { TodoService } from '../../services/to-do.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { CommentsService } from 'src/app/shared/services/comments.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
@@ -23,11 +23,11 @@ import { SharedService } from 'src/app/shared/services/shared.service';
 import moment from 'moment';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 import { TodoModalComponent } from 'src/app/pages/to-do/pages/to-do-modal/to-do-modal.component';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // helpers
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
@@ -36,7 +36,7 @@ import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global
     selector: 'app-to-do-list-card',
     templateUrl: './to-do-list-card.component.html',
     styleUrls: ['./to-do-list-card.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
 })
 export class ToDoListCardComponent implements OnInit, OnDestroy {
@@ -592,7 +592,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             });
         } else if (event.type === 'delete-item') {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: 'small' },
                 {
                     ...event,

@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 //Animations
-import { card_modal_animation } from '../../../../../../core/components/shared/animations/card-modal.animation';
+import { cardModalAnimation } from '../../../../../../shared/animations/card-modal.animation';
 
 //Helpers
 import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
@@ -27,7 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-load-modal-financial',
     templateUrl: './load-modal-financial.component.html',
     styleUrls: ['./load-modal-financial.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [cardModalAnimation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [

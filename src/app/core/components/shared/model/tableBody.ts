@@ -26,6 +26,7 @@ import {
     LoadBillingAdditionalResponse,
     LoadPaymentPayResponse,
     LoadRequirementsResponse,
+    LoadResponse,
     LoadStatusHistoryResponse,
     LoadStopProgressBarResponse,
     LoadStopResponse,
@@ -51,7 +52,6 @@ import {
     TruckMinimalResponse,
     TruckTypeResponse,
 } from 'appcoretruckassist';
-import { LoadResponse } from './load';
 
 export interface tableBodyColumns {
     ngTemplate?: string;

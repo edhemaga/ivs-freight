@@ -9,7 +9,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
@@ -30,7 +30,7 @@ import {
     CardRows,
     Search,
     TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
+} from 'src/app/shared/models/card-data.model';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import {
     FilterOptionsLoad,
@@ -63,7 +63,7 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 
 // Enum
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 // Store
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
@@ -402,7 +402,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -983,7 +983,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
                 {
                     type: TableStringEnum.DELETE,

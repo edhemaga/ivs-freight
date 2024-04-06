@@ -19,16 +19,14 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import {
-    TaUploadFileComponent,
-    UploadFile,
-} from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { TaUploadFileComponent } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import { TaUploadDropzoneComponent } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFilesCarouselComponent } from '../ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
-import { FileEvent } from 'src/app/core/model/file-event.model';
+import { FileEvent } from 'src/app/shared/models/file-event.model';
 import { Tags } from '../../models/tags.model';
+import { UploadFile } from '../ta-upload-files/models/upload-file.model';
 
 //Services
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';

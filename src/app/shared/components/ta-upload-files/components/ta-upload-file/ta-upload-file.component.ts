@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -40,24 +41,9 @@ import { ByteConvertPipe } from 'src/app/shared/components/ta-upload-files/pipes
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-export interface UploadFile {
-    fileId?: number;
-    name?: any;
-    fileName?: string;
-    url: string | any;
-    extension?: string;
-    guid?: string;
-    size?: number;
-    fileSize?: number;
-    tags?: any;
-    realFile?: File;
-    tagId?: any;
-    incorrect?: boolean;
-    tagChanged?: boolean;
-    savedTag?: any;
-    tagGeneratedByUser?: boolean;
-    lastHovered?: boolean;
-}
+// models
+import { UploadFile } from '../../models/upload-file.model';
+
 @Component({
     selector: 'app-ta-upload-file',
     templateUrl: './ta-upload-file.component.html',
@@ -81,7 +67,7 @@ export interface UploadFile {
         TaInputComponent,
     ],
 })
-export class TaUploadFileComponent implements OnInit, OnDestroy {
+export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @ViewChild(TaInputComponent) inputRef: TaInputComponent;
     @Input() customClassName: string;
@@ -305,7 +291,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public setTags() {
         if (this.hasTagsDropdown && this.tags?.length) {
-            this.tags.map((item, i) => {
+            this.tags.map((item) => {
                 item = {
                     ...item,
                     checked: false,

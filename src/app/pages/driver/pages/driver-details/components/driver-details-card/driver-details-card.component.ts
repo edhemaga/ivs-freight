@@ -19,7 +19,7 @@ import moment from 'moment';
 import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
 
 //Animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 //Helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
@@ -27,7 +27,7 @@ import { ImageBase64Service } from 'src/app/shared/services/image-base64.service
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 import { DriverCdlService } from '../../../../services/driver-cdl.service';
 import { DriverMedicalService } from '../../../../services/driver-medical.service';
 import { DriverMvrService } from '../../../../services/driver-mvr.service';
@@ -81,7 +81,7 @@ import { DriverDetailsCard } from './utils/constants/driver-details-card.constan
     templateUrl: './driver-details-card.component.html',
     styleUrls: ['./driver-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     providers: [SumArraysPipe],
 })
 export class DriverDetailsCardComponent

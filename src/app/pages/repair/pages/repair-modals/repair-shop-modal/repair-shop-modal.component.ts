@@ -63,7 +63,7 @@ import {
 import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // Animation
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // Component
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
@@ -73,7 +73,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -93,7 +93,7 @@ import { RepairOrderConstants } from '../repair-order-modal/utils/constants/repa
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
     styleUrls: ['./repair-shop-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
@@ -112,7 +112,7 @@ import { RepairOrderConstants } from '../repair-order-modal/utils/constants/repa
         TaInputComponent,
         TaCustomCardComponent,
         TaInputDropdownComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaInputNoteComponent,
         TaCheckboxComponent,
         TaUploadFilesComponent,

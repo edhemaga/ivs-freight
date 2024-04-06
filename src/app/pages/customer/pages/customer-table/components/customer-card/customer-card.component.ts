@@ -16,10 +16,7 @@ import {
     CardDetails,
     SendDataCard,
 } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
 
 // Pipes
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';

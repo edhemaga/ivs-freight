@@ -1,5 +1,5 @@
 <div class="table-container dispatch-board-main-table">
-    <app-truckassist-table-toolbar
+    <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
@@ -7,11 +7,11 @@
         [columns]="columns"
         [selectedDispatcher]="selectedDispatcher"
         [dispathcboardTableLocked]="isBoardLocked"
-    ></app-truckassist-table-toolbar>
+    ></app-ta-table-toolbar>
     <div
         class="dispatch-tables"
         [class.multiple-tables]="(dispatchTableList | async).length > 1"
-        [ngStyle]="{'max-width.px': maxToolbarWidth }"
+        [ngStyle]="{ 'max-width.px': maxToolbarWidth }"
     >
         <div
             class="dipsatch_groups"

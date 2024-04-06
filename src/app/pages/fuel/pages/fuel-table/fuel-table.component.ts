@@ -12,12 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
 
 //Utils
 import {
@@ -45,7 +45,7 @@ import { FuelQuery } from '../../state/fule-state/fuel-state.query';
 
 //Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { SortTypes } from 'src/app/core/model/fuel';
+import { SortTypes } from 'src/app/shared/models/sort-types.model';
 
 //Services
 import { FuelService } from '../../../../shared/services/fuel.service';
@@ -229,7 +229,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        ConfirmationModalComponent,
+                        TaConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -723,7 +723,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

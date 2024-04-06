@@ -32,15 +32,15 @@ import moment from 'moment';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // helpers
 import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 @Titles()
 @Component({
@@ -49,7 +49,7 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
     styleUrls: ['./truck-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardAnimation', [
             state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [
@@ -98,7 +98,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private commonTruckService: CommonTruckTrailerService,
+        private commonTruckService: TruckTrailerService,
         private dropDownService: DropDownService
     ) {}
 

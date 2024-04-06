@@ -6,18 +6,18 @@ import { MilesRoutingModule } from './miles-routing.module';
 
 //Components
 import { MilesComponent } from './pages/miles/miles.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
 
 @NgModule({
     declarations: [MilesComponent],
     imports: [
         CommonModule,
         MilesRoutingModule,
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
     ],
 })
 export class MilesModule {}

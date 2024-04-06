@@ -10,29 +10,6 @@ import {
 } from 'appcoretruckassist';
 import { tableDropdownContent } from '../../shared/models/card-table-data.model';
 
-export class Contacts {
-    status: string;
-    data: ContactsData[];
-}
-
-export class ContactsData {
-    id: number;
-    clientType: string;
-    clientTypeCode: number;
-    name: string;
-    phone: number;
-    email: string;
-    address: string;
-    note: string;
-    labelId: number;
-    labelName: string;
-    labelColor: string;
-    checked: boolean;
-    doc: ManageContactDoc;
-    // tslint:disable-next-line:variable-name
-    address_unit: string;
-}
-
 export class ContactsTableData {
     id?: number;
     note?: string | null;
@@ -50,13 +27,6 @@ export class ContactsTableData {
     createdAt?: string;
     updatedAt?: string;
     actionAnimation?: string;
-}
-
-export interface ManageContact {
-    contactType?: string;
-    name: string;
-    labelId?: number;
-    doc: ManageContactDoc;
 }
 
 export interface TableHeadActionContract {
@@ -103,23 +73,9 @@ export class ContractTableData {
     colorRes?: ContactColorResponse;
 }
 
-export interface ToolBarActionContract {
-    action?: string;
-    mode?: string;
-}
-
 export interface contractLableData {
     name: string;
     color: string;
-}
-
-export interface ManageContactDoc {
-    phone: number | string;
-    email: string;
-    address: string;
-    address_unit?: string;
-    note: string;
-    labelId?: number;
 }
 
 export interface ContactColumn {

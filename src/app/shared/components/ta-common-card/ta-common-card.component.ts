@@ -17,14 +17,14 @@ import moment from 'moment';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 //animations
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // services
 import { DetailsDataService } from '../../services/details-data.service';
 
 //components
 import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { DetailsDropdownComponent } from '../../../core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -38,13 +38,13 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         FormsModule,
         TaAppTooltipComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
     ],
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardOpenAnimation', [
             state(
                 'true',

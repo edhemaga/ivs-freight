@@ -33,9 +33,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaAutoclosePopoverComponent } from '../ta-autoclose-popover/ta-autoclose-popover.component';
 import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 
@@ -56,7 +56,7 @@ import { inOutAnimation } from './animations/in-out.animation';
 import { showAnimation } from './animations/show.animation';
 import { stateHeader } from './animations/state-header.animation';
 // models
-import { ArrayStatus } from './model/array-status.model';
+import { ArrayStatus } from './models/array-status.model';
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -72,9 +72,9 @@ import { ArrayStatus } from './model/array-status.model';
         // compoenents
         TaAutoclosePopoverComponent,
         AppTooltipComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaNgxSliderComponent,
         TaTabSwitchComponent,
 

@@ -22,7 +22,7 @@ import { HttpResponseBase } from '@angular/common/http';
 import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
 //Animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 //Services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
@@ -62,8 +62,8 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { ConfirmationModalComponent } from '../../../../../core/components/modals/confirmation-modal/confirmation-modal.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaConfirmationModalComponent } from '../../../../../core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -80,7 +80,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
     selector: 'app-driver-modal',
     templateUrl: './driver-modal.component.html',
     styleUrls: ['./driver-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService, BankVerificationService],
     standalone: true,
     imports: [
@@ -96,7 +96,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaNgxSliderComponent,
@@ -266,7 +266,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             };
             this.ngbActiveModal.close();
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -328,7 +328,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             };
             this.ngbActiveModal.close();
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                TaConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

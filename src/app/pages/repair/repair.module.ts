@@ -11,13 +11,13 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 // Components
 import { RepairTableComponent } from './pages/repair-table/repair-table.component';
 import { RepairCardComponent } from './pages/repair-card/repair-card.component';
-import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
-import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
-import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
+import { TaMapListCardComponent } from 'src/app/shared/components/ta-map-list-card/ta-map-list-card.component';
+import { TaMapListComponent } from 'src/app/shared/components/ta-map-list/ta-map-list.component';
+import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.component';
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
 import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 
@@ -37,12 +37,12 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         AgmDirectionModule,
 
         // Components
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
-        MapsComponent,
-        MapListCardComponent,
-        MapListComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaMapsComponent,
+        TaMapListCardComponent,
+        TaMapListComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         AppTooltipComponent,
