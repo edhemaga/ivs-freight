@@ -12,12 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 //Utils
 import {
@@ -37,7 +37,7 @@ import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-
 //Models
 import { FuelStopListResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
-import { TableColumnConfig } from 'src/app/core/components/shared/model/all-tables.modal';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 
 //States
@@ -229,7 +229,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -723,7 +723,7 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

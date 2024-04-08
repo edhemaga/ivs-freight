@@ -20,11 +20,11 @@ import { cardComponentAnimation } from 'src/app/shared/animations/card-component
 import { SettingsCompanyService } from '../../../../services/settings-company.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // components
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-settings-insurancepolicy',
@@ -170,7 +170,7 @@ export class SettingsInsurancepolicyComponent
             }
             case 'delete-item': {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: 'small' },
                     {
                         id: insurance.id,

@@ -1,20 +1,20 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaConfirmationModalComponent } from './ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from './confirmation-modal.component';
 
-describe('TaConfirmationModalComponent', () => {
-    let component: TaConfirmationModalComponent;
-    let fixture: ComponentFixture<TaConfirmationModalComponent>;
+describe('ConfirmationModalComponent', () => {
+    let component: ConfirmationModalComponent;
+    let fixture: ComponentFixture<ConfirmationModalComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TaConfirmationModalComponent],
+            declarations: [ConfirmationModalComponent],
         }).compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(TaConfirmationModalComponent);
+        fixture = TestBed.createComponent(ConfirmationModalComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

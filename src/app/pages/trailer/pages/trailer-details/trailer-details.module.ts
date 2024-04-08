@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 // modules
 import { TruckDetailsRoutes } from './trailer-details.routing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';

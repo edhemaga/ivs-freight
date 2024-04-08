@@ -1,7 +1,6 @@
 import { AddressEntity } from 'appcoretruckassist';
-import { DropdownItem } from '../../../../shared/models/card-models/card-table-data.model';
 
-export interface DriverModal {
+export interface DriverModel {
     id: number;
     owner: Owner;
     firstName: string;
@@ -16,7 +15,7 @@ export interface DriverModal {
     invitedDate: string;
     acceptedDate: string;
     mvrExpiration: number;
-    address: Address2;
+    address: Address;
     dateOfBirth: string;
     dateTerminated: string;
     doB: string;
@@ -74,7 +73,7 @@ export interface DriverModal {
     cdlDaysLeft: string;
 }
 
-export interface Owner {
+interface Owner {
     id: number;
     name: string;
     ownerType: OwnerType;
@@ -94,12 +93,12 @@ export interface Owner {
     updatedAt: string;
 }
 
-export interface OwnerType {
+interface OwnerType {
     name: string;
     id: number;
 }
 
-export interface Bank {
+interface Bank {
     id: number;
     name: string;
     logoName: string;
@@ -107,20 +106,7 @@ export interface Bank {
     updatedAt: string;
 }
 
-export interface Address {
-    city: string;
-    state: string;
-    county: string;
-    address: string;
-    street: string;
-    streetNumber: string;
-    country: string;
-    zipCode: string;
-    stateShortName: string;
-    addressUnit: string;
-}
-
-export interface File {
+interface File {
     fileId: number;
     fileName: string;
     url: string;
@@ -129,7 +115,7 @@ export interface File {
     tagGeneratedByUser: boolean;
 }
 
-export interface Address2 {
+interface Address {
     city: string;
     state: string;
     county: string;
@@ -142,7 +128,7 @@ export interface Address2 {
     addressUnit: string;
 }
 
-export interface Bank2 {
+interface Bank2 {
     id: number;
     name: string;
     logoName: string;
@@ -150,29 +136,29 @@ export interface Bank2 {
     updatedAt: string;
 }
 
-export interface PayType {
+interface PayType {
     name: string;
     id: number;
 }
 
-export interface Solo {
+interface Solo {
     emptyMile: number;
     loadedMile: number;
     perStop: number;
 }
 
-export interface Team {
+interface Team {
     emptyMile: number;
     loadedMile: number;
     perStop: number;
 }
 
-export interface FleetType {
+interface FleetType {
     name: string;
     id: number;
 }
 
-export interface EmploymentHistory {
+interface EmploymentHistory {
     id: number;
     startDate: string;
     endDate: string;
@@ -182,13 +168,13 @@ export interface EmploymentHistory {
     updatedAt: string;
 }
 
-export interface Duration {
+interface Duration {
     additionalProp1: number;
     additionalProp2: number;
     additionalProp3: number;
 }
 
-export interface OffDutyLocation {
+interface OffDutyLocation {
     id: number;
     nickname: string;
     address: Address3;
@@ -196,7 +182,7 @@ export interface OffDutyLocation {
     updatedAt: string;
 }
 
-export interface Address3 {
+interface Address3 {
     city: string;
     state: string;
     county: string;
@@ -209,7 +195,7 @@ export interface Address3 {
     addressUnit: string;
 }
 
-export interface Dispatch {
+interface Dispatch {
     id: number;
     dispatchBoardId: number;
     dispatcherId: number;
@@ -219,7 +205,7 @@ export interface Dispatch {
     coDriver: CoDriver;
 }
 
-export interface Truck {
+interface Truck {
     id: number;
     truckNumber: string;
     status: number;
@@ -228,21 +214,21 @@ export interface Truck {
     truckType: TruckType;
 }
 
-export interface Color {
+interface Color {
     id: number;
     companyId: number;
     name: string;
     code: string;
 }
 
-export interface TruckType {
+interface TruckType {
     id: number;
     companyId: number;
     name: string;
     logoName: string;
 }
 
-export interface Trailer {
+interface Trailer {
     id: number;
     trailerNumber: string;
     status: number;
@@ -250,7 +236,7 @@ export interface Trailer {
     trailerType: TrailerType;
 }
 
-export interface TrailerType {
+interface TrailerType {
     id: number;
     companyId: number;
     name: string;
@@ -258,7 +244,7 @@ export interface TrailerType {
     hasVolume: boolean;
 }
 
-export interface Driver {
+interface Driver {
     id: number;
     firstName: string;
     lastName: string;
@@ -267,7 +253,7 @@ export interface Driver {
     avatar: string;
 }
 
-export interface CoDriver {
+interface CoDriver {
     id: number;
     firstName: string;
     lastName: string;
@@ -276,7 +262,7 @@ export interface CoDriver {
     avatar: string;
 }
 
-export interface File2 {
+interface File2 {
     fileId: number;
     fileName: string;
     url: string;
@@ -285,7 +271,7 @@ export interface File2 {
     tagGeneratedByUser: boolean;
 }
 
-export interface AssignedTo {
+interface AssignedTo {
     id: number;
     dispatchBoardId: number;
     dispatcherId: number;
@@ -295,7 +281,7 @@ export interface AssignedTo {
     coDriver: CoDriver2;
 }
 
-export interface Truck2 {
+interface Truck2 {
     id: number;
     truckNumber: string;
     status: number;
@@ -304,21 +290,21 @@ export interface Truck2 {
     truckType: TruckType2;
 }
 
-export interface Color2 {
+interface Color2 {
     id: number;
     companyId: number;
     name: string;
     code: string;
 }
 
-export interface TruckType2 {
+interface TruckType2 {
     id: number;
     companyId: number;
     name: string;
     logoName: string;
 }
 
-export interface Trailer2 {
+interface Trailer2 {
     id: number;
     trailerNumber: string;
     status: number;
@@ -326,7 +312,7 @@ export interface Trailer2 {
     trailerType: TrailerType2;
 }
 
-export interface TrailerType2 {
+interface TrailerType2 {
     id: number;
     companyId: number;
     name: string;
@@ -334,7 +320,7 @@ export interface TrailerType2 {
     hasVolume: boolean;
 }
 
-export interface Driver2 {
+interface Driver2 {
     id: number;
     firstName: string;
     lastName: string;
@@ -343,114 +329,17 @@ export interface Driver2 {
     avatar: string;
 }
 
-export interface CoDriver2 {
+interface CoDriver2 {
     id: number;
     firstName: string;
     lastName: string;
     owner: number;
     status: number;
     avatar: string;
-}
-
-export interface FilterOptionApplicant {
-    applicantSpecParamsArchived: boolean;
-    applicantSpecParamsHired: boolean;
-    applicantSpecParamsFavourite: boolean;
-    applicantSpecParamsPageIndex: number;
-    applicantSpecParamsPageSize: number;
-    applicantSpecParamsCompanyId: number;
-    applicantSpecParamsSort: string;
-    searchOne: string;
-    searchTwo: string;
-    searchThree: string;
-}
-
-export interface FilterOptionDriver {
-    active: number;
-    long: number;
-    lat: number;
-    distance: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number;
-    sort: string;
-    searchOne: string;
-    searchTwo: string;
-    searchThree: string;
-}
-
-export interface OnTableHeadActionsModal {
-    action: string;
-    direction: string;
-}
-
-export interface OnTableBodyActionsModal {
-    data?: DriverModal;
-    id?: number;
-    type: string;
-}
-export interface AvatarColors {
-    background: string;
-    color: string;
-}
-
-export interface MappedApplicantData {
-    isSelected: boolean;
-    invitedDate?: string | null;
-    acceptedDate: string;
-    doB: string;
-    applicationStatus: string;
-    mvrStatus: string;
-    pspStatus: string;
-    sphStatus: string;
-    hosStatus: string;
-    ssnStatus: string;
-    medicalDaysLeft: number;
-    medicalPercentage: number;
-    cdlDaysLeft: number;
-    cdlPercentage: number;
 }
 
 interface GeneralNotifications {
     mailNotification: string;
     pushNotification: string;
     smsNotification: string;
-}
-
-export interface MappedApplicantData {
-    tableInvited: string;
-    isSelected: boolean;
-    tableAccepted: string | null;
-    tableDOB: string | null;
-    tableApplicantProgress: {
-        title: string;
-        status: string | null;
-        width: number;
-        class: string;
-        percentage: number;
-    }[];
-    tableMedical: {
-        class: string;
-        hideProgres: boolean;
-        isApplicant: boolean;
-        expirationDays: string | null;
-        percentage: number | null;
-    };
-    tableCdl: {
-        class: string;
-        hideProgres: boolean;
-        isApplicant: boolean;
-        expirationDays: string | null;
-        percentage: number | null;
-    };
-    tableRev: {
-        title: string;
-        iconLink: string;
-    };
-    hire: boolean;
-    isFavorite: boolean;
-    tableDropdownContent: {
-        hasContent: boolean;
-        content: DropdownItem[];
-    };
 }

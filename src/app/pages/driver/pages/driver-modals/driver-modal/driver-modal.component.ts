@@ -62,7 +62,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaConfirmationModalComponent } from '../../../../../core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from '../../../../../shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -266,7 +266,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             };
             this.ngbActiveModal.close();
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -328,7 +328,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             };
             this.ngbActiveModal.close();
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

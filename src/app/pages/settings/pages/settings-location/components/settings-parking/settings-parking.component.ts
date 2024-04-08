@@ -9,7 +9,7 @@ import moment from 'moment';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
 import { CompanyParkingService } from '../../../../services/company-parking.service';
 

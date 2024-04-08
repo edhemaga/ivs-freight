@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 
-//Models
+// models
 import { DriverService as DriverBackendService } from 'appcoretruckassist';
 import {
     CheckOwnerSsnEinResponse,
@@ -17,7 +17,7 @@ import {
     DriverPayrollResponse,
 } from 'appcoretruckassist';
 
-//Store
+// store
 import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
 import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
@@ -27,14 +27,14 @@ import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-st
 import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
 
-//Services
+// services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { FormDataService } from 'src/app/shared/services/form-data.service';
 
-//Components
-import { DriverModal } from 'src/app/core/components/shared/model/driver-modal';
+// components
+import { DriverModel } from 'src/app/pages/driver/pages/driver-table/models/driver.model';
 
-//Enums
+// enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Injectable({
@@ -213,7 +213,7 @@ export class DriverService {
     public deleteDriverById(
         driverId: number,
         tableSelectedTab?: string
-    ): Observable<DriverModal> {
+    ): Observable<DriverModel> {
         return this.driverService.apiDriverIdDelete(driverId).pipe(
             tap(() => {
                 const driverCount = JSON.parse(
@@ -293,7 +293,7 @@ export class DriverService {
     public updateDriver(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPut().pipe(
-            tap((res: any) => {
+            tap(() => {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[data.id];

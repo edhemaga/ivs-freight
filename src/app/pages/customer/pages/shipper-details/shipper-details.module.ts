@@ -6,7 +6,7 @@ import { ShipperDetailsRoutes } from './shipper-details.routing';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components

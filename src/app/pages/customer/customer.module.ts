@@ -1,6 +1,6 @@
 // Modules
 import { ShipperDetailsModule } from './pages/shipper-details/shipper-details.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';

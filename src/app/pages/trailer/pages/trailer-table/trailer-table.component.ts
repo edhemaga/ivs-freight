@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 // components
 import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // services
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
@@ -52,10 +52,8 @@ import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-co
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
 import { TrailerBodyResponse } from './models/trailer-body-response.model';
-import {
-    TableColumnConfig,
-    DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 
 @Component({
     selector: 'app-trailer-table',
@@ -339,7 +337,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -481,7 +479,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getTrailerColumnDefinition();
     }
 
-    private setTrailerData(td: DataForCardsAndTables): void {
+    private setTrailerData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -913,7 +911,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -1008,7 +1006,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
@@ -1024,7 +1022,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.DELETE_ITEM: {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,

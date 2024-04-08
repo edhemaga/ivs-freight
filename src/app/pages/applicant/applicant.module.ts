@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 
 // modules
 import { ApplicantRoutingModule } from './applicant-routing.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 // pipes

@@ -4,14 +4,14 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { ContactsModalComponent } from '../contacts-modal/contacts-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // service
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { ContactState } from '../../state/contact.store';
@@ -35,7 +35,7 @@ import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/
 
 // data for cards
 import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 
 // models
 import {
@@ -297,7 +297,7 @@ export class ContactsTableComponent
                     });
 
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -476,7 +476,7 @@ export class ContactsTableComponent
     }
 
     // Set Countact Data
-    setContactData(tdata: DataForCardsAndTables): void {
+    setContactData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -688,7 +688,7 @@ export class ContactsTableComponent
             );
         } else if (event.type === TableStringEnum.DELTETE_CONTACT) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { LoadDetailsRoutes } from './load-details.routing';
 import { LoadDetailsComponent } from './load-details.component';
 import { LoadDetailsItemComponent } from './components/load-details-item/load-details-item.component';

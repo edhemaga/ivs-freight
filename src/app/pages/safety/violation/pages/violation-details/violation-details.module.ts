@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { ViolationDetailsRoutes } from './violation-details.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';

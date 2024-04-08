@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DispatchRoutingModule } from './dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { DispatchComponent } from './pages/dispatch/dispatch.component';

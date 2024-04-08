@@ -9,7 +9,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
@@ -26,11 +26,9 @@ import {
     GridColumn,
 } from 'src/app/shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
-import {
-    FilterOptionsLoad,
-    LoadModel,
-} from 'src/app/core/components/shared/model/load-modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { FilterOptionsLoad } from 'src/app/pages/load/pages/load-table/models/filter-options-load.model';
+import { LoadModel } from './models/load.model';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Queries
@@ -59,7 +57,7 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 
 // Enum
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Store
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
@@ -89,7 +87,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadTemplate: LoadTemplateState[] = [];
 
     public loadingPage: boolean = false;
-    public activeTableData: DataForCardsAndTables;
+    public activeTableData: CardTableData;
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
@@ -398,7 +396,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -645,7 +643,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setLoadData(td: DataForCardsAndTables): void {
+    private setLoadData(td: CardTableData): void {
         this.columns = td.gridColumns;
         if (td.data?.length) {
             this.viewData = td.data;
@@ -979,7 +977,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
                 {
                     type: TableStringEnum.DELETE,
