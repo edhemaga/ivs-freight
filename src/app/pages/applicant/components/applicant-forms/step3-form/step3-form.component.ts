@@ -46,7 +46,7 @@ import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';
 import { SelectedMode } from '../../../enums/selected-mode.enum';
 
 // models
-import { LicenseModel } from '../../../models/cdl-information';
+import { License } from '../../../pages/applicant-application/models/license.model';
 import {
     ApplicantModalResponse,
     CdlEndorsementResponse,
@@ -510,7 +510,7 @@ export class Step3FormComponent
             ...licenseForm
         } = this.licenseForm.value;
 
-        const saveData: LicenseModel = {
+        const saveData: License = {
             ...licenseForm,
             state: this.selectedStateType.stateName,
             stateShort: this.selectedStateType.name,
@@ -568,7 +568,7 @@ export class Step3FormComponent
             ...licenseForm
         } = this.licenseForm.value;
 
-        const saveData: LicenseModel = {
+        const saveData: License = {
             ...licenseForm,
             state: this.selectedStateType.stateName,
             stateShort: this.selectedStateType.name,

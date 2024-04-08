@@ -52,7 +52,7 @@ import { ApplicantQuery } from '../../../state/applicant.query';
 import { SelectedMode } from '../../../enums/selected-mode.enum';
 
 // models
-import { ViolationModel } from '../../../models/violations.model';
+import { Violation } from '../../../pages/applicant-application/models/violation.model';
 import {
     ApplicantModalResponse,
     TruckTypeResponse,
@@ -341,7 +341,7 @@ export class Step5FormComponent
         const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
 
-        const saveData: ViolationModel = {
+        const saveData: Violation = {
             ...violationsForm,
             isEditingViolation: false,
             vehicleTypeLogoName: this.vehicleType.find(
@@ -380,7 +380,7 @@ export class Step5FormComponent
         const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
 
-        const saveData: ViolationModel = {
+        const saveData: Violation = {
             ...violationsForm,
             isEditingViolation: false,
             vehicleTypeLogoName: this.vehicleType.find(

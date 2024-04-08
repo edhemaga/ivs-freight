@@ -59,10 +59,8 @@ import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-col
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
-import {
-    DropdownItem,
-    GridColumn,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 
 // Enums

@@ -11,10 +11,8 @@ import {
 import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // Models
-import {
-    DropdownItem,
-    GridColumn,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { PmTrailer } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
 import { PmTruck } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
