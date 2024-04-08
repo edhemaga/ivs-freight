@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 // modules
 import { WebsiteRoutingModule } from './website-routing.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components

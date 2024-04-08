@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { TruckDetailsRoutes } from './truck-details.routing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 

@@ -5,7 +5,7 @@ import { FuelTableComponent } from './pages/fuel-table/fuel-table.component';
 import { FuelRoutingModule } from './fuel-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';

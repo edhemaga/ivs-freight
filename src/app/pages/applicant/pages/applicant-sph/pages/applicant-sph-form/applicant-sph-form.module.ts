@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 // modules
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ApplicantSphFormRoutingModule } from './applicant-sph-form-routing.module';
 import { ApplicantModule } from 'src/app/pages/applicant/applicant.module';
 

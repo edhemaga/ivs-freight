@@ -18,7 +18,7 @@ import {
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { PmTrailer } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
 import { PmTruck } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Services
@@ -221,7 +221,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setPmData(td: DataForCardsAndTables): void {
+    private setPmData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {

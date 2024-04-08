@@ -33,7 +33,7 @@ import {
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from '../../ta-modal/services/modal.service';
-import { ConfirmationResetService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation-reset.service';
+import { ConfirmationResetService } from 'src/app/shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // decorators
 import { Titles } from 'src/app/core/decorators/titles.decorator';
@@ -43,7 +43,7 @@ import { TaToolbarFiltersComponent } from './components/ta-toolbar-filters/ta-to
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipComponent } from '../../ta-app-tooltip/ta-app-tooltip.component';
 import { LoadCardsModalComponent } from 'src/app/core/components/modals/cards-modal/load-cards-modal/load-cards-modal.component';
-import { TaConfirmationModalResetComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation-reset/ta-confirmation-reset.component';
+import { ConfirmationModalResetComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset.component';
 
 // enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
@@ -72,7 +72,7 @@ import { OptionsPopupContent } from 'src/app/shared/components/ta-table/ta-table
         TaToolbarFiltersComponent,
         TaInputDropdownComponent,
         LoadCardsModalComponent,
-        TaConfirmationModalResetComponent,
+        ConfirmationModalResetComponent,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -579,7 +579,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.onShowOptions(this.optionsPopup);
 
             this.modalService.openModal(
-                TaConfirmationModalResetComponent,
+                ConfirmationModalResetComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     template: TableStringEnum.RESET_MODAL,

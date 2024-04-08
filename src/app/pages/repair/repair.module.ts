@@ -6,7 +6,7 @@ import { RepairRoutingModule } from './repair-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { RepairTableComponent } from './pages/repair-table/repair-table.component';

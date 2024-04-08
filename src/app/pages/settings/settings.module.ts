@@ -5,7 +5,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // modules
 import { SettingsRoutingModule } from './settings-routing.module';
-import { SharedModule } from '../../core/components/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 // components
 import { SettingsToolbarComponent } from './pages/settings-toolbar/settings-toolbar.component';
 import { SettingsToollbarCardComponent } from './pages/settings-toolbar/components/settings-toollbar-card/settings-toollbar-card.component';

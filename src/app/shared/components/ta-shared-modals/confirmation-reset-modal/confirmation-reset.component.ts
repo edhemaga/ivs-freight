@@ -8,19 +8,19 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
+import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
 
 // services
-import { ConfirmationResetService } from '../services/confirmation-reset.service';
+import { ConfirmationResetService } from './services/confirmation-reset.service';
 
 // enums
-import { ConfirmationResetStringEnum } from '../enums/confirmation-reset-string.enum';
+import { ConfirmationResetStringEnum } from './enums/confirmation-reset-string.enum';
 
 // models
-import { ConfirmationReset } from '../models/confirmation-reset.model';
+import { ConfirmationReset } from './models/confirmation-reset.model';
 
 @Component({
-    selector: 'app-ta-confirmation-reset',
+    selector: 'app-confirmation-reset',
     standalone: true,
     imports: [
         // modules
@@ -30,10 +30,10 @@ import { ConfirmationReset } from '../models/confirmation-reset.model';
         // components
         TaModalComponent,
     ],
-    templateUrl: './ta-confirmation-reset.component.html',
-    styleUrls: ['./ta-confirmation-reset.component.scss'],
+    templateUrl: './confirmation-reset.component.html',
+    styleUrls: ['./confirmation-reset.component.scss'],
 })
-export class TaConfirmationModalResetComponent {
+export class ConfirmationModalResetComponent {
     @Input() editData: ConfirmationReset;
 
     constructor(

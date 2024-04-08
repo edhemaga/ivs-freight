@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // Modules
 import { SettingsCompanyRoutes } from './settings-company.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { SettingsCompanyComponent } from './settings-company.component';

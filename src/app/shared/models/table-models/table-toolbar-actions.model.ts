@@ -1,7 +1,7 @@
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 
 export interface TableToolbarActions {
     action: string;
-    tabData: DataForCardsAndTables;
+    tabData: CardTableData;
     mode: string;
 }

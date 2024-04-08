@@ -34,7 +34,6 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     imports: [
         CommonModule,
         FormsModule,
-
         NgSelectModule,
         NgbModule,
         RouterModule,
@@ -52,14 +51,13 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         NgxDropzoneModule,
         CroppieModule,
         PdfViewerModule,
-        /* TruckassistTableModule, */
         ChartsModule,
         AgmSnazzyInfoWindowModule,
         ObserversModule,
         CarouselModule,
     ],
     exports: [
-        // Modules
+        // modules
         FormsModule,
         ReactiveFormsModule,
         NgSelectModule,

@@ -27,7 +27,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // component
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
@@ -146,7 +146,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
     public onCardActions(event: OwnerData): void {
         if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -169,7 +169,7 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

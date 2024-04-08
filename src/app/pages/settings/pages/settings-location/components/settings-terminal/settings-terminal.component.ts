@@ -7,7 +7,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { SettingsLocationService } from '../../services/settings-location.service';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { CompanyTerminalService } from '../../../../services/company-terminal.service';
 
 // pipes

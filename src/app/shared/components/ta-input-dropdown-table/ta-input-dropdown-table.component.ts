@@ -20,7 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from '../../../core/components/shared/shared.module';
+import { SharedModule } from '../../shared.module';
 
 // models
 import {

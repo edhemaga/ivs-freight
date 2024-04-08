@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AgmCoreModule } from '@agm/core';
 
 // Modules
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AccountingRoutingModule } from './accounting-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 

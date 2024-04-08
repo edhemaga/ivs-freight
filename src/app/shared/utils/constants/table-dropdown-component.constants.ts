@@ -6,18 +6,13 @@ import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-
 
 // models
 import { RepairBackFilter } from 'src/app/pages/repair/pages/repair-table/models/repair-back-filter.model';
-
 import { ShopBackFilterQuery } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter-query.model';
-import {
-    FilterOptionBroker,
-    FilterOptionshipper,
-} from '../../../core/components/shared/model/customer.modals';
-import {
-    FilterOptionApplicant,
-    FilterOptionDriver,
-} from '../../../core/components/shared/model/driver-modal';
+import { FilterOptionBroker } from 'src/app/pages/customer/pages/customer-table/models/filter-option-broker.model';
+import { FilterOptionShipper } from 'src/app/pages/customer/pages/customer-table/models/filter-option-shipper.model';
+import { FilterOptionDriver } from 'src/app/pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { FilterOptionApplicant } from 'src/app/pages/driver/pages/driver-table/models/filter-option-applicant.model';
 import { DropdownItem } from '../../models/card-models/card-table-data.model';
-import { FilterOptionsLoad } from '../../../core/components/shared/model/load-modal';
+import { FilterOptionsLoad } from '../../../pages/load/pages/load-table/models/filter-options-load.model';
 
 import { SortTypes } from '../../models/sort-types.model';
 
@@ -128,7 +123,7 @@ export class TableDropdownComponentConstants {
         searchThree: undefined,
     };
 
-    static SHIPPER_BACK_FILTER: FilterOptionshipper = {
+    static SHIPPER_BACK_FILTER: FilterOptionShipper = {
         stateIds: undefined,
         long: undefined,
         lat: undefined,

@@ -1,7 +1,7 @@
 // Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Routing
 import { RepairShopDetailsRoutes } from './repair-shop-details.routing';

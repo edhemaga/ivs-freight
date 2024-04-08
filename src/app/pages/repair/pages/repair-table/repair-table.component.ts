@@ -12,7 +12,7 @@ import { DatePipe } from '@angular/common';
 
 // services
 import { RepairService } from 'src/app/shared/services/repair.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
@@ -48,7 +48,7 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // components
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
@@ -63,10 +63,8 @@ import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
 import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import {
-    TableColumnConfig,
-    DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 import {
     getRepairTruckAndTrailerColumnDefinition,
     getRepairsShopColumnDefinition,
@@ -664,7 +662,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Set Repair Data
-    private setRepairData(tdata: DataForCardsAndTables): void {
+    private setRepairData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -1172,7 +1170,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             switch (this.selectedTab) {
                 case TableStringEnum.REPAIR_SHOP:
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1192,7 +1190,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 default:
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1227,7 +1225,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         : TableStringEnum.CLOSE,
             };
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
