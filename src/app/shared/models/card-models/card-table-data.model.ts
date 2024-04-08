@@ -1,51 +1,5 @@
 import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
 
-// Table Columns
-export interface Column {
-    column: GridColumn;
-    index: number;
-}
-export interface GridColumn {
-    avatar: null | string;
-    disabled: boolean;
-    export: boolean;
-    field: string;
-    filter: string;
-    filterable: boolean;
-    hidden: boolean;
-    hoverTemplate: null | string;
-    index: number;
-    isActionColumn: boolean;
-    isNumeric: boolean;
-    isPined: boolean;
-    isSelectColumn: boolean;
-    name: string;
-    ngTemplate: string;
-    progress: null | string;
-    resizable: boolean;
-    sortable: boolean;
-    tableHeadTitle: string;
-    title: string;
-    width: number;
-}
-export interface ResizingEventData {
-    index: number;
-    isResizing: boolean;
-    section: string;
-    width: number;
-}
-export interface ColumnWidthData {
-    columns: GridColumn[];
-    event: ResizingEventData[];
-}
-// Table Columns end
-export interface SendDataCard {
-    id?: number;
-    data?: CardDetails;
-    type: string;
-    subType?: string;
-}
-
 export interface Trucks {
     truckNumber: string;
     status: number;

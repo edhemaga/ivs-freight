@@ -19,10 +19,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // Models
-import {
-    CardDetails,
-    SendDataCard,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { SendDataCard } from 'src/app/shared/models/card-models/send-data-card.model';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
 

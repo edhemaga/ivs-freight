@@ -23,8 +23,8 @@ import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,
     DropdownItem,
-    GridColumn,
 } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { FilterOptionsLoad } from 'src/app/pages/load/pages/load-table/models/filter-options-load.model';

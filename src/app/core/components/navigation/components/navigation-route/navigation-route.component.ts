@@ -1,6 +1,4 @@
-import { NavigationSubRoutes } from '../../models/navigation.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Navigation } from '../../models/navigation.model';
 import {
     Component,
     Input,
@@ -10,16 +8,30 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import {
-    navigation_magic_line,
-    navigation_route_animation,
-} from '../../animations/navigation.animation';
-import { StaticInjectorService } from 'src/app/core/decorators/titles.decorator';
-import { NavigationService } from '../../services/navigation.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// animations
+import {
+    navigationMagicLine,
+    navigationRouteAnimation,
+} from '../../animations/navigation.animation';
+
+// decorators
+
+// services
+import { StaticInjectorService } from 'src/app/core/decorators/titles.decorator';
+import { NavigationService } from '../../services/navigation.service';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
 import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+
+// models
+import { NavigationSubRoutes } from 'src/app/core/components/navigation/models/navigation-subroutes.model';
+import { Navigation } from '../../models/navigation.model';
 
 @Component({
     selector: 'app-navigation-route',
@@ -34,8 +46,8 @@ import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-sl
         ReactiveFormsModule,
     ],
     animations: [
-        navigation_route_animation('showHideDetails'),
-        navigation_magic_line('magicLine'),
+        navigationRouteAnimation('showHideDetails'),
+        navigationMagicLine('magicLine'),
     ],
 })
 export class NavigationRouteComponent implements OnInit, OnChanges {
