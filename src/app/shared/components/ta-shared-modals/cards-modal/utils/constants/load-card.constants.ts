@@ -1,6 +1,6 @@
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
-export class LoadCardsModuleData {
+export class LoadCardsModuleConstants {
     static frontDataLoad: CardRows[] = [
         {
             title: 'Comodity',
@@ -24,6 +24,7 @@ export class LoadCardsModuleData {
             selected: true,
         },
     ];
+
     static BackDataLoad: CardRows[] = [
         {
             title: 'Pickup',
@@ -50,6 +51,7 @@ export class LoadCardsModuleData {
             selected: true,
         },
     ];
+
     static allDataLoad: CardRows[] = [
         {
             id: 1,

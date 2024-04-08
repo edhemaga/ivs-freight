@@ -22,10 +22,10 @@ import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // store
-import { LoadQuery } from '../state/store/load-modal.query';
+import { LoadQuery } from '../state/load-modal.query';
 
 // enums
-import { CardModalEnum } from '../utils/enums/card-modals.enum';
+import { CardsModalEnum } from '../enums/cards-modal.enum';
 
 // helpers
 import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-helper';
@@ -109,10 +109,10 @@ export class ModalInputFormComponent implements ControlValueAccessor {
 
     public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
         switch (selectedRow.title) {
-            case CardModalEnum.EMPTY:
+            case CardsModalEnum.EMPTY:
                 const emptyObj = {
-                    title: CardModalEnum.EMPTY,
-                    endpoint: CardModalEnum.EMPTY,
+                    title: CardsModalEnum.EMPTY,
+                    endpoint: CardsModalEnum.EMPTY,
                 };
 
                 this.inputTitleValue.nativeElement.value = this.backupValue;

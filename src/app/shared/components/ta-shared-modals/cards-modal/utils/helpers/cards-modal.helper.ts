@@ -1,5 +1,5 @@
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { ModalModelData } from '../models/modal-input.model';
+import { CardsModalData } from '../../models/cards-modal-data.model';
 
 export class CompareObjectsModal {
     static areArraysOfObjectsEqual(
@@ -31,7 +31,7 @@ export class CompareObjectsModal {
     }
 
     static filterOutOBjects(
-        obj: ModalModelData,
+        obj: CardsModalData,
         filterType: string
     ): CardRows[] {
         const backKeys = Object.keys(obj).filter((key) =>

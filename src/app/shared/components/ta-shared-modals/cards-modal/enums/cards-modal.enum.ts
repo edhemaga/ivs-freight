@@ -1,4 +1,4 @@
-export enum CardModalEnum {
+export enum CardsModalEnum {
     EMPTY = 'empty',
 
     STRING = 'string',

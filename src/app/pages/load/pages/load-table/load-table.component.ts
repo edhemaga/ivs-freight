@@ -11,7 +11,7 @@ import { LoadService } from '../../../../shared/services/load.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
-import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
+import { CardsModalConfigService } from 'src/app/shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 
 // Models
 import {
@@ -60,7 +60,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Store
-import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
+import { LoadQuery } from 'src/app/shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // Utils
 import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';

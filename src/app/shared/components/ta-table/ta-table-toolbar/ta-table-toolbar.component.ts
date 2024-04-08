@@ -42,7 +42,7 @@ import { Titles } from 'src/app/core/decorators/titles.decorator';
 import { TaToolbarFiltersComponent } from './components/ta-toolbar-filters/ta-toolbar-filters.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipComponent } from '../../ta-app-tooltip/ta-app-tooltip.component';
-import { LoadCardsModalComponent } from 'src/app/core/components/modals/cards-modal/load-cards-modal/load-cards-modal.component';
+import { LoadCardsModalComponent } from '../../../../pages/load/pages/load-cards-modal/load-cards-modal.component';
 import { ConfirmationModalResetComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset.component';
 
 // enums
