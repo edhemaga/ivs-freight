@@ -14,13 +14,13 @@ import {
     CardDetails,
     DropdownItem,
     GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
 import { OwnerTableData } from '../../models/owner-table-data.model';
 import { OwnerFilter } from '../../models/owner-filter.model';
 import { OwnerData } from '../../models/owner-data.model';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -706,7 +706,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(OwnerModalComponent, {
                 size: TableStringEnum.SMALL,

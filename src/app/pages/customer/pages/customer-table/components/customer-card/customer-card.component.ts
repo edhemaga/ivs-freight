@@ -15,8 +15,9 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     CardDetails,
     SendDataCard,
-} from 'src/app/shared/models/card-table-data.model';
-import { CardRows, DataResult } from 'src/app/shared/models/card-data.model';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
 
 // Pipes
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
@@ -56,8 +57,8 @@ export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(

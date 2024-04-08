@@ -5,7 +5,7 @@ import { DriverDetailsComponent } from './driver-details.component';
 import { DriverDetailsRoutes } from './driver-details.routing';
 import { DriverDetailsItemComponent } from './components/driver-details-item/driver-details-item.component';
 import { SharedModule } from 'src/app/core/components/shared/shared.module';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.co
         CommonModule,
         DriverDetailsRoutes,
         SharedModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         ReactiveFormsModule,

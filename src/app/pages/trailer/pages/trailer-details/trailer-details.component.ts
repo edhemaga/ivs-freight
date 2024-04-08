@@ -26,7 +26,6 @@ import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
-import { TableOptions } from 'src/app/core/model/table.model';
 import { TrailerConfigData } from './models/trailer-config-data.model';
 import { TrailerResponse } from 'appcoretruckassist';
 import { TrailerDetailsConfig } from './models/trailer-details-config.model';
@@ -41,7 +40,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerDetailsConfig: TrailerDetailsConfig[] = [];
     public trailerId: number;
-    public dataHeaderDropDown: TableOptions;
+    public dataHeaderDropDown;
     public trailerObject: TrailerResponse;
     public trailerList: any = this.trailerMinimalQuery.getAll();
     public currentIndex: number = 0;

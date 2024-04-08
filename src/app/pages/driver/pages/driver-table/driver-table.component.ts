@@ -46,8 +46,8 @@ import {
     OnTableBodyActionsModal,
     OnTableHeadActionsModal,
     MappedApplicantData,
-} from 'src/app/core/components/shared/model/table-components/driver-modal';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/driver-modal';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
 import {
     ApplicantShortResponse,
     DriverListResponse,
@@ -59,13 +59,13 @@ import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-col
 
 // Globals
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 import {
     DropdownItem,
     GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 
 // Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
@@ -1265,7 +1265,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             if (this.selectedTab === TableStringEnum.APPLICANTS) {

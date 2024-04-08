@@ -9,7 +9,7 @@ import { DriverRoutingModule } from './driver-routing.module';
 import { DriverTableComponent } from './pages/driver-table/driver-table.component';
 import { DriverCardComponent } from './pages/driver-card/driver-card.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 
 import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
@@ -48,7 +48,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         NgbModule,
 
         //components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,

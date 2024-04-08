@@ -14,7 +14,7 @@ import { ShipperDetailsItemComponent } from './components/shipper-details-item/s
 import { ShipperDetailsCardComponent } from './components/shipper-details-card/shipper-details-card.component';
 import { ShipperDetailsComponent } from './shipper-details.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
@@ -45,7 +45,7 @@ import { FormatTimePipe } from 'src/app/shared/pipes/format-time.pipe';
 
         // Components
         TaChartComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCopyComponent,
         TaCustomCardComponent,

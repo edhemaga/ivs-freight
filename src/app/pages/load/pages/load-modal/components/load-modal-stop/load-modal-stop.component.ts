@@ -13,7 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // animations
 import { collapseAnimation } from '../../utils/animations/collapse.animation';
@@ -36,7 +36,7 @@ import { LoadModalConstants } from '../../utils/constants/load-modal.constants';
         AngularSvgIconModule,
 
         // component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
     ],
     animations: [collapseAnimation],
 })

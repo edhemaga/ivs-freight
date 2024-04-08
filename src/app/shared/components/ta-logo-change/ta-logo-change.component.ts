@@ -28,7 +28,7 @@ import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
 } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
 
 // icon
@@ -55,7 +55,7 @@ import { UploadFile } from '../ta-upload-files/models/upload-file.model';
         NgbPopoverModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaUploadDropzoneComponent,
         TaNgxSliderComponent,
 

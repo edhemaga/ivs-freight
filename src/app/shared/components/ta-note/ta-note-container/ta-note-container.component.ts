@@ -18,7 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { noteColors } from '../../../../const';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -36,7 +36,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         NgbModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
     ],
     animations: [
         trigger('pickupAnimation', [

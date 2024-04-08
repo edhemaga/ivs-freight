@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NameInitialsPipe } from '../../pipes/name-initials.pipe';
 
 //  components
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-ta-profile-images',
@@ -20,7 +20,7 @@ import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip
     imports: [
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         NgbModule,
         NameInitialsPipe,
         ReactiveFormsModule,

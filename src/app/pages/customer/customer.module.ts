@@ -15,7 +15,7 @@ import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
 
 import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
@@ -56,7 +56,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         NgbModule,
 
         // Components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaCopyComponent,
         TaCustomCardComponent,
         TaTableToolbarComponent,

@@ -39,9 +39,6 @@ import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-
 // moment
 import moment from 'moment';
 
-// models
-import { TableOptions } from 'src/app/core/model/table.model';
-
 @Titles()
 @Component({
     selector: 'app-trailer-details-item',
@@ -87,8 +84,8 @@ export class TrailerDetailsItemComponent
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest: TableOptions;
-    public dataFHWA: TableOptions;
+    public dataTest;
+    public dataFHWA;
     public toggler: boolean[] = [];
     public currentDate: string;
 

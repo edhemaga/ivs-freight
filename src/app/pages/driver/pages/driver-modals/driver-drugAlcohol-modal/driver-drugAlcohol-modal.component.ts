@@ -26,7 +26,7 @@ import { FormService } from 'src/app/shared/services/form.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../../../../../shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -51,7 +51,7 @@ import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/m
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,

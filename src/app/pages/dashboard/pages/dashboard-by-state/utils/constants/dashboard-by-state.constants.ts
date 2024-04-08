@@ -1,5 +1,5 @@
 import { DashboardTab } from '../../../../models/dashboard-tab.model';
-import { DropdownItem } from '../../../../models/dropdown-item.model';
+import { DropdownItem } from '../../../../../../shared/models/dropdown-item.model';
 import { BarChartValues } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export class DashboardByStateConstants {

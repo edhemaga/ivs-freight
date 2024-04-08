@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Pipe
 import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
@@ -19,7 +19,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
     templateUrl: './ta-special-filter.component.html',
     styleUrls: ['./ta-special-filter.component.scss'],
     imports: [
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         NgbModule,
         AngularSvgIconModule,
         TaSvgPipe,
