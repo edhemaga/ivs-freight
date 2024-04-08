@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ApplicantHosRulesRoutingModule } from './applicant-hos-rules-routing.module';
 import { ApplicantModule } from '../../applicant.module';
 

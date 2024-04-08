@@ -26,15 +26,15 @@ import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { CommentsService } from '../../services/comments.service';
 import { ModalService } from '../ta-modal/services/modal.service';
-import { ConfirmationService } from '../../../core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from '../ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TaInputDropdownTableService } from '../ta-input-dropdown-table/services/ta-input-dropdown-table.service';
 import { LoadService } from '../../services/load.service';
 
 // utils
-import { convertDateFromBackendToDateAndTime } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // enums
 import { CommentStringEnum } from 'src/app/shared/components/ta-comment/enums/comment-string.enum';
@@ -44,16 +44,16 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 import { FormatDatePipe } from '../../pipes/format-date.pipe';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { ConfirmationModalComponent } from '../../../core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
 // models
 import { CommentCompanyUser } from '../../models/comment-company-user.model';
-import { CommentData } from 'src/app/core/model/comment-data';
-import { Comment } from '../../models/card-table-data.model';
+import { CommentData } from 'src/app/shared/models/comment-data.model';
+import { Comment } from '../../models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-ta-comment',
@@ -73,7 +73,7 @@ import { Comment } from '../../models/card-table-data.model';
         SafeHtmlPipe,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
     ],
     animations: [dropdownAnimationComment('dropdownAnimationComment')],
 })
@@ -315,9 +315,10 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.isEditing = false;
                 }
 
-                const dateAndTimeNow = convertDateFromBackendToDateAndTime(
-                    new Date()
-                );
+                const dateAndTimeNow =
+                    MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
+                        new Date()
+                    );
                 const dateNow = moment().format(
                     CommentStringEnum.COMMENT_DATE_FORMAT
                 );

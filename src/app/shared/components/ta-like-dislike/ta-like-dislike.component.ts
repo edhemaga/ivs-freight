@@ -20,7 +20,7 @@ import {
 import { DetailsDataService } from '../../services/details-data.service';
 
 // models
-import { SendDataCard } from '../../models/card-table-data.model';
+import { SendDataCard } from '../../models/card-models/card-table-data.model';
 
 // enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';

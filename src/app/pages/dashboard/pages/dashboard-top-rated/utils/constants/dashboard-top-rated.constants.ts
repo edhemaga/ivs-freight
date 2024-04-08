@@ -3,7 +3,7 @@ import { DashboardStringEnum } from '../../../../enums/dashboard-string.enum';
 
 // models
 import { DropdownListItem } from '../../../../models/dropdown-list-item.model';
-import { DropdownItem } from '../../../../models/dropdown-item.model';
+import { DropdownItem } from '../../../../../../shared/models/dropdown-item.model';
 import { DashboardTab } from '../../../../models/dashboard-tab.model';
 import { TopRatedListItem } from '../../models/top-rated-list-item.model';
 

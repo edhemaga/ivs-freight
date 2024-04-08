@@ -9,20 +9,25 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// model
-import { CardRows } from '../../../shared/model/card-data.model';
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// bootstrap
+import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+
+// models
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // store
 import { LoadQuery } from '../state/store/load-modal.query';
 
-// enum
+// enums
 import { CardModalEnum } from '../utils/enums/card-modals.enum';
 
-// helper
+// helpers
 import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-helper';
 
 @Component({

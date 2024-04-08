@@ -10,20 +10,20 @@ import { DriverDrugAlcoholModalComponent } from '../../pages/driver/pages/driver
 import { DriverMedicalModalComponent } from '../../pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { BrokerModalComponent } from '../../pages/customer/pages/broker-modal/broker-modal.component';
-import { TtFhwaInspectionModalComponent } from '../../core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtTitleModalComponent } from '../../core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { ConfirmationModalComponent } from '../../core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TtFhwaInspectionModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtTitleModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { ConfirmationModalComponent } from '../components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { DriverModalComponent } from '../../pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { RepairOrderModalComponent } from '../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '../../pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ShipperModalComponent } from '../../pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../pages/truck/pages/truck-modal/truck-modal.component';
-import { SettingsOfficeModalComponent } from '../../pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../pages/settings/pages/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../pages/settings/pages/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../pages/settings/pages/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
     providedIn: 'root',

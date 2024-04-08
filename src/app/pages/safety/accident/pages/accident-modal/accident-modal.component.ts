@@ -21,10 +21,10 @@ import {
 } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // helpers
-import { convertDateFromBackend } from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
@@ -33,11 +33,11 @@ import { FormService } from 'src/app/shared/services/form.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
@@ -54,7 +54,7 @@ import {
     selector: 'app-accident-modal',
     templateUrl: './accident-modal.component.html',
     styleUrls: ['./accident-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
@@ -65,11 +65,11 @@ import {
         NgbModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,
@@ -308,14 +308,18 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                             ? res.addressAccident.address
                             : null,
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         time: res.time,
                         driverName: res.driver_FullName,
                         driverLicenceNumber: res.driver_LicenceNo,
                         driverState: res.driver_State,
                         driverDOB: res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.driver_DateOfBirth
+                              )
                             : null,
                         truckUnit: res.truck_Unit,
                         truckType: res.truck_Type,

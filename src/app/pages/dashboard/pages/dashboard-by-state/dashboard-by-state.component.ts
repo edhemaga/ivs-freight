@@ -29,7 +29,7 @@ import { DashboardColors } from '../../utils/constants/dashboard-colors.constant
 
 // models
 import { ByStateListItem } from './models/by-state-list-item.model';
-import { DropdownItem } from '../../models/dropdown-item.model';
+import { DropdownItem } from '../../../../shared/models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
 import { ByStateColorsPallete } from '../../models/colors-pallete.model';

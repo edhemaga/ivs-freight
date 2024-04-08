@@ -5,12 +5,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // modules
 import { SettingsRoutingModule } from './settings-routing.module';
-import { SharedModule } from '../../core/components/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 // components
 import { SettingsToolbarComponent } from './pages/settings-toolbar/settings-toolbar.component';
 import { SettingsToollbarCardComponent } from './pages/settings-toolbar/components/settings-toollbar-card/settings-toollbar-card.component';
 import { SettingsComponent } from './pages/settings/settings.component';
-import { AppTooltipComponent } from '../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../../shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '../../shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '../../shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCounterComponent } from '../../shared/components/ta-counter/ta-counter.component';
@@ -24,7 +24,7 @@ import { FormatEinPipe } from '../../shared/pipes/format-ein.pipe';
         CommonModule,
         SettingsRoutingModule,
         SharedModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         AngularSvgIconModule,

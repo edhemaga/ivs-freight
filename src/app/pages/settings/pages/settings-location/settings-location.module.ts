@@ -16,7 +16,7 @@ import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
@@ -28,14 +28,14 @@ import { SettingsParkingComponent } from './components/settings-parking/settings
 import { SettingsOfficeComponent } from './components/settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './components/settings-terminal/settings-terminal.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 @NgModule({
     imports: [
         CommonModule,
         ReactiveFormsModule,
         SettingsLocationRoutes,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         NgbModule,
         TaCounterComponent,
         AngularSvgIconModule,
@@ -45,7 +45,7 @@ import { TruckassistProgressExpirationComponent } from 'src/app/core/components/
         TaCommonCardComponent,
         TaCopyComponent,
         TaCustomCardComponent,
-        TruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         FormatDatePipe,
     ],
     declarations: [

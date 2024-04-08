@@ -11,7 +11,7 @@ import { UserResolver } from '../user/resolvers/user.resolver';
 import { CompanyIntegrationsResolver } from './resolvers/company-integrations.resolver';
 
 // components
-import { UnderConstructionComponent } from '../../core/components/under-construction/under-construction.component';
+import { TaUnderConstructionComponent } from '../../shared/components/ta-under-construction/ta-under-construction.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
@@ -72,7 +72,7 @@ const routes: Routes = [
                 //     import('./settings-billing/settings-billing.module').then(
                 //         (m) => m.SettingsBillingModule
                 //     ),
-                component: UnderConstructionComponent,
+                component: TaUnderConstructionComponent,
                 data: { title: 'Billing' },
             },
             {
@@ -81,7 +81,7 @@ const routes: Routes = [
                 //     import('./custom-agreement/custom-agreement.module').then(
                 //         (m) => m.CustomAgreementModule
                 //     ),
-                component: UnderConstructionComponent,
+                component: TaUnderConstructionComponent,
                 data: { title: 'Custom Agreement' },
             },
             {
@@ -90,7 +90,7 @@ const routes: Routes = [
                 //     import('./training-material/training-material.module').then(
                 //         (m) => m.TrainingMaterialModule
                 //     ),
-                component: UnderConstructionComponent,
+                component: TaUnderConstructionComponent,
                 data: { title: 'Training Material' },
             },
             {

@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 // services
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // animations
 import {
@@ -22,14 +22,13 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // store
 import { TrailersMinimalListQuery } from '../../../../state/trailer-minimal-list-state/trailer-minimal.query';
 
 // models
-import { TableOptions } from 'src/app/core/model/table.model';
-import { TrailerDropdown } from 'src/app/core/model/trailer.model';
+import { TrailerDropdown } from '../../models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 
 @Component({
@@ -38,7 +37,7 @@ import { TrailerMinimalResponse } from 'appcoretruckassist';
     styleUrls: ['./trailer-details-card.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('ownerDetailsAnimation', [
             state(
                 'true',
@@ -73,7 +72,7 @@ export class TrailerDetailsCardComponent
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public inspectionNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
-    public dataEdit: TableOptions;
+    public dataEdit;
     public toggleOwner: boolean;
     public trailerDropDowns: TrailerDropdown[] = [];
     public trailer_list: TrailerMinimalResponse[] =

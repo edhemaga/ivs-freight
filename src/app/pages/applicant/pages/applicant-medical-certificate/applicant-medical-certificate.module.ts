@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { ApplicantMedicalCertificateRoutingModule } from './applicant-medical-certificate-routing.module';
 import { ApplicantModule } from '../../applicant.module';
 

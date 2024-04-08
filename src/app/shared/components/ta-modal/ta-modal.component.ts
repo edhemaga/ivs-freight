@@ -34,18 +34,20 @@ import { ModalService } from './services/modal.service';
 import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
 
 // components
-import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
 } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { CustomScrollbarComponent } from '../../../core/components/shared/custom-scrollbar/custom-scrollbar.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaCustomScrollbarComponent } from '../ta-custom-scrollbar/ta-custom-scrollbar.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 
 // guards
 import { AuthGuard } from '../../../core/guards/authentication.guard';
+
+// models
+import { UploadFile } from '../ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-modal',
@@ -63,9 +65,9 @@ import { AuthGuard } from '../../../core/guards/authentication.guard';
         NgbModule,
 
         // components
-        CustomScrollbarComponent,
+        TaCustomScrollbarComponent,
         TaUploadDropzoneComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaTabSwitchComponent,
     ],

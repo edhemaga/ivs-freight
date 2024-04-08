@@ -12,7 +12,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // animations
-import { tab_modal_animation } from '../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
 
 // services
 import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
@@ -40,13 +40,10 @@ import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-sw
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { InputAddressDropdownComponent } from '../../../../../core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // helpers
-import {
-    convertDateFromBackend,
-    convertTimeFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // models
 import {
@@ -59,7 +56,7 @@ import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-in
     selector: 'app-violation-modal',
     templateUrl: './violation-modal.component.html',
     styleUrls: ['./violation-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
@@ -74,7 +71,7 @@ import { ITaInput } from '../../../../../shared/components/ta-input/config/ta-in
         TaInputComponent,
         TaInputDropdownComponent,
         TaCustomCardComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
     ],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
@@ -515,13 +512,19 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             ? res.state.stateShortName
                             : null,
                         startTime: res.startTime
-                            ? convertTimeFromBackend(res.startTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.startTime
+                              )
                             : null,
                         endTime: res.endTime
-                            ? convertTimeFromBackend(res.endTime)
+                            ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                  res.endTime
+                              )
                             : null,
                         date: res.date
-                            ? convertDateFromBackend(res.date)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.date
+                              )
                             : null,
                         // Driver
                         driverName: res.driver
@@ -535,19 +538,23 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             : res.driver_State,
                         driverDOB: res.driver
                             ? res.driver?.dateOfBirth
-                                ? convertDateFromBackend(
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
                                       res.driver?.dateOfBirth
                                   )
                                 : null
                             : res.driver_DateOfBirth
-                            ? convertDateFromBackend(res.driver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.driver_DateOfBirth
+                              )
                             : null,
                         // Co Driver
                         coDriverName: res.coDriver_FullName,
                         coDriverLicenceNumber: res.coDriver_LicenceNo,
                         coDriverState: res.coDriver_State,
                         coDriverDOB: res.coDriver_DateOfBirth
-                            ? convertDateFromBackend(res.coDriver_DateOfBirth)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.coDriver_DateOfBirth
+                              )
                             : null,
                         // Truck
                         truck_Unit: res.truck

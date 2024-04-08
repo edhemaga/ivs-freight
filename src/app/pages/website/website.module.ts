@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 // modules
 import { WebsiteRoutingModule } from './website-routing.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components
@@ -34,7 +34,7 @@ import { SelectCompanyComponent } from './components/website-sidebar/sidebar-con
 import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
 
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';
 
@@ -76,7 +76,7 @@ import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spin
 
         // components
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaSpinnerComponent,
     ],

@@ -22,12 +22,7 @@ import { Subject, takeUntil, skip, tap } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-    convertNumberInThousandSep,
-} from '../../../../core/utils/methods.calculations';
-import { convertThousanSepInNumber } from '../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
@@ -38,7 +33,7 @@ import { FormService } from '../../../../shared/services/form.service';
 import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
 
 // animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
 
 // validations
 import {
@@ -78,7 +73,7 @@ import {
     selector: 'app-truck-modal',
     templateUrl: './truck-modal.component.html',
     styleUrls: ['./truck-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, TaInputService, FormService],
     standalone: true,
@@ -661,30 +656,40 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                         // Additional Tab
                         purchaseDate: res.purchaseDate
-                            ? convertDateFromBackend(res.purchaseDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.purchaseDate
+                              )
                             : null,
                         purchasePrice: res.purchasePrice
-                            ? convertNumberInThousandSep(res.purchasePrice)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.purchasePrice
+                              )
                             : null,
                         truckGrossWeightId: res.truckGrossWeight
                             ? res.truckGrossWeight.name
                             : null,
                         emptyWeight: res.emptyWeight
-                            ? convertNumberInThousandSep(res.emptyWeight)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.emptyWeight
+                              )
                             : null,
                         truckEngineModelId: res.truckEngineModel
                             ? res.truckEngineModel.name
                             : null,
                         tireSizeId: res.tireSize ? res.tireSize.name : null,
                         fuelTankSize: res.fuelTankSize
-                            ? convertNumberInThousandSep(res.fuelTankSize)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.fuelTankSize
+                              )
                             : null,
                         brakes: res.brakes ? res.brakes.name : null,
                         frontWheels: res.frontWheels
                             ? res.frontWheels.name
                             : null,
                         wheelBase: res.wheelBase
-                            ? convertNumberInThousandSep(res.wheelBase)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.wheelBase
+                              )
                             : null,
                         rearWheels: res.rearWheels ? res.rearWheels.name : null,
                         transmissionModel: res.transmissionModel,
@@ -692,7 +697,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         axles: res.axles,
                         insurancePolicy: res.insurancePolicy,
                         mileage: res.mileage
-                            ? convertNumberInThousandSep(res.mileage)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.mileage
+                              )
                             : null,
                         fuelType: res.fuelType ? res.fuelType.name : null,
                         engineOilType: res.engineOilType
@@ -900,7 +907,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedFrontWheels.name
                 : null,
             wheelBase: this.truckForm.get('wheelBase').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('wheelBase').value
                   )
                 : null,
@@ -908,18 +915,20 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedRearWheels.name
                 : null,
             fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('fuelTankSize').value
                   )
                 : null,
             mileage: this.truckForm.get('mileage').value
-                ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.truckForm.get('mileage').value
+                  )
                 : null,
             axles: this.truckForm.get('axles').value
                 ? parseInt(this.truckForm.get('axles').value)
                 : null,
             emptyWeight: this.truckForm.get('emptyWeight').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('emptyWeight').value
                   )
                 : null,
@@ -935,14 +944,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             year: parseInt(this.truckForm.get('year').value),
             purchaseDate: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchaseDate').value
-                    ? convertDateToBackend(
+                    ? MethodsCalculationsHelper.convertDateToBackend(
                           this.truckForm.get('purchaseDate').value
                       )
                     : null
                 : null,
             purchasePrice: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchasePrice').value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.truckForm.get('purchasePrice').value
                       )
                     : null
@@ -1120,7 +1129,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedFrontWheels.name
                 : null,
             wheelBase: this.truckForm.get('wheelBase').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('wheelBase').value
                   )
                 : null,
@@ -1128,18 +1137,20 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 ? this.selectedRearWheels.name
                 : null,
             fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('fuelTankSize').value
                   )
                 : null,
             mileage: this.truckForm.get('mileage').value
-                ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      this.truckForm.get('mileage').value
+                  )
                 : null,
             axles: this.truckForm.get('axles').value
                 ? parseInt(this.truckForm.get('axles').value)
                 : null,
             emptyWeight: this.truckForm.get('emptyWeight').value
-                ? convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.truckForm.get('emptyWeight').value
                   )
                 : null,
@@ -1155,14 +1166,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             year: parseInt(this.truckForm.get('year').value),
             purchaseDate: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchaseDate').value
-                    ? convertDateToBackend(
+                    ? MethodsCalculationsHelper.convertDateToBackend(
                           this.truckForm.get('purchaseDate').value
                       )
                     : null
                 : null,
             purchasePrice: this.truckForm.get('companyOwned').value
                 ? this.truckForm.get('purchasePrice').value
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.truckForm.get('purchasePrice').value
                       )
                     : null

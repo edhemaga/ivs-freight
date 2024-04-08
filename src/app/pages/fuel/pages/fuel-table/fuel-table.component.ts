@@ -12,12 +12,12 @@ import { Subject, takeUntil } from 'rxjs';
 //Components
 import { FuelPurchaseModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from 'src/app/pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 //Utils
 import {
@@ -31,24 +31,21 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
-import {
-    convertDateFromBackend,
-    convertDateToTimeFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 //Models
 import { FuelStopListResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
-import { TableColumnConfig } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 
 //States
 import { FuelQuery } from '../../state/fule-state/fuel-state.query';
 
 //Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { SortTypes } from 'src/app/core/model/fuel';
+import { SortTypes } from 'src/app/shared/models/sort-types.model';
 
 //Services
 import { FuelService } from '../../../../shared/services/fuel.service';
@@ -221,10 +218,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             id: item.id,
                             data: {
                                 ...item.tableData,
-                                date: convertDateFromBackend(
+                                date: MethodsCalculationsHelper.convertDateFromBackend(
                                     item.tableData.transactionDate
                                 ),
-                                time: convertDateToTimeFromBackend(
+                                time: MethodsCalculationsHelper.convertDateToTimeFromBackend(
                                     item.tableData.transactionDate,
                                     true
                                 ),
@@ -310,7 +307,10 @@ export class FuelTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const interval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
                     this.tableData[0].data = this.viewData;
 
                     clearInterval(interval);

@@ -6,21 +6,21 @@ import { BrokerDetailsRoutes } from './broker-details.routing';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { BrokerDetailsItemComponent } from './components/broker-details-item/broker-details-item.component';
 import { BrokerDetailsCardComponent } from './components/broker-details-card/broker-details-card.component';
 import { BrokerDetailsComponent } from './broker-details.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { DetailsDropdownComponent } from 'src/app/core/components/shared/details-page-dropdown/details-dropdown';
+import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 // Pipes
 import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
@@ -45,14 +45,14 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
         // Components
         TaChartComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCopyComponent,
         TaCustomCardComponent,
         TaTabSwitchComponent,
         TaInputNoteComponent,
         TaDetailsHeaderComponent,
-        DetailsDropdownComponent,
+        TaDetailsDropdownComponent,
 
         // Pipes
         FormatCurrency,

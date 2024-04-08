@@ -50,7 +50,7 @@ import { BankVerificationService } from 'src/app/shared/services/bank-verificati
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
 //Animation
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from 'src/app/shared/animations/tabs-modal.animation';
 
 //Core
 import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
@@ -62,23 +62,18 @@ import {
 } from '../../../../../../appcoretruckassist';
 
 //Utils
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 //Models
 import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
 
 //Components
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -89,7 +84,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [
@@ -100,11 +95,11 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
         AngularSvgIconModule,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
@@ -413,16 +408,24 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             ? this.selectedPayment.id
                             : null,
                         salary: salary
-                            ? convertThousanSepInNumber(salary)
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  salary
+                              )
                             : null,
                         startDate: startDate
-                            ? convertDateToBackend(startDate)
+                            ? MethodsCalculationsHelper.convertDateToBackend(
+                                  startDate
+                              )
                             : null,
                         is1099: this.selectedW21099
                             ? this.selectedW21099.name === '1099'
                             : false,
                         bankId: this.selectedBank ? this.selectedBank.id : null,
-                        base: base ? convertThousanSepInNumber(base) : null,
+                        base: base
+                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                                  base
+                              )
+                            : null,
                         commission: commission ? parseFloat(commission) : null,
                     };
                 }
@@ -731,13 +734,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
-            salary: salary ? convertThousanSepInNumber(salary) : null,
-            startDate: startDate ? convertDateToBackend(startDate) : null,
+            salary: salary
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                : null,
+            startDate: startDate
+                ? MethodsCalculationsHelper.convertDateToBackend(startDate)
+                : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            base: base ? convertThousanSepInNumber(base) : null,
+            base: base
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                : null,
             commission: commission ? parseFloat(commission) : null,
         };
 
@@ -797,13 +806,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
                 : false,
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
-            salary: salary ? convertThousanSepInNumber(salary) : null,
-            startDate: startDate ? convertDateToBackend(startDate) : null,
+            salary: salary
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                : null,
+            startDate: startDate
+                ? MethodsCalculationsHelper.convertDateToBackend(startDate)
+                : null,
             is1099: this.selectedW21099
                 ? this.selectedW21099.name === '1099'
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            base: base ? convertThousanSepInNumber(base) : null,
+            base: base
+                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                : null,
             commission: commission ? parseFloat(commission) : null,
         };
 
@@ -879,17 +894,23 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             ? res.paymentType.name
                             : null,
                         salary: res.salary
-                            ? convertNumberInThousandSep(res.salary)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.salary
+                              )
                             : null,
                         startDate: res.startDate
-                            ? convertDateFromBackend(res.startDate)
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.startDate
+                              )
                             : null,
                         is1099: res.is1099,
                         bankId: res.bank ? res.bank.name : null,
                         routingNumber: res.routingNumber,
                         accountNumber: res.accountNumber,
                         base: res.base
-                            ? convertNumberInThousandSep(res.base)
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.base
+                              )
                             : null,
                         commission: res.commission,
                         note: res.note,
@@ -1046,12 +1067,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
                                 ? this.editData.data.paymentType.name
                                 : null,
                             salary: this.editData.data.salary
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       this.editData.data.salary
                                   )
                                 : null,
                             startDate: this.editData.data.startDate
-                                ? convertDateFromBackend(
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
                                       this.editData.data.startDate
                                   )
                                 : null,
@@ -1062,7 +1083,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
                             routingNumber: this.editData.data.routingNumber,
                             accountNumber: this.editData.data.accountNumber,
                             base: this.editData.data.base
-                                ? convertNumberInThousandSep(
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                       this.editData.data.base
                                   )
                                 : null,

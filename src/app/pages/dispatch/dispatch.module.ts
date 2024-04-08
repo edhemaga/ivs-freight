@@ -5,17 +5,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DispatchRoutingModule } from './dispatch-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
 import { DispatchComponent } from './pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from './pages/dispatch/components/dispatch-table/dispatch-table.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaStatusSwitchComponent } from 'src/app/shared/components/ta-status-switch/ta-status-switch.component';
-import { GpsProgressbarComponent } from 'src/app/core/components/shared/gps-progressbar/gps-progressbar.component';
+import { TaGpsProgressbarComponent } from 'src/app/shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
 import { TaPickupDeliveryComponent } from 'src/app/shared/components/ta-pickup-delivery/ta-pickup-delivery.component';
 
@@ -54,12 +54,12 @@ import { HosTimePipe } from 'src/app/pages/dispatch/pipes/hos-time.pipe';
         HosTimePipe,
 
         // Components
-        AppTooltipComponent,
-        TruckassistTableToolbarComponent,
+        TaAppTooltipV2Component,
+        TaTableToolbarComponent,
         TaInputDropdownComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaStatusSwitchComponent,
-        GpsProgressbarComponent,
+        TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
     ],

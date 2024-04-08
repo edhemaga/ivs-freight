@@ -16,11 +16,9 @@ import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
 
 @Component({
     selector: 'app-trailer-card',
@@ -40,8 +38,8 @@ export class TrailerCardComponent implements OnInit, OnDestroy, OnChanges {
 
     public isCardFlippedCheckInCards: number[] = [];
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(

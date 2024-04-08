@@ -9,18 +9,23 @@
             <img
                 *ngIf="data.companyUser?.avatar"
                 class="ta-user-image"
-                [src]=" data.companyUser.avatar !='assets/svg/common/ic_profile.svg' ? imageBase64Service.sanitizer(data.companyUser.avatar) : data.companyUser.avatar "
+                [src]="
+                    data.companyUser.avatar !=
+                    'assets/svg/common/ic_profile.svg'
+                        ? imageBase64Service.sanitizer(data.companyUser.avatar)
+                        : data.companyUser.avatar
+                "
                 [alt]="data.companyUser.fullName.substring(0, 1)"
             />
 
             <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
-                <app-profile-images
+                <app-ta-profile-images
                     [indx]="0"
                     [size]="'medium'"
                     [type]="'user'"
                     [name]="data.companyUser.fullName"
                 >
-                </app-profile-images>
+                </app-ta-profile-images>
             </div>
 
             <div class="ta-user-data">
@@ -39,10 +44,10 @@
                 </div>
                 <div class="ta-user-datetime">
                     <div class="ta-user-date">
-                        {{ data.createdAt | date: 'shortDate' }}
+                        {{ data.createdAt | date : 'shortDate' }}
                     </div>
                     <div class="ta-user-time">
-                        {{ data.updatedAt | date: 'shortTime' }}
+                        {{ data.updatedAt | date : 'shortTime' }}
                     </div>
                 </div>
             </div>

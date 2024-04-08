@@ -5,15 +5,15 @@ import { FuelTableComponent } from './pages/fuel-table/fuel-table.component';
 import { FuelRoutingModule } from './fuel-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // Components
-import { TruckassistTableToolbarComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component';
-import { TruckassistTableBodyComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-body/truckassist-table-body.component';
-import { TruckassistTableHeadComponent } from 'src/app/core/components/shared/truckassist-table/truckassist-table-head/truckassist-table-head.component';
-import { MapsComponent } from 'src/app/core/components/shared/maps/maps.component';
-import { MapListComponent } from 'src/app/core/components/shared/map-list/map-list.component';
-import { MapListCardComponent } from 'src/app/core/components/shared/map-list-card/map-list-card.component';
+import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaMapsComponent } from 'src/app/shared/components/ta-maps/ta-maps.component';
+import { TaMapListComponent } from 'src/app/shared/components/ta-map-list/ta-map-list.component';
+import { TaMapListCardComponent } from 'src/app/shared/components/ta-map-list-card/ta-map-list-card.component';
 
 @NgModule({
     declarations: [FuelTableComponent],
@@ -27,12 +27,12 @@ import { MapListCardComponent } from 'src/app/core/components/shared/map-list-ca
         SharedModule,
 
         // Components
-        TruckassistTableToolbarComponent,
-        TruckassistTableBodyComponent,
-        TruckassistTableHeadComponent,
-        MapsComponent,
-        MapListComponent,
-        MapListCardComponent,
+        TaTableToolbarComponent,
+        TaTableBodyComponent,
+        TaTableHeadComponent,
+        TaMapsComponent,
+        TaMapListComponent,
+        TaMapListCardComponent,
     ],
 })
 export class FuelModule {}

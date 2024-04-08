@@ -25,12 +25,7 @@ import { CommonModule } from '@angular/common';
 import moment from 'moment';
 
 // Helpers
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-    convertNumberInThousandSep,
-    convertThousanSepInNumber,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
 import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
@@ -73,7 +68,7 @@ import { RepairOrderConstants } from './utils/constants/repair-order.constant';
 import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -99,7 +94,7 @@ import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,
@@ -915,7 +910,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             newData = {
                 ...form,
                 repairType: 'Bill',
-                date: convertDateToBackend(date),
+                date: MethodsCalculationsHelper.convertDateToBackend(date),
                 truckId:
                     this.repairOrderForm.get('unitType').value === 'Truck'
                         ? this.selectedUnit.id
@@ -927,7 +922,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 repairShopId: this.selectedRepairShop
                     ? this.selectedRepairShop.id
                     : null,
-                odometer: odometer ? convertThousanSepInNumber(odometer) : null,
+                odometer: odometer
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                          odometer
+                      )
+                    : null,
                 invoice: invoice,
                 serviceTypes: this.services.map((item) => {
                     return {
@@ -1074,7 +1073,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id: id,
                 ...form,
                 repairType: 'Bill',
-                date: convertDateToBackend(date),
+                date: MethodsCalculationsHelper.convertDateToBackend(date),
                 truckId:
                     this.repairOrderForm.get('unitType').value === 'Truck'
                         ? this.selectedUnit.id
@@ -1087,7 +1086,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     ? this.selectedRepairShop.id
                     : null,
                 odometer: odometer
-                    ? convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
                           this.repairOrderForm.get('odometer').value
                       )
                     : null,
@@ -1285,11 +1284,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             res.odometer &&
                             res.date &&
                             this.selectedHeaderTab === 2
-                                ? convertNumberInThousandSep(res.odometer)
+                                ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                      res.odometer
+                                  )
                                 : null,
                         date:
                             res.date && this.selectedHeaderTab === 2
-                                ? convertDateFromBackend(res.date)
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
+                                      res.date
+                                  )
                                 : null,
                         invoice:
                             res.date && this.selectedHeaderTab === 2

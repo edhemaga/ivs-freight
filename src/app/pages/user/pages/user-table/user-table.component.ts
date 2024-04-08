@@ -4,21 +4,18 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { UserService } from '../../services/user.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // helpers
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // store
@@ -38,8 +35,8 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import {
     CompanyUserResponse,
     GetCompanyUserListResponse,
@@ -214,10 +211,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -238,10 +236,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -268,10 +267,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.viewData = [...sortedUserData];
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -288,7 +288,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -635,10 +638,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -827,7 +831,10 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.updateDataCount();
 
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);

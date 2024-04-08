@@ -8,8 +8,8 @@ import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-mod
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { LoadService } from '../../../../shared/services/load.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from 'src/app/core/components/modals/cards-modal/utils/services/cards-modal-config.service';
 
@@ -24,18 +24,12 @@ import {
     DeleteComment,
     DropdownItem,
     GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    Search,
-    TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import {
-    FilterOptionsLoad,
-    LoadModel,
-} from 'src/app/core/components/shared/model/table-components/load-modal';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { FilterOptionsLoad } from 'src/app/pages/load/pages/load-table/models/filter-options-load.model';
+import { LoadModel } from './models/load.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Queries
 import { LoadActiveQuery } from '../../state/load-active-state/load-active.query';
@@ -53,7 +47,7 @@ import { LoadTemplateState } from '../../state/load-template-state/load-template
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // Constants
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
@@ -63,13 +57,13 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 
 // Enum
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Store
 import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
 
 // Utils
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-load-table',
@@ -80,7 +74,7 @@ import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.he
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public loadTableData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
@@ -93,7 +87,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadTemplate: LoadTemplateState[] = [];
 
     public loadingPage: boolean = false;
-    public activeTableData: DataForCardsAndTables;
+    public activeTableData: CardTableData;
     public backLoadFilterQuery: FilterOptionsLoad =
         TableDropdownComponentConstants.LOAD_BACK_FILTER;
 
@@ -358,7 +352,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: Search) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backLoadFilterQuery.statusType =
                         this.selectedTab === TableStringEnum.TEMPLATE
@@ -370,7 +364,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             : 1;
                     this.backLoadFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.backLoadFilterQuery
                     );
@@ -649,7 +643,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setLoadData(td: DataForCardsAndTables): void {
+    private setLoadData(td: CardTableData): void {
         this.columns = td.gridColumns;
         if (td.data?.length) {
             this.viewData = td.data;
@@ -673,7 +667,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.mapingIndex++;
                     return {
                         ...comment,
-                        avatarColor: MAKE_COLORS_FOR_AVATAR.getAvatarColors(
+                        avatarColor: AvatarColorsHelper.getAvatarColors(
                             this.mapingIndex
                         ),
                         textShortName: this.nameInitialsPipe.transform(
@@ -912,7 +906,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // ---------------------------- Table Actions ------------------------------
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {

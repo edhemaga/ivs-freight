@@ -11,7 +11,7 @@ import {
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { DropdownItem } from '../../models/dropdown-item.model';
+import { DropdownItem } from '../../../../shared/models/dropdown-item.model';
 
 @Component({
     selector: 'app-dashboard-dropdown',

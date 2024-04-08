@@ -25,10 +25,7 @@ import {
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../../../utils/helpers/applicant.helper';
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
@@ -253,10 +250,9 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                     state: item.state.stateName,
                     stateShort: item.state.stateShortName,
                     classType: item.classType.name,
-                    expDate: convertDateFromBackend(item.expDate).replace(
-                        /-/g,
-                        '/'
-                    ),
+                    expDate: MethodsCalculationsHelper.convertDateFromBackend(
+                        item.expDate
+                    ).replace(/-/g, '/'),
                     restrictions: item.cdlRestrictions,
                     endorsments: item.cdlEndorsements,
                     restrictionsCode: item.cdlRestrictions
@@ -281,7 +277,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             state: lastItemInLicenseArray.state.stateName,
             stateShort: lastItemInLicenseArray.state.stateShortName,
             classType: lastItemInLicenseArray.classType.name,
-            expDate: convertDateFromBackend(
+            expDate: MethodsCalculationsHelper.convertDateFromBackend(
                 lastItemInLicenseArray.expDate
             ).replace(/-/g, '/'),
             restrictions: lastItemInLicenseArray.cdlRestrictions,
@@ -959,9 +955,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                             .toLowerCase();
 
                         if (keyName === 'expdate') {
-                            o['expdate'] = convertDateFromBackend(
-                                this.stepValues.licences[i].expDate
-                            );
+                            o['expdate'] =
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    this.stepValues.licences[i].expDate
+                                );
                         }
 
                         if (keyName === 'license') {
@@ -1113,7 +1110,9 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 country: item.country as CountryType,
                 stateId,
                 classType: item.classType,
-                expDate: convertDateToBackend(item.expDate),
+                expDate: MethodsCalculationsHelper.convertDateToBackend(
+                    item.expDate
+                ),
                 restrictions: item.restrictions.map((item) => item.id),
                 endorsements: item.endorsments.map((item) => item.id),
             };
@@ -1153,7 +1152,9 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 country: this.lastLicenseCard.country,
                 stateId: filteredLastLicenseCardStateId,
                 classType: this.lastLicenseCard.classType,
-                expDate: convertDateToBackend(this.lastLicenseCard.expDate),
+                expDate: MethodsCalculationsHelper.convertDateToBackend(
+                    this.lastLicenseCard.expDate
+                ),
                 restrictions: this.lastLicenseCard.restrictions.map(
                     (item) => item.id
                 ),

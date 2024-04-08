@@ -29,7 +29,7 @@ import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
 
 // models
-import { DropdownItem } from '../../models/dropdown-item.model';
+import { DropdownItem } from '../../../../shared/models/dropdown-item.model';
 import { DashboardTab } from '../../models/dashboard-tab.model';
 import { DropdownListItem } from '../../models/dropdown-list-item.model';
 import { TopRatedListItem } from './models/top-rated-list-item.model';

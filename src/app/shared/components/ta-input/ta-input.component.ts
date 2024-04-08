@@ -27,27 +27,24 @@ import {
     NgbModule,
     NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarScrollService } from '../../../core/components/shared/custom-datetime-pickers/calendar-scroll.service';
+import { CalendarDateTimePickerService } from '../ta-custom-datetime-pickers/services/calendar-datetime-picker.service';
 import moment from 'moment';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
-import {
-    convertThousanSepInNumber,
-    convertNumberInThousandSep,
-} from '../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../utils/helpers/methods-calculations.helper';
 import { FormService } from '../../services/form.service';
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
 import { InputTypePipe } from './pipes/input-type.pipe';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './pipes/input-error.pipe';
-import { CustomDatetimePickersComponent } from '../../../core/components/shared/custom-datetime-pickers/custom-datetime-pickers.component';
+import { TaCustomDatetimePickersComponent } from '../ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { HoverSvgDirective } from '../../directives/hover-svg.directive';
@@ -58,7 +55,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
     styleUrls: ['./ta-input.component.scss'],
     providers: [
         NgbDropdownConfig,
-        CalendarScrollService,
+        CalendarDateTimePickerService,
         ThousandSeparatorPipe,
         InputTypePipe,
     ],
@@ -76,10 +73,10 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
         NgbPopoverModule,
 
         // Component
-        AppTooltipComponent,
-        CustomDatetimePickersComponent,
+        TaAppTooltipV2Component,
+        TaCustomDatetimePickersComponent,
         TaSpinnerComponent,
-        ProfileImagesComponent,
+        TaProfileImagesComponent,
         LoadModalProgressBarComponent,
 
         // Pipe
@@ -232,7 +229,7 @@ export class TaInputComponent
     constructor(
         @Self() public superControl: NgControl,
         private inputService: TaInputService,
-        private calendarService: CalendarScrollService,
+        private calendarService: CalendarDateTimePickerService,
         private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
@@ -1616,30 +1613,41 @@ export class TaInputComponent
 
         switch (type) {
             case 'pm-increment-decrement': {
-                const value = convertThousanSepInNumber(
-                    this.getSuperControl.value
-                );
+                const value =
+                    MethodsCalculationsHelper.convertThousanSepInNumber(
+                        this.getSuperControl.value
+                    );
                 switch (action) {
                     case 'decrement': {
                         if (value >= 10000 && value < 20000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 1000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 1000
+                                )
                             );
                         } else if (value >= 20001 && value < 50000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 3000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 3000
+                                )
                             );
                         } else if (value >= 50001 && value < 100000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 5000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 5000
+                                )
                             );
                         } else if (value >= 10000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 10000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 10000
+                                )
                             );
                         } else if (value >= 1000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value - 500)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value - 500
+                                )
                             );
                         }
                         break;
@@ -1647,23 +1655,33 @@ export class TaInputComponent
                     case 'increment': {
                         if (value > 10000 && value < 20000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 1000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 1000
+                                )
                             );
                         } else if (value >= 20001 && value < 50000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 3000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 3000
+                                )
                             );
                         } else if (value >= 50001 && value < 100000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 5000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 5000
+                                )
                             );
                         } else if (value >= 10000) {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 10000)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 10000
+                                )
                             );
                         } else {
                             this.getSuperControl.patchValue(
-                                convertNumberInThousandSep(value + 500)
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    value + 500
+                                )
                             );
                         }
                         break;

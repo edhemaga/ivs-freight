@@ -4,13 +4,13 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // components
-import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // services
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
@@ -29,10 +29,7 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 // animations
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // constants
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
@@ -47,21 +44,16 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from './models/trailer-mapped.model';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { ToolbarActions } from 'src/app/core/model/table.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
 import { TrailerBodyResponse } from './models/trailer-body-response.model';
-import {
-    TableColumnConfig,
-    DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 
 @Component({
     selector: 'app-trailer-table',
@@ -72,7 +64,7 @@ import {
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -258,10 +250,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -285,10 +278,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -314,10 +308,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(trailerIndex, 1);
                         clearInterval(inetval);
@@ -366,7 +361,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -481,7 +479,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getTrailerColumnDefinition();
     }
 
-    private setTrailerData(td: DataForCardsAndTables): void {
+    private setTrailerData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -859,7 +857,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TrailerModalComponent, {
@@ -1081,10 +1079,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1130,7 +1129,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 trailerNumber = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);
@@ -1142,9 +1144,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector(TableStringEnum.TABLE_CONTAINER)
-        // );
+
         this.resizeObserver.disconnect();
         this.destroy$.next();
         this.destroy$.complete();

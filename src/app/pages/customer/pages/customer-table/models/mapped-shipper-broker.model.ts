@@ -10,7 +10,7 @@ import {
     ShipperResponse,
     TimeOnly,
 } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { LoadBroker } from '../../../../../shared/models/load-broker.model';
 
 export interface MappedShipperBroker {

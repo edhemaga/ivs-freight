@@ -9,7 +9,7 @@ import { NotificationService } from 'src/app/shared/services/notification.servic
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Store
 import { ShipperMinimalListStore } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';

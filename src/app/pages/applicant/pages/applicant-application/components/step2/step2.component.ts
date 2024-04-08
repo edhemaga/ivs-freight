@@ -18,10 +18,7 @@ import {
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
 } from '../../../../utils/helpers/applicant.helper';
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { ApplicantService } from '../../../../services/applicant.service';
@@ -234,14 +231,13 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                         isEditingWorkExperience: false,
                         employer: item.employer,
                         jobDescription: item.jobDescription,
-                        fromDate: convertDateFromBackend(item.from).replace(
-                            /-/g,
-                            '/'
-                        ),
-                        toDate: convertDateFromBackend(item.to).replace(
-                            /-/g,
-                            '/'
-                        ),
+                        fromDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                item.from
+                            ).replace(/-/g, '/'),
+                        toDate: MethodsCalculationsHelper.convertDateFromBackend(
+                            item.to
+                        ).replace(/-/g, '/'),
                         employerPhone: item.phone,
                         employerEmail: item.email,
                         employerFax: item.fax,
@@ -288,10 +284,10 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                 isEditingWorkExperience: false,
                 employer: lastItemInWorkExperienceArray.employer,
                 jobDescription: lastItemInWorkExperienceArray.jobDescription,
-                fromDate: convertDateFromBackend(
+                fromDate: MethodsCalculationsHelper.convertDateFromBackend(
                     lastItemInWorkExperienceArray.from
                 ).replace(/-/g, '/'),
-                toDate: convertDateFromBackend(
+                toDate: MethodsCalculationsHelper.convertDateFromBackend(
                     lastItemInWorkExperienceArray.to
                 ).replace(/-/g, '/'),
                 employerPhone: lastItemInWorkExperienceArray.phone,
@@ -998,11 +994,17 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                         o[keyName] = this.stepValues[i][match];
 
                         if (keyName === 'from') {
-                            o['from'] = convertDateFromBackend(o['from']);
+                            o['from'] =
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    o['from']
+                                );
                         }
 
                         if (keyName === 'to') {
-                            o['to'] = convertDateFromBackend(o['to']);
+                            o['to'] =
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    o['to']
+                                );
                         }
 
                         if (keyName === 'address') {
@@ -1186,8 +1188,12 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                     }),
                     employer: item.employer,
                     jobDescription: item.jobDescription,
-                    from: convertDateToBackend(item.fromDate),
-                    to: convertDateToBackend(item.toDate),
+                    from: MethodsCalculationsHelper.convertDateToBackend(
+                        item.fromDate
+                    ),
+                    to: MethodsCalculationsHelper.convertDateToBackend(
+                        item.toDate
+                    ),
                     phone: item.employerPhone,
                     email: item.employerEmail,
                     fax: item.employerFax,
@@ -1256,10 +1262,12 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                 }),
                 employer: this.lastWorkExperienceCard.employer,
                 jobDescription: this.lastWorkExperienceCard.jobDescription,
-                from: convertDateToBackend(
+                from: MethodsCalculationsHelper.convertDateToBackend(
                     this.lastWorkExperienceCard.fromDate
                 ),
-                to: convertDateToBackend(this.lastWorkExperienceCard.toDate),
+                to: MethodsCalculationsHelper.convertDateToBackend(
+                    this.lastWorkExperienceCard.toDate
+                ),
                 phone: this.lastWorkExperienceCard.employerPhone,
                 email: this.lastWorkExperienceCard.employerEmail,
                 fax: this.lastWorkExperienceCard.employerFax,

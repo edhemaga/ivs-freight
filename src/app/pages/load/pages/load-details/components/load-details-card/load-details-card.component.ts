@@ -12,7 +12,7 @@ import { LoadResponse } from 'appcoretruckassist';
 
 //Services
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 //Store
 import { LoadMinimalListQuery } from '../../../../state/load-details-state/load-minimal-list-state/load-details-minimal.query';

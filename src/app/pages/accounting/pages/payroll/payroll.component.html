@@ -1,12 +1,12 @@
 <div class="table-container d-flex">
     <div class="payroll-main" [class.open]="!tableExpanded">
-        <app-truckassist-table-toolbar
+        <app-ta-table-toolbar
             (toolBarAction)="onToolBarAction($event)"
             [options]="tableOptions"
             [tableData]="tableData"
             [selectedTab]="selectedTab"
             [columns]="columns"
-        ></app-truckassist-table-toolbar>
+        ></app-ta-table-toolbar>
 
         <div class="payroll-tables-holder">
             <ng-container *ngFor="let d of payrollData | async">
@@ -35,6 +35,8 @@
         </div>
     </div>
     <div class="report-hold" *ngIf="!tableExpanded">
-        <app-payroll-report [reportTableData]="reportTableData"></app-payroll-report>
+        <app-payroll-report
+            [reportTableData]="reportTableData"
+        ></app-payroll-report>
     </div>
 </div>

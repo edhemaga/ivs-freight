@@ -9,35 +9,30 @@ import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal
 // services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from 'src/app/pages/account/services/account.service';
 
 // store
-import { AccountState } from '../../state/account.store';
-import { AccountQuery } from '../../state/account.query';
+import { AccountState } from 'src/app/pages/account/state/account.store';
+import { AccountQuery } from 'src/app/pages/account/state/account.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
-import {
-    tableSearch,
-    closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // enums
-import { AccountStringEnum } from '../../enums/account-string.enum';
-import { ComponentsTableEnum } from 'src/app/core/model/enums';
+import { AccountStringEnum } from 'src/app/pages/account/enums/account-string.enum';
+import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 
 // models
 import {
     CompanyAccountLabelResponse,
     CompanyAccountResponse,
 } from 'appcoretruckassist';
-import {
-    TableBodyActionsAccount,
-    TableHeadActionAccount,
-    TableToolBarActionActionsAccount,
-} from 'src/app/core/model/account';
-import { AccountCardData } from '../../utils/constants/account-card-data.constants';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { AccountTableToolbarAction } from 'src/app/pages/account/pages/account-table/models/account-table-toolbard-action.model';
+import { AccountTableBodyAction } from 'src/app/pages/account/pages/account-table/models/account-table-body-action.model';
+import { AccountTableHeadAction } from 'src/app/pages/account/pages/account-table/models/account-table-head-action.model';
+import { AccountCardData } from 'src/app/pages/account/utils/constants/account-card-data.constants';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 @Component({
     selector: 'app-account-table',
@@ -66,7 +61,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchThree: undefined,
     };
 
-    //Data to display from model Broker
+    // Data to display from model Broker
     public displayRowsFront: CardRows[] =
         AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
 
@@ -152,13 +147,16 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (res) {
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
-                        if (searchEvent.action === ComponentsTableEnum.API) {
+                        if (searchEvent.action === TableActionsStringEnum.API) {
                             this.accountBackFilter(searchEvent.query);
                         } else if (
-                            searchEvent.action === ComponentsTableEnum.STORE
+                            searchEvent.action === TableActionsStringEnum.STORE
                         ) {
                             this.sendAccountData();
                         }
@@ -172,14 +170,14 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 // Add Account
-                if (res?.animation === ComponentsTableEnum.ADD) {
+                if (res?.animation === TableActionsStringEnum.ADD) {
                     this.viewData.push(this.mapAccountData(res.data));
 
                     this.viewData = this.viewData.map(
                         (account: CompanyAccountResponse) => {
                             if (account.id === res.id) {
                                 // account.actionAnimation =
-                                //     ComponentsTableEnum.ADD;
+                                //     TableActionsStringEnum.ADD;
                             }
 
                             return account;
@@ -187,10 +185,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -199,7 +198,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // Update Account
-                else if (res?.animation === ComponentsTableEnum.UPDATE) {
+                else if (res?.animation === TableActionsStringEnum.UPDATE) {
                     const updatedAccount = this.mapAccountData(res.data);
 
                     this.viewData = this.viewData.map(
@@ -207,7 +206,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             if (account.id === res.id) {
                                 account = updatedAccount;
                                 // account.actionAnimation =
-                                //     ComponentsTableEnum.UPDATE;
+                                //     TableActionsStringEnum.UPDATE;
                             }
 
                             return account;
@@ -215,24 +214,25 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
                 }
 
                 // Delete Account
-                else if (res?.animation === ComponentsTableEnum.DELETE) {
+                else if (res?.animation === TableActionsStringEnum.DELETE) {
                     let accountIndex: number;
 
                     this.viewData = this.viewData.map(
                         (account: CompanyAccountResponse, index: number) => {
                             if (account.id === res.id) {
                                 // account.actionAnimation =
-                                //     ComponentsTableEnum.DELETE;
+                                //     TableActionsStringEnum.DELETE;
                                 accountIndex = index;
                             }
 
@@ -241,10 +241,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(accountIndex, 1);
                         clearInterval(inetval);
@@ -269,7 +270,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                     response.map((res) => {
                                         if (account.id === res.id) {
                                             // account.actionAnimation =
-                                            //     ComponentsTableEnum.DELETE_MULTIPLE;
+                                            //     TableActionsStringEnum.DELETE_MULTIPLE;
                                         }
                                     });
 
@@ -280,10 +281,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.updateDataCount();
 
                             const inetval = setInterval(() => {
-                                this.viewData = closeAnimationAction(
-                                    true,
-                                    this.viewData
-                                );
+                                this.viewData =
+                                    MethodsGlobalHelper.closeAnimationAction(
+                                        true,
+                                        this.viewData
+                                    );
 
                                 clearInterval(inetval);
                             }, 900);
@@ -311,7 +313,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver?.observe(
-            document.querySelector(ComponentsTableEnum.TABLE_CONTAINER)
+            document.querySelector(TableActionsStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -322,14 +324,14 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showLabelFilter: true,
                 viewModeOptions: [
                     {
-                        name: ComponentsTableEnum.LIST,
+                        name: TableActionsStringEnum.LIST,
                         active:
-                            this.activeViewMode === ComponentsTableEnum.LIST,
+                            this.activeViewMode === TableActionsStringEnum.LIST,
                     },
                     {
-                        name: ComponentsTableEnum.CARD,
+                        name: TableActionsStringEnum.CARD,
                         active:
-                            this.activeViewMode === ComponentsTableEnum.CARD,
+                            this.activeViewMode === TableActionsStringEnum.CARD,
                     },
                 ],
             },
@@ -357,7 +359,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableData = [
             {
                 title: AccountStringEnum.ACCOUNTS,
-                field: ComponentsTableEnum.ACTIVE,
+                field: TableActionsStringEnum.ACTIVE,
                 extended: false,
                 length: accontCount.account,
                 data: accountData,
@@ -602,24 +604,24 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: TableToolBarActionActionsAccount): void {
-        if (event.action === ComponentsTableEnum.OPEN_MODAL) {
+    public onToolBarAction(event: AccountTableToolbarAction): void {
+        if (event.action === TableActionsStringEnum.OPEN_MODAL) {
             this.modalService.openModal(AccountModalComponent, {
                 size: 'small',
             });
-        } else if (event.action === ComponentsTableEnum.TAB_SELECTED) {
+        } else if (event.action === TableActionsStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
             this.backFilterQuery.pageIndex = 1;
 
             this.setAccountData(event.tabData);
-        } else if (event.action === ComponentsTableEnum.VIEW_MODE) {
+        } else if (event.action === TableActionsStringEnum.VIEW_MODE) {
             this.activeViewMode = event.mode;
         }
     }
 
-    public onTableHeadActions(event: TableHeadActionAccount): void {
-        if (event.action === ComponentsTableEnum.SORT) {
+    public onTableHeadActions(event: AccountTableHeadAction): void {
+        if (event.action === TableActionsStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
 
@@ -632,9 +634,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: TableBodyActionsAccount): void {
+    public onTableBodyActions(event: AccountTableBodyAction): void {
         switch (event.type) {
-            case ComponentsTableEnum.SHOW_MORE: {
+            case TableActionsStringEnum.SHOW_MORE: {
                 this.backFilterQuery.pageIndex++;
                 this.accountBackFilter(this.backFilterQuery, true);
                 break;
@@ -642,25 +644,25 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             case AccountStringEnum.EDIT_ACCONUT: {
                 this.modalService.openModal(
                     AccountModalComponent,
-                    { size: ComponentsTableEnum.SMALL },
+                    { size: TableActionsStringEnum.SMALL },
                     {
                         ...event,
-                        type: ComponentsTableEnum.EDIT,
+                        type: TableActionsStringEnum.EDIT,
                     }
                 );
                 break;
             }
-            case ComponentsTableEnum.GO_TO_LINK: {
+            case TableActionsStringEnum.GO_TO_LINK: {
                 if (event.data?.url) {
                     this.clipboard.copy(event.data.url);
                 }
                 break;
             }
-            case ComponentsTableEnum.COPY_PASSWORD: {
+            case TableActionsStringEnum.COPY_PASSWORD: {
                 this.clipboard.copy(event.data.password);
                 break;
             }
-            case ComponentsTableEnum.COPY_USERNAME: {
+            case TableActionsStringEnum.COPY_USERNAME: {
                 this.clipboard.copy(event.data.password);
                 break;
             }
@@ -671,11 +673,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     .subscribe();
                 break;
             }
-            case ComponentsTableEnum.LABLE_CHANGE: {
+            case TableActionsStringEnum.LABLE_CHANGE: {
                 this.saveAcountLabel(event.data);
                 break;
             }
-            case ComponentsTableEnum.UPDATE_LABLE: {
+            case TableActionsStringEnum.UPDATE_LABLE: {
                 this.updateAcountLable(event);
                 break;
             }
@@ -685,7 +687,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private updateAcountLable(event: TableBodyActionsAccount): void {
+    private updateAcountLable(event: AccountTableBodyAction): void {
         // const companyAcountData = this.viewData.find(
         //     (e: CreateCompanyContactCommand) => e.id === event.id
         // );

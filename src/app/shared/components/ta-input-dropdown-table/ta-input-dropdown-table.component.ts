@@ -20,7 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from '../../../core/components/shared/shared.module';
+import { SharedModule } from '../../shared.module';
 
 // models
 import {
@@ -29,13 +29,13 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../models/card-table-data.model';
-import { Tabs } from '../../../core/components/shared/model/modal-tabs';
-import { CardRows } from '../../../core/components/shared/model/card-data.model';
+} from '../../models/card-models/card-table-data.model';
+import { Tabs } from '../../models/tabs.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // services
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 
 // pipes
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
@@ -48,8 +48,8 @@ import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.
 
 // helpers
 import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
-import { removeDuplicateObjects } from 'src/app/core/utils/methods.globals';
-import { MAKE_COLORS_FOR_AVATAR } from 'src/app/core/utils/make-colors-avatar.helper';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 
 // components
 import { TaCommentComponent } from '../ta-comment/ta-comment.component';
@@ -510,7 +510,8 @@ export class TaInputDropdownTableComponent
     }
 
     private mapContactsData(contactsData: DepartmentResponse[]): void {
-        let filteredDepartments = removeDuplicateObjects(contactsData);
+        let filteredDepartments =
+            MethodsGlobalHelper.removeDuplicateObjects(contactsData);
 
         filteredDepartments = filteredDepartments.map((department) => {
             this.isContactCardOpenArray = [
@@ -523,8 +524,7 @@ export class TaInputDropdownTableComponent
                 companyUsers: department.companyUsers.map((contact, index) => {
                     return {
                         ...contact,
-                        avatarColor:
-                            MAKE_COLORS_FOR_AVATAR.getAvatarColors(index),
+                        avatarColor: AvatarColorsHelper.getAvatarColors(index),
                     };
                 }),
             };

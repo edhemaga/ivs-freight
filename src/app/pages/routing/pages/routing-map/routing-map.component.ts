@@ -35,7 +35,7 @@ import { imageMapType } from 'src/assets/utils/methods-global';
 //Services
 import { MapsService } from 'src/app/shared/services/maps.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { RoutingStateService } from '../../../../shared/services/routing-state.service';
@@ -50,7 +50,7 @@ import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.p
 import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
 //Components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 declare var google: any;
 declare const geoXML3: any;

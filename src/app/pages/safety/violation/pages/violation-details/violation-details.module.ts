@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { ViolationDetailsRoutes } from './violation-details.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
@@ -11,10 +11,10 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 // components
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TruckassistProgressExpirationComponent } from 'src/app/core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
+import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
 import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
@@ -37,7 +37,7 @@ import { ViolationDetailsCardComponent } from './components/violation-details-ca
         CommonModule,
         ViolationDetailsRoutes,
         SharedModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCustomCardComponent,
         TaCopyComponent,
@@ -45,7 +45,7 @@ import { ViolationDetailsCardComponent } from './components/violation-details-ca
         FormatDatePipe,
         TaCounterComponent,
         TaUploadFilesComponent,
-        TruckassistProgressExpirationComponent,
+        TaProgressExpirationComponent,
         TaCommonCardComponent,
         TaDetailsHeaderComponent,
     ],

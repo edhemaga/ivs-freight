@@ -24,16 +24,13 @@ import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-i
 import { FormService } from 'src/app/shared/services/form.service';
 
 //Helpers
-import {
-    convertDateToBackend,
-    convertDateFromBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../../../../../shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -55,7 +52,7 @@ import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,
@@ -234,7 +231,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             driverId: this.editData.id,
             id: this.editData.file_id,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
             note: note,
             files: documents ? documents : this.mvrForm.value.files,
@@ -275,7 +273,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             driverId: this.selectedDriver
                 ? this.selectedDriver.id
                 : this.editData.id,
-            issueDate: convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
             note: note,
             tableActiveTab: this.editData.tableActiveTab,
@@ -311,7 +310,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 next: (res: MvrResponse) => {
                     this.mvrForm.patchValue({
                         cdlId: res.cdlNumber,
-                        issueDate: convertDateFromBackend(res.issueDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
                         note: res.note,
                         files: res.files.length
                             ? JSON.stringify(res.files)

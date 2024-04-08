@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { FilterState } from '../model/filter-state.model';
+import { FilterState } from '../models/filter-state.model';
 
 export interface FilterStateState extends EntityState<FilterState> {}
 

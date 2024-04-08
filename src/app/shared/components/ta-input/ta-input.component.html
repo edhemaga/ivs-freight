@@ -873,13 +873,13 @@
         "
         class="no-profile-image dropdown-selected-image name-initials-instead-url"
     >
-        <app-profile-images
+        <app-ta-profile-images
             [indx]="0"
             [size]="'small'"
             [type]="'user'"
             [name]="_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
         >
-        </app-profile-images>
+        </app-ta-profile-images>
     </div>
     <!-- ------------------------- -->
 
@@ -919,12 +919,12 @@
                     *ngIf="item.logoName === 'no-url'"
                     class="no-profile-image"
                 >
-                    <app-profile-images
+                    <app-ta-profile-images
                         [indx]="0"
                         [size]="'small'"
                         [name]="item.value"
                     >
-                    </app-profile-images>
+                    </app-ta-profile-images>
                 </div>
             </span>
 
@@ -1021,12 +1021,12 @@
                     *ngIf="item.logoName === 'no-url'"
                     class="no-profile-image"
                 >
-                    <app-profile-images
+                    <app-ta-profile-images
                         [indx]="0"
                         [size]="'small'"
                         [name]="item.value"
                     >
-                    </app-profile-images>
+                    </app-ta-profile-images>
                 </div>
             </span>
 
@@ -1377,7 +1377,7 @@
 <!-- Popover for DateTime Pickers -->
 <ng-template #dateTimePopover let-data="data">
     <div class="datetime-dropdown-holder">
-        <app-custom-datetime-pickers
+        <app-ta-custom-datetime-pickers
             [calendarType]="
                 _inputConfig.name === 'datepicker' ||
                 _inputConfig.name === 'datepickerBankCard'
@@ -1388,6 +1388,6 @@
             [placeholder]="'MM/DD/YY'"
             [dateTime]="dateTimeInputDate"
             (closePopover)="closePopover()"
-        ></app-custom-datetime-pickers>
+        ></app-ta-custom-datetime-pickers>
     </div>
 </ng-template>

@@ -10,11 +10,9 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
@@ -40,8 +38,8 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(

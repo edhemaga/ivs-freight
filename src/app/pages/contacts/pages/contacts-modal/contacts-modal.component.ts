@@ -22,7 +22,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
@@ -31,7 +31,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
 import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { InputAddressDropdownComponent } from 'src/app/core/components/shared/input-address-dropdown/input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from 'src/app/shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
 
@@ -85,7 +85,7 @@ import { EditData } from '../../../../shared/models/edit-data.model';
         NgbModule,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaCustomCardComponent,
@@ -94,7 +94,7 @@ import { EditData } from '../../../../shared/models/edit-data.model';
         TaLogoChangeComponent,
         TaInputNoteComponent,
         TaInputComponent,
-        InputAddressDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
     ],

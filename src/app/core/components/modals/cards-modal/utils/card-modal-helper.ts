@@ -1,4 +1,4 @@
-import { CardRows } from '../../../shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { ModalModelData } from '../models/modal-input.model';
 
 export class CompareObjectsModal {

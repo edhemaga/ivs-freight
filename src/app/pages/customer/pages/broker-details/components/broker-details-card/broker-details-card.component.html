@@ -215,7 +215,7 @@
                         broker?.invoiceAgeingGroupOne
                     "
                 >
-                    <app-progress-invoices
+                    <app-ta-progress-invoices
                         [invoiceDays]="
                             broker?.invoiceAgeingGroupOne?.periodOfDays
                         "
@@ -225,7 +225,7 @@
                         [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
                         [template]="'light-blue'"
                     >
-                    </app-progress-invoices>
+                    </app-ta-progress-invoices>
                 </ng-container>
 
                 <ng-container
@@ -234,7 +234,7 @@
                         broker?.invoiceAgeingGroupTwo
                     "
                 >
-                    <app-progress-invoices
+                    <app-ta-progress-invoices
                         [invoiceDays]="
                             broker?.invoiceAgeingGroupTwo?.periodOfDays
                         "
@@ -244,7 +244,7 @@
                         [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
                         [template]="'mid-blue'"
                     >
-                    </app-progress-invoices>
+                    </app-ta-progress-invoices>
                 </ng-container>
                 <ng-container
                     *ngIf="
@@ -252,7 +252,7 @@
                         broker?.invoiceAgeingGroupThree
                     "
                 >
-                    <app-progress-invoices
+                    <app-ta-progress-invoices
                         [invoiceDays]="
                             broker?.invoiceAgeingGroupThree?.periodOfDays
                         "
@@ -264,7 +264,7 @@
                         "
                         [template]="'dark-blue'"
                     >
-                    </app-progress-invoices>
+                    </app-ta-progress-invoices>
                 </ng-container>
                 <ng-container
                     *ngIf="
@@ -272,7 +272,7 @@
                         broker?.invoiceAgeingGroupFour
                     "
                 >
-                    <app-progress-invoices
+                    <app-ta-progress-invoices
                         [invoiceDays]="
                             broker?.invoiceAgeingGroupFour?.periodOfDays
                         "
@@ -284,7 +284,7 @@
                         "
                         [template]="'danger'"
                     >
-                    </app-progress-invoices>
+                    </app-ta-progress-invoices>
                 </ng-container>
             </app-ta-custom-card>
 

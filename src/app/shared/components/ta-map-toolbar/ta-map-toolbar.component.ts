@@ -31,13 +31,13 @@ import { ModalService } from '../ta-modal/services/modal.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
 // animations
-import { card_component_animation } from '../../../core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '../../animations/card-component.animation';
 
 // components
-import { MapSettingsModalComponent } from '../../../core/components/modals/map-settings-modal/map-settings-modal.component';
-import { MapRouteModalComponent } from '../../../core/components/modals/map-route-modal/map-route-modal.component';
+import { MapSettingsModalComponent } from '../ta-shared-modals/map-modals/map-settings-modal/map-settings-modal.component';
+import { MapRouteModalComponent } from '../ta-shared-modals/map-modals/map-route-modal/map-route-modal.component';
 import { TaFilterComponent } from '../ta-filter/ta-filter.component';
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
@@ -47,7 +47,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
     selector: 'app-ta-map-toolbar',
     templateUrl: './ta-map-toolbar.component.html',
     styleUrls: ['./ta-map-toolbar.component.scss'],
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
     standalone: true,
     imports: [
         TaFilterComponent,
@@ -55,7 +55,7 @@ import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         NgbPopoverModule,
         NgbModule,
         TaInputComponent,
@@ -94,7 +94,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     layersPopupOpen: boolean = false;
     keyboardPopupOpen: boolean = false;
     tableLocked: boolean = true;
-    optionsPopupContent: any[] = [
+    OptionsPopupContent: any[] = [
         {
             text: 'Unlock table',
             svgPath: 'assets/svg/truckassist-table/lock.svg',

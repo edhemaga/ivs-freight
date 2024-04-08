@@ -13,11 +13,11 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
-import { CommonTruckTrailerService } from 'src/app/core/components/modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // components
-import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
 
 // animations
 import {
@@ -28,19 +28,16 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
 
 // decorators
-import { Titles } from 'src/app/core/utils/application.decorators';
+import { Titles } from 'src/app/core/decorators/titles.decorator';
 
 // helpers
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // moment
 import moment from 'moment';
-
-// models
-import { TableOptions } from 'src/app/core/model/table.model';
 
 @Titles()
 @Component({
@@ -49,7 +46,7 @@ import { TableOptions } from 'src/app/core/model/table.model';
     styleUrls: ['./trailer-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardAnimation', [
             state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [
@@ -87,15 +84,15 @@ export class TrailerDetailsItemComponent
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest: TableOptions;
-    public dataFHWA: TableOptions;
+    public dataTest;
+    public dataFHWA;
     public toggler: boolean[] = [];
     public currentDate: string;
 
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private commonTrailerService: CommonTruckTrailerService,
+        private commonTrailerService: TruckTrailerService,
         private dropDownService: DropDownService
     ) {}
 
@@ -292,7 +289,10 @@ export class TrailerDetailsItemComponent
 
     public optionsEvent(file: any, data: any, action: string): void {
         data = this.trailer[0]?.data;
-        const name = dropActionNameTrailerTruck(file, action);
+        const name = DropActionNameHelper.dropActionNameTrailerTruck(
+            file,
+            action
+        );
         this.dropDownService.dropActions(
             file,
             name,
@@ -364,7 +364,7 @@ export class TrailerDetailsItemComponent
     }
 
     public formatDate(date: string): string {
-        return convertDateFromBackend(date);
+        return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
     ngOnDestroy(): void {

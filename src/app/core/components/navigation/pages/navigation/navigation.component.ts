@@ -9,8 +9,8 @@ import {
     ViewChild,
 } from '@angular/core';
 import { navigationData } from '../../utils/constants/navigation-data.constants';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap, startWith, Subject, takeUntil } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, startWith, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from '../../services/navigation.service';
 import { navigation_magic_line } from '../../animations/navigation.animation';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';

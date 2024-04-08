@@ -1,10 +1,3 @@
-// models
-import { CardDetails } from '../../models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from '../../../core/components/shared/model/card-data.model';
-
 // enums
 import { TableStringEnum } from '../../enums/table-string.enum';
 
@@ -14,7 +7,12 @@ import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { FormatMilesPipe } from '../../pipes/format-miles.pipe';
 import { TimeFormatPipe } from '../../pipes/time-format-am-pm.pipe';
 
-//Remove quotes from string to convert into endpoint
+// models
+import { CardDetails } from '../../models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+
+// Remove quotes from string to convert into endpoint
 
 export class CardHelper {
     private formatCurrencyPipe: FormatCurrency = new FormatCurrency();
@@ -28,7 +26,7 @@ export class CardHelper {
     public isCardFlippedArrayComparasion: number[] = [];
     public isCardFlippedCheckInCards: number[] = [];
 
-    public dataForRows: DataResult[][] = [];
+    public dataForRows: CardDataResult[][] = [];
     public titleArray: string[] = [];
 
     public renderCards(
@@ -40,7 +38,7 @@ export class CardHelper {
         this.titleArray = [];
 
         viewData.forEach((card) => {
-            let resultsRowsForCards: DataResult[] = [];
+            let resultsRowsForCards: CardDataResult[] = [];
 
             if (cardTitle) {
                 const title = this.getValueByStringPath(card, cardTitle);

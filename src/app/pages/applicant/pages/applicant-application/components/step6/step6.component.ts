@@ -42,10 +42,7 @@ import {
     phoneFaxRegex,
 } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 
 // services
 import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
@@ -504,8 +501,10 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             otherTrainingExplain: otherTrainingDescription,
             knowledgeOfSafetyRegulations,
             driverForCompany: driverBefore,
-            driverForCompanyBeforeExplain: from && convertDateFromBackend(from),
-            driverForCompanyToExplain: to && convertDateFromBackend(to),
+            driverForCompanyBeforeExplain:
+                from && MethodsCalculationsHelper.convertDateFromBackend(from),
+            driverForCompanyToExplain:
+                to && MethodsCalculationsHelper.convertDateFromBackend(to),
             unableForJob,
             unableForJobExplain: unableForJobDescription,
         });
@@ -1300,11 +1299,17 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
                             o[keyName] = this.stepValues[match];
 
                             if (keyName === 'from') {
-                                o['from'] = convertDateFromBackend(o['from']);
+                                o['from'] =
+                                    MethodsCalculationsHelper.convertDateFromBackend(
+                                        o['from']
+                                    );
                             }
 
                             if (keyName === 'to') {
-                                o['to'] = convertDateFromBackend(o['to']);
+                                o['to'] =
+                                    MethodsCalculationsHelper.convertDateFromBackend(
+                                        o['to']
+                                    );
                             }
 
                             if (keyName === 'unabletopreformjobdescription') {
@@ -1608,10 +1613,14 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
             knowledgeOfSafetyRegulations,
             driverBefore: driverForCompany,
             from: driverForCompany
-                ? convertDateToBackend(driverForCompanyBeforeExplain)
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      driverForCompanyBeforeExplain
+                  )
                 : null,
             to: driverForCompany
-                ? convertDateToBackend(driverForCompanyToExplain)
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      driverForCompanyToExplain
+                  )
                 : null,
             unableForJob,
             unableForJobDescription: unableForJobExplain,

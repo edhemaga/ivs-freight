@@ -20,12 +20,12 @@ import { SignInResponse } from 'appcoretruckassist';
 import { ReviewComment } from '../../models/review-comment.model';
 
 // utils
-import { ImageBase64Service } from '../../../core/utils/base64.image';
+import { ImageBase64Service } from '../../services/image-base64.service';
 import { FormsModule } from '@angular/forms';
 
 // components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { ProfileImagesComponent } from '../../../core/components/shared/profile-images/profile-images.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,8 +40,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         CommonModule,
         FormsModule,
         AngularSvgIconModule,
-        AppTooltipComponent,
-        ProfileImagesComponent,
+        TaAppTooltipV2Component,
+        TaProfileImagesComponent,
         NgbModule,
     ],
 })

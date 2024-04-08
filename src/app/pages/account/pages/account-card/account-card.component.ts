@@ -8,13 +8,11 @@ import {
 import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { tableBodyColorLabel } from 'src/app/core/components/shared/model/tableBody';
+import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
@@ -43,8 +41,8 @@ export class AccountCardComponent implements OnInit, OnChanges {
     public dropdownSelectionArray = new UntypedFormArray([]);
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(
@@ -92,7 +90,7 @@ export class AccountCardComponent implements OnInit, OnChanges {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    public labelDropdown(): tableBodyColorLabel {
+    public labelDropdown(): TableBodyColorLabel {
         for (let card of this.viewData) {
             this.dropdownSelectionArray.push(new FormControl());
             if (card.companyContactLabel) {

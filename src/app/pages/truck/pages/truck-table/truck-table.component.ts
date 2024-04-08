@@ -3,17 +3,17 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/core/components/modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
-import { TtRegistrationModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from 'src/app/core/components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
 import { TruckService } from '../../../../shared/services/truck.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/confirmation-modal/state/state/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { TruckActiveQuery } from '../../state/truck-active-state/truck-active.query';
@@ -37,27 +37,18 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import {
-    closeAnimationAction,
-    tableSearch,
-} from 'src/app/core/utils/methods.globals';
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 
 // models
 import { TruckListResponse } from 'appcoretruckassist';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 import { TruckFilter } from './models/truck-filter.model';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+
 import { TruckBodyResponse } from './models/truck-body-response.model';
 
 @Component({
@@ -68,7 +59,7 @@ import { TruckBodyResponse } from './models/truck-body-response.model';
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public truckData: any[] = [];
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -273,10 +264,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 2300);
@@ -298,10 +290,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 1000);
@@ -325,10 +318,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
@@ -350,10 +344,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            false,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                false,
+                                this.viewData
+                            );
 
                         this.viewData.splice(truckIndex, 1);
                         clearInterval(inetval);
@@ -403,7 +398,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.backFilterQuery.pageIndex = 1;
 
-                    const searchEvent = tableSearch(res, this.backFilterQuery);
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
 
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
@@ -517,7 +515,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // Set data for display in tables and cards
-    private setTruckData(td: DataForCardsAndTables): void {
+    private setTruckData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -914,7 +912,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TruckModalComponent, {
@@ -1150,10 +1148,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.updateDataCount();
 
                     const inetval = setInterval(() => {
-                        this.viewData = closeAnimationAction(
-                            true,
-                            this.viewData
-                        );
+                        this.viewData =
+                            MethodsGlobalHelper.closeAnimationAction(
+                                true,
+                                this.viewData
+                            );
 
                         clearInterval(inetval);
                     }, 900);
@@ -1180,7 +1179,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
                 const inetval = setInterval(() => {
-                    this.viewData = closeAnimationAction(true, this.viewData);
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
 
                     clearInterval(inetval);
                 }, 900);

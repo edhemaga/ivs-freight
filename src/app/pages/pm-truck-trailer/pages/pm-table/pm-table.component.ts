@@ -15,13 +15,14 @@ import {
     CardDetails,
     DropdownItem,
     GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import { Truck, Trailer } from 'src/app/core/components/shared/model/pm';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/shared/models/card-models/card-table-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
 import { PmTableColumns } from './models/pm-table-columns.model';
 import { PmTableAction } from './models/pm-table-actions.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { PmTrailer } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
+import { PmTruck } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -186,7 +187,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setPmData(td: DataForCardsAndTables): void {
+    private setPmData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -251,7 +252,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setPmData(td);
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
@@ -365,11 +366,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private getTableData(dataType: string): (Truck | Trailer)[] {
+    private getTableData(dataType: string): (PmTruck | PmTrailer)[] {
         if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {
-                const truck: Truck = {
+                const truck: PmTruck = {
                     truckTypeClass: truckUnit.truck.truckType.logoName.replace(
                         TableStringEnum.SVG,
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER
@@ -437,7 +438,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             const trailerUnits = this.pmTrailerQuery.getAll();
             const trailerUnitsData = trailerUnits.map((trailerUnit) => {
-                const trailer: Trailer = {
+                const trailer: PmTrailer = {
                     tableTrailerTypeIcon:
                         trailerUnit.trailer.trailerType.logoName,
                     tableTrailerName: trailerUnit.trailer.trailerType.name,

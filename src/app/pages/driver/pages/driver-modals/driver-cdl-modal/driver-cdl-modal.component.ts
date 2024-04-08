@@ -22,7 +22,7 @@ import { FormService } from 'src/app/shared/services/form.service';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../../../../../shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
@@ -31,10 +31,7 @@ import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/
 import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
 
 //Helpers
-import {
-    convertDateFromBackend,
-    convertDateToBackend,
-} from '../../../../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
 import {
     cdlCANADAValidation,
     cdlUSValidation,
@@ -54,7 +51,7 @@ import {
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,
@@ -347,8 +344,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 next: (res: CdlResponse) => {
                     this.cdlForm.patchValue({
                         cdlNumber: res.cdlNumber,
-                        issueDate: convertDateFromBackend(res.issueDate),
-                        expDate: convertDateFromBackend(res.expDate),
+                        issueDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.issueDate
+                            ),
+                        expDate:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.expDate
+                            ),
                         classType: res.classType.name,
                         stateId: res.state.stateShortName,
                         restrictions: null,
@@ -414,8 +417,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: this.editData.file_id,
             ...this.cdlForm.value,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             classType: this.selectedClassType
                 ? this.selectedClassType.name
                 : null,
@@ -466,8 +470,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             driverId: this.editData.id,
             ...this.cdlForm.value,
-            issueDate: convertDateToBackend(issueDate),
-            expDate: convertDateToBackend(expDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
             classType: this.selectedClassType
                 ? this.selectedClassType.name
                 : null,
