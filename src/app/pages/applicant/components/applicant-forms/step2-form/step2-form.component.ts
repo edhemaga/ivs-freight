@@ -59,8 +59,8 @@ import { SelectedMode } from '../../../enums/selected-mode.enum';
 import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';
 
 // models
-import { ApplicantQuestion } from '../../../models/applicant-question.model';
-import { WorkExpereienceModel } from '../../../models/work-experience.model';
+import { ApplicantQuestion } from '../../../pages/applicant-application/models/applicant-question.model';
+import { WorkExpereience } from '../../../pages/applicant-application/models/work-experience.model';
 import {
     ApplicantModalResponse,
     EnumValue,
@@ -1407,7 +1407,7 @@ export class Step2FormComponent
             addressUnit: employerAddressUnit,
         };
 
-        const saveData: WorkExpereienceModel = {
+        const saveData: WorkExpereience = {
             ...workExperienceForm,
             employerAddress: selectedAddress,
             employerAddressUnit,
@@ -1469,7 +1469,7 @@ export class Step2FormComponent
             addressUnit: employerAddressUnit,
         };
 
-        const saveData: WorkExpereienceModel = {
+        const saveData: WorkExpereience = {
             ...workExperienceForm,
             employerAddress: this.selectedAddress
                 ? selectedAddress

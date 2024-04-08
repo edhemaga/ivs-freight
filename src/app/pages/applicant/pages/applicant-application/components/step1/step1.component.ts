@@ -72,7 +72,7 @@ import {
     ApplicantResponse,
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
-import { ApplicantQuestion } from '../../../../models/applicant-question.model';
+import { ApplicantQuestion } from '../../models/applicant-question.model';
 
 @Component({
     selector: 'app-step1',

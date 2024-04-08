@@ -53,9 +53,9 @@ import { SelectedMode } from '../../../enums/selected-mode.enum';
 import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';
 
 // models
-import { AnswerChoices } from '../../../models/applicant-question.model';
+import { AnswerChoices } from '../../../pages/applicant-application/models/answer-choices.model';
 import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
-import { AccidentModel } from '../../../models/accident.model';
+import { Accident } from '../../../pages/applicant-application/models/accident.model';
 
 // components
 import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
@@ -442,7 +442,7 @@ export class Step4FormComponent
         const { firstRowReview, secondRowReview, ...accidentForm } =
             this.accidentForm.value;
 
-        const saveData: AccidentModel = {
+        const saveData: Accident = {
             ...accidentForm,
             isEditingAccident: false,
         };
@@ -478,7 +478,7 @@ export class Step4FormComponent
         const { firstRowReview, secondRowReview, ...accidentForm } =
             this.accidentForm.value;
 
-        const saveData: AccidentModel = {
+        const saveData: Accident = {
             ...accidentForm,
             isEditingAccident: false,
         };

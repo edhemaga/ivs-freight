@@ -41,7 +41,7 @@ import { ApplicantStore } from 'src/app/pages/applicant/state/applicant.store';
 import { InputSwitchActions } from 'src/app/pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { ApplicantQuestion } from 'src/app/pages/applicant/models/applicant-question.model';
+import { ApplicantQuestion } from 'src/app/pages/applicant/pages/applicant-application/models/applicant-question.model';
 import { AddressEntity } from 'appcoretruckassist';
 import { CreatePreviousEmployerDrugAndAlcoholCommand } from 'appcoretruckassist/model/models';
 

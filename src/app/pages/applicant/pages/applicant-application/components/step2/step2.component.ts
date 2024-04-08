@@ -41,7 +41,7 @@ import {
     ApplicantResponse,
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
-import { WorkExpereienceModel } from '../../../../models/work-experience.model';
+import { WorkExpereience } from '../../models/work-experience.model';
 
 @Component({
     selector: 'app-step2',
@@ -60,7 +60,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public workExperienceArray: WorkExpereienceModel[] = [
+    public workExperienceArray: WorkExpereience[] = [
         {
             id: 1,
             isEditingWorkExperience: false,

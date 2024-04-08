@@ -1,4 +1,4 @@
-export interface ContactModel {
+export interface Contact {
     id?: number;
     reviewId?: number;
     name: string;

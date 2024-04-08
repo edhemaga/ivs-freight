@@ -1,11 +1,4 @@
-export interface AnswerChoices {
-    id: number;
-    label: string;
-    value: string;
-    name: string;
-    checked: boolean;
-    index?: number;
-}
+import { AnswerChoices } from './answer-choices.model';
 
 export interface ApplicantQuestion {
     title: string;

@@ -1,4 +1,4 @@
-export interface LicenseModel {
+export interface License {
     id?: number | null;
     reviewId: number;
     licenseNumber: string | null;
