@@ -1,4 +1,4 @@
-import { CardsModalData } from '../../../../../../shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { CardsModalData } from '../../../models/cards-modal-data.model';
 
 export class LoadCardsModalConstants {
     static defaultCardsValues: CardsModalData = {

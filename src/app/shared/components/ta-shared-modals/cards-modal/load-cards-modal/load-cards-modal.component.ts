@@ -14,37 +14,35 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-// Models
-import { LoadCardsModuleConstants } from '../../../../shared/components/ta-shared-modals/cards-modal/utils/constants/load-card.constants';
+// models
+import { LoadCardsModuleConstants } from '../utils/constants/load-card.constants';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardsModalData } from '../../../../shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { CardsModalData } from '../models/cards-modal-data.model';
 
 // Configuration for modals
 import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
 
 // Services
-import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
+import { ModalService } from '../../../ta-modal/services/modal.service';
 import { FormService } from 'src/app/shared/services/form.service';
+import { CardsModalConfigService } from '../services/cards-modal-config.service';
 
-// Store
-import { LoadQuery } from '../../../../shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
+// store
+import { LoadQuery } from '../state/load-modal.query';
 
 // helpers
-import { CompareObjectsModal } from '../../../../shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
+import { CompareObjectsModal } from '../utils/helpers/cards-modal.helper';
 
-// Enum
-import { CardsModalEnum } from '../../../../shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
-
-// Services
-import { CardsModalConfigService } from '../../../../shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
+// enums
+import { CardsModalEnum } from '../enums/cards-modal.enum';
 
 // constants
 import { LoadCardsModalConstants } from './utils/constants/load-modal.constants';
 
 // components
-import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
-import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
-import { ModalInputFormComponent } from '../../../../shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
+import { TaModalComponent } from '../../../ta-modal/ta-modal.component';
+import { TaCheckboxComponent } from '../../../ta-checkbox/ta-checkbox.component';
+import { ModalInputFormComponent } from '../components/modal-input-form.component';
 
 @Component({
     selector: 'app-load-cards-modal',
