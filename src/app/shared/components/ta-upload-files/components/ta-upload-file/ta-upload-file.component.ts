@@ -27,7 +27,7 @@ import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 
 // components
 import { TaInputComponent } from '../../../ta-input/ta-input.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '../../../ta-spinner/ta-spinner.component';
 
 // services
@@ -55,7 +55,7 @@ import { UploadFile } from '../../models/upload-file.model';
     imports: [
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         ReactiveFormsModule,
         PdfViewerModule,
         ByteConvertPipe,

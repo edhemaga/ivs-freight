@@ -40,27 +40,24 @@ import {
     ShipperListResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { CustomerBodyResponse } from './models/customer-body-response.model';
 import { CustomerUpdateRating } from './models/customer-update-rating.model';
 import { CustomerViewDataResponse } from './models/customer-viewdata-response.model';
 import {
     CardDetails,
     DropdownItem,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { MappedShipperBroker } from './models/mapped-shipper-broker.model';
 import {
     FilterOptionBroker,
     FilterOptionshipper,
-} from 'src/app/core/components/shared/model/table-components/customer.modals';
+} from 'src/app/core/components/shared/model/customer.modals';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/all-tables.modal';
 
 // Constants
 import { CustomerCardDataConfigConstants } from './utils/constants/customer-card-data-config.constants';
@@ -97,7 +94,7 @@ export class CustomerTableComponent
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
     public customerTableData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -1001,7 +998,7 @@ export class CustomerTableComponent
     }
 
     // Toolbar Actions
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Add Call
 
         if (event.action === TableStringEnum.OPEN_MODAL) {

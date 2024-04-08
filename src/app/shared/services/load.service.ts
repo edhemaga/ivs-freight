@@ -25,7 +25,7 @@ import {
 import {
     Comment,
     DeleteComment,
-} from 'src/app/shared/models/card-table-data.model';
+} from 'src/app/shared/models/card-models/card-table-data.model';
 import { Load } from 'src/app/pages/load/models/load.model';
 
 @Injectable({

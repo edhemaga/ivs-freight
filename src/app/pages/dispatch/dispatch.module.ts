@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/core/components/shared/shared.module';
 // Components
 import { DispatchComponent } from './pages/dispatch/dispatch.component';
 import { DispatchTableComponent } from './pages/dispatch/components/dispatch-table/dispatch-table.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -54,7 +54,7 @@ import { HosTimePipe } from 'src/app/pages/dispatch/pipes/hos-time.pipe';
         HosTimePipe,
 
         // Components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaTableToolbarComponent,
         TaInputDropdownComponent,
         TaInputAddressDropdownComponent,

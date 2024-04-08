@@ -29,9 +29,9 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../models/card-table-data.model';
+} from '../../models/card-models/card-table-data.model';
 import { Tabs } from '../../models/tabs.model';
-import { CardRows } from '../../models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // services
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';

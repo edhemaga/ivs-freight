@@ -42,19 +42,15 @@ import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-column
 
 // models
 import { TruckListResponse } from 'appcoretruckassist';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import {
     DataForCardsAndTables,
     TableColumnConfig,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/all-tables.modal';
 import { TruckFilter } from './models/truck-filter.model';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+
 import { TruckBodyResponse } from './models/truck-body-response.model';
 
 @Component({
@@ -65,7 +61,7 @@ import { TruckBodyResponse } from './models/truck-body-response.model';
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public truckData: any[] = [];
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -918,7 +914,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TruckModalComponent, {

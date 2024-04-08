@@ -19,7 +19,7 @@ import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.compo
 
 import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //pipes
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
@@ -41,7 +41,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         TaInputDropdownTableComponent,
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
 
         //pipes
         FormatDatePipe,

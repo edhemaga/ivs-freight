@@ -35,8 +35,8 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import {
     CompanyUserResponse,
     GetCompanyUserListResponse,

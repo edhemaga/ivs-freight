@@ -32,7 +32,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 //Components
-import { DriverModal } from 'src/app/core/components/shared/model/table-components/driver-modal';
+import { DriverModal } from 'src/app/core/components/shared/model/driver-modal';
 
 //Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';

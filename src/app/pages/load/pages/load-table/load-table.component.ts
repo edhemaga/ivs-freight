@@ -24,18 +24,14 @@ import {
     DeleteComment,
     DropdownItem,
     GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    Search,
-    TableOptionsInterface,
-} from 'src/app/shared/models/card-data.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { DataForCardsAndTables } from 'src/app/core/components/shared/model/all-tables.modal';
 import {
     FilterOptionsLoad,
     LoadModel,
-} from 'src/app/core/components/shared/model/table-components/load-modal';
+} from 'src/app/core/components/shared/model/load-modal';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Queries
 import { LoadActiveQuery } from '../../state/load-active-state/load-active.query';
@@ -80,7 +76,7 @@ import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.h
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public loadTableData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
@@ -358,7 +354,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private search(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: Search) => {
+            .subscribe((res) => {
                 if (res) {
                     this.backLoadFilterQuery.statusType =
                         this.selectedTab === TableStringEnum.TEMPLATE
@@ -912,7 +908,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // ---------------------------- Table Actions ------------------------------
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {

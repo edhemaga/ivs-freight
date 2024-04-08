@@ -37,8 +37,8 @@ import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-
 //Models
 import { FuelStopListResponse } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
-import { TableColumnConfig } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/core/components/shared/model/all-tables.modal';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 
 //States
 import { FuelQuery } from '../../state/fule-state/fuel-state.query';

@@ -7,10 +7,10 @@ import { SettingsCompanyService } from '../../services/settings-company.service'
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 
 // model
-import { File } from 'src/app/shared/models/card-table-data.model';
+import { File } from 'src/app/shared/models/card-models/card-table-data.model';
 import { FileEvent } from 'src/app/shared/models/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
-import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
+import { TableBodyOptionActions } from 'src/app/shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { UploadFile } from 'src/app/shared/components/ta-upload-files/models/upload-file.model';
 import {
     CreateWithUploadsResponse,
@@ -41,7 +41,7 @@ export class SettingsDocumentComponent
     public showDropzone: boolean = false;
 
     public selectedTab: string = SettingsDocumentsConstants.SELECTED_TAB;
-    public tableOptions: TableBodyOptions =
+    public tableOptions: TableBodyOptionActions =
         SettingsDocumentsConstants.INITIAL_TABLE_OPTIONS;
     public tableData = SettingsDocumentsConstants.INITIAL_TABLE_DATA;
     public resizeObserver: ResizeObserver;

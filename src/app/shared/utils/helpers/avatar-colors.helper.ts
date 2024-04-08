@@ -1,4 +1,4 @@
-import { AvatarColors } from '../../../core/components/shared/model/table-components/driver-modal';
+import { AvatarColors } from '../../../core/components/shared/model/driver-modal';
 
 // constants
 import { TableDropdownComponentConstants } from '../constants/table-dropdown-component.constants';

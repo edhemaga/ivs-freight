@@ -50,7 +50,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { TableType } from 'appcoretruckassist';
-import { optionsPopupContent } from 'src/app/core/components/shared/model/toolbar';
+import { OptionsPopupContent } from 'src/app/shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 @Titles()
 @Component({
@@ -92,7 +92,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public optionsPopup: string | TemplateRef<any>;
     public optionsPopupOpen: boolean = false;
     public tableLocked: boolean = true;
-    public optionsPopupContent: optionsPopupContent[] = [
+    public OptionsPopupContent: OptionsPopupContent[] = [
         {
             text: TableStringEnum.COLUMNS,
             svgPath: 'assets/svg/truckassist-table/columns-new.svg',
@@ -282,7 +282,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.optionsPopupContent[2].isInactive = tableColumnsConfig
+        this.OptionsPopupContent[2].isInactive = tableColumnsConfig
             ? false
             : true;
 
@@ -503,8 +503,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Show Toolbar Options Popup
     public onShowOptions(optionsPopup): void {
-        this.optionsPopupContent[0].active = false;
-        this.optionsPopupContent.map((option) => {
+        this.OptionsPopupContent[0].active = false;
+        this.OptionsPopupContent.map((option) => {
             if (option.text !== TableStringEnum.COLUMNS) {
                 option.hide = false;
             }
@@ -536,11 +536,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             this.tableLocked = !this.tableLocked;
 
-            this.optionsPopupContent[1].text = this.tableLocked
+            this.OptionsPopupContent[1].text = this.tableLocked
                 ? TableStringEnum.UNLOCK_TABLE
                 : TableStringEnum.LOCK_TABLE;
 
-            this.optionsPopupContent[1].svgPath = this.tableLocked
+            this.OptionsPopupContent[1].svgPath = this.tableLocked
                 ? 'assets/svg/truckassist-table/lock-new.svg'
                 : 'assets/svg/truckassist-table/new-unlocked-table.svg';
 
@@ -565,7 +565,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             this.checkAreAllSelectedInGroup();
 
-            this.optionsPopupContent.map((option) => {
+            this.OptionsPopupContent.map((option) => {
                 if (option.text !== TableStringEnum.COLUMNS) {
                     option.hide = action.active;
                 }
@@ -574,7 +574,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (
             action.text === TableStringEnum.RESET_TABLE &&
-            !this.optionsPopupContent[2].isInactive
+            !this.OptionsPopupContent[2].isInactive
         ) {
             this.onShowOptions(this.optionsPopup);
 

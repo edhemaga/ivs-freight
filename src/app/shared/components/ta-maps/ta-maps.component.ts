@@ -37,7 +37,7 @@ import { MapRoute } from '../../models/map-route.model';
 import { Confirmation } from '../../../core/components/modals/ta-confirmation-modal/models/confirmation.model';
 
 // components
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 
 // icon
@@ -46,7 +46,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-ta-maps',
     templateUrl: './ta-maps.component.html',
-    styleUrls: ['./ta-maps.component.scss', '/src/assets/scss/maps.scss'],
+    styleUrls: ['./ta-maps.component.scss'] /* '/src/assets/scss/maps.scss' */,
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
@@ -61,7 +61,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         AngularSvgIconModule,
 
         // Components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaMapMarkerDropdownComponent,
     ],
 })

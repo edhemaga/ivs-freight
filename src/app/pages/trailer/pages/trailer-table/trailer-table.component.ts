@@ -44,13 +44,10 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from './models/trailer-mapped.model';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/shared/models/card-data.model';
-import { ToolbarActions } from 'src/app/core/model/table.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
@@ -58,7 +55,7 @@ import { TrailerBodyResponse } from './models/trailer-body-response.model';
 import {
     TableColumnConfig,
     DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from 'src/app/core/components/shared/model/all-tables.modal';
 
 @Component({
     selector: 'app-trailer-table',
@@ -69,7 +66,7 @@ import {
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -862,7 +859,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TrailerModalComponent, {

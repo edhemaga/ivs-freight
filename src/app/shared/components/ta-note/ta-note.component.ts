@@ -38,7 +38,7 @@ import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 
 //components
 import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 //models
@@ -59,7 +59,7 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaNoteContainerComponent,
 

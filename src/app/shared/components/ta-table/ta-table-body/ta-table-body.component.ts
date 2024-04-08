@@ -48,7 +48,7 @@ import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
 import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { AppTooltipComponent } from '../../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../../app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '../../ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '../../ta-progres-bar/ta-progres-bar.component';
 
@@ -69,11 +69,9 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import {
-    tableBodyColorLabel,
-    tableBodyColumns,
-    tableBodyOptions,
-} from '../../../../core/components/shared/model/tableBody';
+import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
+import { TableBodyOptionActions } from './models/table-body-option-actions.model';
+import { TableBodyColumns } from './models/table-body-columns.model';
 
 @Titles()
 @Component({
@@ -99,7 +97,7 @@ import {
         TaInputDropdownTableComponent,
         TaNoteComponent,
         TaUploadFilesComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         TableHighlightSearchTextPipe,
@@ -130,11 +128,11 @@ export class TaTableBodyComponent
     public dropdownSelectionArray = new FormArray([]);
 
     @Input() viewData: any[];
-    @Input() columns: tableBodyColumns[];
-    @Input() options: tableBodyOptions;
+    @Input() columns: TableBodyColumns[];
+    @Input() options: TableBodyOptionActions;
     @Input() tableData: any[];
     @Input() selectedTab: string;
-    public selectedContactLabel: tableBodyColorLabel[] = [];
+    public selectedContactLabel: TableBodyColorLabel[] = [];
     pinedColumns: any = [];
     pinedWidth: number = 0;
     notPinedColumns: any = [];
