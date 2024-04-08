@@ -12,6 +12,7 @@ import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/
 
 // Models
 import {
+    CardDetails,
     DropdownItem,
     GridColumn,
     ToolbarActions,
@@ -19,6 +20,8 @@ import {
 import { Truck, Trailer } from 'src/app/core/components/shared/model/pm';
 import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { PmTableColumns } from './models/pm-table-columns.model';
+import { PmTableAction } from './models/pm-table-actions.model';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -41,18 +44,19 @@ import { PmTrailerQuery } from '../../state/pm-trailer-state/pm-trailer.query';
 
 // Pipes
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandToShortFormatPipe } from 'src/app/shared/pipes/thousand-to-short-format.pipe';
 
 @Component({
     selector: 'app-pm-table',
     templateUrl: './pm-table.component.html',
     styleUrls: ['./pm-table.component.scss'],
-    providers: [ThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe, ThousandToShortFormatPipe],
 })
 export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public tableOptions: any = {};
     public tableData: any[] = [];
-    private viewData: any[] = [];
+    private viewData: CardDetails[] = [];
     public columns: GridColumn[] = [];
     public selectedTab: string = TableStringEnum.ACTIVE;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -88,7 +92,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private pmTrailerQuery: PmTrailerQuery,
 
         // Pipes
-        private thousandSeparator: ThousandSeparatorPipe
+        private thousandSeparator: ThousandSeparatorPipe,
+        private thousandToShortFormatPipe: ThousandToShortFormatPipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -162,6 +167,48 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
+        this.getTableCountData();
+    }
+
+    private getGridColumns(configType: string): PmTableColumns[] {
+        const tableColumnsConfig = JSON.parse(
+            localStorage.getItem(`table-${configType}-Configuration`)
+        );
+
+        if (configType === TableStringEnum.PM_TRUCK) {
+            return tableColumnsConfig
+                ? tableColumnsConfig
+                : getTruckPMColumnDefinition();
+        } else {
+            return tableColumnsConfig
+                ? tableColumnsConfig
+                : getTrailerPMColumnDefinition();
+        }
+    }
+
+    private setPmData(td: DataForCardsAndTables): void {
+        this.columns = td.gridColumns;
+
+        if (td.data.length) {
+            this.viewData = td.data;
+
+            this.viewData = this.viewData.map((data) => {
+                data.isSelected = false;
+                return data;
+            });
+
+            // Set data for cards based on tab active
+            this.selectedTab === TableStringEnum.ACTIVE
+                ? ((this.sendDataToCardsFront = this.displayRowsFront),
+                  (this.sendDataToCardsBack = this.displayRowsBack))
+                : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
+                  (this.sendDataToCardsBack = this.displayRowsBackInactive));
+        } else {
+            this.viewData = [];
+        }
+    }
+
+    private getTableCountData(): void {
         const truckCount = JSON.parse(
             localStorage.getItem('pmTruckTableCount')
         );
@@ -204,97 +251,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.setPmData(td);
     }
 
-    private getGridColumns(configType: string): any {
-        const tableColumnsConfig = JSON.parse(
-            localStorage.getItem(`table-${configType}-Configuration`)
-        );
-
-        if (configType === TableStringEnum.PM_TRUCK) {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getTruckPMColumnDefinition();
-        } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getTrailerPMColumnDefinition();
-        }
-    }
-
-    private setPmData(td: DataForCardsAndTables): void {
-        this.columns = td.gridColumns;
-
-        if (td.data.length) {
-            this.viewData = td.data;
-
-            this.viewData = this.viewData.map((data) => {
-                data.isSelected = false;
-                return data;
-            });
-
-            // Set data for cards based on tab active
-            this.selectedTab === TableStringEnum.ACTIVE
-                ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack))
-                : ((this.sendDataToCardsFront = this.displayRowsFrontInactive),
-                  (this.sendDataToCardsBack = this.displayRowsBackInactive));
-        } else {
-            this.viewData = [];
-        }
-    }
-
-    // Data until backend point is fixed
-    private getDumyData(
-        numberOfCopy: number,
-        dataType: string
-    ): (Truck | Trailer)[] {
-        const newDumyData = {
-            expirationDays: 8350,
-            expirationDaysText: '8350',
-            totalValueText: '6 month period',
-            percentage: 20,
-        };
-
-        const truck: Truck = {
-            textUnit: '12345',
-            textOdometer: '567,364',
-            oilFilter: newDumyData,
-            airFilter: newDumyData,
-            transFluid: newDumyData,
-            belts: newDumyData,
-            textInv: 'W444-444',
-            textLastShop: 'NEXTRAN TRUCKS',
-            lastService: '04/04/24',
-            ruMake: 'Carrier',
-            repairShop: 'ARMEN’S TIRE AND SERVICE',
-        };
-
-        const trailer: Trailer = {
-            textUnit: '123',
-            textOdometer: '1,267,305',
-            lastService: '01/29/21',
-            repairShop: 'ARMEN’S TIRE AND SERVICE',
-            color: '#7040A1',
-            svgIcon: 'Treba da se sredi',
-            alignment: newDumyData,
-            general: newDumyData,
-            ptoNumber: newDumyData,
-            ruMake: 'Carrier',
-            reeferUnit: newDumyData,
-        };
-
-        let data = [];
-
-        for (let i = 0; i < numberOfCopy; i++) {
-            if (dataType === TableStringEnum.TRUCK) {
-                data.push(truck);
-            } else {
-                data.push(trailer);
-            }
-        }
-
-        return data;
-    }
-
     public onToolBarAction(event: ToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
@@ -327,7 +283,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any): void {
+    public onTableBodyActions(event: PmTableAction): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE: {
                 this.modalService.openModal(
@@ -413,7 +369,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {
-                const truck: any = {
+                const truck: Truck = {
                     truckTypeClass: truckUnit.truck.truckType.logoName.replace(
                         TableStringEnum.SVG,
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER
@@ -427,12 +383,12 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     textUnit: truckUnit.truck.truckNumber,
                     textOdometer: truckUnit.odometer
                         ? truckUnit.odometer.toString()
-                        : '86,125',
+                        : null,
                     textInv: truckUnit.invoice,
                     textLastShop: truckUnit.lastShop,
-                    lastService: truckUnit.lastService ?? '04/03/24',
+                    lastService: truckUnit.lastService ?? null,
                     ruMake: 'Carrier',
-                    repairShop: 'ARMEN’S TIRE AND SERVICE',
+                    repairShop: truckUnit.lastShop,
                     additionalData: { note: '' },
                     tableDropdownContent: {
                         hasContent: true,
@@ -456,23 +412,18 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         (column) => column.name === pm.title
                     );
 
-                    if (pm.passedMileage) {
+                    if (pm.diffMileage) {
                         truck[pmColumn.field] = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
+                            expirationMiles: pm.diffMileage,
                             expirationMilesText:
                                 this.thousandSeparator.transform(
-                                    pm.mileage - pm.passedMileage
+                                    pm.diffMileage
                                 ),
                             totalValueText:
-                                this.thousandSeparator.transform(pm.mileage) +
-                                ' mi',
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
+                                this.thousandToShortFormatPipe.transform(
+                                    pm.mileage
+                                ) + ' mi',
+                            percentage: Math.floor(pm.percentage),
                         };
                     } else {
                         truck[pmColumn.field] = defaultPMData;
@@ -486,7 +437,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             const trailerUnits = this.pmTrailerQuery.getAll();
             const trailerUnitsData = trailerUnits.map((trailerUnit) => {
-                const trailer: any = {
+                const trailer: Trailer = {
                     tableTrailerTypeIcon:
                         trailerUnit.trailer.trailerType.logoName,
                     tableTrailerName: trailerUnit.trailer.trailerType.name,
@@ -501,9 +452,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     textUnit: trailerUnit.trailer.trailerNumber,
                     textOdometer: trailerUnit.odometer
                         ? trailerUnit.odometer.toString()
-                        : '86,125',
-                    lastService: trailerUnit.lastService ?? '01/29/21',
-                    repairShop: 'ARMEN’S TIRE AND SERVICE',
+                        : null,
+                    lastService: trailerUnit.lastService ?? null,
+                    repairShop: trailerUnit.lastShop,
                     ruMake: 'Carrier',
                     additionalData: { note: '' },
                     tableDropdownContent: {
@@ -528,21 +479,14 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         (column) => column.name === pm.title
                     );
 
-                    if (pm.passedMonths) {
+                    if (pm.diffDays) {
                         trailer[pmColumn.field] = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
+                            expirationDays: Math.abs(pm.diffDays),
                             expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
+                                pm.diffDays
                             ).toString(),
                             totalValueText: pm.months + ' month period',
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
+                            percentage: Math.floor(pm.percentage),
                         };
                     } else {
                         trailer[pmColumn.field] = defaultPMData;
@@ -554,15 +498,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return trailerUnitsData;
         }
-    }
-
-    private calculatePercentage(partialValue, totalValue): number {
-        if (!partialValue || !totalValue) {
-            return null;
-        }
-
-        const percentageValue = (100 * partialValue) / totalValue;
-        return percentageValue <= 100 ? percentageValue : 0;
     }
 
     // Toogle Columns

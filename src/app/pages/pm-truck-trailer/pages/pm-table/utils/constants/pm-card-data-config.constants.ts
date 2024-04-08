@@ -8,25 +8,29 @@ export class PmCardDataConfigConstants {
     static CARD_TITLE: string = 'textUnit';
 
     // Data for active front
-    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [
+    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [    
         {
             title: 'Oil & Filter',
-            key: 'oilFilter.expirationDaysText',
+            field: 'oilFilter',
+            key: 'oilFilter.expirationMiles',
             secondKey: 'oilFilter.percentage',
         },
         {
             title: 'Air Filter',
-            key: 'airFilter.expirationDaysText',
+            field: 'airFilter',
+            key: 'airFilter.expirationMiles',
             secondKey: 'airFilter.percentage',
         },
         {
             title: 'Trans. Fluid',
-            key: 'transFluid.percentage',
+            field: 'transFluid',
+            key: 'transFluid.expirationMiles',
             secondKey: 'transFluid.percentage',
         },
         {
             title: 'Belts',
-            key: 'belts.expirationDaysText',
+            field: 'belts',
+            key: 'belts.expirationMiles',
             secondKey: 'belts.percentage',
         },
     ];
@@ -55,23 +59,27 @@ export class PmCardDataConfigConstants {
     static DISPLAY_ROWS_FRONT_INACTIVE: CardRows[] = [
         {
             title: 'General',
+            field: 'general',
             key: 'general.expirationDaysText',
             secondKey: 'general.percentage',
         },
         {
             title: 'Alignment',
+            field: 'alignment',
             key: 'alignment.expirationDaysText',
             secondKey: 'alignment.percentage',
         },
         {
             title: 'Reefer Unit',
+            field: 'reeferUnit',
             key: 'reeferUnit.expirationDaysText',
             secondKey: 'reeferUnit.percentage',
         },
         {
             title: 'PTO Pump',
-            key: 'ptoNumber.expirationDaysText',
-            secondKey: 'ptoNumber.percentage',
+            field: 'ptoPump',
+            key: 'ptoPump.expirationDaysText',
+            secondKey: 'ptoPump.percentage',
         },
     ];
 

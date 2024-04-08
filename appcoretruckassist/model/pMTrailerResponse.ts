@@ -20,5 +20,7 @@ export interface PMTrailerResponse {
     months?: number;
     passedMonths?: number | null;
     logoName?: string | null;
+    diffDays?: number | null;
+    percentage?: number | null;
 }
 

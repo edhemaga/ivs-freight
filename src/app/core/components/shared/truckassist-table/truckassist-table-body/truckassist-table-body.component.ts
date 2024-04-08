@@ -172,10 +172,6 @@ export class TruckassistTableBodyComponent
     horizontalScrollPosition: number = 0;
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
-    progressTooltip: any;
-    progressDropdownActive: number = -1;
-    progressDropdownColumnActive: string = '';
-    progressDropdownData: any;
 
     constructor(
         private router: Router,
@@ -773,23 +769,6 @@ export class TruckassistTableBodyComponent
 
             this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
-    }
-
-    // Toggle Progress Dropdown
-    toggleProgressDropdown(tooltip: any, row: any, column: any) {
-        this.progressTooltip = tooltip;
-
-        if (tooltip.isOpen()) {
-            tooltip.close();
-        } else {
-            tooltip.open();
-        }
-
-        this.progressDropdownActive = tooltip.isOpen() ? row.textUnit : -1;
-        this.progressDropdownColumnActive = tooltip.isOpen()
-            ? column.field
-            : '';
-        this.progressDropdownData = { row: row, column: row[column.field] };
     }
 
     // Dropdown Actions

@@ -20,5 +20,7 @@ export interface PMTruckResponse {
     mileage?: number;
     passedMileage?: number | null;
     logoName?: string | null;
+    diffMileage?: number | null;
+    percentage?: number | null;
 }
 

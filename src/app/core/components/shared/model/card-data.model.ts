@@ -5,6 +5,7 @@ export interface DataResult {
     key?: string;
     secondKey?: string;
     thirdKey?: string;
+    field?: string;
 }
 export interface CardHeader {
     checkbox: boolean;
@@ -65,6 +66,7 @@ export interface CardRows {
     hasLiked?: string;
     hasDislike?: string;
     selected?: boolean;
+    field?: string;
 }
 
 export interface Search {

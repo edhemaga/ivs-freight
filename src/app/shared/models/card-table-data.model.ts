@@ -201,6 +201,38 @@ export interface CardDetails {
     textPayTerms?: string;
     textDriver?: string;
     tableAttachments?: File[];
+    acCompressor?: PmTruckProgressData;
+    airCompressor?: PmTruckProgressData;
+    airFilter?: PmTruckProgressData;
+    alignment?: PmTruckProgressData | PmTrailerProgressData;
+    battery?: PmTruckProgressData;
+    belts?: PmTruckProgressData;
+    brakeChamber?: PmTruckProgressData;
+    engTuneUp?: PmTruckProgressData;
+    fuelPump?: PmTruckProgressData;
+    oilFilter?: PmTruckProgressData;
+    oilPump?: PmTruckProgressData;
+    radiator?: PmTruckProgressData;
+    transFluid?: PmTruckProgressData;
+    turbo?: PmTruckProgressData;
+    waterPump?: PmTruckProgressData;
+    general?: PmTrailerProgressData;
+    ptoPump?: PmTrailerProgressData;
+    reeferUnit?: PmTrailerProgressData;
+}
+
+export interface PmTruckProgressData {
+    expirationMiles?: number;
+    expirationMilesText?: string;
+    percentage: number;
+    totalValueText: string;
+}
+
+export interface PmTrailerProgressData {
+    expirationDays?: number;
+    expirationDaysText?: string;
+    percentage: number;
+    totalValueText: string;
 }
 
 export interface tableDropdownContent {

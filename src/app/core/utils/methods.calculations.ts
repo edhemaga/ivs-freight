@@ -102,8 +102,14 @@ export const convertDateFromBackend = (date: string) => {
 };
 
 //------------------------------- TIME FROM DATE FROM BACKEND -------------------------------
-export const convertDateToTimeFromBackend = (date: string, show_am_ap?: boolean) => {
-    return moment.utc(date).local().format(show_am_ap ? 'HH:mm a' : 'HH:mm:SS');
+export const convertDateToTimeFromBackend = (
+    date: string,
+    show_am_ap?: boolean
+) => {
+    return moment
+        .utc(date)
+        .local()
+        .format(show_am_ap ? 'HH:mm a' : 'HH:mm:SS');
 };
 
 //------------------------------- TIME FROM BACKEND -------------------------------
@@ -136,6 +142,16 @@ export const convertNumberInThousandSep = (value: number) => {
     if (value)
         // return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+//------------------------------- Convert number to short format (1.000 to 1K, 1.000.000 to 1M) -------------------------------
+export const convertThousandToShortFormat = (value: number) => {
+    if (value)
+        return new Intl.NumberFormat(undefined, {
+            //@ts-ignore
+            notation: 'compact',
+            compactDisplay: 'short',
+        }).format(value);
 };
 
 //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------

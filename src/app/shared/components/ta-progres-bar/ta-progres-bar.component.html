@@ -1,4 +1,20 @@
-<div class="progress-bar-parent d-flex align-items-center">
+<div
+    class="progress-bar-parent d-flex align-items-center"
+    #ngbProgress="ngbPopover"
+    [autoClose]="true"
+    [ngbPopover]="milesProgressPopover"
+    [placement]="'bottom-left bottom-right'"
+    container="body"
+    popoverClass="table-progress-popover"
+    triggers="manual"
+    (hidden)="progressDropdownActive = -1"
+    (click)="
+        data[columnField]?.expirationDaysText ||
+        data[columnField]?.expirationMilesText
+            ? toggleProgressDropdown(ngbProgress)
+            : {}
+    "
+>
     <ng-container *ngIf="text !== '/'">
         <div class="progress-bar-holder">
             <div
@@ -32,7 +48,7 @@
             </ng-container>
 
             <ng-container *ngIf="type === 'miles'">
-                {{ text }}
+                {{ text | thousandToShortFormatPipe }}
                 mi to go
             </ng-container>
         </span>
@@ -48,7 +64,7 @@
             </ng-container>
 
             <ng-container *ngIf="type === 'miles'">
-                {{ text }}
+                {{ text | thousandToShortFormatPipe }}
                 mi over
             </ng-container>
         </span>
@@ -58,77 +74,123 @@
     </ng-container>
 </div>
 
-<!-- PROGRESS POPOVER -->
-<ng-template #progressPopover>
+<!-- MILES PROGRESS POPOVER -->
+<ng-template #milesProgressPopover>
     <div class="progress-dropdown">
         <div class="progress-header">
             <div class="progress-title">
-                {{
-                    data[column.field].expirationMiles > 0
-                        ? data[column.field].expirationMilesText
-                        : 0
-                }}
-                <span *ngIf="percents > 0 && percents < 100"> mi to go</span>
-                <span *ngIf="!percents"> mi over</span>
+                <ng-container
+                    *ngIf="progressDropdownData.column.expirationMilesText"
+                >
+                    {{
+                        progressDropdownData.column.expirationMiles > 0
+                            ? progressDropdownData.column.expirationMilesText
+                            : 0
+                    }}
+                    <span
+                        *ngIf="
+                            progressDropdownData.column.percentage > 0 &&
+                            progressDropdownData.column.percentage <= 100
+                        "
+                    >
+                        mi to go</span
+                    >
+                    <span *ngIf="!progressDropdownData.column.percentage">
+                        mi over</span
+                    >
+                </ng-container>
+                <ng-container
+                    *ngIf="progressDropdownData.column.expirationDaysText"
+                >
+                    {{
+                        progressDropdownData.column.expirationDays > 0
+                            ? progressDropdownData.column.expirationDaysText
+                            : 0
+                    }}
+                    <span
+                        *ngIf="
+                            progressDropdownData.column.percentage > 0 &&
+                            progressDropdownData.column.percentage < 100
+                        "
+                    >
+                        days left</span
+                    >
+                    <span *ngIf="!progressDropdownData.column.percentage">
+                        days ago</span
+                    >
+                </ng-container>
             </div>
             <div class="progress-total">
-                {{ data[column.field].totalMiles }} mi
+                {{ progressDropdownData.column.totalValueText }}
             </div>
         </div>
         <div
             class="table-progress-bar-container"
             [ngClass]="{
-                'bg-expired-container': !percents,
-                'bg-sliver-container': percents >= 25 && percents < 100,
-                'bg-orange-container': percents >= 5 && percents < 25,
-                'bg-danger-container': percents > 0 && percents < 5,
-                'bg-inactive-container': percents === 100
+                'bg-expired-container': !progressDropdownData.column.percentage,
+                'bg-sliver-container':
+                    progressDropdownData.column.percentage >= 50 &&
+                    progressDropdownData.column.percentage < 100,
+                'bg-orange-container':
+                    progressDropdownData.column.percentage >= 20 &&
+                    progressDropdownData.column.percentage < 50,
+                'bg-danger-container':
+                    progressDropdownData.column.percentage > 0 &&
+                    progressDropdownData.column.percentage < 20,
+                'bg-inactive-container':
+                    progressDropdownData.column.percentage === 100
             }"
         >
             <div
                 [ngClass]="{
-                    'bg-progress-sliver': percents >= 25 && percents < 100,
-                    'bg-progress-orange': percents >= 5 && percents < 25,
-                    'bg-progress-danger': percents > 0 && percents < 5
+                    'bg-progress-sliver':
+                        progressDropdownData.column.percentage >= 50 &&
+                        progressDropdownData.column.percentage < 100,
+                    'bg-progress-orange':
+                        progressDropdownData.column.percentage >= 20 &&
+                        progressDropdownData.column.percentage < 50,
+                    'bg-progress-danger':
+                        progressDropdownData.column.percentage > 0 &&
+                        progressDropdownData.column.percentage < 20
                 }"
                 [ngStyle]="{
-                    width: percents + '%'
+                    width: progressDropdownData.column.percentage + '%'
                 }"
                 class="table-progress-bar"
             ></div>
         </div>
         <div class="progress-dropdown-body">
-            <div class="progress-dual-info-container">
+            <div class="progress-dual-info-container d-flex align-items-center">
                 <div class="progress-info-container">
                     <div class="progress-info-title">Last Serviced</div>
                     <div class="progress-info-text">
-                        {{ data.lastService ?? 'No data' }}
+                        {{ progressDropdownData.row.lastService ?? 'No data' }}
                     </div>
                 </div>
                 <div class="progress-info-container">
                     <div class="progress-info-title">Odometer</div>
                     <div class="progress-info-text">
-                        {{ data.textOdometer ?? 'No data' }}
+                        {{ progressDropdownData.row.textOdometer ?? 'No data' }}
                     </div>
                 </div>
             </div>
             <div class="progress-info-container">
                 <div class="progress-info-title">Repair Shop</div>
                 <div class="progress-info-text">
-                    {{ data.repairShop ?? 'No data' }}
+                    {{ progressDropdownData.row.repairShop ?? 'No data' }}
                 </div>
             </div>
-            <div class="progress-dual-info-container">
+            <div class="progress-dual-info-container d-flex align-items-center">
                 <div class="progress-info-container">
                     <div class="progress-info-title">Invoice</div>
                     <div class="progress-info-text">
-                        {{ data.textInv ?? 'No data' }}
+                        {{ progressDropdownData.row.textInv ?? 'No data' }}
                     </div>
                 </div>
                 <div class="progress-info-container">
                     <div class="progress-info-title">Cost</div>
                     <div class="progress-info-text">
-                        {{ data.cost ?? 'No data' }}
+                        {{ progressDropdownData.row.cost ?? 'No data' }}
                     </div>
                 </div>
             </div>
