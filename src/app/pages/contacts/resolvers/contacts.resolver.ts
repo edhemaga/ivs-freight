@@ -11,7 +11,7 @@ import { ContactsService } from '../../../shared/services/contacts.service';
 import { ContactState, ContactStore } from '../state/contact.store';
 
 // models
-import { ContactsTableData } from 'src/app/core/model/contact';
+import { ContactsTableData } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-data.model';
 
 @Injectable({
     providedIn: 'root',

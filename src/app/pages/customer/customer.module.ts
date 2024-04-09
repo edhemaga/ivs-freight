@@ -1,6 +1,6 @@
 // Modules
 import { ShipperDetailsModule } from './pages/shipper-details/shipper-details.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -15,7 +15,7 @@ import { BrokerCardComponent } from './pages/broker-card/broker-card.component';
 
 import { CustomerTableComponent } from './pages/customer-table/customer-table.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 
@@ -56,7 +56,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
         NgbModule,
 
         // Components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaCopyComponent,
         TaCustomCardComponent,
         TaTableToolbarComponent,

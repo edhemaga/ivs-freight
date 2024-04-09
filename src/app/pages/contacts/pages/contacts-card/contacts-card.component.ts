@@ -2,8 +2,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';

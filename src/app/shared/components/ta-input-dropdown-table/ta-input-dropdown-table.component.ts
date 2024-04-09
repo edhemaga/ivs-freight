@@ -20,7 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from '../../../core/components/shared/shared.module';
+import { SharedModule } from '../../shared.module';
 
 // models
 import {
@@ -29,9 +29,9 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../models/card-table-data.model';
+} from '../../models/card-models/card-table-data.model';
 import { Tabs } from '../../models/tabs.model';
-import { CardRows } from '../../models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // services
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';

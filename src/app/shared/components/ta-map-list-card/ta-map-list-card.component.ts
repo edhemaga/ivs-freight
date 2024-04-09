@@ -158,7 +158,7 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
         //     };
 
         //     this.modalService.openModal(
-        //         TaConfirmationModalComponent,
+        //         ConfirmationModalComponent,
         //         { size: 'small' },
         //         {
         //             ...shipperData,

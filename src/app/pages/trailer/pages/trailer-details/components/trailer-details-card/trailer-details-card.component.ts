@@ -28,7 +28,6 @@ import { cardComponentAnimation } from 'src/app/shared/animations/card-component
 import { TrailersMinimalListQuery } from '../../../../state/trailer-minimal-list-state/trailer-minimal.query';
 
 // models
-import { TableOptions } from 'src/app/core/model/table.model';
 import { TrailerDropdown } from '../../models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 
@@ -73,7 +72,7 @@ export class TrailerDetailsCardComponent
     public registrationNote: UntypedFormControl = new UntypedFormControl();
     public inspectionNote: UntypedFormControl = new UntypedFormControl();
     public toggler: boolean[] = [];
-    public dataEdit: TableOptions;
+    public dataEdit;
     public toggleOwner: boolean;
     public trailerDropDowns: TrailerDropdown[] = [];
     public trailer_list: TrailerMinimalResponse[] =

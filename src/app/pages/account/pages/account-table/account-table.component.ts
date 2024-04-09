@@ -9,18 +9,18 @@ import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal
 // services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from 'src/app/pages/account/services/account.service';
 
 // store
-import { AccountState } from '../../state/account.store';
-import { AccountQuery } from '../../state/account.query';
+import { AccountState } from 'src/app/pages/account/state/account.store';
+import { AccountQuery } from 'src/app/pages/account/state/account.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // enums
-import { AccountStringEnum } from '../../enums/account-string.enum';
+import { AccountStringEnum } from 'src/app/pages/account/enums/account-string.enum';
 import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 
 // models
@@ -28,13 +28,11 @@ import {
     CompanyAccountLabelResponse,
     CompanyAccountResponse,
 } from 'appcoretruckassist';
-import {
-    TableBodyActionsAccount,
-    TableHeadActionAccount,
-    TableToolBarActionActionsAccount,
-} from 'src/app/core/model/account';
-import { AccountCardData } from '../../utils/constants/account-card-data.constants';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { AccountTableToolbarAction } from 'src/app/pages/account/pages/account-table/models/account-table-toolbard-action.model';
+import { AccountTableBodyAction } from 'src/app/pages/account/pages/account-table/models/account-table-body-action.model';
+import { AccountTableHeadAction } from 'src/app/pages/account/pages/account-table/models/account-table-head-action.model';
+import { AccountCardData } from 'src/app/pages/account/utils/constants/account-card-data.constants';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 @Component({
     selector: 'app-account-table',
@@ -63,7 +61,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         searchThree: undefined,
     };
 
-    //Data to display from model Broker
+    // Data to display from model Broker
     public displayRowsFront: CardRows[] =
         AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
 
@@ -606,7 +604,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: TableToolBarActionActionsAccount): void {
+    public onToolBarAction(event: AccountTableToolbarAction): void {
         if (event.action === TableActionsStringEnum.OPEN_MODAL) {
             this.modalService.openModal(AccountModalComponent, {
                 size: 'small',
@@ -622,7 +620,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableHeadActions(event: TableHeadActionAccount): void {
+    public onTableHeadActions(event: AccountTableHeadAction): void {
         if (event.action === TableActionsStringEnum.SORT) {
             if (event.direction) {
                 this.backFilterQuery.sort = event.direction;
@@ -636,7 +634,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: TableBodyActionsAccount): void {
+    public onTableBodyActions(event: AccountTableBodyAction): void {
         switch (event.type) {
             case TableActionsStringEnum.SHOW_MORE: {
                 this.backFilterQuery.pageIndex++;
@@ -689,7 +687,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private updateAcountLable(event: TableBodyActionsAccount): void {
+    private updateAcountLable(event: AccountTableBodyAction): void {
         // const companyAcountData = this.viewData.find(
         //     (e: CreateCompanyContactCommand) => e.id === event.id
         // );

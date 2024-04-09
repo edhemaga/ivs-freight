@@ -17,10 +17,8 @@ import {
 import { ApplicantQuery } from '../../../../state/applicant.query';
 
 // models
-import {
-    AnswerChoices,
-    ApplicantQuestion,
-} from '../../../../models/applicant-question.model';
+import { ApplicantQuestion } from '../../../applicant-application/models/applicant-question.model';
+import { AnswerChoices } from '../../../applicant-application/models/answer-choices.model';
 import {
     ApplicantModalResponse,
     EnumValue,

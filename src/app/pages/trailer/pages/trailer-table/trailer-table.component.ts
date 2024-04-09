@@ -6,11 +6,11 @@ import { Router } from '@angular/router';
 // components
 import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // services
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { TrailerService } from '../../../../shared/services/trailer.service';
@@ -44,21 +44,16 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from './models/trailer-mapped.model';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/shared/models/card-data.model';
-import { ToolbarActions } from 'src/app/core/model/table.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
 import { TrailerBodyResponse } from './models/trailer-body-response.model';
-import {
-    TableColumnConfig,
-    DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
 
 @Component({
     selector: 'app-trailer-table',
@@ -69,7 +64,7 @@ import {
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public trailerData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -342,7 +337,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -484,7 +479,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getTrailerColumnDefinition();
     }
 
-    private setTrailerData(td: DataForCardsAndTables): void {
+    private setTrailerData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -862,7 +857,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(TrailerModalComponent, {
@@ -916,7 +911,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -1011,7 +1006,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
@@ -1027,7 +1022,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.DELETE_ITEM: {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,

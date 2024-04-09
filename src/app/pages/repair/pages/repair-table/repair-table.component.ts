@@ -10,76 +10,65 @@ import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
-// Services
-import { RepairService } from '../../../../shared/services/repair.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+// services
+import { RepairService } from 'src/app/shared/services/repair.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
 import { MapsService } from 'src/app/shared/services/maps.service';
 
-// Models
-import {
-    RepairBackFilterModal,
-    ShopbBckFilterQueryInterface,
-    MapList,
-    MapedTruckAndTrailer,
-    ShopBackFilterModal,
-    BodyResponseRepair,
-} from 'src/app/core/model/repair.model';
-import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
-import {
-    DropdownItem,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import {
-    TableOptionsInterface,
-    CardRows,
-} from 'src/app/shared/models/card-data.model';
-import {
-    TableColumnConfig,
-    DataForCardsAndTables,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import {
-    getRepairTruckAndTrailerColumnDefinition,
-    getRepairsShopColumnDefinition,
-} from 'src/assets/utils/settings/repair-columns';
+// store
+import { RepairShopQuery } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.query';
+import { RepairShopState } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.store';
 
-// Store
-import { RepairShopQuery } from '../../state/repair-shop-state/repair-shop.query';
-import { RepairShopState } from '../../state/repair-shop-state/repair-shop.store';
+import { RepairTruckState } from 'src/app/pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTruckQuery } from 'src/app/pages/repair/state/repair-truck-state/repair-truck.query';
 
-import { RepairTruckState } from '../../state/repair-truck-state/repair-truck.store';
-import { RepairTruckQuery } from '../../state/repair-truck-state/repair-truck.query';
-
-import { RepairTrailerQuery } from '../../state/repair-trailer-state/repair-trailer.query';
+import { RepairTrailerQuery } from 'src/app/pages/repair/state/repair-trailer-state/repair-trailer.query';
 
 import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '../../state/repair-trailer-state/repair-trailer.store';
 
-// Pipes
+// pipes
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
-// Enum
+// enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
-// Constants
+// constants
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { RepairCardConfigConstants } from '../../utils/constants/repair-card-config.constants';
+import { RepairCardConfigConstants } from 'src/app/pages/repair/utils/constants/repair-card-config.constants';
 
-// Helpers
+// helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-
-// Methods
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
-// Components
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+// components
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+
+// models
+import { ShopBackFilter } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter.model';
+import { MappedTruckTrailer } from 'src/app/pages/repair/pages/repair-table/models/mapped-truck-trailer.model';
+import { MapList } from 'src/app/pages/repair/pages/repair-table/models/map-list.model';
+import { ShopBackFilterQuery } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter-query.model';
+import { RepairBackFilter } from 'src/app/pages/repair/pages/repair-table/models/repair-back-filter.model';
+import { RepairBodyResponse } from 'src/app/pages/repair/pages/repair-table/models/repair-body-response.model';
+import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
+import {
+    getRepairTruckAndTrailerColumnDefinition,
+    getRepairsShopColumnDefinition,
+} from 'src/assets/utils/settings/repair-columns';
 
 @Component({
     selector: 'app-repair-table',
@@ -95,7 +84,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
     public reapirTableData: any[] = [];
 
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -108,10 +97,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public inactiveTabClicked: boolean = false;
     public repairShopTabClicked: boolean = false;
     public activeTableData: string;
-    public backFilterQuery: RepairBackFilterModal =
+    public backFilterQuery: RepairBackFilter =
         TableDropdownComponentConstants.REPAIR_BACK_FILTER_QUERY;
 
-    public shopFilterQuery: ShopbBckFilterQueryInterface =
+    public shopFilterQuery: ShopBackFilterQuery =
         TableDropdownComponentConstants.SHOP_FILTER_QUERY;
 
     public mapListData: MapList[] = [];
@@ -673,7 +662,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Set Repair Data
-    private setRepairData(tdata: DataForCardsAndTables): void {
+    private setRepairData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -721,7 +710,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Map Truck And Trailer Data
-    private mapTruckAndTrailerData(data: RepairResponse): MapedTruckAndTrailer {
+    private mapTruckAndTrailerData(data: RepairResponse): MappedTruckTrailer {
         return {
             ...data,
             isSelected: false,
@@ -888,7 +877,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Repair Back Filters
     private repairBackFilter(
-        filter: RepairBackFilterModal,
+        filter: RepairBackFilter,
         isShowMore?: boolean
     ): void {
         this.repairService
@@ -932,10 +921,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Shop Back Filters
-    private shopBackFilter(
-        filter: ShopBackFilterModal,
-        isShowMore?: boolean
-    ): void {
+    private shopBackFilter(filter: ShopBackFilter, isShowMore?: boolean): void {
         this.repairService
             .getRepairShopList(
                 filter.active,
@@ -999,7 +985,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Table Toolbar Actions
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
 
@@ -1109,7 +1095,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Table Body Actions
-    public onTableBodyActions(event: BodyResponseRepair): void {
+    public onTableBodyActions(event: RepairBodyResponse): void {
         // Show More
         if (event.type === TableStringEnum.SHOW_MORE) {
             if (this.selectedTab !== TableStringEnum.REPAIR_SHOP) {
@@ -1184,7 +1170,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             switch (this.selectedTab) {
                 case TableStringEnum.REPAIR_SHOP:
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1204,7 +1190,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 default:
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
                             type: TableStringEnum.DELETE,
@@ -1239,7 +1225,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         : TableStringEnum.CLOSE,
             };
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

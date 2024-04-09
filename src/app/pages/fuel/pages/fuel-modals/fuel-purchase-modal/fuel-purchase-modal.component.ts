@@ -23,7 +23,7 @@ import { FuelService } from 'src/app/shared/services/fuel.service';
 import { TruckService } from 'src/app/shared/services/truck.service';
 
 //Components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
@@ -48,7 +48,7 @@ import { FuelItems } from './models/fuel-items.model';
 import { FuelItemsDropdown } from './models/fuel-items-dropdown.model';
 import { FuelTruckType } from './models/fuel-truck-type.model';
 import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Trailer } from '../../../../../shared/models/card-table-data.model';
+import { Trailer } from '../../../../../shared/models/card-models/card-table-data.model';
 
 //Pipes
 import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
@@ -85,7 +85,7 @@ import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/m
         NgbModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaInputComponent,
         TaCustomCardComponent,

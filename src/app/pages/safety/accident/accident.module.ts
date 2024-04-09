@@ -5,7 +5,7 @@ import { AgmCoreModule } from '@agm/core';
 
 // modules
 import { AccidentRoutingModule } from './accident-routing.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // components
 import { AccidentTableComponent } from './pages/accident-table/accident-table.component';

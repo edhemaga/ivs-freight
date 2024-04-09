@@ -11,14 +11,13 @@ import {
 import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // Models
-import {
-    DropdownItem,
-    GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import { Truck, Trailer } from 'src/app/core/components/shared/model/pm';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { PmTrailer } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
+import { PmTruck } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -220,7 +219,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setPmData(td: DataForCardsAndTables): void {
+    private setPmData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -246,7 +245,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private getDumyData(
         numberOfCopy: number,
         dataType: string
-    ): (Truck | Trailer)[] {
+    ): (PmTruck | PmTrailer)[] {
         const newDumyData = {
             expirationDays: 8350,
             expirationDaysText: '8350',
@@ -254,7 +253,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             percentage: 20,
         };
 
-        const truck: Truck = {
+        const truck: PmTruck = {
             textUnit: '12345',
             textOdometer: '567,364',
             oilFilter: newDumyData,
@@ -268,7 +267,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             repairShop: 'ARMEN’S TIRE AND SERVICE',
         };
 
-        const trailer: Trailer = {
+        const trailer: PmTrailer = {
             textUnit: '123',
             textOdometer: '1,267,305',
             lastService: '01/29/21',
@@ -295,7 +294,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return data;
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
             this.sendPMData();
@@ -409,7 +408,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private getTableData(dataType: string): (Truck | Trailer)[] {
+    private getTableData(dataType: string): (PmTruck | PmTrailer)[] {
         if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {

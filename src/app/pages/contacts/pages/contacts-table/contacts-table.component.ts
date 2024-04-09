@@ -4,14 +4,14 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { ContactsModalComponent } from '../contacts-modal/contacts-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // service
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ContactsService } from '../../../../shared/services/contacts.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { ContactState } from '../../state/contact.store';
@@ -35,7 +35,7 @@ import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/
 
 // data for cards
 import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 
 // models
 import {
@@ -44,16 +44,14 @@ import {
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { ContactsBackFilter } from '../../models/contacts-back-filter.model';
-import { ContactsPhone } from '../../models/contacts-phone.model';
-import { ContactsEmail } from '../../models/contacts-email.model';
-import {
-    TableBodyActionsContract,
-    TableHeadActionContract,
-    TableToolBarActionActionsContract,
-} from 'src/app/core/model/contact';
-import { CardRows } from 'src/app/shared/models/card-data.model';
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
+import { ContactsBackFilter } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-back-filter.model';
+import { ContactsPhone } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-phone.model';
+import { ContactsEmail } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-email.model';
+import { ContactsTableToolbarAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
+import { ContactsTableBodyAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-body-action.model';
+import { ContactsTableHeadAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-head-action.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-contacts-table',
@@ -299,7 +297,7 @@ export class ContactsTableComponent
                     });
 
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -478,7 +476,7 @@ export class ContactsTableComponent
     }
 
     // Set Countact Data
-    setContactData(tdata: DataForCardsAndTables): void {
+    setContactData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -583,7 +581,7 @@ export class ContactsTableComponent
             .subscribe();
     }
 
-    private updateCompanyContactLabel(event: TableBodyActionsContract): void {
+    private updateCompanyContactLabel(event: ContactsTableBodyAction): void {
         // const companyContractData = this.viewData.find(
         //     (e: CreateCompanyContactCommand) => e.id === event.id
         // );
@@ -637,7 +635,7 @@ export class ContactsTableComponent
         ];
     }
     // On Toolbar Actions
-    onToolBarAction(event: TableToolBarActionActionsContract) {
+    onToolBarAction(event: ContactsTableToolbarAction) {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(ContactsModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -658,7 +656,7 @@ export class ContactsTableComponent
     }
 
     // On Head Actions
-    public onTableHeadActions(event: TableHeadActionContract) {
+    public onTableHeadActions(event: ContactsTableHeadAction) {
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 this.mapingIndex = 0;
@@ -675,7 +673,7 @@ export class ContactsTableComponent
     }
 
     // On Body Actions
-    public onTableBodyActions(event: TableBodyActionsContract): void {
+    public onTableBodyActions(event: ContactsTableBodyAction): void {
         if (event.type === TableStringEnum.SHOW_MORE) {
             this.backFilterQuery.pageIndex++;
             this.contactBackFilter(this.backFilterQuery, true);
@@ -690,7 +688,7 @@ export class ContactsTableComponent
             );
         } else if (event.type === TableStringEnum.DELTETE_CONTACT) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

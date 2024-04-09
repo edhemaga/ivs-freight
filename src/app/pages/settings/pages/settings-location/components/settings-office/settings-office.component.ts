@@ -9,7 +9,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { CompanyOfficeService } from '../../../../../../shared/services/company-office.service';
 import { SettingsLocationService } from '../../services/settings-location.service';
 

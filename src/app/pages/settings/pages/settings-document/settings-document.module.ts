@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { SettingsDocumentRoutes } from './settings-document.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 // components
 import { SettingsDocumentComponent } from './settings-document.component';

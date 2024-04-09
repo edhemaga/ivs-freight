@@ -21,7 +21,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NoteConfigConstants } from './utils/constants/note-config.constants';
 
 //Components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Models
 import { NoteColors } from './models/note-colors.model';
@@ -44,7 +44,7 @@ import { NoteDefaultStringEnum } from './enums/note-default-string.enum';
         NgbModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
     ],
     animations: [
         trigger('pickupAnimation', [
@@ -225,7 +225,7 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
             this.type === NoteDefaultStringEnum.DARK
                 ? [...NoteConfigConstants.NoteDarkColors]
                 : [...NoteConfigConstants.NoteLightColors];
-                
+
         this.selectedColorName = {
             name: this.containerColors[0].name,
             color: this.containerColors[0].color,

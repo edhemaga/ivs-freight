@@ -1,4 +1,4 @@
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
 export class LoadCardConfiguration {
     static rows: number = 4;

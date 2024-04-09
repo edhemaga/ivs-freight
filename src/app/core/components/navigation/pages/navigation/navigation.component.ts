@@ -1,4 +1,4 @@
-import { Navigation, NavigationSubRoutes } from '../../models/navigation.model';
+import { Navigation } from '../../models/navigation.model';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -8,14 +8,21 @@ import {
     OnInit,
     ViewChild,
 } from '@angular/core';
-import { navigationData } from '../../utils/constants/navigation-data.constants';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter, startWith, Subject, takeUntil } from 'rxjs';
-import { NavigationService } from '../../services/navigation.service';
-import { navigation_magic_line } from '../../animations/navigation.animation';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { filter, startWith, Subject, takeUntil } from 'rxjs';
+
+// constants
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
+// services
+import { NavigationService } from '../../services/navigation.service';
+import { navigationMagicLine } from '../../animations/navigation.animation';
+import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+
+// components
 import { NavigationHeaderComponent } from '../../components/navigation-header/navigation-header.component';
 import { NavigationModalsComponent } from '../../components/navigation-modals/navigation-modals.component';
 import { NavigationFooterComponent } from '../../components/navigation-footer/navigation-footer.component';
@@ -25,12 +32,15 @@ import { NavigationSubrouteCardComponent } from '../../components/navigation-sub
 import { NavigationRouteComponent } from '../../components/navigation-route/navigation-route.component';
 import { NavigationSubrouteComponent } from '../../components/navigation-subroute/navigation-subroute.component';
 
+// models
+import { NavigationSubRoutes } from 'src/app/core/components/navigation/models/navigation-subroutes.model';
+
 @Component({
     selector: 'app-navigation',
     templateUrl: './navigation.component.html',
     styleUrls: ['./navigation.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [navigation_magic_line('showHideDetails')],
+    animations: [navigationMagicLine('showHideDetails')],
     standalone: true,
     imports: [
         CommonModule,
@@ -50,7 +60,7 @@ import { NavigationSubrouteComponent } from '../../components/navigation-subrout
     },
 })
 export class NavigationComponent implements OnInit, OnDestroy {
-    public navigation: Navigation[] = navigationData;
+    public navigation: Navigation[] = NavigationDataConstants.navigationData;
 
     public isNavigationHovered: boolean = false;
     public isNavigationOpenend: boolean = false;

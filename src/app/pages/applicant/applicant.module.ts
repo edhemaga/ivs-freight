@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 
 // modules
 import { ApplicantRoutingModule } from './applicant-routing.module';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 // pipes
@@ -44,7 +44,7 @@ import { Step4FormComponent } from './components/applicant-forms/step4-form/step
 import { Step3FormComponent } from './components/applicant-forms/step3-form/step3-form.component';
 import { Step2FormComponent } from './components/applicant-forms/step2-form/step2-form.component';
 
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -98,7 +98,7 @@ import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-file
 
         /* COMPONENTS */
 
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaInputRadiobuttonsComponent,

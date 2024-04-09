@@ -36,8 +36,8 @@ import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
 import { InputSwitchActions } from 'src/app/pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { ApplicantQuestion } from 'src/app/pages/applicant/models/applicant-question.model';
-import { SphFormAccidentModel } from 'src/app/pages/applicant/models/accident.model';
+import { ApplicantQuestion } from 'src/app/pages/applicant/pages/applicant-application/models/applicant-question.model';
+import { SphFormAccident } from 'src/app/pages/applicant/pages/applicant-sph/pages/applicant-sph-form/models/sph-form-accident.model';
 import {
     ApplicantModalResponse,
     CreatePreviousEmployerAccidentHistoryCommand,
@@ -63,7 +63,7 @@ export class Step2Component
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public accidentArray: SphFormAccidentModel[] = [];
+    public accidentArray: SphFormAccident[] = [];
 
     public lastAccidentCard: any;
 

@@ -32,7 +32,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { TaAutoclosePopoverComponent } from '../ta-autoclose-popover/ta-autoclose-popover.component';
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '../ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -71,7 +71,7 @@ import { ArrayStatus } from './models/array-status.model';
 
         // compoenents
         TaAutoclosePopoverComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaProfileImagesComponent,
         TaInputComponent,
         TaInputAddressDropdownComponent,

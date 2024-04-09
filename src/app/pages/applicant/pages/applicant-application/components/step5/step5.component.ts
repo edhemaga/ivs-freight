@@ -38,7 +38,7 @@ import { SelectedMode } from '../../../../enums/selected-mode.enum';
 import { InputSwitchActions } from '../../../../enums/input-switch-actions.enum';
 
 // models
-import { ViolationModel } from '../../../../models/violations.model';
+import { Violation } from '../../models/violation.model';
 import {
     ApplicantModalResponse,
     ApplicantResponse,
@@ -69,7 +69,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public violationsArray: ViolationModel[] = [];
+    public violationsArray: Violation[] = [];
 
     public stepValues: any;
     public stepHasValues: boolean = false;

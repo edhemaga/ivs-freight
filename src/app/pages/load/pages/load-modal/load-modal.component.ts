@@ -39,7 +39,7 @@ import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-
 import { LoadModalStopItemsComponent } from './components/load-modal-stop-items/load-modal-stop-items.component';
 import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -123,7 +123,7 @@ import { LoadYearDropdown } from './models/load-year-dropdown.model';
         NgbModule,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,

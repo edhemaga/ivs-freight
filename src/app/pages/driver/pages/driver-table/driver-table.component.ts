@@ -8,7 +8,7 @@ import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modal
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
 
 // Services
@@ -16,7 +16,7 @@ import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.
 import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ApplicantService } from '../../../../shared/services/applicant.service';
 import { AddressService } from 'src/app/shared/services/address.service';
 
@@ -39,15 +39,13 @@ import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
 // Modals
-import {
-    AvatarColors,
-    FilterOptionApplicant,
-    FilterOptionDriver,
-    OnTableBodyActionsModal,
-    OnTableHeadActionsModal,
-    MappedApplicantData,
-} from 'src/app/core/components/shared/model/table-components/driver-modal';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+import { MappedApplicantData } from './models/mapped-applicant-data.model';
+import { FilterOptionApplicant } from 'src/app/pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { TableHeadActions } from 'src/app/pages/driver/pages/driver-table/models/table-head-actions.model';
+import { TableBodyActions } from 'src/app/pages/driver/pages/driver-table/models/table-body-actions.model';
+import { AvatarColors } from 'src/app/pages/driver/pages/driver-table/models/avatar-colors.model';
+import { FilterOptionDriver } from 'src/app/pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import {
     ApplicantShortResponse,
     DriverListResponse,
@@ -59,13 +57,11 @@ import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-col
 
 // Globals
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
-import {
-    DropdownItem,
-    GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 
 // Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
@@ -98,7 +94,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = true;
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
-    public activeTableData: DataForCardsAndTables;
+    public activeTableData: CardTableData;
     public driverBackFilterQuery: FilterOptionDriver =
         TableDropdownComponentConstants.DRIVER_BACK_FILTER;
     public applicantBackFilterQuery: FilterOptionApplicant =
@@ -380,7 +376,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -675,7 +671,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setDriverData(tdata: DataForCardsAndTables): void {
+    private setDriverData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -1265,7 +1261,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             if (this.selectedTab === TableStringEnum.APPLICANTS) {
@@ -1366,7 +1362,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -1381,7 +1377,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableHeadActions(event: OnTableHeadActionsModal): void {
+    public onTableHeadActions(event: TableHeadActions): void {
         if (event.action === TableStringEnum.SORT) {
             this.mapingIndex = 0;
 
@@ -1405,7 +1401,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OnTableBodyActionsModal): void {
+    public onTableBodyActions(event: TableBodyActions): void {
         const mappedEvent = {
             ...event,
             data: {
@@ -1479,7 +1475,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -1493,7 +1489,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

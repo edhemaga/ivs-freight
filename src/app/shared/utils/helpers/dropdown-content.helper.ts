@@ -1,5 +1,5 @@
 // models
-import { DropdownItem } from '../../models/card-table-data.model';
+import { DropdownItem } from '../../models/card-models/card-table-data.model';
 
 // enums
 import { TableStringEnum } from '../../enums/table-string.enum';

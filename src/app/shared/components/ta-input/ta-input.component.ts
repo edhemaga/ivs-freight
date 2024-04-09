@@ -39,7 +39,7 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
 import { InputTypePipe } from './pipes/input-type.pipe';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
 import { InputErrorPipe } from './pipes/input-error.pipe';
 import { TaCustomDatetimePickersComponent } from '../ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
@@ -73,7 +73,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
         NgbPopoverModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaCustomDatetimePickersComponent,
         TaSpinnerComponent,
         TaProfileImagesComponent,

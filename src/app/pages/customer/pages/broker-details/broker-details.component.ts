@@ -7,7 +7,7 @@ import { BrokerService } from '../../services/broker.service';
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DetailsPageService } from 'src/app/shared/services/details-page.service';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 

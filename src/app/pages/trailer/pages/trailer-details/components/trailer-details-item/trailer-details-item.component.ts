@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { DropDownService } from 'src/app/shared/services/drop-down.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // components
@@ -38,9 +38,6 @@ import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-
 
 // moment
 import moment from 'moment';
-
-// models
-import { TableOptions } from 'src/app/core/model/table.model';
 
 @Titles()
 @Component({
@@ -87,8 +84,8 @@ export class TrailerDetailsItemComponent
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest: TableOptions;
-    public dataFHWA: TableOptions;
+    public dataTest;
+    public dataFHWA;
     public toggler: boolean[] = [];
     public currentDate: string;
 

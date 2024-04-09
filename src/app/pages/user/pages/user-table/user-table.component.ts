@@ -6,11 +6,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
 import { UserService } from '../../services/user.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
 // components
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // helpers
@@ -35,8 +35,8 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
 
 // models
-import { DropdownItem } from 'src/app/shared/models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import {
     CompanyUserResponse,
     GetCompanyUserListResponse,
@@ -176,7 +176,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
 
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -766,7 +766,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             event.type === TableStringEnum.ACTIVATE
         ) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...confirmationModalData,
@@ -799,7 +799,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // User Delete
         else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...confirmationModalData,
