@@ -37,7 +37,7 @@ import { MapRoute } from '../../models/map-route.model';
 import { Confirmation } from '../ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 
 // icon

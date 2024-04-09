@@ -14,7 +14,7 @@ import { PmCardComponent } from './pages/pm-card/pm-card.component';
 import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
 import { TaProgresBarComponent } from 'src/app/shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @NgModule({
     declarations: [PmTableComponent, PmCardComponent],

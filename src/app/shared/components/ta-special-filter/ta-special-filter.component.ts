@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Pipe
 import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';

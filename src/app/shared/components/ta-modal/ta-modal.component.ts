@@ -39,7 +39,7 @@ import {
     TaUploadDropzoneComponent,
 } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaCustomScrollbarComponent } from '../ta-custom-scrollbar/ta-custom-scrollbar.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 

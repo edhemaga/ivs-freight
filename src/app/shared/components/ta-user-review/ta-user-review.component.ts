@@ -24,7 +24,7 @@ import { ImageBase64Service } from '../../services/image-base64.service';
 import { FormsModule } from '@angular/forms';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
 
 // icon

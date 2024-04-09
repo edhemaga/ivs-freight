@@ -48,7 +48,7 @@ import { TaNoteComponent } from '../../ta-note/ta-note.component';
 import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
 import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaAppTooltipV2Component } from '../../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '../../ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '../../ta-progres-bar/ta-progres-bar.component';
 

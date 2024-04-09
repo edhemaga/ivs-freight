@@ -17,7 +17,7 @@ import { cardModalAnimation } from '../../../../../../shared/animations/card-mod
 import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
 
 //Components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
