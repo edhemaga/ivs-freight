@@ -75,7 +75,7 @@
                 'notification-dark': navigationIsOpened
             }"
             class="notification-img"
-            src="../../../../../assets/svg/applicant/notification-light.svg"
+            src="assets/svg/applicant/notification-light.svg"
         ></svg-icon>
     </div>
 
@@ -104,16 +104,15 @@
             [@showHideDetails]="navigationIsOpened ? 'true' : 'false'"
         >
             {{ route.name }}
-            <!-- prettier-ignore -->
             <span
-            
                 class="subroute"
                 *ngIf="
-                     route.id == activeRouteIdFromLocalStorage && !activeLinkHighlight 
-                     && activeRouteName != 'notifications' 
+                    route.id == activeRouteIdFromLocalStorage &&
+                    !activeLinkHighlight &&
+                    activeRouteName != 'notifications'
                 "
-                [ngClass]="{'animation-text': navigationIsOpened}"
-            >   
+                [ngClass]="{ 'animation-text': navigationIsOpened }"
+            >
                 &nbsp;[{{ activeRouteName | titlecase }}]
             </span>
         </p>

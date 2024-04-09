@@ -18,7 +18,7 @@ import {
     getLoadActiveAndPendingColumnDefinition,
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
-} from 'src/assets/utils/settings/load-columns';
+} from 'src/app/shared/utils/settings/table-settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,

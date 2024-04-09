@@ -15,12 +15,15 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // constants
-import { noteColors } from '../../../../const';
+import { NoteConstants } from '../utils/constants/note.constants';
 
 // components
 import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-//icons
+// models
+import { NoteColor } from '../models/note-color.model';
+
+// icons
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -68,7 +71,7 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
         foreColor: false,
         underline: false,
     };
-    containerColors: any[] = [...noteColors];
+    containerColors: NoteColor[] = [...NoteConstants.noteColors];
     selectedColorName: any = {
         color: '#6C6C6C',
         name: 'Gray',

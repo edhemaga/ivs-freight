@@ -30,11 +30,11 @@ import { ChartsModule } from 'ng2-charts';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 
-//helpers
+// helpers
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { hexToRgbA } from '../../../../assets/utils/methods-global';
+import { ChartHelper } from './utils/helpers/chart.helper';
 
-//models
+// models
 import { AnnotationConfig } from './models/annotation-config.model';
 import { Axis } from './models/axis.model';
 import { BasicChartConfig } from './models/basic-chart-config.model';
@@ -42,11 +42,11 @@ import { ChartDataProperties } from './models/chart-data-properties.model';
 import { LegendAttributes } from './models/legend-attributes.model';
 import { OnHoverProperties } from './models/on-hover-properties.model';
 
-//enums
-
+// enums
 import { ChartAxisPositionEnum } from './enums/chart-axis-position-string.enum';
 import { ChartAnnotationPositionStringEnum } from './enums/chart-annotation-position-string.enum';
-//Properties from dashboard
+
+// Properties from dashboard
 import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { TopRatedListItem } from 'src/app/pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
 import { ChartInitProperties } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
@@ -595,8 +595,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         let startcolorRGBA, endColorRGBA, lineHovered;
 
         if (color) {
-            startcolorRGBA = hexToRgbA('#' + color, 0.4);
-            endColorRGBA = hexToRgbA('#' + color, 0);
+            startcolorRGBA = ChartHelper.hexToRgbA('#' + color, 0.4);
+            endColorRGBA = ChartHelper.hexToRgbA('#' + color, 0);
         }
 
         let averageAnnotation = 0;

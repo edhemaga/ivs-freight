@@ -3,39 +3,51 @@ import {
     BrowserModule,
     BrowserTransferStateModule,
 } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+
+// modules
 import { SharedModule } from './shared/shared.module';
+import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
-// ---- NAVIGATION
-import { NavigationComponent } from './core/components/navigation/pages/navigation/navigation.component';
-import { ChangeLogoPipe } from './core/components/navigation/pipes/change-logo.pipe';
-import { ApiModule, Configuration } from 'appcoretruckassist';
-import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
-
-import { TaCustomToastMessagesComponent } from './shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
-import { AppInterceptor } from './app.inteceptor';
-
-import { EncryptionDecryptionService } from './shared/services/encryption-decryption.service';
-
-import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
-import { configFactory } from './app.config';
-import { StaticInjectorService } from './core/decorators/titles.decorator';
-import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
-import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
-import { ReactiveFormsModule } from '@angular/forms';
-import { TaCustomScrollbarComponent } from './shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
+
+// routing
+import { AppRoutingModule } from './app-routing.module';
+
+// components
+import { AppComponent } from './app.component';
+import { NavigationComponent } from './core/components/navigation/pages/navigation/navigation.component';
+import { TaCustomToastMessagesComponent } from './shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
+import { TaTooltipSlideComponent } from './shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaCustomScrollbarComponent } from './shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
+
+// pipes
+import { ChangeLogoPipe } from './core/components/navigation/pipes/change-logo.pipe';
+import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
+
+// interceptors
+import { AppInterceptor } from './core/interceptors/app.inteceptor';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+
+// config
+import { configFactory } from './core/configs/app.config';
+
+// services
+import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
+import { EncryptionDecryptionService } from './shared/services/encryption-decryption.service';
+import { StaticInjectorService } from './core/decorators/titles.decorator';
+
+// store
 import { ArticleReducer } from './pages/dashboard/state/dashboard.reducer';
 
+// lottie
+import player from 'lottie-web';
 function playerFactory() {
     return player;
 }
@@ -47,7 +59,6 @@ function playerFactory() {
         CommonModule,
         BrowserTransferStateModule,
         BrowserAnimationsModule,
-        AppRoutingModule,
         HttpClientModule,
         SharedModule,
         TaTooltipSlideComponent,
@@ -73,6 +84,9 @@ function playerFactory() {
         StoreModule.forRoot({
             course: ArticleReducer,
         }),
+
+        // routing
+        AppRoutingModule,
     ],
     providers: [
         {

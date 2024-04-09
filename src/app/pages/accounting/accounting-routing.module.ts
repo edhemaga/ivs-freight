@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// Components
+// components
 import { PayrollComponent } from './pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from './pages/accounting-payroll/accounting-payroll.component';
+import { TaUnderConstructionComponent } from 'src/app/shared/components/ta-under-construction/ta-under-construction.component';
 
-// Resolvers
+// resolvers
 import { PayrolldResolver } from './pages/payroll/state/payroll-resolver';
 
 const routes: Routes = [
@@ -13,13 +14,28 @@ const routes: Routes = [
         path: '',
         component: AccountingPayrollComponent,
         children: [
-            { path: '', redirectTo: 'payroll', pathMatch: 'full' },
             {
                 path: 'payroll',
                 component: PayrollComponent,
                 data: { title: 'Payroll' },
                 resolve: [PayrolldResolver],
             },
+            {
+                path: 'ifta',
+                component: TaUnderConstructionComponent,
+                data: { title: 'Ifta' },
+            },
+            {
+                path: 'ledger',
+                component: TaUnderConstructionComponent,
+                data: { title: 'Ledger' },
+            },
+            {
+                path: 'tax',
+                component: TaUnderConstructionComponent,
+                data: { title: 'Tax' },
+            },
+            { path: '', redirectTo: 'payroll', pathMatch: 'full' },
         ],
         data: { title: 'Accounting' },
     },

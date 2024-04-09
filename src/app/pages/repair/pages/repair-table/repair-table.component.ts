@@ -52,6 +52,12 @@ import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-
 import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
+// settings
+import {
+    getRepairTruckAndTrailerColumnDefinition,
+    getRepairsShopColumnDefinition,
+} from 'src/app/shared/utils/settings/table-settings/repair-columns';
+
 // models
 import { ShopBackFilter } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter.model';
 import { MappedTruckTrailer } from 'src/app/pages/repair/pages/repair-table/models/mapped-truck-trailer.model';
@@ -65,10 +71,6 @@ import { TableToolbarActions } from 'src/app/shared/models/table-models/table-to
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
-import {
-    getRepairTruckAndTrailerColumnDefinition,
-    getRepairsShopColumnDefinition,
-} from 'src/assets/utils/settings/repair-columns';
 
 @Component({
     selector: 'app-repair-table',

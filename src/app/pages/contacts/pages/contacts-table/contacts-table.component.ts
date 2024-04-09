@@ -22,7 +22,7 @@ import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 
 // helpers
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
+import { getToolsContactsColumnDefinition } from 'src/app/shared/utils/settings/table-settings/contacts-columns';
 import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
 import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
 

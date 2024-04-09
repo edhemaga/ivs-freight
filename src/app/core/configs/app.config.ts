@@ -1,11 +1,13 @@
 import {
     Configuration,
     ConfigurationParameters,
-} from './../../appcoretruckassist/configuration';
+} from '../../../../appcoretruckassist/configuration';
 
-import { environment } from '../environments/environment';
+// enviroment
+import { environment } from '../../../environments/environment';
 
-import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
+// services
+import { WebsiteUserLoggedService } from '../../pages/website/services/website-user-logged.service';
 
 export const configFactory = (
     userLoggedService?: WebsiteUserLoggedService
@@ -17,5 +19,6 @@ export const configFactory = (
             'x-api-key': 'f72ad2c9-d4a6-46c5-9093-7085d43cf6b2',
         },
     };
+
     return new Configuration(params);
 };

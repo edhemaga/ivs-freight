@@ -20,7 +20,7 @@ import { WebsiteUserLoggedService } from 'src/app/pages/website/services/website
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 
 // config
-import { configFactory } from './../../app.config';
+import { configFactory } from '../configs/app.config';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
