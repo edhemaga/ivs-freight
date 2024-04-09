@@ -1,5 +1,8 @@
-import { TruckTypeResponse } from 'appcoretruckassist';
-import { DropdownItem, PmTruckProgressData } from 'src/app/shared/models/card-models/card-table-data.model';
+import { TruckMinimalResponse, TruckTypeResponse } from 'appcoretruckassist';
+import {
+    DropdownItem,
+    PmTruckProgressData,
+} from 'src/app/shared/models/card-models/card-table-data.model';
 
 export interface PmTruck {
     textUnit: string;
@@ -34,4 +37,6 @@ export interface PmTruck {
         hasContent: boolean;
         content: DropdownItem[];
     };
+    truck: TruckMinimalResponse;
+    pmId: number;
 }

@@ -1,10 +1,8 @@
 <app-ta-modal
-    [modalTitle]="editData?.header?.concat(' ', 'PM')"
+    [modalTitle]="editData?.header"
     [editData]="editData"
     [editName]="
-        editData?.action?.includes('unit-pm')
-            ? 'Unit'.concat(' ', editData?.data?.textUnit)
-            : null
+        editData?.action?.includes('unit-pm') ? editData?.data?.textUnit : null
     "
     [disableDelete]="true"
     [isModalValid]="PMform.valid && isFormDirty"

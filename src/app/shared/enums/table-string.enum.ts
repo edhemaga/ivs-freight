@@ -297,6 +297,11 @@ export enum TableStringEnum {
     NEW = 'new',
     GENERIC_PM = 'generic-pm',
     UNIT_PM = 'unit-pm',
+    CONFIGURE = 'configure',
+    ADD_REPAIR_BILL = 'add-repair-bill',
+    EDIT_TRUCK_PM_HEADER = 'Edit Truck PM',
+    EDIT_TRAILER_PM_HEADER = 'Edit Trailer PM',
+    CUSTOM = 'custom',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',

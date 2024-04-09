@@ -518,24 +518,6 @@
                     }
                 }
             }
-
-            &.active-drop {
-                .dropdown-dots {
-                    svg {
-                        path {
-                            //fill: #6c6c6c !important;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            path {
-                                //fill: #3d3d3d !important;
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

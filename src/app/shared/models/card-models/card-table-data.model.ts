@@ -1,3 +1,4 @@
+import { TrailerMinimalResponse, TruckMinimalResponse } from 'appcoretruckassist';
 import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
 
 // Table Columns
@@ -206,6 +207,9 @@ export interface CardDetails {
     general?: PmTrailerProgressData;
     ptoPump?: PmTrailerProgressData;
     reeferUnit?: PmTrailerProgressData;
+    truck?: TruckMinimalResponse;
+    trailer?: TrailerMinimalResponse;
+    pmId?: number;
 }
 
 export interface PmTruckProgressData {

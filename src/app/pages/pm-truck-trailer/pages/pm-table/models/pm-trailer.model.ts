@@ -1,4 +1,8 @@
-import { DropdownItem, PmTrailerProgressData } from 'src/app/shared/models/card-models/card-table-data.model';
+import { TrailerMinimalResponse } from 'appcoretruckassist';
+import {
+    DropdownItem,
+    PmTrailerProgressData,
+} from 'src/app/shared/models/card-models/card-table-data.model';
 
 export interface PmTrailer {
     textUnit: string;
@@ -19,4 +23,6 @@ export interface PmTrailer {
         hasContent: boolean;
         content: DropdownItem[];
     };
+    trailer: TrailerMinimalResponse;
+    pmId: number;
 }

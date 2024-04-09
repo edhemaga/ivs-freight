@@ -42,6 +42,7 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-pm-modal',
@@ -315,7 +316,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     }
                     case 'edit': {
                         switch (this.editData.header) {
-                            case 'Truck': {
+                            case TableStringEnum.EDIT_TRUCK_PM_HEADER: {
                                 this.addUpdatePMTruckUnit();
                                 this.modalService.setModalSpinner({
                                     action: null,
@@ -324,7 +325,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 });
                                 break;
                             }
-                            case 'Trailer': {
+                            case TableStringEnum.EDIT_TRAILER_PM_HEADER: {
                                 this.addUpdatePMTrailerUnit();
                                 this.modalService.setModalSpinner({
                                     action: null,
@@ -811,7 +812,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         },
                         type2: this.editData.type,
                         type: 'edit',
-                        header: 'Truck',
+                        header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
                         action: 'unit-pm',
                     };
                 }
@@ -825,13 +826,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         },
                         type2: this.editData.type,
                         type: 'edit',
-                        header: 'Trailer',
+                        header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
                         action: 'unit-pm',
                     };
                 }
             }
             if (
-                [this.editData?.header, this.editData?.type].includes('Truck')
+                [this.editData?.header].includes(TableStringEnum.EDIT_TRUCK_PM_HEADER)
             ) {
                 this.getPMTruckUnit(this.editData.id);
             } else {
