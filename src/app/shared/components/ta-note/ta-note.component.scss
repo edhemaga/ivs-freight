@@ -78,7 +78,7 @@
 
             svg {
                 path {
-                    fill: #FFFFFFB2 !important;
+                    fill: #ffffffb2 !important;
                 }
             }
         }
@@ -293,10 +293,10 @@
             white-space: break-spaces;
             overflow: auto;
             outline: none;
-            color: #6c6c6c;
+            color: $bw-9;
             font-size: 11px;
             margin: 0 0 0 auto;
-            line-height: 12px;
+            line-height: 14px;
             padding: 3px 6px;
             font-weight: 500;
 
@@ -311,7 +311,8 @@
             }
 
             span,
-            div {
+            div,
+            b {
                 &::-moz-selection {
                     color: $bw6-2;
                     background: rgb(108, 108, 108, 0.2);
@@ -323,55 +324,81 @@
                 }
             }
 
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
+            font[color='#dadada'], font[color='#424242']  {
+                color: $bw-9;
                 &::-moz-selection {
-                    color: rgb(83, 107, 194) !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
+                    color: rgb(218, 218, 218) !important;
+                    background: rgb(218, 218, 218, 0.2)!important;
                 }
-
+            
                 &::selection {
-                    color: rgb(83, 107, 194) !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
+                    color: rgb(218, 218, 218) !important;
+                    background: rgb(218, 218, 218, 0.2)!important;
                 }
             }
 
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
+            font[color='#6692f1'], font[color='#3b73ed'] {
+                color: $ta-blue-13;
                 &::-moz-selection {
-                    color: rgb(38, 166, 144) !important;
-                    background: rgb(38, 166, 144, 0.2) !important;
+                    color: rgb(102, 146, 241) !important;
+                    background: rgb(102, 146, 241, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(38, 166, 144) !important;
-                    background: rgb(38, 166, 144, 0.2) !important;
+                    color: rgb(102, 146, 241) !important;
+                    background: rgb(102, 146, 241, 0.2) !important;
                 }
             }
 
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
+            font[color='#56b4ac'], font[color='#259f94'] {
+                color: $ta-green;
                 &::-moz-selection {
-                    color: rgb(239, 83, 80) !important;
-                    background: rgb(239, 83, 80, 0.2) !important;
+                    color: rgb(86, 180, 172) !important;
+                    background: rgb(86, 180, 172, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(239, 83, 80);
-                    background: rgb(239, 83, 80, 0.2) !important;
+                    color: rgb(86, 180, 172) !important;
+                    background: rgb(86, 180, 172, 0.2) !important;
                 }
             }
 
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
+            font[color='#e66767'], font[color='#df3c3c'] {
+                color: $ta-red-10;
                 &::-moz-selection {
-                    color: rgb(255, 167, 38) !important;
-                    background: rgb(255, 167, 38, 0.2) !important;
+                    color: rgb(230, 103, 103) !important;
+                    background: rgb(230, 103, 103, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(255, 167, 38);
-                    background: rgb(255, 167, 38, 0.2) !important;
+                    color: rgb(230, 103, 103) !important;
+                    background: rgb(230, 103, 103, 0.2) !important;
+                }
+            }
+
+            font[color='#fab15c'], font[color='#f89b2e'] {
+                color: $ta-yellow-1;
+                &::-moz-selection {
+                    color: rgb(250, 177, 92) !important;
+                    background: rgb(250, 177, 92, 0.2) !important;
+                }
+            
+                &::selection {
+                    color: rgb(250, 177, 92) !important;
+                    background: rgb(250, 177, 92, 0.2) !important;
+                }
+            }
+
+            font[color='#b370f0'], font[color='#9e47ec'] {
+                color: $ta-purple-1;
+                &::-moz-selection {
+                    color: rgb(179, 112, 240) !important;
+                    background: rgb(179, 112, 240, 0.2) !important;
+                }
+            
+                &::selection {
+                    color: rgb(179, 112, 240) !important;
+                    background: rgb(179, 112, 240, 0.2) !important;
                 }
             }
 

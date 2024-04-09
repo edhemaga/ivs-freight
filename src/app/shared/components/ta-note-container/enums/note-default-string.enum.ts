@@ -5,4 +5,5 @@ export enum NoteDefaultStringEnum {
     CSS_STYLE = 'styleWithCSS',
     FALSE = 'false',
     COLOR = 'color',
+    DARK = 'dark',
 }

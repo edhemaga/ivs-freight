@@ -77,11 +77,8 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
         foreColor: false,
         underline: false,
     }; //leave it like this don't move to constants because it won't work
-    public containerColors: NoteColors[] = [...NoteConfigConstants.NoteColors];
-    public selectedColorName: NoteColors = {
-        color: NoteSelectedColorStringEnum.GRAY_RGB,
-        name: NoteSelectedColorStringEnum.GRAY,
-    };
+    public containerColors: NoteColors[];
+    public selectedColorName: NoteColors;
     private defaultColorSet: boolean = false;
 
     //Timeout
@@ -97,7 +94,9 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.setContainerColors();
+    }
 
     private filterContainersColor(): void {
         this.containerColors.sort((a) => {
@@ -219,6 +218,18 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
 
     public hoveringArrow(value: boolean): void {
         this.hoveringArrowPicker = value;
+    }
+
+    private setContainerColors(): void {
+        this.containerColors =
+            this.type === NoteDefaultStringEnum.DARK
+                ? [...NoteConfigConstants.NoteDarkColors]
+                : [...NoteConfigConstants.NoteLightColors];
+                
+        this.selectedColorName = {
+            name: this.containerColors[0].name,
+            color: this.containerColors[0].color,
+        };
     }
 
     public ngOnDestroy(): void {
