@@ -135,7 +135,7 @@ export class PmService {
 
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
-                                data: pm,
+                                data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
 
@@ -259,7 +259,7 @@ export class PmService {
 
                             this.tableService.sendActionAnimation({
                                 animation: 'update',
-                                data: pm,
+                                data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
 

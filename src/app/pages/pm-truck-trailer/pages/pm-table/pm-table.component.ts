@@ -430,14 +430,12 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private actionAnimationSubscribe() {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
+            .subscribe((res) => {
                 if (res?.animation === TableStringEnum.UPDATE) {
                     const updatedPm =
                         this.selectedTab === TableStringEnum.ACTIVE
-                            ? this.mapPmTruckData(res.data.pagination.data[0])
-                            : this.mapPmTrailerData(
-                                  res.data.pagination.data[0]
-                              );
+                            ? this.mapPmTruckData(res.data)
+                            : this.mapPmTrailerData(res.data);
 
                     this.viewData = this.viewData.map((pm) => {
                         if (pm.pmId === res.id) {
@@ -622,7 +620,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         minWidth: 101,
                         filter: '',
                         isNumeric: true,
-                        index: truckColumnsLength+1,
+                        index: truckColumnsLength + 1,
                         sortable: true,
                         isActionColumn: false,
                         isSelectColumn: false,
@@ -654,7 +652,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         minWidth: 101,
                         filter: '',
                         isNumeric: true,
-                        index: trailerColumnsLength+1,
+                        index: trailerColumnsLength + 1,
                         sortable: true,
                         isActionColumn: false,
                         isSelectColumn: false,
