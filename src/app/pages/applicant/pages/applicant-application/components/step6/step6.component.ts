@@ -62,8 +62,8 @@ import {
     CreateEducationReviewCommand,
     EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
-import { ApplicantQuestion } from '../../../../models/applicant-question.model';
-import { ContactModel } from '../../../../models/education.model';
+import { ApplicantQuestion } from '../../models/applicant-question.model';
+import { Contact } from '../../models/contact.model';
 
 @Component({
     selector: 'app-step6',
@@ -132,7 +132,7 @@ export class Step6Component implements OnInit, OnDestroy, AfterContentChecked {
         { id: 4, displayRadioRequiredNote: false },
     ];
 
-    public contactsArray: ContactModel[] = [];
+    public contactsArray: Contact[] = [];
 
     public lastContactCard: any;
 

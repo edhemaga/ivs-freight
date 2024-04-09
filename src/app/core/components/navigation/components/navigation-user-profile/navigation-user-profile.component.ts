@@ -10,23 +10,29 @@ import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// animations
 import {
-    DropDownAnimation,
-    navigation_route_animation,
+    dropDownAnimation,
+    navigationRouteAnimation,
 } from '../../animations/navigation.animation';
 
-//Model
-import { userNavigationData } from '../../utils/constants/navigation-data.constants';
-import { NavigationUserPanel } from '../../models/navigation.model';
+// models
+import { NavigationUserPanel } from '../../models/navigation-user-panel.model';
 
-//Services
+// constants
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
+// services
 import { NavigationService } from '../../services/navigation.service';
 import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 
-//Components
+// components
 import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 @Component({
@@ -37,8 +43,8 @@ import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/n
     standalone: true,
     imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
-        navigation_route_animation('showHideDetails'),
-        DropDownAnimation,
+        navigationRouteAnimation('showHideDetails'),
+        dropDownAnimation,
     ],
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
@@ -47,10 +53,13 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
     @Input() isUserCompanyDetailsOpen: boolean;
-    public userNavigationData: NavigationUserPanel[] = userNavigationData;
+
+    public userNavigationData: NavigationUserPanel[] =
+        NavigationDataConstants.userNavigationData;
     public currentUserStatus: string = 'online';
     isActiveMagicLine = true;
     public loggedUser: any = null;
+
     constructor(
         public router: Router,
         private websiteAuthService: WebsiteAuthService,

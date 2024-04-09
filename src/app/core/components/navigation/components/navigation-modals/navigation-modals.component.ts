@@ -5,25 +5,21 @@ import {
 } from '../../animations/navigation.animation';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//Models
-import { NavigationModal } from '../../models/navigation.model';
-import {
-    accountingNavigationData,
-    fuelNavigationData,
-    generalNavigationData,
-    repairNavigationData,
-    safetyNavigationData,
-    toolsNavigationData,
-    requestNavigationData,
-} from '../../utils/constants/navigation-data.constants';
-//Services
+// models
+import { NavigationModal } from 'src/app/core/components/navigation/models/navigation-modal.model';
+
+// constants
+import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
+// services
 import { NavigationService } from '../../services/navigation.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 
-//Components
-
+// components
 import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
 import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
@@ -64,14 +60,20 @@ export class NavigationModalsComponent {
     @Input() isNavigationHoveredAndPanelOpen: boolean = false;
     @Input() isNavigationHovered: boolean = false;
     @Input() isModalPanelOpen: boolean;
-    public generalNavigationData: NavigationModal[] = generalNavigationData;
-    public toolsNavigationData: NavigationModal[] = toolsNavigationData;
-    public repairNavigationData: NavigationModal[] = repairNavigationData;
-    public fuelNavigationData: NavigationModal[] = fuelNavigationData;
-    public safetyNavigationData: NavigationModal[] = safetyNavigationData;
-    public requestNavigationData: NavigationModal[] = requestNavigationData;
+    public generalNavigationData: NavigationModal[] =
+        NavigationDataConstants.generalNavigationData;
+    public toolsNavigationData: NavigationModal[] =
+        NavigationDataConstants.toolsNavigationData;
+    public repairNavigationData: NavigationModal[] =
+        NavigationDataConstants.repairNavigationData;
+    public fuelNavigationData: NavigationModal[] =
+        NavigationDataConstants.fuelNavigationData;
+    public safetyNavigationData: NavigationModal[] =
+        NavigationDataConstants.safetyNavigationData;
+    public requestNavigationData: NavigationModal[] =
+        NavigationDataConstants.requestNavigationData;
     public accountingNavigationData: NavigationModal[] =
-        accountingNavigationData;
+        NavigationDataConstants.accountingNavigationData;
     public showToolTip: boolean = false;
     public changeTextHoverOnCloseModal: boolean = false;
     public Title: string = 'Add Anything';

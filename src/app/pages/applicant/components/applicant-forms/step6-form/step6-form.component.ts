@@ -45,7 +45,7 @@ import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-i
 import { SelectedMode } from '../../../enums/selected-mode.enum';
 
 // models
-import { ContactModel } from '../../../models/education.model';
+import { Contact } from '../../../pages/applicant-application/models/contact.model';
 
 @Component({
     selector: 'app-step6-form',
@@ -313,7 +313,7 @@ export class Step6FormComponent
 
         const { firstRowReview, ...contactForm } = this.contactForm.value;
 
-        const saveData: ContactModel = {
+        const saveData: Contact = {
             ...contactForm,
         };
 
@@ -334,7 +334,7 @@ export class Step6FormComponent
 
         const { firstRowReview, ...contactForm } = this.contactForm.value;
 
-        const saveData: ContactModel = {
+        const saveData: Contact = {
             ...contactForm,
         };
 

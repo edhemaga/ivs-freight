@@ -30,7 +30,7 @@ import { ApplicantQuery } from '../../../../state/applicant.query';
 import { SelectedMode } from '../../../../enums/selected-mode.enum';
 
 // models
-import { AccidentModel } from '../../../../models/accident.model';
+import { Accident } from '../../models/accident.model';
 import {
     AccidentRecordFeedbackResponse,
     ApplicantModalResponse,
@@ -55,7 +55,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public accidentArray: AccidentModel[] = [];
+    public accidentArray: Accident[] = [];
 
     public stepValues: any;
     public stepHasValues: boolean = false;

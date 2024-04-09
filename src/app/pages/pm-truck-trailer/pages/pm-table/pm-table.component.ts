@@ -11,12 +11,10 @@ import {
 import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // Models
-import {
-    CardDetails,
-    DropdownItem,
-    GridColumn,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
 import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { PmTableColumns } from './models/pm-table-columns.model';
 import { PmTableAction } from './models/pm-table-actions.model';
@@ -452,17 +450,19 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pmService.currentPmListTruck
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentPmListTruck subscribe res', res);
-                this.setCustomPmColumns();
-                this.sendPMData();
+                if (res) {
+                    this.setCustomPmColumns();
+                    this.sendPMData();
+                }
             });
 
         this.pmService.currentPmListTrailer
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentPmListTrailer subscribe res', res);
-                this.setCustomPmColumns();
-                this.sendPMData();
+                if (res) {
+                    this.setCustomPmColumns();
+                    this.sendPMData();
+                }
             });
     }
 
@@ -601,69 +601,65 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             pm.logoName.includes(TableStringEnum.CUSTOM)
         );
 
-        if (customColumnsPmTruck?.length) {
-            const truckColumnsLength = this.getGridColumns(
-                TableStringEnum.PM_TRUCK
-            ).length;
+        const truckColumnsLength = this.getGridColumns(
+            TableStringEnum.PM_TRUCK
+        ).length;
 
-            this.customColumnsTruck = customColumnsPmTruck.map(
-                (customColumn, index) => {
-                    return {
-                        ngTemplate: 'progressMiles',
-                        title: customColumn.title,
-                        field: 'customField' + (index + 1),
-                        name: customColumn.title,
-                        sortName: 'customField' + (index + 1),
-                        hidden: false,
-                        isPined: false,
-                        width: 150,
-                        minWidth: 101,
-                        filter: '',
-                        isNumeric: true,
-                        index: truckColumnsLength + 1,
-                        sortable: true,
-                        isActionColumn: false,
-                        isSelectColumn: false,
-                        filterable: false,
-                        disabled: false,
-                        export: true,
-                        resizable: true,
-                    };
-                }
-            );
-        }
+        this.customColumnsTruck = customColumnsPmTruck.map(
+            (customColumn, index) => {
+                return {
+                    ngTemplate: 'progressMiles',
+                    title: customColumn.title,
+                    field: 'customField' + (index + 1),
+                    name: customColumn.title,
+                    sortName: 'customField' + (index + 1),
+                    hidden: false,
+                    isPined: false,
+                    width: 150,
+                    minWidth: 101,
+                    filter: '',
+                    isNumeric: true,
+                    index: truckColumnsLength + 1,
+                    sortable: true,
+                    isActionColumn: false,
+                    isSelectColumn: false,
+                    filterable: false,
+                    disabled: false,
+                    export: true,
+                    resizable: true,
+                };
+            }
+        );
 
-        if (customColumnsPmTrailer?.length) {
-            const trailerColumnsLength = this.getGridColumns(
-                TableStringEnum.PM_TRAILER
-            ).length;
+        const trailerColumnsLength = this.getGridColumns(
+            TableStringEnum.PM_TRAILER
+        ).length;
 
-            this.customColumnsTrailer = customColumnsPmTrailer.map(
-                (customColumn, index) => {
-                    return {
-                        ngTemplate: 'progress',
-                        title: customColumn.title,
-                        field: 'customField' + (index + 1),
-                        name: customColumn.title,
-                        sortName: 'customField' + (index + 1),
-                        hidden: false,
-                        isPined: false,
-                        width: 150,
-                        minWidth: 101,
-                        filter: '',
-                        isNumeric: true,
-                        index: trailerColumnsLength + 1,
-                        sortable: true,
-                        isActionColumn: false,
-                        isSelectColumn: false,
-                        filterable: false,
-                        disabled: false,
-                        export: true,
-                        resizable: true,
-                    };
-                }
-            );
-        }
+        this.customColumnsTrailer = customColumnsPmTrailer.map(
+            (customColumn, index) => {
+                return {
+                    ngTemplate: 'progress',
+                    title: customColumn.title,
+                    field: 'customField' + (index + 1),
+                    name: customColumn.title,
+                    sortName: 'customField' + (index + 1),
+                    hidden: false,
+                    isPined: false,
+                    width: 150,
+                    minWidth: 101,
+                    filter: '',
+                    isNumeric: true,
+                    index: trailerColumnsLength + 1,
+                    sortable: true,
+                    isActionColumn: false,
+                    isSelectColumn: false,
+                    filterable: false,
+                    disabled: false,
+                    export: true,
+                    resizable: true,
+                };
+            }
+        );
     }
 
     private getAllTableColumns(configType: string): PmTableColumns[] {

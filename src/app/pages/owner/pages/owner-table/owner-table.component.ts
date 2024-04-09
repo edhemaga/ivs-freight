@@ -13,8 +13,8 @@ import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-column
 import {
     CardDetails,
     DropdownItem,
-    GridColumn,
 } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { OwnerTableData } from '../../models/owner-table-data.model';

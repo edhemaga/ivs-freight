@@ -1,8 +1,7 @@
-import {
-    Navigation,
-    NavigationSubRoute,
-    NavigationSubRoutes,
-} from '../../models/navigation.model';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import {
     Component,
     Input,
@@ -12,15 +11,18 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+
+// animations
 import {
-    DropDownAnimation,
-    navigation_route_animation,
+    dropDownAnimation,
+    navigationRouteAnimation,
     test,
-} from '../../animations/navigation.animation';
+} from 'src/app/core/components/navigation/animations/navigation.animation';
+
+// models
+import { Navigation } from 'src/app/core/components/navigation/models/navigation.model';
+import { NavigationSubRoute } from 'src/app/core/components/navigation/models/navigation-subroute.model';
+import { NavigationSubRoutes } from 'src/app/core/components/navigation/models/navigation-subroutes.model';
 
 @Component({
     selector: 'app-navigation-subroute',
@@ -28,8 +30,8 @@ import {
     styleUrls: ['./navigation-subroute.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     animations: [
-        navigation_route_animation('showHideDetails'),
-        DropDownAnimation,
+        navigationRouteAnimation('showHideDetails'),
+        dropDownAnimation,
         test('test'),
     ],
     standalone: true,
@@ -44,8 +46,10 @@ export class NavigationSubrouteComponent implements OnChanges {
     @Input() otherContainerOpened: boolean;
     @Output() onSubrouteActiveEvent = new EventEmitter<NavigationSubRoutes>();
     @Output() subRouteIndex = new EventEmitter<Number>();
+
     public isMagicLineActive: boolean = false;
     public doAnimation: boolean = false;
+
     constructor(private router: Router) {}
 
     subrouteIndex(index) {

@@ -43,8 +43,8 @@ import { FormService } from 'src/app/shared/services/form.service';
 import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 // models
-import { SphFormAccidentModel } from 'src/app/pages/applicant/models/accident.model';
-import { AnswerChoices } from 'src/app/pages/applicant/models/applicant-question.model';
+import { SphFormAccident } from 'src/app/pages/applicant/pages/applicant-sph/pages/applicant-sph-form/models/sph-form-accident.model';
+import { AnswerChoices } from 'src/app/pages/applicant/pages/applicant-application/models/answer-choices.model';
 import { InputSwitchActions } from 'src/app/pages/applicant/enums/input-switch-actions.enum';
 import { AddressEntity } from 'appcoretruckassist';
 
@@ -79,7 +79,7 @@ export class SphStep2FormComponent
 
     public accidentForm: UntypedFormGroup;
 
-    public accidentArray: SphFormAccidentModel[] = [];
+    public accidentArray: SphFormAccident[] = [];
 
     public isAccidentEdited?: boolean;
 
@@ -298,7 +298,7 @@ export class SphStep2FormComponent
 
         const { accidentLocation, ...registerForm } = this.accidentForm.value;
 
-        const saveData: SphFormAccidentModel = {
+        const saveData: SphFormAccident = {
             ...registerForm,
             accidentLocation: this.selectedAddress,
             accidentState: this.selectedAddress.stateShortName,
@@ -333,7 +333,7 @@ export class SphStep2FormComponent
         const { address, accidentState, ...registerForm } =
             this.accidentForm.value;
 
-        const saveData: SphFormAccidentModel = {
+        const saveData: SphFormAccident = {
             ...registerForm,
             accidentLocation: this.selectedAddress
                 ? this.selectedAddress

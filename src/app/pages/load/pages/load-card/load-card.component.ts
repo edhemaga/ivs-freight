@@ -23,7 +23,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { DetailsDataService } from 'src/app/shared/services/details-data.service';
 
 // store
-import { LoadQuery } from 'src/app/core/components/modals/cards-modal/state/store/load-modal.query';
+import { LoadQuery } from 'src/app/shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // helpers
 import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
