@@ -35,6 +35,7 @@ import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
 import { ArticleReducer } from './pages/dashboard/state/dashboard.reducer';
+import { authReducer } from './pages/website/state/auth.reducer';
 
 function playerFactory() {
     return player;
@@ -71,7 +72,7 @@ function playerFactory() {
             warnOnNgModelWithFormControl: 'never',
         }),
         StoreModule.forRoot({
-            course: ArticleReducer,
+            auth: authReducer,
         }),
     ],
     providers: [
