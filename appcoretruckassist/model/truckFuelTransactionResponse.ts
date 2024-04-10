@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemFuel } from './itemFuel';
 
 
-export interface EditFuelItemCommand { 
-    id?: number | null;
-    itemfuel?: ItemFuel;
-    price?: number;
-    qty?: number;
-    subtotal?: number;
+export interface TruckFuelTransactionResponse { 
+    id?: number;
+    truckNumber?: string | null;
+    name?: string | null;
+    logoName?: string | null;
+    assigned?: boolean;
+    transactionCount?: number;
+    lastUsed?: string | null;
 }
 

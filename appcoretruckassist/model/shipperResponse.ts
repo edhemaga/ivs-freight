@@ -13,7 +13,6 @@ import { FileResponse } from './fileResponse';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
-import { TimeOnly } from './timeOnly';
 
 
 export interface ShipperResponse { 
@@ -44,10 +43,13 @@ export interface ShipperResponse {
     rating?: number;
     pickups?: number;
     deliveries?: number;
-    avgPickupTime?: TimeOnly;
-    avgDeliveryTime?: TimeOnly;
+    commentCount?: number;
+    avgPickupTimeInMin?: number | null;
+    avgDeliveryTimeInMin?: number | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     createdAt?: string;
+    updatedAt?: string;
+    lastUsedAt?: string | null;
 }
 

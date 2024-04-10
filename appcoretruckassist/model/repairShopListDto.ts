@@ -60,5 +60,6 @@ export interface RepairShopListDto {
     contactCount?: number | null;
     shopServiceType?: EnumValue;
     dateDeactivated?: string | null;
+    visitedByMe?: boolean;
 }
 

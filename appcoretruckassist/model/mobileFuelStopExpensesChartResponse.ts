@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemFuel } from './itemFuel';
 
 
-export interface EditFuelItemCommand { 
-    id?: number | null;
-    itemfuel?: ItemFuel;
-    price?: number;
-    qty?: number;
-    subtotal?: number;
+export interface MobileFuelStopExpensesChartResponse { 
+    cost?: number | null;
+    bill?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 
