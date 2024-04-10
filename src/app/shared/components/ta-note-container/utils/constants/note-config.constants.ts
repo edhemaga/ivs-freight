@@ -1,3 +1,4 @@
+import { NoteActiveOptions } from '../../models/note-active-options.model';
 import { NoteColors } from '../../models/note-colors.model';
 
 export class NoteConfigConstants {
@@ -54,4 +55,11 @@ export class NoteConfigConstants {
             name: 'Purple',
         },
     ];
+
+    static NoteActiveOptions: NoteActiveOptions = {
+        bold: false,
+        italic: false,
+        foreColor: false,
+        underline: false,
+    };
 }

@@ -79,6 +79,7 @@
                 contenteditable="true"
                 spellcheck="false"
                 id="main_editor"
+                #mainEditorDiv
                 (paste)="onPaste($event)"
             ></div>
             <div class="container_separate" *ngIf="isExpanded">
@@ -106,7 +107,7 @@
                     [selectedEditor]="main_editor?.nativeElement"
                     [type]="'dark'"
                 ></app-ta-note-container>
-                <ng-container *ngIf="!savingNote && _note && _note !== ''">
+                <ng-container *ngIf="!savingNote && value">
                     <div
                         [tooltipBackground]="'#424242'"
                         ngbTooltip
@@ -115,7 +116,7 @@
                     >
                         <svg-icon
                             src="assets/svg/common/trash.svg"
-                            (click)="valueChange('')"
+                            (click)="valueChange('', true)"
                         ></svg-icon>
                     </div>
                 </ng-container>

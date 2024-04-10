@@ -72,11 +72,8 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
     //Colors
     public selectedPaternColor: string = NoteSelectedColorStringEnum.GRAY_RGB;
     public activeOptions: NoteActiveOptions = {
-        bold: false,
-        italic: false,
-        foreColor: false,
-        underline: false,
-    }; //leave it like this don't move to constants because it won't work
+        ...NoteConfigConstants.NoteActiveOptions,
+    };
     public containerColors: NoteColors[];
     public selectedColorName: NoteColors;
     private defaultColorSet: boolean = false;
@@ -101,7 +98,7 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
     private filterContainersColor(): void {
         this.containerColors.sort((a) => {
             if (
-                a[NoteDefaultStringEnum.COLOR] != this.selectedColorName.color
+                a[NoteDefaultStringEnum.COLOR] !== this.selectedColorName.color
             ) {
                 return 1;
             }

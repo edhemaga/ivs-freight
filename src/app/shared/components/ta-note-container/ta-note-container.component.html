@@ -63,16 +63,20 @@
                 [class.input_note]="!popoverNote"
             >
                 <ng-container
-                    *ngFor="let paternCol of containerColors; let indx = index"
+                    *ngFor="
+                        let paternCol of containerColors;
+                        let indx = index;
+                        trackBy: identity
+                    "
                 >
                     <div
                         (click)="
                             executeEditor('foreColor', paternCol.color, indx)
                         "
                         [style.backgroundColor]="paternCol.color"
-                        [class.hide_elements]="indx != 0 && !showCollorPattern"
+                        [class.hide_elements]="indx && !showCollorPattern"
                         [tooltipBackground]="
-                            indx != 0 && !showCollorPattern
+                            indx && !showCollorPattern
                                 ? ''
                                 : type === 'dark'
                                 ? '#2F2F2F'
@@ -82,26 +86,26 @@
                         [mainTooltip]="
                             indx === 0 && !showCollorPattern
                                 ? 'Color Picker'
-                                : indx !== 0 && !showCollorPattern
+                                : indx && !showCollorPattern
                                 ? ''
-                                : indx === 0 && showCollorPattern
+                                : !indx && showCollorPattern
                                 ? 'Close'
                                 : paternCol.name
                         "
                         position="bottom"
-                        class="editor_buttons_colors text_color opened_text_color"
-                        [class.popover_text_color]="popoverNote"
+                        class="editor_buttons_colors justify-content-end"
+                        [class.justify-content-start]="popoverNote"
                         [ngStyle]="{
-                            opacity: !showCollorPattern && indx != 0 ? 0 : 1
+                            opacity: !showCollorPattern && indx ? 0 : 1
                         }"
                         (mouseenter)="
                             hoveringArrow(
-                                showCollorPattern && indx === 0 ? true : false
+                                showCollorPattern && !indx ? true : false
                             )
                         "
                         (mouseleave)="hoveringArrow(false)"
                     >
-                        <ng-container *ngIf="indx === 0">
+                        <ng-container *ngIf="!indx">
                             <div
                                 class="color_picker_arrow"
                                 [class.flip_arrow]="

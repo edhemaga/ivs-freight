@@ -183,7 +183,7 @@
                     margin: 0 1px;
                     cursor: pointer;
 
-                    &:first-child{
+                    &:first-child {
                         margin-right: 0;
                     }
 
@@ -204,18 +204,11 @@
                 }
 
                 .editor_buttons_colors {
+                    position: relative;
+                    
                     border-radius: 1px;
-
-                    &.text_color {
-                        position: relative;
-                        transition: all 0.3s ease-in-out;
-                        overflow: hidden;
-                        justify-content: flex-end;
-                    }
-
-                    &.popover_text_color {
-                        justify-content: flex-start;
-                    }
+                    transition: transform, opacity 0.3s ease-in-out;
+                    overflow: hidden;
 
                     &.hide_elements {
                         opacity: 0;

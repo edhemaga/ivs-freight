@@ -256,7 +256,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         ev.preventDefault();
     }
 
-    public valueChange(event: string): void {
+    public valueChange(event: string, deleteAll?: boolean): void {
         this.value = event;
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
@@ -266,7 +266,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 if (moment().unix() - this.lastTypeTime >= 2) {
                     this.saveIntervalStarted = false;
                     clearInterval(this.saveInterval);
-                    this.saveNote(true);
+                    this.saveNote(true, deleteAll);
                 }
             }, 100);
         }
@@ -278,7 +278,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    public saveNote(autoSave?: boolean): void {
+    public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.openedAll) {
                 this.closeNote();
@@ -298,6 +298,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
+        if (deleteAll) this.closeNote();
     }
 
     private closeNote(): void {
@@ -407,7 +408,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     private transferNoteData(): void {
-        if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
+        if (this.dispatchIndex === -1) this.saveNoteValue.emit(this.value);
         else
             this.saveNoteValue.emit({
                 note: this.value,
