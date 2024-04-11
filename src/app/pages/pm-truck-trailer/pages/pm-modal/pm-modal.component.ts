@@ -134,6 +134,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
             svg: [svg],
             title: [title],
             mileage: [mileage],
+            defaultMileage: [mileage],
             status: [status],
         });
     }
@@ -153,6 +154,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
             svg: [svg],
             title: [title],
             mileage: [mileage],
+            defaultMileage: [mileage],
             value: [value, [...descriptionValidation]],
             hidden: [hidden],
         });
@@ -223,23 +225,27 @@ export class PmModalComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    public removeNewPMs(id: number) {
+    public removeNewPMs(index: number) {
         if (this.editData.type === 'new') {
-            switch (this.editData.header) {
-                case 'Truck': {
-                    this.deleteTruckPMList(this.newPMs.at(id).value.id);
-                    break;
-                }
-                case 'Trailer': {
-                    this.deleteTrailerPMList(this.newPMs.at(id).value.id);
-                    break;
-                }
-                default: {
-                    break;
+            if (this.newPMs.at(index).value.id) {
+                switch (this.editData.header) {
+                    case 'Truck': {
+                        this.deleteTruckPMList(this.newPMs.at(index).value.id);
+                        break;
+                    }
+                    case 'Trailer': {
+                        this.deleteTrailerPMList(
+                            this.newPMs.at(index).value.id
+                        );
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
                 }
             }
 
-            this.newPMs.removeAt(id);
+            this.newPMs.removeAt(index);
         }
     }
 
@@ -372,6 +378,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 MethodsCalculationsHelper.convertNumberInThousandSep(
                                     item.mileage
                                 ),
+                            defaultMileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.mileage
+                                ),
                             status: item.status,
                         };
 
@@ -399,6 +409,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
                             mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.mileage
+                                ),
+                            defaultMileage:
                                 MethodsCalculationsHelper.convertNumberInThousandSep(
                                     item.mileage
                                 ),
@@ -431,6 +445,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 MethodsCalculationsHelper.convertNumberInThousandSep(
                                     item.months
                                 ),
+                            defaultMileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.months
+                                ),
                             status: item.status.name,
                         };
 
@@ -457,6 +475,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             svg: `assets/svg/common/repair-pm/${item.logoName}`,
                             title: item.title,
                             mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    item.months
+                                ),
+                            defaultMileage:
                                 MethodsCalculationsHelper.convertNumberInThousandSep(
                                     item.months
                                 ),
@@ -629,7 +651,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     private addUpdatePMTruckUnit() {
         const newData: UpdatePMTruckUnitListCommand = {
-            truckId: this.editData.id,
+            truckId: this.editData.data.truck.id,
+            pmId: this.editData.data.pmId,
             pmTrucks: [
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
@@ -660,7 +683,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 }),
             ],
         };
-
+        
         this.pmService
             .addUpdatePMTruckUnit(newData)
             .pipe(takeUntil(this.destroy$))
@@ -832,7 +855,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 }
             }
             if (
-                [this.editData?.header].includes(TableStringEnum.EDIT_TRUCK_PM_HEADER)
+                [this.editData?.header].includes(
+                    TableStringEnum.EDIT_TRUCK_PM_HEADER
+                )
             ) {
                 this.getPMTruckUnit(this.editData.id);
             } else {

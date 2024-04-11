@@ -375,6 +375,14 @@
     <div
         *ngIf="_inputConfig.commands?.active && isVisibleCommands"
         class="ta-input-commands"
+        [ngClass]="{
+            'blue-commands': _inputConfig.commands?.blueCommands,
+            'blue-commands-focus':
+                focusInput &&
+                _inputConfig.commands?.blueCommands &&
+                _inputConfig.commands?.active &&
+                isVisibleCommands
+        }"
     >
         <div
             class="ta-input-command-first"
@@ -420,6 +428,29 @@
                 "
             ></svg-icon>
         </div>
+        <ng-container *ngIf="_inputConfig.commands?.thirdCommand">
+            <div
+                class="ta-input-command-third"
+                ngbTooltip
+                [mainTooltip]="_inputConfig.commands?.thirdCommand?.popup?.name"
+                [tooltipBackground]="
+                    _inputConfig.commands?.thirdCommand?.popup?.backgroundColor
+                "
+                [disableTooltip]="!_inputConfig.commands?.thirdCommand?.popup"
+                position="top"
+            >
+                <svg-icon
+                    class="ta-input-command-svg-third"
+                    [src]="_inputConfig.commands.thirdCommand.svg"
+                    (click)="
+                        onCommands(
+                            $event,
+                            _inputConfig.commands.type,
+                            _inputConfig.commands.thirdCommand.name
+                        )
+                    "
+                ></svg-icon></div
+        ></ng-container>
     </div>
 
     <!-- Input Placeholder Icon -->
@@ -1204,6 +1235,10 @@
                 !_inputConfig.isDisabled,
             'input-commands':
                 _inputConfig.commands?.active && isVisibleCommands,
+            'blue-commands':
+                _inputConfig.commands?.blueCommands &&
+                _inputConfig.commands?.active &&
+                isVisibleCommands,
             'dropdown-input-image-truck':
                 _inputConfig?.dropdownImageInput?.withText &&
                 _inputConfig?.dropdownImageInput?.url &&

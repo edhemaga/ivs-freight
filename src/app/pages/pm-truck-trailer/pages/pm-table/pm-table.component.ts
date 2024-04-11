@@ -308,7 +308,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             type: TableStringEnum.EDIT,
                             header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
                             action: TableStringEnum.UNIT_PM,
-                            id: event.data.pmId,
+                            id: event.data.truck.id,
                             data: event.data,
                         }
                     );
@@ -320,7 +320,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             type: TableStringEnum.EDIT,
                             header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
                             action: TableStringEnum.UNIT_PM,
-                            id: event.data.pmId,
+                            id: event.data.truck.id,
                             data: event.data,
                         }
                     );
@@ -493,7 +493,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 content: this.getPMDropdownContent(),
             },
             truck: truckUnit.truck,
-            pmId: truckUnit.truck.id,
+            pmId: truckUnit.id,
         };
 
         const defaultPMData = {
@@ -556,7 +556,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 content: this.getPMDropdownContent(),
             },
             trailer: trailerUnit.trailer,
-            pmId: trailerUnit.trailer.id,
+            pmId: trailerUnit.id,
         };
 
         const defaultPMData = {

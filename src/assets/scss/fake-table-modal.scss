@@ -251,7 +251,9 @@
                 }
 
                 .common-fake-table-card-number {
-                    opacity: 0;
+                    &:not(.always-active) {
+                        opacity: 0;
+                    }
                 }
             }
         }
@@ -759,6 +761,8 @@
     // PM MODAL
     &-pm {
         .common-fake-table-label {
+            padding: 0;
+
             p {
                 &:nth-child(2) {
                     margin-left: 26px;
@@ -771,19 +775,56 @@
         }
         .common-fake-table-body {
             .common-fake-table-card {
-                grid-template-columns: 1fr 126px 18px;
-                padding: 0 6px;
+                grid-template-columns: 26px 274px 148px;
+                grid-template-rows: 26px;
+                column-gap: 4px;
+                row-gap: 4px;
+                padding: 0;
 
-                .ta-checkbox-container.disabled .ta-checkbox-label {
-                    color: #6c6c6c !important;
-                }
-                .ta-checkbox-container .ta-checkbox-svg {
-                    svg {
-                        path {
-                            fill: #b7b7b7 !important;
+                .ta-checkbox-container {
+                    top: 1px;
+
+                    .ta-checkbox-svg {
+                        width: 18px;
+                        height: 18px;
+                        margin-left: 10px;
+    
+                        svg {
+                            path {
+                                fill: #b7b7b7 !important;
+                            }
+                        }
+                    }
+
+                    .ta-mark {
+                        top: 2px;
+                    }
+
+                    &.disabled {
+                        top: 0;
+
+                        .ta-checkbox-label {
+                            color: #6c6c6c !important;
                         }
                     }
                 }
+
+                .input-custom-group {
+                    input {
+                        background: none;
+                    }
+
+                    &:hover {
+                        input {
+                            background: $ta-blue-17;
+                        }
+                    }
+                }
+            }
+
+            .common-fake-table-delete {
+                left: 0;
+                top: 0;
             }
         }
     }

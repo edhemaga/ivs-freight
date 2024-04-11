@@ -129,7 +129,7 @@ export class PmService {
                     .subscribe({
                         next: (pm) => {
                             this.pmTruckStore.remove(
-                                ({ id }) => id === data.truckId
+                                ({ id }) => id === data.pmId
                             );
                             this.pmTruckStore.add(pm.pagination.data[0]);
 

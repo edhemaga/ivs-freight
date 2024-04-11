@@ -136,7 +136,8 @@ export class TaInputComponent
             !this._inputConfig.isDisabled
         ) {
             if (this._inputConfig.commands.type === 'confirm-cancel') {
-                this._inputConfig.blackInput = true;
+                if (!this._inputConfig.blueInput)
+                    this._inputConfig.blackInput = true;
                 this.isVisibleCommands = true;
                 this.focusInput = true;
                 this.input.nativeElement.focus();
@@ -358,7 +359,14 @@ export class TaInputComponent
         // Commands
         if (this._inputConfig.commands && !this._inputConfig.isDisabled) {
             if (this._inputConfig.commands.type === 'months') {
-                this._inputConfig.blackInput = true;
+                if (!this._inputConfig.blueInput)
+                    this._inputConfig.blackInput = true;
+                this._inputConfig.commands.active = true;
+                this.isVisibleCommands = true;
+            }
+
+            if (this._inputConfig.commands.type === 'pm-increment-decrement') {
+                this._inputConfig.blackInput = false;
                 this._inputConfig.commands.active = true;
                 this.isVisibleCommands = true;
             }
@@ -1594,7 +1602,7 @@ export class TaInputComponent
 
         this.editInputMode = true;
         this._inputConfig.dropdownLabelNew = false;
-        this._inputConfig.blackInput = true;
+        if (!this._inputConfig.blueInput) this._inputConfig.blackInput = true;
         this._inputConfig.commands.active = true;
         this.isVisibleCommands = true;
         this.focusInput = true;
@@ -1685,6 +1693,13 @@ export class TaInputComponent
                             );
                         }
                         break;
+                    }
+                    case 'reset': {
+                        if (this._inputConfig?.defaultValue) {
+                            this.getSuperControl.patchValue(
+                                this._inputConfig?.defaultValue
+                            );
+                        }
                     }
                     default: {
                         break;
