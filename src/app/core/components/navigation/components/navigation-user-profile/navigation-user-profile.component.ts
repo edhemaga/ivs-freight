@@ -49,6 +49,7 @@ import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/n
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
@@ -137,7 +138,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    public identity(index: number, item: NavigationUserPanel): number {
+    public identity(_: number, item: NavigationUserPanel): number {
         return item.id;
     }
 

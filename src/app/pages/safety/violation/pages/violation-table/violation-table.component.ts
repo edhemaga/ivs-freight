@@ -14,7 +14,7 @@ import { RoadsideActiveQuery } from '../../state/roadside-state/roadside-active/
 import { RoadsideInactiveQuery } from '../../state/roadside-state/roadside-inactive/roadside-inactive.query';
 
 // helpers
-import { getRoadsideInspectionColums } from 'src/assets/utils/settings/safety-columns';
+import { getRoadsideInspectionColums } from 'src/app/shared/utils/settings/table-settings/safety-columns';
 
 // components
 import { ViolationModalComponent } from 'src/app/pages/safety/violation/pages/violation-modal/violation-modal.component';

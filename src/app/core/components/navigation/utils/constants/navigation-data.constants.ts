@@ -530,7 +530,7 @@ export class NavigationDataConstants {
             isSubrouteActive: false,
             route: [
                 {
-                    name: 'NavigationSettings',
+                    name: 'Settings',
                     image: 'assets/svg/common/ic_settings.svg',
                     route: '/settings',
                     activeRouteFlegId: 34,

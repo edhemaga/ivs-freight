@@ -22,17 +22,17 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 
-//Constants
-import * as AppConst from '../../../../const';
+// constants
+import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
 
-//Models
+// models
 import { AddressEntity } from 'appcoretruckassist';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 
-//Methods
-import { imageMapType } from 'src/assets/utils/methods-global';
+// helpers
+import { RoutingHelper } from '../../utils/helpers/routing.helper';
 
-//Services
+// services
 import { MapsService } from 'src/app/shared/services/maps.service';
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -40,16 +40,16 @@ import { DetailsDataService } from 'src/app/shared/services/details-data.service
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { RoutingStateService } from '../../../../shared/services/routing-state.service';
 
-//States
+// store
 import { RoutingStateQuery } from '../../state/routing-state/routing-state.query';
 
-//Pipes
+// pipes
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
-//Validators
+// validators
 import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
 
-//Components
+// components
 import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 declare var google: any;
@@ -216,9 +216,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     mapHover: boolean = false;
 
     public agmMap: any;
-    public styles: any = AppConst.GOOGLE_MAP_STYLES;
+    public styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -2492,7 +2492,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         if (on) {
             if (!this.tileNeXRad.length) {
                 for (const rad of this.allNexrad) {
-                    this.tileNeXRad.push(imageMapType(rad));
+                    this.tileNeXRad.push(RoutingHelper.imageMapType(rad));
                 }
             }
             for (const tile of this.tileNeXRad) {

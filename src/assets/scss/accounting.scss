@@ -391,22 +391,10 @@
 
                 cursor: pointer;
 
-                &.widget_download {
-                    // background-image: url('../../../assets/img/accounting_download.svg');
-                    // background-size: 20px 16px;
-                }
-
-                &.widget_print {
-                    // background-image: url('../../../assets/img/accounting_pring.svg');
-                    // background-size: 18px 17px;
-                }
-
                 &.widget_letter,
                 &.widget_download,
                 &.widget_print {
                     background-image: none;
-                    // background-image: url('../../../assets/img/accounting_email.svg');
-                    // background-size: 18px 14px;
 
                     svg-icon {
                         display: flex;

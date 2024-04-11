@@ -12,7 +12,7 @@ import { SettingsGeneralComponent } from './components/settings-general/settings
 import { SettingsPayrollComponent } from './components/settings-payroll/settings-payroll.component';
 import { SettingsInsurancepolicyComponent } from './components/settings-insurancepolicy/settings-insurancepolicy.component';
 import { SettingsFactoringComponent } from './components/settings-factoring/settings-factoring.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';

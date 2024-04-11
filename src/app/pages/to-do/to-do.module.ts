@@ -16,7 +16,7 @@ import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details
 import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
 import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from 'src/app/shared/components/ta-filter/ta-filter.component';
 import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.component';

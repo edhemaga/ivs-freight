@@ -48,7 +48,7 @@ import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.
 import { TrailerMapped } from './models/trailer-mapped.model';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
+import { getTrailerColumnDefinition } from 'src/app/shared/utils/settings/table-settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
 import { TraillerData } from './models/trailer-data.model';
 import { TrailerBodyResponse } from './models/trailer-body-response.model';

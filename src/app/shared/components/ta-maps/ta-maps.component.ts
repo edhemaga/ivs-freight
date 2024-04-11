@@ -18,7 +18,7 @@ import { AgmDirectionModule } from 'agm-direction';
 import { Subject, takeUntil } from 'rxjs';
 
 // const
-import * as AppConst from 'src/app/const';
+import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
 
 // services
 import { MapsService } from '../../services/maps.service';
@@ -37,7 +37,7 @@ import { MapRoute } from '../../models/map-route.model';
 import { Confirmation } from '../ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 
 // icon
@@ -103,9 +103,9 @@ export class TaMapsComponent implements OnInit, OnDestroy {
     @Output() selectMarker: EventEmitter<any> = new EventEmitter();
 
     public agmMap: any;
-    public styles: any = AppConst.GOOGLE_MAP_STYLES;
+    public styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -198,7 +198,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
         this.addDeleteListener();
 
         if (this.darkMode) {
-            this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
+            this.styles = MapConstants.GOOGLE_MAP_DARK_STYLES;
         }
     }
 

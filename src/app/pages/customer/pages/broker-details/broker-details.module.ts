@@ -13,7 +13,7 @@ import { BrokerDetailsItemComponent } from './components/broker-details-item/bro
 import { BrokerDetailsCardComponent } from './components/broker-details-card/broker-details-card.component';
 import { BrokerDetailsComponent } from './broker-details.component';
 import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { forkJoin, map, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
-// Components
+// components
 import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -11,7 +11,7 @@ import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modal
 import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
 
-// Services
+// services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { DriverService } from '../../services/driver.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
@@ -20,11 +20,7 @@ import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/
 import { ApplicantService } from '../../../../shared/services/applicant.service';
 import { AddressService } from 'src/app/shared/services/address.service';
 
-// Queries
-import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';
-import { ApplicantTableQuery } from '../../state/applicant-state/applicant-table.query';
-
-// Store
+// store
 import { DriversActiveState } from '../../state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
@@ -32,13 +28,38 @@ import {
 } from '../../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../../state/driver-inactive-state/driver-inactive.query';
 import { ApplicantTableStore } from '../../state/applicant-state/applicant-table.store';
+import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '../../state/applicant-state/applicant-table.query';
 
-// Pipes
+// pipes
 import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
 
-// Modals
+// Globals
+import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+
+import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+
+// enums
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+
+// constants
+import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
+
+// settings
+import { getLoadModalColumnDefinition } from 'src/app/shared/utils/settings/modal-settings/load-modal-columns';
+import { getApplicantColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/applicant-columns';
+import { getDriverColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/driver-columns';
+
+// helpers
+import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+
+// models
 import { MappedApplicantData } from './models/mapped-applicant-data.model';
 import { FilterOptionApplicant } from 'src/app/pages/driver/pages/driver-table/models/filter-option-applicant.model';
 import { TableHeadActions } from 'src/app/pages/driver/pages/driver-table/models/table-head-actions.model';
@@ -51,27 +72,6 @@ import {
     DriverListResponse,
     DriverResponse,
 } from 'appcoretruckassist';
-import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
-
-// Globals
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-
-// Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-
-// Constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
-
-//Helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 @Component({
     selector: 'app-driver-table',

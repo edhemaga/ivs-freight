@@ -5,7 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
-} from 'src/assets/utils/settings/pm-columns';
+} from 'src/app/shared/utils/settings/table-settings/pm-columns';
 
 // Components
 import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';

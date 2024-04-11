@@ -38,7 +38,7 @@ import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-str
 //Helpers
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
+import { getTruckColumnDefinition } from 'src/app/shared/utils/settings/table-settings/truck-columns';
 
 // models
 import { TruckListResponse } from 'appcoretruckassist';

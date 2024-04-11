@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
 
 // Helpers
-import { getPayrollDriverMilesDefinition } from 'src/assets/utils/settings/payroll-columns';
+import { getPayrollDriverMilesDefinition } from 'src/app/shared/utils/settings/table-settings/payroll-columns';
 
 // Store
 import { DriversActiveQuery } from '../../../driver/state/driver-active-state/driver-active.query';
@@ -156,7 +156,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     public summaryControll() {}
 
     onToolBarAction(event: any) {
-        if ( event.action === 'tab-selected' ) {
+        if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
         }
     }

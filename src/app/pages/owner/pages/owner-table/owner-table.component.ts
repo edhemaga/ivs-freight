@@ -9,7 +9,7 @@ import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
-import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
+import { getOwnerColumnDefinition } from 'src/app/shared/utils/settings/table-settings/owner-columns';
 import {
     CardDetails,
     DropdownItem,
