@@ -2,7 +2,7 @@
 
 .editor_menu {
     display: flex;
-    height: 24px;
+    height: 18px;
     padding-left: 2px;
     align-items: center;
     transition: all 0.3s ease-in-out;
@@ -39,7 +39,7 @@
         height: 18px;
         font-family: 'WebComponentsIcons', sans-serif;
         font-size: 20px;
-        color: #91919170;
+        color: $bw5;
         cursor: pointer;
 
         .color_picker_arrow {
@@ -87,10 +87,6 @@
             justify-content: flex-end;
         }
 
-        &.popover_text_color {
-            justify-content: flex-start;
-        }
-
         &:hover,
         &.active {
             background-color: #f3f3f3;
@@ -121,7 +117,6 @@
             padding: 2px;
             width: 18px;
 
-            //background-image: url('../../../../assets/img/svgs/right.svg');
             background-repeat: no-repeat;
             background-position: calc(100% - 3px) center;
             background-size: 6px auto;
@@ -135,6 +130,10 @@
                 width: 100%;
                 display: flex;
                 justify-content: end;
+            }
+
+            &.popover_text_color {
+                justify-content: flex-start;
             }
 
             &:hover {
@@ -184,33 +183,13 @@
                     margin: 0 1px;
                     cursor: pointer;
 
-                    &:nth-child(1) {
-                        background-color: #536bc2;
-                    }
-
-                    &:nth-child(2) {
-                        background-color: #26a690;
-                    }
-
-                    &:nth-child(3) {
-                        background-color: #ef5350;
-                    }
-
-                    &:nth-child(4) {
-                        background-color: #ffa726;
-                    }
-
-                    &:nth-child(5) {
-                        background-color: #6c6c6c;
+                    &:first-child {
+                        margin-right: 0;
                     }
 
                     &:hover:not(:first-child) {
                         transform: scale(1.1);
                         transform-origin: center;
-                    }
-
-                    &:nth-child(1) {
-                        margin-left: 0;
                     }
 
                     svg-icon {
@@ -223,33 +202,90 @@
                         }
                     }
                 }
+
+                .editor_buttons_colors {
+                    position: relative;
+                    
+                    border-radius: 1px;
+                    transition: transform, opacity 0.3s ease-in-out;
+                    overflow: hidden;
+
+                    &.hide_elements {
+                        opacity: 0;
+                    }
+
+                    .color_picker_arrow {
+                        position: absolute;
+                        z-index: 11;
+                        background-color: transparent !important;
+
+                        &.flip_arrow {
+                            transform: scaleX(-1);
+                        }
+                        &.regular_icon {
+                            transform: scaleX(1);
+                        }
+                        svg-icon {
+                            svg {
+                                display: flex;
+                                width: 6px;
+                                height: 10px;
+
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+
+                        &.hovering_picker {
+                            svg-icon {
+                                svg {
+                                    width: 10px;
+                                    height: 10px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        &.opened_text_color {
-            border-radius: 1px;
-        }
-
-        &.hide_elements {
-            opacity: 0;
-        }
-
-        .color_picker_arrow {
-            position: absolute;
-            z-index: 11;
-            background-color: transparent !important;
-
-            &.flip_arrow {
-                transform: scaleX(-1);
+        &.text_color {
+            &:hover,
+            &.active {
+                background-color: $bw2 !important;
             }
+        }
+
+        &.main_commands {
+            background-color: transparent;
+        }
+
+        svg-icon {
+            path {
+                fill: $bw5;
+            }
+        }
+
+        &:hover {
             svg-icon {
-                svg {
-                    display: flex;
-                    width: 6px;
-                    height: 10px;
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
 
+        &.active {
+            svg-icon {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+
+            &:hover {
+                svg-icon {
                     path {
-                        fill: #fff;
+                        fill: $ta-blue-15;
                     }
                 }
             }
@@ -260,23 +296,23 @@
         .editor_buttons {
             &:hover,
             &.active {
-                background-color: $ta-black;
+                background-color: $ta-black !important;
             }
 
             &.main_commands {
-                background-color: transparent;
+                background-color: transparent !important;
             }
 
             svg-icon {
                 path {
-                    fill: $bw5;
+                    fill: $bw5 !important;
                 }
             }
 
             &:hover {
                 svg-icon {
                     path {
-                        fill: $bw-9;
+                        fill: $bw-9 !important;
                     }
                 }
             }
@@ -284,24 +320,35 @@
             &.active {
                 svg-icon {
                     path {
-                        fill: $ta-blue-13;
+                        fill: $ta-blue-13 !important;
                     }
                 }
 
                 &:hover {
                     svg-icon {
                         path {
-                            fill: $ta-blue-17;
+                            fill: $ta-blue-17 !important;
                         }
                     }
                 }
             }
         }
 
-        .color_picker_arrow {
-            svg-icon {
-                path {
-                    fill: $ta-black !important;
+        .colors_patter {
+            div {
+                margin: 0 1px;
+
+                &:nth-child(1) {
+                    margin-right: 1px !important;
+                    margin-left: 0 !important;
+                }
+            }
+
+            .editor_buttons_colors .color_picker_arrow {
+                svg-icon {
+                    path {
+                        fill: $ta-black !important;
+                    }
                 }
             }
         }

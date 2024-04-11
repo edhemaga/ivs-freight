@@ -1,0 +1,144 @@
+<div
+    [class.active]="isExpanded"
+    [class.parking_editor_menu]="parking"
+    [class.opened_parking_editor]="parking && showCollorPattern"
+    [class.dark]="type === 'dark'"
+    class="editor_menu"
+>
+    <ng-container *ngIf="!parking || (parking && !showCollorPattern)">
+        <div class="font_editor" [class.parking_font_editor]="parking">
+            <div
+                (click)="executeEditor('bold')"
+                [class.active]="activeOptions.bold"
+                [tooltipBackground]="type === 'dark' ? '#2F2F2F' : '#6C6C6C'"
+                ngbTooltip
+                [mainTooltip]="'Bold'"
+                position="bottom"
+                class="editor_buttons main_commands bold_text"
+            >
+                <svg-icon
+                    src="assets/svg/truckassist-table/note/bold-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('italic')"
+                [class.active]="activeOptions.italic"
+                [tooltipBackground]="type === 'dark' ? '#2F2F2F' : '#6C6C6C'"
+                ngbTooltip
+                [mainTooltip]="'Italic'"
+                position="bottom"
+                class="editor_buttons main_commands italic_text"
+            >
+                <svg-icon
+                    src="assets/svg/truckassist-table/note/italic-icon.svg"
+                ></svg-icon>
+            </div>
+            <div
+                (click)="executeEditor('underline')"
+                [class.active]="activeOptions.underline"
+                [tooltipBackground]="type === 'dark' ? '#2F2F2F' : '#6C6C6C'"
+                ngbTooltip
+                [mainTooltip]="'Underline'"
+                position="bottom"
+                class="editor_buttons main_commands underline_text"
+            >
+                <svg-icon
+                    src="assets/svg/truckassist-table/note/underline-icon.svg"
+                ></svg-icon>
+            </div>
+            <div class="note_separator"></div>
+        </div>
+        <div
+            (click)="togglePattern()"
+            [class.no_opacity]="showCollorPattern"
+            [class.parking_tooltip]="parking && showCollorPattern"
+            class="editor_buttons text_color"
+            [class.popover_text_color]="popoverNote"
+            [class.active]="showCollorPattern"
+        >
+            <div
+                class="colors_patter"
+                id="colors_patter"
+                [class.closed_pattern]="!closedPattern"
+                [class.input_note]="!popoverNote"
+            >
+                <ng-container
+                    *ngFor="
+                        let paternCol of containerColors;
+                        let indx = index;
+                        trackBy: identity
+                    "
+                >
+                    <div
+                        (click)="
+                            executeEditor('foreColor', paternCol.color, indx)
+                        "
+                        [style.backgroundColor]="paternCol.color"
+                        [class.hide_elements]="indx && !showCollorPattern"
+                        [tooltipBackground]="
+                            indx && !showCollorPattern
+                                ? ''
+                                : type === 'dark'
+                                ? '#2F2F2F'
+                                : '#6C6C6C'
+                        "
+                        ngbTooltip
+                        [mainTooltip]="
+                            indx === 0 && !showCollorPattern
+                                ? 'Color Picker'
+                                : indx && !showCollorPattern
+                                ? ''
+                                : !indx && showCollorPattern
+                                ? 'Close'
+                                : paternCol.name
+                        "
+                        position="bottom"
+                        class="editor_buttons_colors justify-content-end"
+                        [class.justify-content-start]="popoverNote"
+                        [ngStyle]="{
+                            opacity: !showCollorPattern && indx ? 0 : 1
+                        }"
+                        (mouseenter)="
+                            hoveringArrow(
+                                showCollorPattern && !indx ? true : false
+                            )
+                        "
+                        (mouseleave)="hoveringArrow(false)"
+                    >
+                        <ng-container *ngIf="!indx">
+                            <div
+                                class="color_picker_arrow"
+                                [class.flip_arrow]="
+                                    (!popoverNote && showCollorPattern) ||
+                                    (popoverNote && !showCollorPattern)
+                                "
+                                [class.regular_icon]="
+                                    !popoverNote &&
+                                    showCollorPattern &&
+                                    !hoveringArrowPicker
+                                "
+                                [class.active]="showCollorPattern"
+                                [class.hovering_picker]="
+                                    !hoveringArrowPicker && showCollorPattern
+                                "
+                            >
+                                <svg-icon
+                                    [src]="
+                                        !hoveringArrowPicker &&
+                                        showCollorPattern
+                                            ? 'assets/svg/applicant/check.svg
+                '
+                                            : 'assets/svg/truckassist-table/arrow-columns-drop.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!parking && !popoverNote && isVisibleArrow">
+        <div class="note_border_line" [class.dark]="type === 'dark'"></div>
+    </ng-container>
+</div>
