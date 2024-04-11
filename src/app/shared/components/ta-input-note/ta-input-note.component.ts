@@ -28,7 +28,7 @@ import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
+import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
 // services

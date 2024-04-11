@@ -37,7 +37,7 @@ import { FormsModule } from '@angular/forms';
 import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
 
 //components
-import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
+import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
 import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
 
@@ -154,12 +154,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('window:resize', ['$event'])
-    onWindowResize(event: Event) {
+    onWindowResize() {
         if (this.isDispatch) {
             this.setNoteParentWidth();
         }
     }
 
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngAfterViewInit(): void {
         this.value = this._note;
         this.setNoteParentWidth();
@@ -255,7 +256,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         ev.preventDefault();
     }
 
-    public valueChange(event: string): void {
+    public valueChange(event: string, deleteAll?: boolean): void {
         this.value = event;
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
@@ -265,7 +266,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 if (moment().unix() - this.lastTypeTime >= 2) {
                     this.saveIntervalStarted = false;
                     clearInterval(this.saveInterval);
-                    this.saveNote(true);
+                    this.saveNote(true, deleteAll);
                 }
             }, 100);
         }
@@ -277,7 +278,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    public saveNote(autoSave?: boolean): void {
+    public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.openedAll) {
                 this.closeNote();
@@ -297,12 +298,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
-        if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
-        else
-            this.saveNoteValue.emit({
-                note: this.value,
-                dispatchIndex: this.dispatchIndex,
-            });
+        if (deleteAll) this.closeNote();
     }
 
     private closeNote(): void {
@@ -312,6 +308,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
+
+        this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(
@@ -407,6 +405,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public onPaste(event: ClipboardEvent): void {
         CopyPasteHelper.onPaste(event);
+    }
+
+    private transferNoteData(): void {
+        if (this.dispatchIndex === -1) this.saveNoteValue.emit(this.value);
+        else
+            this.saveNoteValue.emit({
+                note: this.value,
+                dispatchIndex: this.dispatchIndex,
+            });
     }
 
     public ngOnDestroy(): void {
