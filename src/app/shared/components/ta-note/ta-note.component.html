@@ -19,16 +19,16 @@
             'note-note-empty': !_note && !openedAll,
             'note-all-expanded': noteOpened
         }"
-        [tooltipBackground]="'#6C6C6C'"
+        [tooltipBackground]="'#424242'"
         ngbTooltip
-        [mainTooltip]="_note && noteOpened ? 'Edit Note' : 'View Note'"
+        [mainTooltip]="noteOpened ? 'Close Note' : 'Note'"
         position="bottom"
     >
         <svg-icon
             #t2="ngbPopover"
             [ngbPopover]="note_popover"
             [autoClose]="'outside'"
-            class="note-btn"
+            class="note-btn d-flex align-items-center justify-content-center"
             [container]="'body'"
             [placement]="'left-top'"
             [animation]="false"
@@ -79,12 +79,11 @@
                 contenteditable="true"
                 spellcheck="false"
                 id="main_editor"
+                #mainEditorDiv
                 (paste)="onPaste($event)"
             ></div>
             <div class="container_separate" *ngIf="isExpanded">
-                <div
-                    class="container_separate_inner"
-                ></div>
+                <div class="container_separate_inner"></div>
             </div>
             <div class="spinner" *ngIf="savingNote && isExpanded">
                 <app-ta-spinner
@@ -93,7 +92,7 @@
                 ></app-ta-spinner>
             </div>
             <div
-                class="note_container"
+                class="note_container d-flex align-items-center justify-content-between"
                 (click)="preventMouseDown($event)"
                 *ngIf="isExpanded"
             >
@@ -108,6 +107,19 @@
                     [selectedEditor]="main_editor?.nativeElement"
                     [type]="'dark'"
                 ></app-ta-note-container>
+                <ng-container *ngIf="!savingNote && value">
+                    <div
+                        [tooltipBackground]="'#424242'"
+                        ngbTooltip
+                        [mainTooltip]="'Delete'"
+                        position="bottom"
+                    >
+                        <svg-icon
+                            src="assets/svg/common/trash.svg"
+                            (click)="valueChange('', true)"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
             </div>
         </div>
     </div>

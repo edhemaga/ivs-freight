@@ -2447,12 +2447,13 @@
                                         *ngIf="column.ngTemplate === 'fleet'"
                                     >
                                         <div
-                                            class="td-content set-center"
+                                            class="td-content set-left"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
                                                 'min-width.px': column?.minWidth
                                                     ? column.minWidth
-                                                    : 'unset'
+                                                    : 'unset',
+                                                margin: '0px 4px 0px -4px'
                                             }"
                                         >
                                             <app-ta-input-dropdown-table

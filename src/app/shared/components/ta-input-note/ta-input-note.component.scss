@@ -85,7 +85,7 @@
 
         .note-textarea {
             overflow: auto;
-            line-height: 15px;
+            line-height: 18px;
             min-height: 15px;
             padding-bottom: 12px;
             padding-top: 5px;
@@ -94,7 +94,7 @@
 
             width: 100%;
             resize: none;
-            color: #6c6c6c;
+            color: $ta-black;
             border: none;
             box-shadow: none;
             outline: none;
@@ -140,28 +140,6 @@
 
             &::placeholder {
                 color: #dadada !important;
-            }
-
-            &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
-            }
-
-            span {
-                &::-moz-selection {
-                    color: $bw6-2 !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-
-                &::selection {
-                    color: $bw6-2 !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
             }
 
             &:empty:before {
