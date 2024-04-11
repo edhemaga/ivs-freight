@@ -1,4 +1,4 @@
-import { TruckMinimalResponse, TruckTypeResponse } from 'appcoretruckassist';
+import { RepairShopPMResponse, TruckShortResponse, TruckTypeResponse } from 'appcoretruckassist';
 import {
     DropdownItem,
     PmTruckProgressData,
@@ -23,9 +23,9 @@ export interface PmTruck {
     turbo?: PmTruckProgressData;
     waterPump?: PmTruckProgressData;
     textInv: string;
-    textLastShop: string;
+    textLastShop: RepairShopPMResponse;
     lastService: string;
-    repairShop: string;
+    repairShop: RepairShopPMResponse;
     ruMake: string;
     truckTypeClass: string;
     truckTypeIcon: string;
@@ -37,6 +37,6 @@ export interface PmTruck {
         hasContent: boolean;
         content: DropdownItem[];
     };
-    truck: TruckMinimalResponse;
+    truck: TruckShortResponse;
     pmId: number;
 }

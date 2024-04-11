@@ -89,7 +89,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
         });
     }
     public getReviews(reviewsData: BrokerResponse) {
-        this.reviewsRepair = reviewsData.reviews.map((item) => {
+        this.reviewsRepair = reviewsData.ratingReviews.map((item) => {
             return {
                 ...item,
                 companyUser: {
@@ -99,7 +99,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                         : 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.ratingFromTheReviewer,
+                rating: item.thumb, // - ne postoji item.ratingFromTheReviewer na response, treba provjeriti sta ovde ide
             };
         });
     }

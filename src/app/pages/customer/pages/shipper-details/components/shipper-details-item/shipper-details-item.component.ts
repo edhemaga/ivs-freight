@@ -54,7 +54,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
     }
 
     public getReviews(reviewsData: ShipperResponse) {
-        this.reviewsRepair = reviewsData.reviews.map((item) => {
+        this.reviewsRepair = reviewsData.ratingReviews.map((item) => {
             return {
                 ...item,
                 companyUser: {
@@ -64,7 +64,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
                         : 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.ratingFromTheReviewer,
+                rating: item.thumb, // - ne postoji item.ratingFromTheReviewer na response, treba provjeriti sta ovde ide
             };
         });
     }

@@ -13,7 +13,6 @@ import {
     UpdatePMTrailerListDefaultCommand,
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
-    UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
 
 // Store
@@ -22,6 +21,9 @@ import { PmTrailerStore } from '../state/pm-trailer-state/pm-trailer.store';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { PmListTruckStore } from '../state/pm-list-truck-state/pm-list-truck.store';
 import { PmListTrailerStore } from '../state/pm-list-trailer-state/pm-list-trailer.store';
+
+// Model
+import { PmUpdateTruckUnitListCommand } from '../models/pm-update-truck-unit-list-command.model';
 
 @Injectable({
     providedIn: 'root',
@@ -55,6 +57,7 @@ export class PmService {
     public getPMTruckUnitList(
         truckId?: number,
         hideInactivePMs?: number,
+        truckTypeId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -66,6 +69,7 @@ export class PmService {
         return this.repairService.apiRepairPmTruckUnitListGet(
             truckId,
             hideInactivePMs,
+            truckTypeId,
             pageIndex,
             pageSize,
             companyId,
@@ -120,7 +124,7 @@ export class PmService {
 
     // Update PM Truck Unit
     public addUpdatePMTruckUnit(
-        data: UpdatePMTruckUnitListCommand
+        data: PmUpdateTruckUnitListCommand
     ): Observable<object> {
         return this.repairService.apiRepairPmTruckUnitPut(data).pipe(
             tap(() => {
@@ -177,6 +181,7 @@ export class PmService {
     public getPMTrailerUnitList(
         trailerId?: number,
         hideInactivePMs?: number,
+        trailerTypeId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -188,6 +193,7 @@ export class PmService {
         return this.repairService.apiRepairPmTrailerUnitListGet(
             trailerId,
             hideInactivePMs,
+            trailerTypeId,
             pageIndex,
             pageSize,
             companyId,

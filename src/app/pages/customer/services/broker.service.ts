@@ -341,10 +341,10 @@ export class BrokerService implements OnDestroy {
             }
         });
 
-        this.brokerItemStore.update(brokerData.id, {
-            reviews: brokerData.reviews,
-        });
-        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+        // this.brokerItemStore.update(brokerData.id, {
+        //     reviews: brokerData.reviews,
+        // });
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
 
         this.tableService.sendActionAnimation({
             animation: 'update',
@@ -363,11 +363,11 @@ export class BrokerService implements OnDestroy {
 
         brokerData?.reviews.push(data);
 
-        this.brokerItemStore.update(brokerData.id, {
-            reviews: brokerData.reviews,
-        });
+        // this.brokerItemStore.update(brokerData.id, {
+        //     reviews: brokerData.reviews,
+        // });
 
-        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
 
         this.tableService.sendActionAnimation({
             animation: 'update',
@@ -388,10 +388,10 @@ export class BrokerService implements OnDestroy {
             }
         });
 
-        this.brokerItemStore.update(brokerData.id, {
-            reviews: brokerData.reviews,
-        });
-        this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews });
+        // this.brokerItemStore.update(brokerData.id, {
+        //     reviews: brokerData.reviews,
+        // });
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
 
         this.tableService.sendActionAnimation({
             animation: 'update',

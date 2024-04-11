@@ -23,8 +23,8 @@ import {
     UpdatePMTrailerListDefaultCommand,
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
-    UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
+import { PmUpdateTruckUnitListCommand } from '../../models/pm-update-truck-unit-list-command.model';
 
 // Validators
 import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
@@ -650,7 +650,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     private addUpdatePMTruckUnit() {
-        const newData: UpdatePMTruckUnitListCommand = {
+        const newData: PmUpdateTruckUnitListCommand = {
             truckId: this.editData.data.truck.id,
             pmId: this.editData.data.pmId,
             pmTrucks: [
