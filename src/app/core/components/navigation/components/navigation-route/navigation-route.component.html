@@ -50,7 +50,7 @@
     <svg-icon
         class="{{ class }}"
         class="nav-item-img-active"
-        src="{{ route.image }}"
+        [src]="'assets/svg/common/' + route.image"
         [ngClass]="{
             'nav-item-img': !route.construction,
             'route-clicked-svg':
@@ -59,11 +59,10 @@
                 closeDropdownOnNavClose &&
                 !isSettingsPanelOpen &&
                 !isUserPanelOpen,
-            'nav-item-svg-active': selectedRoute == route.name,
-            'route-not-active-svg':
-                route.construction == true && navigationIsOpened,
+            'nav-item-svg-active': selectedRoute === route.name,
+            'route-not-active-svg': route.construction && navigationIsOpened,
             'route-closed-nav-svg-not-active':
-                route.construction == true && !navigationIsOpened
+                route.construction && !navigationIsOpened
         }"
     ></svg-icon>
 

@@ -41,13 +41,13 @@
                         'user-content-status': item.name === 'User status'
                     }"
                     class="user-content-svg"
-                    src="{{
+                    [src]="
                         item.name === 'User status'
                             ? currentUserStatus === 'online'
-                                ? item.image
+                                ? 'assets/svg/common/' + item.image
                                 : 'assets/svg/common/ic_verify-check.svg'
-                            : item.image
-                    }}"
+                            : 'assets/svg/common/' + item.image
+                    "
                 ></svg-icon>
                 <p
                     *ngIf="item.name !== 'User status'"
