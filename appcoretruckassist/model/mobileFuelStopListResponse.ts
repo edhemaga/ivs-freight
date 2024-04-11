@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemFuel } from './itemFuel';
+import { MobileFuelStopResponsePagination } from './mobileFuelStopResponsePagination';
 
 
-export interface EditFuelItemCommand { 
-    id?: number | null;
-    itemfuel?: ItemFuel;
-    price?: number;
-    qty?: number;
-    subtotal?: number;
+export interface MobileFuelStopListResponse { 
+    pagination?: MobileFuelStopResponsePagination;
+    fuelTransactionCount?: number;
+    fuelStopCount?: number;
+    fuelCardCount?: number;
 }
 

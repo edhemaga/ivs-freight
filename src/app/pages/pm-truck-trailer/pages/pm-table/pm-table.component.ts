@@ -12,7 +12,7 @@ import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/
 
 // Models
 import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
 import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';

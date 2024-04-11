@@ -9,17 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { FuelStopFranchiseMinimalResponse } from './fuelStopFranchiseMinimalResponse';
 
 
-export interface ShipperLoadModalResponse { 
+export interface MobileFuelStopShortResponse { 
     id?: number;
+    companyId?: number | null;
     businessName?: string | null;
-    status?: number;
-    address?: AddressEntity;
+    fuelStopFranchise?: FuelStopFranchiseMinimalResponse;
+    store?: string | null;
     longitude?: number | null;
     latitude?: number | null;
-    pickupCount?: number;
-    deliveryCount?: number;
 }
 

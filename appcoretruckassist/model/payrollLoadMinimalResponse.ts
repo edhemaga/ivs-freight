@@ -26,5 +26,6 @@ export interface PayrollLoadMinimalResponse {
     totalMiles?: number | null;
     revenue?: number;
     subtotal?: number | null;
+    rate?: number | null;
 }
 

@@ -14,7 +14,6 @@ import { UpdateTruckPMUnitCommand } from './updateTruckPMUnitCommand';
 
 export interface UpdatePMTruckUnitListCommand { 
     truckId?: number;
-    pmId?: number;
     pmTrucks?: Array<UpdateTruckPMUnitCommand> | null;
 }
 

@@ -9,14 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ItemFuel } from './itemFuel';
+import { RepairShopPMResponse } from './repairShopPMResponse';
 
 
-export interface EditFuelItemCommand { 
-    id?: number | null;
-    itemfuel?: ItemFuel;
-    price?: number;
-    qty?: number;
-    subtotal?: number;
+export interface RepairShortResponse { 
+    id?: number;
+    invoice?: string | null;
+    odometer?: number | null;
+    date?: string | null;
+    total?: number | null;
+    repairShop?: RepairShopPMResponse;
 }
 

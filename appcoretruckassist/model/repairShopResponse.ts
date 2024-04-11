@@ -10,13 +10,13 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { RatingReviewResponse } from './ratingReviewResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { RepairShopContactResponse } from './repairShopContactResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
-import { ReviewResponse } from './reviewResponse';
 
 
 export interface RepairShopResponse { 
@@ -46,6 +46,7 @@ export interface RepairShopResponse {
     account?: string | null;
     upCount?: number;
     downCount?: number;
+    commentCount?: number;
     currentCompanyUserRating?: number | null;
     lastVisited?: string | null;
     timesVisitedByCompany?: number | null;
@@ -58,7 +59,7 @@ export interface RepairShopResponse {
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     contacts?: Array<RepairShopContactResponse> | null;
-    reviews?: Array<ReviewResponse> | null;
+    ratingReviews?: Array<RatingReviewResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     shopServiceType?: EnumValue;

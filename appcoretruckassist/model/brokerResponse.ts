@@ -11,11 +11,11 @@
  */
 import { LoadResponse } from './loadResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
+import { RatingReviewResponse } from './ratingReviewResponse';
 import { EnumValue } from './enumValue';
 import { PoBoxEntity } from './poBoxEntity';
 import { InvoiceAgeingResponse } from './invoiceAgeingResponse';
 import { AddressEntity } from './addressEntity';
-import { ReviewResponse } from './reviewResponse';
 
 
 export interface BrokerResponse { 
@@ -38,6 +38,7 @@ export interface BrokerResponse {
     longitude?: number;
     upCount?: number;
     downCount?: number;
+    commentCount?: number;
     rating?: number;
     loadCount?: number;
     total?: number;
@@ -46,7 +47,7 @@ export interface BrokerResponse {
     note?: string | null;
     creditType?: EnumValue;
     brokerContacts?: Array<BrokerContactResponse> | null;
-    reviews?: Array<ReviewResponse> | null;
+    ratingReviews?: Array<RatingReviewResponse> | null;
     status?: number;
     currentCompanyUserRating?: number | null;
     totalDebt?: number | null;
