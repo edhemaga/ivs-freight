@@ -17,8 +17,6 @@ import {
     navigationRouteAnimation,
 } from '../../animations/navigation.animation';
 
-// decorators
-
 // services
 import { StaticInjectorService } from 'src/app/core/decorators/titles.decorator';
 import { NavigationService } from '../../services/navigation.service';

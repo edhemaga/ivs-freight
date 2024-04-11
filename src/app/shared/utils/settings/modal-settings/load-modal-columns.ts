@@ -1,4 +1,3 @@
-// Load Modal Column Definition
 export function getLoadModalColumnDefinition() {
     return [
         {

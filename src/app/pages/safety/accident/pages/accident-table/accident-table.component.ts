@@ -12,7 +12,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
 
 // helpers
-import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
+import { getAccidentColumns } from 'src/app/shared/utils/settings/table-settings/safety-columns';
 
 // store
 import { AccidentActiveState } from '../../state/accident-active/accident-active.store';

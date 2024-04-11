@@ -16,7 +16,7 @@ import { AccountState } from 'src/app/pages/account/state/account.store';
 import { AccountQuery } from 'src/app/pages/account/state/account.query';
 
 // utils
-import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
+import { getToolsAccountsColumnDefinition } from 'src/app/shared/utils/settings/table-settings/tools-accounts-columns';
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 // enums

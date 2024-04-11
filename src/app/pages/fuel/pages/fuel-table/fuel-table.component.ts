@@ -23,7 +23,7 @@ import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/
 import {
     getFuelStopColumnDefinition,
     getFuelTransactionColumnDefinition,
-} from 'src/assets/utils/settings/accounting-fuel-columns';
+} from 'src/app/shared/utils/settings/table-settings/accounting-fuel-columns';
 import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
 
 //Pipes

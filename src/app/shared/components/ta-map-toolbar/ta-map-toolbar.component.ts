@@ -37,7 +37,7 @@ import { cardComponentAnimation } from '../../animations/card-component.animatio
 import { MapSettingsModalComponent } from '../ta-shared-modals/map-modals/map-settings-modal/map-settings-modal.component';
 import { MapRouteModalComponent } from '../ta-shared-modals/map-modals/map-route-modal/map-route-modal.component';
 import { TaFilterComponent } from '../ta-filter/ta-filter.component';
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';

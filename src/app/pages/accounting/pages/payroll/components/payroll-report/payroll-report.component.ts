@@ -7,16 +7,16 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
-// Services
+// services
 import { PayrollService } from '../../../../services/payroll.service';
 
-// Constants
+// constants
 import { PayrollCommisionDriverOpenLoads } from './utils/constants/payroll-commision-driver-open-loads.constants';
 import {
     PayrollOwnerOpenLoads,
     PayrollOwnerOpenLoadsResizable,
 } from './utils/constants/payroll-owner-open-load.constants';
-import * as AppConst from 'src/app/const';
+import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
 import {
     PayrollMilesDriverOpenLoads,
     PayrollMilesDriverOpenLoadsResizable,
@@ -41,9 +41,9 @@ export class PayrollReportComponent implements OnInit {
     mapZoom: number = 1;
 
     agmMap: any;
-    styles = AppConst.GOOGLE_MAP_STYLES;
+    styles = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -86,7 +86,8 @@ export class PayrollReportComponent implements OnInit {
                 break;
             case 'Driver (Miles)':
                 this.tableSettings = PayrollMilesDriverOpenLoads;
-                this.tableSettingsResizable = PayrollMilesDriverOpenLoadsResizable;
+                this.tableSettingsResizable =
+                    PayrollMilesDriverOpenLoadsResizable;
                 this.payrollService.getPayrollMileageDriverOpenReport();
                 // Same error as above
                 // .subscribe((res) => {

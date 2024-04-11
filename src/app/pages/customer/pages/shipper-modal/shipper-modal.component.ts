@@ -60,7 +60,7 @@ import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.ani
 // Components
 import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';

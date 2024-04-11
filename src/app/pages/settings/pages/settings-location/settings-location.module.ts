@@ -16,7 +16,7 @@ import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
 import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
 import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';

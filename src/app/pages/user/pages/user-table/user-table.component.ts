@@ -14,7 +14,7 @@ import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-
 import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
 
 // helpers
-import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
+import { getUsersColumnDefinition } from 'src/app/shared/utils/settings/table-settings/users-columns';
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 

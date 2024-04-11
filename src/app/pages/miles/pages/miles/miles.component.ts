@@ -6,7 +6,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
 
 // utils
 import { MilesTableQuery } from '../../state/miles.query';
-import { getMilesColumnsDefinition } from 'src/assets/utils/settings/miles-columns';
+import { getMilesColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/miles-columns';
 
 @Component({
     selector: 'app-miles',

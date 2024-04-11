@@ -48,7 +48,6 @@ $carrierassist-fe-theme: mat.define-light-theme(
 @import './assets/scss/general';
 @import './assets/scss/cards';
 
-// html, body { height: 100%; }
 body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -60,6 +59,7 @@ html {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
 @import './assets/scss/modal';
 @import './assets/scss/form';
 @import './assets/scss/input-validation';

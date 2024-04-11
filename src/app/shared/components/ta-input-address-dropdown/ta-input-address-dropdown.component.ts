@@ -33,7 +33,7 @@ import { ITaInput } from '../ta-input/config/ta-input.config';
 import { AddressService } from '../../services/address.service';
 
 //Components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
 
 //Modules

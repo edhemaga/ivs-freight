@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+
 import { Subject } from 'rxjs';
-import * as AppConst from 'src/app/const';
+
+// constants
+import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
 
 @Component({
     selector: 'app-dashboard-map',
@@ -13,9 +16,9 @@ export class DashboardMapComponent implements OnInit, OnDestroy {
     dashboardMapSwitchTabs: any[] = [];
 
     agmMap: any;
-    styles: any = AppConst.GOOGLE_MAP_STYLES;
+    styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
     mapLatitude: number = 41.860119;

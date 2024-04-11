@@ -71,7 +71,7 @@ import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helpe
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
-} from 'src/assets/utils/settings/customer-columns';
+} from 'src/app/shared/utils/settings/table-settings/customer-columns';
 import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
 
 @Component({

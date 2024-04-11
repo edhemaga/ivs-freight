@@ -21,7 +21,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NoteConfigConstants } from './utils/constants/note-config.constants';
 
 //Components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Models
 import { NoteColors } from './models/note-colors.model';

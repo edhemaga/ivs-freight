@@ -33,7 +33,7 @@ import { FormService } from 'src/app/shared/services/form.service';
 import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
