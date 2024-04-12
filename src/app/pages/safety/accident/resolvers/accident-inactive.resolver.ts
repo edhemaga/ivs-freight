@@ -7,13 +7,13 @@ import { Observable, of, catchError, tap } from 'rxjs';
 import { AccidentListResponse } from 'appcoretruckassist';
 
 // services
-import { AccidentService } from '../services/accident.service';
+import { AccidentService } from '@pages/safety/accident/services/accident.service';
 
 // store
 import {
     AccidentInactiveState,
     AccidentInactiveStore,
-} from '../state/accident-inactive/accident-inactive.store';
+} from '@pages/safety/accident/state/accident-inactive/accident-inactive.store';
 
 @Injectable({
     providedIn: 'root',

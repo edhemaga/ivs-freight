@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsBasicModalComponent } from './settings-basic-modal.component';
+import { SettingsBasicModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
 
 describe('SettingsBasicModalComponent', () => {
     let component: SettingsBasicModalComponent;

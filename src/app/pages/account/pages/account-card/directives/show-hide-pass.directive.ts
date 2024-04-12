@@ -6,8 +6,8 @@ import {
     Renderer2,
 } from '@angular/core';
 
-import { ShowHidePassConstants } from '../utils/constants/show-hide-pass.constants';
-import { ShowHideDirectiveStringEnum } from '../enums/show-hide-directive-string.enum';
+import { ShowHidePassConstants } from '@pages/account/pages/account-card/utils/constants/show-hide-pass.constants';
+import { ShowHideDirectiveStringEnum } from '@pages/account/pages/account-card/enums/show-hide-directive-string.enum';
 
 @Directive({
     selector: '[appTextToggle]',

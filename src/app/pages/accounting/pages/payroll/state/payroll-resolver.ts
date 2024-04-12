@@ -3,7 +3,7 @@ import { Resolve } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
 // Services
-import { PayrollService } from '../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/services/payroll.service';
 
 @Injectable({
     providedIn: 'root',

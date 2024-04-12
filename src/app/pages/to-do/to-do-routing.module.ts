@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.component';
+
+// components
+import { ToDoListCardComponent } from '@pages/to-do/pages/to-do-list-card/to-do-list-card.component';
 
 const routes: Routes = [
     {

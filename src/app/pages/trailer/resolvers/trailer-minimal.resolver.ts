@@ -1,10 +1,13 @@
-import { TrailerService } from '../../../shared/services/trailer.service';
+import { TrailerService } from '@shared/services/trailer.service';
 import { Injectable } from '@angular/core';
-
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { TrailersMinimalListStore } from '../state/trailer-minimal-list-state/trailer-minimal.store';
+
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// store
+import { TrailersMinimalListStore } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.store';
+
+// models
 import { TrailerMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({

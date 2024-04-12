@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TruckTableComponent } from './truck-table.component';
+import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
 
 describe('TruckTableComponent', () => {
     let component: TruckTableComponent;

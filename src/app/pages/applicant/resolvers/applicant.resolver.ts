@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 
-import { forkJoin, Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { forkJoin, Observable, throwError, catchError, tap } from 'rxjs';
 
 // services
-import { ApplicantService } from '../services/applicant.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantState, ApplicantStore } from '../state/applicant.store';
+import {
+    ApplicantState,
+    ApplicantStore,
+} from '@pages/applicant/state/applicant.store';
 
 @Injectable({
     providedIn: 'root',

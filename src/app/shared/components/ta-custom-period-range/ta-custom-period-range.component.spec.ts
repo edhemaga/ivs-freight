@@ -1,23 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCustomPeriodRangeComponent } from './ta-custom-period-range.component';
+import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 
 describe('TaCustomPeriodRangeComponent', () => {
-  let component: TaCustomPeriodRangeComponent;
-  let fixture: ComponentFixture<TaCustomPeriodRangeComponent>;
+    let component: TaCustomPeriodRangeComponent;
+    let fixture: ComponentFixture<TaCustomPeriodRangeComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ TaCustomPeriodRangeComponent ]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [TaCustomPeriodRangeComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(TaCustomPeriodRangeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(TaCustomPeriodRangeComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

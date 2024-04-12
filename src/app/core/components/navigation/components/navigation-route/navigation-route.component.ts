@@ -15,21 +15,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
     navigationMagicLine,
     navigationRouteAnimation,
-} from '../../animations/navigation.animation';
+} from '@core/components/navigation/animations/navigation.animation';
 
 // services
-import { StaticInjectorService } from 'src/app/core/decorators/titles.decorator';
-import { NavigationService } from '../../services/navigation.service';
+import { StaticInjectorService } from '@core/decorators/titles.decorator';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
 // models
-import { NavigationSubRoutes } from 'src/app/core/components/navigation/models/navigation-subroutes.model';
-import { Navigation } from '../../models/navigation.model';
+import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
+import { Navigation } from '@core/components/navigation/models/navigation.model';
 
 @Component({
     selector: 'app-navigation-route',

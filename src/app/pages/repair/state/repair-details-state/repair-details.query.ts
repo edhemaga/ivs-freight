@@ -4,7 +4,10 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { RepairDetailsState, RepairDetailsStore } from './repair-details.store';
+import {
+    RepairDetailsState,
+    RepairDetailsStore,
+} from '@pages/repair/state/repair-details-state/repair-details.store';
 
 @Injectable({ providedIn: 'root' })
 export class RepairDetailsQuery extends QueryEntity<RepairDetailsState> {

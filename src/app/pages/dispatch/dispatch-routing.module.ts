@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DispatchComponent } from './pages/dispatch/dispatch.component';
 
-const routes: Routes = [{
-  path: "",
-  component: DispatchComponent,
-  data: {test: 1}
-}];
+import { DispatchComponent } from '@pages/dispatch/pages/dispatch/dispatch.component';
+
+const routes: Routes = [
+    {
+        path: '',
+        component: DispatchComponent,
+        data: { test: 1 },
+    },
+];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
 })
-export class DispatchRoutingModule { }
+export class DispatchRoutingModule {}

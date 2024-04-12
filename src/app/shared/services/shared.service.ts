@@ -5,10 +5,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
 
 // enviroment
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 // services
-import { NotificationService } from './notification.service';
+import { NotificationService } from '@shared/services/notification.service';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';

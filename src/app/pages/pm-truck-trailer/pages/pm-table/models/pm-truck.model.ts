@@ -1,4 +1,4 @@
-import { FilterData } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/filter-data.model';
+import { FilterData } from '@pages/pm-truck-trailer/pages/pm-table/models/filter-data.model';
 
 export interface PmTruck {
     textUnit: string;

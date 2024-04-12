@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { TrailerItemsResolver } from './resolvers/trailer-items.resolver';
-import { TrailerMinimalResolver } from './resolvers/trailer-minimal.resolver';
+import { TrailerItemsResolver } from '@pages/trailer/resolvers/trailer-items.resolver';
+import { TrailerMinimalResolver } from '@pages/trailer/resolvers/trailer-minimal.resolver';
 
 // components
-import { TrailerTableComponent } from './pages/trailer-table/trailer-table.component';
+import { TrailerTableComponent } from '@pages/trailer/pages/trailer-table/trailer-table.component';
 
 const routes: Routes = [
     {
@@ -17,9 +17,9 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./pages/trailer-details/trailer-details.module').then(
-                (m) => m.TrailerDetailsModule
-            ),
+            import(
+                '@pages/trailer/pages/trailer-details/trailer-details.module'
+            ).then((m) => m.TrailerDetailsModule),
         resolve: {
             trailer: TrailerItemsResolver,
             trailerMinimal: TrailerMinimalResolver,

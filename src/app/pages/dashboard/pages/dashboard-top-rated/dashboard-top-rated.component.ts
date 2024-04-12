@@ -11,54 +11,54 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardTopRatedService } from './services/dashboard-top-rated.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { DashboardTopRatedService } from '@pages/dashboard/pages/dashboard-top-rated/services/dashboard-top-rated.service';
+import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // constants
-import { DashboardTopRatedConstants } from './utils/constants/dashboard-top-rated.constants';
-import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
-import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
-import { DashboardByStateConstants } from '../dashboard-by-state/utils/constants/dashboard-by-state.constants';
+import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
+import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
 
 // helpers
-import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
-import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
+import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
+import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
 
 // enums
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // models
-import { DropdownItem } from '../../../../shared/models/dropdown-item.model';
-import { DashboardTab } from '../../models/dashboard-tab.model';
-import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { TopRatedListItem } from './models/top-rated-list-item.model';
-import { CustomPeriodRange } from '../../models/custom-period-range.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
+import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
 import {
     TopRatedMainColorsPallete,
     TopRatedSecondaryColorsPallete,
-} from '../../models/colors-pallete.model';
+} from '@pages/dashboard/models/colors-pallete.model';
 import {
     ChartInitProperties,
     DoughnutChart,
     DoughnutChartConfig,
     DoughnutChartPercentage,
     DoughnutChartSigns,
-} from '../../models/dashboard-chart-models/doughnut-chart.model';
+} from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../../models/dashboard-chart-models/bar-chart.model';
+} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     DashboardTopReportType,
     IntervalLabelResponse,
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { TopRatedApiArguments } from './models/top-rated-api-arguments.model';
-import { TopRatedWithoutTabApiArguments } from './models/top-rated-without-tab-api-arguments.model';
+import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
+import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
 @Component({
     selector: 'app-dashboard-top-rated',
     templateUrl: './dashboard-top-rated.component.html',

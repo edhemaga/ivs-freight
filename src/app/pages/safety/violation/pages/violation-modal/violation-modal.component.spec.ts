@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViolationModalComponent } from './violation-modal.component';
+import { ViolationModalComponent } from '@pages/safety/violation/pages/violation-modal/violation-modal.component';
 
 describe('ViolationModalComponent', () => {
     let component: ViolationModalComponent;

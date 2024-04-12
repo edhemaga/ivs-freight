@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // components
-import { UploadFile } from '../../models/upload-file.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';

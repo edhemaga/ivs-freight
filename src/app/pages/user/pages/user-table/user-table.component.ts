@@ -3,40 +3,40 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { UserService } from '../../services/user.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { UserService } from '@pages/user/services/user.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { UserModalComponent } from 'src/app/pages/user/pages/user-modal/user-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 
 // helpers
-import { getUsersColumnDefinition } from 'src/app/shared/utils/settings/table-settings/users-columns';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+import { getUsersColumnDefinition } from '@shared/utils/settings/table-settings/users-columns';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // store
-import { UserQuery } from '../../state/user.query';
-import { UserState } from '../../state/user.store';
+import { UserQuery } from '@pages/user/state/user.query';
+import { UserState } from '@pages/user/state/user.store';
 
 // pipes
-import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // constants
-import { UserConstants } from '../../utils/constants/user.constants';
+import { UserConstants } from '@pages/user/utils/constants/user.constants';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { DisplayUserConfiguration } from '../../utils/constants/user-card-data.constants';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-data.constants';
 
 // models
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
     CompanyUserResponse,
     GetCompanyUserListResponse,

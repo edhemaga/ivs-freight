@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaPayrollStatusesComponent } from './ta-payroll-statuses.component';
+import { TaPayrollStatusesComponent } from '@shared/components/ta-payroll-statuses/ta-payroll-statuses.component';
 
 describe('TaPayrollStatusesComponent', () => {
     let component: TaPayrollStatusesComponent;

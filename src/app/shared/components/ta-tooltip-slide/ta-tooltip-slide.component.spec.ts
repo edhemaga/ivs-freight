@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaTooltipSlideComponent } from './ta-tooltip-slide.component';
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
 describe('TaTooltipSlideComponent', () => {
     let component: TaTooltipSlideComponent;

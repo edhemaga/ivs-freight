@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // enums
-import { DashboardStringEnum } from '../../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 // constants
-import { DashboardPerformanceConstants } from '../utils/constants/dashboard-performance.constants';
+import { DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-performance/utils/constants/dashboard-performance.constants';
 
 @Pipe({
     name: 'setTrendIcon',

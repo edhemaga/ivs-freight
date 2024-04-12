@@ -20,16 +20,16 @@ import {
 } from 'appcoretruckassist';
 
 // store
-import { RepairTruckStore } from '../../pages/repair/state/repair-truck-state/repair-truck.store';
-import { RepairTrailerStore } from '../../pages/repair/state/repair-trailer-state/repair-trailer.store';
-import { RepairShopStore } from '../../pages/repair/state/repair-shop-state/repair-shop.store';
-import { RepairDetailsQuery } from '../../pages/repair/state/repair-details-state/repair-details.query';
-import { RepairDetailsStore } from '../../pages/repair/state/repair-details-state/repair-details.store';
+import { RepairTruckStore } from '@pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
+import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
+import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 
 // services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',

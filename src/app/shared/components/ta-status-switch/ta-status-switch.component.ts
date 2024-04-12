@@ -4,6 +4,7 @@ import {
     Component,
     EventEmitter,
     Input,
+    OnDestroy,
     OnInit,
     Output,
 } from '@angular/core';
@@ -19,11 +20,11 @@ import moment from 'moment-timezone';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // pipes
-import { StatusPipe } from '../../pipes/status-pipe.pipe';
+import { StatusPipe } from '@shared/pipes/status-pipe.pipe';
 
 // models
 import { DispatchService } from 'appcoretruckassist';
-import { IDispatchModel } from './models/dispatch.model';
+import { IDispatchModel } from '@shared/components/ta-status-switch/models/dispatch.model';
 
 @Component({
     selector: 'app-ta-status-switch',
@@ -43,7 +44,7 @@ import { IDispatchModel } from './models/dispatch.model';
         ]),
     ],
 })
-export class TaStatusSwitchComponent implements OnInit {
+export class TaStatusSwitchComponent implements OnInit, OnDestroy {
     @Input() status: {
         statusValue: IDispatchModel;
         statusString: string;
@@ -97,7 +98,7 @@ export class TaStatusSwitchComponent implements OnInit {
         this.openIndex.emit(-1);
     }
 
-    public setStatus(status, indx): void {
+    public setStatus(status): void {
         this.changeStatus.emit(status);
     }
 

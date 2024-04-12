@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TtFhwaInspectionModalComponent } from './tt-fhwa-inspection-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 
 describe('TtFhwaInspectionModalComponent', () => {
     let component: TtFhwaInspectionModalComponent;

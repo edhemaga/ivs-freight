@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsInsurancePolicyModalComponent } from './settings-insurance-policy-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 
 describe('SettingsInsurancePolicyModalComponent', () => {
     let component: SettingsInsurancePolicyModalComponent;

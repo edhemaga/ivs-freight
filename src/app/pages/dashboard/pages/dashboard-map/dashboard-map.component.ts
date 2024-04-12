@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // constants
-import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
 @Component({
     selector: 'app-dashboard-map',

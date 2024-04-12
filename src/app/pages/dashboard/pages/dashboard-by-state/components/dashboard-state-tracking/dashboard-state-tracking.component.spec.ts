@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardStateTrackingComponent } from './dashboard-state-tracking.component';
+import { DashboardStateTrackingComponent } from '@pages/dashboard/pages/dashboard-by-state/components/dashboard-state-tracking/dashboard-state-tracking.component';
 
 describe('DashboardStateTrackingComponent', () => {
     let component: DashboardStateTrackingComponent;

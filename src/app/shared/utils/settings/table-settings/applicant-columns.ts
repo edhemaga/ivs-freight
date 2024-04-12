@@ -307,7 +307,7 @@ export function getApplicantColumnsDefinition() {
                 width: 18,
                 height: 18,
                 imgPath:
-                    '../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg',
+                    'assets/svg/truckassist-table/hire-applicant-selected-row.svg',
             },
             filter: '',
             isNumeric: false,

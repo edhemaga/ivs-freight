@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
 
-// state
-import { CompanyStore } from '../state/company-state/company-settings.store';
+// store
+import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
 import {
     CompanyRepairShopState,
     CompanyRepairShopStore,
-} from '../state/setting-reapir-shop-state/company-repairshop.store';
+} from '@pages/settings/state/setting-reapir-shop-state/company-repairshop.store';
 
 // services
-import { CompanyRepairShopService } from '../services/company-repairshop.service';
+import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
 
-//core
+// models
 import { RepairShopNewListResponse } from 'appcoretruckassist';
 
 @Injectable({

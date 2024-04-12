@@ -16,17 +16,17 @@ import moment from 'moment';
 // bootstrap
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-//animations
-import { cardComponentAnimation } from '../../animations/card-component.animation';
+// animations
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // services
-import { DetailsDataService } from '../../services/details-data.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 //components
-import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
-// icons
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({

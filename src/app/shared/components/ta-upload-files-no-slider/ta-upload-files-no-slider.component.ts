@@ -19,20 +19,20 @@ import { FormsModule } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { TaUploadFileComponent } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
-import { TaUploadDropzoneComponent } from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFilesCarouselComponent } from '../ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFilesCarouselComponent } from '@shared/components/ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
-import { FileEvent } from 'src/app/shared/models/file-event.model';
-import { Tags } from '../../models/tags.model';
-import { UploadFile } from '../ta-upload-files/models/upload-file.model';
+import { FileEvent } from '@shared/models/file-event.model';
+import { Tags } from '@shared/models/tags.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 //Services
-import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
+import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 //Enums
-import { FileActionEnum } from './enums/file-action-string.enum';
+import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enums/file-action-string.enum';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',

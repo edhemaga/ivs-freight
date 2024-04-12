@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Step7Component } from './step7.component';
+import { Step7Component } from '@pages/applicant/pages/applicant-application/components/step7/step7.component';
 
 describe('Step7Component', () => {
     let component: Step7Component;

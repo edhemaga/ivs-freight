@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCustomCardComponent } from './ta-custom-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 describe('TaCustomCardComponent', () => {
     let component: TaCustomCardComponent;

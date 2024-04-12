@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsTabPlaceholderComponent } from './settings-tab-placeholder.component';
+import { SettingsTabPlaceholderComponent } from '@pages/settings/components/settings-tab-placeholder/settings-tab-placeholder.component';
 
 describe('SettingsTabPlaceholderComponent', () => {
     let component: SettingsTabPlaceholderComponent;

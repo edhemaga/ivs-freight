@@ -1,6 +1,6 @@
-import { tableDropdownContent } from 'src/app/shared/models/card-models/card-table-data.model';
-import { AccountPassword } from 'src/app/pages/account/pages/account-table/models/account-password.model';
-import { AccountLabelData } from 'src/app/pages/account/pages/account-table/models/account-label-data.model';
+import { tableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+import { AccountPassword } from '@pages/account/pages/account-table/models/account-password.model';
+import { AccountLabelData } from '@pages/account/pages/account-table/models/account-label-data.model';
 
 export class AccountTableData {
     id: number;

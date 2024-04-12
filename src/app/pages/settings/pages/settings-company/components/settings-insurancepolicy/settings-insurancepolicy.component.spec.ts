@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsInsurancepolicyComponent } from './settings-insurancepolicy.component';
+import { SettingsInsurancepolicyComponent } from '@pages/settings/pages/settings-company/components/settings-insurancepolicy/settings-insurancepolicy.component';
 
 describe('SettingsInsurancepolicyComponent', () => {
     let component: SettingsInsurancepolicyComponent;

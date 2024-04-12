@@ -18,30 +18,30 @@ import {
     phoneFaxRegex,
     addressValidation,
     vinNumberValidation,
-} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
-import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/shared/services/form.service';
-import { AccidentService } from 'src/app/pages/safety/accident/services/accident.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FormService } from '@shared/services/form.service';
+import { AccidentService } from '@pages/safety/accident/services/accident.service';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from '../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '../../../../../shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 // models
 import {

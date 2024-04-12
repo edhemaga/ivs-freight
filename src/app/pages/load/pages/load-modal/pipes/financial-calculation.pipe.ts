@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Pipe({
     name: 'financialCalculation',

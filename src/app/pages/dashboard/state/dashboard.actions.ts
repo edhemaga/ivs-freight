@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Article } from './dashboard.model';
+import { Article } from '@pages/dashboard/state/dashboard.model';
 
 export enum ArticleActionType {
     ADD_ITEM = '[ARTICLE] Add ARTICLE',

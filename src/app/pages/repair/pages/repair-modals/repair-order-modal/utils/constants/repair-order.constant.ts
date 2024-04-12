@@ -1,5 +1,5 @@
-import { RepairTypes } from '../../models/repair-types.model';
-import { RepairData } from '../../models/repair-data.model';
+import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
+import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
 
 export class RepairOrderConstants {
     static REPAIR_TYPES: RepairTypes[] = [

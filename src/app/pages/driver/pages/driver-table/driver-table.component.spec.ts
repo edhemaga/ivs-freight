@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverTableComponent } from './driver-table.component';
+import { DriverTableComponent } from '@pages/driver/pages/driver-table/driver-table.component';
 
 describe('DriverTableComponent', () => {
     let component: DriverTableComponent;

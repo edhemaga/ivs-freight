@@ -1,4 +1,4 @@
-import { ToolbarActions } from '../../ta-table-toolbar/models/table-toolbar-actions.model';
+import { ToolbarActions } from '@shared/components/ta-table/ta-table-toolbar/models/table-toolbar-actions.model';
 
 export interface TableBodyOptionActions {
     toolbarActions: ToolbarActions;

@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { TodoQuery } from '../../state/to-do.query';
 
 // models
 import {
@@ -10,27 +9,30 @@ import {
 } from 'appcoretruckassist';
 
 // services
-import { TodoService } from '../../services/to-do.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { CommentsService } from 'src/app/shared/services/comments.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { SharedService } from 'src/app/shared/services/shared.service';
+import { TodoService } from '@pages/to-do/services/to-do.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { CommentsService } from '@shared/services/comments.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { SharedService } from '@shared/services/shared.service';
+
+// store
+import { TodoQuery } from '@pages/to-do/state/to-do.query';
 
 // moment
 import moment from 'moment';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TodoModalComponent } from 'src/app/pages/to-do/pages/to-do-modal/to-do-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TodoModalComponent } from '@pages/to-do/pages/to-do-modal/to-do-modal.component';
 
 // animations
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // helpers
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-to-do-list-card',

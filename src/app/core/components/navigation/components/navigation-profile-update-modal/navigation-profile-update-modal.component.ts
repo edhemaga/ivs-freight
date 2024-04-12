@@ -17,29 +17,29 @@ import {
     firstNameValidation,
     lastNameValidation,
     passwordValidation,
-} from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
-import { phoneFaxRegex } from '../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
+import { phoneFaxRegex } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // animations
-import { tabsModalAnimation } from '../../../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // services
-import { TaInputService } from '../../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../../shared/components/ta-modal/services/modal.service';
-import { UserProfileUpdateService } from '../../../../../shared/services/user-profile-update.service';
-import { FormService } from '../../../../../shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+import { FormService } from '@shared/services/form.service';
 
 // modules
 import Croppie from 'croppie';
 
 // components
-import { TaModalComponent } from '../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaLogoChangeComponent } from '../../../../../shared/components/ta-logo-change/ta-logo-change.component';
-import { TaCheckboxCardComponent } from '../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 // models
 import {

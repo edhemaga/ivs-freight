@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
+import {} from 'rxjs/operators';
 
 // Services
-import { ShipperService } from '../services/shipper.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
 
 // Store
-import { ShipperMinimalListStore } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
+import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 
 // Models
 import { ShipperMinimalListResponse } from 'appcoretruckassist';
@@ -23,10 +23,7 @@ export class ShipperMinimalListResolver
     count: number;
 
     constructor(
-        // Services
         private shipperService: ShipperService,
-
-        // Store
         private shipperMinimalListStore: ShipperMinimalListStore
     ) {}
     resolve(): Observable<ShipperMinimalListResponse> | Observable<any> {

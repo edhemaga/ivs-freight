@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaModalComponent } from './ta-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
 describe('TaModalComponent', () => {
     let component: TaModalComponent;

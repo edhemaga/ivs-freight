@@ -261,7 +261,6 @@
                 }
 
                 &.active {
-                    //background-image: url('../../../assets/img/svgs/editor-selected-color.svg');
                     background-repeat: no-repeat;
                     background-position: center;
                 }
@@ -407,7 +406,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            
+
             width: 18px;
             height: 18px;
 
@@ -441,7 +440,7 @@
 
     outline: none;
     font-size: 13px;
-    color: #3C3C3C;
+    color: #3c3c3c;
 
     cursor: text;
     overflow: auto;
@@ -498,12 +497,12 @@
     font[color='#dadada'] {
         &::-moz-selection {
             color: rgb(218, 218, 218) !important;
-            background: rgb(218, 218, 218, 0.2)!important;
+            background: rgb(218, 218, 218, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(218, 218, 218) !important;
-            background: rgb(218, 218, 218, 0.2)!important;
+            background: rgb(218, 218, 218, 0.2) !important;
         }
     }
 
@@ -512,7 +511,7 @@
             color: rgb(102, 146, 241) !important;
             background: rgb(102, 146, 241, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(102, 146, 241) !important;
             background: rgb(102, 146, 241, 0.2) !important;
@@ -524,7 +523,7 @@
             color: rgb(86, 180, 172) !important;
             background: rgb(86, 180, 172, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(86, 180, 172) !important;
             background: rgb(86, 180, 172, 0.2) !important;
@@ -536,7 +535,7 @@
             color: rgb(230, 103, 103) !important;
             background: rgb(230, 103, 103, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(230, 103, 103) !important;
             background: rgb(230, 103, 103, 0.2) !important;
@@ -548,7 +547,7 @@
             color: rgb(250, 177, 92) !important;
             background: rgb(250, 177, 92, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(250, 177, 92) !important;
             background: rgb(250, 177, 92, 0.2) !important;
@@ -560,7 +559,7 @@
             color: rgb(179, 112, 240) !important;
             background: rgb(179, 112, 240, 0.2) !important;
         }
-    
+
         &::selection {
             color: rgb(179, 112, 240) !important;
             background: rgb(179, 112, 240, 0.2) !important;

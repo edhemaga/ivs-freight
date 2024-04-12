@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaChartComponent } from './ta-chart.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 describe('TaChartComponent', () => {
     let component: TaChartComponent;

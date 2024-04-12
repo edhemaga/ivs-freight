@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApplicantSphComponent } from './applicant-sph.component';
+import { ApplicantSphComponent } from '@pages/applicant/pages/applicant-sph/applicant-sph.component';
 
 const routes: Routes = [
     {

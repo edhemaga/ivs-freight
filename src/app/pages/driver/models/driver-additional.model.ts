@@ -1,7 +1,7 @@
-import { Address } from "ngx-google-places-autocomplete/objects/address";
-import { Avatar } from "src/app/shared/models/avatar.model";
-import { Bank } from "src/app/shared/models/bank.model";
-import { Bussiness } from "src/app/shared/models/bussiness.model";
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { Avatar } from '@shared/models/avatar.model';
+import { Bank } from '@shared/models/bank.model';
+import { Bussiness } from '@shared/models/bussiness.model';
 
 export interface DriverAdditional {
     note?: any;

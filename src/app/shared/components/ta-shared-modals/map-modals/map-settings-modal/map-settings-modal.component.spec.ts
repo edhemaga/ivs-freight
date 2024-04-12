@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapSettingsModalComponent } from './map-settings-modal.component';
+import { MapSettingsModalComponent } from '@shared/components/ta-shared-modals/map-modals/map-settings-modal/map-settings-modal.component';
 
 describe('MapSettingsModalComponent', () => {
     let component: MapSettingsModalComponent;

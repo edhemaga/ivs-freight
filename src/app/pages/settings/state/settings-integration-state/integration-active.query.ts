@@ -5,7 +5,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     IntegrationStore,
     IntegrationActiveState,
-} from './integrationActiveStore';
+} from '@pages/settings/state/settings-integration-state/integrationActiveStore';
 
 @Injectable({ providedIn: 'root' })
 export class IntegrationActiveQuery extends QueryEntity<IntegrationActiveState> {

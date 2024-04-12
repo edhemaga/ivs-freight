@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RepairTableComponent } from './repair-table.component';
+import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-table.component';
 
 describe('RepairTableComponent', () => {
     let component: RepairTableComponent;

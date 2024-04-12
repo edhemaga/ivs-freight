@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaProgressInvoicesComponent } from './ta-progress-invoices.component';
+import { TaProgressInvoicesComponent } from '@shared/components/ta-progress-invoices/ta-progress-invoices.component';
 
 describe('TaProgressInvoicesComponent', () => {
     let component: TaProgressInvoicesComponent;

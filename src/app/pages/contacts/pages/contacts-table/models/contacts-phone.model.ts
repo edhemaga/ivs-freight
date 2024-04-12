@@ -1,4 +1,4 @@
-import { ContactsPhoneType } from './contacts-phone-type.model';
+import { ContactsPhoneType } from '@pages/contacts/pages/contacts-table/models/contacts-phone-type.model';
 
 export interface ContactsPhone {
     id?: number;

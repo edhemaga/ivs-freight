@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Component, Input, OnInit } from '@angular/core';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TaMapsComponent } from '../ta-maps/ta-maps.component';
+
+// components
+import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 @Component({
     selector: 'app-ta-gps-progressbar',
@@ -21,6 +25,7 @@ import { TaMapsComponent } from '../ta-maps/ta-maps.component';
 })
 export class TaGpsProgressbarComponent implements OnInit {
     constructor() {}
+
     @Input() isDropdown: boolean = false;
 
     currentPosition: number = 30;

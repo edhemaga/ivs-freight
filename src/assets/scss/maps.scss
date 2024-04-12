@@ -1,4 +1,4 @@
-@import '../../theme/variables.scss';
+@import 'src/theme/variables';
 
 .toolbar-relative {
     position: relative;
@@ -97,7 +97,7 @@
             }
 
             &:has(.show-marker-dropdown) {
-                z-index: 1000!important;
+                z-index: 1000 !important;
             }
 
             &:has(.focused-route-wrapper) {
@@ -514,24 +514,6 @@
                     svg {
                         path {
                             fill: #6c6c6c;
-                        }
-                    }
-                }
-            }
-
-            &.active-drop {
-                .dropdown-dots {
-                    svg {
-                        path {
-                            //fill: #6c6c6c !important;
-                        }
-                    }
-
-                    &:hover {
-                        svg {
-                            path {
-                                //fill: #3d3d3d !important;
-                            }
                         }
                     }
                 }

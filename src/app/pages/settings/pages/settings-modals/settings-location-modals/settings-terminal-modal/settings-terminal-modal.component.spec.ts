@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsTerminalModalComponent } from './settings-terminal-modal.component';
+import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 describe('SettingsTerminalModalComponent', () => {
     let component: SettingsTerminalModalComponent;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViolationTableComponent } from './violation-table.component';
+import { ViolationTableComponent } from '@pages/safety/violation/pages/violation-table/violation-table.component';
 
 describe('ViolationTableComponent', () => {
     let component: ViolationTableComponent;

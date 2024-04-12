@@ -1,8 +1,8 @@
-import { Navigation } from 'src/app/core/components/navigation/models/navigation.model';
-import { NavigationSettings } from 'src/app/core/components/navigation/models/navigation-settings.model';
-import { NavigationFooterData } from 'src/app/core/components/navigation/models/navigation-footer-data.model';
-import { NavigationUserPanel } from 'src/app/core/components/navigation/models/navigation-user-panel.model';
-import { NavigationModal } from 'src/app/core/components/navigation/models/navigation-modal.model';
+import { Navigation } from '@core/components/navigation/models/navigation.model';
+import { NavigationSettings } from '@core/components/navigation/models/navigation-settings.model';
+import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
+import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
+import { NavigationModal } from '@core/components/navigation/models/navigation-modal.model';
 
 export class NavigationDataConstants {
     static navigationData: Navigation[] = [

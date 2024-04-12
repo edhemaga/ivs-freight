@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaStatusSwitchComponent } from './ta-status-switch.component';
+import { TaStatusSwitchComponent } from '@shared/components/ta-status-switch/ta-status-switch.component';
 
 describe('TaStatusSwitchComponent', () => {
     let component: TaStatusSwitchComponent;

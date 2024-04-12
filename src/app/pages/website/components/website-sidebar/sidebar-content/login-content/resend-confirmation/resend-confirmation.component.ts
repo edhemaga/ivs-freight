@@ -8,12 +8,12 @@ import {
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 // enums
-import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import { ResendSignUpCompanyOrUserCommand } from 'appcoretruckassist';

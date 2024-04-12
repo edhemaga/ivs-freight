@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Step3FormComponent } from './step3-form.component';
+import { Step3FormComponent } from '@pages/applicant/components/applicant-forms/step3-form/step3-form.component';
 
 describe('Step3FormComponent', () => {
     let component: Step3FormComponent;

@@ -1,4 +1,3 @@
-import { SettingsCompanyService } from '../../../../services/settings-company.service';
 import {
     Component,
     ElementRef,
@@ -15,23 +14,24 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 
 // pipes
-import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
+import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
 
 // enums
-import { SettingsGeneralStringEnum } from '../../../../enums/settings-general-string.enum';
-import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { SettingsGeneralStringEnum } from '@pages/settings/enums/settings-general-string.enum';
+import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 
 //Components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Models
-import { SettingsCompanyProperties } from '../../../../models/settings-company-properties.model';
+import { SettingsCompanyProperties } from '@pages/settings/models/settings-company-properties.model';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

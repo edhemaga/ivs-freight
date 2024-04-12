@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoadTableComponent } from './pages/load-table/load-table.component';
-import { LoatItemResolver } from './state/load-details-state/load-details.resolver';
-import { LoadCardComponent } from './pages/load-card/load-card.component';
-import { LoadMinimalListResolver } from './state/load-details-state/load-minimal-list-state/laod-details-minamal.resolver';
+
+// resolvers
+import { LoadDetailsResolver } from '@pages/load/resolvers/load-details.resolver';
+import { LoadDetailsMinimalResolver } from '@pages/load/resolvers/laod-details-minimal.resolver';
+
+// components
+import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
+import { LoadCardComponent } from '@pages/load/pages/load-card/load-card.component';
 
 const routes: Routes = [
     {
@@ -14,12 +18,12 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./pages/load-details/load-details.module').then(
+            import('@pages/load/pages/load-details/load-details.module').then(
                 (m) => m.LoadDetailsModule
             ),
         resolve: {
-            loadItem: LoatItemResolver,
-            loadMinimalList: LoadMinimalListResolver,
+            loadItem: LoadDetailsResolver,
+            loadMinimalList: LoadDetailsMinimalResolver,
         },
         data: { title: 'Load Detail' },
     },

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCheckboxComponent } from './ta-checkbox.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 describe('TaCheckboxComponent', () => {
     let component: TaCheckboxComponent;

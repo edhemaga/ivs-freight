@@ -6,24 +6,24 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { SettingsLocationService } from '../../services/settings-location.service';
-import { CompanyParkingService } from '../../../../services/company-parking.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { CompanyParkingService } from '@pages/settings/services/company-parking.service';
 
 // pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // utils
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-parking',
     templateUrl: './settings-parking.component.html',
     styleUrls: ['./settings-parking.component.scss'],
-    providers: [FormatCurrency],
+    providers: [FormatCurrencyPipe],
 })
 export class SettingsParkingComponent implements OnInit, OnDestroy {
     public parkingPhone: boolean;
@@ -52,7 +52,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private FormatCurrency: FormatCurrency,
+        private FormatCurrencyPipe: FormatCurrencyPipe,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -245,7 +245,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         return (
             data.payPeriod.name +
             ' Rent ' +
-            `-  ${this.FormatCurrency.transform(data.rent)}`
+            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
     ngOnDestroy(): void {

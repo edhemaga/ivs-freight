@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { QueryEntity } from '@datorama/akita';
 
-import { ApplicantStore, ApplicantState } from './applicant.store';
+import {
+    ApplicantStore,
+    ApplicantState,
+} from '@pages/applicant/state/applicant.store';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantQuery extends QueryEntity<ApplicantState> {

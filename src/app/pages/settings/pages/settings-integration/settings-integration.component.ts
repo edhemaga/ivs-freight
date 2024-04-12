@@ -3,13 +3,13 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { getIntegrationsColumnDefinition } from 'src/app/shared/utils/settings/table-settings/integration-columns';
+import { getIntegrationsColumnDefinition } from '@shared/utils/settings/table-settings/integration-columns';
 
 // store
-import { IntegrationActiveQuery } from '../../state/settings-integration-state/integration-active.query';
+import { IntegrationActiveQuery } from '@pages/settings/state/settings-integration-state/integration-active.query';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',

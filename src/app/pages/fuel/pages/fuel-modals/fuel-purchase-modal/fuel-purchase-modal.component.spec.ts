@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FuelPurchaseModalComponent } from './fuel-purchase-modal.component';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 describe('FuelPurchaseModalComponent', () => {
     let component: FuelPurchaseModalComponent;

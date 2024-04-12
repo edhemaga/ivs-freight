@@ -1,8 +1,3 @@
-import { AddressEntity } from '../../../../../../../../appcoretruckassist/model/addressEntity';
-import {
-    addressUnitValidation,
-    addressValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -13,28 +8,36 @@ import {
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { SettingsCompanyService } from 'src/app/pages/settings/services/settings-company.service';
-import { TaInputService } from '../../../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../../../shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/shared/services/form.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FormService } from '@shared/services/form.service';
 
 // models
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 
 // validators
-import { phoneFaxRegex } from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+import {
+    addressUnitValidation,
+    addressValidation,
+    phoneFaxRegex,
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaCustomCardComponent } from '../../../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputAddressDropdownComponent } from '../../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaNoticeOfAsignmentComponent } from '../../../../../../shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
-import { TaInputNoteComponent } from '../../../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaNoticeOfAsignmentComponent } from '@shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+
+// models
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-settings-factoring-modal',

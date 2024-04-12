@@ -6,14 +6,14 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, mergeMap } from 'rxjs';
 
 // animations
-import { scrollButtonAnimation } from './core/animations/scroll-button.animation';
+import { scrollButtonAnimation } from '@core/animations/scroll-button.animation';
 import {
     slideLeft,
     slideRight,
-} from 'src/app/pages/applicant/animations/applicant-route.animation';
+} from '@pages/applicant/animations/applicant-route.animation';
 
 // services
-import { StaticInjectorService } from './core/decorators/titles.decorator';
+import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
 @Component({
     selector: 'app-root',

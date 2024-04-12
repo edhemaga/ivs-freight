@@ -1,4 +1,4 @@
-import { ContactsEmailType } from './contacts-email-type.model';
+import { ContactsEmailType } from '@pages/contacts/pages/contacts-table/models/contacts-email-type.model';
 
 export interface ContactsEmail {
     id?: number;

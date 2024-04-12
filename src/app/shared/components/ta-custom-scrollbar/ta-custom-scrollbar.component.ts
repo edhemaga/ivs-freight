@@ -19,8 +19,8 @@ import { ObserversModule } from '@angular/cdk/observers';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { SharedService } from '../../services/shared.service';
-import { TruckassistTableService } from '../../services/truckassist-table.service';
+import { SharedService } from '@shared/services/shared.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 let hasTablePageHeight = false;
 @Component({

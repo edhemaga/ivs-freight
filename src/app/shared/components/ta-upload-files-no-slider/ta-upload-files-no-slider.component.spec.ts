@@ -1,23 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaUploadFilesNoSliderComponent } from './ta-upload-files-no-slider.component';
+import { TaUploadFilesNoSliderComponent } from '@shared/components/ta-upload-files-no-slider/ta-upload-files-no-slider.component';
 
 describe('TaUploadFilesNoSliderComponent', () => {
-  let component: TaUploadFilesNoSliderComponent;
-  let fixture: ComponentFixture<TaUploadFilesNoSliderComponent>;
+    let component: TaUploadFilesNoSliderComponent;
+    let fixture: ComponentFixture<TaUploadFilesNoSliderComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ TaUploadFilesNoSliderComponent ]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [TaUploadFilesNoSliderComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(TaUploadFilesNoSliderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(TaUploadFilesNoSliderComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

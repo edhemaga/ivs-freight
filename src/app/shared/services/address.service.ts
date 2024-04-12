@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 import { AddressListResponse, AddressResponse } from 'appcoretruckassist';
 
 // services
-import { GeolocationService } from '../../../../appcoretruckassist/api/geolocation.service';
+import { GeolocationService } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

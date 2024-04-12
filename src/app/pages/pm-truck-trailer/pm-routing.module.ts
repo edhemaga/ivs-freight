@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PmTableComponent } from './pages/pm-table/pm-table.component';
+
+import { PmTableComponent } from '@pages/pm-truck-trailer/pages/pm-table/pm-table.component';
 
 const routes: Routes = [
     {

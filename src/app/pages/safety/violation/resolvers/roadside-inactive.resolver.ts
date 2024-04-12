@@ -4,16 +4,17 @@ import { Resolve } from '@angular/router';
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // services
-import { RoadsideService } from '../services/roadside.service';
+import { RoadsideService } from '@pages/safety/violation/services/roadside.service';
 
 // store
 import {
     RoadsideInactiveState,
     RoadsideInactiveStore,
-} from '../state/roadside-state/roadside-inactive/roadside-inactive.store';
+} from '@pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.store';
 
 // models
 import { RoadsideInspectionListResponse } from 'appcoretruckassist';
+
 @Injectable({
     providedIn: 'root',
 })

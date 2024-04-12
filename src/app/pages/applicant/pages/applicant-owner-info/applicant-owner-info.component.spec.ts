@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantOwnerInfoComponent } from './applicant-owner-info.component';
+import { ApplicantOwnerInfoComponent } from '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.component';
 
 describe('ApplicantOwnerInfoComponent', () => {
     let component: ApplicantOwnerInfoComponent;

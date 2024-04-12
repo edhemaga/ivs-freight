@@ -1,4 +1,4 @@
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class trailerCardDataConstants {
     static rows: number = 4;

@@ -16,13 +16,13 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAutoclosePopoverComponent } from '../ta-autoclose-popover/ta-autoclose-popover.component';
-import { TaCustomPeriodRangeComponent } from '../ta-custom-period-range/ta-custom-period-range.component';
+import { TaAutoclosePopoverComponent } from '@shared/components/ta-autoclose-popover/ta-autoclose-popover.component';
+import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 
 // models
-import { Tabs } from '../../models/tabs.model';
-import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
-import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
+import { Tabs } from '@shared/models/tabs.model';
+import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-tab-switch',

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverDetailsItemComponent } from './driver-details-item.component';
+import { DriverDetailsItemComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/driver-details-item.component';
 
 describe('DriverDetailsItemComponent', () => {
     let component: DriverDetailsItemComponent;

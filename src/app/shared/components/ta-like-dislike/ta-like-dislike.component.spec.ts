@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaLikeDislikeComponent } from './ta-like-dislike.component';
+import { TaLikeDislikeComponent } from '@shared/components/ta-like-dislike/ta-like-dislike.component';
 
 describe('TaLikeDislikeComponent', () => {
     let component: TaLikeDislikeComponent;

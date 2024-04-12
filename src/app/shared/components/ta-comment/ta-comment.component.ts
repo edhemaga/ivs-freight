@@ -1,4 +1,3 @@
-import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
@@ -15,8 +14,10 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // animations
-import { dropdownAnimationComment } from './animations/dropdown-animation-comment.animation';
+import { dropdownAnimationComment } from '@shared/components/ta-comment/animations/dropdown-animation-comment.animation';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -26,34 +27,34 @@ import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { CommentsService } from '../../services/comments.service';
-import { ModalService } from '../ta-modal/services/modal.service';
-import { ConfirmationService } from '../ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TaInputDropdownTableService } from '../ta-input-dropdown-table/services/ta-input-dropdown-table.service';
-import { LoadService } from '../../services/load.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { CommentsService } from '@shared/services/comments.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TaInputDropdownTableService } from '@shared/components/ta-input-dropdown-table/services/ta-input-dropdown-table.service';
+import { LoadService } from '@shared/services/load.service';
 
 // utils
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // enums
-import { CommentStringEnum } from 'src/app/shared/components/ta-comment/enums/comment-string.enum';
+import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-string.enum';
 
 // pipes
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
-import { FormatDatePipe } from '../../pipes/format-date.pipe';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
-import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
-import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
+import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
+import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 // models
-import { CommentCompanyUser } from '../../models/comment-company-user.model';
-import { CommentData } from 'src/app/shared/models/comment-data.model';
-import { Comment } from '../../models/card-models/card-table-data.model';
+import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
+import { CommentData } from '@shared/models/comment-data.model';
+import { Comment } from '@shared/models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-ta-comment',

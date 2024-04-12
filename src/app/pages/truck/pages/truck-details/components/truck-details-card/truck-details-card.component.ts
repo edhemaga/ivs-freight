@@ -21,31 +21,31 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckService } from '../../../../../../shared/services/truck.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckService } from '@shared/services/truck.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // animations
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // store
-import { TrucksMinimalListQuery } from '../../../../state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListQuery } from '@pages/truck/state/truck-details-minima-list-state/truck-details-minimal.query';
 
 // enums
-import { ChartAxisPositionEnum } from 'src/app/shared/components/ta-chart/enums/chart-axis-position-string.enum';
-import { ChartLegendDataStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-legend-data-string.enum';
+import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
+import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
 // constants
-import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
 
 // components
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 // models
 import { TruckResponse } from 'appcoretruckassist';
-import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
-import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
+import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 @Component({
     selector: 'app-truck-details-card',
     templateUrl: './truck-details-card.component.html',
@@ -690,7 +690,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
     public getTruckDropdown() {

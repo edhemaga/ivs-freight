@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     ApplicantTableState,
     ApplicantTableStore,
-} from './applicant-table.store';
+} from '@pages/driver/state/applicant-state/applicant-table.store';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantTableQuery extends QueryEntity<ApplicantTableState> {

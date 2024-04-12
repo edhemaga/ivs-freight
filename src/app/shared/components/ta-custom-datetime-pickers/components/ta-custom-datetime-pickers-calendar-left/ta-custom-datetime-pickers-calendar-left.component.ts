@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { CalendarDateTimePickerService } from '../../services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 
 // modules
 import {
@@ -21,16 +21,16 @@ import {
 } from '@angular/cdk/scrolling';
 
 // pipes
-import { CalendarMonthsPipe } from 'src/app/shared/components/ta-custom-datetime-pickers/pipes/calendar-months.pipe';
+import { CalendarMonthsPipe } from '@shared/components/ta-custom-datetime-pickers/pipes/calendar-months.pipe';
 
 // strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
-} from '../../strategy/calendar-strategy';
+} from '@shared/components/ta-custom-datetime-pickers/strategy/calendar-strategy';
 
 // enums
-import { CalendarLeftEnum } from '../../enums/calendar-left.enum';
+import { CalendarLeftEnum } from '@shared/components/ta-custom-datetime-pickers/enums/calendar-left.enum';
 
 function factory(dir: TaCustomDateTimePickersCalendarLeftComponent) {
     return dir.scrollStrategy;

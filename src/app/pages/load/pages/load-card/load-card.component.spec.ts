@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadCardComponent } from './load-card.component';
+import { LoadCardComponent } from '@pages/load/pages/load-card/load-card.component';
 
 describe('LoadCardComponent', () => {
     let component: LoadCardComponent;
