@@ -11,7 +11,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { CompanyTerminalService } from '@pages/settings/services/company-terminal.service';
 
 // pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // utils
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
@@ -20,7 +20,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
     selector: 'app-settings-terminal',
     templateUrl: './settings-terminal.component.html',
     styleUrls: ['./settings-terminal.component.scss'],
-    providers: [FormatCurrency],
+    providers: [FormatCurrencyPipe],
 })
 export class SettingsTerminalComponent implements OnInit, OnDestroy {
     public terminalData: any;

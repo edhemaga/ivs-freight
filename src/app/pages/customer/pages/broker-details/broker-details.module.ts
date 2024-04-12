@@ -23,7 +23,7 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 // Pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
@@ -55,7 +55,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         TaDetailsDropdownComponent,
 
         // Pipes
-        FormatCurrency,
+        FormatCurrencyPipe,
         FormatEinPipe,
         FormatDatePipe,
     ],

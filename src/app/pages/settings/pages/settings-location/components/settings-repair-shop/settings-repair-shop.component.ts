@@ -13,7 +13,7 @@ import { RepairService } from '@shared/services/repair.service';
 import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
 
 // pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // core
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -25,7 +25,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
     selector: 'app-settings-repair-shop',
     templateUrl: './settings-repair-shop.component.html',
     styleUrls: ['./settings-repair-shop.component.scss'],
-    providers: [FormatCurrency],
+    providers: [FormatCurrencyPipe],
 })
 export class SettingsRepairShopComponent implements OnInit, OnDestroy {
     public repairShopData: any;
@@ -41,7 +41,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private FormatCurrency: FormatCurrency,
+        private FormatCurrencyPipe: FormatCurrencyPipe,
         private repairService: RepairService,
         private activatedRoute: ActivatedRoute
     ) {}
@@ -205,7 +205,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         return (
             data.payPeriod.name +
             ' Rent ' +
-            `-  ${this.FormatCurrency.transform(data.rent)}`
+            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
 

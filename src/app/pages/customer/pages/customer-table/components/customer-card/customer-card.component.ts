@@ -18,7 +18,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
 // Services
@@ -32,7 +32,7 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
     selector: 'app-customer-card',
     templateUrl: './customer-card.component.html',
     styleUrls: ['./customer-card.component.scss'],
-    providers: [FormatCurrency, TimeFormatPipe, CardHelper],
+    providers: [FormatCurrencyPipe, TimeFormatPipe, CardHelper],
 })
 export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();

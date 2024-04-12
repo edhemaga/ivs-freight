@@ -22,7 +22,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
 import { MoneyFilterPipe } from '@shared/pipes/money-filter.pipe';
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -38,7 +38,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
         TaSearchComponent,
         TaFilterComponent,
         AngularSvgIconModule,
-        FormatCurrency,
+        FormatCurrencyPipe,
         MoneyFilterPipe,
         TaSpecialFilterComponent,
     ],

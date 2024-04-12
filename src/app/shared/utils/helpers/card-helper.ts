@@ -2,7 +2,7 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FormatMilesPipe } from '@shared/pipes/format-miles.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
@@ -15,7 +15,7 @@ import { CardDataResult } from '@shared/models/card-models/card-data-result.mode
 // Remove quotes from string to convert into endpoint
 
 export class CardHelper {
-    private formatCurrencyPipe: FormatCurrency = new FormatCurrency();
+    private formatCurrencyPipe: FormatCurrencyPipe = new FormatCurrencyPipe();
     private formatDatePipe: FormatDatePipe = new FormatDatePipe();
     private formatNumberMi: FormatMilesPipe = new FormatMilesPipe();
     private timeFormatPipe: TimeFormatPipe = new TimeFormatPipe();

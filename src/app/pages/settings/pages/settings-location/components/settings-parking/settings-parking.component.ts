@@ -14,7 +14,7 @@ import { SettingsLocationService } from '@pages/settings/pages/settings-location
 import { CompanyParkingService } from '@pages/settings/services/company-parking.service';
 
 // pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // utils
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
@@ -23,7 +23,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
     selector: 'app-settings-parking',
     templateUrl: './settings-parking.component.html',
     styleUrls: ['./settings-parking.component.scss'],
-    providers: [FormatCurrency],
+    providers: [FormatCurrencyPipe],
 })
 export class SettingsParkingComponent implements OnInit, OnDestroy {
     public parkingPhone: boolean;
@@ -52,7 +52,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private FormatCurrency: FormatCurrency,
+        private FormatCurrencyPipe: FormatCurrencyPipe,
         private activatedRoute: ActivatedRoute
     ) {}
 
@@ -245,7 +245,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         return (
             data.payPeriod.name +
             ' Rent ' +
-            `-  ${this.FormatCurrency.transform(data.rent)}`
+            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
     ngOnDestroy(): void {

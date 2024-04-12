@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // pipes
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatMilesPipe } from '@shared/pipes/format-miles.pipe';
 
 // models
@@ -32,7 +32,7 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatMilesPipe, FormatCurrency, CardHelper],
+    providers: [FormatMilesPipe, FormatCurrencyPipe, CardHelper],
 })
 export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data

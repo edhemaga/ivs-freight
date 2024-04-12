@@ -7,7 +7,7 @@ import { LoadDetailsRoutingModule } from '@app/pages/load/pages/load-details/loa
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // components
 import { LoadDetailsComponent } from '@pages/load/pages/load-details/load-details.component';
@@ -50,7 +50,7 @@ import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
         TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
-        FormatCurrency,
+        FormatCurrencyPipe,
         TaMapsComponent,
     ],
 })

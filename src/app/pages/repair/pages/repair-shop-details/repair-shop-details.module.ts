@@ -28,7 +28,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 @NgModule({
     declarations: [
@@ -64,7 +64,7 @@ import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
 
         // Pipes
         FormatDatePipe,
-        FormatCurrency,
+        FormatCurrencyPipe,
     ],
 })
 export class RepairShopDetailsModule {}
