@@ -8,7 +8,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
 // services
 import { ConfirmationResetService } from './services/confirmation-reset.service';

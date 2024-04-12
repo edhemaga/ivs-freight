@@ -1,5 +1,5 @@
-import { NoteActiveOptions } from '../../models/note-active-options.model';
-import { NoteColors } from '../../models/note-colors.model';
+import { NoteActiveOptions } from '@shared/components/ta-note-container/models/note-active-options.model';
+import { NoteColors } from '@shared/components/ta-note-container/models/note-colors.model';
 
 export class NoteConfigConstants {
     static NoteDarkColors: NoteColors[] = [

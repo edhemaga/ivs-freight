@@ -15,19 +15,19 @@ import { takeUntil } from 'rxjs/operators';
 
 // models
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { User } from '../../models/user.model';
+import { User } from '@shared/models/user.model';
 
 //moment
 import moment from 'moment';
 
 // enums
-import { TaInputDropdownTableStringEnum } from '../../enums/ta-input-dropdown-table-string.enum';
+import { TaInputDropdownTableStringEnum } from '@shared/components/ta-input-dropdown-table/enums/ta-input-dropdown-table-string.enum';
 
 // services
-import { CommentsService } from 'src/app/shared/services/comments.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { TaInputDropdownTableService } from '../../services/ta-input-dropdown-table.service';
-import { LoadService } from 'src/app/shared/services/load.service';
+import { CommentsService } from '@shared/services/comments.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { TaInputDropdownTableService } from '@shared/components/ta-input-dropdown-table/services/ta-input-dropdown-table.service';
+import { LoadService } from '@shared/services/load.service';
 
 @Component({
     selector: 'app-ta-new-comment',

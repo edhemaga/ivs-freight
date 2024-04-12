@@ -8,17 +8,17 @@ import {
 import { FormControl, UntypedFormArray } from '@angular/forms';
 
 // models
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
-import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 
 // helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-account-card',

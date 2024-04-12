@@ -31,7 +31,7 @@ import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 
 // helpers
-import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
+import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
 import { ChartHelper } from './utils/helpers/chart.helper';
 
 // models
@@ -47,10 +47,10 @@ import { ChartAxisPositionEnum } from './enums/chart-axis-position-string.enum';
 import { ChartAnnotationPositionStringEnum } from './enums/chart-annotation-position-string.enum';
 
 // Properties from dashboard
-import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
-import { TopRatedListItem } from 'src/app/pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
-import { ChartInitProperties } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { ByStateListItem } from 'src/app/pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
+import { ChartInitProperties } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 import { ChartConstants } from './utils/constants/chart.constants';
 
 @Component({

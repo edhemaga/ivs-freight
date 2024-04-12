@@ -20,13 +20,13 @@ import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
 } from './services/ta-like-dislike.service';
-import { DetailsDataService } from '../../services/details-data.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // models
-import { SendDataCard } from 'src/app/shared/models/card-models/send-data-card.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-like-dislike',

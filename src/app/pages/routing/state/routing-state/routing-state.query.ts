@@ -6,7 +6,7 @@ import { QueryEntity } from '@datorama/akita';
 import { RoutingStateStore, RoutingStateState } from './routing-state.store';
 
 //model
-import { RoutingState } from '../../models/routing-state.model';
+import { RoutingState } from '@pages/routing/models/routing-state.model';
 
 @Injectable({
     providedIn: 'root',

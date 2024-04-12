@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, forkJoin, tap } from 'rxjs';
 
-//Store
-import { OwnerInactiveState, OwnerInactiveStore } from './owner-inactive.store';
+// Store
+import {
+    OwnerInactiveState,
+    OwnerInactiveStore,
+} from '@pages/owner/state/owner-inactive-state/owner-inactive.store';
 
-//Services
-import { OwnerService } from '../../services/owner.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+// Services
+import { OwnerService } from '@pages/owner/services/owner.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
-//Enums
-import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
+// Enums
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 @Injectable({
     providedIn: 'root',

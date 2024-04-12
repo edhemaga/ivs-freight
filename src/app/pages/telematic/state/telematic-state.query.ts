@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 
-// Akita
+// store
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { TelematicStateStore, TelematicStateState } from './telematic-state.store';
+import {
+    TelematicStateStore,
+    TelematicStateState,
+} from './telematic-state.store';
 
 // Models
-import { TelematicState } from '../models/telematic-state.model';
+import { TelematicState } from '@pages/telematic/models/telematic-state.model';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
-export class TelematicStateQuery extends QueryEntity<TelematicStateState, TelematicState> {
-
-  constructor(protected store: TelematicStateStore) {
-    super(store);
-  }
-
+export class TelematicStateQuery extends QueryEntity<
+    TelematicStateState,
+    TelematicState
+> {
+    constructor(protected store: TelematicStateStore) {
+        super(store);
+    }
 }

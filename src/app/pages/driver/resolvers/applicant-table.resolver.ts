@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable } from 'rxjs';
-import { ApplicantTableState } from './applicant-table.store';
+
+// store
+import { ApplicantTableState } from '@pages/driver/state/applicant-state/applicant-table.store';
 
 @Injectable({
     providedIn: 'root',

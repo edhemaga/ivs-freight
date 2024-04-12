@@ -11,8 +11,8 @@ import { UntypedFormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // animations
 import {
@@ -22,13 +22,13 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // store
-import { TrailersMinimalListQuery } from '../../../../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
 
 // models
-import { TrailerDropdown } from '../../models/trailer-dropdown.model';
+import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerMinimalResponse } from 'appcoretruckassist';
 
 @Component({

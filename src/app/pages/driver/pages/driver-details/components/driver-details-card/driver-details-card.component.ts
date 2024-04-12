@@ -16,48 +16,48 @@ import { UntypedFormControl } from '@angular/forms';
 import moment from 'moment';
 
 //Pipes
-import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 //Animations
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 //Helpers
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 //Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DriverCdlService } from '../../../../services/driver-cdl.service';
-import { DriverMedicalService } from '../../../../services/driver-medical.service';
-import { DriverMvrService } from '../../../../services/driver-mvr.service';
-import { DriverTestService } from '../../../../services/driver-test.service';
-import { DriverService } from '../../../../services/driver.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
+import { DriverMedicalService } from '@pages/driver/services/driver-medical.service';
+import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
+import { DriverTestService } from '@pages/driver/services/driver-test.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DropDownService } from '@shared/services/drop-down.service';
 
 //Components
-import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 //Store
-import { DriversMinimalListQuery } from '../../../../state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 
 //Enums
-import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
+import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from './enums/driver-details-card-string.enum';
 import { DriverImagesStringEnum } from './enums/driver-images-string.enum';
-import { BrokerTabStringEnum } from 'src/app/pages/customer/pages/broker-details/enums/broker-tab-string.enum';
+import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 //Models
-import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
-import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
-import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
+import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
+import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
     DriverMinimalResponse,
@@ -68,12 +68,12 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from 'src/app/shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
 import { DriverDropdown } from './models/driver-dropdown.model';
-import { DriverDateInfo } from '../../../../models/driver-date-info.model';
+import { DriverDateInfo } from '@pages/driver/models/driver-date-info.model';
 
 //Constants
-import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
+import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
 import { DriverDetailsCard } from './utils/constants/driver-details-card.constants';
 
 @Component({

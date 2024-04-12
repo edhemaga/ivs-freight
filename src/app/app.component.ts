@@ -10,7 +10,7 @@ import { scrollButtonAnimation } from './core/animations/scroll-button.animation
 import {
     slideLeft,
     slideRight,
-} from 'src/app/pages/applicant/animations/applicant-route.animation';
+} from '@pages/applicant/animations/applicant-route.animation';
 
 // services
 import { StaticInjectorService } from './core/decorators/titles.decorator';

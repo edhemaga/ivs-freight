@@ -9,7 +9,7 @@ import {
 import validator from 'validator';
 
 // services
-import { NotificationService } from 'src/app/shared/services/notification.service';
+import { NotificationService } from '@shared/services/notification.service';
 
 @Injectable({
     providedIn: 'root',

@@ -22,26 +22,26 @@ import {
 } from 'appcoretruckassist';
 
 // animations
-import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // services
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../../shared/components/ta-modal/services/modal.service';
-import { TaInputService } from '../../../../../../shared/components/ta-input/services/ta-input.service';
-import { rentValidation } from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
-import { FormService } from 'src/app/shared/services/form.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { rentValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+import { FormService } from '@shared/services/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputAddressDropdownComponent } from '../../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCustomCardComponent } from '../../../../../../shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 // pipes
-import { SumArraysPipe } from '../../../../../../shared/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 // validators
 import {
@@ -52,10 +52,10 @@ import {
     parkingNameValidation,
     parkingSlotValidation,
     fullParkingSlotValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // utils
-import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-parking-modal',

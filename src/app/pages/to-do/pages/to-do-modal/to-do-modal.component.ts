@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -11,28 +11,28 @@ import {
     TodoResponse,
     UpdateCommentCommand,
 } from 'appcoretruckassist';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TodoService } from 'src/app/pages/to-do/services/to-do.service';
-import { TaUserReviewComponent } from 'src/app/shared/components/ta-user-review/ta-user-review.component';
-import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+import { ModalService } from '@shared/services/modal.service';
+import { TodoService } from '@pages/to-do/services/to-do.service';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { ReviewComment } from '@shared/models/review-comment.model';
 
 import {
     departmentValidation,
     descriptionValidation,
     titleValidation,
     urlValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
-import { CommentsService } from '../../../../shared/services/comments.service';
-import { FormService } from '../../../../shared/services/form.service';
-import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
+import { CommentsService } from '@shared/services/comments.service';
+import { FormService } from '@shared/services/form.service';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { CommonModule } from '@angular/common';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-to-do-modal',

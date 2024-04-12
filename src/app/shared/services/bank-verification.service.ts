@@ -8,10 +8,10 @@ import {
     routingBankValidation,
     accountBankValidation,
     bankRoutingValidator,
-} from './../components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from '../components/ta-input/services/ta-input.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 // models
 import {

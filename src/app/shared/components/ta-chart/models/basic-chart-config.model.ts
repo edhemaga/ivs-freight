@@ -1,4 +1,4 @@
-import type { BarChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import type { BarChartConfig } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export interface BasicChartConfig extends BarChartConfig {
     loadRatePerMileValue?: number;

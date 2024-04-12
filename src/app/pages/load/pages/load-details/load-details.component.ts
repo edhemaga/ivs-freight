@@ -3,15 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 
 //Services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { LoadService } from '../../../../shared/services/load.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { LoadService } from '@shared/services/load.service';
 
 //Models
 import { LoadResponse } from 'appcoretruckassist';
-import { MapRoute } from 'src/app/shared/models/map-route.model';
+import { MapRoute } from '@shared/models/map-route.model';
 
 //Store
-import { LoadDetailsListQuery } from '../../state/load-details-state/load-details-list-state/load-d-list.query';
+import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-d-list.query';
 
 interface IStopRoutes {
     longitude: number;

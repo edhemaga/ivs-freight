@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 // components
 import { PayrollComponent } from './pages/payroll/payroll.component';
 import { AccountingPayrollComponent } from './pages/accounting-payroll/accounting-payroll.component';
-import { TaUnderConstructionComponent } from 'src/app/shared/components/ta-under-construction/ta-under-construction.component';
+import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 
 // resolvers
 import { PayrolldResolver } from './pages/payroll/state/payroll-resolver';

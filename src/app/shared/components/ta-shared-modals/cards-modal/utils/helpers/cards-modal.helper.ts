@@ -1,5 +1,5 @@
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardsModalData } from '../../models/cards-modal-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
 export class CompareObjectsModal {
     static areArraysOfObjectsEqual(

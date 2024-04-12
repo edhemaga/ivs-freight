@@ -23,20 +23,20 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // validations
-import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+import { descriptionValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { LoadStopItems } from '../../utils/constants/load-stop-items.constants';
+import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
 
 // enums
-import { LoadModalStopItemsStringEnum } from '../../../../enums/load-modal-stop-items-string.enum';
+import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
 
 // model
-import { LoadStopItemDropdownLists } from '../../models/load-stop-item-dropdowns-list.model';
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
 import { EnumValue, LoadStopItemCommand } from 'appcoretruckassist';
 
 @Component({

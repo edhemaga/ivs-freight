@@ -12,7 +12,7 @@ import {
 import { Subscription, filter, fromEvent } from 'rxjs';
 
 // enums
-import { DashboardStringEnum } from '../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 @Directive({
     selector: '[clickOutsideElement]',

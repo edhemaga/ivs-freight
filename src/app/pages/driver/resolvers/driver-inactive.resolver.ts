@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable } from 'rxjs';
-import { DriversInactiveState } from './driver-inactive.store';
+
+// store
+import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 
 @Injectable({
     providedIn: 'root',

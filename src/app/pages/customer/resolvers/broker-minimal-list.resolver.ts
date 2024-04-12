@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
 
 // Services
-import { BrokerService } from '../services/broker.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
 
 // Store
-import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
+import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 
 // Models
 import { BrokerMinimalListResponse } from 'appcoretruckassist';
@@ -34,7 +33,7 @@ export class BrokerMinimalListResolver
             .getBrokerMinimalList(this.pageIndex, this.pageSize, this.count)
             .pipe(
                 catchError(() => {
-                    return of('No broker data for...');
+                    return of('No broker data for@pages/customer.');
                 }),
                 tap((brokerMinimalList: BrokerMinimalListResponse) => {
                     this.brokerMinimalListStore.set(

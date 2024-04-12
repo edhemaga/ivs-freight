@@ -1,16 +1,16 @@
 // enums
-import { TableStringEnum } from '../../enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
-import { FormatCurrency } from '../../pipes/format-currency.pipe';
-import { FormatDatePipe } from '../../pipes/format-date.pipe';
-import { FormatMilesPipe } from '../../pipes/format-miles.pipe';
-import { TimeFormatPipe } from '../../pipes/time-format-am-pm.pipe';
+import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatMilesPipe } from '@shared/pipes/format-miles.pipe';
+import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
 // models
-import { CardDetails } from '../../models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Remove quotes from string to convert into endpoint
 

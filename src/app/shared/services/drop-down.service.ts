@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
 
 // services
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../components/ta-modal/services/modal.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { DriverCdlModalComponent } from '../../pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../../pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../../pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../../pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { BrokerModalComponent } from '../../pages/customer/pages/broker-modal/broker-modal.component';
-import { TtFhwaInspectionModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TtTitleModalComponent } from '../components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
-import { ConfirmationModalComponent } from '../components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { DriverModalComponent } from '../../pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { RepairOrderModalComponent } from '../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopModalComponent } from '../../pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { ShipperModalComponent } from '../../pages/customer/pages/shipper-modal/shipper-modal.component';
-import { TrailerModalComponent } from '../../pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TruckModalComponent } from '../../pages/truck/pages/truck-modal/truck-modal.component';
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -370,11 +370,7 @@ export class DropDownService {
             }
         }
     }
-    public dropActionsHeader(
-        event: any,
-        driverObject?: any,
-        driverId?: number
-    ) {
+    public dropActionsHeader(event: any, driverObject?: any, _?: number) {
         const mappedEvent = {
             ...driverObject,
             data: {
@@ -743,11 +739,7 @@ export class DropDownService {
             }
         }
     }
-    public dropActionsHeaderRepair(
-        event: any,
-        dataObject?: any,
-        dataId?: number
-    ) {
+    public dropActionsHeaderRepair(event: any, dataObject?: any, _?: number) {
         const mappedEvent = {
             ...dataObject,
             data: {

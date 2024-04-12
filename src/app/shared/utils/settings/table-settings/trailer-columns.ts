@@ -137,7 +137,7 @@ export function getTrailerColumnDefinition() {
             export: true,
             resizable: true,
             imageHover: {
-                url: '../assets/img/svgs/trailer/makers/',
+                url: '/assets/img/svgs/trailer/makers/',
                 file: 'doc.additionalData.make.file',
             },
             class: 'make-icon',

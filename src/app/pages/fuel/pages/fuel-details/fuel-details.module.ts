@@ -5,10 +5,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { FuelDetailsRoutes } from './fuel-details.routing';
-import { SharedModule } from 'src/app/shared/shared.module';
-import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { SharedModule } from '@shared/shared.module';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [FuelDetailsComponent, FuelDetailsItemComponent],

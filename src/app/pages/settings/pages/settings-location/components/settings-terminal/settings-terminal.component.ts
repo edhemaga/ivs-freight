@@ -4,17 +4,17 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { SettingsLocationService } from '../../services/settings-location.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { CompanyTerminalService } from '../../../../services/company-terminal.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { CompanyTerminalService } from '@pages/settings/services/company-terminal.service';
 
 // pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
 
 // utils
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-terminal',

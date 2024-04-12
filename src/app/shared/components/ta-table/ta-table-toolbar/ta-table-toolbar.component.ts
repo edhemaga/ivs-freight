@@ -31,26 +31,26 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from '../../ta-modal/services/modal.service';
-import { ConfirmationResetService } from 'src/app/shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // components
-import { TaToolbarFiltersComponent } from './components/ta-toolbar-filters/ta-toolbar-filters.component';
-import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaAppTooltipComponent } from '../../ta-app-tooltip/ta-app-tooltip.component';
-import { LoadCardsModalComponent } from '../../ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
-import { ConfirmationModalResetComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset.component';
+import { TaToolbarFiltersComponent } from '@shared/components/ta-table/ta-table-toolbar/components/ta-toolbar-filters/ta-toolbar-filters.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { LoadCardsModalComponent } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
+import { ConfirmationModalResetComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset.component';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import { TableType } from 'appcoretruckassist';
-import { OptionsPopupContent } from 'src/app/shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 @Titles()
 @Component({

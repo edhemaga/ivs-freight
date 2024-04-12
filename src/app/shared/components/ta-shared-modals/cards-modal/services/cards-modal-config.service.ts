@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject, Observable } from 'rxjs';
 
 // models
-import { CardsModalData } from '../models/cards-modal-data.model';
-import { CompareObjectsModal } from '../utils/helpers/cards-modal.helper';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
 // store
-import { LoadDataStore } from '../state/load-modal.store';
+import { LoadDataStore } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.store';
 
 @Injectable({
     providedIn: 'root',

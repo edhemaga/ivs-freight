@@ -14,23 +14,23 @@ import { Subject, takeUntil } from 'rxjs';
 import { RepairShopResponse, UpdateReviewCommand } from 'appcoretruckassist';
 
 // Services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Helpers
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // Store
-import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
+import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 
 // Components
-import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 
 // Animations
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 @Component({
     selector: 'app-repair-shop-details-item',

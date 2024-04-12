@@ -1,20 +1,18 @@
+import { OwnerBackFilterQuery } from '@shared/models/owner-back-filter-query.model';
+import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
+import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model'; // models
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
+import { ShopBackFilterQuery } from '@pages/repair/pages/repair-table/models/shop-back-filter-query.model';
+import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
+import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
+import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { SortTypes } from '@shared/models/sort-types.model';
+
 // enums
-import { TableStringEnum } from '../../enums/table-string.enum';
-import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-back-filter-query.model';
-import { TrailerBackFilterQueryInterface } from 'src/app/pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
-import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-filter.model';
-
-// models
-import { RepairBackFilter } from 'src/app/pages/repair/pages/repair-table/models/repair-back-filter.model';
-import { ShopBackFilterQuery } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter-query.model';
-import { FilterOptionBroker } from 'src/app/pages/customer/pages/customer-table/models/filter-option-broker.model';
-import { FilterOptionShipper } from 'src/app/pages/customer/pages/customer-table/models/filter-option-shipper.model';
-import { FilterOptionDriver } from 'src/app/pages/driver/pages/driver-table/models/filter-option-driver.model';
-import { FilterOptionApplicant } from 'src/app/pages/driver/pages/driver-table/models/filter-option-applicant.model';
-import { DropdownItem } from '../../models/card-models/card-table-data.model';
-import { FilterOptionsLoad } from '../../../pages/load/pages/load-table/models/filter-options-load.model';
-
-import { SortTypes } from '../../models/sort-types.model';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {

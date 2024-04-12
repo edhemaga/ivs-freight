@@ -1,10 +1,6 @@
-@import '../../../../../assets/scss/details_page_ske.scss';
+@import 'src/assets/scss/details_page_ske.scss';
 
 app-truck-details {
-    // .details-container-items {
-    //     display: grid;
-    //     grid-template-columns: 360px repeat(3, 237px) !important;
-    // }
     .purchase-container {
         padding: 0px 4px;
         padding-top: 8px;
@@ -21,7 +17,6 @@ app-truck-details {
             grid-template-columns: repeat(2, 141px);
             grid-template-rows: repeat(1, 36px);
             grid-column-gap: 22px;
-            //padding: 0 8px;
             margin-bottom: 12px;
             .amount {
                 font-size: $font-size18 !important;
@@ -45,9 +40,6 @@ app-truck-details {
                     &::selection {
                         color: $color-gray-dark;
                         background: rgb(108, 108, 108, 0.2);
-                    }
-
-                    .longText {
                     }
 
                     .shortText {

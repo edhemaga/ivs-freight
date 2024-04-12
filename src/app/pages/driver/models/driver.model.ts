@@ -2,7 +2,7 @@ import { DriverCdl } from './driver-cdl.model';
 import { DriverMedical } from './driver-medical.model';
 import { DriverMvr } from './driver-mvr.model';
 import { DriverEndorsement } from './driver-endorsement.model';
-import { Work } from 'src/app/shared/models/work.model';
+import { Work } from '@shared/models/work.model';
 import { DriverLicense } from './driver-license.model';
 import { DriverAdditional } from './driver-additional.model';
 

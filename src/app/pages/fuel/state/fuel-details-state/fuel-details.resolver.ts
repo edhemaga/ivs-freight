@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { FuelStopResponse } from 'appcoretruckassist';
 
 //Services
-import { FuelService } from '../../../../shared/services/fuel.service';
+import { FuelService } from '@shared/services/fuel.service';
 
 //Store
 import { FuelItemStore } from './fuel-details.store';

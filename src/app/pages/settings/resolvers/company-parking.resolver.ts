@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
 
-// core
+// models
 import { ParkingListResponse } from 'appcoretruckassist';
 
 // services
-import { CompanyParkingService } from '../services/company-parking.service';
+import { CompanyParkingService } from '@pages/settings/services/company-parking.service';
 
 // state
 import {
     ParkingState,
     ParkingStore,
-} from '../state/parking-state/company-parking.store';
+} from '@pages/settings/state/parking-state/company-parking.store';
 
 @Injectable({
     providedIn: 'root',
@@ -23,10 +22,12 @@ export class CompanyParkingResolver implements Resolve<ParkingState> {
     pageIndex: number = 1;
     pageSize: number = 25;
     count: number;
+
     constructor(
         private parkingService: CompanyParkingService,
         private parkingStore: ParkingStore
     ) {}
+
     resolve(): Observable<ParkingState | boolean> {
         return this.parkingService
             .getParkingList(this.pageIndex, this.pageSize, this.count)

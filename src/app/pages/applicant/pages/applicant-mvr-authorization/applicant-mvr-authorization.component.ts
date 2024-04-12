@@ -9,21 +9,21 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { anyInputInLineIncorrect } from '../../utils/helpers/applicant.helper';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { anyInputInLineIncorrect } from '@pages/applicant/utils/helpers/applicant.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantService } from '../../services/applicant.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantQuery } from '../../state/applicant.query';
-import { ApplicantStore } from '../../state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from '../../enums/input-switch-actions.enum';
-import { SelectedMode } from '../../enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
 import {

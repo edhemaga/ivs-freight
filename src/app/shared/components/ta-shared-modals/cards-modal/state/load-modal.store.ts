@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+
+// store
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-// model
-import { LoadCardConfiguration } from 'src/app/pages/load/utils/constants/load-card-configuration.constants';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardsModalData } from '../models/cards-modal-data.model';
+// models
+import { LoadCardConfiguration } from '@pages/load/utils/constants/load-card-configuration.constants';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
 export interface LoadDataState extends EntityState<CardRows> {}
 

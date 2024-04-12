@@ -3,70 +3,70 @@ import { forkJoin, map, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
-import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
 
 // services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DriverService } from '../../services/driver.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ApplicantService } from '../../../../shared/services/applicant.service';
-import { AddressService } from 'src/app/shared/services/address.service';
+import { ModalService } from '@shared/services/modal.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ApplicantService } from '@shared/services/applicant.service';
+import { AddressService } from '@shared/services/address.service';
 
 // store
-import { DriversActiveState } from '../../state/driver-active-state/driver-active.store';
+import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
-} from '../../state/driver-inactive-state/driver-inactive.store';
-import { DriversInactiveQuery } from '../../state/driver-inactive-state/driver-inactive.query';
-import { ApplicantTableStore } from '../../state/applicant-state/applicant-table.store';
-import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';
-import { ApplicantTableQuery } from '../../state/applicant-state/applicant-table.query';
+} from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applicant-table.store';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
 
 // pipes
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // Globals
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
 
 // settings
-import { getLoadModalColumnDefinition } from 'src/app/shared/utils/settings/modal-settings/load-modal-columns';
-import { getApplicantColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/driver-columns';
+import { getLoadModalColumnDefinition } from '@shared/utils/settings/modal-settings/load-modal-columns';
+import { getApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/applicant-columns';
+import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
 
 // helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // models
 import { MappedApplicantData } from './models/mapped-applicant-data.model';
-import { FilterOptionApplicant } from 'src/app/pages/driver/pages/driver-table/models/filter-option-applicant.model';
-import { TableHeadActions } from 'src/app/pages/driver/pages/driver-table/models/table-head-actions.model';
-import { TableBodyActions } from 'src/app/pages/driver/pages/driver-table/models/table-body-actions.model';
-import { AvatarColors } from 'src/app/pages/driver/pages/driver-table/models/avatar-colors.model';
-import { FilterOptionDriver } from 'src/app/pages/driver/pages/driver-table/models/filter-option-driver.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
+import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
+import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
+import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import {
     ApplicantShortResponse,
     DriverListResponse,
@@ -960,7 +960,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableRev: {
                 title: TableStringEnum.INCOMPLETE,
                 iconLink:
-                    '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
+                    'assets/svg/truckassist-table/applicant-wrong-icon.svg',
             },
             hire: false,
             isFavorite: false,

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 @Component({
     selector: 'app-applicant-next-back-btn',

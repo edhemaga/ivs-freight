@@ -2,68 +2,68 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
-import { LoadModalComponent } from 'src/app/pages/load/pages/load-modal/load-modal.component';
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { LoadService } from '../../../../shared/services/load.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
-import { CardsModalConfigService } from 'src/app/shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { LoadService } from '@shared/services/load.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
+import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
 
 // Models
 import {
     getLoadActiveAndPendingColumnDefinition,
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
-} from 'src/app/shared/utils/settings/table-settings/load-columns';
+} from '@shared/utils/settings/table-settings/load-columns';
 import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,
     DropdownItem,
-} from 'src/app/shared/models/card-models/card-table-data.model';
-import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
-import { FilterOptionsLoad } from 'src/app/pages/load/pages/load-table/models/filter-options-load.model';
+} from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { LoadModel } from './models/load.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // Queries
-import { LoadActiveQuery } from '../../state/load-active-state/load-active.query';
-import { LoadClosedQuery } from '../../state/load-closed-state/load-closed.query';
-import { LoadPandinQuery } from '../../state/load-pending-state/load-pending.query';
-import { LoadTemplateQuery } from '../../state/load-template-state/load-template.query';
+import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
+import { LoadClosedQuery } from '@pages/load/state/load-closed-state/load-closed.query';
+import { LoadPandinQuery } from '@pages/load/state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '@pages/load/state/load-template-state/load-template.query';
 
 // Store
-import { LoadActiveState } from '../../state/load-active-state/load-active.store';
-import { LoadClosedState } from '../../state/load-closed-state/load-closed.store';
-import { LoadPandingState } from '../../state/load-pending-state/load-panding.store';
-import { LoadTemplateState } from '../../state/load-template-state/load-template.store';
+import { LoadActiveState } from '@pages/load/state/load-active-state/load-active.store';
+import { LoadClosedState } from '@pages/load/state/load-closed-state/load-closed.store';
+import { LoadPandingState } from '@pages/load/state/load-pending-state/load-panding.store';
+import { LoadTemplateState } from '@pages/load/state/load-template-state/load-template.store';
 
 // Pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // Constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 //Helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // Enum
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Store
-import { LoadQuery } from 'src/app/shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
+import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // Utils
-import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-load-table',

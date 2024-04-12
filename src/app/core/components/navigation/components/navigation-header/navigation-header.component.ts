@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // animations
-import { navigationRouteAnimation } from '../../animations/navigation.animation';
+import { navigationRouteAnimation } from '@core/components/navigation/animations/navigation.animation';
 
 // services
-import { NavigationService } from '../../services/navigation.service';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
 
 // components
-import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
 @Component({
     selector: 'app-navigation-header',

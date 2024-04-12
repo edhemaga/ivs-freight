@@ -19,13 +19,13 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // config
-import { ITaInput } from '../ta-input/config/ta-input.config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // pipe
-import { FormControlPipe } from '../ta-input/pipes/form-control.pipe';
+import { FormControlPipe } from '@shared/components/ta-input/pipes/form-control.pipe';
 
 @Component({
     selector: 'app-ta-input-dropdown-label',

@@ -20,27 +20,27 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { NavigationService } from '../../services/navigation.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 
 // components
-import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
+import { NavigationSettingsComponent } from '@core/components/navigation/components/navigation-settings/navigation-settings.component';
 
 // pipes
-import { UserDataPipe } from '../../pipes/user-data.pipe';
+import { UserDataPipe } from '@core/components/navigation/pipes/user-data.pipe';
 
 // animations
 import {
     navigationMagicLine,
     navigationRouteAnimation,
-} from '../../animations/navigation.animation';
+} from '@core/components/navigation/animations/navigation.animation';
 
 // constants
-import { NavigationDataConstants } from 'src/app/core/components/navigation/utils/constants/navigation-data.constants';
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
 // models
-import { NavigationFooterData } from 'src/app/core/components/navigation/models/navigation-footer-data.model';
+import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
 
 @Component({
     selector: 'app-navigation-footer',

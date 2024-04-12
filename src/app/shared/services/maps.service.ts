@@ -9,11 +9,10 @@ import * as signalR from '@microsoft/signalr';
 // services
 import { DetailsDataService } from './details-data.service';
 import { NotificationService } from './notification.service';
-import { MapService } from '../../../../appcoretruckassist/api/map.service';
+import { MapService } from 'appcoretruckassist';
 
 // models
-import { CreateMapCommand } from '../../../../appcoretruckassist/model/createMapCommand';
-import { MapResponse } from '../../../../appcoretruckassist/model/mapResponse';
+import { CreateMapCommand, MapResponse } from 'appcoretruckassist';
 
 declare var google: any;
 

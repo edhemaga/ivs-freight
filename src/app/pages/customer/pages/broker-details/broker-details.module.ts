@@ -6,26 +6,26 @@ import { BrokerDetailsRoutes } from './broker-details.routing';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 // Components
 import { BrokerDetailsItemComponent } from './components/broker-details-item/broker-details-item.component';
 import { BrokerDetailsCardComponent } from './components/broker-details-card/broker-details-card.component';
 import { BrokerDetailsComponent } from './broker-details.component';
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 // Pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
-import { FormatEinPipe } from 'src/app/shared/pipes/format-ein.pipe';
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
+import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [

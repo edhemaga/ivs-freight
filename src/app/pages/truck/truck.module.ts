@@ -9,14 +9,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TruckTableComponent } from './pages/truck-table/truck-table.component';
 import { TruckCardComponent } from './pages/truck-card/truck-card.component';
 
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTableToolbarComponent } from 'src/app/shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
-import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { TaNoteComponent } from 'src/app/shared/components/ta-note/ta-note.component';
-import { TaTableCardDropdownActionsComponent } from 'src/app/shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
-import { TaProgresBarComponent } from 'src/app/shared/components/ta-progres-bar/ta-progres-bar.component';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 //pipes
 

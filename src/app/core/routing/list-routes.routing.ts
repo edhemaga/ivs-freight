@@ -1,42 +1,40 @@
-import { TaUnderConstructionComponent } from 'src/app/shared/components/ta-under-construction/ta-under-construction.component';
+import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 
 // guards
-import { AuthGuard } from 'src/app/core/guards/authentication.guard';
-import { CompanySettingsGuard } from 'src/app/core/guards/company-settings.guard';
+import { AuthGuard } from '@core/guards/authentication.guard';
+import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 
 // resolvers
-import { LoadTemplateResolver } from 'src/app/pages/load/state/load-template-state/load-template.resolver';
-import { TrailerActiveResolver } from 'src/app/pages/trailer/resolvers/trailer-active.resolver';
-import { TrailerInactiveResolver } from 'src/app/pages/trailer/resolvers/trailer-inactive.resolver';
-import { TruckActiveResolver } from 'src/app/pages/truck/resolvers/truck-active.resolver';
-import { TruckInactiveResolver } from 'src/app/pages/truck/resolvers/truck-inactive.resolver';
-import { BrokerResolver } from 'src/app/pages/customer/resolvers/broker.resolver';
-import { ShipperResolver } from 'src/app/pages/customer/resolvers/shipper.resolver';
-import { ApplicantTableResolver } from 'src/app/pages/driver/state/applicant-state/applicant-table.resolver';
-import { DriverActiveResolver } from 'src/app/pages/driver/state/driver-active-state/driver-active.resolver';
-import { DriverInactiveResolver } from 'src/app/pages/driver/state/driver-inactive-state/driver-inactive.resolver';
-import { LoadActiveResolver } from 'src/app/pages/load/state/load-active-state/load-active.resolver';
-import { LoadClosedResolver } from 'src/app/pages/load/state/load-closed-state/load-closed.resolver';
-import { LoadPandingResolver } from 'src/app/pages/load/state/load-pending-state/load-panding.resolver';
-import { RepairTruckResolver } from 'src/app/pages/repair/resolvers/repair-truck.resolver';
-import { RepairTrailerResolver } from 'src/app/pages/repair/resolvers/repair-trailer.resolver';
-import { RepairShopResolver } from 'src/app/pages/repair/resolvers/repair-shop.resolver';
-import { PmTrailerResolver } from 'src/app/pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
-import { PmTruckResolver } from 'src/app/pages/pm-truck-trailer/resolvers/pm-truck.resolver';
-import { FuelResolver } from 'src/app/pages/fuel/state/fule-state/fuel-state.resolver';
-import { OwnerActiveResolver } from 'src/app/pages/owner/state/owner-active-state/owner-active.resolver';
-import { OwnerInactiveResolver } from 'src/app/pages/owner/state/owner-inactive-state/owner-inactive.resolver';
-import { AccountResolver } from 'src/app/pages/account/resolvers/account.resolver';
-import { ContactsResolver } from 'src/app/pages/contacts/resolvers/contacts.resolver';
+import { LoadTemplateResolver } from '@pages/load/state/load-template-state/load-template.resolver';
+import { TrailerActiveResolver } from '@pages/trailer/resolvers/trailer-active.resolver';
+import { TrailerInactiveResolver } from '@pages/trailer/resolvers/trailer-inactive.resolver';
+import { TruckActiveResolver } from '@pages/truck/resolvers/truck-active.resolver';
+import { TruckInactiveResolver } from '@pages/truck/resolvers/truck-inactive.resolver';
+import { BrokerResolver } from '@pages/customer/resolvers/broker.resolver';
+import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
+import { ApplicantTableResolver } from '@pages/driver/resolvers/applicant-table.resolver';
+import { DriverActiveResolver } from '@pages/driver/resolvers/driver-active.resolver';
+import { DriverInactiveResolver } from '@pages/driver/resolvers/driver-inactive.resolver';
+import { LoadActiveResolver } from '@pages/load/state/load-active-state/load-active.resolver';
+import { LoadClosedResolver } from '@pages/load/state/load-closed-state/load-closed.resolver';
+import { LoadPandingResolver } from '@pages/load/state/load-pending-state/load-panding.resolver';
+import { RepairTruckResolver } from '@pages/repair/resolvers/repair-truck.resolver';
+import { RepairTrailerResolver } from '@pages/repair/resolvers/repair-trailer.resolver';
+import { RepairShopResolver } from '@pages/repair/resolvers/repair-shop.resolver';
+import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
+import { PmTruckResolver } from '@pages/pm-truck-trailer/resolvers/pm-truck.resolver';
+import { FuelResolver } from '@pages/fuel/state/fule-state/fuel-state.resolver';
+import { OwnerActiveResolver } from '@pages/owner/resolvers/owner-active.resolver';
+import { OwnerInactiveResolver } from '@pages/owner/resolvers/owner-inactive.resolver';
+import { AccountResolver } from '@pages/account/resolvers/account.resolver';
+import { ContactsResolver } from '@pages/contacts/resolvers/contacts.resolver';
 
 export class ListRoutes {
     static routes = [
         {
             path: 'list/load',
             loadChildren: () =>
-                import('src/app/pages/load/load.module').then(
-                    (m) => m.LoadModule
-                ),
+                import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 loadTemplate: LoadTemplateResolver,
@@ -48,7 +46,7 @@ export class ListRoutes {
         {
             path: 'list/customer',
             loadChildren: () =>
-                import('src/app/pages/customer/customer.module').then(
+                import('@pages/customer/customer.module').then(
                     (m) => m.CustomerModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
@@ -57,7 +55,7 @@ export class ListRoutes {
         {
             path: 'list/driver',
             loadChildren: () =>
-                import('src/app/pages/driver/driver.module').then(
+                import('@pages/driver/driver.module').then(
                     (m) => m.DriverModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
@@ -70,9 +68,7 @@ export class ListRoutes {
         {
             path: 'list/truck',
             loadChildren: () =>
-                import('src/app/pages/truck/truck.module').then(
-                    (m) => m.TruckModule
-                ),
+                import('@pages/truck/truck.module').then((m) => m.TruckModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 truckActive: TruckActiveResolver,
@@ -82,7 +78,7 @@ export class ListRoutes {
         {
             path: 'list/trailer',
             loadChildren: () =>
-                import('src/app/pages/trailer/trailer.module').then(
+                import('@pages/trailer/trailer.module').then(
                     (m) => m.TrailerModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
@@ -94,7 +90,7 @@ export class ListRoutes {
         {
             path: 'list/repair',
             loadChildren: () =>
-                import('src/app/pages/repair/repair.module').then(
+                import('@pages/repair/repair.module').then(
                     (m) => m.RepairModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
@@ -107,9 +103,9 @@ export class ListRoutes {
         {
             path: 'list/pm',
             loadChildren: () =>
-                import(
-                    'src/app/pages/pm-truck-trailer/pm-truck-trailer.module'
-                ).then((m) => m.PmTruckTrailerModule),
+                import('@pages/pm-truck-trailer/pm-truck-trailer.module').then(
+                    (m) => m.PmTruckTrailerModule
+                ),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 pmTrailer: PmTrailerResolver,
@@ -119,9 +115,7 @@ export class ListRoutes {
         {
             path: 'list/fuel',
             loadChildren: () =>
-                import('src/app/pages/fuel/fuel.module').then(
-                    (m) => m.FuelModule
-                ),
+                import('@pages/fuel/fuel.module').then((m) => m.FuelModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 fuel: FuelResolver,
@@ -130,9 +124,7 @@ export class ListRoutes {
         {
             path: 'list/owner',
             loadChildren: () =>
-                import('src/app/pages/owner/owner.module').then(
-                    (m) => m.OwnerModule
-                ),
+                import('@pages/owner/owner.module').then((m) => m.OwnerModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 ownerActive: OwnerActiveResolver,
@@ -148,7 +140,7 @@ export class ListRoutes {
         {
             path: 'list/account',
             loadChildren: () =>
-                import('src/app/pages/account/account.module').then(
+                import('@pages/account/account.module').then(
                     (m) => m.AccountModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
@@ -159,7 +151,7 @@ export class ListRoutes {
         {
             path: 'list/contact',
             loadChildren: () =>
-                import('src/app/pages/contacts/contacts.module').then(
+                import('@pages/contacts/contacts.module').then(
                     (m) => m.ContactsModule
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],

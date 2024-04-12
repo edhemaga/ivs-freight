@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DriverCardComponent } from './pages/driver-card/driver-card.component';
 import { DriverTableComponent } from './pages/driver-table/driver-table.component';
-import { DriverMinimalResolver } from './state/driver-details-minimal-list-state/driver-minimal-list.resolver';
-import { DriverItemResolver } from './state/driver-details-state/driver.items.resolver';
+import { DriverMinimalResolver } from './resolvers/driver-minimal-list.resolver';
+import { DriverItemsResolver } from './resolvers/driver-items.resolver';
 
 const routes: Routes = [
     {
@@ -18,7 +18,7 @@ const routes: Routes = [
                 (m) => m.DriverDetailsModule
             ),
         resolve: {
-            driver: DriverItemResolver,
+            driver: DriverItemsResolver,
             driverMinimal: DriverMinimalResolver,
         },
         data: { title: 'Driver Detail' },

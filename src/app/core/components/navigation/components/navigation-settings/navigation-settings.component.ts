@@ -13,26 +13,26 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // constants
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
 // animations
 import {
     dropDownAnimation,
     navigationRouteAnimation,
-} from '../../animations/navigation.animation';
+} from '@core/components/navigation/animations/navigation.animation';
 
 // services
-import { NavigationService } from '../../services/navigation.service';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 
 // models
-import { NavigationSettings } from '../../models/navigation-settings.model';
-import { NavigationFooterData } from 'src/app/core/components/navigation/models/navigation-footer-data.model';
+import { NavigationSettings } from '@core/components/navigation/models/navigation-settings.model';
+import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
 
 @Component({
     selector: 'app-navigation-settings',

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+
 import { Observable, tap, forkJoin } from 'rxjs';
 
-//Service
-import { TrailerService } from '../../../shared/services/trailer.service';
+// Services
+import { TrailerService } from '@shared/services/trailer.service';
 
-//State
+// State
 import {
     TrailerItemState,
     TrailerItemStore,
-} from '../state/trailer-details-state/trailer-details.store';
-import { TrailerDetailsListStore } from '../state/trailer-details-list-state/trailer-details-list.store';
+} from '@pages/trailer/state/trailer-details-state/trailer-details.store';
+import { TrailerDetailsListStore } from '@pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
 
 @Injectable({
     providedIn: 'root',

@@ -137,7 +137,7 @@ export function getTruckColumnDefinition() {
             export: true,
             resizable: true,
             imageHover: {
-                url: '../assets/img/svgs/truck/makers/',
+                url: '/assets/img/svgs/truck/makers/',
                 file: 'doc.additionalData.make.file',
             },
             class: 'make-icon',

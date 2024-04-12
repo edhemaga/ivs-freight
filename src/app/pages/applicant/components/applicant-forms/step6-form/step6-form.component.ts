@@ -29,23 +29,23 @@ import {
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // validations
 import {
     phoneFaxRegex,
     name2_24Validation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // sevices
-import { FormService } from 'src/app/shared/services/form.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 // enums
-import { SelectedMode } from '../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
-import { Contact } from '../../../pages/applicant-application/models/contact.model';
+import { Contact } from '@pages/applicant/pages/applicant-application/models/contact.model';
 
 @Component({
     selector: 'app-step6-form',

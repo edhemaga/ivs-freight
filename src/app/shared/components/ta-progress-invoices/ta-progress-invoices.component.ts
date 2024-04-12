@@ -6,7 +6,9 @@ import {
     OnInit,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormatCurrency } from '../../pipes/format-currency.pipe';
+
+// pipes
+import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
 
 @Component({
     selector: 'app-ta-progress-invoices',

@@ -3,51 +3,51 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
-import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
-import { TruckService } from '../../../../shared/services/truck.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckService } from '@shared/services/truck.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
-import { TruckActiveQuery } from '../../state/truck-active-state/truck-active.query';
-import { TruckInactiveQuery } from '../../state/truck-inactive-state/truck-inactive.query';
-import { TruckActiveState } from '../../state/truck-active-state/truck-active.store';
-import { TruckInactiveState } from '../../state/truck-inactive-state/truck-inactive.store';
-import { TruckInactiveStore } from '../../state/truck-inactive-state/truck-inactive.store';
+import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
+import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truck-inactive.query';
+import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-active.store';
+import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
+import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 
 // constants
 import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // pipes
 import { DatePipe } from '@angular/common';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { TruckNameStringEnum } from 'src/app/shared/enums/truck-name-string.enum';
-import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
 
 //Helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { getTruckColumnDefinition } from 'src/app/shared/utils/settings/table-settings/truck-columns';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
 
 // models
 import { TruckListResponse } from 'appcoretruckassist';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
-import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { TruckFilter } from './models/truck-filter.model';
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 
 import { TruckBodyResponse } from './models/truck-body-response.model';
 

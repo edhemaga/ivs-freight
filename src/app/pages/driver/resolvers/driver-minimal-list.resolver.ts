@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
-
 import { Resolve } from '@angular/router';
-import { DriverMinimalListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { DriverService } from '../../services/driver.service';
+
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// services
+import { DriverService } from '@pages/driver/services/driver.service';
+
+// store
 import {
     DriverMinimalListState,
     DriversMinimalListStore,
-} from './driver-minimal-list.store';
+} from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
+
+// models
+import { DriverMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',

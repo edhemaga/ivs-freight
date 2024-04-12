@@ -10,42 +10,42 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardPerformanceService } from './services/dashboard-performance.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { DashboardPerformanceService } from '@pages/dashboard/pages/dashboard-performance/services/dashboard-performance.service';
+import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // constants
-import { DashboardPerformanceConstants } from './utils/constants/dashboard-performance.constants';
-import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
-import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
-import { DashboardTopRatedConstants } from '../dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardPerformanceConstants } from '@pages/dashboard/pages/dashboard-performance/utils/constants/dashboard-performance.constants';
+import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
+import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
+import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
 
 // helpers
-import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
+import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
 
 // enums
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // models
-import { DashboardTab } from '../../models/dashboard-tab.model';
-import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { PerformanceDataItem } from './models/performance-data-item.model';
-import { PerformanceColorsPallete } from '../../models/colors-pallete.model';
-import { CustomPeriodRange } from '../../models/custom-period-range.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { PerformanceDataItem } from '@pages/dashboard/pages/dashboard-performance/models/performance-data-item.model';
+import { PerformanceColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
+import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
 import {
     ChartDefaultConfig,
     LineChart,
     LineChartAxes,
     LineChartConfig,
-} from '../../models/dashboard-chart-models/line-chart.model';
+} from '@pages/dashboard/models/dashboard-chart-models/line-chart.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartPerformanceValues,
-} from '../../models/dashboard-chart-models/bar-chart.model';
-import { PerformanceApiArguments } from './models/performance-api-arguments.model';
-import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
+} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { PerformanceApiArguments } from '@pages/dashboard/pages/dashboard-performance/models/performance-api-arguments.model';
+import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 import {
     IntervalLabelResponse,
     SubintervalType,

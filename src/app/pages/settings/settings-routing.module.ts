@@ -2,17 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { CompanySettingsResolver } from './resolvers/company-settings.resolver';
-import { CompanyParkingResolver } from './resolvers/company-parking.resolver';
-import { CompanyOfficeResolver } from './resolvers/company-office.resolver';
-import { CompanyTerminalResolver } from './resolvers/company-terminal.resolver';
-import { CompanyRepairShopResolver } from './resolvers/company-repairshop.resolver';
-import { UserResolver } from '../user/resolvers/user.resolver';
-import { CompanyIntegrationsResolver } from './resolvers/company-integrations.resolver';
+import { CompanySettingsResolver } from '@pages/settings/resolvers/company-settings.resolver';
+import { CompanyParkingResolver } from '@pages/settings/resolvers/company-parking.resolver';
+import { CompanyOfficeResolver } from '@pages/settings/resolvers/company-office.resolver';
+import { CompanyTerminalResolver } from '@pages/settings/resolvers/company-terminal.resolver';
+import { CompanyRepairShopResolver } from '@pages/settings/resolvers/company-repairshop.resolver';
+import { UserResolver } from '@pages/user/resolvers/user.resolver';
+import { CompanyIntegrationsResolver } from '@pages/settings/resolvers/company-integrations.resolver';
 
 // components
-import { TaUnderConstructionComponent } from '../../shared/components/ta-under-construction/ta-under-construction.component';
-import { SettingsComponent } from './pages/settings/settings.component';
+import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
+import { SettingsComponent } from '@pages/settings/pages/settings/settings.component';
 
 const routes: Routes = [
     {
@@ -52,7 +52,7 @@ const routes: Routes = [
             {
                 path: 'user',
                 loadChildren: () =>
-                    import('../user/user.module').then((m) => m.UserModule),
+                    import('@pages/user/user.module').then((m) => m.UserModule),
                 data: { title: 'User' },
                 resolve: {
                     user: UserResolver,

@@ -12,35 +12,35 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 //Store
-import { BrokerQuery } from '../../../../state/broker-state/broker.query';
-import { BrokerMinimalListQuery } from '../../../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
+import { BrokerQuery } from '@pages/customer/state/broker-state/broker.query';
+import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 //Services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { BrokerService } from '../../../../services/broker.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
 
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
-import { DoughnutChartConfig } from '../../../../../dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { ChartApiCall } from 'src/app/shared/components/ta-chart/models/chart-api-call.model';
-import { LegendAttributes } from 'src/app/shared/components/ta-chart/models/legend-attributes.model';
-import { BarChartAxes } from '../../../../../dashboard/models/dashboard-chart-models/bar-chart.model';
-import { BrokerDropdown } from '../../models/broker-dropdown.model';
-import { TabOptions } from 'src/app/shared/components/ta-tab-switch/models/tab-options.models';
+import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
+import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
+import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
 
 //Constants
-import { ChartConstants } from 'src/app/shared/components/ta-chart/utils/constants/chart.constants';
-import { BrokerConstants } from '../../utils/constants/broker.constants';
+import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
+import { BrokerConstants } from '@pages/customer/pages/broker-details/utils/constants/broker.constants';
 
 //Components
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 //Pipes
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 //Enums
-import { ArrowActionsStringEnum } from 'src/app/shared/enums/arrow-actions-string.enum';
-import { BrokerTabStringEnum } from '../../enums/broker-tab-string.enum';
+import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
+import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 @Component({
     selector: 'app-broker-details-card',

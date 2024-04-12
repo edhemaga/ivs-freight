@@ -2,11 +2,11 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // utils
-import { MilesTableQuery } from '../../state/miles.query';
-import { getMilesColumnsDefinition } from 'src/app/shared/utils/settings/table-settings/miles-columns';
+import { MilesTableQuery } from '@pages/miles/state/miles.query';
+import { getMilesColumnsDefinition } from '@shared/utils/settings/table-settings/miles-columns';
 
 @Component({
     selector: 'app-miles',

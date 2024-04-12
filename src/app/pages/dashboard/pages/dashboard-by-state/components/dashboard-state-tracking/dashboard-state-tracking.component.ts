@@ -1,11 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 // constants
-import { DashboardStateConstants } from '../../utils/constants/dashboard-state.constants';
+import { DashboardStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-state.constants';
 
 // models
-import { MapStates } from '../../models/map-states.model';
-import { MapListItem } from '../../models/map-list-item.model';
+import { MapStates } from '@pages/dashboard/pages/dashboard-by-state/models/map-states.model';
+import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-state-tracking',

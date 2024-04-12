@@ -3,27 +3,27 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // components
-import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
-import { TrailerService } from '../../../../shared/services/trailer.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { TrailerService } from '@shared/services/trailer.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
-import { TrailerItemStore } from '../../state/trailer-details-state/trailer-details.store';
-import { TrailersMinimalListStore } from '../../state/trailer-minimal-list-state/trailer-minimal.store';
-import { TrailersMinimalListQuery } from '../../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailersDetailsListQuery } from '../../state/trailer-details-list-state/trailer-details-list.query';
+import { TrailerItemStore } from '@pages/trailer/state/trailer-details-state/trailer-details.store';
+import { TrailersMinimalListStore } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailersDetailsListQuery } from '@pages/trailer/state/trailer-details-list-state/trailer-details-list.query';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import { TrailerConfigData } from './models/trailer-config-data.model';

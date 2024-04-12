@@ -1,4 +1,4 @@
-import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
+import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 
 export interface Trucks {
     truckNumber: string;

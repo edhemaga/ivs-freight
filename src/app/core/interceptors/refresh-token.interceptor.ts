@@ -13,14 +13,14 @@ import { Observable, catchError, throwError, switchMap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { WebsiteUserLoggedService } from 'src/app/pages/website/services/website-user-logged.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 
 // models
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 
 // config
-import { configFactory } from '../configs/app.config';
+import { configFactory } from '@core/configs/app.config';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {

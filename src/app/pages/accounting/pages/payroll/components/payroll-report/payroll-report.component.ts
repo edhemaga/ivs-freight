@@ -8,7 +8,7 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 
 // services
-import { PayrollService } from '../../../../services/payroll.service';
+import { PayrollService } from '@pages/accounting/services/payroll.service';
 
 // constants
 import { PayrollCommisionDriverOpenLoads } from './utils/constants/payroll-commision-driver-open-loads.constants';
@@ -16,7 +16,7 @@ import {
     PayrollOwnerOpenLoads,
     PayrollOwnerOpenLoadsResizable,
 } from './utils/constants/payroll-owner-open-load.constants';
-import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 import {
     PayrollMilesDriverOpenLoads,
     PayrollMilesDriverOpenLoadsResizable,

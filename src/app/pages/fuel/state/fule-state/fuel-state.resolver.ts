@@ -4,8 +4,8 @@ import { Observable, forkJoin } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 //Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FuelService } from '../../../../shared/services/fuel.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FuelService } from '@shared/services/fuel.service';
 
 //Store
 import { FuelState } from './fuel-state.store';

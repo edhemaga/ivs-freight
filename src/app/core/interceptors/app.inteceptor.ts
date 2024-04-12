@@ -7,8 +7,8 @@ import {
 import { catchError, Observable, tap } from 'rxjs';
 
 // services
-import { NotificationService } from '../../shared/services/notification.service';
-import { FormDataService } from '../../shared/services/form-data.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {

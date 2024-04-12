@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 // models
-import { UserInfoModel } from '../models/user-info.model';
+import { UserInfoModel } from '@pages/website/models/user-info.model';
 
 @Injectable({
     providedIn: 'root',

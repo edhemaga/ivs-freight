@@ -29,12 +29,12 @@ import { DashboardDataPlaceholderComponent } from './components/dashboard-data-p
 import { DashboardLoadingPlaceholderComponent } from './components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 import { DashboardDropdownComponent } from './components/dashboard-dropdown/dashboard-dropdown.component';
 
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomPeriodRangeComponent } from 'src/app/shared/components/ta-custom-period-range/ta-custom-period-range.component';
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { TaSearchV2Component } from 'src/app/shared/components/ta-search-v2/ta-search-v2.component';
-import { TaSpinnerComponent } from 'src/app/shared/components/ta-spinner/ta-spinner.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 @NgModule({
     declarations: [
         DashboardComponent,

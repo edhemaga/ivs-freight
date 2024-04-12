@@ -4,26 +4,26 @@ import moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 
 //Components
-import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 //Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DriverService } from '../../services/driver.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { DriverCdlService } from '../../services/driver-cdl.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { ModalService } from '@shared/services/modal.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 //Store
-import { DriversMinimalListStore } from '../../state/driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversMinimalListQuery } from '../../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversDetailsListQuery } from '../../state/driver-details-list-state/driver-details-list.query';
-import { DriversItemStore } from '../../state/driver-details-state/driver-details.store';
+import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 
 @Component({
     selector: 'app-driver-details',
@@ -605,8 +605,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 

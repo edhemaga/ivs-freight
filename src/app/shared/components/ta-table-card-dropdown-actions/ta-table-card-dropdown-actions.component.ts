@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // services
-import { DetailsDataService } from '../../services/details-data.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 import { TableCardDropdownActionsService } from './services/table-card-dropdown-actions.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import { CardDetails } from '../../models/card-models/card-table-data.model';
-import { DropdownItem } from '../../models/card-models/card-table-data.model';
-import { SendDataCard } from 'src/app/shared/models/card-models/send-data-card.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 @Component({
     selector: 'app-ta-table-card-dropdown-actions',
     templateUrl: './ta-table-card-dropdown-actions.component.html',

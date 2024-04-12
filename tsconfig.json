@@ -1,33 +1,36 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "es2020",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2020",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "typeRoots": ["node_modules/@types", "types"],
-    "lib": ["es2018", "dom"],
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ],
-    "paths": {
-      "rxjs": ["node_modules/rxjs"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "es2020",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2020",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "typeRoots": ["node_modules/@types", "types"],
+        "lib": ["es2018", "dom"],
+        "plugins": [
+            {
+                "name": "typescript-tslint-plugin"
+            }
+        ],
+        "paths": {
+            "rxjs": ["node_modules/rxjs"],
+            "@core/*": ["src/app/core/*"],
+            "@pages/*": ["src/app/pages/*"],
+            "@shared/*": ["src/app/shared/*"]
+        }
+    },
+    "angularCompilerOptions": {
+        "enableI18nLegacyMessageIdFormat": false,
+        "strictInjectionParameters": true,
+        "strictInputAccessModifiers": true,
+        "strictTemplates": false
     }
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": false
-  }
 }

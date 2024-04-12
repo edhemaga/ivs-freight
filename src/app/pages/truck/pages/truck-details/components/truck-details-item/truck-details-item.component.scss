@@ -1,4 +1,5 @@
-@import '../../truck-details.component.scss';
+@import 'src/pages/truck/pages/truck-details/truck-details.component.scss';
+
 app-truck-details-item {
     .truck-toolbar-plus {
         svg {
@@ -18,8 +19,6 @@ app-truck-details-item {
     .fuel-item {
         margin-left: -5px;
     }
-
-    // Note template
 
     .truck-card-line {
         margin: 0;

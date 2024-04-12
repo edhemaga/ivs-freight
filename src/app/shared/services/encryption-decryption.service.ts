@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 
 import crypto from 'crypto-js';
 
+// enviroment
+import { environment } from 'src/environments/environment';
+
 @Injectable({
     providedIn: 'root',
 })
 export class EncryptionDecryptionService {
-    private securedKey: string =
-        '__+_+_+#!.../>!$!$&*&!$CHICAGOTRUCKASSISTNIS$!&$&*)))__)!)#__+_+_+#!.../>';
+    private securedKey: string = environment.encryptionDecryptionKey;
     private salt = crypto.lib.WordArray.random(128 / 8);
     private key256Bits = crypto.PBKDF2(this.securedKey, this.salt, {
         keySize: 128 / 32,

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { RoadsideService } from '../services/roadside.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { RoadsideService } from '@pages/safety/violation/services/roadside.service';
 
 // store
 import {
     RoadsideActiveState,
     RoadsideActiveStore,
-} from '../state/roadside-state/roadside-active/roadside-active.store';
+} from '@pages/safety/violation/state/roadside-state/roadside-active/roadside-active.store';
 
 @Injectable({
     providedIn: 'root',
@@ -32,7 +33,6 @@ export class RoadsideActiveResolver implements Resolve<RoadsideActiveState> {
                     JSON.stringify({
                         active: roadsidePagination.active,
                         inactive: roadsidePagination.inactive,
-                        //categoryReport: roadsidePagination.categoryReport,
                     })
                 );
 

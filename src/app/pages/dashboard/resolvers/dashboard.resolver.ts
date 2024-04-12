@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
 // services
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // models
 import { CompanyDurationResponse } from 'appcoretruckassist';

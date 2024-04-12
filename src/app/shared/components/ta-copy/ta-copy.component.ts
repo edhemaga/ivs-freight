@@ -7,14 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipes
-import { DriverHideAccountPipe } from 'src/app/shared/components/ta-copy/pipes/driver-hide-account.pipe';
-import { HidePasswordPipe } from '../../pipes/hide-password.pipe';
+import { DriverHideAccountPipe } from '@shared/components/ta-copy/pipes/driver-hide-account.pipe';
+import { HidePasswordPipe } from '@shared/pipes/hide-password.pipe';
+
 @Component({
     selector: 'app-ta-copy',
     templateUrl: './ta-copy.component.html',

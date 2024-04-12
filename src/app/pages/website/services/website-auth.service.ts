@@ -10,7 +10,7 @@ import { WebsiteActionsService } from './website-actions.service';
 import { PersistState } from '@datorama/akita';
 
 // enums
-import { WebsiteStringEnum } from '../enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import {

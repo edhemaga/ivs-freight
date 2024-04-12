@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // Modules
 import { SettingsCompanyRoutes } from './settings-company.routing';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 // Components
 import { SettingsCompanyComponent } from './settings-company.component';
@@ -12,33 +12,33 @@ import { SettingsGeneralComponent } from './components/settings-general/settings
 import { SettingsPayrollComponent } from './components/settings-payroll/settings-payroll.component';
 import { SettingsInsurancepolicyComponent } from './components/settings-insurancepolicy/settings-insurancepolicy.component';
 import { SettingsFactoringComponent } from './components/settings-factoring/settings-factoring.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaNoticeOfAsignmentComponent } from 'src/app/shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
-import { TaLogoChangeComponent } from 'src/app/shared/components/ta-logo-change/ta-logo-change.component';
-import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
-import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaNoticeOfAsignmentComponent } from '@shared/components/ta-notice-of-asignment/ta-notice-of-asignment.component';
+import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 // Pipes
-import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
-import { FormatEinPipe } from 'src/app/shared/pipes/format-ein.pipe';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { HidePasswordPipe } from 'src/app/shared/pipes/hide-password.pipe';
-import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
-import { BankCardTypesPipe } from 'src/app/shared/pipes/bank-card-types.pipe';
-import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
+import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
+import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { HidePasswordPipe } from '@shared/pipes/hide-password.pipe';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
+import { BankCardTypesPipe } from '@shared/pipes/bank-card-types.pipe';
+import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 
 @NgModule({
     imports: [

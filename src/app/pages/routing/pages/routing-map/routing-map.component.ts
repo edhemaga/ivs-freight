@@ -23,34 +23,34 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // constants
-import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 
 // helpers
-import { RoutingHelper } from '../../utils/helpers/routing.helper';
+import { RoutingHelper } from '@pages/routing/utils/helpers/routing.helper';
 
 // services
-import { MapsService } from 'src/app/shared/services/maps.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { RoutingStateService } from '../../../../shared/services/routing-state.service';
+import { MapsService } from '@shared/services/maps.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { RoutingStateService } from '@shared/services/routing-state.service';
 
 // store
-import { RoutingStateQuery } from '../../state/routing-state/routing-state.query';
+import { RoutingStateQuery } from '@pages/routing/state/routing-state/routing-state.query';
 
 // pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // validators
-import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 declare var google: any;
 declare const geoXML3: any;

@@ -3,22 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 
 // Services
-import { BrokerService } from '../../services/broker.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { NotificationService } from '@shared/services/notification.service';
 
 // Store
-import { BrokerMinimalListStore } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
-import { BrokerDetailsStore } from '../../state/broker-details-state/broker-details.store';
-import { BrokerMinimalListQuery } from '../../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
-import { BrokerDetailsListQuery } from '../../state/broker-details-state/broker-details-list-state/broker-details-list.query';
+import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
+import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
+import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
+import { BrokerDetailsListQuery } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.query';
 
 // Pipes
-import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 // Models
 import { BrokerResponse } from 'appcoretruckassist';

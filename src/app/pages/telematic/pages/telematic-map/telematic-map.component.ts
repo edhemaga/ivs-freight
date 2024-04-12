@@ -17,23 +17,23 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject, takeUntil } from 'rxjs';
 
 // constants
-import { MapConstants } from 'src/app/shared/utils/constants/map.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
 // services
-import { TruckService } from '../../../../shared/services/truck.service';
-import { TrailerService } from '../../../../shared/services/trailer.service';
-import { TelematicStateService } from '../../services/telematic-state.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { MapsService } from 'src/app/shared/services/maps.service';
-import { GpsService } from 'src/app/pages/telematic/services/gps-service.service';
-import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
+import { TruckService } from '@shared/services/truck.service';
+import { TrailerService } from '@shared/services/trailer.service';
+import { TelematicStateService } from '@pages/telematic/services/telematic-state.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { MapsService } from '@shared/services/maps.service';
+import { GpsService } from '@pages/telematic/services/gps-service.service';
+import { CompanyOfficeService } from '@shared/services/company-office.service';
 
 // models
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 
 // store
-import { TelematicStateQuery } from '../../state/telematic-state.query';
-import { TelematicStateStore } from '../../state/telematic-state.store';
+import { TelematicStateQuery } from '@pages/telematic/state/telematic-state.query';
+import { TelematicStateStore } from '@pages/telematic/state/telematic-state.store';
 
 @Component({
     selector: 'app-telematic-map',

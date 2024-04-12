@@ -3,6 +3,7 @@ import {
     Component,
     ElementRef,
     Input,
+    OnInit,
     Self,
     ViewChild,
 } from '@angular/core';
@@ -19,16 +20,16 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // store
-import { LoadQuery } from '../state/load-modal.query';
+import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // enums
-import { CardsModalEnum } from '../enums/cards-modal.enum';
+import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
 
 // helpers
-import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-helper';
+import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 
 @Component({
     selector: 'app-modal-input-form',
@@ -37,7 +38,7 @@ import { CardDropdownHelper } from 'src/app/shared/utils/helpers/card-dropdown-h
     templateUrl: './modal-input-form.component.html',
     styleUrls: ['./modal-input-form.component.scss'],
 })
-export class ModalInputFormComponent implements ControlValueAccessor {
+export class ModalInputFormComponent implements OnInit, ControlValueAccessor {
     @ViewChild('inputTitleValue') public inputTitleValue: ElementRef;
 
     @Input() set dataCardModal(value: CardRows[]) {

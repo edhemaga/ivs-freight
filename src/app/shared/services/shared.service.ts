@@ -5,7 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, tap } from 'rxjs';
 
 // enviroment
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 // services
 import { NotificationService } from './notification.service';

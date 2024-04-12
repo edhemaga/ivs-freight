@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { Observable, forkJoin, tap } from 'rxjs';
 
 // Services
-import { ShipperService } from '../services/shipper.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
 
 // Store
-import { ShipperDetailsStore } from '../state/shipper-state/shipper-details-state/shipper-details.store';
-import { ShipperDetailsListStore } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { ShipperDetailsListQuery } from '../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
+import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
+import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 
 // Models
 import { ShipperResponse } from 'appcoretruckassist';
@@ -19,16 +17,9 @@ import { ShipperResponse } from 'appcoretruckassist';
 })
 export class ShipperItemResolver implements Resolve<any[]> {
     constructor(
-        // Router
-        private router: Router,
-
-        // Services
         private shipperService: ShipperService,
-
-        // Store
         private shipperDetailsStore: ShipperDetailsStore,
-        private sls: ShipperDetailsListStore,
-        private slq: ShipperDetailsListQuery
+        private sls: ShipperDetailsListStore
     ) {}
     resolve(
         route: ActivatedRouteSnapshot

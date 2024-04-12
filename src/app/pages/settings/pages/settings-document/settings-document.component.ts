@@ -2,21 +2,21 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
-import { SettingsCompanyService } from '../../services/settings-company.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { EditTagsService } from '@shared/services/edit-tags.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // model
-import { File } from 'src/app/shared/models/card-models/card-table-data.model';
-import { FileEvent } from 'src/app/shared/models/file-event.model';
+import { File } from '@shared/models/card-models/card-table-data.model';
+import { FileEvent } from '@shared/models/file-event.model';
 import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
-import { TableBodyOptionActions } from 'src/app/shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
-import { UploadFile } from 'src/app/shared/components/ta-upload-files/models/upload-file.model';
+import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import {
     CreateWithUploadsResponse,
     FileResponse,
 } from 'appcoretruckassist/model/models';
-import { DocumentActionConfig } from 'src/app/pages/settings/pages/settings-document/models/document-action-config';
+import { DocumentActionConfig } from '@pages/settings/pages/settings-document/models/document-action-config';
 
 // constants
 import { SettingsDocumentsConstants } from './utils/constants/settings-document.constants';

@@ -23,8 +23,8 @@ import { TaUploadFileComponent } from './components/ta-upload-file/ta-upload-fil
 import { TaUploadFilesCarouselComponent } from './components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 //Models
-import { FileEvent } from 'src/app/shared/models/file-event.model';
-import { Tags } from '../../models/tags.model';
+import { FileEvent } from '@shared/models/file-event.model';
+import { Tags } from '@shared/models/tags.model';
 import { UploadFile } from './models/upload-file.model';
 
 //Services

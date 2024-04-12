@@ -8,16 +8,16 @@ import {
 import { Observable } from 'rxjs';
 
 // Pipes
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // Helpers
-import { getPayrollDriverMilesDefinition } from 'src/app/shared/utils/settings/table-settings/payroll-columns';
+import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-settings/payroll-columns';
 
 // Store
-import { DriversActiveQuery } from '../../../driver/state/driver-active-state/driver-active.query';
-import { DriversActiveState } from '../../../driver/state/driver-active-state/driver-active.store';
-import { DriversInactiveQuery } from '../../../driver/state/driver-inactive-state/driver-inactive.query';
-import { DriversInactiveState } from '../../../driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from './state/payroll.query';
 
 @Component({
@@ -358,8 +358,8 @@ export class PayrollComponent implements OnInit, AfterViewInit {
                         : 'Ready',
                 iconLink:
                     index === 0 || index === 2
-                        ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
-                        : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+                        ? 'assets/svg/truckassist-table/applicant-wrong-icon.svg'
+                        : 'assets/svg/truckassist-table/applicant-done-icon.svg',
             },
             hire: true,
             favorite: false,

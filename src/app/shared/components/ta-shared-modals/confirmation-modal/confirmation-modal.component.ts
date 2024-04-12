@@ -11,22 +11,22 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaModalComponent } from '../../ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaProfileImagesComponent } from '../../ta-profile-images/ta-profile-images.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 // services
-import { ImageBase64Service } from '../../../services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from './services/confirmation.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../../utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // pipes
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // models
 import { Confirmation } from './models/confirmation.model';

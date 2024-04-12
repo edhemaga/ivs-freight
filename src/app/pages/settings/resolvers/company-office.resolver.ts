@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
 
-//core
+// models
 import { CompanyOfficeListResponse } from 'appcoretruckassist';
 
-//Service
-import { CompanyOfficeService } from '../../../shared/services/company-office.service';
+// service
+import { CompanyOfficeService } from '@shared/services/company-office.service';
 
-//Store
+// store
 import {
     OfficeState,
     OfficeStore,
-} from '../state/setting-ofice-state/company-office.store';
+} from '@pages/settings/state/setting-ofice-state/company-office.store';
 
 @Injectable({
     providedIn: 'root',

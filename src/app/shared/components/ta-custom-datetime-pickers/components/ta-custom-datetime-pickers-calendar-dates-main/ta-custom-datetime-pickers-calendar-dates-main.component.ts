@@ -22,19 +22,19 @@ import {
 import moment from 'moment';
 
 // services
-import { CalendarDateTimePickerService } from '../../services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 
 // components
-import { TaCustomDateTimePickersCalendarDaysComponent } from '../ta-custom-datetime-pickers-calendar-days/ta-custom-datetime-pickers-calendar-days.component';
+import { TaCustomDateTimePickersCalendarDaysComponent } from '@shared/components/ta-custom-datetime-pickers/components/ta-custom-datetime-pickers-calendar-days/ta-custom-datetime-pickers-calendar-days.component';
 
 // strategy
 import {
     CalendarStrategy,
     STARTING_YEAR,
-} from '../../strategy/calendar-strategy';
+} from '@shared/components/ta-custom-datetime-pickers/strategy/calendar-strategy';
 
 // enums
-import { CalendarMainEnum } from '../../enums/calendar-main.enum';
+import { CalendarMainEnum } from '@shared/components/ta-custom-datetime-pickers/enums/calendar-main.enum';
 
 function factory(dir: TaCustomDateTimePickerCalendarDatesMainComponent) {
     return dir.scrollStrategy;

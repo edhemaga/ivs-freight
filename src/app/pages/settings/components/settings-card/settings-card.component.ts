@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 // animations
-import { settingsCardAnimation } from '../../animations/settings-card.animation';
+import { settingsCardAnimation } from '@pages/settings/animations/settings-card.animation';
 
 @Component({
     selector: 'app-settings-card',
