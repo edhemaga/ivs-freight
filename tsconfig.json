@@ -22,10 +22,10 @@
         ],
         "paths": {
             "rxjs": ["node_modules/rxjs"],
-            "@app/*": ["src/app/*"],
             "@core/*": ["src/app/core/*"],
             "@pages/*": ["src/app/pages/*"],
-            "@shared/*": ["src/app/shared/*"]
+            "@shared/*": ["src/app/shared/*"],
+            "@app/*": ["src/app/*"]
         }
     },
     "angularCompilerOptions": {

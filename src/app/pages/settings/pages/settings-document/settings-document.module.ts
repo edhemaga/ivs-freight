@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SettingsDocumentRoutingModule } from '@app/pages/settings/pages/settings-document/settings-document-routing.module';
+import { SettingsDocumentRoutingModule } from '@pages/settings/pages/settings-document/settings-document-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // components

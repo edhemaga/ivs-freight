@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { LoadDetailsRoutingModule } from '@app/pages/load/pages/load-details/load-details-routing.module';
+import { LoadDetailsRoutingModule } from '@pages/load/pages/load-details/load-details-routing.module';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';

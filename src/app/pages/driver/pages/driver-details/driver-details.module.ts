@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { DriverDetailsRoutingModule } from '@app/pages/driver/pages/driver-details/driver-details-routing.module';
+import { DriverDetailsRoutingModule } from '@pages/driver/pages/driver-details/driver-details-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes

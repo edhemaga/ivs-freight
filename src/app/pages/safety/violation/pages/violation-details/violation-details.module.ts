@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { ViolationDetailsRoutingModule } from '@app/pages/safety/violation/pages/violation-details/violation-details-routing.module';
+import { ViolationDetailsRoutingModule } from '@pages/safety/violation/pages/violation-details/violation-details-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes

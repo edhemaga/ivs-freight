@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { TrailerDetailsRoutingModule } from '@app/pages/trailer/pages/trailer-details/trailer-details-routing.module';
+import { TrailerDetailsRoutingModule } from '@pages/trailer/pages/trailer-details/trailer-details-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
 

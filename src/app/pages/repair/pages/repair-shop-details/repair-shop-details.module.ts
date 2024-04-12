@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
 
 // Routing
-import { RepairShopDetailsRoutingModule } from '@app/pages/repair/pages/repair-shop-details/repair-shop-details-routing.module';
+import { RepairShopDetailsRoutingModule } from '@pages/repair/pages/repair-shop-details/repair-shop-details-routing.module';
 
 // Components
 import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';

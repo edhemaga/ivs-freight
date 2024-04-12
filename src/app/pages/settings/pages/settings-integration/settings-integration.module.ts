@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SettingsIntegrationRoutingModule } from '@app/pages/settings/pages/settings-integration/settings-integration-routing.module';
+import { SettingsIntegrationRoutingModule } from '@pages/settings/pages/settings-integration/settings-integration-routing.module';
 
 // components
 import { SettingsIntegrationComponent } from '@pages/settings/pages/settings-integration/settings-integration.component';

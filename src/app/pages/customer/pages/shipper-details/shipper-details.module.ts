@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { ShipperDetailsRoutingModule } from '@app/pages/customer/pages/shipper-details/shipper-details-routing.module';
+import { ShipperDetailsRoutingModule } from '@pages/customer/pages/shipper-details/shipper-details-routing.module';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';

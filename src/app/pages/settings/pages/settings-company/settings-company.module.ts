@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Modules
-import { SettingsCompanyRoutingModule } from '@app/pages/settings/pages/settings-company/settings-company-routing.module';
+import { SettingsCompanyRoutingModule } from '@pages/settings/pages/settings-company/settings-company-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // Components

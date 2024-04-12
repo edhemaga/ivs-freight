@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { TruckDetailsRoutingModule } from '@app/pages/truck/pages/truck-details/truck-details-routing.module';
+import { TruckDetailsRoutingModule } from '@pages/truck/pages/truck-details/truck-details-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components

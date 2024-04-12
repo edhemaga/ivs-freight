@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routing
-import { SettingsLocationRoutingModule } from '@app/pages/settings/pages/settings-location/settings-location-routing.module';
+import { SettingsLocationRoutingModule } from '@pages/settings/pages/settings-location/settings-location-routing.module';
 
 // pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';

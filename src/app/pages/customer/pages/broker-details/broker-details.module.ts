@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { BrokerDetailsRoutingModule } from '@app/pages/customer/pages/broker-details/broker-details-routing.module';
+import { BrokerDetailsRoutingModule } from '@pages/customer/pages/broker-details/broker-details-routing.module';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
