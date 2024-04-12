@@ -42,8 +42,8 @@ import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component
 
 // models
 import { TruckResponse } from 'appcoretruckassist';
-import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 @Component({

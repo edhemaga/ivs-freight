@@ -21,10 +21,10 @@ import { BrokerService } from '@pages/customer/services/broker.service';
 
 //Models
 import { BrokerResponse } from 'appcoretruckassist';
-import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
-import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
 

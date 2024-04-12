@@ -54,10 +54,10 @@ import { DriverImagesStringEnum } from '@pages/driver/pages/driver-details/compo
 import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 //Models
-import { DoughnutChartConfig } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
-import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     CdlResponse,
     DriverMinimalResponse,

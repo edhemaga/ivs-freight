@@ -11,8 +11,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // validations
 import {
@@ -24,7 +24,7 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // enums
-import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import { SignUpCompanyCommand } from 'appcoretruckassist';
