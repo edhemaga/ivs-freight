@@ -1,4 +1,4 @@
-@import 'src/pages/customer/pages/broker-details/broker-details.component.scss';
+@import '../../broker-details.component.scss';
 
 app-broker-details-single {
     .dots-vertical {
@@ -169,13 +169,11 @@ app-broker-details-single {
                 }
             }
 
-            &:hover{
+            &:hover {
                 cursor: pointer;
                 background-color: #f3f3f3;
             }
-
         }
-        
     }
     .pickup-wrapper {
         display: flex;
