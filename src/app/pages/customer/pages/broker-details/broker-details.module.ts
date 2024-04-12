@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { BrokerDetailsRoutes } from '@pages/customer/pages/broker-details/broker-details.routing';
+import { BrokerDetailsRoutingModule } from '@app/pages/customer/pages/broker-details/broker-details-routing.module';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +36,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
     exports: [BrokerDetailsCardComponent, SharedModule],
     imports: [
         // Routes
-        BrokerDetailsRoutes,
+        BrokerDetailsRoutingModule,
 
         // Modules
         CommonModule,

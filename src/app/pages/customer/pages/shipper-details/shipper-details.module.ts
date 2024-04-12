@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { ShipperDetailsRoutes } from '@pages/customer/pages/shipper-details/shipper-details.routing';
+import { ShipperDetailsRoutingModule } from '@app/pages/customer/pages/shipper-details/shipper-details-routing.module';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -35,7 +35,7 @@ import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
     exports: [ShipperDetailsCardComponent, SharedModule],
     imports: [
         // Routes
-        ShipperDetailsRoutes,
+        ShipperDetailsRoutingModule,
 
         // Modules
         CommonModule,

@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routing
-import { SettingsLocationRoutes } from '@pages/settings/pages/settings-location/settings-location.routing';
+import { SettingsLocationRoutingModule } from '@app/pages/settings/pages/settings-location/settings-location-routing.module';
 
 // pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
@@ -34,7 +34,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
     imports: [
         CommonModule,
         ReactiveFormsModule,
-        SettingsLocationRoutes,
+        SettingsLocationRoutingModule,
         TaAppTooltipV2Component,
         NgbModule,
         TaCounterComponent,

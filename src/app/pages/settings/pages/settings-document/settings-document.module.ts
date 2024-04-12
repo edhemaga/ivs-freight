@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SettingsDocumentRoutes } from '@pages/settings/pages/settings-document/settings-document.routing';
+import { SettingsDocumentRoutingModule } from '@app/pages/settings/pages/settings-document/settings-document-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // components
@@ -17,7 +17,7 @@ import { TaUploadFilesNoSliderComponent } from '@shared/components/ta-upload-fil
 @NgModule({
     imports: [
         CommonModule,
-        SettingsDocumentRoutes,
+        SettingsDocumentRoutingModule,
         SharedModule,
         TaSearchComponent,
         TaUploadFilesComponent,

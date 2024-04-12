@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
 
 // Routing
-import { RepairShopDetailsRoutes } from '@pages/repair/pages/repair-shop-details/repair-shop-details.routing';
+import { RepairShopDetailsRoutingModule } from '@app/pages/repair/pages/repair-shop-details/repair-shop-details-routing.module';
 
 // Components
 import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
@@ -39,7 +39,7 @@ import { FormatCurrency } from '@shared/pipes/format-currency.pipe';
     exports: [RepairShopCardViewComponent, SharedModule],
     imports: [
         // Routes
-        RepairShopDetailsRoutes,
+        RepairShopDetailsRoutingModule,
 
         // Modules
         CommonModule,

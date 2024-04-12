@@ -8,7 +8,7 @@ import { FuelDetailsComponent } from '@pages/fuel/pages/fuel-details/fuel-detail
 import { FuelDetailsItemComponent } from '@pages/fuel/pages/fuel-details/components/fuel-details-item/fuel-details-item.component';
 
 // modules
-import { FuelDetailsRoutes } from '@pages/fuel/pages/fuel-details/fuel-details.routing';
+import { FuelDetailsRoutingModule } from '@pages/fuel/pages/fuel-details/fuel-details-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes
@@ -21,7 +21,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
     imports: [
         CommonModule,
         SharedModule,
-        FuelDetailsRoutes,
+        FuelDetailsRoutingModule,
         TaTableBodyComponent,
         TaTableHeadComponent,
         FormatDatePipe,

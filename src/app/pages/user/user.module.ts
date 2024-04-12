@@ -5,7 +5,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routing
-import { UserRoutes } from '@pages/user/user.routing';
+import { UserRoutingModule } from '@app/pages/user/user-routing.module';
 
 // components
 import { UserTableComponent } from '@pages/user/pages/user-table/user-table.component';
@@ -23,9 +23,7 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
         CommonModule,
         NgbTooltipModule,
         AngularSvgIconModule,
-
-        // routing
-        UserRoutes,
+        UserRoutingModule,
 
         // components
         TaTableToolbarComponent,

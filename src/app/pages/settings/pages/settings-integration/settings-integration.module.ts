@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SettingsIntegrationRoutes } from '@pages/settings/pages/settings-integration/settings-integration.routing';
+import { SettingsIntegrationRoutingModule } from '@app/pages/settings/pages/settings-integration/settings-integration-routing.module';
 
 // components
 import { SettingsIntegrationComponent } from '@pages/settings/pages/settings-integration/settings-integration.component';
@@ -13,7 +13,7 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 @NgModule({
     imports: [
         CommonModule,
-        SettingsIntegrationRoutes,
+        SettingsIntegrationRoutingModule,
         TaTableToolbarComponent,
         TaTableHeadComponent,
         TaTableBodyComponent,

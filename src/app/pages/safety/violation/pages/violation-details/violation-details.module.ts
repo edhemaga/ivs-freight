@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { ViolationDetailsRoutes } from '@pages/safety/violation/pages/violation-details/violation-details.routing';
+import { ViolationDetailsRoutingModule } from '@app/pages/safety/violation/pages/violation-details/violation-details-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes
@@ -35,7 +35,7 @@ import { ViolationDetailsCardComponent } from '@pages/safety/violation/pages/vio
 
         // components
         CommonModule,
-        ViolationDetailsRoutes,
+        ViolationDetailsRoutingModule,
         SharedModule,
         TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
