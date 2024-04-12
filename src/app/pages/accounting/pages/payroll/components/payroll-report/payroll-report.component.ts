@@ -11,16 +11,16 @@ import { UntypedFormControl } from '@angular/forms';
 import { PayrollService } from '@pages/accounting/services/payroll.service';
 
 // constants
-import { PayrollCommisionDriverOpenLoads } from './utils/constants/payroll-commision-driver-open-loads.constants';
+import { PayrollCommisionDriverOpenLoads } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-commision-driver-open-loads.constants';
 import {
     PayrollOwnerOpenLoads,
     PayrollOwnerOpenLoadsResizable,
-} from './utils/constants/payroll-owner-open-load.constants';
+} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-owner-open-load.constants';
 import { MapConstants } from '@shared/utils/constants/map.constants';
 import {
     PayrollMilesDriverOpenLoads,
     PayrollMilesDriverOpenLoadsResizable,
-} from './utils/constants/payroll-miles-driver-open-loads.constants';
+} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
 
 @Component({
     selector: 'app-payroll-report',

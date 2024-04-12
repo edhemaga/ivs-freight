@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantPspAuthorizationComponent } from './applicant-psp-authorization.component';
+import { ApplicantPspAuthorizationComponent } from '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.component';
 
 describe('ApplicantPspAuthorizationComponent', () => {
     let component: ApplicantPspAuthorizationComponent;

@@ -45,7 +45,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // models
-import { activeOptions } from './models/active-options-models';
+import { ActiveOptions } from '@shared/components/ta-note/models/active-options-models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
@@ -120,7 +120,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     //note container
     public showCollorPattern: boolean;
     public buttonsExpanded = false;
-    public activeOptions: activeOptions;
+    public activeOptions: ActiveOptions;
     public selectedPaternColor: string = '#6C6C6C';
 
     //properties and values

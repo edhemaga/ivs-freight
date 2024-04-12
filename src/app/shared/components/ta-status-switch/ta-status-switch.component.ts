@@ -24,7 +24,7 @@ import { StatusPipe } from '@shared/pipes/status-pipe.pipe';
 
 // models
 import { DispatchService } from 'appcoretruckassist';
-import { IDispatchModel } from './models/dispatch.model';
+import { IDispatchModel } from '@shared/components/ta-status-switch/models/dispatch.model';
 
 @Component({
     selector: 'app-ta-status-switch',

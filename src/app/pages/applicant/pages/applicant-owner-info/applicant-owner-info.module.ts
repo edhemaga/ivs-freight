@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { ApplicantOwnerInfoRoutingModule } from './applicant-owner-info-routing.module';
+import { ApplicantOwnerInfoRoutingModule } from '@pages/applicant/pages/applicant-owner-info/applicant-owner-info-routing.module';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 
 // components
-import { ApplicantOwnerInfoComponent } from './applicant-owner-info.component';
+import { ApplicantOwnerInfoComponent } from '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.component';
 
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';

@@ -31,7 +31,7 @@ import moment from 'moment';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
+import { PriceCalculationArrayPipe } from '@pages/repair/pages/repair-modals/repair-order-modal/pipes/price-calculation-array.pipe';
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
@@ -50,9 +50,9 @@ import {
     RepairShopResponse,
     RepairResponse,
 } from 'appcoretruckassist';
-import { RepairTypes } from './models/repair-types.model';
-import { RepairSubtotal } from './models/repair-subtotal.model';
-import { RepairData } from './models/repair-data.model';
+import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
+import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -65,7 +65,7 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConstants } from './utils/constants/repair-order.constant';
+import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants/repair-order.constant';
 
 // components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';

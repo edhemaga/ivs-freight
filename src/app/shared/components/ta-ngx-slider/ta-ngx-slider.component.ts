@@ -5,6 +5,7 @@ import {
 } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     EventEmitter,
@@ -13,12 +14,12 @@ import {
     ViewChild,
 } from '@angular/core';
 
-//Modules
+// Modules
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng5SliderModule } from 'ng5-slider';
 
-//Enums
-import { SliderTemplateEnum } from './enums/slider-template.enum';
+// Enums
+import { SliderTemplateEnum } from '@shared/components/ta-ngx-slider/enums/slider-template.enum';
 
 @Component({
     selector: 'app-ta-ngx-slider',
@@ -35,7 +36,7 @@ import { SliderTemplateEnum } from './enums/slider-template.enum';
         Ng5SliderModule,
     ],
 })
-export class TaNgxSliderComponent {
+export class TaNgxSliderComponent implements AfterViewInit {
     @Input() sliderTemplate: string = SliderTemplateEnum.COMMISSION;
     @Input() sliderName: string = null;
     @Input() sliderOptions: Options;

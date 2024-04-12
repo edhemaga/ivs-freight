@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { SettingsDocumentRoutes } from './settings-document.routing';
+import { SettingsDocumentRoutes } from '@pages/settings/pages/settings-document/settings-document.routing';
 import { SharedModule } from '@shared/shared.module';
 
 // components
-import { SettingsDocumentComponent } from './settings-document.component';
+import { SettingsDocumentComponent } from '@pages/settings/pages/settings-document/settings-document.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';

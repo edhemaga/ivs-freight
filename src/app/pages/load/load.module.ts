@@ -2,13 +2,13 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoadRoutingModule } from './load-routing.module';
+import { LoadRoutingModule } from '@pages/load/load-routing.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
-import { LoadTableComponent } from './pages/load-table/load-table.component';
-import { LoadCardComponent } from './pages/load-card/load-card.component';
-import { LoadDetailsModule } from './pages/load-details/load-details.module';
+import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
+import { LoadCardComponent } from '@pages/load/pages/load-card/load-card.component';
+import { LoadDetailsModule } from '@pages/load/pages/load-details/load-details.module';
 
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';

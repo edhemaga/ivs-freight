@@ -1,7 +1,8 @@
-// Module
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OwnerRoutingModule } from './owner-routing.module';
+
+// Modules
+import { OwnerRoutingModule } from '@pages/owner/owner-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,8 +10,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaskNumberPipe } from '@pages/owner/pages/owner-card/pipes/mask-number.pipe';
 
 // Components
-import { OwnerTableComponent } from './pages/owner-table/owner-table.component';
-import { OwnerCardComponent } from './pages/owner-card/owner-card.component';
+import { OwnerTableComponent } from '@pages/owner/pages//owner-table/owner-table.component';
+import { OwnerCardComponent } from '@pages/owner/pages//owner-card/owner-card.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';

@@ -35,7 +35,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // configuration
-import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
+import { trailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -45,13 +45,13 @@ import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enu
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
-import { TrailerMapped } from './models/trailer-mapped.model';
+import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
-import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
-import { TraillerData } from './models/trailer-data.model';
-import { TrailerBodyResponse } from './models/trailer-body-response.model';
+import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
+import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
+import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 

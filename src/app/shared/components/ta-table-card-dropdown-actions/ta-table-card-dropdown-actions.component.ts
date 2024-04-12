@@ -4,7 +4,7 @@ import { NgbModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { TableCardDropdownActionsService } from './services/table-card-dropdown-actions.service';
+import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
-import { TruckDetailsRoutes } from './trailer-details.routing';
+import { TruckDetailsRoutes } from '@pages/trailer/pages/trailer-details/trailer-details.routing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
 
@@ -23,9 +23,9 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
-import { TrailerDetailsCardComponent } from './components/trailer-details-card/trailer-details-card.component';
-import { TrailerDetailsItemComponent } from './components/trailer-details-item/trailer-details-item.component';
-import { TrailerDetailsComponent } from './trailer-details.component';
+import { TrailerDetailsCardComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-card/trailer-details-card.component';
+import { TrailerDetailsItemComponent } from '@pages/trailer/pages/trailer-details/components/trailer-details-item/trailer-details-item.component';
+import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
 
 @NgModule({
     declarations: [

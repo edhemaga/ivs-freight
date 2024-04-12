@@ -18,7 +18,7 @@ import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driv
 import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { PayrollQuery } from './state/payroll.query';
+import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
 
 @Component({
     selector: 'app-payroll',

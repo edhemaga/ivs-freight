@@ -41,7 +41,7 @@ import { NotificationService } from '@shared/services/notification.service';
 import { RoutingStateService } from '@shared/services/routing-state.service';
 
 // store
-import { RoutingStateQuery } from '@pages/routing/state/routing-state/routing-state.query';
+import { RoutingStateQuery } from '@pages/routing/state/routing-state.query';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';

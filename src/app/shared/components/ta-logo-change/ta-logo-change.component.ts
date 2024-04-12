@@ -39,7 +39,7 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipe
-import { LogoSliderPipe } from './pipes/logo-slider.pipe';
+import { LogoSliderPipe } from '@shared/components/ta-logo-change/pipes/logo-slider.pipe';
 
 // models
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';

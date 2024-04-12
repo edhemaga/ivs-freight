@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routing
-import { SettingsLocationRoutes } from './settings-location.routing';
+import { SettingsLocationRoutes } from '@pages/settings/pages/settings-location/settings-location.routing';
 
 // pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
@@ -22,11 +22,11 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { SettingsRepairShopComponent } from './components/settings-repair-shop/settings-repair-shop.component';
-import { SettingsLocationComponent } from './settings-location.component';
-import { SettingsParkingComponent } from './components/settings-parking/settings-parking.component';
-import { SettingsOfficeComponent } from './components/settings-office/settings-office.component';
-import { SettingsTerminalComponent } from './components/settings-terminal/settings-terminal.component';
+import { SettingsRepairShopComponent } from '@pages/settings/pages/settings-location/components/settings-repair-shop/settings-repair-shop.component';
+import { SettingsLocationComponent } from '@pages/settings/pages/settings-location/settings-location.component';
+import { SettingsParkingComponent } from '@pages/settings/pages/settings-location/components/settings-parking/settings-parking.component';
+import { SettingsOfficeComponent } from '@pages/settings/pages/settings-location/components/settings-office/settings-office.component';
+import { SettingsTerminalComponent } from '@pages/settings/pages/settings-location/components/settings-terminal/settings-terminal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 

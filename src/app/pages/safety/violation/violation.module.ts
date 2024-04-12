@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
-import { ViolationRoutingModule } from './violation-routing.module';
+import { ViolationRoutingModule } from '@pages/safety/violation/violation-routing.module';
 
 // components
-import { ViolationTableComponent } from './pages/violation-table/violation-table.component';
+import { ViolationTableComponent } from '@pages/safety/violation/pages/violation-table/violation-table.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';

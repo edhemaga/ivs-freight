@@ -11,7 +11,7 @@ import { LoadResponse } from 'appcoretruckassist';
 import { MapRoute } from '@shared/models/map-route.model';
 
 //Store
-import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-d-list.query';
+import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
 
 interface IStopRoutes {
     longitude: number;

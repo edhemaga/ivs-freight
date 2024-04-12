@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // components
-import { PayrollComponent } from './pages/payroll/payroll.component';
-import { AccountingPayrollComponent } from './pages/accounting-payroll/accounting-payroll.component';
+import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
+import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';
 import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 
 // resolvers
-import { PayrolldResolver } from './pages/payroll/state/payroll-resolver';
+import { PayrolldResolver } from '@pages/accounting/pages/payroll/state/payroll-resolver';
 
 const routes: Routes = [
     {

@@ -34,9 +34,9 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { LoadModalFinancialComponent } from './components/load-modal-financial/load-modal-financial.component';
-import { LoadModalStopComponent } from './components/load-modal-stop/load-modal-stop.component';
-import { LoadModalStopItemsComponent } from './components/load-modal-stop-items/load-modal-stop-items.component';
+import { LoadModalFinancialComponent } from '@pages/load/pages/load-modal/components/load-modal-financial/load-modal-financial.component';
+import { LoadModalStopComponent } from '@pages/load/pages/load-modal/components/load-modal-stop/load-modal-stop.component';
+import { LoadModalStopItemsComponent } from '@pages/load/pages/load-modal/components/load-modal-stop-items/load-modal-stop-items.component';
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -58,23 +58,23 @@ import { FormService } from '@shared/services/form.service';
 import { LoadService } from '@shared/services/load.service';
 
 // animations
-import { fadeInAnimation } from './utils/animations/fade-in.animation';
+import { fadeInAnimation } from '@pages/load/pages/load-modal/utils/animations/fade-in.animation';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // pipes
-import { FinancialCalculationPipe } from './pipes/financial-calculation.pipe';
-import { LoadDatetimeRangePipe } from './pipes/load-datetime-range.pipe';
-import { LoadTimeTypePipe } from './pipes/load-time-type.pipe';
+import { FinancialCalculationPipe } from '@pages/load/pages/load-modal/pipes/financial-calculation.pipe';
+import { LoadDatetimeRangePipe } from '@pages/load/pages/load-modal/pipes/load-datetime-range.pipe';
+import { LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes/load-time-type.pipe';
 
 // constants
-import { LoadModalConstants } from './utils/constants/load-modal.constants';
-import { LoadModalConfig } from './utils/constants/load-modal-config.constants';
-import { LoadStopItems } from './utils/constants/load-stop-items.constants';
+import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
+import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
+import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
 
 // enums
-import { LoadModalStringEnum } from './enums/load-modal-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 // models
 import {
@@ -94,21 +94,21 @@ import {
     LoadStopItemCommand,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { LoadBilling } from './models/load-billing.model';
-import { LoadPayment } from './models/load-payment.model';
+import { LoadBilling } from '@pages/load/pages/load-modal/models/load-billing.model';
+import { LoadPayment } from '@pages/load/pages/load-modal/models/load-payment.model';
 import { MapRoute } from '@shared/models/map-route.model';
-import { LoadStopRoutes } from './models/load-stop-routes.model';
-import { LoadModalTab } from './models/load-modal-tab.model';
+import { LoadStopRoutes } from '@pages/load/pages/load-modal/models/load-stop-routes.model';
+import { LoadModalTab } from '@pages/load/pages/load-modal/models/load-modal-tab.model';
 import { Load } from '@pages/load/models/load.model';
 import { Tags } from '@shared/models/tags.model';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
-import { LoadStopItemDropdownLists } from './models/load-stop-item-dropdowns-list.model';
-import { LoadItemStop } from './models/load-item-stop.model';
+import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
+import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
-import { LoadAdditionalBilling } from './models/load-additional-billing.model';
-import { LoadYearDropdown } from './models/load-year-dropdown.model';
+import { LoadAdditionalBilling } from '@pages/load/pages/load-modal/models/load-additional-billing.model';
+import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-dropdown.model';
 
 @Component({
     selector: 'app-load-modal',

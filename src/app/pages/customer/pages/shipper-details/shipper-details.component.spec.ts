@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ShipperDetailsComponent } from './shipper-details.component';
+import { ShipperDetailsComponent } from '@pages/customer/pages/shipper-details/shipper-details.component';
 
 describe('ShipperDetailsComponent', () => {
     let component: ShipperDetailsComponent;

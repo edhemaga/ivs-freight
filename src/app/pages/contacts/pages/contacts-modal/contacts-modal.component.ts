@@ -50,10 +50,10 @@ import { ContactsService } from '@shared/services/contacts.service';
 import { FormService } from '@shared/services/form.service';
 
 // enums
-import { ContactsModalStringEnum } from './enums/contacts-modal-string.enum';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
 
 // constants
-import { ContactsModalConstants } from './utils/constants/contacts-modal.constants';
+import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 
 // models
 import {

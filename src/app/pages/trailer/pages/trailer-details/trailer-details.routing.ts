@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { TrailerDetailsComponent } from './trailer-details.component';
+import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
 
 const routes: Routes = [{ path: '', component: TrailerDetailsComponent }];
 

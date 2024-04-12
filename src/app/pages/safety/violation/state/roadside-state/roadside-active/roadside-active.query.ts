@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     RoadsideActiveState,
     RoadsideActiveStore,
-} from './roadside-active.store';
+} from '@pages/safety/violation/state/roadside-state/roadside-active/roadside-active.store';
 
 @Injectable({ providedIn: 'root' })
 export class RoadsideActiveQuery extends QueryEntity<RoadsideActiveState> {

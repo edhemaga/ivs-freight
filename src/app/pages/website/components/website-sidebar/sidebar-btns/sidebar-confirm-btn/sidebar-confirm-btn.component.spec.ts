@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidebarConfirmBtnComponent } from './sidebar-confirm-btn.component';
+import { SidebarConfirmBtnComponent } from '@pages/website/components/website-sidebar/sidebar-btn/sidebar-confirm-btn/sidebar-confirm-btn.component';
 
 describe('SidebarConfirmBtnComponent', () => {
     let component: SidebarConfirmBtnComponent;

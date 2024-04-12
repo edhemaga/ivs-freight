@@ -45,10 +45,10 @@ import {
     TruckMinimalListResponse,
     EnumValue,
 } from 'appcoretruckassist';
-import { FuelData } from './models/fuel-data.model';
-import { FuelItems } from './models/fuel-items.model';
-import { FuelItemsDropdown } from './models/fuel-items-dropdown.model';
-import { FuelTruckType } from './models/fuel-truck-type.model';
+import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
+import { FuelItems } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-items.model';
+import { FuelItemsDropdown } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-items-dropdown.model';
+import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
 import { Trailer } from '@shared/models/card-models/card-table-data.model';
 
 //Pipes
@@ -56,9 +56,9 @@ import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 //Enums
 import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
-import { FuelDropdownOptionsStringEnum } from './enums/fuel-dropdown-optioins-string.enum';
-import { FuelValuesStringEnum } from './enums/fuel-values-string.enum';
-import { FuelModalActionsStringEnum } from './enums/fuel-modal-actions-string.enum';
+import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-dropdown-optioins-string.enum';
+import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-values-string.enum';
+import { FuelModalActionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-modal-actions-string.enum';
 
 //Validations
 import {

@@ -1,18 +1,22 @@
 import { Injectable } from '@angular/core';
-
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap, take } from 'rxjs/operators';
+import { Observable, of, catchError, tap, take } from 'rxjs';
+
+// models
 import { LoadResponse } from 'appcoretruckassist';
+
+// services
 import { LoadService } from '@shared/services/load.service';
-import { LoadDetailsListQuery } from './load-details-list-state/load-d-list.query';
-import { LoadDetailsListStore } from './load-details-list-state/load-d-list.store';
-import { LoadItemStore } from './load-details.store';
+
+// store
+import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
+import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
+import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LoatItemResolver implements Resolve<LoadResponse[]> {
+export class LoadDetailsResolver implements Resolve<LoadResponse[]> {
     constructor(
         private loadService: LoadService,
         private loadItemStore: LoadItemStore,

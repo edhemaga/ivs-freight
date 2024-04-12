@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaInputRadiobuttonsComponent } from './ta-input-radiobuttons.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 describe('TaInputRadiobuttonsComponent', () => {
     let component: TaInputRadiobuttonsComponent;

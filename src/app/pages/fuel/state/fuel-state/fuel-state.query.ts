@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { FuelState, FuelStore } from './fuel-state.store';
+import {
+    FuelState,
+    FuelStore,
+} from '@pages/fuel/state/fuel-state/fuel-state.store';
 
 @Injectable({ providedIn: 'root' })
 export class FuelQuery extends QueryEntity<FuelState> {

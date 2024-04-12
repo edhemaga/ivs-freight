@@ -26,9 +26,9 @@ import { TrailersDetailsListQuery } from '@pages/trailer/state/trailer-details-l
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
-import { TrailerConfigData } from './models/trailer-config-data.model';
+import { TrailerConfigData } from '@pages/trailer/pages/trailer-details/models/trailer-config-data.model';
 import { TrailerResponse } from 'appcoretruckassist';
-import { TrailerDetailsConfig } from './models/trailer-details-config.model';
+import { TrailerDetailsConfig } from '@pages/trailer/pages/trailer-details/models/trailer-details-config.model';
 
 @Component({
     selector: 'app-trailer-details',

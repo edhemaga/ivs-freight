@@ -5,11 +5,11 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // routing
-import { UserRoutes } from './user.routing';
+import { UserRoutes } from '@pages/user/user.routing';
 
 // components
-import { UserTableComponent } from './pages/user-table/user-table.component';
-import { UserCardComponent } from './pages/user-card/user-card.component';
+import { UserTableComponent } from '@pages/user/pages/user-table/user-table.component';
+import { UserCardComponent } from '@pages/user/pages/user-card/user-card.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';

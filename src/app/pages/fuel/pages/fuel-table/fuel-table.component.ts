@@ -41,7 +41,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 //States
-import { FuelQuery } from '@pages/fuel/state/fule-state/fuel-state.query';
+import { FuelQuery } from '@pages/fuel/state/fuel-state/fuel-state.query';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';

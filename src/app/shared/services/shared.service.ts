@@ -8,7 +8,7 @@ import { Observable, Subject, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 // services
-import { NotificationService } from './notification.service';
+import { NotificationService } from '@shared/services/notification.service';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';

@@ -17,7 +17,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
-import { ConfirmationService } from './services/confirmation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -29,7 +29,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // models
-import { Confirmation } from './models/confirmation.model';
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 @Component({
     selector: 'app-confirmation-modal',

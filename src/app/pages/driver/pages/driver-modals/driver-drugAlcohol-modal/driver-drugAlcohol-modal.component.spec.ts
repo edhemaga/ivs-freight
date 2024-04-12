@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverDrugAlcoholModalComponent } from './driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 
 describe('DriverDrugAlcoholModalComponent', () => {
     let component: DriverDrugAlcoholModalComponent;

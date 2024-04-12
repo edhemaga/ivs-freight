@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadModalStopItemsComponent } from './load-modal-stop-items.component';
+import { LoadModalStopItemsComponent } from '@pages/load/pages/load-modal/components/load-modal-stop-items/load-modal-stop-items.component';
 
 describe('LoadModalStopItemsComponent', () => {
     let component: LoadModalStopItemsComponent;

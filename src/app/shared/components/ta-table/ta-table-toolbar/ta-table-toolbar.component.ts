@@ -43,7 +43,7 @@ import { TaToolbarFiltersComponent } from '@shared/components/ta-table/ta-table-
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 import { LoadCardsModalComponent } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
-import { ConfirmationModalResetComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset.component';
+import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -72,7 +72,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TaToolbarFiltersComponent,
         TaInputDropdownComponent,
         LoadCardsModalComponent,
-        ConfirmationModalResetComponent,
+        ConfirmationResetModalComponent,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -579,7 +579,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.onShowOptions(this.optionsPopup);
 
             this.modalService.openModal(
-                ConfirmationModalResetComponent,
+                ConfirmationResetModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     template: TableStringEnum.RESET_MODAL,

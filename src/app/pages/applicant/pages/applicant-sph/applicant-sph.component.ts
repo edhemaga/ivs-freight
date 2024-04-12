@@ -12,7 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // components
-import { ApplicantSphModalComponent } from './components/applicant-sph-modal/applicant-sph-modal.component';
+import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';

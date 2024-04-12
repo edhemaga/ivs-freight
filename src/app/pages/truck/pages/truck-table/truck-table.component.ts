@@ -23,7 +23,7 @@ import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truc
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 
 // constants
-import { TruckCardDataConstants } from './utils/constants/truck-card-data.constants';
+import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // pipes
@@ -45,11 +45,11 @@ import { TruckListResponse } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { TruckFilter } from './models/truck-filter.model';
+import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 
-import { TruckBodyResponse } from './models/truck-body-response.model';
+import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
 
 @Component({
     selector: 'app-truck-table',

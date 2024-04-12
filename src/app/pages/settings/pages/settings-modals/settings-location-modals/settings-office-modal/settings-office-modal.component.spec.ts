@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsOfficeModalComponent } from './settings-office-modal.component';
+import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 
 describe('SettingsOfficeModalComponent', () => {
     let component: SettingsOfficeModalComponent;

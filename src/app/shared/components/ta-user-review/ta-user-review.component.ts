@@ -1,4 +1,3 @@
-import { ReviewsSortPipe } from './pipes/reviews-sort.pipe';
 import {
     Component,
     ElementRef,
@@ -27,8 +26,11 @@ import { FormsModule } from '@angular/forms';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// pipes
+import { ReviewsSortPipe } from '@shared/components/ta-user-review/pipes/reviews-sort.pipe';
 
 @Component({
     selector: 'app-ta-user-review',

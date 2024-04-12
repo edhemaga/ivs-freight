@@ -10,12 +10,12 @@ import { FuelStopResponse } from 'appcoretruckassist';
 import { FuelService } from '@shared/services/fuel.service';
 
 //Store
-import { FuelItemStore } from './fuel-details.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FuelItemResolver implements Resolve<FuelStopResponse[]> {
+export class FuelDetailsResolver implements Resolve<FuelStopResponse[]> {
     pageIndex: number = 1;
     pageSize: number = 25;
     constructor(
@@ -28,7 +28,7 @@ export class FuelItemResolver implements Resolve<FuelStopResponse[]> {
         let fuelid = parseInt(id);
 
         return this.fuelService.getFuelStopById(fuelid).pipe(
-            catchError((error) => {
+            catchError(() => {
                 this.router.navigate(['/fuel']);
                 return of('No fuel data for...' + fuelid);
             }),

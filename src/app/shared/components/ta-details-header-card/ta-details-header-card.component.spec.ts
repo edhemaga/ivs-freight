@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaDetailsHeaderCardComponent } from './ta-details-header-card.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 
 describe('TaDetailsHeaderCardComponent', () => {
     let component: TaDetailsHeaderCardComponent;

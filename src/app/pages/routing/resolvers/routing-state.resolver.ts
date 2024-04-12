@@ -10,7 +10,7 @@ import { RoutingStateService } from '@shared/services/routing-state.service';
 import {
     RoutingStateState,
     RoutingStateStore,
-} from '@pages/routing/state/routing-state/routing-state.store';
+} from '@pages/routing/state/routing-state.store';
 
 @Injectable({
     providedIn: 'root',

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PmModalComponent } from './pm-modal.component';
+import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 describe('PmModalComponent', () => {
     let component: PmModalComponent;

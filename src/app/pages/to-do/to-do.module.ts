@@ -1,11 +1,13 @@
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { GridsterModule } from 'angular-gridster2';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 
 // moduels
-import { ToDoRoutingModule } from './to-do-routing.module';
+import { ToDoRoutingModule } from '@pages/to-do/to-do-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes
@@ -19,7 +21,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
-import { ToDoListCardComponent } from './pages/to-do-list-card/to-do-list-card.component';
+import { ToDoListCardComponent } from '@pages/to-do/pages/to-do-list-card/to-do-list-card.component';
 
 @NgModule({
     declarations: [ToDoListCardComponent],

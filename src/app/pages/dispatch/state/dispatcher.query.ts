@@ -4,7 +4,10 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { DispatcherState, DispatcherStore } from './dispatcher.store';
+import {
+    DispatcherState,
+    DispatcherStore,
+} from '@pages/dispatch/state/dispatcher.store';
 
 @Injectable({
     providedIn: 'root',

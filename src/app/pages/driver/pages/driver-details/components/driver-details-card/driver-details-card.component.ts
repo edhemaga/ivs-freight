@@ -49,8 +49,8 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 
 //Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
-import { DriverDetailsCardStringEnum } from './enums/driver-details-card-string.enum';
-import { DriverImagesStringEnum } from './enums/driver-images-string.enum';
+import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
+import { DriverImagesStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-images-string.enum';
 import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
 //Models
@@ -69,12 +69,12 @@ import {
     TestResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
-import { DriverDropdown } from './models/driver-dropdown.model';
+import { DriverDropdown } from '@pages/driver/pages/driver-details/components/driver-details-card/models/driver-dropdown.model';
 import { DriverDateInfo } from '@pages/driver/models/driver-date-info.model';
 
 //Constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
-import { DriverDetailsCard } from './utils/constants/driver-details-card.constants';
+import { DriverDetailsCard } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/constants/driver-details-card.constants';
 
 @Component({
     selector: 'app-driver-details-card',

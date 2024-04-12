@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { RoadsideDetailsResolver } from './resolvers/roadside-details.resolver';
-import { RoadsideMinimalResolver } from './resolvers/roadside-minimal.resolver';
+import { RoadsideDetailsResolver } from '@pages/safety/violation/resolvers/roadside-details.resolver';
+import { RoadsideMinimalResolver } from '@pages/safety/violation/resolvers/roadside-minimal.resolver';
 
 // components
-import { ViolationTableComponent } from './pages/violation-table/violation-table.component';
+import { ViolationTableComponent } from '@pages/safety/violation/pages/violation-table/violation-table.component';
 
 const routes: Routes = [
     {
@@ -17,9 +17,9 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./pages/violation-details/violation-details.module').then(
-                (m) => m.ViolationDetailsModule
-            ),
+            import(
+                '@pages/safety/violation/pages/violation-details/violation-details.module'
+            ).then((m) => m.ViolationDetailsModule),
         resolve: {
             roadItem: RoadsideDetailsResolver,
             roadMinimal: RoadsideMinimalResolver,

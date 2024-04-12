@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Modules
-import { SettingsCompanyRoutes } from './settings-company.routing';
+import { SettingsCompanyRoutes } from '@pages/settings/pages/settings-company/settings-company.routing';
 import { SharedModule } from '@shared/shared.module';
 
 // Components
-import { SettingsCompanyComponent } from './settings-company.component';
-import { SettingsGeneralComponent } from './components/settings-general/settings-general.component';
-import { SettingsPayrollComponent } from './components/settings-payroll/settings-payroll.component';
-import { SettingsInsurancepolicyComponent } from './components/settings-insurancepolicy/settings-insurancepolicy.component';
-import { SettingsFactoringComponent } from './components/settings-factoring/settings-factoring.component';
+import { SettingsCompanyComponent } from '@pages/settings/pages/settings-company/settings-company.component';
+import { SettingsGeneralComponent } from '@pages/settings/pages/settings-company/components/settings-general/settings-general.component';
+import { SettingsPayrollComponent } from '@pages/settings/pages/settings-company/components/settings-payroll/settings-payroll.component';
+import { SettingsInsurancepolicyComponent } from '@pages/settings/pages/settings-company/components/settings-insurancepolicy/settings-insurancepolicy.component';
+import { SettingsFactoringComponent } from '@pages/settings/pages/settings-company/components/settings-factoring/settings-factoring.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';

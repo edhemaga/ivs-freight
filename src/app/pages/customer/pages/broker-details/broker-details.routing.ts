@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { BrokerDetailsComponent } from './broker-details.component';
+import { BrokerDetailsComponent } from '@pages/customer/pages/broker-details/broker-details.component';
 
 const routes: Routes = [{ path: '', component: BrokerDetailsComponent }];
 

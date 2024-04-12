@@ -7,7 +7,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     TelematicStateStore,
     TelematicStateState,
-} from './telematic-state.store';
+} from '@pages/telematic/state/telematic-state.store';
 
 // Models
 import { TelematicState } from '@pages/telematic/models/telematic-state.model';

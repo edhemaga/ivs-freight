@@ -11,16 +11,16 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
 // services
-import { ConfirmationResetService } from './services/confirmation-reset.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { ConfirmationResetStringEnum } from './enums/confirmation-reset-string.enum';
+import { ConfirmationResetStringEnum } from '@shared/components/ta-shared-modals/confirmation-reset-modal/enums/confirmation-reset-string.enum';
 
 // models
-import { ConfirmationReset } from './models/confirmation-reset.model';
+import { ConfirmationReset } from '@shared/components/ta-shared-modals/confirmation-reset-modal/models/confirmation-reset.model';
 
 @Component({
-    selector: 'app-confirmation-reset',
+    selector: 'app-confirmation-reset-modal',
     standalone: true,
     imports: [
         // modules
@@ -30,10 +30,10 @@ import { ConfirmationReset } from './models/confirmation-reset.model';
         // components
         TaModalComponent,
     ],
-    templateUrl: './confirmation-reset.component.html',
-    styleUrls: ['./confirmation-reset.component.scss'],
+    templateUrl: './confirmation-reset-modal.component.html',
+    styleUrls: ['./confirmation-reset-modal.component.scss'],
 })
-export class ConfirmationModalResetComponent {
+export class ConfirmationResetModalComponent {
     @Input() editData: ConfirmationReset;
 
     constructor(

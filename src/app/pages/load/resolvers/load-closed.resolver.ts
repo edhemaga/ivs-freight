@@ -1,18 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
-import { LoadActiveState, LoadActiveStore } from './load-active.store';
+
+// store
+import {
+    LoadClosedState,
+    LoadClosedStore,
+} from '@pages/load/state/load-closed-state/load-closed.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LoadActiveResolver implements Resolve<LoadActiveState> {
+export class LoadClosedResolver implements Resolve<LoadClosedState> {
     constructor(
         private loadService: LoadService,
-        private loadActiveStore: LoadActiveStore,
+        private loadClosedStore: LoadClosedStore,
         private tableService: TruckassistTableService
     ) {}
 
@@ -20,7 +27,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
         return forkJoin([
             this.loadService.getLoadList(
                 undefined,
-                2,
+                3,
                 undefined,
                 undefined,
                 undefined,
@@ -34,7 +41,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                 1,
                 25
             ),
-            this.tableService.getTableConfig(3),
+            this.tableService.getTableConfig(2),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
                 localStorage.setItem(
@@ -56,7 +63,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                     );
                 }
 
-                this.loadActiveStore.set(loadPagination.pagination.data);
+                this.loadClosedStore.set(loadPagination.pagination.data);
             })
         );
     }

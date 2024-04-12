@@ -4,11 +4,11 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 
 // modules
-import { AccidentRoutingModule } from './accident-routing.module';
+import { AccidentRoutingModule } from '@pages/safety/accident/accident-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
 // components
-import { AccidentTableComponent } from './pages/accident-table/accident-table.component';
+import { AccidentTableComponent } from '@pages/safety/accident/pages/accident-table/accident-table.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';

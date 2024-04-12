@@ -7,8 +7,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import * as signalR from '@microsoft/signalr';
 
 // services
-import { DetailsDataService } from './details-data.service';
-import { NotificationService } from './notification.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { NotificationService } from '@shared/services/notification.service';
 import { MapService } from 'appcoretruckassist';
 
 // models

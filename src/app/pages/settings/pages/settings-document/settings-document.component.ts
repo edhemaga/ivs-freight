@@ -9,7 +9,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // model
 import { File } from '@shared/models/card-models/card-table-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
-import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
+import { SettingsDocumentStringEnum } from '@pages/settings/pages/settings-document/enums/settings-document-string.enum';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import {
@@ -19,7 +19,7 @@ import {
 import { DocumentActionConfig } from '@pages/settings/pages/settings-document/models/document-action-config';
 
 // constants
-import { SettingsDocumentsConstants } from './utils/constants/settings-document.constants';
+import { SettingsDocumentsConstants } from '@pages/settings/pages/settings-document/utils/constants/settings-document.constants';
 
 @Component({
     selector: 'app-settings-document',

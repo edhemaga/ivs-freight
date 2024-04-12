@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViolationCardViewComponent } from './violation-details-card.component';
+import { ViolationDetailsCardComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-card/violation-details-card.component';
 
-describe('ViolationCardViewComponent', () => {
-    let component: ViolationCardViewComponent;
-    let fixture: ComponentFixture<ViolationCardViewComponent>;
+describe('ViolationDetailsCardComponent', () => {
+    let component: ViolationDetailsCardComponent;
+    let fixture: ComponentFixture<ViolationDetailsCardComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ViolationCardViewComponent],
+            declarations: [ViolationDetailsCardComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ViolationCardViewComponent);
+        fixture = TestBed.createComponent(ViolationDetailsCardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

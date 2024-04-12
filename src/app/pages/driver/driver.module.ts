@@ -1,13 +1,15 @@
-//modules
-import { SharedModule } from '@shared/shared.module';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { DriverRoutingModule } from './driver-routing.module';
-//components
-import { DriverTableComponent } from './pages/driver-table/driver-table.component';
-import { DriverCardComponent } from './pages/driver-card/driver-card.component';
+import { DriverRoutingModule } from '@pages/driver/driver-routing.module';
+
+// components
+import { DriverTableComponent } from '@pages/driver/pages/driver-table/driver-table.component';
+import { DriverCardComponent } from '@pages/driver/pages/driver-card/driver-card.component';
 
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -34,7 +36,7 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
-//pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],

@@ -18,33 +18,33 @@ import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
 
 // routing
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from '@app/app-routing.module';
 
 // components
-import { AppComponent } from './app.component';
-import { NavigationComponent } from './core/components/navigation/pages/navigation/navigation.component';
+import { AppComponent } from '@app/app.component';
+import { NavigationComponent } from '@core/components/navigation/pages/navigation/navigation.component';
 import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 
 // pipes
-import { ChangeLogoPipe } from './core/components/navigation/pipes/change-logo.pipe';
-import { BlockedContentPipe } from './core/pipes/blocked-content.pipe';
+import { ChangeLogoPipe } from '@core/components/navigation/pipes/change-logo.pipe';
+import { BlockedContentPipe } from '@core/pipes/blocked-content.pipe';
 
 // interceptors
-import { AppInterceptor } from './core/interceptors/app.inteceptor';
-import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+import { AppInterceptor } from '@core/interceptors/app.inteceptor';
+import { RefreshTokenInterceptor } from '@core/interceptors/refresh-token.interceptor';
 
 // config
-import { configFactory } from './core/configs/app.config';
+import { configFactory } from '@core/configs/app.config';
 
 // services
-import { WebsiteUserLoggedService } from './pages/website/services/website-user-logged.service';
+import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
-import { StaticInjectorService } from './core/decorators/titles.decorator';
+import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
 // store
-import { ArticleReducer } from './pages/dashboard/state/dashboard.reducer';
+import { ArticleReducer } from '@pages/dashboard/state/dashboard.reducer';
 
 // lottie
 import player from 'lottie-web';

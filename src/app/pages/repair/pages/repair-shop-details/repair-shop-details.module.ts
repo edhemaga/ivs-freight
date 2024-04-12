@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from '@shared/shared.module';
 
 // Routing
-import { RepairShopDetailsRoutes } from './repair-shop-details.routing';
+import { RepairShopDetailsRoutes } from '@pages/repair/pages/repair-shop-details/repair-shop-details.routing';
 
 // Components
-import { RepairShopDetailsComponent } from './repair-shop-details.component';
-import { RepairShopDetailsItemComponent } from './components/repair-shop-details-item/repair-shop-details-item.component';
-import { RepairShopCardViewComponent } from './components/repair-shop-details-card/repair-shop-details-card.component';
+import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
+import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
+import { RepairShopCardViewComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';

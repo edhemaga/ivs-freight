@@ -6,7 +6,7 @@ export interface LoadPandingState extends EntityState<LoadResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'loadPanding' })
-export class LoadPandinStore extends EntityStore<LoadPandingState> {
+export class LoadPendingStore extends EntityStore<LoadPandingState> {
     constructor() {
         super();
     }

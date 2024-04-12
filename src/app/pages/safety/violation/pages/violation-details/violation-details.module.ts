@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { ViolationDetailsRoutes } from './violation-details.routing';
+import { ViolationDetailsRoutes } from '@pages/safety/violation/pages/violation-details/violation-details.routing';
 import { SharedModule } from '@shared/shared.module';
 
 // pipes
@@ -19,9 +19,9 @@ import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-head
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { ViolationDetailsComponent } from './violation-details.component';
-import { ViolationDetailsItemComponent } from './components/violation-details-item/violation-details-item.component';
-import { ViolationDetailsCardComponent } from './components/violation-details-card/violation-details-card.component';
+import { ViolationDetailsComponent } from '@pages/safety/violation/pages/violation-details/violation-details.component';
+import { ViolationDetailsItemComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-item/violation-details-item.component';
+import { ViolationDetailsCardComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-card/violation-details-card.component';
 
 @NgModule({
     declarations: [

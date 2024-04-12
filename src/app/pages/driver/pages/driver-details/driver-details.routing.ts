@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { DriverDetailsComponent } from './driver-details.component';
+import { DriverDetailsComponent } from '@pages/driver/pages/driver-details/driver-details.component';
 
 const routes: Routes = [{ path: '', component: DriverDetailsComponent }];
 

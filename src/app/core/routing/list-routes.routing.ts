@@ -5,7 +5,7 @@ import { AuthGuard } from '@core/guards/authentication.guard';
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 
 // resolvers
-import { LoadTemplateResolver } from '@pages/load/state/load-template-state/load-template.resolver';
+import { LoadTemplateResolver } from '@pages/load/resolvers/load-template.resolver';
 import { TrailerActiveResolver } from '@pages/trailer/resolvers/trailer-active.resolver';
 import { TrailerInactiveResolver } from '@pages/trailer/resolvers/trailer-inactive.resolver';
 import { TruckActiveResolver } from '@pages/truck/resolvers/truck-active.resolver';
@@ -15,15 +15,15 @@ import { ShipperResolver } from '@pages/customer/resolvers/shipper.resolver';
 import { ApplicantTableResolver } from '@pages/driver/resolvers/applicant-table.resolver';
 import { DriverActiveResolver } from '@pages/driver/resolvers/driver-active.resolver';
 import { DriverInactiveResolver } from '@pages/driver/resolvers/driver-inactive.resolver';
-import { LoadActiveResolver } from '@pages/load/state/load-active-state/load-active.resolver';
-import { LoadClosedResolver } from '@pages/load/state/load-closed-state/load-closed.resolver';
-import { LoadPandingResolver } from '@pages/load/state/load-pending-state/load-panding.resolver';
+import { LoadActiveResolver } from '@pages/load/resolvers/load-active.resolver';
+import { LoadClosedResolver } from '@pages/load/resolvers/load-closed.resolver';
+import { LoadPendingResolver } from '@pages/load/resolvers/load-pending.resolver';
 import { RepairTruckResolver } from '@pages/repair/resolvers/repair-truck.resolver';
 import { RepairTrailerResolver } from '@pages/repair/resolvers/repair-trailer.resolver';
 import { RepairShopResolver } from '@pages/repair/resolvers/repair-shop.resolver';
 import { PmTrailerResolver } from '@pages/pm-truck-trailer/resolvers/pm-trailer.resolver';
 import { PmTruckResolver } from '@pages/pm-truck-trailer/resolvers/pm-truck.resolver';
-import { FuelResolver } from '@pages/fuel/state/fule-state/fuel-state.resolver';
+import { FuelResolver } from '@pages/fuel/resolvers/fuel.resolver';
 import { OwnerActiveResolver } from '@pages/owner/resolvers/owner-active.resolver';
 import { OwnerInactiveResolver } from '@pages/owner/resolvers/owner-inactive.resolver';
 import { AccountResolver } from '@pages/account/resolvers/account.resolver';
@@ -38,7 +38,7 @@ export class ListRoutes {
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 loadTemplate: LoadTemplateResolver,
-                loadPanding: LoadPandingResolver,
+                loadPanding: LoadPendingResolver,
                 loadActive: LoadActiveResolver,
                 loadClosed: LoadClosedResolver,
             },

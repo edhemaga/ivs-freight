@@ -9,8 +9,8 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-import { PayrollSmallTableConfigConstants } from './utils/constants/payroll-small-tables-config.constants';
-import { PayrollSmallTableConfigResizeConstants } from './utils/constants/payroll-small-tables-config-resize.constants';
+import { PayrollSmallTableConfigConstants } from '@pages/accounting/pages/payroll/components/payroll-small-tables/utils/constants/payroll-small-tables-config.constants';
+import { PayrollSmallTableConfigResizeConstants } from '@pages/accounting/pages/payroll/components/payroll-small-tables/utils/constants/payroll-small-tables-config-resize.constants';
 
 @Component({
     selector: 'app-payroll-small-tables',

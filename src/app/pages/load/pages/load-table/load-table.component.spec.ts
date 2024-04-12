@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadTableComponent } from './load-table.component';
+import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
 
 describe('LoadTableComponent', () => {
     let component: LoadTableComponent;

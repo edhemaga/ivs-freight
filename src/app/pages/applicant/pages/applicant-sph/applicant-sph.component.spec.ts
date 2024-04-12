@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantSphComponent } from './applicant-sph.component';
+import { ApplicantSphComponent } from '@pages/applicant/pages/applicant-sph/applicant-sph.component';
 
 describe('ApplicantSphComponent', () => {
     let component: ApplicantSphComponent;

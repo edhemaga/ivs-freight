@@ -41,22 +41,22 @@ import {
     ShipperResponse,
 } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CustomerBodyResponse } from './models/customer-body-response.model';
-import { CustomerUpdateRating } from './models/customer-update-rating.model';
-import { CustomerViewDataResponse } from './models/customer-viewdata-response.model';
+import { CustomerBodyResponse } from '@pages/customer/pages/customer-table/models/customer-body-response.model';
+import { CustomerUpdateRating } from '@pages/customer/pages/customer-table/models/customer-update-rating.model';
+import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
 import {
     CardDetails,
     DropdownItem,
 } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { MappedShipperBroker } from './models/mapped-shipper-broker.model';
+import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
 import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
 import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 // Constants
-import { CustomerCardDataConfigConstants } from './utils/constants/customer-card-data-config.constants';
+import { CustomerCardDataConfigConstants } from '@pages/customer/pages/customer-table/utils/constants/customer-card-data-config.constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // Pipes

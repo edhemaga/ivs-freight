@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SidebarResendBtnComponent } from './sidebar-resend-btn.component';
+import { SidebarResendBtnComponent } from '@pages/website/components/website-sidebar/sidebar-btns/sidebar-resend-btn/sidebar-resend-btn.component';
 
 describe('SidebarResendBtnComponent', () => {
     let component: SidebarResendBtnComponent;

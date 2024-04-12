@@ -32,7 +32,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 //Enums
-import { FileActionEnum } from './enums/file-action-string.enum';
+import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enums/file-action-string.enum';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',

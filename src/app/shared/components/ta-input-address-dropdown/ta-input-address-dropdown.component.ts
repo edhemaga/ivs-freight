@@ -63,14 +63,14 @@ import { CommandsHandler } from '@shared/components/ta-input-address-dropdown/mo
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        // Module
+        // Modules
         CommonModule,
         FormsModule,
         NgbModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // Components
         TaAppTooltipV2Component,
         TaInputDropdownComponent,
     ],

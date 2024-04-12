@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { ApplicantMedicalCertificateRoutingModule } from './applicant-medical-certificate-routing.module';
+import { ApplicantMedicalCertificateRoutingModule } from '@pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate-routing.module';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 
 // components
-import { ApplicantMedicalCertificateComponent } from './applicant-medical-certificate.component';
+import { ApplicantMedicalCertificateComponent } from '@pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate.component';
 
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';

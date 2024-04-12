@@ -1,5 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
-import { UserTableComponent } from './pages/user-table/user-table.component';
+
+// components
+import { UserTableComponent } from '@pages/user/pages/user-table/user-table.component';
 
 const routes: Routes = [{ path: '', component: UserTableComponent }];
 

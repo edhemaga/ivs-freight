@@ -8,7 +8,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { FuelService } from '@shared/services/fuel.service';
 
 //Store
-import { FuelState } from './fuel-state.store';
+import { FuelState } from '@pages/fuel/state/fuel-state/fuel-state.store';
 
 @Injectable({
     providedIn: 'root',

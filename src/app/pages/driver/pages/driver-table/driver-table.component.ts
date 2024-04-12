@@ -49,7 +49,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
+import { DriverTableConfiguration } from '@pages/driver/pages/driver-table/utils/constants/driver-table-configuration.constants';
 
 // settings
 import { getLoadModalColumnDefinition } from '@shared/utils/settings/modal-settings/load-modal-columns';
@@ -60,7 +60,7 @@ import { getDriverColumnsDefinition } from '@shared/utils/settings/table-setting
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // models
-import { MappedApplicantData } from './models/mapped-applicant-data.model';
+import { MappedApplicantData } from '@pages/driver/pages/driver-table/models/mapped-applicant-data.model';
 import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
 import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
 import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';

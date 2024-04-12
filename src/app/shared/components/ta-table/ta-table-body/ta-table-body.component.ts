@@ -31,7 +31,7 @@ import {
 import { CommonModule } from '@angular/common';
 
 // strategy
-import { TableStrategy } from './strategy/table-strategy';
+import { TableStrategy } from '@shared/components/ta-table/ta-table-body/strategy/table-strategy';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -70,8 +70,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
-import { TableBodyOptionActions } from './models/table-body-option-actions.model';
-import { TableBodyColumns } from './models/table-body-columns.model';
+import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
+import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 @Titles()
 @Component({

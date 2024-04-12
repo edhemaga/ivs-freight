@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar.component';
+import { TaCurrencyProgressBarComponent } from '@shared/components/ta-currency-progress-bar/ta-currency-progress-bar.component';
 
 describe('TaCurrencyProgressBarComponent', () => {
     let component: TaCurrencyProgressBarComponent;

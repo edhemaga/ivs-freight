@@ -26,7 +26,7 @@ import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { PmCardDataConfigConstants } from './utils/constants/pm-card-data-config.constants';
+import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';

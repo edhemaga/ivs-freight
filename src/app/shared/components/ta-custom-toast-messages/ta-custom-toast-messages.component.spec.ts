@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCustomToastMessagesComponent } from './ta-custom-toast-messages.component';
+import { TaCustomToastMessagesComponent } from '@shared/components/ta-custom-toast-messages/ta-custom-toast-messages.component';
 
 describe('TaCustomToastMessagesComponent', () => {
     let component: TaCustomToastMessagesComponent;

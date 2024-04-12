@@ -1,5 +1,5 @@
 import { Routes, RouterModule } from '@angular/router';
-import { ShipperDetailsComponent } from './shipper-details.component';
+import { ShipperDetailsComponent } from '@pages/customer/pages/shipper-details/shipper-details.component';
 
 const routes: Routes = [{ path: '', component: ShipperDetailsComponent }];
 

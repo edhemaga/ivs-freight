@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { BrokerDetailsRoutes } from './broker-details.routing';
+import { BrokerDetailsRoutes } from '@pages/customer/pages/broker-details/broker-details.routing';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '@shared/shared.module';
 
 // Components
-import { BrokerDetailsItemComponent } from './components/broker-details-item/broker-details-item.component';
-import { BrokerDetailsCardComponent } from './components/broker-details-card/broker-details-card.component';
-import { BrokerDetailsComponent } from './broker-details.component';
+import { BrokerDetailsItemComponent } from '@pages/customer/pages/broker-details/components/broker-details-item/broker-details-item.component';
+import { BrokerDetailsCardComponent } from '@pages/customer/pages/broker-details/components/broker-details-card/broker-details-card.component';
+import { BrokerDetailsComponent } from '@pages/customer/pages/broker-details/broker-details.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';

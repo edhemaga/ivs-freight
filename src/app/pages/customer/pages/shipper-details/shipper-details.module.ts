@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Routing
-import { ShipperDetailsRoutes } from './shipper-details.routing';
+import { ShipperDetailsRoutes } from '@pages/customer/pages/shipper-details/shipper-details.routing';
 
 // Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -10,9 +10,9 @@ import { SharedModule } from '@shared/shared.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components
-import { ShipperDetailsItemComponent } from './components/shipper-details-item/shipper-details-item.component';
-import { ShipperDetailsCardComponent } from './components/shipper-details-card/shipper-details-card.component';
-import { ShipperDetailsComponent } from './shipper-details.component';
+import { ShipperDetailsItemComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-item/shipper-details-item.component';
+import { ShipperDetailsCardComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-card/shipper-details-card.component';
+import { ShipperDetailsComponent } from '@pages/customer/pages/shipper-details/shipper-details.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';

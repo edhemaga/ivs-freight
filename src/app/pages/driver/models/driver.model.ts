@@ -1,10 +1,10 @@
-import { DriverCdl } from './driver-cdl.model';
-import { DriverMedical } from './driver-medical.model';
-import { DriverMvr } from './driver-mvr.model';
-import { DriverEndorsement } from './driver-endorsement.model';
+import { DriverCdl } from '@pages/driver/models/driver-cdl.model';
+import { DriverMedical } from '@pages/driver/models/driver-medical.model';
+import { DriverMvr } from '@pages/driver/models/driver-mvr.model';
+import { DriverEndorsement } from '@pages/driver/models/driver-endorsement.model';
 import { Work } from '@shared/models/work.model';
-import { DriverLicense } from './driver-license.model';
-import { DriverAdditional } from './driver-additional.model';
+import { DriverLicense } from '@pages/driver/models/driver-license.model';
+import { DriverAdditional } from '@pages/driver/models/driver-additional.model';
 
 export interface Driver {
     id: number;

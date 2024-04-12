@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsParkingModalComponent } from './settings-parking-modal.component';
+import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
 
 describe('SettingsParkingModalComponent', () => {
     let component: SettingsParkingModalComponent;

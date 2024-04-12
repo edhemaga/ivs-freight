@@ -19,7 +19,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
-} from './services/ta-like-dislike.service';
+} from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 
 // models

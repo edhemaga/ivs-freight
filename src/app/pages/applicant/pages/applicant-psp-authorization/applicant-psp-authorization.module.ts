@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { ApplicantPspAuthorizationRoutingModule } from './applicant-psp-authorization-routing.module';
+import { ApplicantPspAuthorizationRoutingModule } from '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization-routing.module';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 
 // components
-import { ApplicantPspAuthorizationComponent } from './applicant-psp-authorization.component';
+import { ApplicantPspAuthorizationComponent } from '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.component';
 
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 

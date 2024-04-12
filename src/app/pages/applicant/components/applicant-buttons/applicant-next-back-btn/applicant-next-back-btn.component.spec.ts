@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn.component';
+import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
 
 describe('ApplicantNextBackBtnComponent', () => {
     let component: ApplicantNextBackBtnComponent;

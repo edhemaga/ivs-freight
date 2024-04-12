@@ -1,4 +1,4 @@
-import { FuelDetailsComponent } from './fuel-details.component';
+import { FuelDetailsComponent } from '@pages/fuel/pages/fuel-details/fuel-details.component';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [{ path: '', component: FuelDetailsComponent }];

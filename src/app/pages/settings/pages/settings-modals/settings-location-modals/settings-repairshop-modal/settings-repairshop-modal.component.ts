@@ -249,8 +249,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepariShop(id: number) {
-        const { addressUnit, rent, servicesHelper, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
         const newData: any = {
             id: id,
@@ -304,8 +303,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        const { addressUnit, rent, servicesHelper, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
         const newData: any = {
             ...form,

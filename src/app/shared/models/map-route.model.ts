@@ -1,4 +1,4 @@
-import { MapStop } from './map-stop.model';
+import { MapStop } from '@shared/models/map-stop.model';
 
 export interface MapRoute {
     stops?: Array<MapStop>;

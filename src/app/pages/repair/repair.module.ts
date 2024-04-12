@@ -1,16 +1,17 @@
-// Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { RepairRoutingModule } from './repair-routing.module';
+import { RepairRoutingModule } from '@pages/repair/repair-routing.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { SharedModule } from '@shared/shared.module';
 
 // Components
-import { RepairTableComponent } from './pages/repair-table/repair-table.component';
-import { RepairCardComponent } from './pages/repair-card/repair-card.component';
+import { RepairTableComponent } from '@pages/repair/pages/repair-table/repair-table.component';
+import { RepairCardComponent } from '@pages/repair/pages/repair-card/repair-card.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';

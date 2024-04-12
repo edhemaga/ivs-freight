@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
+import { Resolve } from '@angular/router';
 
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of, catchError, tap } from 'rxjs';
+
+// services
 import { LoadService } from '@shared/services/load.service';
-import { LoadMinimalListStore } from './load-details-minimal.store';
+
+// store
+import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
+
+// models
 import { LoadMinimalListResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LoadMinimalListResolver
+export class LoadDetailsMinimalResolver
     implements Resolve<LoadMinimalListResponse>
 {
     pageIndex: number = 1;
@@ -19,13 +24,11 @@ export class LoadMinimalListResolver
         private loadService: LoadService,
         private loadMinimalListStore: LoadMinimalListStore
     ) {}
-    resolve(
-        route: ActivatedRouteSnapshot
-    ): Observable<LoadMinimalListResponse> | Observable<any> {
+    resolve(): Observable<LoadMinimalListResponse> | Observable<any> {
         return this.loadService
             .getLoadMinimalList(this.pageIndex, this.pageSize)
             .pipe(
-                catchError((error) => {
+                catchError(() => {
                     return of('No load data for...');
                 }),
                 tap((loadListData: LoadMinimalListResponse) => {

@@ -45,7 +45,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 //Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
+import { OwnerConfiguration } from '@pages/owner/pages/owner-table/utils/constants/owner-configuration.constants';
 
 // helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';

@@ -34,13 +34,13 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 // Queries
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
 import { LoadClosedQuery } from '@pages/load/state/load-closed-state/load-closed.query';
-import { LoadPandinQuery } from '@pages/load/state/load-pending-state/load-pending.query';
+import { LoadPendingQuery } from '@pages/load/state/load-pending-state/load-pending.query';
 import { LoadTemplateQuery } from '@pages/load/state/load-template-state/load-template.query';
 
 // Store
 import { LoadActiveState } from '@pages/load/state/load-active-state/load-active.store';
 import { LoadClosedState } from '@pages/load/state/load-closed-state/load-closed.store';
-import { LoadPandingState } from '@pages/load/state/load-pending-state/load-panding.store';
+import { LoadPandingState } from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadTemplateState } from '@pages/load/state/load-template-state/load-template.store';
 
 // Pipes
@@ -108,7 +108,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
-        private loadPandinQuery: LoadPandinQuery,
+        private loadPandinQuery: LoadPendingQuery,
         private loadTemplateQuery: LoadTemplateQuery,
         private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,

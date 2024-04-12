@@ -24,7 +24,7 @@ const routes: Routes = [
                 path: 'settings',
                 loadChildren: () =>
                     import(
-                        './pages/settings-company/settings-company.module'
+                        '@pages/settings/pages/settings-company/settings-company.module'
                     ).then((m) => m.SettingsCompanyModule),
                 resolve: {
                     company: CompanySettingsResolver,
@@ -39,7 +39,7 @@ const routes: Routes = [
                 path: 'location',
                 loadChildren: () =>
                     import(
-                        './pages/settings-location/settings-location.module'
+                        '@pages/settings/pages/settings-location/settings-location.module'
                     ).then((m) => m.SettingsLocationModule),
                 resolve: {
                     parking: CompanyParkingResolver,
@@ -62,34 +62,22 @@ const routes: Routes = [
                 path: 'document',
                 loadChildren: () =>
                     import(
-                        './pages/settings-document/settings-document.module'
+                        '@pages/settings/pages/settings-document/settings-document.module'
                     ).then((m) => m.SettingsDocumentModule),
                 data: { title: 'Document' },
             },
             {
                 path: 'billing',
-                // loadChildren: () =>
-                //     import('./settings-billing/settings-billing.module').then(
-                //         (m) => m.SettingsBillingModule
-                //     ),
                 component: TaUnderConstructionComponent,
                 data: { title: 'Billing' },
             },
             {
                 path: 'custom-agreement',
-                // loadChildren: () =>
-                //     import('./custom-agreement/custom-agreement.module').then(
-                //         (m) => m.CustomAgreementModule
-                //     ),
                 component: TaUnderConstructionComponent,
                 data: { title: 'Custom Agreement' },
             },
             {
                 path: 'training-material',
-                // loadChildren: () =>
-                //     import('./training-material/training-material.module').then(
-                //         (m) => m.TrainingMaterialModule
-                //     ),
                 component: TaUnderConstructionComponent,
                 data: { title: 'Training Material' },
             },
@@ -97,7 +85,7 @@ const routes: Routes = [
                 path: 'integration',
                 loadChildren: () =>
                     import(
-                        './pages/settings-integration/settings-integration.module'
+                        '@pages/settings/pages/settings-integration/settings-integration.module'
                     ).then((m) => m.SettingsIntegrationModule),
                 data: { title: 'Integration' },
                 resolve: { CompanyIntegrationsResolver },

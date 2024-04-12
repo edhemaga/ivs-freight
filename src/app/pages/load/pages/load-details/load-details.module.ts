@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@shared/shared.module';
-import { LoadDetailsRoutes } from './load-details.routing';
-import { LoadDetailsComponent } from './load-details.component';
-import { LoadDetailsItemComponent } from './components/load-details-item/load-details-item.component';
-import { LoadDetailsCardComponent } from './components/load-details-card/load-details-card.component';
+import { LoadDetailsRoutes } from '@pages/load/pages/load-details/load-details.routing';
+import { LoadDetailsComponent } from '@pages/load/pages/load-details/load-details.component';
+import { LoadDetailsItemComponent } from '@pages/load/pages/load-details/components/load-details-item/load-details-item.component';
+import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';

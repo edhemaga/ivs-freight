@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WebsiteSidebarComponent } from './website-sidebar.component';
+import { WebsiteSidebarComponent } from '@pages/website/components/website-sidebar/website-sidebar.component';
 
 describe('WebsiteSidebarComponent', () => {
-  let component: WebsiteSidebarComponent;
-  let fixture: ComponentFixture<WebsiteSidebarComponent>;
+    let component: WebsiteSidebarComponent;
+    let fixture: ComponentFixture<WebsiteSidebarComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ WebsiteSidebarComponent ]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [WebsiteSidebarComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(WebsiteSidebarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(WebsiteSidebarComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

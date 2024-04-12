@@ -4,13 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
-import { TruckDetailsRoutes } from './truck-details.routing';
+import { TruckDetailsRoutes } from '@pages/truck/pages/truck-details/truck-details.routing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TruckDetailsItemComponent } from './components/truck-details-item/truck-details-item.component';
-import { TruckDetailsComponent } from './truck-details.component';
-import { TruckDetailsCardComponent } from './components/truck-details-card/truck-details-card.component';
+import { TruckDetailsItemComponent } from '@pages/truck/pages/truck-details/components/truck-details-item/truck-details-item.component';
+import { TruckDetailsComponent } from '@pages/truck/pages/truck-details/truck-details.component';
+import { TruckDetailsCardComponent } from '@pages/truck/pages/truck-details/components/truck-details-card/truck-details-card.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';

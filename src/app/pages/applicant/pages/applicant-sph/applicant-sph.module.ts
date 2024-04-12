@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { ApplicantSphRoutingModule } from './applicant-sph-routing.module';
+import { ApplicantSphRoutingModule } from '@pages/applicant/pages/applicant-sph/applicant-sph-routing.module';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -14,8 +14,8 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
 // components
-import { ApplicantSphComponent } from './applicant-sph.component';
-import { ApplicantSphModalComponent } from './components/applicant-sph-modal/applicant-sph-modal.component';
+import { ApplicantSphComponent } from '@pages/applicant/pages/applicant-sph/applicant-sph.component';
+import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 
 @NgModule({
     declarations: [ApplicantSphComponent, ApplicantSphModalComponent],

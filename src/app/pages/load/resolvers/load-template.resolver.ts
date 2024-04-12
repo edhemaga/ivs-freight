@@ -1,10 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
-import { LoadTemplateState, LoadTemplateStore } from './load-template.store';
+
+// store
+import {
+    LoadTemplateState,
+    LoadTemplateStore,
+} from '@pages/load/state/load-template-state/load-template.store';
 
 @Injectable({
     providedIn: 'root',

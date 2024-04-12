@@ -1,18 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { LoadListResponse } from 'appcoretruckassist';
+
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+
+// models
+import { LoadListResponse } from 'appcoretruckassist';
+
+// services
 import { LoadService } from '@shared/services/load.service';
-import { LoadPandingState, LoadPandinStore } from './load-panding.store';
+
+// store
+import {
+    LoadPandingState,
+    LoadPendingStore,
+} from '@pages/load/state/load-pending-state/load-pending.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LoadPandingResolver implements Resolve<LoadPandingState> {
+export class LoadPendingResolver implements Resolve<LoadPandingState> {
     constructor(
         private loadService: LoadService,
-        private loadPandingStore: LoadPandinStore
+        private loadPandingStore: LoadPendingStore
     ) {}
 
     resolve(): Observable<LoadPandingState | boolean> {

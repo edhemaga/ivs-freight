@@ -1,13 +1,14 @@
-//modules
-import { TruckRoutingModule } from './truck-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+
+//modules
+import { TruckRoutingModule } from '@pages/truck/truck-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
-import { TruckTableComponent } from './pages/truck-table/truck-table.component';
-import { TruckCardComponent } from './pages/truck-card/truck-card.component';
+import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
+import { TruckCardComponent } from '@pages/truck/pages/truck-card/truck-card.component';
 
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';

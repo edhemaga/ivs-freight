@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaAppTooltipV2Component } from './ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 describe('TaAppTooltipV2Component', () => {
     let component: TaAppTooltipV2Component;
