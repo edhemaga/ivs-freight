@@ -1,0 +1,944 @@
+<div class="todo-list-holder">
+    <div class="todo-tollbar">
+        <div class="toolbar">
+            <div class="toolbar-title">
+                To-Do ({{ scene.children[0].children?.length }})
+            </div>
+            <div class="toolbar-menu-holder">
+                <div class="toolbar-icons-frame">
+                    <div
+                        class="box-icons search-icon"
+                        ngbTooltip
+                        mainTooltip="Search"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                    >
+                        <app-ta-search
+                            [selectedTabData]="searchToDoOptions"
+                        ></app-ta-search>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'timeFilter'"
+                            [filterTitle]="'Time Filter'"
+                            [icon]="'pending'"
+                            [toDoSubType]="'Todo'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'userFilter'"
+                            [searchState]="true"
+                            [filterTitle]="'User Filter'"
+                            [defFilterHolder]="true"
+                            [toDoSubType]="'Todo'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'departmentFilter'"
+                            [icon]="'tab'"
+                            [filterTitle]="'Department Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="true"
+                            [toDoSubType]="'Todo'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                </div>
+                <div class="toolbar-icons-frame">
+                    <div class="border-right"></div>
+                    <div
+                        class="plus-box"
+                        (click)="openModalTodo()"
+                        ngbTooltip
+                        mainTooltip="Add New"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                    >
+                        <svg-icon
+                            src="assets/svg/truckassist-table/dropdown/content/add.svg"
+                        >
+                        </svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar-title">
+                Ongoing ({{ scene.children[1].children?.length }})
+            </div>
+            <div class="toolbar-menu-holder">
+                <div class="toolbar-icons-frame">
+                    <div
+                        class="box-icons search-icon"
+                        ngbTooltip
+                        mainTooltip="Search"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                    >
+                        <app-ta-search
+                            [selectedTabData]="searchOnGoingOptions"
+                        ></app-ta-search>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'timeFilter'"
+                            [filterTitle]="'Time Filter'"
+                            [icon]="'pending'"
+                            [toDoSubType]="'InProgress'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'userFilter'"
+                            [searchState]="true"
+                            [filterTitle]="'User Filter'"
+                            [defFilterHolder]="true"
+                            [toDoSubType]="'InProgress'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'departmentFilter'"
+                            [icon]="'tab'"
+                            [filterTitle]="'Department Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="true"
+                            [toDoSubType]="'InProgress'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar-title">
+                Done ({{ scene.children[2].children?.length }})
+            </div>
+            <div class="toolbar-menu-holder">
+                <div class="toolbar-icons-frame">
+                    <div
+                        class="box-icons search-icon"
+                        ngbTooltip
+                        mainTooltip="Search"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                    >
+                        <app-ta-search
+                            [selectedTabData]="searchDoneOptions"
+                        ></app-ta-search>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'timeFilter'"
+                            [filterTitle]="'Time Filter'"
+                            [icon]="'pending'"
+                            [toDoSubType]="'Done'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'userFilter'"
+                            [searchState]="true"
+                            [filterTitle]="'User Filter'"
+                            [defFilterHolder]="true"
+                            [toDoSubType]="'Done'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                    <div class="border-right"></div>
+                    <div class="box-icons">
+                        <app-ta-filter
+                            [type]="'departmentFilter'"
+                            [icon]="'tab'"
+                            [filterTitle]="'Department Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="true"
+                            [toDoSubType]="'Done'"
+                        >
+                        </app-ta-filter>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-main-to-do-holder">
+        <smooth-dnd-container
+            [orientation]="'horizontal'"
+            [dragHandleSelector]="'.column-drag-handle'"
+        >
+            <smooth-dnd-draggable
+                *ngFor="let column of scene.children; let i = index"
+            >
+                <span class="column-drag-handle"></span>
+                <div [ngClass]="column.props.className">
+                    <div class="card-column-header"></div>
+                    <smooth-dnd-container
+                        [groupName]="'col'"
+                        (drop)="onCardDrop(column.id, $event)"
+                        [getChildPayload]="getCardPayload(column.id)"
+                        [dragClass]="'card-ghost'"
+                        [dropClass]="'card-ghost-drop'"
+                        (dragStart)="dragStart($event)"
+                        (dragEnd)="log('drag end', $event)"
+                        [dragBeginDelay]="0"
+                        [animationDuration]="100"
+                        [dropPlaceholder]="{
+                            className: 'dropShadowClass, showOnTop: true'
+                        }"
+                    >
+                        <smooth-dnd-draggable
+                            *ngFor="let item of column.children; let j = index"
+                        >
+                            <div
+                                class="list-holder"
+                                (mouseenter)="setIndex(i, j)"
+                            >
+                                <div class="list-top-holder">
+                                    <div class="list-items-frame">
+                                        <div class="list-title">
+                                            <svg-icon
+                                                *ngIf="
+                                                    item.status?.name == 'Done'
+                                                "
+                                                src="/assets/svg/applicant/check.svg"
+                                            ></svg-icon>
+                                            {{ item.title }}
+                                        </div>
+                                        <div class="icons-frame">
+                                            <div
+                                                (mousedown)="
+                                                    item.url
+                                                        ? toggleLinkShow(
+                                                              $event,
+                                                              i,
+                                                              j
+                                                          )
+                                                        : ''
+                                                "
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    item.url
+                                                        ? 'Hyperlink'
+                                                        : 'No Hyperlink'
+                                                "
+                                                position="bottom"
+                                                tooltipBackground="#6C6C6C"
+                                                class="icon-box"
+                                                [class.lighter-icon]="!item.url"
+                                                [class.blue-icons]="
+                                                    item.linkActive
+                                                "
+                                            >
+                                                <svg-icon
+                                                    src="assets/svg/common/ic_web.svg"
+                                                ></svg-icon>
+                                            </div>
+                                            <div
+                                                class="icon-box"
+                                                [class.documents]="
+                                                    item.files?.length
+                                                "
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    item.files?.length
+                                                        ? 'Documents'
+                                                        : 'No Documents'
+                                                "
+                                                position="bottom"
+                                                (mousedown)="
+                                                    item.files?.length
+                                                        ? toggleFiles(
+                                                              $event,
+                                                              i,
+                                                              j
+                                                          )
+                                                        : ''
+                                                "
+                                                tooltipBackground="#6C6C6C"
+                                                [class.blue-icons]="
+                                                    item.filesActive
+                                                "
+                                                [class.lighter-icon]="
+                                                    !item.files?.length
+                                                "
+                                            >
+                                                <svg-icon
+                                                    src="assets/svg/common/ic_attachment.svg"
+                                                ></svg-icon>
+                                                <div
+                                                    class="documents_counter"
+                                                    *ngIf="item.files?.length"
+                                                >
+                                                    {{ item.files.length }}
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="icon-box"
+                                                ngbTooltip
+                                                mainTooltip="Comments"
+                                                position="bottom"
+                                                tooltipBackground="#6C6C6C"
+                                                (mousedown)="
+                                                    toggleComment($event, i, j)
+                                                "
+                                                [class.blue-icons]="
+                                                    item.commentActive
+                                                "
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="18"
+                                                    height="18"
+                                                    viewBox="0 0 19 19"
+                                                >
+                                                    <g
+                                                        id="Comment_-_Count"
+                                                        data-name="Comment - Count"
+                                                        transform="translate(0.5 2.5)"
+                                                    >
+                                                        <path
+                                                            id="Path_10563"
+                                                            data-name="Path 10563"
+                                                            d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
+                                                            transform="translate(-948.279 -512.676)"
+                                                            fill="#aaa"
+                                                            stroke="rgba(0,0,0,0)"
+                                                            stroke-width="1"
+                                                        />
+                                                    </g>
+                                                    <text
+                                                        x="50%"
+                                                        y="48.5%"
+                                                        dominant-baseline="middle"
+                                                        text-anchor="middle"
+                                                        id="_1"
+                                                        data-name="1"
+                                                        fill="#fff"
+                                                        font-size="11"
+                                                        font-family="Montserrat-Bold, Montserrat"
+                                                        font-weight="700"
+                                                    >
+                                                        <tspan
+                                                            class="number-comments"
+                                                        >
+                                                            {{
+                                                                item.comments
+                                                                    .length
+                                                            }}
+                                                        </tspan>
+                                                    </text>
+                                                </svg>
+                                            </div>
+                                            <div class="icon-box dots">
+                                                <app-ta-details-dropdown
+                                                    (click)="
+                                                        toggleDropdownActions(
+                                                            item
+                                                        )
+                                                    "
+                                                    [options]="
+                                                        dropdownOptions.actions
+                                                    "
+                                                    [id]="item.id"
+                                                    [data]="item"
+                                                    [placement]="
+                                                        i == 2
+                                                            ? 'bottom-right'
+                                                            : 'right-top right-bottom'
+                                                    "
+                                                    [hasVericalDots]="true"
+                                                    (dropDownActions)="
+                                                        dropAct($event)
+                                                    "
+                                                    [customClassDropDown]="
+                                                        'drop-down-details-single'
+                                                    "
+                                                >
+                                                </app-ta-details-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="options-frame"
+                                        *ngIf="
+                                            item.departments?.length &&
+                                            !item.todoUsers?.length
+                                        "
+                                    >
+                                        <div
+                                            class="dispatch-box"
+                                            *ngFor="let dep of item.departments"
+                                        >
+                                            {{ dep.name }}
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="options-frame"
+                                        *ngIf="
+                                            !item.departments?.length &&
+                                            !item.todoUsers?.length
+                                        "
+                                    >
+                                        <div class="dispatch-box everybody">
+                                            Everybody
+                                        </div>
+                                    </div>
+                                    <div class="main_users_hold">
+                                        <div
+                                            class="assigned_user_hold"
+                                            *ngIf="item.todoUsers?.length"
+                                        >
+                                            <div
+                                                class="assigned_user_hold_inner"
+                                                *ngFor="
+                                                    let user of item.todoUsers;
+                                                    let indx = index
+                                                "
+                                            >
+                                                <img
+                                                    *ngIf="user?.avatar"
+                                                    class="user_avatar"
+                                                    [src]="
+                                                        imageBase64Service.sanitizer(
+                                                            user?.avatar
+                                                        )
+                                                    "
+                                                />
+                                                <div
+                                                    class="user_profile_image"
+                                                    *ngIf="!user.avatar"
+                                                >
+                                                    <app-ta-profile-images
+                                                        [indx]="indx"
+                                                        [name]="
+                                                            user.firstName +
+                                                            ' ' +
+                                                            user.lastName
+                                                        "
+                                                        [size]="'medium'"
+                                                        [type]="'user'"
+                                                    >
+                                                    </app-ta-profile-images>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="list-text"
+                                        *ngIf="item.description"
+                                    >
+                                        {{ item.description }}
+                                    </div>
+                                    <div
+                                        class="link"
+                                        *ngIf="item?.url"
+                                        [class.closed]="!item.linkActive"
+                                    >
+                                        {{ item.url }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="comment_main_holder"
+                                    [@showHideCardBody]="
+                                        item.filesActive ? 'true' : 'false'
+                                    "
+                                >
+                                    <div
+                                        class="comment-holder"
+                                        [class.no_comments]="
+                                            !item.files?.length
+                                        "
+                                        [class.show_border]="
+                                            item.deadline && !item.commentActive
+                                        "
+                                    >
+                                        <div class="todo_list_holder files">
+                                            <div
+                                                class="todo_list_info_holder"
+                                                [class.expand]="
+                                                    item.files.length
+                                                "
+                                            >
+                                                <div
+                                                    class="todo_list_info_number_hold"
+                                                >
+                                                    <div
+                                                        class="todo_list_info_number"
+                                                    >
+                                                        {{ item.files?.length }}
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="todo_list_info_text"
+                                                >
+                                                    Document
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="files_holder"
+                                                *ngIf="item.files.length"
+                                            >
+                                                <app-ta-upload-files
+                                                    [customClassName]="
+                                                        'todo-details'
+                                                    "
+                                                    [files]="
+                                                        item.files
+                                                            ? item.files
+                                                            : []
+                                                    "
+                                                    [size]="'large'"
+                                                    [reviewMode]="'REVIEW_MODE'"
+                                                    [type]="'todo'"
+                                                    [slideWidth]="209"
+                                                ></app-ta-upload-files>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="comment_main_holder"
+                                    [@showHideCardBody]="
+                                        item.commentActive ? 'true' : 'false'
+                                    "
+                                >
+                                    <div
+                                        class="comment-holder"
+                                        [class.no_comments]="
+                                            !item.comments?.length
+                                        "
+                                        [class.show_border]="item.deadline"
+                                    >
+                                        <div
+                                            class="todo_list_holder"
+                                            [class.expand]="
+                                                newComment ||
+                                                item.comments?.length
+                                            "
+                                        >
+                                            <div class="todo_list_info_holder">
+                                                <div
+                                                    class="todo_list_info_number_hold"
+                                                >
+                                                    <div
+                                                        class="todo_list_info_number"
+                                                    >
+                                                        {{
+                                                            item.comments.length
+                                                        }}
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="todo_list_info_text"
+                                                >
+                                                    Comment
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="todo_list_add_comment_hold"
+                                                *ngIf="
+                                                    !newComment ||
+                                                    (i != currentHoldIndex &&
+                                                        j != currentChildIndex)
+                                                "
+                                                (click)="addNewComment(i, j)"
+                                            >
+                                                <div
+                                                    class="todo_list_add_comment_text"
+                                                >
+                                                    ADD COMMENT
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <app-ta-user-review
+                                            (changeReviewsEvent)="
+                                                changeReviewsEvent($event)
+                                            "
+                                            [reviewData]="item.comments"
+                                            *ngIf="item.comments.length"
+                                        >
+                                        </app-ta-user-review>
+                                        <div
+                                            class="add_comment_holder"
+                                            [class.shrink_hold]="!newComment"
+                                            [class.move_comment_hold]="
+                                                item.comments.length
+                                            "
+                                        >
+                                            <app-ta-user-review
+                                                (changeReviewsEvent)="
+                                                    commentEvent($event)
+                                                "
+                                                [reviewData]="comments"
+                                                [isNewReview]="true"
+                                                *ngIf="
+                                                    newComment &&
+                                                    comments.length &&
+                                                    i == currentHoldIndex &&
+                                                    j == currentChildIndex
+                                                "
+                                            >
+                                            </app-ta-user-review>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="todo_deadline_hold"
+                                    [class.done]="item.status?.name == 'Done'"
+                                    *ngIf="item.deadline"
+                                >
+                                    <app-ta-progress-expiration
+                                        *ngIf="item.status?.name == 'Done'"
+                                        [expireDate]="
+                                            item.deadline | formatDateP
+                                        "
+                                        [startDate]="
+                                            item.createdAt | formatDateP
+                                        "
+                                        [completedDate]="
+                                            item.setAsDoneAt | formatDateP
+                                        "
+                                        [expiresSettings]="'todo-list'"
+                                    >
+                                    </app-ta-progress-expiration>
+                                    <app-ta-progress-expiration
+                                        *ngIf="item.status?.name != 'Done'"
+                                        [expireDate]="
+                                            item.deadline | formatDateP
+                                        "
+                                        [startDate]="
+                                            item.createdAt | formatDateP
+                                        "
+                                        [expiresSettings]="'todo-list'"
+                                    >
+                                    </app-ta-progress-expiration>
+                                </div>
+                            </div>
+                        </smooth-dnd-draggable>
+                    </smooth-dnd-container>
+                </div>
+            </smooth-dnd-draggable>
+        </smooth-dnd-container>
+    </div>
+
+    <!-- <div class="widgets-holder">
+    <div class="widgets-title-holder">
+      <div class="widgets-title-frame">
+        <div class="widgets-title">Widgets</div>
+        <div class="refresh-icon">
+          <svg-icon
+            src="assets/svg/truckassist-table/refresh-widgets.svg"
+          ></svg-icon>
+        </div>
+        <div class="update-text">
+          Updated <br />
+          5 min ago
+        </div>
+      </div>
+      <div class="lock">
+        <svg-icon src="assets/svg/truckassist-table/lock.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="middle-holder">
+      <div class="world-clock-holder padding-none">
+        <div class="world-clock-title-holder">
+          <div class="world-clock-title">WORLD CLOCK</div>
+          <div class="add">
+            <svg-icon
+              src="assets/svg/truckassist-table/plus-icon.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div
+          *ngFor="let item of worldClockHolder; let indx = index"
+          class="city-holder"
+        >
+          <div class="city-frame">
+            <div class="city">{{ item.city }}</div>
+            <div class="state">{{ item.state }}</div>
+          </div>
+          <div class="time-and-date-holder">
+            <div class="date-holder">
+              <div class="day">{{ item.day }}</div>
+              <div class="date">{{ item.date }}</div>
+            </div>
+            <div class="time">{{ item.time }}</div>
+            <div class="part-of-day">{{ item.partDay }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder">
+        <div class="vehicle-title">Vehicle Status</div>
+        <div class="vehicle-statistics-holder">
+          <div class="vehicle-ring-icon">
+            <svg-icon
+              src="assets/svg/truckassist-table/vehicle-ring-status.svg"
+            ></svg-icon>
+            <div class="total-vehicle">
+              <div class="total">221</div>
+              <div class="total-text">Vehicle</div>
+            </div>
+          </div>
+          <div class="vehicle-statistics-frame">
+            <div class="statistics-items-frame">
+              <div class="statistics-items">MOVING</div>
+              <div class="percent">72%</div>
+            </div>
+            <div class="statistics-items-frame">
+              <div class="statistics-items short-stop">SHORT STOP</div>
+              <div class="percent">7%</div>
+            </div>
+            <div class="statistics-items-frame">
+              <div class="statistics-items extra-stop">EXT. STOP</div>
+              <div class="percent">14%</div>
+            </div>
+            <div class="statistics-items-frame no-padding-bottom">
+              <div class="statistics-items parking">PARKING</div>
+              <div class="percent">10%</div>
+            </div>
+          </div>
+          <div class="current-holder">
+            <div class="current">153</div>
+            <div class="current">15</div>
+            <div class="current">31</div>
+            <div class="current">22</div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder">
+        <div class="world-clock-title-holder">
+          <div class="weather-city-holder">
+            <div class="weather-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="temperature-city">48°</div>
+            <div class="weather-status-holder">
+              <div class="weather-city">Philadelphia, PA</div>
+              <div class="weather-status">Sunny</div>
+            </div>
+          </div>
+          <div class="add different-fill">
+            <svg-icon
+              src="assets/svg/truckassist-table/plus-icon.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="max-min-temp-holder">
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">55°</div>
+            <div class="temp-scale">
+              <div class="scale-position"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="weather-day">FRI</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">49°</div>
+            <div class="temp-scale">
+              <div class="scale-position scales-thunder"></div>
+            </div>
+            <div class="max-temp min-temp">39°</div>
+            <div class="weather-status-icon thunder">
+              <svg-icon
+                src="assets/svg/truckassist-table/thunder-rain.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">SAT</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">35°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-rain"></div>
+            </div>
+            <div class="max-temp min-temp">20°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon src="assets/svg/truckassist-table/rain.svg"></svg-icon>
+            </div>
+            <div class="weather-day">SUN</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">53°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-cloudy"></div>
+            </div>
+            <div class="max-temp min-temp">40°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon
+                src="assets/svg/truckassist-table/cloudy.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">MON</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">53°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-mostly-sunny"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon cloudy-sunny">
+              <svg-icon
+                src="assets/svg/truckassist-table/partly-cloudy-day.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">TUE</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">54°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-wind"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon src="assets/svg/truckassist-table/wind.svg"></svg-icon>
+            </div>
+            <div class="weather-day">WED</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">69°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-sunny"></div>
+            </div>
+            <div class="max-temp min-temp">43°</div>
+            <div class="weather-status-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="weather-day">THU</div>
+          </div>
+        </div>
+        <div class="border-bottom"></div>
+        <div class="temp-in-cities-global-holder">
+          <div class="temp-in-cities-holder">
+            <div class="cities">Westmont, IL</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/cloudy.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Cloudy</div>
+              </div>
+              <div class="temp-in-cities">67°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder">
+            <div class="cities">New Orleans, LU</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/fog.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Fog</div>
+              </div>
+              <div class="temp-in-cities">32°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder">
+            <div class="cities">Anaheim, CA</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons snow">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/snow-showers-day.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Snow Showers</div>
+              </div>
+              <div class="temp-in-cities">18°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder padding-bottom">
+            <div class="cities">Scranton, PA</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons sunny">
+                  <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+                </div>
+                <div class="weather-description">Sunny</div>
+              </div>
+              <div class="temp-in-cities">105°</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder no-margin">
+        <div class="ring-chart">
+          <svg-icon
+            src="assets/svg/truckassist-table/ring-chart.svg"
+          ></svg-icon>
+        </div>
+        <div class="world-clock-title-holder">
+          <div class="vehicle-title">INVOICE</div>
+          <div class="vehicle-title">AGEING</div>
+        </div>
+        <div class="invoice-holder">
+          <div class="invoice-text">76 invoicess</div>
+          <div class="invoice-price">$41,431.76</div>
+          <div class="invoice-days-holder">
+            <div class="invoice-days-frame">
+              <div class="invoice-number">7</div>
+              <div class="invoice-days">0-20 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-light-blue">21</div>
+              <div class="invoice-days">21-40 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-blue">32</div>
+              <div class="invoice-days">41-60 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-light-red">16</div>
+              <div class="invoice-days">60+ days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-holder">
+      <div class="border"></div>
+      <div class="menu-icons-holder">
+        <div class="menu-icons">
+          <svg-icon src="ic_company.svg"></svg-icon>
+        </div>
+        <div class="menu-icons">
+          <svg-icon src="assets/svg/common/ic_document.svg"></svg-icon>
+        </div>
+        <div class="menu-icons active">
+          <svg-icon src="assets/svg/truckassist-table/widgets.svg"></svg-icon>
+        </div>
+        <div class="menu-icons">
+          <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
+          <div class="circle-notification">
+            <div class="circle-blue"></div>
+          </div>
+        </div>
+        <div class="menu-icons">
+          <svg-icon
+            src="assets/svg/truckassist-table/activity-log.svg"
+          ></svg-icon>
+        </div>
+      </div>
+    </div>
+  </div> -->
+</div>

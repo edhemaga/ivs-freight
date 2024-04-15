@@ -1,0 +1,190 @@
+<div class="nav-footer" [ngClass]="{ 'nav-footer-width': isNavigationHovered }">
+    <div
+        class="settings-footer"
+        [ngClass]="{
+            'activated-footer-route': selectedRoute == 'Company'
+        }"
+    >
+        <app-navigation-settings
+            (activatedSettingsRoute)="settingsRouteClicked($event)"
+            [isNavigationHovered]="isNavigationHovered"
+            [isUserPanelOpen]="isUserPanelOpen"
+            [isSettingsPanelOpen]="isSettingsPanelOpen"
+            [settingsRouteActivated]="settingsRouteActivated"
+            [mouseOverMiddleNav]="mouseOverMiddleNav"
+            [mouseOverFooter]="mouseOverFooter"
+            [selectedRoute]="selectedRoute"
+            [selectedSubRoute]="selectedSubRoute"
+            [subrouteContainerOpened]="subrouteContainerOpened"
+        ></app-navigation-settings>
+    </div>
+    <div
+        *ngFor="let item of footerData; trackBy: identity; let ind = index"
+        class="nav-footer-item close"
+        [ngClass]="{
+            'nav-footer-item-scaleWidth': !isNavigationHovered,
+            show: isNavigationHovered,
+            'activated-footer-route':
+                selectedRoute == 'Notifications' && item.notification,
+            'notification-item': item.notification
+        }"
+        [routerLink]="item.route"
+        routerLinkActive="{{ ind !== 2 ? 'nav-footer-item-active' : '' }}"
+        (mouseenter)="showToolTip = true"
+        (mouseleave)="showToolTip = false"
+    >
+        <div
+            class="tooltip-right"
+            [ngClass]="{ 'hide-tooltip': isNavigationHovered }"
+            *ngIf="item.notification"
+        >
+            <app-ta-tooltip-slide
+                [show]="showToolTip"
+                [name]="'Notifications'"
+            ></app-ta-tooltip-slide>
+        </div>
+        <div
+            [ngClass]="{
+                'nav-item-active-box':
+                    !mouseOverMiddleNav &&
+                    !mouseOverFooter &&
+                    !isNavigationHovered &&
+                    selectedRoute == 'Notifications' &&
+                    item.notification,
+                'animation-backward': !magicBoxAnime
+            }"
+        ></div>
+        <div
+            [ngClass]="{
+                'hide-user': isUserPanelOpen === true && ind === 2,
+                'user-profile': ind === 2
+            }"
+        >
+            <div
+                [ngClass]="{
+                    'hide-user': isUserCompanyDetailsOpen && ind === 2
+                }"
+            >
+                <div
+                    [ngClass]="{
+                        notification: item.notification,
+                        'nav-width': isNavigationHovered
+                    }"
+                >
+                    <div *ngIf="item.text !== ''" class="wrapper">
+                        <div
+                            class="nav-footer-hover"
+                            [ngClass]="{
+                                'nav-footer-hover-user': ind === 2
+                            }"
+                        ></div>
+                        <div
+                            class="status-marker-container-notification-1 close"
+                        >
+                            <svg-icon
+                                *ngIf="item.notification"
+                                [ngClass]="{
+                                    'notification-light': !isNavigationHovered,
+                                    'notification-dark': isNavigationHovered
+                                }"
+                                class="notification-svg"
+                                src="assets/svg/applicant/notification-light.svg"
+                            >
+                            </svg-icon>
+                        </div>
+                        <svg-icon
+                            *ngIf="item.notification"
+                            class="notification-svg"
+                            src="{{ item.image }}"
+                            [ngClass]="{
+                                'active-img': selectedRoute == 'Notifications',
+                                close: item.notification,
+                                'route-closed-nav-svg-not-active':
+                                    item.construction == true &&
+                                    !isNavigationHovered,
+
+                                'route-not-active-svg':
+                                    item.construction == true &&
+                                    isNavigationHovered
+                            }"
+                        >
+                        </svg-icon>
+                        <div
+                            class="nav-footer-rightSide"
+                            [@showHideDetails]="
+                                isNavigationHovered ? 'true' : 'false'
+                            "
+                            [ngClass]="{ close: item.notification }"
+                        >
+                            <p
+                                class="nav-footer-text ta-font-regular"
+                                *ngIf="
+                                    !(item.text | userData) &&
+                                    isNavigationHovered
+                                "
+                                [ngClass]="{
+                                    'active-route':
+                                        selectedRoute == 'Notifications',
+                                    'route-not-active': item.construction
+                                }"
+                            >
+                                {{ item.text }}
+                            </p>
+                            <div
+                                [@showHideDetails]="
+                                    isNavigationHovered ? 'true' : 'false'
+                                "
+                                *ngIf="item.notification"
+                                class="notification-message"
+                            >
+                                <span>
+                                    {{ item.notification }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        *ngIf="
+            (!mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                mouseOverFooter &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Notifications' &&
+                !mouseOverMiddleNav &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isSettingsPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
+            (selectedRoute == 'Company' &&
+                !mouseOverMiddleNav &&
+                !isSettingsPanelOpen &&
+                !isActiveSubroute &&
+                !isUserPanelOpen &&
+                !isUserCompanyDetailsOpen &&
+                !showHideLineIfSettingsActive &&
+                isNavigationHovered) ||
+            (mouseOverFooter && !isNavigationHovered)
+        "
+        [@showHideDetailsMagicLine]="
+            showMagicLine &&
+            !isUserPanelOpen &&
+            !isSettingsPanelOpen &&
+            !isModalPanelOpen
+        "
+        class="magic-line-footer"
+        [ngClass]="{
+            'magic-line-not-hovered': !isNavigationHovered,
+            'animate-magic-line': isNavigationHovered
+        }"
+    ></div>
+</div>

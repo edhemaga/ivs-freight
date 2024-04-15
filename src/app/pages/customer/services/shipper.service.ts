@@ -1,0 +1,516 @@
+import { Injectable, OnDestroy } from '@angular/core';
+
+import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+
+// Models
+import {
+    ClusterResponse,
+    CreateRatingCommand,
+    CreateResponse,
+    RatingReviewService,
+    ShipperListResponse,
+    ShipperMinimalListResponse,
+    ShipperModalResponse,
+    ShipperResponse,
+    UpdateReviewCommand,
+} from 'appcoretruckassist';
+
+// Store
+import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
+import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
+import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
+import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
+
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
+import { ShipperService as ShipperMainService } from 'appcoretruckassist';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class ShipperService implements OnDestroy {
+    public shipperId: number;
+    public shipperList: any;
+    public currentIndex: number;
+    x;
+    private destroy$ = new Subject<void>();
+
+    constructor(
+        private shipperService: ShipperMainService,
+        private tableService: TruckassistTableService,
+        private ratingReviewService: RatingReviewService,
+        private formDataService: FormDataService,
+        private shipperStore: ShipperStore,
+        private shipperMinimalStore: ShipperMinimalListStore,
+        private sListStore: ShipperDetailsListStore,
+        private shipperDetailsStore: ShipperDetailsStore,
+        private shipperMinimalQuery: ShipperMinimalListQuery
+    ) {}
+
+    // Create Shipper
+    public addShipper(data: any): Observable<CreateResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.shipperService.apiShipperPost().pipe(
+            tap((res: any) => {
+                const subShipper = this.getShipperById(res.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shipper: any) => {
+                            this.shipperStore.add(shipper);
+                            this.shipperMinimalStore.add(shipper);
+                            const brokerShipperCount = JSON.parse(
+                                localStorage.getItem('brokerShipperTableCount')
+                            );
+
+                            brokerShipperCount.shipper++;
+
+                            localStorage.setItem(
+                                'brokerShipperTableCount',
+                                JSON.stringify({
+                                    broker: brokerShipperCount.broker,
+                                    shipper: brokerShipperCount.shipper,
+                                })
+                            );
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'add',
+                                tab: 'shipper',
+                                data: shipper,
+                                id: shipper.id,
+                            });
+
+                            subShipper.unsubscribe();
+                        },
+                    });
+            })
+        );
+    }
+
+    // Update Shipper
+    public updateShipper(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.shipperService.apiShipperPut().pipe(
+            tap(() => {
+                let shipperData = {
+                    ...this.shipperDetailsStore?.getValue()?.entities[data.id],
+                };
+                const subShipper = this.getShipperById(data.id)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shipper: any) => {
+                            this.shipperStore.remove(
+                                ({ id }) => id === data.id
+                            );
+                            this.shipperMinimalStore.remove(
+                                ({ id }) => id === data.id
+                            );
+
+                            shipper.loadStops = shipperData.loadStops;
+
+                            this.shipperStore.add(shipper);
+                            this.shipperMinimalStore.add(shipper);
+                            this.sListStore.update(shipper.id, shipper);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                tab: 'shipper',
+                                data: shipper,
+                                id: shipper.id,
+                            });
+
+                            subShipper.unsubscribe();
+                        },
+                    });
+            })
+        );
+    }
+
+    //Get Shipper Minimal List
+    public getShipperMinimalList(
+        pageIndex?: number,
+        pageSize?: number,
+        count?: number
+    ): Observable<ShipperMinimalListResponse> {
+        return this.shipperService.apiShipperListMinimalGet(
+            pageIndex,
+            pageSize,
+            count
+        );
+    }
+
+    // Get Shipper List
+    public getShippersList(
+        stateIds?: Array<number>,
+        long?: number,
+        lat?: number,
+        distance?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<ShipperListResponse> {
+        return this.shipperService.apiShipperListGet(
+            stateIds,
+            long,
+            lat,
+            distance,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
+    }
+
+    // Get Shipper By Id
+    public getShipperById(
+        shipperId: number,
+        getIndex?: boolean
+    ): Observable<any> {
+        this.shipperMinimalQuery
+            .selectAll()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((item) => (this.shipperList = item));
+        if (getIndex) {
+            this.currentIndex = this.shipperList.findIndex(
+                (shipper) => shipper.id === shipperId
+            );
+            let last = this.shipperList.at(-1);
+            if (last.id === shipperId) {
+                this.currentIndex = --this.currentIndex;
+            } else {
+                this.currentIndex = ++this.currentIndex;
+            }
+            if (this.currentIndex == -1) {
+                this.currentIndex = 0;
+            }
+            this.shipperId = this.shipperList[this.currentIndex].id;
+        }
+        return this.shipperService.apiShipperIdGet(shipperId);
+    }
+
+    // Delete Shipper List
+    public deleteShipperList(): Observable<any> {
+        return of(null);
+    }
+
+    // Delete Shipper By Id
+    public deleteShipperByIdDetails(shipperId: number): Observable<any> {
+        return this.shipperService.apiShipperIdDelete(shipperId).pipe(
+            tap(() => {
+                this.shipperStore.remove(({ id }) => id === shipperId);
+                this.shipperMinimalStore.remove(({ id }) => id === shipperId);
+                this.sListStore.remove(({ id }) => id === shipperId);
+                const brokerShipperCount = JSON.parse(
+                    localStorage.getItem('brokerShipperTableCount')
+                );
+
+                brokerShipperCount.shipper--;
+
+                localStorage.setItem(
+                    'brokerShipperTableCount',
+                    JSON.stringify({
+                        broker: brokerShipperCount.broker,
+                        shipper: brokerShipperCount.shipper,
+                    })
+                );
+                const subShipper = this.getShipperById(this.shipperId, true)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (shipper: any) => {
+                            this.tableService.sendActionAnimation({
+                                animation: 'delete',
+                                tab: 'shipper',
+                                data: shipper,
+                                id: shipper.id,
+                            });
+
+                            subShipper.unsubscribe();
+                        },
+                    });
+            })
+        );
+    }
+
+    // Delete Shipper By Id
+    public deleteShipperById(shipperId: number): Observable<any> {
+        return this.shipperService.apiShipperIdDelete(shipperId).pipe(
+            tap(() => {
+                this.shipperStore.remove(({ id }) => id === shipperId);
+                this.shipperMinimalStore.remove(({ id }) => id === shipperId);
+                this.sListStore.remove(({ id }) => id === shipperId);
+                const brokerShipperCount = JSON.parse(
+                    localStorage.getItem('brokerShipperTableCount')
+                );
+
+                brokerShipperCount.shipper--;
+
+                localStorage.setItem(
+                    'brokerShipperTableCount',
+                    JSON.stringify({
+                        broker: brokerShipperCount.broker,
+                        shipper: brokerShipperCount.shipper,
+                    })
+                );
+            })
+        );
+    }
+
+    public getShipperDropdowns(): Observable<ShipperModalResponse> {
+        return this.shipperService.apiShipperModalGet();
+    }
+
+    public getShipperMap(): Observable<any> {
+        return this.shipperService.apiShipperMapGet();
+    }
+
+    public getShipperClusters(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        zoomLevel?: number,
+        addedNew?: boolean,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
+        categoryIds?: Array<number>,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        costFrom?: number,
+        costTo?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<Array<ClusterResponse>> {
+        return this.shipperService.apiShipperClustersGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            zoomLevel,
+            addedNew,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            costFrom,
+            costTo,
+            lastFrom,
+            lastTo,
+            ppgFrom,
+            ppgTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
+    }
+
+    public getShipperMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.shipperService.apiShipperListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
+    }
+
+    //  <--------------------------------- Review ---------------------------------->
+
+    public createReview(
+        review: CreateRatingCommand
+    ): Observable<CreateResponse> {
+        return this.ratingReviewService.apiRatingreviewReviewPost(review);
+    }
+
+    public deleteReviewById(id: number): Observable<any> {
+        return this.ratingReviewService.apiRatingreviewReviewIdDelete(id);
+    }
+
+    public updateReview(review: UpdateReviewCommand): Observable<any> {
+        return this.ratingReviewService.apiRatingreviewReviewPut(review);
+    }
+
+    public getShipperLoads(shipperId: number) {
+        return this.shipperService.apiShipperLoadsGet(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            shipperId
+        );
+    }
+
+    public deleteReview(reviewId, shipperId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.shipperDetailsStore?.getValue()?.entities[shipperId]
+            )
+        );
+
+        shipperData?.reviews.map((item: any, index: any) => {
+            if (item.id == reviewId) {
+                shipperData?.reviews.splice(index, 1);
+            }
+        });
+
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.shipperDetailsStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        });
+    }
+
+    public updatedReviewNew(data, currentId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.shipperDetailsStore?.getValue()?.entities[currentId]
+            )
+        );
+
+        shipperData?.reviews.map((item: any) => {
+            if (item.id == data.id) {
+                item.comment = data.comment;
+            }
+        });
+
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.shipperDetailsStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        });
+    }
+
+    public addNewReview(data, currentId) {
+        let shipperData = JSON.parse(
+            JSON.stringify(
+                this.shipperDetailsStore?.getValue()?.entities[currentId]
+            )
+        );
+        shipperData?.reviews.push(data);
+
+        this.shipperStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+        this.shipperDetailsStore.update(shipperData.id, {
+            reviews: shipperData.reviews,
+        });
+
+        this.tableService.sendActionAnimation({
+            animation: 'update',
+            tab: 'shipper',
+            data: shipperData,
+            id: shipperData.id,
+        });
+    }
+
+    public getShipperChart(id: number, chartType: number) {
+        return this.shipperService.apiShipperAveragewaitingtimeGet(
+            id,
+            chartType
+        );
+    }
+
+    public changeShipperStatus(id: number): Observable<ShipperResponse> {
+        return this.shipperService.apiShipperStatusIdPut(id).pipe(
+            switchMap(() => this.getShipperById(id)),
+            tap((shipper) => {
+                const shipperId = id;
+                const shipperData = {
+                    ...this.shipperDetailsStore?.getValue()?.entities[
+                        shipperId
+                    ],
+                };
+
+                this.shipperStore.remove(({ id }) => id === shipperId);
+                this.shipperMinimalStore.remove(({ id }) => id === shipperId);
+
+                shipper.loadStops = shipperData.loadStops;
+
+                this.shipperStore.add(shipper);
+                this.shipperMinimalStore.add(shipper);
+                this.sListStore.update(shipper.id, shipper);
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    tab: 'shipper',
+                    data: shipper,
+                    id: shipper.id,
+                });
+            })
+        );
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+}

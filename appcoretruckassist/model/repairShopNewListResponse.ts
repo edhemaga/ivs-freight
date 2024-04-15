@@ -14,8 +14,10 @@ import { RepairShopListDtoPagination } from './repairShopListDtoPagination';
 
 export interface RepairShopNewListResponse { 
     pagination?: RepairShopListDtoPagination;
+    lastPageNumber?: number;
     repairShopCount?: number;
     truckCount?: number | null;
     trailerCount?: number | null;
+    closedRepairShopsCount?: number;
 }
 

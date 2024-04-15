@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { ApplicantQuery } from '../components/applicant/state/store/applicant.query';
+
+// store
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicantGuard implements CanActivate {
@@ -10,10 +12,10 @@ export class ApplicantGuard implements CanActivate {
     ) {}
 
     canActivate() {
-        // ----------------------- DEVELOP MODE ----------------------------
         this.applicantQuery.applicant$.subscribe((value) => {
             if (!value) {
                 this.router.navigate(['/website']);
+
                 return false;
             }
         });

@@ -6,7 +6,7 @@
     margin-top: 11px;
     display: grid;
     gap: 4px;
-    grid-template-columns: repeat(auto-fill, minmax(302px, 1fr));
+    grid-template-columns: repeat(auto-fill, max(302px, 1fr));
 }
 .custom-card {
     background: $white;
@@ -72,14 +72,24 @@
                         margin-bottom: 0;
                         border-radius: 2px;
                         cursor: pointer;
+                        transition: background 0.3s, transform 0.3s;
+
+                        &:hover {
+                            background: $muted;
+                            transform: scale(1.3);
+                        }
                     }
 
                     .table-checkbox:checked + .table-checkbox-label {
                         background-color: $ta-blue-14;
-                        background-image: url('../svg/truckassist-table/check-new.svg');
+                        background-image: url('/assets/svg/truckassist-table/check-new.svg');
                         background-repeat: no-repeat;
                         background-position: center;
                         transition: background-color 0.25s;
+
+                        &:hover {
+                            background-color: $ta-blue-15;
+                        }
                     }
                 }
 
@@ -93,6 +103,21 @@
                         overflow: hidden;
                         text-overflow: ellipsis;
                         cursor: pointer;
+
+                        span {
+                            .title-tooltip {
+                                color: $ta-black;
+
+                                &::-moz-selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+                                &::selection {
+                                    color: $ta-black !important;
+                                    background: rgb(66, 66, 66, 0.2) !important;
+                                }
+                            }
+                        }
 
                         &:hover {
                             color: $ta-blue-15;
@@ -122,16 +147,39 @@
                             bottom: 2px;
                         }
 
+                        .shuffle-icon {
+                            svg {
+                                path {
+                                    fill: $ta-blue-13;
+                                }
+                            }
+                        }
+
                         .title {
-                            color: $ta-black-2;
+                            color: $ta-black;
+
+                            .title-tooltip {
+                                &::-moz-selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+                                &::selection {
+                                    color: $ta-black;
+                                    background: rgb(66, 66, 66, 0.2);
+                                }
+                            }
 
                             &::-moz-selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
+                                color: $ta-black;
+                                background: rgb(66, 66, 66, 0.2);
                             }
                             &::selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
+                                color: $ta-black;
+                                background: rgb(66, 66, 66, 0.2);
+                            }
+
+                            &:hover {
+                                color: $ta-blue-15;
                             }
                         }
                     }
@@ -209,17 +257,9 @@
                             font-weight: 700;
                             line-height: 20px;
                             padding: 0 4px;
-                            color: $ta-black-2;
                             height: 14px;
-
-                            &::-moz-selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
-                            }
-                            &::selection {
-                                color: $ta-black-2;
-                                background: rgb(47, 47, 47, 0.2);
-                            }
+                            user-select: none;
+                            color: $ta-black;
                         }
 
                         .gap {
@@ -284,6 +324,16 @@
                                 white-space: nowrap;
                                 overflow: hidden;
                                 text-overflow: ellipsis;
+                                color: $ta-black-2;
+
+                                &::-moz-selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
+                                &::selection {
+                                    color: $ta-black-2;
+                                    background: rgb(47, 47, 47, 0.2);
+                                }
                             }
                         }
 
@@ -473,21 +523,27 @@
                     rotate: (0deg);
                 }
 
-                .rotate-svg {
-                    rotate: (180deg);
-
-                    svg {
-                        path {
-                            fill: $ta-blue-18;
-                        }
-                    }
-                }
-
                 .expand-card {
                     &:hover {
                         svg {
                             path {
                                 fill: $ta-black;
+                            }
+                        }
+                    }
+                }
+
+                .rotate-svg {
+                    rotate: (180deg);
+
+                    svg {
+                        path {
+                            fill: $ta-blue-13;
+                        }
+
+                        &:hover {
+                            path {
+                                fill: $ta-blue-15;
                             }
                         }
                     }

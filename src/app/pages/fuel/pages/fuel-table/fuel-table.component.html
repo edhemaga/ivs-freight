@@ -1,0 +1,72 @@
+<div class="table-container">
+    <app-ta-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+    ></app-ta-table-toolbar>
+
+    <ng-container *ngIf="activeViewMode === 'List'">
+        <app-ta-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+        ></app-ta-table-head>
+
+        <app-ta-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
+            (bodyActions)="onTableBodyActions($event)"
+            [tableData]="tableData"
+        ></app-ta-table-body>
+    </ng-container>
+
+    <ng-container *ngIf="activeViewMode === 'Map'">
+        <div class="customer-map-container">
+            <app-ta-map-list
+                [type]="'fuelStop'"
+                [columns]="columns"
+                [mapListContent]="mapListData"
+                (headActions)="onTableHeadActions($event)"
+            >
+                <app-ta-map-list-card
+                    *ngFor="let latlong of mapListData; let i = index"
+                    #listCard
+                    [title]="latlong?.businessName"
+                    [isSelected]="latlong?.isSelected"
+                    [status]="latlong?.status"
+                    [item]="latlong"
+                    [index]="i"
+                    [address]="latlong.address"
+                    [rating]="{
+                        up: latlong?.upRatingCount,
+                        down: latlong?.downRatingCount
+                    }"
+                    [type]="'fuelStop'"
+                    (bodyActions)="onTableBodyActions($event)"
+                    (clickedMarker)="selectItem($event)"
+                    [ngStyle]="{
+                        display:
+                            locationFilterOn && latlong?.isShown == false
+                                ? 'none'
+                                : 'block'
+                    }"
+                ></app-ta-map-list-card>
+            </app-ta-map-list>
+
+            <app-ta-maps
+                #mapsComponent
+                [_viewData]="[]"
+                [mapType]="'fuelStop'"
+                (callDropDownAction)="onTableBodyActions($event)"
+                (updateMapList)="updateMapList($event)"
+                (selectMarker)="selectItem($event)"
+            ></app-ta-maps>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,64 @@
+<div class="d-flex">
+    <div class="month-years-size">
+        <div class="calendar_border"></div>
+        <app-ta-custom-datetime-pickers-app-ta-custom-datetime-pickers-calendar-left
+            [currentIndex]="currentIndex"
+            [currentYearIndex]="currentYearIndex"
+            [activeIndex]="activeIndex"
+            [months]="listPreview == 'full_list' ? months : justYears"
+            [listPreview]="listPreview"
+            [isMonthAndYearOnly]="isMonthAndYearOnly"
+        >
+        </app-ta-custom-datetime-pickers-app-ta-custom-datetime-pickers-calendar-left>
+    </div>
+    <div class="full-calendars-list">
+        <div class="full_list">
+            <div class="calendar_view">
+                <div class="calendar_view_head">
+                    <div class="month_name ta-font-bold">
+                        <span (click)="setListPreview()" class="year_hold">
+                            <span *ngIf="listPreview == 'full_list'">{{
+                                selectedMonth
+                            }}</span>
+                            {{ selectedYear }}
+                        </span>
+                    </div>
+                    <div
+                        class="today ta-font-bold"
+                        (click)="selectCurrentDay()"
+                    >
+                        Today
+                    </div>
+                </div>
+                <div class="calendars_list_view">
+                    <div
+                        class="calendar_month_days"
+                        [class.hideVisibility]="listPreview != 'full_list'"
+                    >
+                        <div class="cal_day ta-font-bold">S</div>
+                        <div class="cal_day ta-font-bold">M</div>
+                        <div class="cal_day ta-font-bold">T</div>
+                        <div class="cal_day ta-font-bold">W</div>
+                        <div class="cal_day ta-font-bold">T</div>
+                        <div class="cal_day ta-font-bold">F</div>
+                        <div class="cal_day ta-font-bold">S</div>
+                    </div>
+                    <app-ta-custom-datetime-pickers--calendar-dates-main
+                        [currentIndex]="currentIndex"
+                        [currentYearIndex]="currentYearIndex"
+                        [activeIndex]="activeIndex"
+                        [monthYearsIndx]="monthYearsIndx"
+                        [months]="
+                            listPreview == 'full_list' ? months : justYears
+                        "
+                        [listPreview]="listPreview"
+                        [dateTime]="dateTime"
+                        [isMonthAndYearOnly]="isMonthAndYearOnly"
+                        (setListPreviewToFull)="setListPreviewToFull($event)"
+                        (setAutoIndex)="setAutoIndex($event)"
+                    ></app-ta-custom-datetime-pickers--calendar-dates-main>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

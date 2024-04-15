@@ -1,0 +1,24 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { OwnerTableComponent } from '@pages/owner/pages/owner-table/owner-table.component';
+
+describe('OwnerTableComponent', () => {
+    let component: OwnerTableComponent;
+    let fixture: ComponentFixture<OwnerTableComponent>;
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [OwnerTableComponent],
+        }).compileComponents();
+    });
+
+    beforeEach(() => {
+        fixture = TestBed.createComponent(OwnerTableComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+});

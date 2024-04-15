@@ -1,0 +1,65 @@
+<app-ta-modal
+    [modalTitle]="'Reset Table'"
+    [customClass]="'modal-container-XS'"
+    [bottomDivider]="true"
+    [headerSvg]="'reset'"
+    [isCloseIconRemoved]="true"
+    [confirmationData]="editData"
+    (confirmationAction)="onModalAction($event)"
+>
+    <div
+        origin
+        class="d-flex flex-column justify-content-center confirmation-reset"
+    >
+        <!-- Icon -->
+
+        <div class="confirmation-reset-icon">
+            <svg-icon
+                [src]="
+                    'assets/svg/common/confirmation/ic_confirmation_modal_reset.svg'
+                "
+            ></svg-icon>
+        </div>
+
+        <!-- Body -->
+
+        <div
+            class="d-flex flex-column justify-content-center confirmation-reset-body"
+        >
+            <!-- Title -->
+
+            <div
+                class="d-flex flex-column justify-content-center confirmation-reset-body-title"
+            >
+                <p class="m-0 ta-font-bold">{{ editData.modalTitle }}</p>
+
+                <span class="m-0 ta-font-medium">1 Change</span>
+            </div>
+
+            <!-- Middle -->
+
+            <div
+                class="d-flex align-items-center confirmation-reset-body-middle"
+            >
+                <p class="m-0 ta-font-extra-bold">to</p>
+
+                <div
+                    class="d-flex align-items-center justify-content-center confirmation-reset-body-middle-box"
+                >
+                    <p class="m-0 ta-font-bold">Default</p>
+                </div>
+            </div>
+
+            <!-- Subtitle -->
+
+            <div
+                class="d-flex align-items-center confirmation-reset-body-subtitle"
+            >
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to reset selected
+                    {{ editData.tableType }} table?
+                </p>
+            </div>
+        </div>
+    </div>
+</app-ta-modal>

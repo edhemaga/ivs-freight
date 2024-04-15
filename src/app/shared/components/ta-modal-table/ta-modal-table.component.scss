@@ -1,0 +1,219 @@
+@import 'src/theme/variables.scss';
+
+.modal-table-container {
+    /* Header */
+
+    .table-header {
+        display: grid;
+        grid-gap: 4px;
+
+        &-box {
+            &:not(:first-child):not(:last-child) {
+                padding-left: 32px;
+            }
+
+            p,
+            span {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+            }
+
+            span {
+                color: $ta-red-11;
+                margin-left: 4px !important;
+            }
+        }
+
+        &.phone-table-header {
+            grid-template-columns: 26px 168px 140px 110px;
+        }
+
+        &.email-table-header {
+            grid-template-columns: 26px 312px 110px;
+        }
+
+        &.description-table-header {
+            grid-template-columns: 26px 306px 26px 60px 90px 88px;
+        }
+
+        &.contact-table-header {
+            grid-template-columns: 26px 170px 120px 140px 80px 200px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
+
+            .first-item {
+                padding-left: 2px;
+            }
+        }
+    }
+
+    .description-header {
+        padding-left: 6px !important;
+    }
+
+    .subtotal {
+        padding-right: 6px;
+    }
+
+    /* Body */
+
+    .table-body {
+        .table-item {
+            display: grid;
+            grid-gap: 4px;
+            background: $bw2;
+
+            &:hover {
+                .table-item-number {
+                    p {
+                        display: none;
+                    }
+
+                    .delete-icon {
+                        display: inline-block;
+                    }
+                }
+            }
+
+            &-number {
+                p {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $bw5;
+
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+                }
+
+                .delete-icon {
+                    line-height: 0;
+                    display: none;
+                    cursor: pointer;
+
+                    svg {
+                        path {
+                            fill: $bw5;
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Phone Table */
+
+        .phone-table-container {
+            .table-item {
+                grid-template-columns: 26px 168px 140px 110px;
+
+                .phone-extension-container {
+                    cursor: pointer;
+
+                    &:hover {
+                        svg-icon {
+                            svg {
+                                path {
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+                    }
+
+                    svg-icon {
+                        svg {
+                            path {
+                                transition: fill 0.3s ease-in;
+                                fill: $bw5;
+                            }
+                        }
+                    }
+
+                    .divider {
+                        height: 14px;
+                        width: 1px;
+                        background: $ta-gray-01;
+                        margin: 0 4px;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: $ta-black-2;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(145, 145, 145, 0.2);
+                        }
+                    }
+                }
+            }
+        }
+
+        .email-table-container {
+            .table-item {
+                grid-template-columns: 26px 312px 110px;
+            }
+        }
+
+        // Description Table
+
+        .description-table-container {
+            .table-item {
+                grid-template-columns: 26px 306px 26px 60px 90px 88px;
+            }
+
+            .subtotal {
+                color: $ta-black;
+                font-size: 14px;
+                padding-right: 6px;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+        }
+
+        .contact-table-container {
+            overflow-x: scroll;
+
+            .contact-item {
+                grid-template-columns: 26px 170px 120px 140px 80px 200px;
+
+                .gradient-border-container {
+                    border-right-width: 8px;
+                    border-right-style: solid;
+                    border-image: linear-gradient(
+                            to right,
+                            #dadada,
+                            rgba(0, 0, 0, 0)
+                        )
+                        1 100%;
+                }
+            }
+        }
+    }
+}

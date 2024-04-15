@@ -1,0 +1,139 @@
+<div class="settings-factoring">
+    <div class="settings-header">
+        <div class="settings-name">
+            <p>Factoring Company</p>
+        </div>
+
+        <div
+            [ngClass]="{
+                'no-factoring-data': !factoringData?.factoringCompany?.name
+            }"
+            class="settings-header-buttons"
+            *ngIf="factoringData.email"
+        >
+            <div class="settings-header-button">
+                <svg-icon
+                    src="ic_pen.svg"
+                    class="settings-edit-button"
+                    (click)="
+                        onAction({
+                            modalName: 'factoring',
+                            type: factoringData.factoringCompany?.name
+                                ? 'edit'
+                                : 'new',
+                            company: factoringData
+                        })
+                    "
+                ></svg-icon>
+            </div>
+            <div
+                class="settings-header-button"
+                *ngIf="factoringData?.factoringCompany?.name"
+            >
+                <div class="border-left"></div>
+                <svg-icon
+                    src="assets/svg/common/ic_trash.svg"
+                    class="settings-trash-button"
+                    (click)="onDeleteFactoringCompany()"
+                ></svg-icon>
+            </div>
+        </div>
+        <div class="settings-header-button" *ngIf="!factoringData.email">
+            <div class="border-left"></div>
+            <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+                class="settings-plus-button"
+                (click)="onAction({ modalName: 'basic', type: 'new' })"
+            ></svg-icon>
+        </div>
+    </div>
+    <div class="settings-body">
+        <app-ta-common-card
+            [cardNameCommon]="factoringData?.factoringCompany?.name"
+            [haveHeaderText]="true"
+            [haveDots]="false"
+            [hasFooter]="false"
+            *ngIf="factoringData?.factoringCompany?.name"
+        >
+            <div class="settings-body-items factoring-body-padding">
+                <div
+                    class="single-item"
+                    *ngIf="factoringData?.factoringCompany?.phone"
+                >
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_phone.svg"
+                    ></svg-icon>
+                    <app-ta-copy
+                        [copyValue]="factoringData?.factoringCompany?.phone"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
+                </div>
+                <div
+                    class="single-item"
+                    *ngIf="factoringData?.factoringCompany?.email"
+                >
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/common/ic_email.svg"
+                    ></svg-icon>
+                    <app-ta-copy
+                        [copyValue]="factoringData?.factoringCompany?.email"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
+                </div>
+                <div
+                    class="single-item"
+                    *ngIf="factoringData?.factoringCompany?.address?.address"
+                >
+                    <svg-icon
+                        class="company-icons"
+                        src="assets/svg/truckassist-table/location-icon.svg"
+                    ></svg-icon>
+                    <span class="single-item-address">{{
+                        factoringData?.factoringCompany?.address?.address
+                    }}</span>
+                </div>
+            </div>
+            <app-ta-custom-card
+                [cardName]="'Notice of Assigment'"
+                [bodyTemplate]="'card'"
+                [isCardOpen]="true"
+                [hasDivider]="true"
+                [textBottomPossiton]="'-2px'"
+            >
+                <div
+                    class="notice_main_hold"
+                    [innerHTML]="
+                        factoringData?.factoringCompany?.noticeOfAssigment
+                            | safeHtml
+                    "
+                ></div>
+            </app-ta-custom-card>
+            <div class="divider"></div>
+            <div class="note-details-holder">
+                <div class="note-item">
+                    <app-ta-input-note
+                        [formControl]="factoringNote"
+                        [isVisibleDivider]="false"
+                        [isVisibleNote]="true"
+                        [isVisibleArrow]="true"
+                        [minRows]="1"
+                        [placeholder]="'Write something.'"
+                        [customClass]="'note-small'"
+                        [note]="factoringData?.factoringCompany?.note"
+                        [blankNote]="
+                            factoringData?.factoringCompany?.note ? true : false
+                        "
+                        [noteType]="'details-card'"
+                        [entityId]="factoringData.id"
+                        [entityType]="'FactoringCompany'"
+                    >
+                    </app-ta-input-note>
+                </div>
+            </div>
+        </app-ta-common-card>
+    </div>
+</div>

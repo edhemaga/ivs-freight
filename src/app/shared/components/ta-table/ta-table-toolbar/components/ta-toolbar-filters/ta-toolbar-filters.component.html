@@ -1,0 +1,436 @@
+<div
+    class="table-filter-container"
+    [ngClass]="{
+        'table-filter-padding': options.toolbarActions.showSearchBorder
+    }"
+>
+    <!-- VIEW MODE SELECT -->
+
+    <!-- TOTAL MONEY COUNT -->
+    <ng-container *ngIf="options.toolbarActions.showMoneyFilter">
+        <div
+            class="money-count-container d-flex justify-content-center align-items-center"
+            [ngClass]="{
+                'money-count-select-style': activeTableData.moneyCountSelected
+            }"
+        >
+            <div
+                class="container-money ta-font-bold d-flex justify-content-center align-items-center"
+            >
+                {{ '123450' | moneyFilter }}
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container
+        *ngIf="
+            options?.toolbarActions?.viewModeOptions?.length &&
+            options.toolbarActions.showMoneyFilter
+        "
+    >
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="options?.toolbarActions?.viewModeOptions?.length">
+        <div class="view-mode-container d-flex">
+            <ng-container
+                *ngFor="let viewMode of options.toolbarActions.viewModeOptions"
+            >
+                <div
+                    class="mode ta-font-extra-bold d-flex justify-content-center align-items-center"
+                    [ngClass]="{
+                        'mode-active': viewMode.active,
+                        'mode-margin':
+                            activeTableData.gridNameTitle === 'Account' ||
+                            activeTableData.gridNameTitle === 'Contact' ||
+                            activeTableData.gridNameTitle === 'User'
+                    }"
+                    (click)="changeModeView(viewMode.name)"
+                >
+                    {{ viewMode.name }}
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+
+    <!-- BORDER -->
+    <ng-container
+        *ngIf="
+            options?.toolbarActions?.viewModeOptions?.length &&
+            !options.toolbarActions.hideSearch
+        "
+    >
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <!-- SEARCH -->
+    <app-ta-search
+        *ngIf="!options.toolbarActions.hideSearch"
+        [searchType]="'tabel'"
+        [selectedTabData]="activeTableData"
+        [toolbarSearch]="true"
+    ></app-ta-search>
+
+    <!-- SEARCH BORDER ONLY -->
+    <ng-container *ngIf="!options.toolbarActions.hideSearch">
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <app-ta-special-filter
+        *ngIf="options.toolbarActions.showArhiveCount"
+        [type]="'archiveFilter'"
+        [icon]="'ic_deactivate'"
+        [filterTitle]="'Deactivated user'"
+        [dataArray]="this.activeTableData.deactivatedUserArray"
+        (setFilter)="onSpecialFilter($event, 'deactivatedUserArray')"
+        [selectedFilter]="
+            this.activeTableData.deactivatedUserArray.selectedFilter
+        "
+    ></app-ta-special-filter>
+
+    <!-- BORDER -->
+    <ng-container
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount.length
+        "
+    >
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <!-- COUNT SELECTED IN LIST  -->
+    <ng-container
+        *ngIf="
+            options.toolbarActions.showCountSelectedInList &&
+            activeTableData?.listSelectedCount
+        "
+    >
+        <div
+            class="count-selected-in-list-container ta-font-bold d-flex justify-content-center align-items-center"
+        >
+            {{ activeTableData.listSelectedCount }} Selected
+        </div>
+    </ng-container>
+
+    <!-- LOCATION FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showLocationFilter"
+        [type]="'locationFilter'"
+        [icon]="'address'"
+        [filterTitle]="'Location Filter'"
+        [locationDefType]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- FUEL STOP FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showFuelStopFilter"
+        [type]="'fuelStopFilter'"
+        [icon]="'fuel'"
+        [filterTitle]="'Fuel Stop Filter'"
+        [noLeftIcon]="true"
+        [defFilterHolder]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- STATE FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showStateFilter"
+        [type]="'stateFilter'"
+        [icon]="'state'"
+        [filterTitle]="'State / Province Filter'"
+        [defFilterHolder]="true"
+        [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- ARHIVE FILTER -->
+    <app-ta-special-filter
+        *ngIf="options.toolbarActions.showArhiveFilter"
+        [type]="'archiveFilter'"
+        [icon]="'ic_driver_arhive'"
+        [filterTitle]="'Archive Filter'"
+        [dataArray]="this.activeTableData.driverArhivedArray"
+        (setFilter)="onSpecialFilter($event, 'driverArhivedArray')"
+        [selectedFilter]="
+            this.activeTableData.driverArhivedArray.selectedFilter
+        "
+    ></app-ta-special-filter>
+
+    <!-- TIME FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTimeFilter"
+        [type]="'timeFilter'"
+        [icon]="'ic_time'"
+        [filterTitle]="'Time Filter'"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- TRUCK FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTruckFilter"
+        [type]="'truckFilter'"
+        [icon]="'truck'"
+        [filterTitle]="'Truck Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- TRAILER FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTrailerFilter"
+        [type]="'trailerFilter'"
+        [icon]="'trailer'"
+        [filterTitle]="'Trailer Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- INJURY FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showInjuryFilter"
+        [type]="'injuryFilter'"
+        [icon]="'ic_injury'"
+        [filterTitle]="'Injury Filter'"
+        [swipeFilter]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- PM FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showPMFilter"
+        [type]="'pmFilter'"
+        [icon]="'default_pm'"
+        [pmSubtype]="'truck'"
+        [filterTitle]="'PM Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- CATEGORY REPAIR FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showCategoryRepairFilter"
+        [type]="'categoryRepairFilter'"
+        [icon]="'ic_key-repair'"
+        [filterTitle]="'Category Repair Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        [leftSideIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- CATEGORY FUEL FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showCategoryFuelFilter"
+        [type]="'categoryFuelFilter'"
+        [icon]="'ic_funnel'"
+        [filterTitle]="'Category Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- DISPECHER FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showDispatcherFilter"
+        [type]="'userFilter'"
+        [searchState]="true"
+        [filterTitle]="'Dispatcher Filter'"
+        [defFilterHolder]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- STATUS FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showStatusFilter"
+        [type]="'statusFilter'"
+        [icon]="'broker-half-circle'"
+        [filterTitle]="'Status Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- TRUCK TYPE FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTruckTypeFilter"
+        [type]="'truckTypeFilter'"
+        [icon]="'truck'"
+        [filterTitle]="'Truck Type Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        [leftSideIcon]="true"
+        [largeLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- TRAILER TYPE FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showTrailerTypeFilter"
+        [type]="'trailerTypeFilter'"
+        [icon]="'trailer'"
+        [filterTitle]="'Trailer Type Filter'"
+        [defFilterHolder]="true"
+        [noLeftIcon]="false"
+        [leftSideIcon]="true"
+        [largeLeftIcon]="true"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- MONEY FILTER -->
+    <app-ta-filter
+        *ngIf="options.toolbarActions.showMoneyFilter"
+        [type]="'moneyFilter'"
+        [icon]="'dollar'"
+        [filterTitle]="'Money Filter'"
+        [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
+        [moneyFilter]="true"
+        [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
+        (setFilter)="onFilter($event)"
+    >
+    </app-ta-filter>
+
+    <!-- FILTER -->
+    <ng-container *ngIf="options.toolbarActions.showLtlFilter">
+        <ng-container *ngFor="let filterData of loadFilterData">
+            <div
+                class="no-filter ta-font-extra-bold d-flex justify-content-center align-items-center"
+                [ngClass]="{
+                    'active-options-filter': filterData.active
+                }"
+                (click)="changeFilterView(filterData.name)"
+            >
+                {{ filterData.name | uppercase }}
+            </div>
+        </ng-container>
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+    </ng-container>
+
+    <app-ta-special-filter
+        *ngIf="
+            options.toolbarActions.showLtlFilter &&
+            showFtl &&
+            this.activeTableData.ftlArray
+        "
+        [type]="'load-filter'"
+        [icon]="'ic_shuffle'"
+        [filterTitle]="'Schuffle Filter'"
+        [dataArray]="this.activeTableData.ftlArray"
+        (setFilter)="onSpecialFilter($event, 'ftlArray')"
+        [selectedFilter]="this.activeTableData.ftlArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="
+            options.toolbarActions.showLtlFilter &&
+            showLtl &&
+            this.activeTableData.ltlArray
+        "
+        [type]="'load-filter'"
+        [icon]="'ic_ltl_single'"
+        [filterTitle]="'LTL Single'"
+        [dataArray]="this.activeTableData.ltlArray"
+        (setFilter)="onSpecialFilter($event, 'ltlArray')"
+        [selectedFilter]="this.activeTableData.ltlArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="
+            options.toolbarActions.showBrokerFilter &&
+            this.activeTableData.bannedArray.filteredArray.length > 0
+        "
+        [type]="'archiveFilter'"
+        [icon]="'ic_banned_broker'"
+        [filterTitle]="'Banned'"
+        [dataArray]="this.activeTableData.bannedArray"
+        (setFilter)="onSpecialFilter($event, 'ban')"
+        [selectedFilter]="this.activeTableData.bannedArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="
+            options.toolbarActions.showBrokerFilter &&
+            this.activeTableData.dnuArray.filteredArray.length > 0
+        "
+        [type]="'broker-filter'"
+        [icon]="'ic_dnu_broker'"
+        [filterTitle]="'Do not use'"
+        [dataArray]="this.activeTableData.dnuArray"
+        (setFilter)="onSpecialFilter($event, 'dnu')"
+        [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="
+            (options.toolbarActions.showBrokerFilter ||
+                options.toolbarActions.showRepairShop ||
+                options.toolbarActions.showBrokerFilterClosed ||
+                options.toolbarActions.showFuelPermanentlyClosed) &&
+            this.activeTableData.closedArray.filteredArray.length > 0
+        "
+        [type]="'broker-filter'"
+        [icon]="'ic_closed_broker'"
+        [filterTitle]="'Permanently Closed'"
+        [dataArray]="this.activeTableData.closedArray"
+        (setFilter)="onSpecialFilter($event, 'closedArray')"
+        [selectedFilter]="this.activeTableData.closedArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="options.toolbarActions.showFuelStopFilter"
+        [type]="'fuel-filter'"
+        [icon]="'ic_fuel_transaction'"
+        [filterTitle]="'Fuel Transaction'"
+        [dataArray]="this.activeTableData.fuelArray"
+        (setFilter)="onSpecialFilter($event, 'specialFilterArray1')"
+        [selectedFilter]="this.activeTableData.fuelArray.selectedFilter"
+    ></app-ta-special-filter>
+
+    <app-ta-special-filter
+        *ngIf="options.toolbarActions.showRepairOrderFilter"
+        [type]="'repair-filter'"
+        [icon]="'ic_repair_track'"
+        [filterTitle]="'Repair Filter'"
+        [dataArray]="this.activeTableData.repairArray"
+        (setFilter)="onSpecialFilter($event, 'repairArray')"
+        [selectedFilter]="this.activeTableData.repairArray.selectedFilter"
+    ></app-ta-special-filter>
+</div>

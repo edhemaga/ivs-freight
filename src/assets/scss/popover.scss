@@ -200,6 +200,15 @@
             }
         }
     }
+
+    &.owner {
+        .popover-body {
+            .table-list-dropdown {
+                left: -4px !important;
+                right: auto !important;
+            }
+        }
+    }
 }
 
 // Table Status Popup
@@ -254,6 +263,106 @@
         }
         to {
             height: 138px;
+        }
+    }
+}
+
+// Table Miles and Days Progress Popover
+.table-progress-popover {
+    background-color: unset !important;
+    margin-left: -10px;
+
+    .progress-dropdown {
+        margin-top: -6px;
+        width: 260px;
+        height: 200px;
+        background: #2f2f2f;
+        border-radius: 3px;
+        padding: 8px;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        -webkit-animation: progressAnimation 0.25s ease-in-out;
+        animation: progressAnimation 0.25s ease-in-out;
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .progress-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: white;
+
+                span {
+                    font-weight: 400;
+                }
+            }
+
+            .progress-total {
+                font-size: 14px;
+                line-height: 17px;
+                color: white;
+            }
+        }
+
+        .table-progress-bar-container {
+            width: 100%;
+            height: 8px;
+            margin-top: 6px;
+            border-radius: 2px;
+            overflow: hidden;
+
+            .table-progress-bar {
+                height: 100%;
+            }
+        }
+
+        .progress-dropdown-body {
+            .progress-dual-info-container {
+                display: flex;
+                align-items: center;
+
+                .progress-info-container {
+                    width: 50%;
+                }
+            }
+
+            .progress-info-container {
+                margin-top: 10px;
+
+                .progress-info-title {
+                    margin-bottom: 2px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    line-height: 14px;
+                    color: #ffffffb2;
+                }
+
+                .progress-info-text {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    @-webkit-keyframes progressAnimation {
+        from {
+            height: 0px;
+        }
+        to {
+            height: 220px;
+        }
+    }
+
+    @keyframes progressAnimation {
+        from {
+            height: 0px;
+        }
+        to {
+            height: 220px;
         }
     }
 }
@@ -491,7 +600,7 @@
                             }
 
                             .some-selected {
-                                background-image: url('../../assets/svg/truckassist-table/some-selected-chack-mark.svg');
+                                background-image: url('/assets/svg/truckassist-table/some-selected-chack-mark.svg');
                                 background-color: #6f9ee0;
                                 background-repeat: no-repeat;
                                 background-position: center;
@@ -505,7 +614,7 @@
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
                                 background-color: #6f9ee0;
-                                background-image: url('../../assets/svg/truckassist-table/check-new.svg') !important;
+                                background-image: url('/assets/svg/truckassist-table/check-new.svg') !important;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;

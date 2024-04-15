@@ -1,0 +1,1058 @@
+@import 'src/theme/variables';
+
+.dispatch-table {
+    position: relative;
+
+    .loadingItem {
+        position: absolute;
+        width: 100%;
+        height: calc(100% - 32px);
+        z-index: 105;
+        background-color: rgb(255 255 255 / 50%);
+        border-radius: 3px;
+        transition: background-color 0.3s;
+
+        &.error {
+            background-color: rgb(255 93 93 / 50%);
+            transition: background-color 0.3s;
+        }
+
+        &.goTop {
+            top: 35px;
+            height: calc(100% - 35px);
+        }
+    }
+    table {
+        width: 100%;
+
+        th.pick-delivery {
+            display: flex;
+            div {
+                flex: 1;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        th {
+            height: 31px;
+            padding-left: 10px;
+
+            color: #2f2f2f;
+            font-size: 11px;
+            font-weight: 700;
+            user-select: none;
+
+            &::selection,
+            ::selection {
+                background-color: #2f2f2f33;
+                color: #2f2f2f;
+            }
+        }
+
+        td {
+            padding: 1px;
+            .main_inside {
+                height: 34px;
+                background-color: #f7f7f7;
+                border-radius: 3px;
+
+                &.cdk-drop-list {
+                    overflow: hidden;
+                }
+
+                .padding-inside {
+                    position: relative;
+
+                    height: 100%;
+
+                    .hos-column {
+                        position: relative;
+                        height: 26px;
+                        width: 26px;
+
+                        .hos-number {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            font-size: 8px;
+                            font-weight: 700;
+                            color: #919191;
+                            padding-right: 1px;
+                            user-select: none;
+                        }
+
+                        .hos-img {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            height: 100%;
+                            cursor: pointer;
+
+                            svg-icon {
+                                display: flex;
+                                margin-left: 1px;
+                                svg {
+                                    width: 22px;
+                                    height: 22px;
+
+                                    path {
+                                        fill: #919191;
+                                        &:first-child {
+                                            fill: transparent !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &.active_hos {
+                            .hos-img {
+                                border-radius: 100%;
+                                background-color: #26a69033;
+
+                                svg-icon {
+                                    svg {
+                                        path:not(path:first-child) {
+                                            fill: #26a690;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .hos-number {
+                                color: #26a690;
+                            }
+                        }
+                    }
+
+                    &:not(.status-inside) {
+                        padding: 4px;
+                    }
+
+                    .add_new {
+                        height: 100%;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding-left: 6px;
+                        padding-right: 6px;
+
+                        &.parking-field {
+                            padding-left: 0px;
+                        }
+
+                        .text {
+                            color: #ffffff;
+                            font-size: 14px;
+                            user-select: none;
+                        }
+
+                        svg-icon {
+                            display: flex;
+
+                            svg {
+                                path {
+                                    fill: #3074d3;
+                                }
+                            }
+                        }
+                    }
+
+                    .info-item {
+                        position: relative;
+                        display: flex;
+                        padding: 0 6px;
+                        height: 100%;
+                        align-items: center;
+                        border-radius: 2px;
+
+                        svg-icon {
+                            display: flex;
+                            &.truck-trailer-image {
+                                display: none;
+                                padding-left: 8px;
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+
+                        &.pickup-dev-popover-hold {
+                            padding: 0 2px;
+                        }
+
+                        .truck-trailer-number {
+                            width: 100%;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        span {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #2f2f2f;
+                            white-space: nowrap;
+
+                            &.dr-span-left {
+                                max-width: calc(100% - 40px);
+                                text-overflow: ellipsis;
+                                overflow: hidden;
+                            }
+
+                            &:not(.dr-span-left) {
+                                padding-left: 6px;
+                            }
+
+                            .copy_divs {
+                                font-size: 14px;
+                                color: #2f2f2f;
+                                font-weight: 400;
+                            }
+
+                            &::selection {
+                                background-color: #2f2f2f33;
+                                color: #2f2f2f;
+                            }
+
+                            &.dr-span {
+                                svg-icon {
+                                    svg {
+                                        g {
+                                            stroke: #3074d3;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .driver-buttons {
+                            display: none;
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            z-index: 11;
+
+                            span {
+                                width: 26px;
+                                height: 26px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                padding-left: inherit;
+
+                                &:hover {
+                                    background-color: #3074d333;
+                                    border-radius: 2px;
+                                    cursor: pointer;
+                                    svg-icon {
+                                        path {
+                                            fill: #3074d3;
+                                        }
+                                    }
+                                }
+
+                                &.only_active_icon {
+                                    svg-icon {
+                                        svg {
+                                            path {
+                                                fill: #ffffff33;
+                                            }
+                                        }
+                                    }
+                                }
+                                &.active-icon {
+                                    svg-icon {
+                                        svg {
+                                            path {
+                                                fill: #ffffff;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .copy_divs {
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            width: calc(100% - 22px);
+                        }
+
+                        .location-field {
+                            display: flex;
+                            width: 100%;
+
+                            .location-f-city,
+                            .location-f-st {
+                                font-size: 14px;
+                                color: #2f2f2f;
+
+                                &.location-f-city {
+                                    white-space: nowrap;
+                                    max-width: 80%;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                }
+
+                                &,
+                                &.location-f-city {
+                                    &::selection {
+                                        background-color: #2f2f2f33;
+                                        color: #2f2f2f;
+                                    }
+                                }
+                            }
+                        }
+                        .no-delpickup {
+                            padding-left: 4px;
+
+                            font-size: 11px;
+                            color: #919191;
+                            font-weight: 500;
+                            text-transform: uppercase;
+                            user-select: none;
+                        }
+
+                        .load-items-hold {
+                            display: flex;
+                            width: 100%;
+
+                            .pick-load-box {
+                                flex: 1;
+                                display: flex;
+                                align-items: center;
+
+                                .pick-load-info {
+                                    margin-left: 6px;
+                                    line-height: 1;
+                                    .pick-load-info-address {
+                                        font-size: 11px;
+                                        font-weight: 700;
+                                        color: #2f2f2f;
+
+                                        &::selection {
+                                            background-color: #2f2f2f33;
+                                            color: #2f2f2f;
+                                        }
+                                    }
+                                    .pick-load-info-time {
+                                        font-size: 11px;
+                                        color: #919191;
+
+                                        &::selection {
+                                            background-color: #91919133;
+                                            color: #919191;
+                                        }
+                                    }
+                                }
+
+                                svg-icon {
+                                    user-select: none;
+                                }
+
+                                &.delivery-box {
+                                    svg-icon {
+                                        svg {
+                                            rect {
+                                                fill: #ef5350;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .driver-copy {
+                            position: absolute;
+                            display: flex;
+                            align-items: center;
+                            padding-left: 6px;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background-color: $ta-blue-5;
+                            color: #fff;
+                            font-weight: 700;
+                            font-size: 11px;
+                            border-radius: 2px;
+                            z-index: 10;
+                        }
+
+                        app-ta-gps-progressbar {
+                            width: 100%;
+                        }
+
+                        .parking-field {
+                            svg-icon {
+                                margin-right: 6px;
+                                svg {
+                                    path {
+                                        fill: #42a4f4;
+                                    }
+                                }
+                            }
+                            .parking-number {
+                                font-size: 11px;
+                                color: #919191;
+
+                                &::selection {
+                                    background-color: #91919133;
+                                    color: #919191;
+                                }
+                            }
+                        }
+
+                        &.c-pointer {
+                            cursor: pointer;
+                        }
+
+                        &.driver-on-vacation {
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: #3074d3;
+                                    }
+                                }
+                            }
+
+                            &:hover {
+                                background-color: #ef535033 !important;
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ef5350;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .remove-item {
+                            position: absolute;
+                            height: 26px;
+                            min-width: 26px;
+                            top: 50%;
+                            right: 0px;
+                            max-width: 85%;
+                            transform: translateY(-50%);
+                            display: none;
+                            justify-content: flex-end;
+                            align-items: center;
+                            transition: all 0.3s;
+                            z-index: 999;
+
+                            svg-icon {
+                                left: auto;
+                                right: 4px;
+                                svg {
+                                    width: 18px;
+                                    height: 18px;
+                                }
+                            }
+                            &:hover {
+                                cursor: pointer;
+                                width: 86px;
+                                background-color: #ef5350;
+                                border-radius: 2px;
+                                transition: all 0.3s;
+
+                                &::after {
+                                    content: 'REMOVE';
+                                    position: absolute;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    left: 6px;
+                                    color: #fff;
+                                }
+
+                                svg-icon {
+                                    svg {
+                                        path {
+                                            fill: #ffffff !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .circles-holder {
+                        position: relative;
+                        display: flex;
+                        height: 100%;
+                        align-items: center;
+                        border-radius: 2px;
+
+                        .info-item {
+                            flex: 1;
+                            padding-left: 16px;
+                            width: 100%;
+                        }
+                    }
+
+                    .circles-holder,
+                    .driver-remove-item {
+                        svg-icon {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 6px;
+                            z-index: 300;
+                            display: flex;
+                        }
+                    }
+
+                    .dispatcher-table-cell-container {
+                        display: flex;
+                        height: 26px;
+                        align-items: center;
+                        line-height: 1;
+
+                        &.note-container {
+                            display: block;
+                            height: 100%;
+
+                            border-radius: 3px;
+                            padding-left: 6px;
+                        }
+
+                        .dispatcher-table-cell-holder {
+                            display: flex;
+                            height: 28px;
+                            width: 100%;
+                            align-items: center;
+                            padding-left: 6px;
+                        }
+                    }
+                }
+
+                .dispatcher-table-cell-container {
+                    display: flex;
+                    height: 26px;
+                    align-items: center;
+                    line-height: 1;
+
+                    &.note-container {
+                        display: block;
+                        height: 100%;
+
+                        border-radius: 3px;
+                        padding-left: 6px;
+                    }
+
+                    .dispatcher-table-cell-holder {
+                        display: flex;
+                        height: 28px;
+                        width: 100%;
+                        align-items: center;
+                        padding-left: 6px;
+                    }
+                }
+
+                &.addNew {
+                    background-color: #f7f7f7;
+
+                    .text {
+                        color: #2f2f2f !important;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #3074d3;
+
+                        .text {
+                            color: #fff !important;
+                        }
+
+                        .add_new {
+                            svg-icon {
+                                svg {
+                                    path {
+                                        fill: #fff !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.filled {
+                    background-color: #fff;
+
+                    .padding-inside {
+                        &:hover {
+                            .info-item {
+                                background-color: #eeeeee;
+
+                                .driver-buttons {
+                                    display: flex;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .drag-hold-between {
+                    height: 100%;
+                }
+
+                .custom-dispatch-placeholder {
+                    position: relative;
+                    height: 32px;
+                    width: 100%;
+                    border-radius: 3px;
+                    opacity: 1 !important;
+                    cursor: grabbing !important;
+
+                    z-index: 10;
+                }
+
+                &.parking-field-new {
+                    .add_new {
+                        justify-content: flex-start;
+
+                        svg-icon {
+                            margin-right: 6px;
+                        }
+                    }
+
+                    &.unassigned {
+                        background-color: #fff;
+
+                        svg-icon {
+                            path {
+                                fill: #cccccc !important;
+                            }
+                        }
+
+                        .text {
+                            font-size: 11px;
+                            color: #919191;
+                        }
+
+                        &:hover {
+                            background-color: #42a4f4;
+
+                            svg-icon {
+                                path {
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.dropdownActive {
+                    border-bottom-left-radius: 0px !important;
+                    border-bottom-right-radius: 0px !important;
+                }
+            }
+        }
+
+        th,
+        td {
+            &.empty,
+            &.box-item {
+                min-width: 34px;
+                max-width: 34px;
+                width: 34px;
+
+                &.box-item {
+                    min-width: 36px;
+                    max-width: 36px;
+                    width: 36px;
+                }
+            }
+
+            &.truck-field,
+            &.trailer-field {
+                min-width: 120px;
+                max-width: 120px;
+                width: 120px;
+            }
+
+            &.driver-field {
+                min-width: 200px;
+                max-width: 200px;
+                width: 200px;
+            }
+
+            &.location-field {
+                min-width: 160px;
+                max-width: 160px;
+                width: 160px;
+            }
+
+            &.status-field {
+                min-width: 140px;
+                max-width: 140px;
+                width: 140px;
+            }
+
+            &.pickup-delivery-field {
+                min-width: 270px;
+                max-width: 270px;
+                width: 270px;
+            }
+
+            &.progress-field {
+                min-width: 226px;
+                max-width: 226px;
+                width: 226px;
+            }
+
+            &.parking-field {
+                min-width: 100px;
+                max-width: 100px;
+                width: 100px;
+            }
+        }
+    }
+
+    table {
+        tr {
+            td {
+                .main_inside {
+                    .circles-holder,
+                    .cdk-drag {
+                        @each $truck_col in $truck_colors {
+                            &.truck_#{$truck_col} {
+                                &:hover {
+                                    .info-item {
+                                        background-color: unquote(
+                                            '#' + $truck_col + '33'
+                                        );
+                                    }
+                                }
+                                svg-icon {
+                                    svg {
+                                        circle {
+                                            fill: unquote('#' + $truck_col);
+                                        }
+                                    }
+
+                                    &:hover {
+                                        & ~ .info-item {
+                                            background-color: unquote(
+                                                '#' + $truck_col
+                                            );
+
+                                            svg-icon {
+                                                display: flex;
+                                            }
+                                            span {
+                                                display: none;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        @each $trailer_col in $trailer_colors {
+                            &.trailer_#{$trailer_col} {
+                                &.cdk-drag {
+                                    background-color: unquote(
+                                        '#' + $trailer_col
+                                    );
+                                    border-radius: 2px;
+
+                                    svg-icon {
+                                        display: none;
+                                    }
+                                    .info-item {
+                                        padding-left: 0;
+                                        span {
+                                            color: #fff !important;
+                                        }
+                                    }
+
+                                    &:after {
+                                        content: '';
+                                        width: 18px;
+                                        height: 18px;
+                                        position: absolute;
+                                        right: 10px;
+                                        top: 50%;
+
+                                        transform: translateY(-50%);
+                                        background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
+                                        background-size: 20px 17px;
+                                        background-repeat: no-repeat;
+                                        background-position: center;
+                                    }
+                                }
+                                &:hover {
+                                    .info-item {
+                                        background-color: unquote(
+                                            '#' + $trailer_col + '33'
+                                        );
+                                    }
+                                }
+                                svg-icon {
+                                    svg {
+                                        pointer-events: none;
+                                        circle {
+                                            pointer-events: none;
+                                            fill: unquote('#' + $trailer_col);
+                                        }
+                                    }
+
+                                    &:hover {
+                                        & ~ .info-item {
+                                            background-color: unquote(
+                                                '#' + $trailer_col
+                                            );
+
+                                            svg-icon {
+                                                display: flex;
+                                            }
+                                            span {
+                                                display: none;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        svg-icon {
+                            &:hover {
+                                svg {
+                                    circle {
+                                        fill: #fff;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //  }
+
+    &.unlocked {
+        table {
+            tr {
+                td {
+                    .main_inside {
+                        .circles-holder,
+                        .cdk-drag {
+                            cursor: grab;
+
+                            &:active {
+                                cursor: grabbing;
+                            }
+                        }
+
+                        &.default {
+                            pointer-events: none;
+                        }
+
+                        &.isDragging {
+                            box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+                        }
+                    }
+
+                    &:not(.truck-field):not(.trailer-field):not(.driver-field) {
+                        pointer-events: none;
+                        .padding-inside {
+                            &:after {
+                                content: '';
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-color: rgba(255, 255, 255, 0.7);
+                                z-index: 999;
+                            }
+                        }
+                    }
+
+                    .info-item {
+                        &:hover {
+                            .remove-item {
+                                display: flex;
+                            }
+
+                            .truck-trailer-number {
+                                width: calc(100% - 13px) !important;
+                            }
+                        }
+                    }
+
+                    .padding-inside {
+                        .driver-buttons {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .table-info {
+        justify-content: space-between;
+        margin-top: 2px;
+
+        .table-inside-info {
+            display: flex;
+            height: 26px;
+            padding: 0 10px;
+            align-items: center;
+        }
+
+        .table-info-field {
+            &,
+            & span {
+                font-size: 11px;
+                font-weight: 600;
+                color: #424242;
+
+                &::selection {
+                    background-color: #42424233;
+                    color: #424242;
+                }
+            }
+
+            &.truck-filed,
+            &.trailer-field {
+                width: 120px;
+            }
+
+            &.taken-field {
+                width: 116px;
+                text-transform: uppercase;
+            }
+
+            &.dispatcher-field {
+                width: 226px;
+                font-size: 14px;
+                font-weight: 700;
+                text-transform: uppercase;
+                text-align: right;
+                visibility: hidden;
+            }
+        }
+    }
+}
+
+.new_load_dispatch_hold {
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: #fff;
+}
+
+.new_load_dispatch {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 3px;
+    background-color: #fff;
+    margin: 0 0 0 auto;
+
+    svg-icon {
+        display: flex;
+    }
+
+    svg {
+        path {
+            transition: none !important;
+            fill: #b7b7b7;
+        }
+    }
+
+    &:hover {
+        background-color: #eeeeee;
+
+        svg {
+            path {
+                fill: #6d82c7;
+            }
+        }
+    }
+
+    &[disabled] {
+        background-color: rgba(255, 255, 255, 0.3);
+        cursor: default;
+
+        &:hover {
+            svg {
+                path {
+                    fill: #cfcfcf;
+                }
+            }
+        }
+    }
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.dispatch-table.cdk-drop-list-dragging .reorder-row:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag {
+    position: relative;
+}
+
+.reorder-row.cdk-drag-preview {
+    position: relative;
+    background-color: #2f2f2f;
+    border-radius: 3px;
+    z-index: 9999999 !important;
+    cursor: grabbing !important;
+
+    .cdk-drag-handle {
+        cursor: grabbing !important;
+    }
+
+    .main_inside {
+        background-color: transparent !important;
+
+        *:not(.switch_statuses) {
+            color: #fff !important;
+        }
+    }
+
+    .new_load_dispatch_hold {
+        display: none !important;
+    }
+
+    .padding-inside {
+        &:after {
+            display: none !important;
+        }
+    }
+
+    &:after {
+        content: '';
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        right: 10px;
+        top: 50%;
+
+        transform: translateY(-50%);
+        background-image: url('/assets/svg/common/ic_dragging_arrows.svg');
+        background-size: 20px 17px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}

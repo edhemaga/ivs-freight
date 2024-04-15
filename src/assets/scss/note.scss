@@ -1,0 +1,85 @@
+.note-textarea {
+    font[color='#dadada'],
+    font[color='#424242'] {
+        color: $ta-black;
+        &::-moz-selection {
+            color: rgb(66, 66, 66) !important;
+            background: rgb(66, 66, 66, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(66, 66, 66) !important;
+            background: rgb(66, 66, 66, 0.2) !important;
+        }
+    }
+
+    font[color='#6692f1'],
+    font[color='#3b73ed'] {
+        color: $ta-blue-14;
+        &::-moz-selection {
+            color: rgb(59, 115, 237) !important;
+            background: rgb(59, 115, 237, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(59, 115, 237) !important;
+            background: rgb(59, 115, 237, 0.2) !important;
+        }
+    }
+
+    font[color='#56b4ac'],
+    font[color='#259f94'] {
+        color: $ta-green-2;
+        &::-moz-selection {
+            color: rgb(37, 159, 148) !important;
+            background: rgb(37, 159, 148, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(37, 159, 148) !important;
+            background: rgb(37, 159, 148, 0.2) !important;
+        }
+    }
+
+    font[color='#e66767'],
+    font[color='#df3c3c'] {
+        color: $ta-red-11;
+        &::-moz-selection {
+            color: rgb(223, 60, 60) !important;
+            background: rgb(223, 60, 60, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(223, 60, 60) !important;
+            background: rgb(223, 60, 60, 0.2) !important;
+        }
+    }
+
+    font[color='#fab15c'],
+    font[color='#f89b2e'] {
+        color: $ta-yellow-5;
+        &::-moz-selection {
+            color: rgb(248, 155, 46) !important;
+            background: rgb(248, 155, 46, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(248, 155, 46) !important;
+            background: rgb(248, 155, 46, 0.2) !important;
+        }
+    }
+
+    font[color='#b370f0'],
+    font[color='#9e47ec'] {
+        color: $special-filter-purple;
+        &::-moz-selection {
+            color: rgb(158, 71, 236) !important;
+            background: rgb(158, 71, 236, 0.2) !important;
+        }
+
+        &::selection {
+            color: rgb(158, 71, 236) !important;
+            background: rgb(158, 71, 236, 0.2) !important;
+        }
+    }
+}

@@ -1,0 +1,77 @@
+.custom-scrollbar-holder {
+    position: relative;
+    overflow: auto;
+    overflow-x: hidden;
+
+    transition: height 0.25s ease-in-out;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important;
+    &::-webkit-scrollbar {
+        display: none !important; /* Safari and Chrome */
+    }
+
+    ::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar {
+        width: 1px !important;
+        display: none !important;
+    }
+
+    // unset overflow
+    .overflow-unset {
+        overflow-y: unset !important;
+        overflow-x: unset !important;
+    }
+
+    .right-bar-scroll {
+        height: 100%;
+        position: fixed;
+        right: 0;
+        top: 0;
+        user-select: none;
+
+        .right-bar {
+            position: absolute;
+            right: 3px;
+            width: 6px;
+            min-height: 30px;
+            border-radius: 1px;
+            background-color: #aaaaaa;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.55);
+                //@debug: grabbing;
+            }
+        }
+    }
+
+    .modal-horizontal-scroll-bar {
+        height: 6px;
+        background: #eeeeee;
+        border-radius: 2px;
+    }
+
+    .horizontal-scroll-bar {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        user-select: none;
+
+        .horizontal-bar {
+            width: 6px;
+            height: 6px;
+            min-width: 30px;
+            border-radius: 1px;
+            background-color: #aaaaaa;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.55);
+            }
+        }
+
+        .horizontal-bar-sticky {
+            position: fixed;
+            bottom: calc(0% - -14px);
+        }
+    }
+}

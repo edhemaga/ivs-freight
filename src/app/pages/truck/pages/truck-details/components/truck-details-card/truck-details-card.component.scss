@@ -1,0 +1,432 @@
+@import 'src/theme/variables';
+
+app-truck-details-card {
+    :root {
+        --dynamic-colour: #aaa;
+    }
+    $color-truck: var(--dynamic-colour);
+
+    .truck-color-code {
+        svg {
+            path {
+                fill: $color-truck !important;
+            }
+        }
+
+        &.whiteTruck {
+            svg {
+                path {
+                    stroke: #aaaaaa;
+                    stroke-width: 1.5;
+                }
+            }
+        }
+    }
+    .feature {
+        display: flex;
+        flex-direction: column;
+        .feature-row {
+            display: flex;
+            justify-content: space-between;
+            height: 26px;
+            .feature-item {
+                svg {
+                    width: 14px;
+                    height: 14px;
+                }
+                display: flex;
+                font-size: 11px;
+                .hide-feature {
+                    svg {
+                        path {
+                            fill: #cccccc;
+                        }
+                    }
+                    text-decoration: line-through;
+                    color: #cccccc;
+                }
+            }
+        }
+    }
+    .inactiveTruckLogo {
+        svg-icon {
+            svg {
+                path {
+                    fill: #aaaaaa !important;
+                    stroke: transparent !important;
+                }
+            }
+        }
+    }
+
+    .custom-card-single {
+        background-color: #ffffff;
+        border-radius: 3px;
+        padding-left: 4px;
+        padding-top: 1px;
+        padding-right: 5px;
+        padding-bottom: 1px;
+        max-width: 440px;
+        margin-top: 8px;
+    }
+    .wrapper-additional-cards {
+        max-height: calc(75vh - 74px);
+        min-height: calc(20vh - 10px);
+        display: grid;
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        .card-footer-cmp {
+            padding-bottom: 0 !important;
+        }
+    }
+    .cards-item-wrapper-1 {
+        overflow: hidden;
+    }
+    .item-wrapper-line {
+        margin: 0;
+        height: 2px;
+        margin-top: 6px;
+        margin-bottom: 8px;
+        margin-right: -6px;
+        margin-left: -6px !important;
+        border-radius: 1px;
+        background-color: $white;
+    }
+    .item-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: row;
+        .item-wrapper-first-row {
+            display: flex;
+            .employment {
+                overflow: visible;
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 18px;
+                text-align: left;
+                margin-right: 5px;
+                color: #424242;
+            }
+
+            .duration {
+                margin-left: 5px;
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 18px;
+                text-align: left;
+                color: #919191;
+            }
+            .duration::before {
+                content: '\2022'; /* Unicode character for bullet point */
+            }
+        }
+    }
+    .details-cards {
+        background-color: #ffffff;
+        width: 440px;
+        padding: 9px 6px;
+    }
+    .note-cards {
+        padding: 0px 6px 0px 4px;
+        .note-header {
+            padding: 0px 0px !important;
+        }
+        .note-body {
+            .note-textarea {
+                color: #6c6c6c !important;
+                font-weight: 500 !important;
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                span,
+                div {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(83, 107, 194)'],
+                span[style*='color: rgb(83, 107, 194)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2 !important;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(83, 107, 194, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(38, 166, 144)'],
+                span[style*='color: rgb(38, 166, 144)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(38, 166, 144, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(239, 83, 80)'],
+                span[style*='color: rgb(239, 83, 80)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(239, 83, 80, 0.2) !important;
+                    }
+                }
+
+                span[style*='color: rgb(255, 167, 38)'],
+                span[style*='color: rgb(255, 167, 38)'] span {
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(255, 167, 38, 0.2) !important;
+                    }
+                }
+            }
+        }
+    }
+    .assignTo-item {
+        height: 34px;
+        .assignTo-vehicle {
+            padding-left: 6px;
+            svg {
+                width: fit-content !important;
+            }
+        }
+        .assignTo-value {
+            font-size: 14px !important;
+        }
+        .driverAvatarImg {
+            height: 20px;
+            width: 18px;
+            margin-right: 6px;
+            margin-left: 6px;
+            position: relative;
+            bottom: 0px;
+
+            &img {
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+
+            //background-size: cover;
+            //background-position: center;
+        }
+
+        &.inactive-assignTo-item {
+            .assignTo-value {
+                padding-left: 6px;
+                color: #b7b7b7;
+                cursor: auto;
+            }
+        }
+    }
+    .details-header-model {
+        svg {
+            width: 165px;
+            height: 30px;
+        }
+    }
+
+    .rotate-owner {
+        .single-icon-wrapper {
+            justify-content: center;
+            margin-top: 10px !important;
+
+            svg {
+                transform: rotate(180deg);
+                path {
+                    fill: #6d82c7;
+                    &:hover {
+                        fill: #536bc2 !important;
+                    }
+                }
+            }
+        }
+    }
+    .single-icon-wrapper {
+        padding: 0 10px;
+
+        cursor: pointer;
+        .icon-rotate {
+            cursor: pointer;
+            svg {
+                transition: 0.2s ease all;
+                &:hover {
+                    path {
+                        fill: #6c6c6c;
+                    }
+                }
+            }
+        }
+        &:hover {
+            // .icon-rotate {
+            //     svg {
+            //         path {
+            //             fill: #536bc2;
+            //         }
+            //     }
+            // }
+            .hide-show {
+                color: #536bc2;
+            }
+        }
+    }
+    .wrapper-owner {
+        //padding: 0 4px;
+        display: grid;
+        row-gap: 12px;
+        padding-top: 14px;
+    }
+    .card-icon {
+        display: none;
+        position: relative;
+        margin-left: 6px;
+        height: 18px;
+        svg {
+            &:hover {
+                path {
+                    fill: #6c6c6c;
+                }
+            }
+        }
+    }
+    .details-header-data-item {
+        &:hover {
+            .card-icon {
+                display: flex;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .whiteColorCode {
+        svg {
+            path {
+                stroke: #aaaaaa;
+                stroke-width: 1.5;
+            }
+        }
+    }
+}
+.chart-template-performance {
+    display: flex;
+    justify-content: space-evenly;
+    font-family: Montserrat;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+
+    .first,
+    .second {
+        flex-grow: 1;
+    }
+
+    .first {
+        flex-basis: 50%;
+        /* Additional styles for the first div */
+    }
+    .main {
+        font-family: Montserrat;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 21.94px;
+        text-align: left;
+    }
+    .second {
+        flex-basis: 50%;
+        /* Additional styles for the second div */
+    }
+}
+
+.chart_hold {
+    &.extend {
+        overflow: auto;
+    }
+}

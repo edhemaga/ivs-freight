@@ -1,0 +1,242 @@
+@import 'src/app/core/components/navigation/scss/navigation.design.scss';
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-radius: 3px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: $nav-text-color;
+    font-size: $nav-font-size;
+    font-weight: $nav-font-medium;
+    transition: $nav-transition;
+    .nav-holder {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: $nav-white;
+        padding: 0 6px;
+        width: 48px;
+        padding: 10px 0px 7px 0px;
+        border-radius: 3px;
+        z-index: -1;
+        margin: 12px;
+    }
+
+    .new-magic-line {
+        width: 36px;
+    }
+    .dark-nav {
+        background: $nav-dark !important;
+        width: 250px !important;
+        transition: $nav-transition;
+    }
+    .animation {
+        transition: $nav-transition;
+        width: 48px;
+        cursor: pointer;
+    }
+    .navigation-top {
+        padding: 0px 6px;
+        height: 82px;
+        margin-bottom: 6px;
+    }
+    .navigation-middle {
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: relative;
+        max-height: 750px;
+        height: auto;
+        padding: 0px 6px;
+    }
+    .close-navigation {
+        flex: 1;
+        cursor: pointer;
+    }
+    .open-navigation {
+        flex: 1;
+        cursor: pointer;
+    }
+    .navigation-bottom {
+        padding: 0px 6px;
+        position: relative;
+        overflow: hidden;
+    }
+    .wrapper-line {
+        @media only screen and (min-width: 300px) {
+            display: inline;
+            height: 2px;
+            width: 176px;
+            margin-left: -5px;
+            background-color: $wrapper-line;
+            position: absolute;
+            bottom: 102px;
+        }
+    }
+
+    //------- end
+
+    .navigation-routes {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 8px;
+        padding-bottom: 1px;
+        padding-top: 1px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .subroute-card {
+        box-shadow: $nav-boxshadow;
+        border-radius: 3px;
+        height: auto;
+        width: 184px;
+        position: absolute;
+        left: 8px;
+        z-index: -1;
+    }
+
+    .new-magic-line {
+        display: inline-block;
+        position: absolute;
+        left: 6px;
+        top: 0px;
+        content: '';
+        height: 28px;
+        background: $nav-hover-ligh;
+        border-radius: 3px;
+        transition: $magic-line-transition;
+        z-index: -1;
+    }
+    .animate-magic-line {
+        width: 238px;
+        background: $nav-hover-color;
+        animation: magiclinecolortransition 1s ease;
+    }
+    @keyframes magiclinecolortransition {
+        from {
+            background-color: transparent;
+        }
+        to {
+            background-color: $nav-hover-color;
+        }
+    }
+
+    .magic-line-width {
+        width: 36px !important;
+    }
+    .new-magic-line-selected {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .navigation-routes:nth-child(1):hover ~ .new-magic-line {
+        transform: translateY(2px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(1) ~ .new-magic-line {
+        transform: translateY(2px);
+    }
+
+    .navigation-routes:nth-child(2):hover ~ .new-magic-line {
+        transform: translateY(32px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(2) ~ .new-magic-line {
+        transform: translateY(32px);
+    }
+
+    .navigation-routes:nth-child(3):hover ~ .new-magic-line {
+        transform: translateY(62px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(3) ~ .new-magic-line {
+        transform: translateY(62px);
+    }
+
+    .navigation-routes:nth-child(4):hover ~ .new-magic-line {
+        transform: translateY(92px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(4) ~ .new-magic-line {
+        transform: translateY(92px);
+    }
+
+    .navigation-routes:nth-child(5):hover ~ .new-magic-line {
+        transform: translateY(122px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(5) ~ .new-magic-line {
+        transform: translateY(122px);
+    }
+
+    .navigation-routes:nth-child(6):hover ~ .new-magic-line {
+        transform: translateY(152px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(6) ~ .new-magic-line {
+        transform: translateY(152px);
+    }
+
+    .navigation-routes:nth-child(7):hover ~ .new-magic-line {
+        transform: translateY(182px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(7) ~ .new-magic-line {
+        transform: translateY(182px);
+    }
+
+    .navigation-routes:nth-child(8):hover ~ .new-magic-line {
+        transform: translateY(212px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(8) ~ .new-magic-line {
+        transform: translateY(212px);
+    }
+
+    .navigation-routes:nth-child(9):hover ~ .new-magic-line {
+        transform: translateY(242px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(9) ~ .new-magic-line {
+        transform: translateY(242px);
+    }
+
+    .navigation-routes:nth-child(10):hover ~ .new-magic-line {
+        transform: translateY(272px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(10) ~ .new-magic-line {
+        transform: translateY(272px);
+    }
+
+    .navigation-routes:nth-child(11):hover ~ .new-magic-line {
+        transform: translateY(302px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(11) ~ .new-magic-line {
+        transform: translateY(302px);
+    }
+
+    .navigation-routes:nth-child(12):hover ~ .new-magic-line {
+        transform: translateY(332px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(12) ~ .new-magic-line {
+        transform: translateY(332px);
+    }
+
+    .navigation-routes:nth-child(13):hover ~ .new-magic-line {
+        transform: translateY(362px) !important;
+    }
+
+    .new-magic-line-selected:nth-child(13) ~ .new-magic-line {
+        transform: translateY(362px);
+    }
+}

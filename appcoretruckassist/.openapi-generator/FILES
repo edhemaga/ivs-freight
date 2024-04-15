@@ -130,6 +130,8 @@ model/apiInspectionPostRequest.ts
 model/apiInspectionPostRequest1.ts
 model/apiLoadPostRequest.ts
 model/apiLoadPostRequest1.ts
+model/apiLoadTemplatePostRequest.ts
+model/apiLoadTemplatePostRequest1.ts
 model/apiMedicalPostRequest.ts
 model/apiMedicalPostRequest1.ts
 model/apiMvrPostRequest.ts
@@ -205,6 +207,7 @@ model/brokerMinimalListResponse.ts
 model/brokerMinimalResponse.ts
 model/brokerMinimalResponsePagination.ts
 model/brokerModalResponse.ts
+model/brokerPaidInvoiceChartResponse.ts
 model/brokerPaidInvoiceResponse.ts
 model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
@@ -229,6 +232,7 @@ model/citationResponse.ts
 model/classOfEquipmentResponse.ts
 model/classType.ts
 model/closePayrollDriverCommissionCommand.ts
+model/closePayrollDriverFlatRateCommand.ts
 model/closePayrollDriverMileageCommand.ts
 model/closePayrollOwnerCommand.ts
 model/clusterResponse.ts
@@ -322,7 +326,6 @@ model/createFuelItemCommand.ts
 model/createHosCommand.ts
 model/createHosRulesReviewCommand.ts
 model/createInsurancePolicyAddonCommand.ts
-model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMobileAccountCommand.ts
@@ -391,6 +394,8 @@ model/dispatcherFilterResponsePagination.ts
 model/dispatcherIntervalResponse.ts
 model/driverAccidentResponse.ts
 model/driverDispatchResponse.ts
+model/driverDto.ts
+model/driverDtoPagination.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
 model/driverFilterResponsePagination.ts
@@ -405,7 +410,6 @@ model/driverPayrollResponse.ts
 model/driverResponse.ts
 model/driverRightsFeedbackResponse.ts
 model/driverShortResponse.ts
-model/driverShortResponsePagination.ts
 model/drugAndAlcoholFeedbackResponse.ts
 model/drugAndAlcoholReviewResponse.ts
 model/editFuelCardCommand.ts
@@ -442,6 +446,7 @@ model/fuelCardShortResponse.ts
 model/fuelDispatchHistoryResponse.ts
 model/fuelIntervalResponse.ts
 model/fuelItemResponse.ts
+model/fuelMainModuleResponse.ts
 model/fuelModalStopResponse.ts
 model/fuelModalStopResponsePagination.ts
 model/fuelStopExpensesChartResponse.ts
@@ -534,10 +539,11 @@ model/loadListResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
 model/loadMinimalResponsePagination.ts
+model/loadMobileListResponse.ts
+model/loadMobileResponse.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
-model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadResponsePagination.ts
@@ -577,6 +583,7 @@ model/milesByUnitResponsePagination.ts
 model/milesStopPayrollResponse.ts
 model/milesStopResponse.ts
 model/mobileGpsDataCommand.ts
+model/mobileRepairShopDetailsResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
@@ -625,6 +632,7 @@ model/patchNoteCommand.ts
 model/payPeriod.ts
 model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
+model/payrollBonusMinimalResponse.ts
 model/payrollBonusModalResponse.ts
 model/payrollBonusResponse.ts
 model/payrollCommissionTotalSum.ts
@@ -646,8 +654,10 @@ model/payrollDeductionType.ts
 model/payrollDriverCommissionByIdResponse.ts
 model/payrollDriverCommissionResponse.ts
 model/payrollDriverCommissionResponsePagination.ts
+model/payrollDriverFlatRateClosedByIdResponse.ts
 model/payrollDriverMileageListResponse.ts
 model/payrollDriverMileageResponse.ts
+model/payrollFlatRateTotalSum.ts
 model/payrollFuelMinimalResponse.ts
 model/payrollListResponse.ts
 model/payrollLoadMinimalResponse.ts
@@ -664,9 +674,9 @@ model/payrollPaymentCommand.ts
 model/payrollPaymentResponse.ts
 model/payrollPaymentShortResponse.ts
 model/payrollPaymentType.ts
+model/payrollPaymentsMinimalResponse.ts
 model/payrollResponse.ts
 model/payrollResponsePagination.ts
-model/payrollStatus.ts
 model/perMileEntity.ts
 model/performanceGraphListResponse.ts
 model/performanceGraphMetric.ts
@@ -783,6 +793,7 @@ model/shipperModalResponse.ts
 model/shipperResponse.ts
 model/shipperResponsePagination.ts
 model/shipperShortResponse.ts
+model/shopServiceType.ts
 model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
@@ -888,6 +899,7 @@ model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
+model/truckPerformanceResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts
 model/truckRevenueResponse.ts
@@ -943,7 +955,6 @@ model/updateHosCommand.ts
 model/updateHosRulesCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
 model/updateLoadStatusCommand.ts
-model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
 model/updateMedicalCertificateReviewCommand.ts
 model/updateMvrAuthReviewCommand.ts
@@ -960,9 +971,6 @@ model/updateParkingSlotCommand.ts
 model/updatePayrollBonusCommand.ts
 model/updatePayrollCreditCommand.ts
 model/updatePayrollDeductionCommand.ts
-model/updatePayrollDriverCommissionLastLoadCommand.ts
-model/updatePayrollDriverMileageLastStopCommand.ts
-model/updatePayrollOwnerLastLoadCommand.ts
 model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
 model/updatePreviousAddressCommand.ts

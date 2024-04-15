@@ -1,0 +1,333 @@
+import { Injectable, OnDestroy } from '@angular/core';
+
+import { Observable, Subject, tap } from 'rxjs';
+
+// Models
+import {
+    CdlResponse,
+    CdlService,
+    GetCdlModalResponse,
+} from 'appcoretruckassist';
+import { RenewCdlCommand } from 'appcoretruckassist';
+
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { FormDataService } from '@shared/services/form-data.service';
+
+// Store
+import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class DriverCdlService implements OnDestroy {
+    private destroy$ = new Subject<void>();
+    constructor(
+        private cdlService: CdlService,
+        private driverService: DriverService,
+        private driverActiveStore: DriversActiveStore,
+        private driverInactiveStore: DriversInactiveStore,
+        private tableService: TruckassistTableService,
+        private driverItemStore: DriversItemStore,
+        private dlStore: DriversDetailsListStore,
+        private formDataService: FormDataService
+    ) {}
+
+    // Add Cdl
+    public addCdl(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        return this.cdlService.apiCdlPost().pipe(
+            tap(() => {
+                if (data?.driverId) {
+                    let driverById = this.driverService
+                        .getDriverById(data.driverId)
+                        .subscribe({
+                            next: (driver: any) => {
+                                // Update Driver Data
+                                driver = {
+                                    ...driver,
+                                    fullName:
+                                        driver.firstName +
+                                        ' ' +
+                                        driver.lastName,
+                                    cdlNumber: data?.cdlNumber
+                                        ? data.cdlNumber
+                                        : null,
+                                    fileCount: driver?.filesCountForList
+                                        ? driver.filesCountForList
+                                        : 0,
+                                };
+
+                                // Update Driver Store
+                                if (data.tableActiveTab === 'active') {
+                                    this.driverActiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+
+                                    this.driverActiveStore.add(driver);
+                                } else if (data.tableActiveTab === 'inactive') {
+                                    this.driverInactiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+
+                                    this.driverInactiveStore.add(driver);
+                                }
+
+                                // Send Update Data To Table
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: driver,
+                                    id: driver.id,
+                                });
+
+                                driverById.unsubscribe();
+                            },
+                        });
+                }
+            })
+        );
+    }
+
+    public updateCdl(data: any): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+        let driverId = data.driverId
+            ? data.driverId
+            : this.driverItemStore.getValue().ids[0];
+        return this.cdlService.apiCdlPut().pipe(
+            tap((res: any) => {
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls.map((reg: any, index: any) => {
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
+                            }
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        cdlApi.unsubscribe();
+                    },
+                });
+            })
+        );
+    }
+
+    public deleteCdlById(id: number): Observable<any> {
+        return this.cdlService.apiCdlIdDelete(id).pipe(
+            tap(() => {
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let indexNum;
+                newData.cdls.map((reg: any, index: any) => {
+                    if (reg.id == id) {
+                        indexNum = index;
+                    }
+                });
+
+                newData.cdls.splice(indexNum, 1);
+
+                this.tableService.sendActionAnimation({
+                    animation: 'update',
+                    data: newData,
+                    id: newData.id,
+                });
+
+                this.dlStore.add(newData);
+                this.driverItemStore.set([newData]);
+            })
+        );
+    }
+
+    public activateCdlById(id: number): Observable<any> {
+        return this.cdlService.apiCdlActivateIdPut(id).pipe(
+            tap(() => {
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
+
+                /*
+                let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls.map((reg: any, index: any) => {
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
+                            }
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        cdlApi.unsubscribe();
+                    },
+                });
+                */
+            })
+        );
+    }
+    public deactivateCdlById(id: number, driverIdMod: number) {
+        return this.cdlService.apiCdlDeactivateIdPut(driverIdMod).pipe(
+            tap(() => {
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
+
+                /*
+                let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+                        newData.cdls.map((reg: any, index: any) => {
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
+                            }
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        cdlApi.unsubscribe();
+                    },
+                });
+
+                */
+            })
+        );
+    }
+    public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
+        return this.cdlService.apiCdlRenewPost(data).pipe(
+            tap(() => {
+                let driverId = this.driverItemStore.getValue().ids[0];
+                const dr = this.driverItemStore.getValue();
+                const driverData = JSON.parse(JSON.stringify(dr.entities));
+                let newData = driverData[driverId];
+
+                let allCdls = this.cdlService
+                    .apiCdlListGet(driverId)
+                    .subscribe({
+                        next: (resp: any) => {
+                            newData.cdls = resp;
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: newData,
+                                id: newData.id,
+                            });
+
+                            this.dlStore.add(newData);
+                            this.driverItemStore.set([newData]);
+
+                            allCdls.unsubscribe();
+                        },
+                    });
+
+                /*
+                let cdlApi = this.cdlService.apiCdlIdGet(res.id).subscribe({
+                    next: (resp: any) => {
+
+                        newData.cdls.map((reg: any, index: any) => {
+                            if (reg.id == resp.id) {
+                                newData.cdls[index] = resp;
+                            }
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: newData,
+                            id: newData.id,
+                        });
+
+                        this.dlStore.add(newData);
+                        this.driverItemStore.set([newData]);
+
+                        cdlApi.unsubscribe();
+                    },
+
+                });
+
+                });
+                */
+            })
+        );
+    }
+
+    public getCdlById(id: number): Observable<CdlResponse> {
+        return this.cdlService.apiCdlIdGet(id);
+    }
+
+    public getCdlDropdowns(): Observable<GetCdlModalResponse> {
+        return this.cdlService.apiCdlModalGet();
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+}

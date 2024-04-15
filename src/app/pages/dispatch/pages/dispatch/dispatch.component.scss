@@ -1,0 +1,37 @@
+.table-container {
+    width: calc(100% - 92px);
+    position: absolute;
+    top: 0;
+}
+
+.multiple-tables {
+    .table-info {
+        background-color: #3074d333;
+        margin-bottom: 12px;
+        border-radius: 3px;
+    }
+
+    .dipsatch_groups:not(.dipsatch_groups:first-child) {
+        table {
+            thead {
+                display: none;
+            }
+        }
+    }
+
+    .dispatcher-field {
+        visibility: visible !important;
+    }
+}
+
+.dispatch-board-main-table {
+    app-ta-table-toolbar {
+        app-ta-input-dropdown {
+            app-ta-input {
+                input {
+                    height: 28px !important;
+                }
+            }
+        }
+    }
+}

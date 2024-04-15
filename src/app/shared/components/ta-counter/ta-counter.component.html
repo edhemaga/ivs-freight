@@ -1,0 +1,23 @@
+<div
+    class="d-flex align-items-center justify-content-center ta-counter {{
+        customClass
+    }}"
+    [class.morePaddingNum]="count > 9"
+    [ngStyle]="{
+        color: countColor,
+        'background-color': countBackground,
+        'font-weight': countFontWeight,
+        height: countHeight,
+        'min-width': countWidth,
+        'border-radius': countBorderRadius,
+        'margin-left': marginLeft
+    }"
+>
+    <p
+        class="m-0 ta-font-bold"
+        [ngStyle]="{ bottom: countTextBottomPosition }"
+        [style.left]="leftPosition"
+    >
+        {{ count > 0 ? (count | thousandSeparator) : 0 }}
+    </p>
+</div>

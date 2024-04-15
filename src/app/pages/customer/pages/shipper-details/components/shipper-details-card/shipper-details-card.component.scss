@@ -1,0 +1,58 @@
+app-shipper-details-card {
+    .wrapper-additional-cards {
+        max-height: calc(77vh - 74px);
+        min-height: fit-content;
+        display: grid;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        .card-footer-cmp {
+            padding-bottom: 0 !important;
+        }
+    }
+    .hours-template {
+        display: grid;
+        grid-template-columns: 160px 190px;
+        column-gap: 55px;
+        align-items: center;
+        align-content: center;
+
+        .hours-item {
+            display: flex;
+            flex-direction: column;
+            .name-item {
+                font-size: 12px;
+            }
+            .value-item {
+                font-size: 14px;
+                font-weight: 400;
+                color: #2f2f2f;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                &::-moz-selection {
+                    color: #2f2f2f;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: #2f2f2f;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        }
+    }
+
+    .icon-wrapper {
+        display: flex;
+        align-items: center;
+        .svg-appoiment {
+            margin-right: 5px;
+            svg {
+                display: flex;
+            }
+        }
+    }
+}

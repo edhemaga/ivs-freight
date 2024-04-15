@@ -1,0 +1,394 @@
+@import 'src/app/core/components/navigation/scss/navigation.design.scss';
+
+.nav-footer {
+    display: flex;
+    flex-direction: column;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: auto;
+    position: relative;
+    left: 8px;
+    width: 100%;
+    .settings-footer {
+        order: 2;
+        margin-top: 6px;
+    }
+    .nav-footer-item {
+        &:nth-child(1) {
+            order: 1;
+        }
+        &:nth-child(4) {
+            order: 3;
+        }
+    }
+    p {
+        color: $nav-white;
+        font-weight: $nav-font-medium;
+        font-size: $nav-font-size;
+
+        margin: 0;
+        margin-left: 8px;
+
+        position: absolute;
+        top: -11px;
+    }
+    .route-not-active {
+        color: #787878;
+    }
+
+    &:nth-child(1) {
+        .hide-user {
+            display: none;
+            div {
+                height: fit-content;
+            }
+        }
+        .notification {
+            div {
+                .nav-footer-rightSide {
+                    p {
+                        z-index: 1;
+                        top: -10px;
+                    }
+                }
+                img {
+                    z-index: 1;
+                }
+            }
+            .active-route {
+                color: $nav-active-lighter;
+                font-weight: $nav-font-bold !important;
+            }
+        }
+        .notification {
+            position: relative;
+            height: 28px;
+            position: relative;
+            z-index: 2;
+            .status-marker-container-notification-1 {
+                position: absolute;
+                z-index: 3;
+                width: 12px;
+                height: 12px;
+                left: 8px;
+                bottom: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .status-marker-notification-1 {
+                    width: 8px;
+                    height: 8px;
+                }
+            }
+            .notification-light {
+                svg {
+                    path {
+                        &:nth-child(1) {
+                            transition: all 0.3s;
+                            fill: $nav-white;
+                        }
+                    }
+                }
+            }
+            .notification-dark {
+                svg {
+                    path {
+                        &:nth-child(1) {
+                            transition: all 0.3s;
+                            fill: $nav-dark;
+                        }
+                    }
+                }
+            }
+            .route-not-active-svg {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #787878;
+                    }
+                }
+            }
+            .route-closed-nav-svg-not-active {
+                svg {
+                    path {
+                        transition: fill 0.4s ease;
+                        fill: #e1e1e1;
+                    }
+                }
+            }
+            .active-img {
+                svg {
+                    path {
+                        fill: $nav-active-lighter;
+                    }
+                }
+            }
+            .nav-footer-rightSide {
+                width: 100%;
+            }
+        }
+        .nav-width {
+            width: 230px;
+            .wrapper {
+                width: 230px;
+            }
+        }
+        div {
+            display: flex;
+            align-items: center;
+            height: fit-content;
+            cursor: pointer;
+            .notification-message {
+                padding: 0 5px;
+                width: auto;
+                height: 18px;
+                background: rgba(229, 115, 115, 0.2);
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: $notification;
+                font-weight: 700;
+                font-size: 11px;
+                position: absolute;
+                right: 8px;
+                opacity: 0;
+                top: -9px;
+            }
+            // .user-profile {
+            //     padding: 8px 0;
+            // }
+        }
+    }
+
+    .nav-footer-item {
+        height: 28px;
+        display: flex;
+        align-items: center;
+        .tooltip-right {
+            position: fixed;
+            bottom: 134px;
+            left: 19px;
+        }
+        .hide-tooltip {
+            display: none;
+        }
+        &:nth-last-child(2) {
+            order: 3;
+        }
+        .nav-footer-image-user {
+            width: 28px;
+            height: 28px;
+            object-fit: fill;
+            margin-left: -4px;
+            bottom: -3px;
+            position: relative;
+        }
+
+        .nav-footer-user {
+            position: absolute;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+            top: -12px;
+            p {
+                margin-left: 6px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                width: 140px;
+                &:nth-child(1) {
+                    line-height: 17px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    width: 193px;
+                    overflow-x: hidden;
+                }
+                &:nth-child(2) {
+                    font-size: 11px;
+                    line-height: 13px;
+                    font-weight: $nav-font-regular;
+                }
+            }
+
+            .nav-footer-user-company {
+                position: relative;
+                top: 1px;
+            }
+
+            .nav-footer-user-name {
+                position: relative;
+                top: -1px;
+            }
+        }
+
+        .status-marker-container {
+            bottom: 4px;
+            left: 13px;
+            width: 12px;
+            background: transparent;
+            left: -8px;
+            width: 36px;
+            height: 44px;
+            svg {
+                bottom: -16px;
+                left: 9px;
+                position: relative;
+            }
+        }
+
+        .nav-footer-hover {
+            height: 30px;
+            position: absolute;
+            right: 5px;
+            content: '';
+            background-color: transparent;
+            border-radius: 3px;
+            z-index: -1;
+        }
+
+        .nav-footer-hover-user {
+            height: 40px;
+            left: -11px;
+            border-radius: 3px;
+        }
+
+        &:hover {
+            .nav-footer-image {
+                transition: $nav-transition;
+                svg {
+                    // info
+                    #Path_35324 {
+                        fill: $nav-svg-hover;
+                    }
+                    // settings
+                    #Path_35325 {
+                        fill: $nav-svg-hover;
+                    }
+
+                    #Path_35326 {
+                        fill: $nav-svg-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    .nav-footer-item-active {
+        .nav-footer-image {
+            svg {
+                // info
+                #Path_35324 {
+                    fill: $nav-svg-active;
+                }
+                // settings
+                #Path_35325 {
+                    fill: $nav-svg-active;
+                }
+
+                #Path_35326 {
+                    fill: $nav-svg-active;
+                }
+            }
+        }
+
+        &:hover {
+            .nav-footer-image {
+                transition: $nav-transition;
+                svg {
+                    // info
+                    #Path_35324 {
+                        fill: $nav-active !important;
+                    }
+                    // settings
+                    #Path_35325 {
+                        fill: $nav-active !important;
+                    }
+
+                    #Path_35326 {
+                        fill: $nav-active !important;
+                    }
+                }
+            }
+
+            .nav-footer-text {
+                transition: $nav-transition;
+            }
+        }
+        .animation-backward {
+            animation: animateBackground 0.25s forwards;
+        }
+        @keyframes animateBackground {
+            from {
+                background-color: $nav-dark;
+            }
+            to {
+                background-color: $nav-hover-ligh;
+            }
+        }
+        .nav-item-active-box {
+            width: 38px;
+            height: 28px;
+            position: absolute;
+            left: -9px;
+            content: '';
+            background-color: $nav-hover-ligh;
+            z-index: -1;
+            border-radius: 3px;
+        }
+    }
+}
+.notification-item {
+    width: 32px !important;
+}
+.magic-line-footer {
+    position: absolute;
+    height: 28px !important;
+    width: 36px;
+    bottom: 3px;
+    background: $nav-hover-ligh;
+    z-index: 0;
+    transition: all 0.2s ease-in;
+    border-radius: 3px;
+    left: -8px;
+}
+.magic-line-not-hovered {
+    width: 38px !important;
+    left: -9px;
+}
+.animate-magic-line {
+    width: 238px;
+    background: $nav-hover-color;
+    animation: magiclinecolortransition 1s ease;
+}
+@keyframes magiclinecolortransition {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: $nav-hover-color;
+    }
+}
+.nav-footer-width {
+    width: 238px;
+    .magic-line-footer {
+        width: 238px;
+        background-color: $nav-hover-color;
+    }
+}
+.settings-footer:hover ~ .magic-line-footer {
+    transform: translateY(0px) !important;
+}
+
+.activated-footer-route:nth-child(1) ~ .magic-line-footer {
+    transform: translateY(0px);
+}
+
+.nav-footer-item:nth-child(2):hover ~ .magic-line-footer {
+    transform: translateY(-39px) !important;
+}
+
+.activated-footer-route:nth-child(2) ~ .magic-line-footer {
+    transform: translateY(-39px);
+}

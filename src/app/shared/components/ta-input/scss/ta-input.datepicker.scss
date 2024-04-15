@@ -1,0 +1,136 @@
+@import './ta-input.colors.scss';
+@import 'src/theme/variables.scss';
+
+.date_time_holder {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0px 6px;
+    opacity: 0;
+    padding-left: 27px;
+    z-index: 20;
+    cursor: text;
+
+    span {
+        position: relative;
+        line-height: 14px;
+        display: flex;
+        height: 100%;
+        align-items: center;
+
+        z-index: 10;
+        .border-picker {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            // z-index: -1;
+            width: 0px;
+        }
+
+        &::selection {
+            // background-color: $default-content-background-selection !important;
+            // color: $default-content !important;
+            background-color: $valid-focus-content-background-selection;
+            color: $valid-focus-content;
+        }
+
+        & div::selection {
+            background-color: $valid-focus-content-background-selection;
+            color: $valid-focus-content;
+        }
+    }
+
+    &::selection {
+        background-color: transparent !important;
+        color: $valid-focus-content;
+    }
+
+    span.main {
+        padding: 0 2px;
+        outline: none;
+        font-size: 14px;
+
+        z-index: 11;
+
+        &::selection {
+            z-index: 10;
+        }
+
+        &:first-child {
+            padding-left: 4px;
+        }
+    }
+
+    &.focus {
+        opacity: 1;
+        padding-left: 35px;
+        span:nth-child(2) {
+            z-index: 12;
+            pointer-events: none;
+        }
+        span:nth-child(3) {
+            z-index: 13;
+        }
+
+        span:nth-child(4) {
+            z-index: 14;
+            pointer-events: none;
+        }
+
+        span:nth-child(5) {
+            z-index: 15;
+        }
+    }
+
+    &.valid-focus-out-filled {
+        opacity: 1;
+        span,
+        span .border-picker {
+            color: $valid-content !important;
+            user-select: none;
+        }
+    }
+
+    &.dark.valid-focus-out-filled {
+        background: #3b73ed33 !important;
+
+        span,
+        span .border-picker {
+            color: white !important;
+        }
+    }
+
+    &.focus {
+        background-color: $default-focus-input;
+        color: $default-focus-content;
+
+        transition: all 0.2s ease-in-out;
+    }
+
+    &.valid-focus-in {
+        opacity: 1;
+        &::selection,
+        & div::selection {
+            background-color: $valid-focus-content-background-selection;
+            color: $valid-focus-content;
+        }
+    }
+
+    &.invalid-focus-out-filled {
+        opacity: 1;
+    }
+
+    &.date_time_holder_bank_card {
+        span.main {
+            padding: 0 3px;
+        }
+    }
+}

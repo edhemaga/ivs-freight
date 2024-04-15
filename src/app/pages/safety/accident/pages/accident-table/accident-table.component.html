@@ -1,0 +1,74 @@
+<!-- *ngIf="tableOptions.toolbarActions.viewModeActive !== 'Map'" -->
+<div class="table-container">
+    <app-ta-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+    ></app-ta-table-toolbar>
+
+    <div *ngIf="activeViewMode == 'List'">
+        <app-ta-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+        ></app-ta-table-head>
+
+        <app-ta-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
+            (bodyActions)="onTableBodyActions($event)"
+            [tableData]="tableData"
+        ></app-ta-table-body>
+    </div>
+</div>
+
+<div class="accident-info-sidebar-container"></div>
+
+<div class="customer-map-container" *ngIf="activeViewMode == 'Map'">
+    <app-ta-map-list
+        [type]="'accident'"
+        [sortTypes]="sortTypes"
+        [columns]="columns"
+        [activeSortType]="activeSortType"
+        [mapListContent]="viewData"
+        (changeSortCategory)="changeSortCategory($event)"
+        (changeSortDirection)="changeSortDirection($event)"
+        (searchData)="searchStops($event)"
+    >
+        <app-ta-map-list-card
+            *ngFor="let latlong of viewData; let i = index"
+            [title]="latlong?.report"
+            [isSelected]="latlong?.isSelected"
+            [status]="latlong?.status"
+            [item]="latlong"
+            [index]="i"
+            [address]="latlong.address"
+            [rating]="{
+                up: latlong?.upRatingCount,
+                down: latlong?.downRatingCount
+            }"
+            [type]="'accident'"
+            (bodyActions)="onTableBodyActions($event)"
+            (clickedMarker)="selectItem(latlong.id)"
+            [ngStyle]="{
+                display:
+                    locationFilterOn && latlong?.isShown == false
+                        ? 'none'
+                        : 'block'
+            }"
+        ></app-ta-map-list-card>
+    </app-ta-map-list>
+
+    <app-ta-maps
+        #mapsComponent
+        [_viewData]="viewData"
+        [mapType]="'accident'"
+        (callDropDownAction)="onTableBodyActions($event)"
+    ></app-ta-maps>
+</div>

@@ -1,0 +1,1393 @@
+<div
+    class="input-custom-group {{ _inputConfig.customClass }}"
+    [ngClass]="{
+        'custom-empty-hover': !focusInput && !selectedDropdownLabelColor,
+        'custom-filled-hover':
+            getSuperControl.value &&
+            !focusInput &&
+            !_inputConfig.dropdownLabel &&
+            !selectedDropdownLabelColor,
+        'invalid-filled-focus-out':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            (touchedInput || getSuperControl.touched) &&
+            !focusInput &&
+            !_inputConfig.hideClear &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.isDisabled,
+        'invalid-empty-focus-out':
+            !getSuperControl.value &&
+            getSuperControl.invalid &&
+            (touchedInput || getSuperControl.touched) &&
+            !focusInput &&
+            !_inputConfig.hideClear &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.isDisabled &&
+            !selectedDropdownLabelColor &&
+            !_inputConfig.dropdownLabel,
+        'invalid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.invalid &&
+            focusInput &&
+            !_inputConfig.hideClear &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.isDisabled,
+        'valid-focus-in':
+            getSuperControl.value &&
+            getSuperControl.valid &&
+            focusInput &&
+            !_inputConfig.hideClear &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.isDisabled,
+        'valid-focus-out':
+            getSuperControl.value &&
+            getSuperControl.valid &&
+            !focusInput &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.isDisabled,
+        'inactive-empty': _inputConfig.isDisabled && !getSuperControl.value,
+        'inactive-filled': _inputConfig.isDisabled && getSuperControl.value,
+        'input-remove-trash-can': _inputConfig.removeInput,
+        'input-remove-background': _inputConfig.removeInputBackground
+    }"
+>
+    <!-- Input Clear -->
+    <div
+        *ngIf="
+            (!_inputConfig.hideClear &&
+                (!_inputConfig.isDisabled || _inputConfig.removeInput) &&
+                !_inputConfig.customClass?.includes('details-pages') &&
+                !_inputConfig.commands?.active &&
+                !_inputConfig?.loadingSpinner?.isLoading) ||
+            _inputConfig.incorrectInput
+        "
+        class="input-clear {{ _inputConfig.customClass }}"
+        [ngClass]="{
+            focus:
+                focusInput &&
+                getSuperControl.value &&
+                !(_inputConfig.blackInput && _inputConfig.isDropdown),
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !_inputConfig.customClass?.includes('repair-shop-open-hour') &&
+                !_inputConfig.blackInput &&
+                !_inputConfig?.dropdownImageInput?.url &&
+                !_inputConfig.isInvalidSearchInDropdown &&
+                !_inputConfig.mergeDropdownBodyWithInput &&
+                !_inputConfig.isDisabled,
+            'valid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                !_inputConfig.customClass?.includes('repair-shop-open-hour') &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-in':
+                (getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    focusInput &&
+                    !_inputConfig.mergeDropdownBodyWithInput &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.isInvalidSearchInDropdown &&
+                    _inputConfig.isDropdown &&
+                    focusInput &&
+                    getSuperControl.value &&
+                    !_inputConfig.mergeDropdownBodyWithInput &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled),
+            'invalid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                !focusInput &&
+                !_inputConfig.isDropdown &&
+                !_inputConfig.blackInput &&
+                !(
+                    !_inputConfig.dropdownImageInput?.withText &&
+                    _inputConfig.dropdownImageInput?.url
+                ) &&
+                !_inputConfig.isDisabled,
+            'incorrect-input':
+                _inputConfig.incorrectInput && getSuperControl.value,
+            'incorrect-input-on':
+                _inputConfig.incorrectInput &&
+                getSuperControl.value &&
+                incorrectValue,
+            hidden:
+                getSuperControl.value &&
+                focusInput &&
+                _inputConfig.dropdownLabel,
+            'dropdown-on':
+                (getSuperControl.value &&
+                    _inputConfig.isDropdown &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.multiSelectDropdownActive &&
+                    !_inputConfig.mergeDropdownBodyWithInput) ||
+                (_inputConfig.dropdownImageInput?.url &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.multiSelectDropdownActive &&
+                    !_inputConfig.mergeDropdownBodyWithInput) ||
+                (!_inputConfig.blackInput && selectedDropdownLabelColor) ||
+                (_inputConfig?.dropdownImageInput?.url &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.mergeDropdownBodyWithInput),
+            'trash-can-svg': _inputConfig.removeInput
+        }"
+        ngbTooltip
+        [mainTooltip]="
+            _inputConfig.incorrectInput
+                ? 'Mark Incorrect'
+                : _inputConfig.removeInput
+                ? 'Remove'
+                : 'Clear'
+        "
+        [tooltipBackground]="
+            _inputConfig.incorrectInput ? '#ef5350' : '#2F2F2F'
+        "
+        position="top"
+        (click)="clearInput($event)"
+    >
+        <svg-icon
+            [src]="
+                _inputConfig.removeInput
+                    ? 'assets/svg/common/ic_remove_input.svg'
+                    : 'assets/svg/ic_x.svg'
+            "
+            class="input-clear-x"
+        ></svg-icon>
+    </div>
+
+    <!-- Input Clear for dispatch dropdown -->
+    <div
+        *ngIf="template == 'svgtext-dispatch-template'"
+        class="input-clear-dispatch"
+        position="top"
+        (click)="clearInput($event)"
+    >
+        <svg-icon
+            [src]="'assets/svg/common/ic_x.svg'"
+            class="input-clear-dispatch-icon"
+        ></svg-icon>
+    </div>
+    <!-- Input Pen -->
+    <div
+        *ngIf="
+            selectedDropdownLabelColor &&
+            !editInputMode &&
+            !focusInput &&
+            getSuperControl.value
+        "
+        class="input-pen-container"
+        ngbTooltip
+        [mainTooltip]="'Edit'"
+        [tooltipBackground]="'#2F2F2F'"
+        position="top"
+        (click)="onEditInput($event)"
+    >
+        <svg-icon
+            src="assets/svg/ic_spec_input_pen.svg"
+            class="input-pen"
+        ></svg-icon>
+    </div>
+
+    <!-- Input Invalid Danger Mark -->
+    <svg-icon
+        *ngIf="
+            ((touchedInput || getSuperControl.touched) &&
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                !focusInput &&
+                !_inputConfig.isDisabled &&
+                !_inputConfig.incorrectInput &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.isDropdown &&
+                !_inputConfig.dropdownLabel &&
+                !_inputConfig.hideDangerMark) ||
+            _inputConfig.dangerMark
+        "
+        class="input-invalid-danger-mark  {{ _inputConfig.customClass }}"
+        src="assets/svg/common/ic_danger.svg"
+    >
+    </svg-icon>
+
+    <!-- Input Valid Check -->
+    <svg-icon
+        class="input-required-check {{ _inputConfig.customClass }}"
+        *ngIf="
+            getSuperControl.value &&
+            getSuperControl.valid &&
+            !focusInput &&
+            !_inputConfig.isDisabled &&
+            !_inputConfig.placeholderIcon &&
+            !_inputConfig.isDropdown &&
+            !_inputConfig.blackInput &&
+            !_inputConfig.hideRequiredCheck &&
+            !_inputConfig.incorrectInput &&
+            !_inputConfig?.loadingSpinner?.isLoading &&
+            !_inputConfig.dropdownLabel
+        "
+        src="assets/svg/common/ic_confirm.svg"
+    ></svg-icon>
+
+    <!-- Input Loading spinner -->
+    <div
+        *ngIf="
+            _inputConfig?.loadingSpinner?.isLoading && !_inputConfig.isDisabled
+        "
+        class="input-loading-spinner"
+    >
+        <app-ta-spinner
+            [size]="_inputConfig.loadingSpinner?.size"
+            [color]="_inputConfig.loadingSpinner?.color"
+        ></app-ta-spinner>
+    </div>
+
+    <!-- Input Password Caps Lock -->
+    <p
+        *ngIf="
+            capsLockOn &&
+            _inputConfig.type === 'password' &&
+            focusInput &&
+            !_inputConfig.isDisabled
+        "
+        class="password-capslock"
+    >
+        Caps Lock is ON
+    </p>
+
+    <!-- Input Password Eye -->
+    <div
+        *ngIf="_inputConfig.type === 'password' && getSuperControl.value"
+        class="input-password-eye {{ _inputConfig.customClass }}"
+        [ngClass]="{
+            visible: getSuperControl.value,
+            inactive: _inputConfig.isDisabled,
+            'valid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                !_inputConfig.isDisabled,
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                !_inputConfig.isDisabled &&
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput,
+            'invalid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                focusInput &&
+                !_inputConfig.isDisabled
+        }"
+        ngbTooltip
+        mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
+        tooltipBackground="#2f2f2f"
+        position="top"
+        (click)="onTogglePassword($event)"
+    >
+        <svg-icon
+            src="{{
+                !togglePassword
+                    ? 'assets/svg/common/ic_eye-visible.svg'
+                    : 'assets/svg/common/ic_eye-hidden.svg'
+            }}"
+        ></svg-icon>
+    </div>
+
+    <!-- Input Dropdown Arrow -->
+    <svg-icon
+        class="input-dropdown-arrow {{ _inputConfig.customClass }}"
+        *ngIf="
+            (!_inputConfig.hideDropdownArrow &&
+                (_inputConfig.isDropdown || _inputConfig.dropdownLabel) &&
+                !_inputConfig.multiSelectDropdownActive &&
+                !_inputConfig.isDisabled) ||
+            ((_inputConfig.name === 'datepicker' ||
+                _inputConfig.name === 'timepicker' ||
+                _inputConfig.name == 'datepickerBankCard') &&
+                !_inputConfig.incorrectInput &&
+                !_inputConfig.isDisabled)
+        "
+        [ngClass]="{
+            focus: focusInput,
+            'valid-focus-in':
+                (!_inputConfig.dropdownLabel &&
+                    (getSuperControl.value || _inputConfig.placeholder) &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.isInvalidSearchInDropdown) ||
+                ((_inputConfig.dropdownImageInput?.url ||
+                    _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl ||
+                    _inputConfig.placeholder) &&
+                    focusInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.isDisabled),
+            'valid-focus-out':
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled) ||
+                (!_inputConfig.dropdownImageInput?.withText &&
+                    _inputConfig.dropdownImageInput?.url &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled),
+            'invalid-focus-in':
+                (getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    focusInput &&
+                    !_inputConfig.isDisabled) ||
+                (focusInput &&
+                    getSuperControl.value &&
+                    _inputConfig.isInvalidSearchInDropdown &&
+                    _inputConfig.isDropdown &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.mergeDropdownBodyWithInput &&
+                    !_inputConfig.isDisabled),
+            'invalid-focus-out':
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput &&
+                !_inputConfig.isDisabled,
+            'invalid-search-in-dropdown-focus-in':
+                _inputConfig.isInvalidSearchInDropdown &&
+                _inputConfig.isDropdown &&
+                focusInput &&
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                !_inputConfig.isDisabled
+        }"
+        src="assets/svg/common/ic_arrow_input.svg"
+        (click)="toggleDropdownOptions()"
+    ></svg-icon>
+
+    <!-- Input Commands -->
+    <div
+        *ngIf="_inputConfig.commands?.active && isVisibleCommands"
+        class="ta-input-commands"
+    >
+        <div
+            class="ta-input-command-first"
+            ngbTooltip
+            [mainTooltip]="_inputConfig.commands?.firstCommand?.popup?.name"
+            [tooltipBackground]="
+                _inputConfig.commands?.firstCommand?.popup?.backgroundColor
+            "
+            [disableTooltip]="!_inputConfig.commands?.firstCommand?.popup"
+            position="top"
+        >
+            <svg-icon
+                class="ta-input-command-svg-first"
+                [src]="_inputConfig.commands.firstCommand.svg"
+                (click)="
+                    onCommands(
+                        $event,
+                        _inputConfig.commands.type,
+                        _inputConfig.commands.firstCommand.name
+                    )
+                "
+            ></svg-icon>
+        </div>
+        <div
+            class="ta-input-command-second"
+            ngbTooltip
+            [mainTooltip]="_inputConfig.commands?.secondCommand?.popup?.name"
+            [tooltipBackground]="
+                _inputConfig.commands?.secondCommand?.popup?.backgroundColor
+            "
+            [disableTooltip]="!_inputConfig.commands?.secondCommand?.popup"
+            position="top"
+        >
+            <svg-icon
+                class="ta-input-command-svg-second"
+                [src]="_inputConfig.commands.secondCommand.svg"
+                (click)="
+                    onCommands(
+                        $event,
+                        _inputConfig.commands.type,
+                        _inputConfig.commands.secondCommand.name
+                    )
+                "
+            ></svg-icon>
+        </div>
+    </div>
+
+    <!-- Input Placeholder Icon -->
+    <div
+        *ngIf="_inputConfig.placeholderIcon"
+        #t2="ngbPopover"
+        [ngbPopover]="dateTimePopover"
+        [disablePopover]="
+            (_inputConfig.name !== 'datepicker' &&
+                _inputConfig.name !== 'timepicker' &&
+                _inputConfig.name !== 'datepickerBankCard') ||
+            _inputConfig.isDisabled
+        "
+        [placement]="['left', 'left-top']"
+        [popoverClass]="'datetimepopovermain'"
+        autoClose="outside"
+        [container]="'body'"
+        class="input-icon {{ _inputConfig.customClass }}"
+        [ngClass]="{
+            'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
+            'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
+            'default-svg-color':
+                !(_inputConfig.dropdownLabel && focusInput) &&
+                !(_inputConfig.dropdownLabel && selectedDropdownLabelColor),
+            focus: focusInput && !_inputConfig.dropdownLabel,
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.commands?.active &&
+                !_inputConfig.isDisabled,
+            'valid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
+                !_inputConfig.isDisabled,
+            'valid-focus-out-dropdown-label':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                selectedDropdownLabelColor &&
+                _inputConfig.dropdownLabel &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out':
+                getSuperControl.invalid &&
+                !focusInput &&
+                !selectedDropdownLabelColor &&
+                !_inputConfig.dropdownLabel &&
+                (touchedInput || getSuperControl.touched) &&
+                !_inputConfig.isDisabled,
+            hidden: _inputConfig.type === 'password' && getSuperControl.value,
+            'cursor-pointer': editInputMode
+        }"
+        ngbTooltip
+        [mainTooltip]="'Change Color'"
+        [tooltipBackground]="'#424242'"
+        [disableTooltip]="!editInputMode"
+        position="bottom"
+        (shown)="onPopoverShown()"
+        (hidden)="onPopoverHidden()"
+        (click)="onPlaceholderIconEvent($event)"
+    >
+        <svg-icon
+            appHoverSvg
+            [stretch]="true"
+            [fill]="
+                _inputConfig.dropdownLabel || selectedDropdownLabelColor
+                    ? selectedDropdownLabelColor?.code
+                        ? selectedDropdownLabelColor.code
+                        : '#b7b7b7'
+                    : null
+            "
+            [fillHover]="
+                (_inputConfig.dropdownLabel || selectedDropdownLabelColor) &&
+                editInputMode
+                    ? selectedDropdownLabelColor?.hoverCode
+                        ? selectedDropdownLabelColor.hoverCode
+                        : null
+                    : null
+            "
+            [src]="
+                _inputConfig.placeholderIcon?.toLowerCase() | taSvg : 'common'
+            "
+        ></svg-icon>
+    </div>
+
+    <!-- Input Placeholder Text -->
+    <svg-icon
+        *ngIf="_inputConfig.placeholderText && getSuperControl.value"
+        class="placeholder-text {{ _inputConfig.customClass }}"
+        [ngClass]="{
+            focus: focusInput,
+            'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.commands?.active &&
+                !isVisibleCommands &&
+                !_inputConfig.isDisabled,
+            'valid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                !_inputConfig.commands?.active &&
+                !isVisibleCommands &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.commands?.active &&
+                !isVisibleCommands &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput &&
+                !_inputConfig.isDisabled
+        }"
+        [style.left]="
+            focusInput &&
+            _inputConfig.placeholderText?.toLowerCase() !== 'months'
+                ? 'auto'
+                : (getSuperControl.value?.toString()?.length + 1) * 8 + 'px'
+        "
+        [style.right]="
+            focusInput &&
+            _inputConfig.placeholderText?.toLowerCase() !== 'months'
+                ? '28px'
+                : 'auto'
+        "
+        [src]="_inputConfig.placeholderText?.toLowerCase() | taSvg : 'common'"
+    >
+    </svg-icon>
+
+    <!-- DateTime Picker -->
+    <div
+        #holder1
+        class="date_time_holder input-control"
+        *ngIf="
+            (_inputConfig.name === 'datepicker' ||
+                _inputConfig.name === 'timepicker') &&
+            !_inputConfig.isDisabled
+        "
+        [class.active]="showDateInput"
+        tabindex="-1"
+        (mousedown)="selectLastOneForSelection()"
+        (mouseup)="selectLastOneAfterMoseUp()"
+        (paste)="onDatePaste($event)"
+        (blur)="onBlur()"
+        (keydown)="changeSelection($event, true)"
+        [ngClass]="{
+            focus: focusInput,
+            'valid-focus-in':
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisibleCommands &&
+                    !_inputConfig?.dropdownImageInput?.url &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    focusInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.isDisabled),
+            'valid-focus-out-filled':
+                (((getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !isVisibleCommands &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                    (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.dropdownLabel &&
+                    getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
+            'invalid-focus-in':
+                getSuperControl.invalid &&
+                getSuperControl.value &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !(
+                    _inputConfig.dropdownImageInput?.url ||
+                    _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl
+                ) &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out-filled':
+                ((getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput) ||
+                    (!_inputConfig.dropdownImageInput?.url &&
+                        (touchedInput || getSuperControl.touched) &&
+                        getSuperControl.invalid &&
+                        !focusInput &&
+                        !_inputConfig.isDisabled)) &&
+                !_inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !focusInput &&
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                _inputConfig.multipleLabel?.labels.length &&
+                !_inputConfig.multipleInputValues?.options.length &&
+                !_inputConfig.isDisabled,
+            dark: _inputConfig.customClass === 'datetimeclass dark'
+        }"
+    >
+        <span
+            #span1
+            class="main"
+            tabindex="0"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
+        ></span>
+        <span>
+            <div
+                class="border-picker"
+                [innerHTML]="_inputConfig.name === 'datepicker' ? '/' : ':'"
+            ></div>
+        </span>
+        <span
+            #span2
+            class="main"
+            tabindex="1"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
+        ></span>
+        <span>
+            <div
+                class="border-picker"
+                [innerHTML]="_inputConfig.name === 'datepicker' ? '/' : ' '"
+            ></div>
+        </span>
+        <span
+            #span3
+            class="main"
+            tabindex="2"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="_inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
+        ></span>
+    </div>
+
+    <!-- Bank Card Expire Date Picker -->
+    <div
+        #holder1
+        class="date_time_holder date_time_holder_bank_card input-control"
+        *ngIf="
+            _inputConfig.name === 'datepickerBankCard' &&
+            !_inputConfig.isDisabled
+        "
+        [class.active]="showDateInput"
+        tabindex="-1"
+        (mousedown)="selectLastOneForSelection()"
+        (mouseup)="selectLastOneAfterMoseUp()"
+        (paste)="onDatePaste($event)"
+        (blur)="onBlur()"
+        (keydown)="changeSelection($event, true)"
+        [ngClass]="{
+            focus: focusInput,
+            'valid-focus-in':
+                (getSuperControl.value &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisibleCommands &&
+                    !_inputConfig?.dropdownImageInput?.url &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    focusInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.isDisabled),
+            'valid-focus-out-filled':
+                (((getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !isVisibleCommands &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                    (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.dropdownLabel &&
+                    getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    !focusInput),
+            'invalid-focus-in':
+                getSuperControl.invalid &&
+                getSuperControl.value &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !(
+                    _inputConfig.dropdownImageInput?.url ||
+                    _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl
+                ) &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out-filled':
+                ((getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput) ||
+                    (!_inputConfig.dropdownImageInput?.url &&
+                        (touchedInput || getSuperControl.touched) &&
+                        getSuperControl.invalid &&
+                        !focusInput &&
+                        !_inputConfig.isDisabled)) &&
+                !_inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !focusInput &&
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                _inputConfig.multipleLabel?.labels.length &&
+                !_inputConfig.multipleInputValues?.options.length &&
+                !_inputConfig.isDisabled,
+            dark: _inputConfig.customClass === 'datetimeclass dark'
+        }"
+    >
+        <span
+            #span1
+            class="main"
+            tabindex="0"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'mm'"
+        ></span>
+        <span>
+            <div class="border-picker" [innerHTML]="'/'"></div>
+        </span>
+        <span
+            #span2
+            class="main"
+            tabindex="1"
+            (focus)="onFocus($event)"
+            (mouseup)="setSelection($event)"
+            (keydown)="changeSelection($event)"
+            (blur)="onBlur()"
+            [innerHTML]="'yy'"
+        ></span>
+    </div>
+
+    <!-- Input Label Counter -->
+    <p
+        *ngIf="
+            selectedDropdownLabelColor &&
+            getSuperControl.value &&
+            !focusInput &&
+            !_inputConfig.isDisabled &&
+            _inputConfig.showCount
+        "
+        [style.top]="'4px'"
+        [style.left]="
+            (getSuperControl.value?.toString()?.length + 6.5) * 8 + 'px'
+        "
+        class="input-label-counter"
+    >
+        {{ selectedDropdownLabelColor.count }}
+    </p>
+
+    <!-- Special Dropdown Selected SVG with or Without Text -->
+    <svg-icon
+        *ngIf="
+            _inputConfig?.dropdownImageInput?.svg &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
+            !(!_inputConfig.dropdownImageInput?.withText && focusInput) &&
+            !(
+                ['truck', 'trailer'].includes(
+                    _inputConfig.dropdownImageInput?.template
+                ) &&
+                focusInput &&
+                _inputConfig.dropdownImageInput?.remove
+            ) &&
+            !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
+        "
+        [src]="_inputConfig.dropdownImageInput?.url"
+        class="dropdown-selected-image {{
+            _inputConfig.dropdownImageInput?.class
+        }}"
+        [ngClass]="{
+            'unset-color': focusInput && _inputConfig.dropdownImageInput?.class
+        }"
+        [svgStyle]="{
+            fill:
+                _inputConfig.dropdownImageInput?.color && !focusInput
+                    ? _inputConfig.dropdownImageInput?.color
+                    : '#ffffff'
+        }"
+    >
+    </svg-icon>
+
+    <!-- Special Dropdown Selected Image With Text With Initials name -->
+    <img
+        *ngIf="
+            _inputConfig?.dropdownImageInput?.image &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
+            _inputConfig?.dropdownImageInput?.url &&
+            !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
+        "
+        class="dropdown-selected-image name-initials-instead-url"
+        [src]="
+            imageBase64Service.sanitizer(_inputConfig?.dropdownImageInput?.url)
+        "
+        [alt]="'Input Image'"
+    />
+    <div
+        *ngIf="
+            _inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl &&
+            !_inputConfig?.hideAllItemsInInputDropdown &&
+            !(!_inputConfig.dropdownImageInput?.withText && focusInput)
+        "
+        class="no-profile-image dropdown-selected-image name-initials-instead-url"
+    >
+        <app-ta-profile-images
+            [indx]="0"
+            [size]="'small'"
+            [type]="'user'"
+            [name]="_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl"
+        >
+        </app-ta-profile-images>
+    </div>
+    <!-- ------------------------- -->
+
+    <!-- Input Control -->
+
+    <!-- Multiple Input Values -->
+    <div
+        *ngIf="
+            _inputConfig?.multipleInputValues?.options?.length && !focusInput
+        "
+        class="input-control {{
+            _inputConfig?.multipleInputValues?.customClass
+        }}"
+        (click)="toggleDropdownOptions()"
+    >
+        <span
+            style="display: flex; gap: 6px; align-items: center"
+            *ngFor="
+                let item of _inputConfig.multipleInputValues.options;
+                let indx = index;
+                trackBy: trackIdentity
+            "
+        >
+            <!-- Image / SVG -->
+            <span *ngIf="item?.logoName && item?.isImg">
+                <img
+                    *ngIf="item?.logoName !== 'no-url'"
+                    [ngStyle]="{
+                        width: '18px',
+                        'aspect-ratio': 1,
+                        'border-radis': '2px'
+                    }"
+                    [src]="imageBase64Service.sanitizer(item.logoName)"
+                    [alt]="item.value"
+                />
+                <div
+                    *ngIf="item.logoName === 'no-url'"
+                    class="no-profile-image"
+                >
+                    <app-ta-profile-images
+                        [indx]="0"
+                        [size]="'small'"
+                        [name]="item.value"
+                    >
+                    </app-ta-profile-images>
+                </div>
+            </span>
+
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                class="{{ item?.subFolder }}"
+                [ngClass]="{
+                    'dispatch-semi-truck': item.id === 1,
+                    'dispatch-semi-sleeper': item.id === 2,
+                    'dispatch-box-truck': item.id === 3,
+                    'dispatch-cargo-van': item.id === 4,
+                    'dispatch-tow-truck': item.id === 5,
+                    'dispatch-car-hauler': item.id === 6,
+                    'dispatch-spotter': item.id === 7
+                }"
+                [src]="item?.logoName"
+            ></svg-icon>
+
+            <!-- Text -->
+            <span
+                *ngIf="!item?.isProgressBar"
+                class="multiple-input-text"
+                [ngStyle]="{
+                    color: '#2F2F2F'
+                }"
+                [ngClass]="{
+                    counter: item?.isCounter,
+                    'counter-one': item?.value === 1
+                }"
+            >
+                {{ item.value }}
+                <span
+                    *ngIf="item?.second_value"
+                    [ngStyle]="{ color: '#919191' }"
+                    >{{ item.second_value }}</span
+                >
+            </span>
+
+            <!-- Owner Flag -->
+            <div
+                *ngIf="item?.isOwner"
+                [ngStyle]="{ position: 'relative', bottom: '1px' }"
+            >
+                <svg-icon
+                    src="assets/svg/common/load/ic_load_driver_owner.svg"
+                ></svg-icon>
+            </div>
+
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+            ></app-load-modal-progress-bar>
+        </span>
+    </div>
+
+    <!-- Multiple Input Placeholder -->
+    <div
+        *ngIf="
+            _inputConfig?.multipleInputValues?.options?.length &&
+            focusInput &&
+            !getSuperControl.value
+        "
+        class="input-control multiple-input-placeholder {{
+            _inputConfig?.multipleInputValues?.customClass
+        }}"
+        [ngClass]="{ focus: focusInput }"
+    >
+        <span
+            style="display: flex; gap: 6px; align-items: center"
+            *ngFor="
+                let item of _inputConfig.multipleInputValues.options;
+                let indx = index;
+                trackBy: trackIdentity
+            "
+        >
+            <!-- Image / SVG -->
+            <span
+                *ngIf="item?.logoName && item?.isImg"
+                [ngClass]="{ 'focusable-image': focusInput }"
+            >
+                <img
+                    *ngIf="item?.logoName !== 'no-url'"
+                    [ngStyle]="{
+                        width: '18px',
+                        'aspect-ratio': 1,
+                        'border-radis': '2px'
+                    }"
+                    [src]="imageBase64Service.sanitizer(item.logoName)"
+                    [alt]="item.value"
+                />
+                <div
+                    *ngIf="item.logoName === 'no-url'"
+                    class="no-profile-image"
+                >
+                    <app-ta-profile-images
+                        [indx]="0"
+                        [size]="'small'"
+                        [name]="item.value"
+                    >
+                    </app-ta-profile-images>
+                </div>
+            </span>
+
+            <svg-icon
+                *ngIf="item?.logoName && item?.isSvg"
+                [ngClass]="{ 'focusable-svg': focusInput }"
+                class="{{ item?.subFolder }} {{
+                    item?.logoType.trim().replace(' ', '').toLowerCase()
+                }}"
+                [src]="item?.logoName"
+            ></svg-icon>
+
+            <!-- Text -->
+            <span
+                *ngIf="!item?.isProgressBar"
+                class="multiple-input-text"
+                [ngClass]="{
+                    'focusable-text': focusInput,
+                    counter: item?.isCounter,
+                    'counter-focus': item?.isCounter && focusInput,
+                    'counter-one': item?.value === 1
+                }"
+                [ngStyle]="{
+                    color: '#6F9EE0'
+                }"
+            >
+                {{ item.value }}
+                <span *ngIf="item?.second_value">{{ item.second_value }}</span>
+            </span>
+
+            <!-- Load Broker ProgressBar -->
+            <app-load-modal-progress-bar
+                *ngIf="item?.isProgressBar"
+                [totalAmount]="item.second_value"
+                [availableCredit]="item.value ? item.value : 0"
+                [inputFocus]="focusInput"
+            ></app-load-modal-progress-bar>
+        </span>
+    </div>
+
+    <!-- Single Input Value -->
+    <input
+        #input
+        [type]="_inputConfig.type | inputType : togglePassword"
+        [id]="_inputConfig.id ? _inputConfig.id : _inputConfig.name"
+        [name]="_inputConfig.name"
+        [disabled]="_inputConfig.isDisabled"
+        [autocomplete]="
+            _inputConfig.autocomplete
+                ? _inputConfig.autocomplete
+                : 'new-password'
+        "
+        [pattern]="_inputConfig.pattern"
+        [placeholder]="
+            (_inputConfig.placeholderInsteadOfLabel &&
+            _inputConfig.placeholder &&
+            focusInput
+                ? _inputConfig.placeholder
+                : '') ||
+            (_inputConfig.placeholder && focusInput
+                ? _inputConfig.placeholder
+                : '')
+        "
+        [minLength]="_inputConfig.minLength ? _inputConfig.minLength : 0"
+        [maxLength]="_inputConfig.maxLength ? _inputConfig.maxLength : 999"
+        [mask]="_inputConfig.mask"
+        [min]="_inputConfig.min ? _inputConfig.min : 0"
+        [max]="_inputConfig.max"
+        [step]="_inputConfig.step ? _inputConfig.step : null"
+        [readOnly]="_inputConfig.readOnly"
+        inputformat="dd-mm-yy"
+        class="input-control
+    {{ _inputConfig.textTransform }}
+    {{ _inputConfig.textAlign }}
+    {{ _inputConfig.customClass }}
+    "
+        [ngClass]="{
+            focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
+            'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
+            'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
+            'valid-focus-in':
+                ((getSuperControl.value || _inputConfig.placeholder) &&
+                    getSuperControl.valid &&
+                    focusInput &&
+                    !isVisibleCommands &&
+                    !_inputConfig?.dropdownImageInput?.url &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.mergeDropdownBodyWithInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.dropdownLabel) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    focusInput &&
+                    !_inputConfig.isInvalidSearchInDropdown &&
+                    !_inputConfig.blackInput &&
+                    !_inputConfig.mergeDropdownBodyWithInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.dropdownLabel),
+            'valid-focus-out-filled':
+                (((getSuperControl.value &&
+                    getSuperControl.valid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !isVisibleCommands &&
+                    !_inputConfig.blackInput) ||
+                    (!focusInput && _inputConfig.dropdownImageInput?.url)) &&
+                    !_inputConfig.blackInput) ||
+                (_inputConfig.multipleInputValues?.options.length &&
+                    !focusInput &&
+                    !_inputConfig.blackInput) ||
+                (_inputConfig.dropdownLabel &&
+                    selectedDropdownLabelColor &&
+                    !focusInput &&
+                    !_inputConfig.blackInput),
+            'invalid-focus-in':
+                getSuperControl.invalid &&
+                getSuperControl.value &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.mergeDropdownBodyWithInput &&
+                !_inputConfig.isDisabled &&
+                !_inputConfig.dropdownLabel &&
+                !(
+                    _inputConfig.dropdownImageInput?.url ||
+                    _inputConfig.dropdownImageInput?.nameInitialsInsteadUrl
+                ),
+            'invalid-focus-out-filled':
+                ((getSuperControl.value &&
+                    getSuperControl.invalid &&
+                    !focusInput &&
+                    !_inputConfig.isDisabled &&
+                    !_inputConfig.blackInput) ||
+                    (!_inputConfig.dropdownImageInput?.url &&
+                        (touchedInput || getSuperControl.touched) &&
+                        getSuperControl.invalid &&
+                        !_inputConfig.isDisabled &&
+                        !focusInput)) &&
+                !_inputConfig.blackInput,
+            'invalid-focus-out-empty':
+                !focusInput &&
+                !getSuperControl.value &&
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                !_inputConfig.isDisabled,
+            'invalid-search-in-dropdown-focus-in':
+                focusInput &&
+                getSuperControl.value &&
+                _inputConfig.isInvalidSearchInDropdown &&
+                _inputConfig.isDropdown &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.mergeDropdownBodyWithInput &&
+                !_inputConfig.isDisabled,
+            'has-placeholderIcon': _inputConfig.placeholderIcon,
+            'dropdown-placeholder-active':
+                _inputConfig.isDropdown &&
+                _inputConfig.placeholder &&
+                dropdownToggler &&
+                focusInput &&
+                !_inputConfig.blackInput &&
+                !_inputConfig.isDisabled &&
+                !_inputConfig.isInvalidSearchInDropdown,
+            'multiSelect-dropdown-active':
+                _inputConfig.multiSelectDropdownActive &&
+                focusInput &&
+                !_inputConfig.isDisabled,
+            'input-blue-content':
+                _inputConfig.textBlueColor &&
+                !focusInput &&
+                getSuperControl.value &&
+                !_inputConfig.isDisabled,
+            'dropdown-label-active':
+                _inputConfig.dropdownLabel &&
+                isVisibleCommands &&
+                this.editInputMode &&
+                !_inputConfig.isDisabled,
+            'input-commands':
+                _inputConfig.commands?.active && isVisibleCommands,
+            'dropdown-input-image-truck':
+                _inputConfig?.dropdownImageInput?.withText &&
+                _inputConfig?.dropdownImageInput?.url &&
+                _inputConfig?.dropdownImageInput?.template === 'truck' &&
+                !_inputConfig?.dropdownImageInput?.remove &&
+                !focusInput,
+            'dropdown-input-image-truck-focus':
+                _inputConfig?.dropdownImageInput?.withText &&
+                _inputConfig?.dropdownImageInput?.url &&
+                _inputConfig?.dropdownImageInput?.template === 'truck' &&
+                !_inputConfig?.dropdownImageInput?.remove &&
+                focusInput,
+            'dropdown-input-image-trailer':
+                _inputConfig?.dropdownImageInput?.withText &&
+                _inputConfig?.dropdownImageInput?.url &&
+                _inputConfig?.dropdownImageInput?.template === 'trailer' &&
+                !_inputConfig?.dropdownImageInput?.remove &&
+                !focusInput,
+            'dropdown-input-image-trailer-focus':
+                _inputConfig?.dropdownImageInput?.withText &&
+                _inputConfig?.dropdownImageInput?.url &&
+                _inputConfig?.dropdownImageInput?.template === 'trailer' &&
+                !_inputConfig?.dropdownImageInput?.remove &&
+                focusInput,
+            'dropdown-input-image-color':
+                _inputConfig?.dropdownImageInput?.withText &&
+                (_inputConfig?.dropdownImageInput?.url ||
+                    _inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl) &&
+                _inputConfig?.dropdownImageInput?.template === 'color',
+            'dropdown-input-image-user':
+                _inputConfig?.dropdownImageInput?.withText &&
+                !_inputConfig?.hideAllItemsInInputDropdown &&
+                _inputConfig?.dropdownImageInput?.template === 'user' &&
+                (_inputConfig.selectedDropdown ||
+                    (_inputConfig.placeholder && focusInput) ||
+                    getSuperControl.value),
+            'dropdown-input-image-without-text-transparent':
+                _inputConfig?.dropdownImageInput &&
+                !_inputConfig?.dropdownImageInput?.withText &&
+                !focusInput,
+            'multiple-input-values':
+                _inputConfig?.multipleInputValues?.options?.length &&
+                !focusInput,
+            'disable-select-on-focus-out': !focusInput,
+            'hide-placeholder-in-multiple-placeholder-input':
+                _inputConfig?.multipleInputValues?.options?.length &&
+                focusInput,
+            'cursor-on-right-side': _inputConfig?.inputCursorOnRightSide,
+            'merge-dropdown-body-with-input':
+                _inputConfig.mergeDropdownBodyWithInput,
+            'dispatch-dropdown': template == 'svgtext-dispatch-template'
+        }"
+        (keypress)="onKeypress($event)"
+        (keydown)="onKeydown($event)"
+        (keyup)="onKeyup($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event)"
+        (select)="selectionChange($event)"
+        (paste)="onPaste($event)"
+        (input)="
+            onChange($event.target.value);
+            transformText($event.target.value, false)
+        "
+        [(ngModel)]="input.value"
+    />
+
+    <!-- Input Label -->
+    <label
+        *ngIf="!_inputConfig.multiSelectDropdownActive"
+        [for]="_inputConfig.name"
+        class="input-label {{ _inputConfig.customClass }} {{
+            _inputConfig.multipleLabel?.customClass
+        }}"
+        [ngClass]="{
+            required: _inputConfig.isRequired && !_inputConfig.isDisabled,
+            'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
+            'up-label':
+                getSuperControl.value ||
+                focusInput ||
+                showDateInput ||
+                _inputConfig?.multipleInputValues?.options?.length ||
+                (!_inputConfig.dropdownImageInput?.withText &&
+                    _inputConfig.dropdownImageInput?.url &&
+                    !_inputConfig.labelInInput),
+            'input-placeholderIcon-on': _inputConfig.placeholderIcon,
+            hidden:
+                _inputConfig.placeholderInsteadOfLabel &&
+                (focusInput || getSuperControl.value),
+            'multiple-labels':
+                _inputConfig?.multipleInputValues?.options?.length,
+            'in-label-focus': focusInput && _inputConfig.labelInInput,
+            'in-label': _inputConfig.labelInInput
+        }"
+    >
+        <span *ngIf="_inputConfig.label">{{ _inputConfig.label }}</span>
+        <div
+            *ngIf="_inputConfig.multipleLabel?.labels?.length"
+            [class]="_inputConfig.multipleLabel?.customClass"
+            [ngClass]="{
+                'multiple-labels-position-on-focus':
+                    focusInput ||
+                    _inputConfig?.multipleInputValues?.options?.length,
+                required: _inputConfig.isRequired && !_inputConfig.isDisabled
+            }"
+        >
+            <span
+                *ngFor="
+                    let label of _inputConfig.multipleLabel.labels;
+                    trackBy: trackIdentity
+                "
+            >
+                {{ label }}
+            </span>
+        </div>
+    </label>
+
+    <!-- Placeholder Icon on Right Side -->
+    <svg-icon
+        *ngIf="_inputConfig.placeholderIconRightSide"
+        class="placeholder-icon-right-side {{
+            _inputConfig.placeholderIconColor
+        }}"
+        [ngClass]="{
+            hide: focusInput && getSuperControl.value,
+            focus: focusInput,
+            'valid-focus-out':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                !focusInput &&
+                !_inputConfig.isDisabled,
+            'valid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.valid &&
+                focusInput &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-out':
+                getSuperControl.invalid &&
+                (touchedInput || getSuperControl.touched) &&
+                !focusInput &&
+                !_inputConfig.isDisabled,
+            'invalid-focus-in':
+                getSuperControl.value &&
+                getSuperControl.invalid &&
+                focusInput &&
+                !_inputConfig.isDisabled
+        }"
+        [src]="
+            _inputConfig.placeholderIconRightSide?.toLowerCase()
+                | taSvg : 'common'
+        "
+    ></svg-icon>
+
+    <!-- Input Error Message -->
+    <span
+        *ngIf="
+            !_inputConfig.hideErrorMessage &&
+            !(!getSuperControl.value && focusInput) &&
+            (touchedInput ||
+                getSuperControl.touched ||
+                getSuperControl.value) &&
+            getSuperControl.invalid &&
+            !_inputConfig.isInvalidSearchInDropdown &&
+            !_inputConfig.isDisabled
+        "
+        class="input-error {{ _inputConfig.customClass }}"
+    >
+        {{ getSuperControl.errors | inputError : _inputConfig.name }}
+    </span>
+</div>
+
+<!-- Popover for DateTime Pickers -->
+<ng-template #dateTimePopover let-data="data">
+    <div class="datetime-dropdown-holder">
+        <app-ta-custom-datetime-pickers
+            [calendarType]="
+                _inputConfig.name === 'datepicker' ||
+                _inputConfig.name === 'datepickerBankCard'
+                    ? 'date'
+                    : 'time'
+            "
+            [inputConfig]="_inputConfig"
+            [placeholder]="'MM/DD/YY'"
+            [dateTime]="dateTimeInputDate"
+            (closePopover)="closePopover()"
+        ></app-ta-custom-datetime-pickers>
+    </div>
+</ng-template>

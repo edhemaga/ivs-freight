@@ -64,6 +64,7 @@ $bw4: #b7b7b7;
 $bw5: #919191;
 $bw6: #606060;
 $bw6-2: #6c6c6c;
+$bw6-3: #6c6c6c20;
 $bw7: #3d3d3d;
 $bw8: #dbdbdb;
 $bw-9: #dadada;
@@ -159,6 +160,7 @@ $ta-red-12: #f4433620;
 $ta-red-13: #ed9292;
 $ta-red-14: #c20c0c;
 $ta-red-15: #f4bebe;
+$ta-red-16: #df3c3c33;
 
 $ta-review-green: #4db6a2;
 $ta-review-green-2: #26a690;
@@ -195,6 +197,7 @@ $ta-yellow-3: #fddeb9;
 $ta-yellow-4: #fbc88b;
 $ta-yellow-5: #f89b2e;
 $ta-yellow-6: #cdb255;
+$ta-yellow-7: #f89b2e33;
 
 $ta-black-3: #1d1d1d;
 // Cards
@@ -206,6 +209,8 @@ $ta-green-4: #86c9c3;
 
 $ta-orange-2: #f77d3b;
 $ta-orange-3: #ffb097;
+
+$ta-purple-1: #b370f0;
 
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {

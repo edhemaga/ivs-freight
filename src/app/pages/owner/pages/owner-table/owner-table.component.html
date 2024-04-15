@@ -1,0 +1,42 @@
+<div class="table-container">
+    <app-ta-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+        [activeViewMode]="activeViewMode"
+    ></app-ta-table-toolbar>
+
+    <ng-container *ngIf="activeViewMode === 'List'">
+        <app-ta-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+        ></app-ta-table-head>
+
+        <app-ta-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
+            (bodyActions)="onTableBodyActions($event)"
+            (saveValueNote)="saveValueNote($event)"
+            [tableData]="tableData"
+        ></app-ta-table-body>
+    </ng-container>
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <app-owner-card
+            [viewData]="viewData"
+            [rows]="rows"
+            [cardTitle]="cardTitle"
+            [displayRowsFront]="sendDataToCardsFront"
+            [displayRowsBack]="sendDataToCardsBack"
+            [page]="page"
+            (saveValueNote)="saveValueNote($event)"
+        >
+        </app-owner-card>
+    </ng-container>
+</div>

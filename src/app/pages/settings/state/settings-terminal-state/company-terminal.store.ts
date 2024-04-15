@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+// core
+import { TerminalResponse } from 'appcoretruckassist';
+
+export interface TerminalState extends EntityState<TerminalResponse, number> {}
+
+@Injectable({ providedIn: 'root' })
+@StoreConfig({ name: 'terminalStore' })
+export class TerminalStore extends EntityStore<TerminalState> {
+    constructor() {
+        super();
+    }
+}

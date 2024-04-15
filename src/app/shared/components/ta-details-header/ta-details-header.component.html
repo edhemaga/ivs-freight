@@ -1,0 +1,370 @@
+<div class="header-wrapper">
+    <div
+        class="toolbar-general-cmp"
+        *ngIf="
+            [
+                'Truck Detail',
+                'Driver Detail',
+                'Trailer Detail',
+                'Repair Shop Detail',
+                'Fuel Stop Detail',
+                'Shipper Detail',
+                'Broker Detail',
+                'Roadside Insp. Detail',
+                'Active Load Detail',
+                'Pending Load Detail',
+                'Closed Load Detail'
+            ].includes(headerText)
+        "
+    >
+        <div class="icon-text-wrapper">
+            <span
+                ngbTooltip
+                [mainTooltip]="tooltipHeaderName"
+                position="bottom"
+                tooltipBackground="#6C6C6C"
+            >
+                <svg-icon
+                    routerLink="{{ route }}"
+                    class="header-arrow"
+                    src="assets/svg/common/ic_arrow-left.svg"
+                >
+                </svg-icon>
+            </span>
+            <p class="disable-selection">{{ headerText }}</p>
+        </div>
+
+        <div class="icon-right">
+            <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
+            <div
+                *ngIf="showClosedBadge && !businessOpen"
+                class="inactive-status"
+            >
+                CLOSED
+            </div>
+
+            <app-ta-details-dropdown
+                (click)="toggleDropdownActions()"
+                [customClassDropDown]="'drop-down-header'"
+                [options]="options?.actions"
+                [id]="optionsId"
+                [placement]="'right-top right-bottom'"
+                (dropDownActions)="dropAct($event)"
+                (openModalAction)="openModal($event)"
+                [hasVericalDots]="false"
+                [leftIcon]="true"
+            >
+            </app-ta-details-dropdown>
+        </div>
+    </div>
+
+    <div>
+        <div
+            class="header-toolbar"
+            *ngIf="
+                ![
+                    'Truck Detail',
+                    'Driver Detail',
+                    'Trailer Detail',
+                    'Repair Shop Detail',
+                    'Fuel Stop Detail',
+                    'Shipper Detail',
+                    'Broker Detail',
+                    'Roadside Insp. Detail',
+                    'Active Load Detail',
+                    'Pending Load Detail',
+                    'Closed Load Detail'
+                ].includes(headerText)
+            "
+        >
+            <div
+                class="counter-text"
+                [ngClass]="{
+                    'has-counter-header': counterData,
+                    dropOpenedHeader: dropOpened
+                }"
+            >
+                <div
+                    class="counter-holder-all"
+                    [class.openDropdownClass]="brokerLoadDrop"
+                    #t2="ngbPopover"
+                    (click)="showDropdown(t2)"
+                    (hidden)="dropdownClosed()"
+                    [ngbPopover]="dropdownPopover"
+                    [placement]="'bottom-left'"
+                    [container]="'body'"
+                    triggers="manual"
+                    [autoClose]="'outside'"
+                >
+                    <!-- old design for counter -->
+                    <!--
+                    <app-ta-counter
+                        *ngIf="
+                            (!danger && counterData) ||
+                            (counterData == 0 && !hideCounter)
+                        "
+                        [countBackground]=" dropOpened ?  '#AAAAAA' : '#F3F3F3'"
+                        [countColor]="dropOpened ?  '#FFFFFF' : '#919191'"
+                        [countHeight]="'24px'"
+                        [countWidth]="'24px'"
+                        [count]="counterData"
+                    >
+                    </app-ta-counter>
+                    -->
+                    <svg-icon
+                        *ngIf="danger && counterData > 0"
+                        class="danger-svg"
+                        src="assets/svg/common/ic_danger.svg"
+                    ></svg-icon>
+                    <div class="header-text-arrow-down">
+                        <p
+                            [ngClass]="{ 'pl-6-header': loadNames }"
+                            class="header-name disable-selection"
+                            #t2="ngbPopover"
+                            [ngbPopover]="eventsDatePopover"
+                        >
+                            {{ headerText }}
+                        </p>
+                        <svg-icon
+                            *ngIf="hasArrowDown"
+                            class="arrow-down-header"
+                            src="assets/svg/common/calendar/arrow-right.svg"
+                        ></svg-icon>
+                    </div>
+                    <div
+                        *ngIf="secondNameHeader"
+                        class="header-text-arrow-down"
+                    >
+                        <div class="second-counter">
+                            <app-ta-counter
+                                [countColor]="'#919191'"
+                                [countHeight]="'24px'"
+                                [countWidth]="'24px'"
+                                [count]="countViolation"
+                            >
+                            </app-ta-counter>
+                        </div>
+                        <p
+                            [ngClass]="{ 'pl-6-header': loadNames }"
+                            class="header-name disable-selection second-name-header-l"
+                        >
+                            {{ secondNameHeader }}
+                        </p>
+                    </div>
+
+                    <app-ta-counter
+                        *ngIf="
+                            (!danger && counterData) ||
+                            (counterData == 0 && !hideCounter)
+                        "
+                        [countBackground]="dropOpened ? '#424242' : '#424242'"
+                        [countColor]="dropOpened ? '#FFFFFF' : '#FFFFFF'"
+                        [countHeight]="'20px'"
+                        [countWidth]="'20px'"
+                        [count]="counterData"
+                        [customClass]="'circle_counter'"
+                    >
+                    </app-ta-counter>
+                </div>
+                <div *ngIf="hasIcon" class="repair-header-icons">
+                    <div class="border-line-left"></div>
+                    <!-- <span
+                        class="ic-hed"
+                        *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
+                    >
+                        <div class="border-line-left"></div>
+                        <svg-icon
+                            class="single-repair-icon"
+                            src="{{ ic.icon }}"
+                        ></svg-icon>
+                    </span> -->
+                    <span class="ic-hed" *ngIf="timeFilter">
+                        <app-ta-filter
+                            [type]="'timeFilter'"
+                            [icon]="'ic_time'"
+                            [filterTitle]="'Time Filter'"
+                        >
+                        </app-ta-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <!--
+                    <span class="ic-hed" *ngIf="unitFilter">
+                        unit filter
+                        <div class="border-line-left"></div>
+                    </span>
+                    -->
+                    <!--
+                    <span class="ic-hed" *ngIf="repairOrderFilter">
+                        repairOrderFilter
+                        <div class="border-line-left"></div>
+                    </span>
+                    -->
+                    <span class="ic-hed" *ngIf="pmFilter">
+                        <app-ta-filter
+                            [type]="'pmFilter'"
+                            [icon]="'default_pm'"
+                            [filterTitle]="'PM Filter'"
+                            [pmSubtype]="'truck'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="false"
+                            [leftSideIcon]="true"
+                        >
+                        </app-ta-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="categoryFilter">
+                        <app-ta-filter
+                            [type]="'categoryRepairFilter'"
+                            [icon]="'ic_key-repair'"
+                            [filterTitle]="'Category Repair Filter'"
+                            [defFilterHolder]="true"
+                            [noLeftIcon]="false"
+                            [leftSideIcon]="true"
+                        >
+                        </app-ta-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <span class="ic-hed" *ngIf="moneyFilter">
+                        <app-ta-filter
+                            [type]="'moneyFilter'"
+                            [icon]="'dollar'"
+                            [filterTitle]="'Money Filter'"
+                            [subType]="'no-all'"
+                            [moneyFilter]="true"
+                        >
+                        </app-ta-filter>
+                        <div class="border-line-left"></div>
+                    </span>
+                    <!-- <div class="border-line-left"></div> -->
+
+                    <div *ngIf="totalCost" class="total-cost">
+                        {{ totalCost | formatCurrency }}
+                    </div>
+                </div>
+            </div>
+            <div class="header-plus-button">
+                <div class="date-arrow-repair">
+                    <p *ngIf="customText" class="date-repair">
+                        {{ customText }}
+                    </p>
+                    <div class="icons-repair" *ngIf="hasDateArrow">
+                        <svg-icon
+                            [ngClass]="{ clicked: up }"
+                            (click)="changeDataArrowUpFun($event)"
+                            class="first-icon"
+                            src="assets/svg/common/fill_arrow_down.svg"
+                        ></svg-icon>
+                        <svg-icon
+                            [ngClass]="{ clicked: down }"
+                            (click)="changeDataArrowDownFun($event)"
+                            class="second-icon"
+                            src="assets/svg/common/fill_arrow_down.svg"
+                        ></svg-icon>
+                    </div>
+                    <div class="violation-counter" *ngIf="counterViolation">
+                        {{ counterViolation }}
+                    </div>
+                </div>
+                <div class="hide-buttons" *ngIf="!statusInactive">
+                    <div
+                        (click)="makeRequestFun(headerText)"
+                        *ngIf="hasRequest"
+                        class="request-header-container"
+                    >
+                        REQUEST
+                    </div>
+                    <div
+                        (click)="makeRequestFun(headerText)"
+                        *ngIf="hasRequest"
+                        class="request-header-container icon-request-holder"
+                    >
+                        <svg-icon [src]="'assets/svg/common/ic_documents.svg'">
+                        </svg-icon>
+                    </div>
+                    <div class="border-line-left"></div>
+                    <svg-icon
+                        class="icon-plus-header"
+                        (click)="openModal(headerText)"
+                        src="assets/svg/common/ic_plus.svg"
+                    >
+                    </svg-icon>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #dropdownPopover let-data="data">
+        <div class="load-dropdown-body">
+            <div
+                class="load-template-holder"
+                [class.active-template]="activeTemplate == 'All Load'"
+                (click)="setLoadType('All Load')"
+            >
+                <div class="number-value-holder">{{ counterData }}</div>
+                <div class="number-text-holder">All Load</div>
+                <div
+                    class="selected-load-type"
+                    *ngIf="activeTemplate == 'All Load'"
+                >
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+            </div>
+            <div
+                class="load-template-holder disabled-template"
+                [class.active-template]="activeTemplate == 'Template'"
+                (click)="setLoadType('Template')"
+            >
+                <div class="number-value-holder">0</div>
+                <div class="number-text-holder">Template</div>
+                <div
+                    class="selected-load-type"
+                    *ngIf="activeTemplate == 'Template'"
+                >
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+            </div>
+            <div
+                class="load-template-holder"
+                [class.active-template]="activeTemplate == 'Pending'"
+                (click)="setLoadType('Pending')"
+            >
+                <div class="number-value-holder">2</div>
+                <div class="number-text-holder">Pending</div>
+                <div
+                    class="selected-load-type"
+                    *ngIf="activeTemplate == 'Pending'"
+                >
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+            </div>
+            <div
+                class="load-template-holder"
+                [class.active-template]="activeTemplate == 'Active'"
+                (click)="setLoadType('Active')"
+            >
+                <div class="number-value-holder">8</div>
+                <div class="number-text-holder">Active</div>
+                <div
+                    class="selected-load-type"
+                    *ngIf="activeTemplate == 'Active'"
+                >
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+            </div>
+            <div
+                class="load-template-holder"
+                [class.active-template]="activeTemplate == 'Closed'"
+                (click)="setLoadType('Closed')"
+            >
+                <div class="number-value-holder">93</div>
+                <div class="number-text-holder">Closed</div>
+                <div
+                    class="selected-load-type"
+                    *ngIf="activeTemplate == 'Closed'"
+                >
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

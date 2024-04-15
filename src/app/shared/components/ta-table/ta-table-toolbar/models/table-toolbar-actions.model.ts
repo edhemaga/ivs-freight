@@ -1,0 +1,46 @@
+import { ViewModelOption } from '@shared/components/ta-table/ta-table-body/models/view-model-option.model';
+
+export interface ToolbarActions {
+    showLocationFilter?: boolean;
+    showMoneyFilter?: boolean;
+    showStateFilter?: boolean;
+    showArhiveFilter?: boolean;
+    showLabelFilter?: boolean;
+    showTruckFilter?: boolean;
+    showTrailerFilter?: boolean;
+    showDispatchAdd?: boolean;
+    showTimeFilter?: boolean;
+    showCategoryFuelFilter?: boolean;
+    showFuelStopFilter?: boolean;
+    showLtlFilter?: boolean;
+    showStatusFilter?: boolean;
+    showDispatcherFilter?: boolean;
+    showTruckTypeFilter?: boolean;
+    showTrailerTypeFilter?: boolean;
+    showRepairOrderFilter?: boolean;
+    showPMFilter?: boolean;
+    showCategoryRepairFilter?: boolean;
+    showMoneyCount?: boolean;
+    showDispatchSettings?: boolean;
+    showMapView?: boolean;
+    showDriverFilter?: boolean;
+    showInjuryFilter?: boolean;
+    showTowingFilter?: boolean;
+    showSearchBorder?: boolean;
+    hideActivationButton?: boolean;
+    hideOpenModalButton?: boolean;
+    hideWidth?: boolean;
+    hideViewMode?: boolean;
+    hideDeleteButton?: boolean;
+    hideListColumn?: boolean;
+    hideMoneySubType?: boolean;
+    hideLocationFilter?: boolean;
+    hideCartButton?: boolean;
+    hideTruckFilter?: boolean;
+    hideTrailerFilter?: boolean;
+    hideDriverFilter?: boolean;
+    hideUnassignedDevicesButton?: boolean;
+    hideSearch?: boolean;
+    fuelMoneyFilter?: boolean;
+    viewModeOptions?: ViewModelOption[];
+}

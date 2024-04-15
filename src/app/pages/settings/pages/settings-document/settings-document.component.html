@@ -1,0 +1,21 @@
+<div class="table-container">
+    <div class="documents_toolbar">
+        <app-ta-table-toolbar
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="tableOptions"
+            [tableData]="tableData"
+            [columns]="[]"
+            [selectedTab]="selectedTab"
+        ></app-ta-table-toolbar>
+    </div>
+    <app-ta-upload-files-no-slider
+        [files]="documents"
+        [showDropzone]="showDropzone"
+        (onFileEvent)="onFilesEvent($event)"
+        (closeDropzone)="hideDropzone()"
+        [customClassName]="'company-documents'"
+        [hasTagsDropdown]="true"
+        [dropzoneFocus]="true"
+        [tags]="tags"
+    ></app-ta-upload-files-no-slider>
+</div>

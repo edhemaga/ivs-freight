@@ -1,0 +1,302 @@
+@import 'src/app/core/components/navigation/scss/navigation.design.scss';
+
+.modal-nav-panel {
+    position: absolute;
+    top: 65px;
+    z-index: 99;
+    height: auto;
+    padding: 10px 6px 6px 6px;
+    border-radius: 3px;
+    left: 17.8px;
+    width: 242px;
+    width: 36px;
+    height: 36px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow: hidden;
+    .modal-inner {
+        width: 230px;
+        position: absolute;
+        left: 4px;
+        top: 13px;
+    }
+    p {
+        margin: 0;
+        font-size: $nav-font-size;
+        font-weight: $nav-font-medium;
+        color: $nav-white;
+    }
+
+    .modal-nav-close {
+        display: flex;
+        margin-bottom: 11px;
+        position: relative;
+        justify-content: space-between;
+        padding-right: 4px;
+        height: 20px;
+        .modal-nav-close-svg {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            position: relative;
+            top: -12.9px;
+            left: 4px;
+            svg {
+                position: relative;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                path {
+                    fill: $nav-white;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $nav-white;
+                    }
+                }
+            }
+        }
+        .title {
+            position: absolute;
+            left: 46px;
+            top: 8px;
+            width: 104px;
+        }
+        .modal-nav-close-text {
+            font-size: $nav-font-size;
+            font-weight: $nav-font-bold;
+            color: $nav-white;
+            width: 100%;
+            height: 36px;
+            display: flex;
+            border-radius: 50%;
+            align-items: center;
+            position: relative;
+            justify-content: space-between;
+            bottom: 13px;
+            cursor: pointer;
+            right: 5px;
+        }
+        .tooltip-right {
+            position: fixed;
+            top: 68px;
+            left: 18px;
+            z-index: -1;
+        }
+    }
+    .closed-modal {
+        width: 36px;
+    }
+    .modal-is-open {
+        padding-right: 4px;
+        height: 45px;
+        background: $nav-svg-active;
+        z-index: 9;
+        top: 65px;
+        left: 21px;
+        padding-top: 13px;
+        position: fixed;
+        width: 230px;
+        transition: width 0.3s;
+    }
+    .modal-nav-content {
+        height: auto;
+        margin-top: 12px;
+
+        .modal-nav-header {
+            font-size: $nav-font-size-small;
+            font-weight: $nav-font-bold;
+            color: $nav-dark;
+            padding-left: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            padding-right: 4px;
+            span {
+                width: 100%;
+                height: 0.1px;
+                background: $nav-dark;
+            }
+        }
+        .top-header {
+            margin-top: 25px;
+        }
+        .modal-nav-header:nth-child(1) {
+            position: sticky;
+            top: 32px;
+            background-color: $nav-svg-active;
+            z-index: 8;
+        }
+        .modal-nav-routes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 6px;
+
+            font-size: 14px;
+            color: $nav-white;
+            justify-content: space-between;
+            p {
+                height: 28px;
+                padding: 4px 0px 0px 10px;
+                border-radius: 3px;
+                transition: all 0.2s ease-in-out;
+                position: relative;
+                width: 112px;
+
+                &:hover {
+                    transition: $nav-transition;
+                    background-color: $nav-hover-hover;
+                    cursor: pointer;
+                }
+
+                .border-right {
+                    position: absolute;
+                    right: -4px;
+                    top: 0;
+                    content: '';
+                    width: 2px;
+                    height: 26px;
+                    background: $nav-blue-3;
+                }
+            }
+        }
+        .first-modal {
+            // padding-top: 14px;
+        }
+    }
+}
+.closed-navigation {
+    background: $nav-transparent;
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-svg {
+                svg {
+                    path {
+                        fill: $nav-svg-active;
+                    }
+                }
+            }
+        }
+    }
+    &:hover {
+        background: $nav-svg-active;
+        transition: background 0.3s;
+        .modal-inner {
+            .modal-nav-close {
+                .modal-nav-close-svg {
+                    svg {
+                        path {
+                            fill: $nav-white;
+                            transition: all 0.3s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.opened-navigation {
+    background: $nav-svg-active;
+}
+.add-hover {
+    &:hover {
+        background-color: rgba(255, 255, 255, 1);
+        transition: all 0.3s;
+        .modal-inner {
+            .modal-nav-close {
+                .modal-nav-close-text {
+                    .modal-nav-close-svg {
+                        svg {
+                            path {
+                                transition: all 0.3s;
+                                fill: $nav-svg-active;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.show-modal {
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-text {
+                .modal-nav-close-svg {
+                    svg {
+                        transform: rotate(-45deg);
+                        transition: all 0.3s;
+                        top: 4.1px;
+                        left: 6px;
+                        position: absolute;
+                        path {
+                            transition: all 0.3s;
+                            opacity: 0.5;
+                        }
+                    }
+                    &:hover {
+                        svg {
+                            path {
+                                transition: all 0.3s;
+                                fill: $nav-white;
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.hide-modal {
+    .modal-inner {
+        .modal-nav-close {
+            .modal-nav-close-text {
+                .modal-nav-close-svg {
+                    svg {
+                        transform: rotate(0deg);
+                        transition: all 0.3s;
+                        top: 4.1px;
+                        left: 6.6px;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+    }
+}
+@media only screen and (max-height: 950px) {
+    .modal-media-query-height {
+        height: 700px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 800px) {
+    .modal-media-query-height {
+        height: 500px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 600px) {
+    .modal-media-query-height {
+        height: 400px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 490px) {
+    .modal-media-query-height {
+        height: 300px !important;
+        overflow-y: scroll;
+    }
+}
+@media only screen and (max-height: 370px) {
+    .modal-media-query-height {
+        height: 200px !important;
+        overflow-y: scroll;
+    }
+}
