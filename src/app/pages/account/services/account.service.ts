@@ -138,21 +138,17 @@ export class AccountService {
     }
 
     // Delete Account List
-    public deleteAccountList(accountsToDelete: any[]): Observable<any> {
-        let deleteOnBack = accountsToDelete.map((owner: any) => {
-            return owner.id;
-        });
-
+    public deleteAccountList(ids: number[]): Observable<any> {
         return this.accountService
-            .apiCompanyaccountListDelete(deleteOnBack)
+            .apiCompanyaccountListDelete(ids)
             .pipe(
                 tap(() => {
                     let storeAccounts = this.accountQuery.getAll();
                     let countDeleted = 0;
 
                     storeAccounts.map((account: any) => {
-                        deleteOnBack.map((d) => {
-                            if (d === account.id) {
+                        ids.map((id) => {
+                            if (id === account.id) {
                                 this.accountStore.remove(
                                     ({ id }) => id === account.id
                                 );
@@ -224,5 +220,22 @@ export class AccountService {
         data: UpdateCompanyAccountLabelCommand
     ): Observable<any> {
         return this.accountLabelService.apiCompanyaccountlabelPut(data);
+    }
+
+    public updateNote(data: {
+        selectedTab: string;
+        id: number;
+        value: string;
+    }): void {
+        const storeAccounts = this.accountQuery.getAll();
+
+        storeAccounts.map((account: CompanyAccountResponse) => {
+            if (data.id === account.id) {
+                this.accountStore.update(account.id, (entity) => ({
+                    ...entity,
+                    note: data.value,
+                }));
+            }
+        });
     }
 }

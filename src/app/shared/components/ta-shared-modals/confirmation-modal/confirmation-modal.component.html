@@ -161,7 +161,7 @@
             <!-- Driver, Owner -->
 
             <ng-container
-                *ngIf="['driver', 'user', 'owner'].includes(editData?.template)"
+                *ngIf="['driver', 'owner'].includes(editData?.template)"
             >
                 <div class="confirmation-info">
                     <p class="m-0 confirmation-text-1 large-text-1">
@@ -175,7 +175,7 @@
                         </ng-container>
                     </p>
                     <ng-container
-                        *ngIf="['driver', 'user'].includes(editData?.template)"
+                        *ngIf="['driver'].includes(editData?.template)"
                     >
                         <p class="m-0 confirmation-text-2 large-text-2">
                             {{ editData?.dateOfBirth | formatDateP }}
@@ -188,6 +188,18 @@
                             {{ editData?.data?.address }}
                         </p>
                     </ng-container>
+                </div>
+            </ng-container>
+
+            <!-- Accouont/User -->
+            <ng-container *ngIf="['user'].includes(editData?.template)">
+                <div class="confirmation-info">
+                    <p class="m-0 confirmation-text-1 large-text-1">
+                        {{ editData?.data?.name }}
+                    </p>
+                    <p class="m-0 confirmation-text-2 large-text-2">
+                        {{ editData?.data?.username }}
+                    </p>
                 </div>
             </ng-container>
 
@@ -446,9 +458,7 @@
                 <!-- Driver, Owner -->
 
                 <ng-container
-                    *ngIf="
-                        ['driver', 'user', 'owner'].includes(editData?.template)
-                    "
+                    *ngIf="['driver', 'owner'].includes(editData?.template)"
                 >
                     <div class="confirmation-info">
                         <p class="m-0 confirmation-text-1 large-text-1">
@@ -463,9 +473,7 @@
                             </ng-container>
                         </p>
                         <ng-container
-                            *ngIf="
-                                ['driver', 'user'].includes(editData?.template)
-                            "
+                            *ngIf="['driver'].includes(editData?.template)"
                         >
                             <p class="m-0 confirmation-text-2 large-text-2">
                                 {{ item?.data?.dateOfBirth | formatDateP }}
@@ -480,6 +488,21 @@
                         </ng-container>
                     </div>
                 </ng-container>
+
+                <!-- Accouont/User -->
+                <ng-container *ngIf="['user'].includes(editData?.template)">
+                    <div class="confirmation-info">
+                        <p class="m-0 confirmation-text-1 large-text-1">
+                            {{ item?.data?.name }}
+                        </p>
+                        <ng-container>
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.username }}
+                            </p>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
                 <!-- Truck, Trailer -->
                 <div
                     *ngIf="['truck', 'trailer'].includes(editData?.template)"

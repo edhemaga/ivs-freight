@@ -509,6 +509,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showLocationFilter: true,
                 hideActivationButton: true,
+                hidePrintButton: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,

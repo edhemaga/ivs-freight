@@ -1,15 +1,24 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    AfterViewInit,
+    OnDestroy,
+    Inject,
+} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Clipboard } from '@angular/cdk/clipboard';
 
 import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
+import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
 import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
 import { AccountService } from 'src/app/pages/account/services/account.service';
+import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { AccountState } from 'src/app/pages/account/state/account.store';
@@ -22,6 +31,7 @@ import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global
 // enums
 import { AccountStringEnum } from 'src/app/pages/account/enums/account-string.enum';
 import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
+import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 // models
 import {
@@ -33,6 +43,7 @@ import { AccountTableBodyAction } from 'src/app/pages/account/pages/account-tabl
 import { AccountTableHeadAction } from 'src/app/pages/account/pages/account-table/models/account-table-head-action.model';
 import { AccountCardData } from 'src/app/pages/account/utils/constants/account-card-data.constants';
 import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-account-table',
@@ -76,11 +87,15 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private accountQuery: AccountQuery,
         private accountService: AccountService,
-        private clipboard: Clipboard
+        private clipboard: Clipboard,
+        private confiramtionService: ConfirmationService,
+        @Inject(DOCUMENT) private readonly documentRef: Document
     ) {}
 
     ngOnInit(): void {
         this.sendAccountData();
+
+        this.confiramtionSubscribe();
 
         this.accountResetColumns();
 
@@ -261,38 +276,25 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length) {
-                    this.accountService
-                        .deleteAccountList(response)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe(() => {
-                            this.viewData = this.viewData.map(
-                                (account: CompanyAccountResponse) => {
-                                    response.map((res) => {
-                                        if (account.id === res.id) {
-                                            // account.actionAnimation =
-                                            //     TableActionsStringEnum.DELETE_MULTIPLE;
-                                        }
-                                    });
-
-                                    return account;
-                                }
-                            );
-
-                            this.updateDataCount();
-
-                            const inetval = setInterval(() => {
-                                this.viewData =
-                                    MethodsGlobalHelper.closeAnimationAction(
-                                        true,
-                                        this.viewData
-                                    );
-
-                                clearInterval(inetval);
-                            }, 900);
-
-                            this.tableService.sendRowsSelected([]);
-                            this.tableService.sendResetSelectedColumns(true);
-                        });
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                            },
+                        };
+                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: TableStringEnum.USER_1,
+                            type: TableStringEnum.MULTIPLE_DELETE,
+                            svg: true,
+                        }
+                    );
                 }
             });
     }
@@ -313,7 +315,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.resizeObserver?.observe(
-            document.querySelector(TableActionsStringEnum.TABLE_CONTAINER)
+            document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
     }
 
@@ -322,6 +324,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 hideActivationButton: true,
                 showLabelFilter: true,
+                hidePrintButton: true,
                 viewModeOptions: [
                     {
                         name: TableActionsStringEnum.LIST,
@@ -445,11 +448,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getDropdownOwnerContent(data),
+                content: this.getDropdownAccountContent(data),
             },
         };
     }
-    getDropdownOwnerContent(data: any) {
+    getDropdownAccountContent(data: any) {
         return [
             {
                 title: 'Edit',
@@ -462,23 +465,24 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hasBorder: true,
                 svgClass: 'regular',
             },
+            // {
+            //     title: 'View Details',
+            //     name: 'view-details',
+            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            //     svgStyle: {
+            //         width: 18,
+            //         height: 18,
+            //     },
+            //     svgClass: 'regular',
+            //     tableListDropdownContentStyle: {
+            //         'margin-bottom.px': 4,
+            //     },
+            // }, leave this commented for now
             {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Go to Link',
-                name: 'go-to-link',
-                svgUrl: '',
+                title: data.url ? 'Go to Link' : 'No Link',
+                name: data.url ? 'go-to-link' : 'no-link',
+                svgUrl: 'assets/svg/common/ic_web.svg',
+                mutedStyle: data.url ? false : true,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -491,7 +495,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Copy Username',
                 name: 'copy-username',
-                svgUrl: '',
+                svgUrl: 'assets/svg/applicant/user.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -504,7 +508,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: 'Copy Password',
                 name: 'copy-password',
-                svgUrl: '',
+                svgUrl: 'assets/svg/common/ic_password.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -512,31 +516,31 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 svgClass: 'regular',
                 hasBorder: true,
             },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: 'regular',
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
+            // {
+            //     title: 'Share',
+            //     name: 'share',
+            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            //     svgStyle: {
+            //         width: 18,
+            //         height: 18,
+            //     },
+            //     svgClass: 'regular',
+            //     tableListDropdownContentStyle: {
+            //         'margin-bottom.px': 4,
+            //     },
+            // },
+            // {
+            //     title: 'Print',
+            //     name: 'print',
+            //     svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            //     svgStyle: {
+            //         width: 18,
+            //         height: 18,
+            //     },
 
-                svgClass: 'regular',
-                hasBorder: true,
-            },
+            //     svgClass: 'regular',
+            //     hasBorder: true,
+            // }, leave this commented for now
             {
                 title: 'Delete',
                 name: 'delete-account',
@@ -654,7 +658,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableActionsStringEnum.GO_TO_LINK: {
                 if (event.data?.url) {
-                    this.clipboard.copy(event.data.url);
+                    const url = !event.data.url.startsWith('https://')
+                        ? 'https://' + event.data.url
+                        : event.data.url;
+
+                    this.documentRef.defaultView.open(url, '_blank');
                 }
                 break;
             }
@@ -663,14 +671,20 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
             }
             case TableActionsStringEnum.COPY_USERNAME: {
-                this.clipboard.copy(event.data.password);
+                this.clipboard.copy(event.data.username);
                 break;
             }
             case AccountStringEnum.DELETE_ACCOUNT: {
-                this.accountService
-                    .deleteCompanyAccountById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...event,
+                        template: TableStringEnum.USER_1,
+                        type: TableStringEnum.DELETE,
+                        svg: true,
+                    }
+                );
                 break;
             }
             case TableActionsStringEnum.LABLE_CHANGE: {
@@ -719,6 +733,73 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             })
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    public saveValueNote(event: { value: string; id: number }): void {
+        this.viewData.map((item: CardDetails) => {
+            if (item.id === event.id) {
+                item.note = event.value;
+            }
+        });
+
+        const noteData = {
+            value: event.value,
+            id: event.id,
+            selectedTab: this.selectedTab,
+        };
+
+        this.accountService.updateNote(noteData);
+    }
+
+    private confiramtionSubscribe(): void {
+        this.confiramtionService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case TableStringEnum.DELETE:
+                            this.deleteAccountList([res.id]);
+                            break;
+                        case TableStringEnum.MULTIPLE_DELETE:
+                            this.deleteAccountList(res.array);
+                            break;
+                        default:
+                            break;
+                    }
+                },
+            });
+    }
+
+    private deleteAccountList(ids: number[]): void {
+        this.accountService
+            .deleteAccountList(ids)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((account: any) => {
+                    ids.map((id) => {
+                        if (account.id === id) {
+                            account.actionAnimation =
+                                TableActionsStringEnum.DELETE_MULTIPLE;
+                        }
+                    });
+
+                    return account;
+                });
+
+                this.updateDataCount();
+
+                const inetval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+
+                    clearInterval(inetval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
     }
 
     ngOnDestroy(): void {
