@@ -16,6 +16,8 @@ import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
+import { authReducer } from './pages/website/state/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 // routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -82,8 +84,9 @@ function playerFactory() {
             warnOnNgModelWithFormControl: 'never',
         }),
         StoreModule.forRoot({
-            course: ArticleReducer,
+            auth: authReducer,
         }),
+        EffectsModule.forRoot([]),
 
         // routing
         AppRoutingModule,
