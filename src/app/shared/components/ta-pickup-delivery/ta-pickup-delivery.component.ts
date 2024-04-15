@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+// modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -124,7 +126,7 @@ export class TaPickupDeliveryComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    changeTabs(ev: any) {
+    changeTabs(_: any) {
         this.showDetails = false;
     }
 

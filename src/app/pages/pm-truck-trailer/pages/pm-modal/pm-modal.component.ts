@@ -11,10 +11,10 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
-import { PmService } from 'src/app/pages/pm-truck-trailer/services/pm.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/shared/services/form.service';
+import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FormService } from '@shared/services/form.service';
 
 // Models
 import {
@@ -27,21 +27,19 @@ import {
 } from 'appcoretruckassist';
 
 // Validators
-import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+import { descriptionValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
-import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
-
-// Modals
-import { RepairOrderModalComponent } from '../../../repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-pm-modal',

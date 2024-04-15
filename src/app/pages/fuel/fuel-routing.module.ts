@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FuelTableComponent } from './pages/fuel-table/fuel-table.component';
-import { FuelItemResolver } from './state/fuel-details-state/fuel-details.resolver';
+
+// components
+import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
+import { FuelDetailsResolver } from '@pages/fuel/resolvers/fuel-details.resolver';
 
 const routes: Routes = [
     {
@@ -12,11 +14,11 @@ const routes: Routes = [
     {
         path: ':id/details',
         loadChildren: () =>
-            import('./pages/fuel-details/fuel-details.module').then(
+            import('@pages/fuel/pages/fuel-details/fuel-details.module').then(
                 (m) => m.FuelDetailsModule
             ),
         resolve: {
-            fuelSingle: FuelItemResolver,
+            fuelSingle: FuelDetailsResolver,
         },
     },
 ];

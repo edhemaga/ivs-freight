@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccidentTableComponent } from './accident-table.component';
+import { AccidentTableComponent } from '@pages/safety/accident/pages/accident-table/accident-table.component';
 
 describe('AccidentTableComponent', () => {
     let component: AccidentTableComponent;

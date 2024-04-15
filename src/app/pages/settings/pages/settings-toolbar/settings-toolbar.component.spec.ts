@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsToolbarComponent } from './settings-toolbar.component';
+import { SettingsToolbarComponent } from '@pages/settings/pages/settings-toolbar/settings-toolbar.component';
 
 describe('SettingsToolbarComponent', () => {
     let component: SettingsToolbarComponent;

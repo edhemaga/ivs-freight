@@ -18,27 +18,27 @@ import { AgmDirectionModule } from 'agm-direction';
 import { Subject, takeUntil } from 'rxjs';
 
 // const
-import * as AppConst from 'src/app/const';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
 // services
-import { MapsService } from '../../services/maps.service';
-import { TruckassistTableService } from '../../services/truckassist-table.service';
-import { DropDownService } from '../../services/drop-down.service';
-import { DetailsDataService } from '../../services/details-data.service';
-import { FuelService } from 'src/app/shared/services/fuel.service';
-import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { RepairService } from 'src/app/shared/services/repair.service';
-import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
-import { ConfirmationService } from '../ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
+import { MapsService } from '@shared/services/maps.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { FuelService } from '@shared/services/fuel.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
+import { RepairService } from '@shared/services/repair.service';
+import { RoutingStateService } from '@shared/services/routing-state.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { CompanyOfficeService } from '@shared/services/company-office.service';
 
 // models
-import { MapRoute } from '../../models/map-route.model';
-import { Confirmation } from '../ta-shared-modals/confirmation-modal/models/confirmation.model';
+import { MapRoute } from '@shared/models/map-route.model';
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaMapMarkerDropdownComponent } from '../ta-map-marker-dropdown/ta-map-marker-dropdown.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaMapMarkerDropdownComponent } from '@shared/components/ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -103,9 +103,9 @@ export class TaMapsComponent implements OnInit, OnDestroy {
     @Output() selectMarker: EventEmitter<any> = new EventEmitter();
 
     public agmMap: any;
-    public styles: any = AppConst.GOOGLE_MAP_STYLES;
+    public styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -198,7 +198,7 @@ export class TaMapsComponent implements OnInit, OnDestroy {
         this.addDeleteListener();
 
         if (this.darkMode) {
-            this.styles = AppConst.GOOGLE_MAP_DARK_STYLES;
+            this.styles = MapConstants.GOOGLE_MAP_DARK_STYLES;
         }
     }
 

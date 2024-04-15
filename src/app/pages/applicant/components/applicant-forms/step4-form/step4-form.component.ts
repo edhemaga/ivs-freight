@@ -33,32 +33,32 @@ import moment from 'moment';
 import {
     addressValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { FormService } from 'src/app/shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
 
 // store
-import { ApplicantQuery } from '../../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../enums/selected-mode.enum';
-import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { AnswerChoices } from '../../../pages/applicant-application/models/answer-choices.model';
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
-import { Accident } from '../../../pages/applicant-application/models/accident.model';
+import { Accident } from '@pages/applicant/pages/applicant-application/models/accident.model';
 
 // components
-import { TaInputRadiobuttonsComponent } from 'src/app/shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @Component({
     selector: 'app-step4-form',

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCustomDateTimePickersCalendarLeftComponent } from './ta-custom-datetime-pickers-calendar-left.component';
+import { TaCustomDateTimePickersCalendarLeftComponent } from '@shared/components/ta-custom-datetime-pickers/components/ta-custom-datetime-pickers-calendar-left/ta-custom-datetime-pickers-calendar-left.component';
 
 describe('TaCustomDateTimePickersCalendarLeftComponent', () => {
     let component: TaCustomDateTimePickersCalendarLeftComponent;

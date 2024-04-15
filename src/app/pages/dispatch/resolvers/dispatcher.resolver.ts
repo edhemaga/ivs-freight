@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+
+import { forkJoin, Observable, map } from 'rxjs';
 
 // Store
-import { DispatcherQuery } from '../state/dispatcher.query';
+import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
 // Services
-import { DispatcherService } from '../services/dispatcher.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 @Injectable({
     providedIn: 'root',

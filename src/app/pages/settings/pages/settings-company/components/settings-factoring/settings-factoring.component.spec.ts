@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsFactoringComponent } from './settings-factoring.component';
+import { SettingsFactoringComponent } from '@pages/settings/pages/settings-company/components/settings-factoring/settings-factoring.component';
 
 describe('SettingsFactoringComponent', () => {
     let component: SettingsFactoringComponent;

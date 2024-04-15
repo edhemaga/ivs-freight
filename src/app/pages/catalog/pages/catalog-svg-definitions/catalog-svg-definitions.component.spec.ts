@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CatalogSvgDefinitionsComponent } from './catalog-svg-definitions.component';
+import { CatalogSvgDefinitionsComponent } from '@pages/catalog/pages/catalog-svg-definitions/catalog-svg-definitions.component';
 
 describe('CatalogSvgDefinitionsComponent', () => {
     let component: CatalogSvgDefinitionsComponent;

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsCardComponent } from './settings-card.component';
+import { SettingsCardComponent } from '@pages/settings/components/settings-card/settings-card.component';
 
 describe('SettingsCardComponent', () => {
     let component: SettingsCardComponent;

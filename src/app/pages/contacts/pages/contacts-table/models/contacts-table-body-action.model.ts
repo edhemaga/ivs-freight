@@ -1,4 +1,4 @@
-import { ContactTableData } from './contact-table-data.model';
+import { ContactTableData } from '@pages/contacts/pages/contacts-table/models/contact-table-data.model';
 
 export interface ContactsTableBodyAction {
     id?: number;

@@ -1,5 +1,5 @@
-import { SvgStyles } from '../../models/svg-styles.model';
-import { TooltipStyles } from '../../models/tooltip-styles.model';
+import { SvgStyles } from '@pages/account/pages/account-card/models/svg-styles.model';
+import { TooltipStyles } from '@pages/account/pages/account-card/models/tooltip-styles.model';
 
 export class ShowHidePassConstants {
     static TOOLTIP_STYLES: TooltipStyles = {

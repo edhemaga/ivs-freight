@@ -1,6 +1,8 @@
-import type { ChartAxisPositionEnum } from '../enums/chart-axis-position-string.enum';
-import type { AxisGridLines } from './axis-grid-lines.model';
-import type { AxisTicks } from './axis-ticks.model';
+import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
+
+// models
+import { AxisGridLines } from '@shared/components/ta-chart/models/axis-grid-lines.model';
+import { AxisTicks } from '@shared/components/ta-chart/models//axis-ticks.model';
 
 export interface Axis {
     stacked: boolean;

@@ -1,26 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // Store
 import {
     ShipperState,
     ShipperStore,
-} from '../state/shipper-state/shipper.store';
+} from '@pages/customer/state/shipper-state/shipper.store';
 
 // Service
-import { ShipperService } from '../services/shipper.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ShipperResolver implements Resolve<ShipperState> {
     constructor(
-        // Store
         private shipperStore: ShipperStore,
-
-        // Service
         private shipperService: ShipperService,
         private tableService: TruckassistTableService
     ) {}

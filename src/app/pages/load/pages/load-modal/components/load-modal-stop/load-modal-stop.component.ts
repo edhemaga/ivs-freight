@@ -13,14 +13,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // animations
-import { collapseAnimation } from '../../utils/animations/collapse.animation';
+import { collapseAnimation } from '@pages/load/pages/load-modal/utils/animations/collapse.animation';
 
 // constants
-import { LoadStatusStringEnum } from './enums/load-status-string.enum';
-import { LoadModalConstants } from '../../utils/constants/load-modal.constants';
+import { LoadStatusStringEnum } from '@pages/load/pages/load-modal/components/load-modal-stop/enums/load-status-string.enum';
+import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
 
 @Component({
     selector: 'app-load-modal-stop',

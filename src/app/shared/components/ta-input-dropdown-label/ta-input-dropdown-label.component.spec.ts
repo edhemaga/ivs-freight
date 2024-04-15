@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label.component';
+import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 
 describe('TaInputDropdownLabelComponent', () => {
     let component: TaInputDropdownLabelComponent;

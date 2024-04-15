@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+
+import { Observable } from 'rxjs';
 
 // Store
-import { RepairDetailsStore } from '../state/repair-details-state/repair-details.store';
-import { RepairDetailsQuery } from '../state/repair-details-state/repair-details.query';
+import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 
 // Models
 import {
@@ -23,12 +23,11 @@ export class RepairDetailsService {
     public currentIndex: number;
     public repairShopList: any;
     public repairShopId: number;
-    private destroy$ = new Subject<void>();
+
     constructor(
         private repairShopService: RepairShopService,
         private repairService: RepairService,
-        private repairDetailsStore: RepairDetailsStore,
-        private repairDetailsQuery: RepairDetailsQuery
+        private repairDetailsStore: RepairDetailsStore
     ) {}
 
     // Get Repair List

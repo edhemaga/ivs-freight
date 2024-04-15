@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
-import { INavigation } from 'src/app/pages/applicant/models/navigation.model';
+import { INavigation } from '@pages/applicant/models/navigation.model';
 import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
 
 @Component({

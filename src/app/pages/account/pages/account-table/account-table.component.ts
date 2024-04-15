@@ -11,39 +11,41 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { AccountModalComponent } from 'src/app/pages/account/pages/account-modal/account-modal.component';
+import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { AccountService } from 'src/app/pages/account/services/account.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { AccountService } from '@pages/account/services/account.service';
 import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
+
 // store
-import { AccountState } from 'src/app/pages/account/state/account.store';
-import { AccountQuery } from 'src/app/pages/account/state/account.query';
+import { AccountState } from '@pages/account/state/account.store';
+import { AccountQuery } from '@pages/account/state/account.query';
 
 // utils
-import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { getToolsAccountsColumnDefinition } from '@shared/utils/settings/table-settings/tools-accounts-columns';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // enums
-import { AccountStringEnum } from 'src/app/pages/account/enums/account-string.enum';
-import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // models
 import {
     CompanyAccountLabelResponse,
     CompanyAccountResponse,
 } from 'appcoretruckassist';
-import { AccountTableToolbarAction } from 'src/app/pages/account/pages/account-table/models/account-table-toolbard-action.model';
-import { AccountTableBodyAction } from 'src/app/pages/account/pages/account-table/models/account-table-body-action.model';
-import { AccountTableHeadAction } from 'src/app/pages/account/pages/account-table/models/account-table-head-action.model';
-import { AccountCardData } from 'src/app/pages/account/utils/constants/account-card-data.constants';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { AccountTableToolbarAction } from '@pages/account/pages/account-table/models/account-table-toolbard-action.model';
+import { AccountTableBodyAction } from '@pages/account/pages/account-table/models/account-table-body-action.model';
+import { AccountTableHeadAction } from '@pages/account/pages/account-table/models/account-table-head-action.model';
+import { AccountCardData } from '@pages/account/utils/constants/account-card-data.constants';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+
 
 @Component({
     selector: 'app-account-table',

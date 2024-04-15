@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsOfficeComponent } from './settings-office.component';
+import { SettingsOfficeComponent } from '@pages/settings/pages/settings-location/components/settings-office/settings-office.component';
 
 describe('SettingsOfficeComponent', () => {
     let component: SettingsOfficeComponent;

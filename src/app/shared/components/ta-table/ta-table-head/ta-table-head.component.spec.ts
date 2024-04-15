@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaTableHeadComponent } from './ta-table-head.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 
 describe('TaTableHeadComponent', () => {
     let component: TaTableHeadComponent;

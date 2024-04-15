@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantSphFormThankYouComponent } from './applicant-sph-form-thank-you.component';
+import { ApplicantSphFormThankYouComponent } from '@pages/applicant/pages/applicant-sph/pages/applicant-sph-form/components/applicant-sph-form-thank-you/applicant-sph-form-thank-you.component';
 
 describe('ApplicantSphFormThankYouComponent', () => {
     let component: ApplicantSphFormThankYouComponent;

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApplicantMvrAuthorizationComponent } from './applicant-mvr-authorization.component';
+import { ApplicantMvrAuthorizationComponent } from '@pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.component';
 
 const routes: Routes = [
     {

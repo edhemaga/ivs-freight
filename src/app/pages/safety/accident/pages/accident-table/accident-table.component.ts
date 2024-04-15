@@ -5,22 +5,22 @@ import { DatePipe } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // components
-import { AccidentModalComponent } from 'src/app/pages/safety/accident/pages/accident-modal/accident-modal.component';
+import { AccidentModalComponent } from '@pages/safety/accident/pages/accident-modal/accident-modal.component';
 
 // helpers
-import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
+import { getAccidentColumns } from '@shared/utils/settings/table-settings/safety-columns';
 
 // store
-import { AccidentActiveState } from '../../state/accident-active/accident-active.store';
-import { AccidentInactiveState } from '../../state/accident-inactive/accident-inactive.store';
-import { AccidentNonReportedState } from '../../state/accident-non-reported/accident-non-reported.store';
-import { AccidentActiveQuery } from '../../state/accident-active/accident-active.query';
-import { AccidentNonReportedQuery } from '../../state/accident-non-reported/accident-non-reported.query';
-import { AccidentInactiveQuery } from '../../state/accident-inactive/accident-inactive.query';
+import { AccidentActiveState } from '@pages/safety/accident/state/accident-active/accident-active.store';
+import { AccidentInactiveState } from '@pages/safety/accident/state/accident-inactive/accident-inactive.store';
+import { AccidentNonReportedState } from '@pages/safety/accident/state/accident-non-reported/accident-non-reported.store';
+import { AccidentActiveQuery } from '@pages/safety/accident/state/accident-active/accident-active.query';
+import { AccidentNonReportedQuery } from '@pages/safety/accident/state/accident-non-reported/accident-non-reported.query';
+import { AccidentInactiveQuery } from '@pages/safety/accident/state/accident-inactive/accident-inactive.query';
 
 // models
 import { AccidentShortResponse } from 'appcoretruckassist';

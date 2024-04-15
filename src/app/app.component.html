@@ -1,4 +1,3 @@
-<!-- <overlay-scrollbars></overlay-scrollbars> -->
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
         showVerticalScrollBar: true,
@@ -6,6 +5,7 @@
     }"
 >
     <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
+
     <div
         id="top"
         class="{{
@@ -35,8 +35,10 @@
             <img src="assets/png/ic_truckassist-logo.png" />
         </div>
         <br />
+
         <h3>The screen size is too low for this app to run.</h3>
         <br />
+
         <h4>Minimum screen width requirement: 1280px.</h4>
     </div>
 </app-ta-custom-scrollbar>

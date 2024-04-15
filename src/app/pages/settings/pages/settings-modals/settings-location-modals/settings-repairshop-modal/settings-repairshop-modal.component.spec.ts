@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsRepairshopModalComponent } from './settings-repairshop-modal.component';
+import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 
 describe('SettingsRepairshopModalComponent', () => {
     let component: SettingsRepairshopModalComponent;

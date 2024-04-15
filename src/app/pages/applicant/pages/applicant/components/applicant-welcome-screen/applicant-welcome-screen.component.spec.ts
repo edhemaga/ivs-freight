@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen.component';
+import { ApplicantWelcomeScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
 
 describe('ApplicantWelcomeScreenComponent', () => {
     let component: ApplicantWelcomeScreenComponent;

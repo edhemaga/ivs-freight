@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantAddSaveBtnComponent } from './applicant-add-save-btn.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 
 describe('ApplicantAddSaveBtnComponent', () => {
     let component: ApplicantAddSaveBtnComponent;

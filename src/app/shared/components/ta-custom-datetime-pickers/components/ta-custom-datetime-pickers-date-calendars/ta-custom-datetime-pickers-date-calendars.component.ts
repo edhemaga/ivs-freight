@@ -15,14 +15,17 @@ import { Subject, Subscription, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // services
-import { CalendarDateTimePickerService } from '../../services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 
 // constants
-import { RANGE, STARTING_YEAR } from '../../strategy/calendar-strategy';
+import {
+    RANGE,
+    STARTING_YEAR,
+} from '@shared/components/ta-custom-datetime-pickers/strategy/calendar-strategy';
 
 // components
-import { TaCustomDateTimePickerCalendarDatesMainComponent } from '../ta-custom-datetime-pickers-calendar-dates-main/ta-custom-datetime-pickers-calendar-dates-main.component';
-import { TaCustomDateTimePickersCalendarLeftComponent } from '../ta-custom-datetime-pickers-calendar-left/ta-custom-datetime-pickers-calendar-left.component';
+import { TaCustomDateTimePickerCalendarDatesMainComponent } from '@shared/components/ta-custom-datetime-pickers/components/ta-custom-datetime-pickers-calendar-dates-main/ta-custom-datetime-pickers-calendar-dates-main.component';
+import { TaCustomDateTimePickersCalendarLeftComponent } from '@shared/components/ta-custom-datetime-pickers/components/ta-custom-datetime-pickers-calendar-left/ta-custom-datetime-pickers-calendar-left.component';
 
 const MONTHS = [
     'January',

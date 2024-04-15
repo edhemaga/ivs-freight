@@ -1,4 +1,4 @@
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -18,22 +18,22 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     dropDownAnimation,
     navigationRouteAnimation,
-} from '../../animations/navigation.animation';
+} from '@core/components/navigation/animations/navigation.animation';
 
 // models
-import { NavigationUserPanel } from '../../models/navigation-user-panel.model';
+import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
 
 // constants
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
 // services
-import { NavigationService } from '../../services/navigation.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { ModalService } from '@shared/services/modal.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 
 // components
-import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
+import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -49,6 +49,7 @@ import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/n
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
@@ -137,7 +138,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    public identity(index: number, item: NavigationUserPanel): number {
+    public identity(_: number, item: NavigationUserPanel): number {
         return item.id;
     }
 

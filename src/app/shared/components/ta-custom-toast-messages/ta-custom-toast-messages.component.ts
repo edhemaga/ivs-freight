@@ -16,11 +16,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import moment from 'moment';
 
 // services
-import { NotificationService } from '../../services/notification.service';
-import { DetailsDataService } from '../../services/details-data.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // components
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';

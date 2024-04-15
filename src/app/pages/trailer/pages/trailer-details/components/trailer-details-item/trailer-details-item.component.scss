@@ -1,4 +1,5 @@
-@import '../../trailer-details.component.scss';
+@import 'src/theme/variables';
+
 @keyframes change {
     from {
         color: #6c6c6c;
@@ -23,19 +24,9 @@ app-trailer-details-item {
             height: 22px;
             text-transform: uppercase;
             .firm-name {
-                font-size: $font-size18;
-                font-weight: $font-medium;
-                //color: $color-gray-dark;
+                font-size: 18px;
                 color: #2f2f2f;
                 height: 19px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
             }
         }
 
@@ -94,7 +85,6 @@ app-trailer-details-item {
         .item-wrapper {
             grid-template-columns: 122px 131px 75px !important;
             .employment {
-                font-weight: $font-semibold !important;
                 width: 155px;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -129,14 +119,6 @@ app-trailer-details-item {
                 font-weight: 800;
                 color: #000000;
                 margin-left: 4px;
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(108, 108, 108, 0.2);
-                }
             }
 
             &.disabled {

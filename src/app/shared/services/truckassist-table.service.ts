@@ -11,9 +11,9 @@ import {
     TableConfigService,
     UpdateTableConfigCommand,
 } from 'appcoretruckassist';
-import { ColumnWidthData } from 'src/app/shared/models/table-models/column-width-data.model';
-import { Column } from 'src/app/shared/models/table-models/column.model';
-import { AllTableAnimationModel } from 'src/app/shared/models/table-models/all-table-animation.model';
+import { ColumnWidthData } from '@shared/models/table-models/column-width-data.model';
+import { Column } from '@shared/models/table-models/column.model';
+import { AllTableAnimationModel } from '@shared/models/table-models/all-table-animation.model';
 
 @Injectable({
     providedIn: 'root',

@@ -1,6 +1,6 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { DropdownItem } from 'src/app/shared/models/dropdown-item.model';
-import { LoadBroker } from 'src/app/shared/models/load-broker.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { LoadBroker } from '@shared/models/load-broker.model';
 
 export interface LoadModel {
     isSelected: boolean;

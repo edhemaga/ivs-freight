@@ -17,12 +17,12 @@ import {
     dropDownAnimation,
     navigationRouteAnimation,
     test,
-} from 'src/app/core/components/navigation/animations/navigation.animation';
+} from '@core/components/navigation/animations/navigation.animation';
 
 // models
-import { Navigation } from 'src/app/core/components/navigation/models/navigation.model';
-import { NavigationSubRoute } from 'src/app/core/components/navigation/models/navigation-subroute.model';
-import { NavigationSubRoutes } from 'src/app/core/components/navigation/models/navigation-subroutes.model';
+import { Navigation } from '@core/components/navigation/models/navigation.model';
+import { NavigationSubRoute } from '@core/components/navigation/models/navigation-subroute.model';
+import { NavigationSubRoutes } from '@core/components/navigation/models/navigation-subroutes.model';
 
 @Component({
     selector: 'app-navigation-subroute',

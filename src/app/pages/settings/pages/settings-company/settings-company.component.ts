@@ -10,18 +10,18 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { SettingsCompanyService } from '../../services/settings-company.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // store
-import { CompanyQuery } from '../../state/company-state/company-settings.query';
-import { CompanyStore } from '../../state/company-state/company-settings.store';
+import { CompanyQuery } from '@pages/settings/state/company-state/company-settings.query';
+import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
 
 // components
-import { SettingsBasicModalComponent } from '../settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsBasicModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
 
 // models
 import { CompanyResponse, SignInResponse } from 'appcoretruckassist';

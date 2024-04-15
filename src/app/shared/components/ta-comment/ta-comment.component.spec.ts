@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCommentComponent } from './ta-comment.component';
+import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 
 describe('TaCommentComponent', () => {
     let component: TaCommentComponent;

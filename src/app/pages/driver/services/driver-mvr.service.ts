@@ -1,22 +1,23 @@
 import { MvrService } from 'appcoretruckassist';
 import { Injectable, OnDestroy } from '@angular/core';
+
 import { Observable, tap, Subject } from 'rxjs';
 
-//Models
+// Models
 import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 
-//Services
-import { DriverService } from './driver.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+// Services
+import { DriverService } from '@pages/driver/services/driver.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
-//Store
-import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
-import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
-import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+// Store
+import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 @Injectable({
     providedIn: 'root',
@@ -109,7 +110,7 @@ export class DriverMvrService implements OnDestroy {
 
     public deleteMvrById(id: number): Observable<any> {
         return this.mvrService.apiMvrIdDelete(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));

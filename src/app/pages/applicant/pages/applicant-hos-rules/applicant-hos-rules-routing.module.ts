@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApplicantHosRulesComponent } from './applicant-hos-rules.component';
+import { ApplicantHosRulesComponent } from '@pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.component';
 
 const routes: Routes = [
     {

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TodoModalComponent } from './to-do-modal.component';
+import { TodoModalComponent } from '@pages/to-do/pages/to-do-modal/to-do-modal.component';
 
 describe('TodoModalComponent', () => {
     let component: TodoModalComponent;

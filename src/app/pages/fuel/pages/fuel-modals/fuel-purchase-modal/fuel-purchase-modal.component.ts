@@ -16,19 +16,19 @@ import {
 import { Subject, takeUntil, switchMap, of } from 'rxjs';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/shared/services/form.service';
-import { FuelService } from 'src/app/shared/services/fuel.service';
-import { TruckService } from 'src/app/shared/services/truck.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FormService } from '@shared/services/form.service';
+import { FuelService } from '@shared/services/fuel.service';
+import { TruckService } from '@shared/services/truck.service';
 
 //Components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -36,38 +36,38 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Models
-import { GetFuelModalResponse } from '../../../../../../../appcoretruckassist/model/getFuelModalResponse';
-import { FuelDispatchHistoryResponse } from '../../../../../../../appcoretruckassist/model/fuelDispatchHistoryResponse';
-import { FuelStopFranchiseResponse } from '../../../../../../../appcoretruckassist/model/fuelStopFranchiseResponse';
 import {
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    GetFuelModalResponse,
+    FuelDispatchHistoryResponse,
+    FuelStopFranchiseResponse,
+    TruckMinimalListResponse,
+    EnumValue,
 } from 'appcoretruckassist';
-import { FuelData } from './models/fuel-data.model';
-import { FuelItems } from './models/fuel-items.model';
-import { FuelItemsDropdown } from './models/fuel-items-dropdown.model';
-import { FuelTruckType } from './models/fuel-truck-type.model';
-import { TruckMinimalListResponse } from '../../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Trailer } from '../../../../../shared/models/card-models/card-table-data.model';
+import { FuelData } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-data.model';
+import { FuelItems } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-items.model';
+import { FuelItemsDropdown } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-items-dropdown.model';
+import { FuelTruckType } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models/fuel-truck-type.model';
+import { Trailer } from '@shared/models/card-models/card-table-data.model';
 
 //Pipes
-import { SumArraysPipe } from 'src/app/shared/pipes/sum-arrays.pipe';
+import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 //Enums
-import { EnumValue } from '../../../../../../../appcoretruckassist/model/enumValue';
-import { FuelDataOptionsStringEnum } from '../../../enums/fuel-data-options-string.enum';
-import { FuelDropdownOptionsStringEnum } from './enums/fuel-dropdown-optioins-string.enum';
-import { FuelValuesStringEnum } from './enums/fuel-values-string.enum';
-import { FuelModalActionsStringEnum } from './enums/fuel-modal-actions-string.enum';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums/fuel-data-options-string.enum';
+import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-dropdown-optioins-string.enum';
+import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-values-string.enum';
+import { FuelModalActionsStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums/fuel-modal-actions-string.enum';
 
 //Validations
 import {
     priceValidation,
     fullNameValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 //Methods
-import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-fuel-purchase-modal',

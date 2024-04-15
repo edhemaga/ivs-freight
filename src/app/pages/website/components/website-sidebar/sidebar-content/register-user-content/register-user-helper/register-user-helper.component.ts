@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // services
-import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 // enums
-import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
-import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
+import { UserInfoModel } from '@pages/website/models/user-info.model';
 
 @Component({
     selector: 'app-register-user-helper',

@@ -7,16 +7,16 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
-import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
-import { TaCounterComponent } from '../ta-counter/ta-counter.component';
-import { TaFilterComponent } from '../ta-filter/ta-filter.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //pipes
-import { FormatCurrency } from '../../pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -34,7 +34,7 @@ import { FormatCurrency } from '../../pipes/format-currency.pipe';
         TaFilterComponent,
         RouterModule,
         NgbPopoverModule,
-        FormatCurrency,
+        FormatCurrencyPipe,
     ],
 })
 export class TaDetailsHeaderComponent implements OnInit {

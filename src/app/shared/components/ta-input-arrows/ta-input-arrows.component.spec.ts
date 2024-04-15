@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaInputArrowsComponent } from './ta-input-arrows.component';
+import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
 
 describe('TaInputArrowsComponent', () => {
     let component: TaInputArrowsComponent;

@@ -2,14 +2,14 @@ import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
-//Utils
-import { getIntegrationsColumnDefinition } from 'src/assets/utils/settings/integration-columns';
+// helpers
+import { getIntegrationsColumnDefinition } from '@shared/utils/settings/table-settings/integration-columns';
 
-//States
-import { IntegrationActiveQuery } from '../../state/settings-integration-state/integration-active.query';
+// store
+import { IntegrationActiveQuery } from '@pages/settings/state/settings-integration-state/integration-active.query';
 
-//Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',
@@ -223,11 +223,11 @@ export class SettingsIntegrationComponent
         };
     }
 
-    onToolBarAction(event) {}
+    onToolBarAction(_) {}
 
-    onTableBodyActions(event) {}
+    onTableBodyActions(_) {}
 
-    onTableHeadActions(event) {}
+    onTableHeadActions(_) {}
 
     getTabData() {
         this.integrationsActive = this.integrationActiveQuery.getAll();

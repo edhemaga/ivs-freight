@@ -8,10 +8,10 @@ import {
 import { UntypedFormControl } from '@angular/forms';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
 
 // store
-import { RoadsideMinimalListQuery } from '../../../../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
+import { RoadsideMinimalListQuery } from '@pages/safety/violation/state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.query';
 
 @Component({
     selector: 'app-violation-details-card',

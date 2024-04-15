@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaProfileImagesComponent } from './ta-profile-images.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
 describe('TaProfileImagesComponent', () => {
     let component: TaProfileImagesComponent;

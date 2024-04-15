@@ -7,20 +7,20 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
-// Services
-import { PayrollService } from '../../../../services/payroll.service';
+// services
+import { PayrollService } from '@pages/accounting/services/payroll.service';
 
-// Constants
-import { PayrollCommisionDriverOpenLoads } from './utils/constants/payroll-commision-driver-open-loads.constants';
+// constants
+import { PayrollCommisionDriverOpenLoads } from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-commision-driver-open-loads.constants';
 import {
     PayrollOwnerOpenLoads,
     PayrollOwnerOpenLoadsResizable,
-} from './utils/constants/payroll-owner-open-load.constants';
-import * as AppConst from 'src/app/const';
+} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-owner-open-load.constants';
+import { MapConstants } from '@shared/utils/constants/map.constants';
 import {
     PayrollMilesDriverOpenLoads,
     PayrollMilesDriverOpenLoadsResizable,
-} from './utils/constants/payroll-miles-driver-open-loads.constants';
+} from '@pages/accounting/pages/payroll/components/payroll-report/utils/constants/payroll-miles-driver-open-loads.constants';
 
 @Component({
     selector: 'app-payroll-report',
@@ -41,9 +41,9 @@ export class PayrollReportComponent implements OnInit {
     mapZoom: number = 1;
 
     agmMap: any;
-    styles = AppConst.GOOGLE_MAP_STYLES;
+    styles = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -86,7 +86,8 @@ export class PayrollReportComponent implements OnInit {
                 break;
             case 'Driver (Miles)':
                 this.tableSettings = PayrollMilesDriverOpenLoads;
-                this.tableSettingsResizable = PayrollMilesDriverOpenLoadsResizable;
+                this.tableSettingsResizable =
+                    PayrollMilesDriverOpenLoadsResizable;
                 this.payrollService.getPayrollMileageDriverOpenReport();
                 // Same error as above
                 // .subscribe((res) => {

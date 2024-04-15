@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaGpsProgressbarComponent } from './ta-gps-progressbar.component';
+import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 
 describe('TaGpsProgressbarComponent', () => {
     let component: TaGpsProgressbarComponent;

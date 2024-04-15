@@ -39,7 +39,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
         RouterModule,
         AngularSvgIconModule.forRoot(),
         AngularSvgIconPreloaderModule.forRoot({
-            configUrl: '../../assets/preload-svg/preload-svg.json',
+            configUrl: 'src/assets/preload-svg/preload-svg.json',
         }),
         AgmDirectionModule,
         NgxSliderModule,

@@ -1,8 +1,8 @@
 // enums
-import { LoadModalStopItemsStringEnum } from "../../../../enums/load-modal-stop-items-string.enum";
+import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
 
 // models
-import { LoadItemStop } from '../../models/load-item-stop.model';
+import { LoadItemStop } from '@pages/load/pages/load-modal/models/load-item-stop.model';
 
 export class LoadStopItems {
     static STOP_ITEM_HEADERS: string[] = [

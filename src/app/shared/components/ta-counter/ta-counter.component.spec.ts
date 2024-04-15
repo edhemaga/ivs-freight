@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCounterComponent } from './ta-counter.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
 describe('TaCounterComponent', () => {
     let component: TaCounterComponent;

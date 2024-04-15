@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantSignaturePadComponent } from './applicant-signature-pad.component';
+import { ApplicantSignaturePadComponent } from '@pages/applicant/components/applicant-signature-pad/applicant-signature-pad.component';
 
 describe('ApplicantSignaturePadComponent', () => {
     let component: ApplicantSignaturePadComponent;

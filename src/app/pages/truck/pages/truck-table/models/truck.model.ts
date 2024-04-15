@@ -1,9 +1,9 @@
-import { TruckAdditionalData } from './truck-additional-data.model';
-import { TruckFHWA } from './truck-fhwa.model';
-import { TruckLeasePurchase } from './truck-lease-purchase.model';
-import { TruckOwner } from './truck-owner.model';
-import { TruckRegistration } from './truck-registration.model';
-import { TruckTitle } from './truck-title.model';
+import { TruckAdditionalData } from '@pages/truck/pages/truck-table/models/truck-additional-data.model';
+import { TruckFHWA } from '@pages/truck/pages/truck-table/models/truck-fhwa.model';
+import { TruckLeasePurchase } from '@pages/truck/pages/truck-table/models/truck-lease-purchase.model';
+import { TruckOwner } from '@pages/truck/pages/truck-table/models/truck-owner.model';
+import { TruckRegistration } from '@pages/truck/pages/truck-table/models/truck-registration.model';
+import { TruckTitle } from '@pages/truck/pages/truck-table/models/truck-title.model';
 
 export interface Truck {
     id: number;

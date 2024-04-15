@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-import { IApplicantStore } from '../models/applicant-store.model';
+import { IApplicantStore } from '@pages/applicant/models/applicant-store.model';
 
 export interface ApplicantState extends EntityState<IApplicantStore> {}
 

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TruckDetailsItemComponent } from './truck-details-item.component';
+import { TruckDetailsItemComponent } from '@pages/truck/pages/truck-details/components/truck-details-item/truck-details-item.component';
 
 describe('TruckDetailsItemComponent', () => {
     let component: TruckDetailsItemComponent;

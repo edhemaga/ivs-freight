@@ -1,4 +1,4 @@
-import { NavigationModel } from '../../models/navigation.model';
+import { NavigationModel } from '@pages/website/models/navigation.model';
 
 export class WebsiteConstants {
     static NAVBAR_MENU_ITEMS: NavigationModel[] = [

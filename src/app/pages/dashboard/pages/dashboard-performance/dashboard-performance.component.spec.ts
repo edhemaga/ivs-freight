@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardPerformanceComponent } from './dashboard-performance.component';
+import { DashboardPerformanceComponent } from '@pages/dashboard/pages/dashboard-performance/dashboard-performance.component';
 
 describe('DashboardPerformanceComponent', () => {
     let component: DashboardPerformanceComponent;

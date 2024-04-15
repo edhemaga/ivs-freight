@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaMapMarkerDropdownComponent } from './ta-map-marker-dropdown.component';
+import { TaMapMarkerDropdownComponent } from '@shared/components/ta-map-marker-dropdown/ta-map-marker-dropdown.component';
 
 describe('TaMapMarkerDropdownComponent', () => {
     let component: TaMapMarkerDropdownComponent;

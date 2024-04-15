@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantMvrAuthorizationComponent } from './applicant-mvr-authorization.component';
+import { ApplicantMvrAuthorizationComponent } from '@pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.component';
 
 describe('ApplicantMvrAuthorizationComponent', () => {
     let component: ApplicantMvrAuthorizationComponent;

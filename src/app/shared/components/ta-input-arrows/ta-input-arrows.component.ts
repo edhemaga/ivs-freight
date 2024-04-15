@@ -6,9 +6,15 @@ import {
     NgControl,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ITaInput } from '../ta-input/config/ta-input.config';
+
+// configs
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaInputComponent } from '../ta-input/ta-input.component';
+
+// components
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-ta-input-arrows',
@@ -16,13 +22,13 @@ import { TaInputComponent } from '../ta-input/ta-input.component';
     styleUrls: ['./ta-input-arrows.component.scss'],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaInputComponent,
     ],
 })

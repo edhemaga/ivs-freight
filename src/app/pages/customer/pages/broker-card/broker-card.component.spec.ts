@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BrokerCardComponent } from './broker-card.component';
+import { BrokerCardComponent } from '@pages/customer/pages/broker-card/broker-card.component';
 
 describe('BrokerCardComponent', () => {
     let component: BrokerCardComponent;

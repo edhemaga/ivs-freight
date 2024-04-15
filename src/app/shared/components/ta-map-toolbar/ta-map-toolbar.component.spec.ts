@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaMapToolbarComponent } from './ta-map-toolbar.component';
+import { TaMapToolbarComponent } from '@shared/components/ta-map-toolbar/ta-map-toolbar.component';
 
 describe('TaMapToolbarComponent', () => {
     let component: TaMapToolbarComponent;

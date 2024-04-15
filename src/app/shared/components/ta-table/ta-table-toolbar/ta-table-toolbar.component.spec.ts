@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaTableToolbarComponent } from './ta-table-toolbar.component';
+import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 
 describe('TaTableToolbarComponent', () => {
     let component: TaTableToolbarComponent;

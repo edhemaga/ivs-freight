@@ -4,56 +4,56 @@ import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // components
-import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // services
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { TrailerService } from '../../../../shared/services/trailer.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { TrailerService } from '@shared/services/trailer.service';
 
 // store
-import { TrailerActiveQuery } from '../../state/trailer-active-state/trailer-active.query';
-import { TrailerActiveState } from '../../state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveQuery } from '../../state/trailer-inactive-state/trailer-inactive.query';
-import { TrailerInactiveState } from '../../state/trailer-inactive-state/trailer-inactive.store';
-import { TrailerInactiveStore } from '../../state/trailer-inactive-state/trailer-inactive.store';
+import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
+import { TrailerActiveState } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveQuery } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
+import { TrailerInactiveState } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
 // pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // animations
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // configuration
-import { trailerCardDataConstants } from './utils/constants/trailer-card-data.constants';
+import { trailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { TrailerNameStringEnum } from 'src/app/shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { TrailerMapped } from './models/trailer-mapped.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
-import { TrailerBackFilterQueryInterface } from './models/trailer-back-filter-query.model';
-import { TraillerData } from './models/trailer-data.model';
-import { TrailerBodyResponse } from './models/trailer-body-response.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
-import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
+import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
+import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
+import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 @Component({
     selector: 'app-trailer-table',

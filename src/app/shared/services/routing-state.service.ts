@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { takeUntil, Subject, Observable, tap, BehaviorSubject } from 'rxjs';
 
 // store
-import { RoutingStateStore } from '../../pages/routing/state/routing-state/routing-state.store';
+import { RoutingStateStore } from '@pages/routing/state/routing-state.store';
 
 // services
-import { NotificationService } from 'src/app/shared/services/notification.service';
+import { NotificationService } from '@shared/services/notification.service';
 
 // models
 import {

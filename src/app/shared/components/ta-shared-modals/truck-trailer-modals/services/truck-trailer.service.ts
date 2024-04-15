@@ -14,20 +14,20 @@ import {
 } from 'appcoretruckassist';
 
 // services
-import { TruckService } from 'src/app/shared/services/truck.service';
-import { TrailerService } from 'src/app/shared/services/trailer.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+import { TruckService } from '@shared/services/truck.service';
+import { TrailerService } from '@shared/services/trailer.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 // store
-import { TruckItemStore } from 'src/app/pages/truck/state/truck-details-state/truck.details.store';
-import { TrailerItemStore } from 'src/app/pages/trailer/state/trailer-details-state/trailer-details.store';
-import { TrucksDetailsListStore } from 'src/app/pages/truck/state/truck-details-list-state/truck-details-list.store';
-import { TrailerDetailsListStore } from 'src/app/pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
-import { TruckActiveStore } from 'src/app/pages/truck/state/truck-active-state/truck-active.store';
-import { TruckInactiveStore } from 'src/app/pages/truck/state/truck-inactive-state/truck-inactive.store';
-import { TrailerActiveStore } from 'src/app/pages/trailer/state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveStore } from 'src/app/pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { TruckItemStore } from '@pages/truck/state/truck-details-state/truck.details.store';
+import { TrailerItemStore } from '@pages/trailer/state/trailer-details-state/trailer-details.store';
+import { TrucksDetailsListStore } from '@pages/truck/state/truck-details-list-state/truck-details-list.store';
+import { TrailerDetailsListStore } from '@pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
+import { TruckActiveStore } from '@pages/truck/state/truck-active-state/truck-active.store';
+import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
+import { TrailerActiveStore } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
 @Injectable({
     providedIn: 'root',
@@ -168,7 +168,6 @@ export class TruckTrailerService {
             tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
-                    let newTitleId = res.id;
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
@@ -244,7 +243,7 @@ export class TruckTrailerService {
         return this.titleService.apiTitleIdGet(id);
     }
 
-    public addTitle(data: any, tabSelected?: string): Observable<any> {
+    public addTitle(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.titleService.apiTitlePost().pipe(
             tap((res: any) => {

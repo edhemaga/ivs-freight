@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardTopRatedComponent } from './dashboard-top-rated.component';
+import { DashboardTopRatedComponent } from '@pages/dashboard/pages/dashboard-top-rated/dashboard-top-rated.component';
 
 describe('DashboardTopDriverComponent', () => {
     let component: DashboardTopRatedComponent;
