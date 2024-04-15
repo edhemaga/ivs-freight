@@ -44,6 +44,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 import { LoadCardsModalComponent } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/truck-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -70,6 +71,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         // components
         TaAppTooltipComponent,
         TaToolbarFiltersComponent,
+        TruckCardModalComponent,
         TaInputDropdownComponent,
         LoadCardsModalComponent,
         ConfirmationResetModalComponent,
@@ -204,9 +206,15 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public openCards(): void {
-        this.modalService.openModal(LoadCardsModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        if (this.listName === TableStringEnum.TRUCK_2) {
+            this.modalService.openModal(TruckCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else {
+            this.modalService.openModal(LoadCardsModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        }
 
         this.popover.close();
     }
