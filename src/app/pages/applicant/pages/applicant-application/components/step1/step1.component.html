@@ -58,89 +58,193 @@
         <div class="d-flex justify-content-center form-section">
             <form [formGroup]="personalInfoForm">
                 <!-- FIRST NAME, LAST NAME -->
+
                 <div class="d-flex form-input-container line-container">
                     <div class="group first-name-group">
                         <app-ta-input
                             formControlName="firstName"
-                            [inputConfig]="getInputConfig('First Name', true, 2, 26, true, 0)"
-                            [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
+                            [inputConfig]="{
+                                name: 'First Name',
+                                type: 'text',
+                                label: 'First Name',
+                                isRequired: true,
+                                minLength: 2,
+                                maxLength: 26,
+                                textTransform: 'capitalize',
+                                autoFocus: true,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isFirstNameValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[0]
+                            "
                             (incorrectEvent)="incorrectInput($event, 0, 0)"
                         ></app-ta-input>
                     </div>
-                
+
                     <div class="group last-name-group">
                         <app-ta-input
                             formControlName="lastName"
-                            [inputConfig]="getInputConfig('Last Name', true, 2, 26, true, 1)"
-                            [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
+                            [inputConfig]="{
+                                name: 'Last Name',
+                                type: 'text',
+                                label: 'Last Name',
+                                isRequired: true,
+                                minLength: 2,
+                                maxLength: 26,
+                                textTransform: 'capitalize',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isLastNameValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[1]
+                            "
                             (incorrectEvent)="incorrectInput($event, 1, 0)"
                         ></app-ta-input>
                     </div>
-                
+
                     <!-- REVIEW AND FEEDBACK -->
+
                     <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
                         <div class="review-feedback-container">
                             <app-applicant-review-feedback
                                 formControlName="firstRowReview"
-                                [displayAnnotationButton]="isReviewMode && openAnnotationArray[0].displayAnnotationButton"
-                                [displayAnnotationTextArea]="isReviewMode && openAnnotationArray[0].displayAnnotationTextArea"
+                                [displayAnnotationButton]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[0]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[0]
+                                        .displayAnnotationTextArea
+                                "
                                 [lineIndex]="0"
-                                [isFeedback]="isFeedbackMode"
-                                [feedbackText]="isFeedbackMode && stepFeedbackValues?.personalInfoMessage"
-                                (annotationBtnClickEvent)="isReviewMode && getAnnotationBtnClickValue($event)"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="
+                                    selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.personalInfoMessage
+                                "
+                                (annotationBtnClickEvent)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        getAnnotationBtnClickValue($event)
+                                "
                             ></app-applicant-review-feedback>
                         </div>
                     </ng-container>
                 </div>
-                
-                <!-- DOB, SSN, PHONE -->
-                
+
+                <!--  DOB, SSN, PHONE-->
+
                 <div class="d-flex form-input-container line-container">
                     <div class="group date-group">
                         <app-ta-input
                             formControlName="dateOfBirth"
-                            [inputConfig]="getInputConfig('DOB', true, 0, 10, true, 2, 'date', 'datetimeclass')"
-                            [incorrectValue]="openAnnotationArray[0].lineInputs[2]"
+                            [inputConfig]="{
+                                name: 'datepicker',
+                                type: 'text',
+                                label: 'DOB',
+                                isDropdown: true,
+                                placeholderIcon: 'date',
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isDoBValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[2]
+                            "
                             (incorrectEvent)="incorrectInput($event, 2, 0)"
                         ></app-ta-input>
                     </div>
-                
+
                     <div class="group ssn-group">
                         <app-ta-input
                             formControlName="ssn"
-                            [inputConfig]="getInputConfig('SSN', true, 9, 11, false, 0, '', '', '000-00-0000')"
-                            [incorrectValue]="openAnnotationArray[7].lineInputs[0]"
+                            [inputConfig]="{
+                                name: 'SSN',
+                                type: 'text',
+                                label: 'SSN',
+                                isRequired: true,
+                                mask: '000-00-0000',
+                                maxLength: 11,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isSsnValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[7].lineInputs[0]
+                            "
                             (incorrectEvent)="incorrectInput($event, 0, 7)"
                         ></app-ta-input>
                     </div>
-                
+
                     <div class="group phone-group">
                         <app-ta-input
                             formControlName="phone"
-                            [inputConfig]="getInputConfig('Phone', true, 13, 14, true, 0, 'phone', '', '(000) 000-0000')"
-                            [incorrectValue]="openAnnotationArray[1].lineInputs[0]"
+                            [inputConfig]="{
+                                name: 'Phone',
+                                type: 'text',
+                                label: 'Phone',
+                                isRequired: true,
+                                placeholderIcon: 'phone',
+                                mask: '(000) 000-0000',
+                                maxLength: 14,
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isPhoneValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[1].lineInputs[0]
+                            "
                             (incorrectEvent)="incorrectInput($event, 0, 1)"
                         ></app-ta-input>
                     </div>
-                
+
                     <!-- REVIEW AND FEEDBACK -->
-                
+
                     <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
                         <div class="review-feedback-container">
                             <app-applicant-review-feedback
                                 formControlName="secondRowReview"
-                                [displayAnnotationButton]="isReviewMode && openAnnotationArray[1].displayAnnotationButton"
-                                [displayAnnotationTextArea]="isReviewMode && openAnnotationArray[1].displayAnnotationTextArea"
+                                [displayAnnotationButton]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[1]
+                                        .displayAnnotationButton
+                                "
+                                [displayAnnotationTextArea]="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                    openAnnotationArray[1]
+                                        .displayAnnotationTextArea
+                                "
                                 [lineIndex]="1"
-                                [isFeedback]="isFeedbackMode"
-                                [feedbackText]="isFeedbackMode && stepFeedbackValues?.phoneMessage"
-                                (annotationBtnClickEvent)="isReviewMode && getAnnotationBtnClickValue($event)"
+                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                                [feedbackText]="
+                                    selectedMode === 'FEEDBACK_MODE' &&
+                                    stepFeedbackValues?.phoneMessage
+                                "
+                                (annotationBtnClickEvent)="
+                                    selectedMode === 'REVIEW_MODE' &&
+                                        getAnnotationBtnClickValue($event)
+                                "
                             ></app-applicant-review-feedback>
                         </div>
                     </ng-container>
                 </div>
-                
-                
+
                 <!-- PREVIOUS ADDRESSES -->
 
                 <div
