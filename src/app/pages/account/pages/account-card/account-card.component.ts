@@ -10,7 +10,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 
 // models
@@ -30,11 +30,13 @@ import { AccountService } from '../../services/account.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { AccountModalComponent } from '../account-modal/account-modal.component';
+import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
 import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 import { DOCUMENT } from '@angular/common';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-account-card',
@@ -174,10 +176,16 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             }
             case AccountStringEnum.DELETE_ACCOUNT: {
-                this.accountService
-                    .deleteCompanyAccountById(event.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe();
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...event,
+                        template: TableStringEnum.USER_1,
+                        type: TableStringEnum.DELETE,
+                        svg: true,
+                    }
+                );
                 break;
             }
             default: {

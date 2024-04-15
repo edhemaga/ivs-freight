@@ -431,4 +431,16 @@ export enum TableStringEnum {
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
     RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
+
+    //Account
+    DELETE_ACCOUNT = "delete-account",
+    COPY_PASSWORD = 'Copy Password',
+    COPY_PASSWORD_2 = 'copy-password',
+    COPY_USERNAME = 'Copy Username',
+    COPY_USERNAME_2 = 'copy-username',
+    EDIT_ACCONUT = 'edit-account',
+    GO_TO_LINK = 'Go to Link',
+    NO_LINK = 'No Link',
+    GO_TO_LINK_2 = 'go-to-link',
+    NO_LINK_2 = 'no-link',
 }

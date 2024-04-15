@@ -12,7 +12,6 @@ import { AccountQuery } from '@pages/account/state/account.query';
 // models
 import {
     AccountColorResponse,
-    CompanyAccountLabelResponse,
     CompanyAccountLabelService,
     CompanyAccountModalResponse,
     CompanyAccountResponse,
@@ -78,8 +77,6 @@ export class AccountService {
     // Update Account
     public updateCompanyAccount(
         data: UpdateCompanyAccountCommand,
-        colors?: AccountColorResponse,
-        colorLabels?: Array<CompanyAccountLabelResponse>
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
             tap(() => {
