@@ -1,9 +1,13 @@
-import { TodoQuery } from '../state/to-do.query';
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { TodoService } from '../services/to-do.service';
+
+import { forkJoin, Observable, map } from 'rxjs';
+
+// store
+import { TodoQuery } from '@pages/to-do/state/to-do.query';
+
+// services
+import { TodoService } from '@pages/to-do/services/to-do.service';
 
 @Injectable({
     providedIn: 'root',

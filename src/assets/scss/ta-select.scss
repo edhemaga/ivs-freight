@@ -1,4 +1,4 @@
-@import '../../theme/variables.scss';
+@import 'src/theme/variables';
 
 .ta-select-wrapper {
     .ng-arrow {
@@ -46,7 +46,6 @@
         border-bottom-right-radius: 3px;
 
         .ng-option {
-            // border-top: 1px solid #f4f5f7;
             line-height: 32px !important;
             min-height: 32px !important;
             padding: 0 0 0 0.6rem !important;
@@ -62,7 +61,6 @@
             display: inline-block;
             height: 18px;
             width: 18px;
-            // background-image: url('../img/svgs/avatar.svg');
             background-size: contain;
             border-radius: 100%;
         }
@@ -108,7 +106,6 @@
                 height: 18px;
                 width: 18px;
                 top: 0;
-                // background-image: url('../img/svgs/avatar.svg');
                 position: relative;
                 background-size: contain;
                 border-radius: 100%;

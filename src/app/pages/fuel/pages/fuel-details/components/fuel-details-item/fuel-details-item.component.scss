@@ -1,4 +1,5 @@
-@import '../../fuel-details.component.scss';
+@import 'src/app/pages/fuel/pages/fuel-details/fuel-details.component.scss';
+
 app-fuel-details-item {
     .fuel-price-template {
         display: grid;
@@ -164,7 +165,8 @@ app-fuel-details-item {
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                span, div {
+                span,
+                div {
                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);

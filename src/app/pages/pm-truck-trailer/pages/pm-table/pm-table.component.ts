@@ -5,41 +5,41 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
-} from 'src/assets/utils/settings/pm-columns';
+} from '@shared/utils/settings/table-settings/pm-columns';
 
 // Components
-import { PmModalComponent } from 'src/app/pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
+import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // Models
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { PmTrailer } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
-import { PmTruck } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { PmTrailer } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
+import { PmTruck } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { PmService } from '../../services/pm.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 
 // Constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { PmCardDataConfigConstants } from './utils/constants/pm-card-data-config.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
 
 // Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-import { TruckNameStringEnum } from 'src/app/shared/enums/truck-name-string.enum';
-import { TrailerNameStringEnum } from 'src/app/shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from 'src/app/shared/enums/tooltip-colors-string,enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
+import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
 
 // Store
-import { PmTruckQuery } from '../../state/pm-truck-state/pm-truck.query';
-import { PmTrailerQuery } from '../../state/pm-trailer-state/pm-trailer.query';
+import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
+import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 
 // Pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 @Component({
     selector: 'app-pm-table',

@@ -11,10 +11,10 @@ import {
 import {
     cardModalAnimation,
     cardModalAnimationFalse,
-} from '../../animations/card-modal.animation';
+} from '@shared/animations/card-modal.animation';
 
 // components
-import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 //icons
 import { AngularSvgIconModule } from 'angular-svg-icon';

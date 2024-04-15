@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavigationRouteComponent } from './navigation-route.component';
+import { NavigationRouteComponent } from '@core/components/navigation/components/navigation-route/navigation-route.component';
 
 describe('NavigationItemComponent', () => {
     let component: NavigationRouteComponent;

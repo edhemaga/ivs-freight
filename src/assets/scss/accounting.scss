@@ -190,7 +190,6 @@
                     transition: right 0.1s;
 
                     &.infinity {
-                        //   background-image: url("../../img/infinity.svg");
                         background-repeat: no-repeat;
                         background-position: center;
                     }
@@ -391,22 +390,10 @@
 
                 cursor: pointer;
 
-                &.widget_download {
-                    // background-image: url('../../../assets/img/accounting_download.svg');
-                    // background-size: 20px 16px;
-                }
-
-                &.widget_print {
-                    // background-image: url('../../../assets/img/accounting_pring.svg');
-                    // background-size: 18px 17px;
-                }
-
                 &.widget_letter,
                 &.widget_download,
                 &.widget_print {
                     background-image: none;
-                    // background-image: url('../../../assets/img/accounting_email.svg');
-                    // background-size: 18px 14px;
 
                     svg-icon {
                         display: flex;
@@ -468,7 +455,6 @@
             right: 1px;
             top: 50%;
             border-radius: 100%;
-            // background-image: url('../../../assets/img/empty_ckeckmark.svg');
             background-size: 100%;
 
             transform: translateY(-50%);
@@ -589,7 +575,6 @@
         right: 1px;
         top: 1px;
         border-radius: 3px;
-        //   background-image: url('../../../assets/img/empty_ckeckmark.svg');
         background-repeat: no-repeat;
         background-size: 30px 30px;
 

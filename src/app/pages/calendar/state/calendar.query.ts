@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { QueryEntity } from '@datorama/akita';
-import { CalendarState, CalendarStore } from './calendar.store';
+import {
+    CalendarState,
+    CalendarStore,
+} from '@pages/calendar/state/calendar.store';
 
 @Injectable({
     providedIn: 'root',

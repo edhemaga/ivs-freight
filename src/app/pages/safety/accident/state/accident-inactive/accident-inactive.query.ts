@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     AccidentInactiveState,
     AccidentInactiveStore,
-} from './accident-inactive.store';
+} from '@pages/safety/accident/state/accident-inactive/accident-inactive.store';
 
 @Injectable({ providedIn: 'root' })
 export class AccidentInactiveQuery extends QueryEntity<AccidentInactiveState> {

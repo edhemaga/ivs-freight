@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavigationUserProfileComponent } from './navigation-user-profile.component';
+import { NavigationUserProfileComponent } from '@core/components/navigation/components/navigation-user-profile/navigation-user-profile.component';
 
 describe('NavigationUserProfileComponent', () => {
     let component: NavigationUserProfileComponent;

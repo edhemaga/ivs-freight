@@ -15,10 +15,10 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import moment from 'moment';
 
 // utils
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 // models
 import { SelectCompanyResponse, SignInResponse } from 'appcoretruckassist';

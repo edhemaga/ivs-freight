@@ -22,22 +22,22 @@ import {
 import { TerminalListResponse } from 'appcoretruckassist';
 
 //Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { CompanyParkingService } from '../../../services/company-parking.service';
-import { CompanyTerminalService } from '../../../services/company-terminal.service';
-import { CompanyOfficeService } from '../../../../../shared/services/company-office.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+import { CompanyParkingService } from '@pages/settings/services/company-parking.service';
+import { CompanyTerminalService } from '@pages/settings/services/company-terminal.service';
+import { CompanyOfficeService } from '@shared/services/company-office.service';
 
 //Components
-import { SettingsOfficeModalComponent } from '../../settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../../settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../../settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 //Stores
-import { ParkingStore } from '../../../state/parking-state/company-parking.store';
-import { OfficeStore } from '../../../state/setting-ofice-state/company-office.store';
-import { TerminalStore } from '../../../state/settings-terminal-state/company-terminal.store';
+import { ParkingStore } from '@pages/settings/state/parking-state/company-parking.store';
+import { OfficeStore } from '@pages/settings/state/setting-ofice-state/company-office.store';
+import { TerminalStore } from '@pages/settings/state/settings-terminal-state/company-terminal.store';
 
 @Injectable({
     providedIn: 'root',

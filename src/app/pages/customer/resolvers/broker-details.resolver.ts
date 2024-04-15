@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { Observable, forkJoin, tap } from 'rxjs';
 
 // Services
-import { BrokerService } from '../services/broker.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
 
 // Store
-import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
-import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
-import { BrokerDetailsListQuery } from '../state/broker-details-state/broker-details-list-state/broker-details-list.query';
+import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
+import { BrokerDetailsListStore } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.store';
+import { BrokerDetailsListQuery } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.query';
 
 // Models
 import { BrokerResponse } from 'appcoretruckassist';
@@ -21,7 +21,7 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
     constructor(
         // Router
         private router: Router,
-        
+
         // Services
         private brokerService: BrokerService,
 

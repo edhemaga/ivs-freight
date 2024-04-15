@@ -9,13 +9,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // service
-import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
+import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 // animations
-import { cardComponentAnimation } from '../../animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // components
-import { TaCounterComponent } from '../ta-counter/ta-counter.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
 // icons
 import { AngularSvgIconModule } from 'angular-svg-icon';

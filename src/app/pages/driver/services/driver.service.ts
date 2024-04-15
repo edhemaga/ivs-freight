@@ -18,24 +18,24 @@ import {
 } from 'appcoretruckassist';
 
 // store
-import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
-import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
-import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 // components
-import { DriverModel } from 'src/app/pages/driver/pages/driver-table/models/driver.model';
+import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.model';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',

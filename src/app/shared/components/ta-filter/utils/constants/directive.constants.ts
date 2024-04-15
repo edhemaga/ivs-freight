@@ -1,4 +1,4 @@
-import { ArrayStatus } from '../../models/array-status.model';
+import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
 export class DirectiveConstants {
     static LABEL_ARRAY: ArrayStatus[] = [

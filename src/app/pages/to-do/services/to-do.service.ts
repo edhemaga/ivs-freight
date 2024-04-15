@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
-import { flatMap, Observable } from 'rxjs';
-import { TodoStore } from '../state/to-do.store';
-import { tap } from 'rxjs/operators';
+
+import { flatMap, Observable, tap } from 'rxjs';
+
+// store
+import { TodoStore } from '@pages/to-do/state/to-do.store';
 
 // services
+import { FormDataService } from '@shared/services/form-data.service';
+
+// models
 import {
     TodoListResponse,
     TodoModalResponse,
@@ -12,7 +17,6 @@ import {
     TodoStatus,
     UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
 
 @Injectable({
     providedIn: 'root',

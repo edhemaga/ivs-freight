@@ -19,27 +19,27 @@ import {
 import moment from 'moment';
 
 // animations
-import { cardModalAnimation } from '../../animations/card-modal.animation';
+import { cardModalAnimation } from '@shared/animations/card-modal.animation';
 
 // pipes
-import { SafeHtmlPipe } from 'src/app/shared/pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // services
-import { SharedService } from '../../services/shared.service';
-import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
+import { SharedService } from '@shared//services/shared.service';
+import { NoteUpdateService } from '@shared/services/note-update.service';
 
 // models
-import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
+import { EntityTypeNote } from 'appcoretruckassist';
 
 // helpers
-import { CopyPasteHelper } from 'src/app/shared/utils/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 @Component({
     selector: 'app-ta-input-note',
     templateUrl: './ta-input-note.component.html',

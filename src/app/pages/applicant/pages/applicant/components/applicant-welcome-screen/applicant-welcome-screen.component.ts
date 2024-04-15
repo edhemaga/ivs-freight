@@ -7,10 +7,10 @@ import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // helpers
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // servies
-import { ApplicantService } from '../../../../services/applicant.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // models
 import {

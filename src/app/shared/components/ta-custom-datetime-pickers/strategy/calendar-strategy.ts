@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 // services
-import { CalendarDateTimePickerService } from '../services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 
 export const STARTING_YEAR = new Date().getFullYear() - 90;
 

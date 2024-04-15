@@ -16,21 +16,21 @@ import {
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
-} from '../../../../utils/helpers/applicant.helper';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { ApplicantService } from '../../../../services/applicant.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantStore } from '../../../../state/applicant.store';
-import { ApplicantQuery } from '../../../../state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
-import { Accident } from '../../models/accident.model';
+import { Accident } from '@pages/applicant/pages/applicant-application/models/accident.model';
 import {
     AccidentRecordFeedbackResponse,
     ApplicantModalResponse,

@@ -7,7 +7,6 @@ import {
     ViewChild,
     ChangeDetectorRef,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import {
     UntypedFormArray,
     UntypedFormBuilder,
@@ -15,24 +14,26 @@ import {
 } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 
-// Constants
-import * as AppConst from '../../../../const';
+import { Subject, takeUntil } from 'rxjs';
 
-// Services
-import { TruckService } from '../../../../shared/services/truck.service';
-import { TrailerService } from '../../../../shared/services/trailer.service';
-import { TelematicStateService } from '../../services/telematic-state.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { MapsService } from 'src/app/shared/services/maps.service';
-import { GpsService } from 'src/app/pages/telematic/services/gps-service.service';
-import { CompanyOfficeService } from 'src/app/shared/services/company-office.service';
+// constants
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
-// Models
+// services
+import { TruckService } from '@shared/services/truck.service';
+import { TrailerService } from '@shared/services/trailer.service';
+import { TelematicStateService } from '@pages/telematic/services/telematic-state.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { MapsService } from '@shared/services/maps.service';
+import { GpsService } from '@pages/telematic/services/gps-service.service';
+import { CompanyOfficeService } from '@shared/services/company-office.service';
+
+// models
 import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 
-// Store
-import { TelematicStateQuery } from '../../state/telematic-state.query';
-import { TelematicStateStore } from '../../state/telematic-state.store';
+// store
+import { TelematicStateQuery } from '@pages/telematic/state/telematic-state.query';
+import { TelematicStateStore } from '@pages/telematic/state/telematic-state.store';
 
 @Component({
     selector: 'app-telematic-map',
@@ -49,9 +50,9 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     @ViewChild('op2') columnsMenuPopover: any;
 
     agmMap: any;
-    styles: any = AppConst.GOOGLE_MAP_STYLES;
+    styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
     mapLatitude: number = 41.860119;

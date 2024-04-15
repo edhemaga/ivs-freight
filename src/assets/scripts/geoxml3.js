@@ -2507,7 +2507,7 @@ var dehostURL = function (s) {
 };
 
 /**
- * Removes all query strings, #IDs, '../' references, and
+ * Removes all query strings, #IDs, and
  * hosts from a URL.
  *
  * @private

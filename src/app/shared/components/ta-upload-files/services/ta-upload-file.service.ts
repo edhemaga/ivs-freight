@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { UploadFile } from '../models/upload-file.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Injectable({
     providedIn: 'root',

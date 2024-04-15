@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaInputAddressDropdownComponent } from './ta-input-address-dropdown.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 describe('TaInputAddressDropdownComponent', () => {
     let component: TaInputAddressDropdownComponent;

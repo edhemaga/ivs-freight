@@ -10,21 +10,21 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { FormService } from 'src/app/shared/services/form.service';
-import { ModalService } from '../../../ta-modal/services/modal.service';
-import { TaInputService } from '../../../ta-input/services/ta-input.service';
-import { RoutingStateService } from 'src/app/shared/services/routing-state.service';
-import { TruckService } from 'src/app/shared/services/truck.service';
+import { FormService } from '@shared/services/form.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { RoutingStateService } from '@shared/services/routing-state.service';
+import { TruckService } from '@shared/services/truck.service';
 
 // models
 import { TruckListResponse, CreateRouteCommand } from 'appcoretruckassist';
 
 // components
-import { TaModalComponent } from '../../../ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../ta-checkbox-card/ta-checkbox-card.component';
-import { TaTabSwitchComponent } from '../../../ta-tab-switch/ta-tab-switch.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 @Component({
     selector: 'app-map-route-modal',

@@ -1,4 +1,5 @@
 @import '../../shipper-details.component.scss';
+
 app-shipper-details-item {
     .note-cards {
         padding: 0px 6px 0px 4px;
@@ -16,7 +17,8 @@ app-shipper-details-item {
                     background: rgb(108, 108, 108, 0.2);
                 }
 
-                span, div {
+                span,
+                div {
                     &::-moz-selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);

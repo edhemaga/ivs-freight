@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Step2FormComponent } from './step2-form.component';
+import { Step2FormComponent } from '@pages/applicant/pages/applicant-sph/pages/applicant-sph-form/components/step2/step2-form/step2-form.component';
 
 describe('Step2FormComponent', () => {
     let component: Step2FormComponent;

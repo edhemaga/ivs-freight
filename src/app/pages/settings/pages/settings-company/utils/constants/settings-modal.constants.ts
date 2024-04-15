@@ -1,9 +1,9 @@
 // models
 import { Options } from '@angular-slider/ngx-slider';
 import { CroppieOptions } from 'croppie';
-import { Tabs } from 'src/app/shared/models/tabs.model';
-import { DropZoneConfig } from 'src/app/shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { AnimationOptions } from 'src/app/shared/models/animation-options.model';
+import { Tabs } from '@shared/models/tabs.model';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { AnimationOptions } from '@shared/models/animation-options.model';
 
 export class SettingsModalConstants {
     static TABS: Tabs[] = [

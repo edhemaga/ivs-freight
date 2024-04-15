@@ -1,4 +1,4 @@
-import { DriverModel } from './driver.model';
+import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.model';
 
 export interface TableBodyActions {
     data?: DriverModel;

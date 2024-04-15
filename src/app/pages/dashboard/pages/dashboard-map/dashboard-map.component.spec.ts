@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardMapComponent } from './dashboard-map.component';
+import { DashboardMapComponent } from '@pages/dashboard/pages/dashboard-map/dashboard-map.component';
 
 describe('DashboardMapComponent', () => {
     let component: DashboardMapComponent;

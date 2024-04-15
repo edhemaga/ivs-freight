@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OwnerTableComponent } from './owner-table.component';
+import { OwnerTableComponent } from '@pages/owner/pages/owner-table/owner-table.component';
 
 describe('OwnerTableComponent', () => {
     let component: OwnerTableComponent;

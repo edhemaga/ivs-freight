@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApplicantOwnerInfoComponent } from './applicant-owner-info.component';
+import { ApplicantOwnerInfoComponent } from '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.component';
 
 const routes: Routes = [
     {

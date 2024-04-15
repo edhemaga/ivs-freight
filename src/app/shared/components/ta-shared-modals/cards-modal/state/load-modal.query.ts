@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { QueryEntity } from '@datorama/akita';
-import { LoadDataState, LoadDataStore } from './load-modal.store';
+import {
+    LoadDataState,
+    LoadDataStore,
+} from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.store';
 
 @Injectable({ providedIn: 'root' })
 export class LoadQuery extends QueryEntity<LoadDataState> {

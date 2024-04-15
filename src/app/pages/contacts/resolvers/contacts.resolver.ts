@@ -4,14 +4,17 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ContactsService } from '../../../shared/services/contacts.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ContactsService } from '@shared/services/contacts.service';
 
 // store
-import { ContactState, ContactStore } from '../state/contact.store';
+import {
+    ContactState,
+    ContactStore,
+} from '@pages/contacts/state/contact.store';
 
 // models
-import { ContactsTableData } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-data.model';
+import { ContactsTableData } from '@pages/contacts/pages/contacts-table/models/contacts-table-data.model';
 
 @Injectable({
     providedIn: 'root',

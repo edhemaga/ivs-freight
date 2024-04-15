@@ -1,4 +1,4 @@
-export interface activeOptions {
+export interface ActiveOptions {
     bold: boolean;
     italic: boolean;
     foreColor: boolean;

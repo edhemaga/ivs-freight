@@ -9,19 +9,19 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // store
-import { ApplicantQuery } from '../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // helpers
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
-} from '../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
-import { INavigation } from '../../models/navigation.model';
+import { INavigation } from '@pages/applicant/models/navigation.model';
 import { ApplicantResponse } from 'appcoretruckassist';
 
 @Component({

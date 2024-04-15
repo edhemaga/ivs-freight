@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsPayrollComponent } from './settings-payroll.component';
+import { SettingsPayrollComponent } from '@pages/settings/pages/settings-company/components/settings-payroll/settings-payroll.component';
 
 describe('SettingsPayrollComponent', () => {
     let component: SettingsPayrollComponent;

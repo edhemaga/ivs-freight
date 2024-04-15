@@ -1,4 +1,4 @@
-import { TableStringEnum } from '../../enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class DataFilterHelper {
     static checkSpecialFilterArray(

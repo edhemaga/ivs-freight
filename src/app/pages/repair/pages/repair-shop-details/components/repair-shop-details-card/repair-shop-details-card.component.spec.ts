@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RepairShopCardViewComponent } from './repair-shop-details-card.component';
+import { RepairShopCardViewComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
 
 describe('RepairShopCardViewComponent', () => {
     let component: RepairShopCardViewComponent;

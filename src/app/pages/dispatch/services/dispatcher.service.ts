@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { flatMap, delay, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { flatMap, delay, of, map } from 'rxjs';
 
 // Store
-import { DispatcherStore } from '../state/dispatcher.store';
+import { DispatcherStore } from '@pages/dispatch/state/dispatcher.store';
 
 // Models
 import {
@@ -22,10 +21,7 @@ export class DispatcherService {
     public parkingOpened: boolean = false;
 
     constructor(
-        // Store
         private dispatcherStore: DispatcherStore,
-
-        // Services
         private dispatchService: DispatchService,
         private driverService: DriverService
     ) {}

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
-import { CardDetails } from '../../models/card-models/card-table-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 
 @Injectable({
     providedIn: 'root',

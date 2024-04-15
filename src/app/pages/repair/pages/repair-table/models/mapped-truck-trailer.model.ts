@@ -4,7 +4,7 @@ import {
     RepairResponse,
     RepairServiceTypeResponse,
 } from 'appcoretruckassist';
-import { DropdownItem } from '../../../../../shared/models/dropdown-item.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
 
 export interface MappedTruckTrailer extends RepairResponse {
     isSelected: boolean;

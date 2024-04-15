@@ -26,23 +26,23 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 
 // components
-import { TaInputComponent } from '../../../ta-input/ta-input.component';
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaSpinnerComponent } from '../../../ta-spinner/ta-spinner.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // services
-import { TaInputService } from '../../../ta-input/services/ta-input.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // pipes
-import { UrlExtensionPipe } from 'src/app/shared/components/ta-upload-files/pipes/url-extension.pipe';
-import { ByteConvertPipe } from 'src/app/shared/components/ta-upload-files/pipes/byte-convert.pipe';
+import { UrlExtensionPipe } from '@shared/components/ta-upload-files/pipes/url-extension.pipe';
+import { ByteConvertPipe } from '@shared/components/ta-upload-files/pipes/byte-convert.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // models
-import { UploadFile } from '../../models/upload-file.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-upload-file',

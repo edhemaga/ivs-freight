@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DashboardStateUsaComponent } from './dashboard-state-usa.component';
+import { DashboardStateUsaComponent } from '@pages/dashboard/pages/dashboard-by-state/components/dashboard-states/dashboard-state-usa/dashboard-state-usa.component';
 
 describe('DashboardStateUsaComponent', () => {
     let component: DashboardStateUsaComponent;

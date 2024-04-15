@@ -1,4 +1,4 @@
-import { ViewModelOption } from '../../ta-table-body/models/view-model-option.model';
+import { ViewModelOption } from '@shared/components/ta-table/ta-table-body/models/view-model-option.model';
 
 export interface ToolbarActions {
     showLocationFilter?: boolean;

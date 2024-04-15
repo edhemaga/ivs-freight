@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaAutoclosePopoverComponent } from './ta-autoclose-popover.component';
+import { TaAutoclosePopoverComponent } from '@shared/components/ta-autoclose-popover/ta-autoclose-popover.component';
 
 describe('TaAutoclosePopoverComponent', () => {
     let component: TaAutoclosePopoverComponent;

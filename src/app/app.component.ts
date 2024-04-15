@@ -2,14 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { transition, trigger } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map, mergeMap } from 'rxjs';
-import { scrollButtonAnimation } from './app.component.animation';
-import { StaticInjectorService } from './core/decorators/titles.decorator';
 
+import { filter, map, mergeMap } from 'rxjs';
+
+// animations
+import { scrollButtonAnimation } from '@core/animations/scroll-button.animation';
 import {
     slideLeft,
     slideRight,
-} from 'src/app/pages/applicant/animations/applicant-route.animation';
+} from '@pages/applicant/animations/applicant-route.animation';
+
+// services
+import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
 @Component({
     selector: 'app-root',
@@ -37,12 +41,7 @@ export class AppComponent implements OnInit {
         private _: StaticInjectorService
     ) {}
 
-    ngOnInit() {
-        //this.gpsService.startConnection();
-
-        // setTimeout(() => {
-        //     this.gpsService.closeConnection();
-        // }, 30000);
+    ngOnInit(): void {
         this.router.events
             .pipe(
                 filter((event) => event instanceof NavigationEnd),
@@ -62,14 +61,9 @@ export class AppComponent implements OnInit {
                     'CarrierAssist' + ' | ' + event.title
                 );
             });
-
-        // Logout
     }
 
-    /**
-     * Top function
-     */
-    public top() {
+    public top(): void {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

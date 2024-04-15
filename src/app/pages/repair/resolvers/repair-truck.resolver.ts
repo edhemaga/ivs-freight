@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { RepairService } from '../../../shared/services/repair.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { RepairService } from '@shared/services/repair.service';
 
 // Store
 import {
     RepairTruckState,
     RepairTruckStore,
-} from '../state/repair-truck-state/repair-truck.store';
+} from '@pages/repair/state/repair-truck-state/repair-truck.store';
 
 @Injectable({
     providedIn: 'root',

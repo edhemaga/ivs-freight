@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
+
 import { Observable, Subject, tap } from 'rxjs';
 
-//Models
+// Models
 import {
     CdlResponse,
     CdlService,
@@ -9,16 +10,16 @@ import {
 } from 'appcoretruckassist';
 import { RenewCdlCommand } from 'appcoretruckassist';
 
-//Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DriverService } from './driver.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
-//Store
-import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
-import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
-import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
+// Store
+import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 
 @Injectable({
     providedIn: 'root',
@@ -157,7 +158,7 @@ export class DriverCdlService implements OnDestroy {
 
     public activateCdlById(id: number): Observable<any> {
         return this.cdlService.apiCdlActivateIdPut(id).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
@@ -209,7 +210,7 @@ export class DriverCdlService implements OnDestroy {
     }
     public deactivateCdlById(id: number, driverIdMod: number) {
         return this.cdlService.apiCdlDeactivateIdPut(driverIdMod).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
@@ -262,7 +263,7 @@ export class DriverCdlService implements OnDestroy {
     }
     public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
         return this.cdlService.apiCdlRenewPost(data).pipe(
-            tap((res: any) => {
+            tap(() => {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));

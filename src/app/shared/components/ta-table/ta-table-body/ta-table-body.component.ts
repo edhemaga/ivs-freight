@@ -31,26 +31,26 @@ import {
 import { CommonModule } from '@angular/common';
 
 // strategy
-import { TableStrategy } from './strategy/table-strategy';
+import { TableStrategy } from '@shared/components/ta-table/ta-table-body/strategy/table-strategy';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { SharedService } from 'src/app/shared/services/shared.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { FilesService } from 'src/app/shared/services/files.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { SharedService } from '@shared/services/shared.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { FilesService } from '@shared/services/files.service';
 
 // decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // components
-import { TaCustomScrollbarComponent } from '../../ta-custom-scrollbar/ta-custom-scrollbar.component';
-import { TaNoteComponent } from '../../ta-note/ta-note.component';
-import { TaUploadFilesComponent } from '../../ta-upload-files/ta-upload-files.component';
-import { TaInputDropdownLabelComponent } from '../../ta-input-dropdown-label/ta-input-dropdown-label.component';
-import { TaInputDropdownComponent } from '../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaAppTooltipV2Component } from '../../app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputDropdownTableComponent } from '../../ta-input-dropdown-table/ta-input-dropdown-table.component';
-import { TaProgresBarComponent } from '../../ta-progres-bar/ta-progres-bar.component';
+import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
+import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -60,18 +60,18 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { DomSanitizer } from '@angular/platform-browser';
 
 // pipes
-import { TableHighlightSearchTextPipe } from 'src/app/shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
-import { TableTextCountPipe } from 'src/app/shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
-import { ContactPhoneEmailIconPipe } from 'src/app/shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
+import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
+import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
+import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
-import { TableBodyColorLabel } from 'src/app/shared/models/table-models/table-body-color-label.model';
-import { TableBodyOptionActions } from './models/table-body-option-actions.model';
-import { TableBodyColumns } from './models/table-body-columns.model';
+import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
+import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
+import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 @Titles()
 @Component({

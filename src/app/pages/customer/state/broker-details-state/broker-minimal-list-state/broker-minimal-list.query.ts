@@ -7,7 +7,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     BrokerMinimalListState,
     BrokerMinimalListStore,
-} from './broker-minimal-list.store';
+} from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
 
 @Injectable({ providedIn: 'root' })
 export class BrokerMinimalListQuery extends QueryEntity<BrokerMinimalListState> {

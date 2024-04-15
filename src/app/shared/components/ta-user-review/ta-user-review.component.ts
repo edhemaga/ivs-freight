@@ -1,4 +1,3 @@
-import { ReviewsSortPipe } from './pipes/reviews-sort.pipe';
 import {
     Component,
     ElementRef,
@@ -17,18 +16,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { SignInResponse } from 'appcoretruckassist';
-import { ReviewComment } from '../../models/review-comment.model';
+import { ReviewComment } from '@shared/models/review-comment.model';
 
 // utils
-import { ImageBase64Service } from '../../services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { FormsModule } from '@angular/forms';
 
 // components
-import { TaAppTooltipV2Component } from 'src/app/shared/components/app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// pipes
+import { ReviewsSortPipe } from '@shared/components/ta-user-review/pipes/reviews-sort.pipe';
 
 @Component({
     selector: 'app-ta-user-review',

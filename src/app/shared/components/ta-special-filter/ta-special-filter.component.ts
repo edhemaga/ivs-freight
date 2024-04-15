@@ -1,17 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//Components
-import { TaAppTooltipV2Component } from '../app-tooltip-v2/ta-app-tooltip-v2.component';
+// Components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-//Pipe
-import { TaSvgPipe } from 'src/app/shared/pipes/ta-svg.pipe';
-import { FilterClassPipe } from 'src/app/shared/components/ta-special-filter/pipes/filter-class.pipe';
+// Pipes
+import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
+import { FilterClassPipe } from '@shared/components/ta-special-filter/pipes/filter-class.pipe';
 
-//Enum
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-special-filter',

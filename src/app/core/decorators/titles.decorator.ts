@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 // models
-import { TFunction } from '../models/titles-decorator.model';
+import { TFunction } from '@core/models/titles-decorator.model';
 
 @Injectable()
 export class StaticInjectorService {

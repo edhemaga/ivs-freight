@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // enums
-import { DashboardChartStringEnum } from '../enums/dashboard-chart-string.enum';
-import { DashboardStringEnum } from '../enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 @Pipe({
     name: 'addThousandSign',

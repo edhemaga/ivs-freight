@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
 import { IntegrationService } from 'appcoretruckassist';
 
 // state
-import { IntegrationStore } from '../state/settings-integration-state/integrationActiveStore';
+import { IntegrationStore } from '@pages/settings/state/settings-integration-state/integrationActiveStore';
 
 @Injectable({
     providedIn: 'root',

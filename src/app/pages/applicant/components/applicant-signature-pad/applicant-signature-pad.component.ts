@@ -19,10 +19,10 @@ import {
 } from '@almothafar/angular-signature-pad';
 
 // services
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 @Component({
     selector: 'app-applicant-signature-pad',

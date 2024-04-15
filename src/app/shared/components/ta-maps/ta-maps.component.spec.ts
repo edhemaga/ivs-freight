@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaMapsComponent } from './ta-maps.component';
+import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 
 describe('TaMapsComponent', () => {
     let component: TaMapsComponent;

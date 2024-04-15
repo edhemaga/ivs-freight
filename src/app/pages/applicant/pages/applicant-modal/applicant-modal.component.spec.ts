@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantModalComponent } from './applicant-modal.component';
+import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
 
 describe('ApplicantModalComponent', () => {
     let component: ApplicantModalComponent;

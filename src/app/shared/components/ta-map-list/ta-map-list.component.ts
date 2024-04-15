@@ -23,20 +23,23 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { AgmCoreModule } from '@agm/core';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-import { Subject, takeUntil } from 'rxjs';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // icon
-import { MapsService } from '../../services/maps.service';
-import { TruckassistTableService } from '../../services/truckassist-table.service';
+import { MapsService } from '@shared/services/maps.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // component
-import { TaInputComponent } from '../ta-input/ta-input.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 @Component({
     selector: 'app-ta-map-list',

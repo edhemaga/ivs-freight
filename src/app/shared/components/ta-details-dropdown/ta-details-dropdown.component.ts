@@ -16,19 +16,22 @@ import {
     trigger,
     state,
 } from '@angular/animations';
-import { Options } from '@popperjs/core/lib/popper';
 import { ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgZone } from '@angular/core';
+
+// modules
+import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { Options } from '@popperjs/core/lib/popper';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // service
-import { DetailsDataService } from '../../services/details-data.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 @Component({
     selector: 'app-ta-details-dropdown',

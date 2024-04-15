@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { takeUntil, Subject, tap, of } from 'rxjs';
 
 // Services
-import { GpsService } from 'src/app/pages/telematic/services/gps-service.service';
+import { GpsService } from '@pages/telematic/services/gps-service.service';
 
 // Models
 import {

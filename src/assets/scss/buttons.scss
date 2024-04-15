@@ -1,4 +1,4 @@
-@import '../../theme/variables.scss';
+@import 'src/theme/variables';
 
 .breadcrumb {
     background: transparent;
@@ -24,9 +24,7 @@
     border-radius: 3px;
     padding: 0.1rem 0.45rem !important;
     background-color: #dadada !important;
-    //opacity: 0.75;
     transition: 0.25s;
-    //border-color: #dadada !important;
     font-weight: 600;
     border: none;
 }
@@ -180,12 +178,6 @@
         padding: 0.1rem 0.7rem;
         font-size: 0.8rem;
     }
-}
-
-.btn:active,
-.btn:focus,
-.btn:hover {
-    //border: 1px solid #606060;
 }
 
 .btn.btn-icon .ion,
@@ -583,11 +575,6 @@
         background-color: #eef4f5;
         border-color: #c2c5c8;
     }
-}
-
-.btn-default:focus,
-.btn-default.focus {
-    //box-shadow: 0 0 0 2px #c2c5c8;
 }
 
 .btn-default:not(:disabled):not(.disabled):active,

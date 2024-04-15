@@ -82,7 +82,7 @@
 
                     .table-checkbox:checked + .table-checkbox-label {
                         background-color: $ta-blue-14;
-                        background-image: url('../svg/truckassist-table/check-new.svg');
+                        background-image: url('/assets/svg/truckassist-table/check-new.svg');
                         background-repeat: no-repeat;
                         background-position: center;
                         transition: background-color 0.25s;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountTableComponent } from './account-table.component';
+import { AccountTableComponent } from '@pages/account/pages/account-table/account-table.component';
 
 describe('AccountTableComponent', () => {
     let component: AccountTableComponent;

@@ -1,4 +1,4 @@
-import { ContactColumn } from './contact-column.model';
+import { ContactColumn } from '@pages/contacts/pages/contacts-table/models/contact-column.model';
 
 export interface ContactsTableToolbarAction {
     mode?: string;

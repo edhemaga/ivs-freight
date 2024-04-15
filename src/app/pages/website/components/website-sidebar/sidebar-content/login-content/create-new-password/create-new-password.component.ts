@@ -8,20 +8,20 @@ import {
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // validations
-import { passwordValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+import { passwordValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // enums
-import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import { SetNewPasswordCommand } from 'appcoretruckassist';
-import { UserInfoModel } from 'src/app/pages/website/models/user-info.model';
+import { UserInfoModel } from '@pages/website/models/user-info.model';
 
 @Component({
     selector: 'app-create-new-password',

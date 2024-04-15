@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
-import { Observable, forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { Observable, forkJoin, tap } from 'rxjs';
 
 // Store
-import { RepairDetailsState } from '../state/repair-details-state/repair-details.store';
+import { RepairDetailsState } from '@pages/repair/state/repair-details-state/repair-details.store';
 
 // Services
-import { RepairDetailsService } from '../services/repair-details.service';
-import { RepairService } from '../../../shared/services/repair.service';
+import { RepairDetailsService } from '@pages/repair/services/repair-details.service';
+import { RepairService } from '@shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',
@@ -27,15 +27,13 @@ export class RepairDetailsResolver implements Resolve<RepairDetailsState> {
             true
         );
 
-        const repairList$ = this.repairDetailsService.getRepairList(repairShopId);
+        const repairList$ =
+            this.repairDetailsService.getRepairList(repairShopId);
 
         const repairShopMinimalList$ =
             this.repairDetailsService.getRepairShopMinimalList(1, 25);
-        const repairedVehicleList$ = this.repairDetailsService.getRepairedVehicle(
-            repairShopId,
-            1,
-            25
-        );
+        const repairedVehicleList$ =
+            this.repairDetailsService.getRepairedVehicle(repairShopId, 1, 25);
         return forkJoin({
             repairShop: repairShop$,
             repairList: repairList$,

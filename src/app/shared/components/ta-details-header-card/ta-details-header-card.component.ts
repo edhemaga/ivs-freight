@@ -4,10 +4,7 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
-    OnInit,
     Output,
-    SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -16,19 +13,21 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// modules
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // pipes
-import { DetailsActiveItemPipe } from 'src/app/shared/pipes/details-active-item.pipe';
+import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
 
 // store
-import { DriversMinimalListQuery } from 'src/app/pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from 'src/app/pages/driver/state/driver-details-state/driver-details.store';
+import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 
 // compoents
-import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
-import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dropdown.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -49,7 +48,7 @@ import { TaDetailsDropdownComponent } from '../ta-details-dropdown/ta-details-dr
         NgbModule,
     ],
 })
-export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
+export class TaDetailsHeaderCardComponent {
     @Input() public customPinnedSvg: string = '';
     @Input() public cardDetailsName: string = '';
     @Input() public cardDetailsDate: any;
@@ -92,10 +91,7 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
         private driverMinimalQuery: DriversMinimalListQuery,
         private cdRef: ChangeDetectorRef
     ) {}
-    ngOnChanges(changes: SimpleChanges) {}
-    ngOnInit(): void {
-        // this.hideArrowOnStart(this.driverId);
-    }
+
     showTooltip(e: boolean) {
         this.showDropdownTooltip = e;
 

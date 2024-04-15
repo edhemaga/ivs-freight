@@ -1,4 +1,4 @@
-import { DropdownItem } from 'src/app/shared/models/dropdown-item.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
 
 export interface MappedApplicantData {
     isSelected: boolean;

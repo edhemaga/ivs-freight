@@ -1,20 +1,20 @@
 // constants
-import { DashboardTopRatedConstants } from '../../pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
-import { DashboardSubperiodConstants } from '../constants/dashboard-subperiod.constants';
-import { DashboardColors } from '../constants/dashboard-colors.constants';
+import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
+import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 
 // helpers
-import { DashboardStringHelper } from './dashboard-string.helper';
+import { DashboardStringHelper } from '@pages/dashboard/utils/helpers/dashboard-string.helper';
 
 // enums
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 // models
-import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { FilteredSubperiod } from '../../models/filtered-subperiod.model';
-import { BarChartLabels } from '../../models/dashboard-chart-models/bar-chart.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { FilteredSubperiod } from '@pages/dashboard/models/filtered-subperiod.model';
+import { BarChartLabels } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { IntervalLabelResponse } from 'appcoretruckassist';
-import { ByStateListItem } from '../../pages/dashboard-by-state/models/by-state-list-item.model';
+import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 
 export class DashboardHelper {
     static ConvertMainPeriod(mainPeriod: string) {

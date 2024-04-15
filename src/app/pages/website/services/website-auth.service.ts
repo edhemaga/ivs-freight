@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { Observable, Subject, tap } from 'rxjs';
 
 // services
-import { WebsiteActionsService } from './website-actions.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // store
 import { PersistState } from '@datorama/akita';
 
 // enums
-import { WebsiteStringEnum } from '../enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import {

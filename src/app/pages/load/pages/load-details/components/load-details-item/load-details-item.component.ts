@@ -13,10 +13,10 @@ import { OnDestroy } from '@angular/core';
 import { UpdateCommentCommand } from 'appcoretruckassist';
 
 //Services
-import { CommentsService } from 'src/app/shared/services/comments.service';
+import { CommentsService } from '@shared/services/comments.service';
 
 //Components
-import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+import { ReviewComment } from '@shared/models/review-comment.model';
 
 @Component({
     selector: 'app-load-details-item',

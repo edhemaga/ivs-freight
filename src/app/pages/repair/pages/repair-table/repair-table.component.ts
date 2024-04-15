@@ -11,64 +11,66 @@ import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
 // services
-import { RepairService } from 'src/app/shared/services/repair.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { RepairService } from '@shared/services/repair.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
 
-import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
-import { MapsService } from 'src/app/shared/services/maps.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { MapsService } from '@shared/services/maps.service';
 
 // store
-import { RepairShopQuery } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.query';
-import { RepairShopState } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.store';
+import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
+import { RepairShopState } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
-import { RepairTruckState } from 'src/app/pages/repair/state/repair-truck-state/repair-truck.store';
-import { RepairTruckQuery } from 'src/app/pages/repair/state/repair-truck-state/repair-truck.query';
+import { RepairTruckState } from '@pages/repair/state/repair-truck-state/repair-truck.store';
+import { RepairTruckQuery } from '@pages/repair/state/repair-truck-state/repair-truck.query';
 
-import { RepairTrailerQuery } from 'src/app/pages/repair/state/repair-trailer-state/repair-trailer.query';
+import { RepairTrailerQuery } from '@pages/repair/state/repair-trailer-state/repair-trailer.query';
 
 import {
     RepairTrailerState,
     RepairTrailerStore,
-} from '../../state/repair-trailer-state/repair-trailer.store';
+} from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
 
 // pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { RepairCardConfigConstants } from 'src/app/pages/repair/utils/constants/repair-card-config.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { RepairCardConfigConstants } from '@pages/repair/utils/constants/repair-card-config.constants';
 
 // helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { RepairOrderModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopModalComponent } from 'src/app/pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
-// models
-import { ShopBackFilter } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter.model';
-import { MappedTruckTrailer } from 'src/app/pages/repair/pages/repair-table/models/mapped-truck-trailer.model';
-import { MapList } from 'src/app/pages/repair/pages/repair-table/models/map-list.model';
-import { ShopBackFilterQuery } from 'src/app/pages/repair/pages/repair-table/models/shop-back-filter-query.model';
-import { RepairBackFilter } from 'src/app/pages/repair/pages/repair-table/models/repair-back-filter.model';
-import { RepairBodyResponse } from 'src/app/pages/repair/pages/repair-table/models/repair-body-response.model';
-import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
-import { TableColumnConfig } from 'src/app/shared/models/table-models/table-column-config.model';
+// settings
 import {
     getRepairTruckAndTrailerColumnDefinition,
     getRepairsShopColumnDefinition,
-} from 'src/assets/utils/settings/repair-columns';
+} from '@shared/utils/settings/table-settings/repair-columns';
+
+// models
+import { ShopBackFilter } from '@pages/repair/pages/repair-table/models/shop-back-filter.model';
+import { MappedTruckTrailer } from '@pages/repair/pages/repair-table/models/mapped-truck-trailer.model';
+import { MapList } from '@pages/repair/pages/repair-table/models/map-list.model';
+import { ShopBackFilterQuery } from '@pages/repair/pages/repair-table/models/shop-back-filter-query.model';
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
+import { RepairBodyResponse } from '@pages/repair/pages/repair-table/models/repair-body-response.model';
+import { RepairListResponse, RepairResponse } from 'appcoretruckassist';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 @Component({
     selector: 'app-repair-table',
