@@ -3,9 +3,11 @@ import { BehaviorSubject, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // Models
 import {
+    PMTrailerDefaultDropdownResponse,
     PMTrailerListResponse,
     PMTrailerResponse,
     PMTrailerUnitListResponse,
+    PMTruckDefaultDropdownResponse,
     PMTruckListResponse,
     PMTruckResponse,
     PMTruckUnitListResponse,
@@ -91,7 +93,7 @@ export class PmService {
     ): Observable<object> {
         return this.repairService.apiRepairPmTruckPut(data).pipe(
             tap(() => {
-                const subTruckUnitList = this.getPMTruckUnitList()
+                this.getPMTruckUnitList()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (pmTruckUnitList) => {
@@ -99,7 +101,7 @@ export class PmService {
                                 pmTruckUnitList.pagination.data
                             );
 
-                            const subPmList = this.getPMTruckList()
+                            this.getPMTruckList()
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: (pmTruckList) => {
@@ -110,12 +112,8 @@ export class PmService {
                                         this.pmListTruck.next(
                                             pmTruckList.pagination.data
                                         );
-
-                                        subPmList.unsubscribe();
                                     },
                                 });
-
-                            subTruckUnitList.unsubscribe();
                         },
                     });
             })
@@ -128,7 +126,7 @@ export class PmService {
     ): Observable<object> {
         return this.repairService.apiRepairPmTruckUnitPut(data).pipe(
             tap(() => {
-                const subPm = this.getPMTruckUnitList(data.truckId)
+                this.getPMTruckUnitList(data.truckId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (pm) => {
@@ -142,8 +140,6 @@ export class PmService {
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
-
-                            subPm.unsubscribe();
                         },
                     });
             })
@@ -153,6 +149,11 @@ export class PmService {
     // Delete PM Truck List
     public deletePMTruckById(id: number): Observable<object> {
         return this.repairService.apiRepairPmTruckIdDelete(id);
+    }
+
+    // Get Truck PM dropdown
+    public getPMTruckDropdown(): Observable<PMTruckDefaultDropdownResponse[]> {
+        return this.repairService.apiRepairPmTruckDropdownGet();
     }
 
     // ------------------------  Trailer --------------------------
@@ -217,7 +218,7 @@ export class PmService {
     ): Observable<object> {
         return this.repairService.apiRepairPmTrailerPut(data).pipe(
             tap(() => {
-                const subTrailerUnitList = this.getPMTrailerUnitList()
+                this.getPMTrailerUnitList()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (pmTrailerUnitList) => {
@@ -225,7 +226,7 @@ export class PmService {
                                 pmTrailerUnitList.pagination.data
                             );
 
-                            const subPmList = this.getPMTrailerList()
+                            this.getPMTrailerList()
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: (pmTrailerList) => {
@@ -236,12 +237,8 @@ export class PmService {
                                         this.pmListTrailer.next(
                                             pmTrailerList.pagination.data
                                         );
-
-                                        subPmList.unsubscribe();
                                     },
                                 });
-
-                            subTrailerUnitList.unsubscribe();
                         },
                     });
             })
@@ -254,7 +251,7 @@ export class PmService {
     ): Observable<object> {
         return this.repairService.apiRepairPmTrailerUnitPut(data).pipe(
             tap(() => {
-                const subPm = this.getPMTrailerUnitList(data.trailerId)
+                this.getPMTrailerUnitList(data.trailerId)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (pm) => {
@@ -268,8 +265,6 @@ export class PmService {
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
-
-                            subPm.unsubscribe();
                         },
                     });
             })
@@ -291,5 +286,12 @@ export class PmService {
 
     public getRepairPmTruckFilter() {
         return this.repairService.apiRepairPmTruckFilterListGet();
+    }
+
+    // Get Trailer PM dropdown
+    public getPMTrailerDropdown(): Observable<
+        PMTrailerDefaultDropdownResponse[]
+    > {
+        return this.repairService.apiRepairPmTrailerDropdownGet();
     }
 }

@@ -16,11 +16,15 @@ import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.
 import { GridColumn } from 'src/app/shared/models/table-models/grid-column.model';
 import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
 import { PmTableColumns } from './models/pm-table-columns.model';
-import { PmTableAction } from './models/pm-table-actions.model';
+import { PmTableAction } from './models/pm-table-action.model';
 import { PmTrailer } from './models/pm-trailer.model';
 import { PmTruck } from './models/pm-truck.model';
 import { TableToolbarActions } from 'src/app/shared/models/table-models/table-toolbar-actions.model';
-import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
+import {
+    PMStatus,
+    PMTrailerUnitResponse,
+    PMTruckUnitResponse,
+} from 'appcoretruckassist';
 
 // Services
 import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
@@ -319,14 +323,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             type: TableStringEnum.EDIT,
                             header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
                             action: TableStringEnum.UNIT_PM,
-                            id: event.data.truck.id,
+                            id: event.data.trailer.id,
                             data: event.data,
                         }
                     );
                 }
-            }
-            case TableStringEnum.ADD_REPAIR_BILL: {
-                console.log('onTableBodyActions truck ADD_REPAIR_BILL');
             }
             default: {
                 break;
@@ -424,7 +425,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return TableDropdownComponentConstants.DROPDOWN_PM_CONTENT;
     }
 
-    private actionAnimationSubscribe() {
+    private actionAnimationSubscribe(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -511,7 +512,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 (column) => column.name === pm.title
             );
 
-            if (pm.diffMileage) {
+            if (
+                pm.diffMileage &&
+                pmColumn.isSelectColumn &&
+                pm.status?.name !== PMStatus.Inactive
+            ) {
                 truck[pmColumn.field] = {
                     expirationMiles: pm.diffMileage,
                     expirationMilesText: this.thousandSeparator.transform(
@@ -574,7 +579,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 (column) => column.name === pm.title
             );
 
-            if (pm.diffDays) {
+            if (
+                pm.diffDays &&
+                pmColumn.isSelectColumn &&
+                pm.status?.name !== PMStatus.Inactive
+            ) {
                 trailer[pmColumn.field] = {
                     expirationDays: Math.abs(pm.diffDays),
                     expirationDaysText: Math.abs(pm.diffDays).toString(),
@@ -621,7 +630,10 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     index: truckColumnsLength + 1,
                     sortable: true,
                     isActionColumn: false,
-                    isSelectColumn: false,
+                    isSelectColumn:
+                        customColumn.status.name === PMStatus.Inactive
+                            ? false
+                            : true,
                     filterable: false,
                     disabled: false,
                     export: true,
@@ -651,7 +663,10 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     index: trailerColumnsLength + 1,
                     sortable: true,
                     isActionColumn: false,
-                    isSelectColumn: false,
+                    isSelectColumn:
+                        customColumn.status.name === PMStatus.Inactive
+                            ? false
+                            : true,
                     filterable: false,
                     disabled: false,
                     export: true,
@@ -664,10 +679,42 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private getAllTableColumns(configType: string): PmTableColumns[] {
         if (configType === TableStringEnum.PM_TRUCK) {
             const truckColumns = this.getGridColumns(configType);
+            const pmListTruck = this.pmListTruckQuery.getAll();
+
+            truckColumns.map((column) => {
+                if (column.ngTemplate === 'progressMiles') {
+                    const findPmListColumn = pmListTruck.find(
+                        (pm) => pm.title === column.name
+                    );
+
+                    if (findPmListColumn) {
+                        column.isSelectColumn =
+                            findPmListColumn.status.name === PMStatus.Inactive
+                                ? false
+                                : true;
+                    }
+                }
+            });
 
             return [...truckColumns, ...this.customColumnsTruck];
         } else {
             const trailerColumns = this.getGridColumns(configType);
+            const pmListTrailer = this.pmListTrailerQuery.getAll();
+
+            trailerColumns.map((column) => {
+                if (column.ngTemplate === 'progress') {
+                    const findPmListColumn = pmListTrailer.find(
+                        (pm) => pm.title === column.name
+                    );
+
+                    if (findPmListColumn) {
+                        column.isSelectColumn =
+                            findPmListColumn.status.name === PMStatus.Inactive
+                                ? false
+                                : true;
+                    }
+                }
+            });
 
             return [...trailerColumns, ...this.customColumnsTrailer];
         }

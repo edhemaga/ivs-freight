@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { NgbModule, NgbPopoverModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopoverModule,
+    NgbPopover,
+} from '@ng-bootstrap/ng-bootstrap';
+
+// Pipes
 import { ThousandToShortFormatPipe } from '../../pipes/thousand-to-short-format.pipe';
+import { ProgressDropdownData } from './models/progress-dropdown-data.model';
 
 @Component({
     selector: 'app-ta-progres-bar',
@@ -26,15 +33,16 @@ export class TaProgresBarComponent implements OnInit {
     @Input() data: any;
     @Input() columnField: string;
     @Input() isTable: boolean = false;
-    progressTooltip: NgbPopover;
-    progressDropdownActive: number = -1;
-    progressDropdownColumnActive: string = '';
-    progressDropdownData: any;
+
+    public progressTooltip: NgbPopover;
+    public progressDropdownActive: number = -1;
+    public progressDropdownColumnActive: string = '';
+    public progressDropdownData: ProgressDropdownData;
 
     ngOnInit() {}
 
     // Toggle Progress Dropdown
-    toggleProgressDropdown(tooltip: NgbPopover) {
+    public toggleProgressDropdown(tooltip: NgbPopover): void {
         this.progressTooltip = tooltip;
 
         if (tooltip.isOpen()) {
@@ -43,10 +51,15 @@ export class TaProgresBarComponent implements OnInit {
             tooltip.open();
         }
 
-        this.progressDropdownActive = tooltip.isOpen() ? this.data.textUnit : -1;
+        this.progressDropdownActive = tooltip.isOpen()
+            ? this.data.textUnit
+            : -1;
         this.progressDropdownColumnActive = tooltip.isOpen()
             ? this.columnField
-            : '';
-        this.progressDropdownData = { row: this.data, column: this.data[this.columnField] };
+            : null;
+        this.progressDropdownData = {
+            row: this.data,
+            column: this.data[this.columnField],
+        };
     }
 }

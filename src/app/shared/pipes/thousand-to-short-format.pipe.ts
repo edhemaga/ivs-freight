@@ -1,14 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // helpers
-import { convertThousandToShortFormat } from '../../core/utils/methods.calculations';
+import { MethodsCalculationsHelper } from '../utils/helpers/methods-calculations.helper';
 
 @Pipe({
     name: 'thousandToShortFormatPipe',
     standalone: true,
 })
 export class ThousandToShortFormatPipe implements PipeTransform {
-    transform(value: any): any {
-        return convertThousandToShortFormat(value ? value : '0');
+    transform(value: number): string {
+        return MethodsCalculationsHelper.convertThousandToShortFormat(
+            value ? value : 0
+        );
     }
 }

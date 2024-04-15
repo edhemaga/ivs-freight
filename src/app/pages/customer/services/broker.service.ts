@@ -344,7 +344,7 @@ export class BrokerService implements OnDestroy {
         // this.brokerItemStore.update(brokerData.id, {
         //     reviews: brokerData.reviews,
         // });
-        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - reviews doesn't exist in brokerData response
 
         this.tableService.sendActionAnimation({
             animation: 'update',
@@ -367,7 +367,7 @@ export class BrokerService implements OnDestroy {
         //     reviews: brokerData.reviews,
         // });
 
-        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - reviews doesn't exist in brokerData response
 
         this.tableService.sendActionAnimation({
             animation: 'update',
@@ -391,7 +391,7 @@ export class BrokerService implements OnDestroy {
         // this.brokerItemStore.update(brokerData.id, {
         //     reviews: brokerData.reviews,
         // });
-        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - ne postoji reviews na response
+        // this.brokerStore.update(brokerData.id, { reviews: brokerData.reviews }); - reviews doesn't exist in brokerData response
 
         this.tableService.sendActionAnimation({
             animation: 'update',

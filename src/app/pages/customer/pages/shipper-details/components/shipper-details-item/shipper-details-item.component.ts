@@ -64,7 +64,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
                         : 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.thumb, // - ne postoji item.ratingFromTheReviewer na response, treba provjeriti sta ovde ide
+                rating: item.thumb, // - item.ratingFromTheReviewer doesn't exist in response
             };
         });
     }

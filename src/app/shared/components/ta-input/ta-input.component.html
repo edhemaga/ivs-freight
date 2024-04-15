@@ -1275,6 +1275,13 @@
                 (_inputConfig.selectedDropdown ||
                     (_inputConfig.placeholder && focusInput) ||
                     getSuperControl.value),
+            'dropdown-input-image-pm':
+                _inputConfig?.dropdownImageInput?.withText &&
+                !_inputConfig?.hideAllItemsInInputDropdown &&
+                _inputConfig?.dropdownImageInput?.template === 'pm' &&
+                (_inputConfig.selectedDropdown ||
+                    (_inputConfig.placeholder && focusInput) ||
+                    getSuperControl.value),
             'dropdown-input-image-without-text-transparent':
                 _inputConfig?.dropdownImageInput &&
                 !_inputConfig?.dropdownImageInput?.withText &&

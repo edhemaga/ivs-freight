@@ -39,7 +39,7 @@
     </ng-container>
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
-    <ng-container *ngIf="percents > 0">
+    <ng-container *ngIf="percents">
         <span class="progress-text" [class.table-progress-text]="isTable">
             <ng-container *ngIf="type === 'days'">
                 in
@@ -83,41 +83,48 @@
                     *ngIf="progressDropdownData.column.expirationMilesText"
                 >
                     {{
-                        progressDropdownData.column.expirationMiles > 0
+                        progressDropdownData.column.expirationMiles
                             ? progressDropdownData.column.expirationMilesText
                             : 0
                     }}
-                    <span
+
+                    <ng-container
                         *ngIf="
-                            progressDropdownData.column.percentage > 0 &&
+                            progressDropdownData.column.percentage &&
                             progressDropdownData.column.percentage <= 100
                         "
                     >
-                        mi to go</span
+                        <span> mi to go</span>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="!progressDropdownData.column.percentage"
                     >
-                    <span *ngIf="!progressDropdownData.column.percentage">
-                        mi over</span
-                    >
+                        <span> mi over</span>
+                    </ng-container>
                 </ng-container>
                 <ng-container
                     *ngIf="progressDropdownData.column.expirationDaysText"
                 >
                     {{
-                        progressDropdownData.column.expirationDays > 0
+                        progressDropdownData.column.expirationDays
                             ? progressDropdownData.column.expirationDaysText
                             : 0
                     }}
-                    <span
+                    <ng-container
                         *ngIf="
-                            progressDropdownData.column.percentage > 0 &&
+                            progressDropdownData.column.percentage &&
                             progressDropdownData.column.percentage < 100
                         "
                     >
-                        days left</span
+                        <span> days left</span>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="!progressDropdownData.column.percentage"
                     >
-                    <span *ngIf="!progressDropdownData.column.percentage">
-                        days ago</span
-                    >
+                        <span> days ago</span>
+                    </ng-container>
                 </ng-container>
             </div>
             <div class="progress-total">

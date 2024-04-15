@@ -154,6 +154,16 @@ export class MethodsCalculationsHelper {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     };
 
+    //------------------------------- Convert number to short format (1.000 to 1K, 1.000.000 to 1M) -------------------------------
+    static convertThousandToShortFormat = (value: number) => {
+        if (value)
+            return new Intl.NumberFormat(undefined, {
+                //@ts-ignore
+                notation: 'compact',
+                compactDisplay: 'short',
+            }).format(value);
+    };
+
     //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------
     static convertNumberWithCurrencyFormatterToBackend = (
         value: number,

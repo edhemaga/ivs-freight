@@ -520,25 +520,33 @@ export class TaInputDropdownComponent
     }
 
     public updateItem(): void {
-        this._activeItem = {
-            ...this._activeItem,
-            name: this.getSuperControl.value,
-            colorId: this.activeItemColor
-                ? this.activeItemColor.id
-                : this._activeItem.colorId,
-            color: this.activeItemColor
-                ? this.activeItemColor.name
-                : this._activeItem.color,
-            code: this.activeItemColor
-                ? this.activeItemColor.code
-                : this._activeItem.code,
-        };
+        if (this.inputConfig.dropdownLabel) {
+            this._activeItem = {
+                ...this._activeItem,
+                name: this.getSuperControl.value,
+                colorId: this.activeItemColor
+                    ? this.activeItemColor.id
+                    : this._activeItem.colorId,
+                color: this.activeItemColor
+                    ? this.activeItemColor.name
+                    : this._activeItem.color,
+                code: this.activeItemColor
+                    ? this.activeItemColor.code
+                    : this._activeItem.code,
+            };
+
+            this.selectedLabelMode.emit('Label');
+        } else {
+            this._activeItem = {
+                ...this._activeItem,
+                name: this.getSuperControl.value,
+            };
+        }
 
         this.saveItem.emit({
             data: this._activeItem,
             action: 'edit',
         });
-        this.selectedLabelMode.emit('Label');
     }
 
     public addNewConfig() {

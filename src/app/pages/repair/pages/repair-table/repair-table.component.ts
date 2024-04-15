@@ -329,7 +329,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repair(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => { // - dodato any jer puca res.data type
+            .subscribe((res: any) => { // - added any because res.data is throwing an error
                 this.updateDataCount();
 
                 // On Add Repair

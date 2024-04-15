@@ -1,4 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     FormsModule,
@@ -18,13 +24,15 @@ import { FormService } from 'src/app/shared/services/form.service';
 
 // Models
 import {
-    PMTrailerListResponse,
-    PMTruckListResponse,
+    PMStatus,
+    PMTrailerResponse,
+    PMTruckResponse,
     UpdatePMTrailerListDefaultCommand,
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
 } from 'appcoretruckassist';
 import { PmUpdateTruckUnitListCommand } from '../../models/pm-update-truck-unit-list-command.model';
+import { PMTableData } from '../models/pm-table-data.model';
 
 // Validators
 import { descriptionValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
@@ -42,6 +50,10 @@ import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta
 import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
+
+// Enums
 import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
 
 @Component({
@@ -64,6 +76,8 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaInputComponent,
+        TaInputDropdownComponent,
+        TaModalTableComponent,
     ],
 })
 export class PmModalComponent implements OnInit, OnDestroy {
@@ -77,6 +91,12 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public disableCardAnimation: boolean = false;
 
+    public pmTableData: PMTableData[] = [];
+
+    public isPmRowCreated: boolean = false;
+
+    public removedPMs: number[] = [];
+
     constructor(
         // Form
         private formBuilder: UntypedFormBuilder,
@@ -85,7 +105,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
         private pmService: PmService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+
+        // Change detector
+        private changeDetector: ChangeDetectorRef
     ) {}
 
     ngOnInit() {
@@ -146,7 +169,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
         title: string,
         mileage: string,
         value: string,
-        hidden: boolean
+        hidden: boolean,
+        status: string
     ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [id],
@@ -157,66 +181,22 @@ export class PmModalComponent implements OnInit, OnDestroy {
             defaultMileage: [mileage],
             value: [value, [...descriptionValidation]],
             hidden: [hidden],
+            status: [status],
         });
     }
 
-    public addPMs(
-        data: {
-            id: any;
-            isChecked: boolean;
-            svg: string;
-            title: string;
-            mileage: string;
-            status: any;
-        },
-        event: string,
-        defaultValue?: number
-    ) {
-        // This if check if new item added or already new items exist, because of 'custom-svg'
-        if (event === 'new-pm') {
-            if (data?.id) {
-                this.newPMs.push(
-                    this.createNewPMs(
-                        data.id,
-                        data.isChecked,
-                        data.svg,
-                        data.title,
-                        data.mileage,
-                        data.title,
-                        false
-                    )
-                );
-            } else {
-                this.newPMs.push(
-                    this.createNewPMs(
-                        null,
-                        true,
-                        'assets/svg/common/repair-pm/ic_custom_pm.svg',
-                        null,
-                        MethodsCalculationsHelper.convertNumberInThousandSep(
-                            defaultValue
-                        ),
-                        null,
-                        false
-                    )
-                );
-            }
-        } else {
-            this.defaultPMs.push(
-                this.createDefaultPMs(
-                    data.id,
-                    data.isChecked,
-                    data.svg,
-                    data.title,
-                    data.mileage,
-                    data.status
-                )
-            );
-        }
+    public addPMs() {
+        this.isPmRowCreated = true;
+
+        setTimeout(() => {
+            this.isPmRowCreated = false;
+        }, 400);
+
+        this.changeDetector.detectChanges();
     }
 
     public activePMs() {
-        return this.defaultPMs.controls.reduce((accumulator, item: any) => {
+        return this.newPMs.controls.reduce((accumulator, item: any) => {
             if (item.get('isChecked').value) {
                 return (accumulator = accumulator + 1);
             } else {
@@ -229,13 +209,38 @@ export class PmModalComponent implements OnInit, OnDestroy {
         if (this.editData.type === 'new') {
             if (this.newPMs.at(index).value.id) {
                 switch (this.editData.header) {
-                    case 'Truck': {
+                    case TableStringEnum.TRUCK_2:
                         this.deleteTruckPMList(this.newPMs.at(index).value.id);
+                        break;
+
+                    case TableStringEnum.TRAILER_3:
+                        this.deleteTrailerPMList(
+                            this.newPMs.at(index).value.id
+                        );
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            this.newPMs.removeAt(index);
+        }
+    }
+
+    public removeDefaultPMs(index: number) {
+        if (this.editData.type === 'new') {
+            if (this.defaultPMs.at(index).value.id) {
+                switch (this.editData.header) {
+                    case 'Truck': {
+                        this.deleteTruckPMList(
+                            this.defaultPMs.at(index).value.id
+                        );
                         break;
                     }
                     case 'Trailer': {
                         this.deleteTrailerPMList(
-                            this.newPMs.at(index).value.id
+                            this.defaultPMs.at(index).value.id
                         );
                         break;
                     }
@@ -245,7 +250,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 }
             }
 
-            this.newPMs.removeAt(index);
+            this.defaultPMs.removeAt(index);
         }
     }
 
@@ -297,6 +302,12 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     case 'new': {
                         switch (this.editData.header) {
                             case 'Truck': {
+                                if (this.removedPMs?.length) {
+                                    this.removedPMs.map((removedPmIndex) => {
+                                        this.removeNewPMs(removedPmIndex);
+                                    });
+                                }
+
                                 this.addPMTruckList();
                                 this.modalService.setModalSpinner({
                                     action: null,
@@ -306,6 +317,12 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                 break;
                             }
                             case 'Trailer': {
+                                if (this.removedPMs?.length) {
+                                    this.removedPMs.map((removedPmIndex) => {
+                                        this.removeNewPMs(removedPmIndex);
+                                    });
+                                }
+
                                 this.addPMTrailerList();
                                 this.modalService.setModalSpinner({
                                     action: null,
@@ -366,30 +383,43 @@ export class PmModalComponent implements OnInit, OnDestroy {
             .getPMTruckList()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PMTruckListResponse) => {
-                    res.pagination.data.forEach((item, index) => {
-                        const data = {
-                            id: item.id,
-                            isChecked:
-                                item.status.name === 'Active' || index < 4,
-                            svg: `assets/svg/common/repair-pm/${item.logoName}`,
-                            title: item.title,
-                            mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.mileage
-                                ),
-                            defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.mileage
-                                ),
-                            status: item.status,
-                        };
+                next: (res) => {
+                    this.pmTableData = res.pagination.data.map(
+                        (item, index) => {
+                            const data = this.mapPmTruckData(item, index);
 
-                        this.addPMs(
-                            data,
-                            item.logoName.includes('custom') ? 'new-pm' : null
-                        );
-                    });
+                            if (data.status.name === PMStatus.Default) {
+                                this.newPMs.push(
+                                    this.createDefaultPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.status.name
+                                    )
+                                );
+                            } else {
+                                this.newPMs.push(
+                                    this.createNewPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.title,
+                                        false,
+                                        data.status.name
+                                    )
+                                );
+                            }
+
+                            return data;
+                        }
+                    );
+
+                    this.PMform.get('newPMs').patchValue(this.pmTableData);
+                    this.changeDetector.detectChanges();
                 },
                 error: () => {},
             });
@@ -400,30 +430,42 @@ export class PmModalComponent implements OnInit, OnDestroy {
             .getPmTruckUnitIdModal(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PMTruckListResponse) => {
-                    res.pagination.data.forEach((item, index) => {
-                        const data = {
-                            id: item.id,
-                            isChecked:
-                                item.status.name === 'Active' || index < 4,
-                            svg: `assets/svg/common/repair-pm/${item.logoName}`,
-                            title: item.title,
-                            mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.mileage
-                                ),
-                            defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.mileage
-                                ),
-                            status: item.status.name,
-                        };
+                next: (res) => {
+                    this.pmTableData = res.pagination.data.map(
+                        (item, index) => {
+                            const data = this.mapPmTruckData(item, index);
 
-                        this.addPMs(
-                            data,
-                            item.logoName.includes('custom') ? 'new-pm' : null
-                        );
-                    });
+                            if (data.status.name === PMStatus.Default) {
+                                this.newPMs.push(
+                                    this.createDefaultPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.status.name
+                                    )
+                                );
+                            } else {
+                                this.newPMs.push(
+                                    this.createNewPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.title,
+                                        false,
+                                        data.status.name
+                                    )
+                                );
+                            }
+
+                            return data;
+                        }
+                    );
+
+                    this.PMform.get('newPMs').patchValue(this.pmTableData);
                 },
                 error: () => {},
             });
@@ -434,29 +476,42 @@ export class PmModalComponent implements OnInit, OnDestroy {
             .getPMTrailerList()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PMTrailerListResponse) => {
-                    res.pagination.data.forEach((item) => {
-                        const data = {
-                            id: item.id,
-                            isChecked: item.status.name === 'Active',
-                            svg: `assets/svg/common/repair-pm/${item.logoName}`,
-                            title: item.title,
-                            mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.months
-                                ),
-                            defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.months
-                                ),
-                            status: item.status.name,
-                        };
+                next: (res) => {
+                    this.pmTableData = res.pagination.data.map(
+                        (item, index) => {
+                            const data = this.mapPmTrailerData(item, index);
 
-                        this.addPMs(
-                            data,
-                            item.logoName.includes('custom') ? 'new-pm' : null
-                        );
-                    });
+                            if (data.status.name === PMStatus.Default) {
+                                this.newPMs.push(
+                                    this.createDefaultPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.status.name
+                                    )
+                                );
+                            } else {
+                                this.newPMs.push(
+                                    this.createNewPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.title,
+                                        false,
+                                        data.status.name
+                                    )
+                                );
+                            }
+
+                            return data;
+                        }
+                    );
+
+                    this.PMform.get('newPMs').patchValue(this.pmTableData);
                 },
                 error: () => {},
             });
@@ -467,29 +522,42 @@ export class PmModalComponent implements OnInit, OnDestroy {
             .getPmTrailerUnitIdModal(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: PMTrailerListResponse) => {
-                    res.pagination.data.forEach((item) => {
-                        const data = {
-                            id: item.id,
-                            isChecked: item.status.name === 'Active',
-                            svg: `assets/svg/common/repair-pm/${item.logoName}`,
-                            title: item.title,
-                            mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.months
-                                ),
-                            defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    item.months
-                                ),
-                            status: item.status,
-                        };
+                next: (res) => {
+                    this.pmTableData = res.pagination.data.map(
+                        (item, index) => {
+                            const data = this.mapPmTrailerData(item, index);
 
-                        this.addPMs(
-                            data,
-                            item.logoName.includes('custom') ? 'new-pm' : null
-                        );
-                    });
+                            if (data.status.name === PMStatus.Default) {
+                                this.newPMs.push(
+                                    this.createDefaultPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.status.name
+                                    )
+                                );
+                            } else {
+                                this.newPMs.push(
+                                    this.createNewPMs(
+                                        data.id,
+                                        data.isChecked,
+                                        data.svg,
+                                        data.title,
+                                        data.mileage,
+                                        data.title,
+                                        false,
+                                        data.status.name
+                                    )
+                                );
+                            }
+
+                            return data;
+                        }
+                    );
+
+                    this.PMform.get('newPMs').patchValue(this.pmTableData);
                 },
                 error: () => {},
             });
@@ -498,7 +566,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     private addPMTruckList() {
         const newData: UpdatePMTruckDefaultListCommand = {
             pmTruckDefaults: [
-                ...this.defaultPMs.controls.map((item, index) => {
+                ...this.newPMs.controls.map((item: any, index) => {
                     return {
                         id: item.get('id').value,
                         title: item.get('title').value,
@@ -508,23 +576,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             ),
                         status:
                             index < 4
-                                ? item.get('status').value.name
+                                ? PMStatus.Default
                                 : item.get('isChecked').value
-                                ? 'Active'
-                                : 'Inactive',
-                    };
-                }),
-                ...this.newPMs.controls.map((item: any) => {
-                    return {
-                        id: item.get('id').value,
-                        title: item.get('value').value,
-                        mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
-                                item.get('mileage').value
-                            ),
-                        status: item.get('isChecked').value
-                            ? 'Active'
-                            : 'Inactive',
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -576,7 +631,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     private addPMTrailerList() {
         const newData: UpdatePMTrailerListDefaultCommand = {
             pmTrailerDefaults: [
-                ...this.defaultPMs.controls.map((item, index) => {
+                ...this.newPMs.controls.map((item: any, index) => {
                     return {
                         id: item.get('id').value,
                         title: item.get('title').value,
@@ -585,22 +640,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         ),
                         status:
                             index < 1
-                                ? item.get('status').value
+                                ? PMStatus.Default
                                 : item.get('isChecked').value
-                                ? 'Active'
-                                : 'Inactive',
-                    };
-                }),
-                ...this.newPMs.controls.map((item: any) => {
-                    return {
-                        id: item.get('id').value,
-                        title: item.get('value').value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
-                            item.get('mileage').value
-                        ),
-                        status: item.get('isChecked').value
-                            ? 'Active'
-                            : 'Inactive',
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -663,27 +706,30 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             ),
                         status:
                             index < 4
-                                ? item.get('status').value
+                                ? PMStatus.Default
                                 : item.get('isChecked').value
-                                ? 'Active'
-                                : 'Inactive',
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
-                ...this.newPMs.controls.map((item) => {
+                ...this.newPMs.controls.map((item, index) => {
                     return {
                         id: item.get('id').value,
                         mileage:
                             MethodsCalculationsHelper.convertThousanSepInNumber(
                                 item.get('mileage').value
                             ),
-                        status: item.get('isChecked').value
-                            ? 'Active'
-                            : 'Inactive',
+                        status:
+                            index < 4
+                                ? PMStatus.Default
+                                : item.get('isChecked').value
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
             ],
         };
-        
+
         this.pmService
             .addUpdatePMTruckUnit(newData)
             .pipe(takeUntil(this.destroy$))
@@ -739,21 +785,24 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         ),
                         status:
                             index < 1
-                                ? item.get('status').value.name
+                                ? PMStatus.Default
                                 : item.get('isChecked').value
-                                ? 'Active'
-                                : 'Inactive',
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
-                ...this.newPMs.controls.map((item) => {
+                ...this.newPMs.controls.map((item, index) => {
                     return {
                         id: item.get('id').value,
                         months: MethodsCalculationsHelper.convertThousanSepInNumber(
                             item.get('mileage').value
                         ),
-                        status: item.get('isChecked').value
-                            ? 'Active'
-                            : 'Inactive',
+                        status:
+                            index < 1
+                                ? PMStatus.Default
+                                : item.get('isChecked').value
+                                ? PMStatus.Active
+                                : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -882,6 +931,104 @@ export class PmModalComponent implements OnInit, OnDestroy {
             .deletePMTrailerById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        let pmNames = [];
+
+        modalTableDataValue.map((pmItem) => {
+            const existingPmIndex = this.newPMs.controls.findIndex(
+                (newPm) => newPm.get('title').value === pmItem.title
+            );
+
+            if (pmItem.title && pmItem.mileage && existingPmIndex === -1) {
+                this.newPMs.push(
+                    this.createNewPMs(
+                        null,
+                        pmItem.isChecked,
+                        pmItem.logoName,
+                        pmItem.title,
+                        MethodsCalculationsHelper.convertNumberInThousandSep(
+                            pmItem.mileage
+                        ),
+                        pmItem.title,
+                        false,
+                        pmItem.status
+                    )
+                );
+            } else if (existingPmIndex > -1) {
+                const defaultPmsIndex =
+                    this.editData.header === TableStringEnum.TRUCK_2 ||
+                    this.editData.header ===
+                        TableStringEnum.EDIT_TRUCK_PM_HEADER
+                        ? 4
+                        : 1;
+
+                this.newPMs.at(existingPmIndex).patchValue({
+                    svg: pmItem.logoName,
+                    title: pmItem.title,
+                    mileage: pmItem.mileage,
+                    value: pmItem.title,
+                    isChecked: pmItem.isChecked,
+                    status:
+                        existingPmIndex < defaultPmsIndex
+                            ? PMStatus.Default
+                            : pmItem.isChecked
+                            ? PMStatus.Active
+                            : PMStatus.Inactive,
+                });
+            }
+
+            if (pmItem.title) pmNames.push(pmItem.title);
+        });
+
+        if (pmNames?.length) {
+            this.newPMs.controls.map((newPm, index) => {
+                if (!pmNames.includes(newPm.get('title').value)) {
+                    if (!this.removedPMs.includes(index))
+                        this.removedPMs.push(index);
+                }
+            });
+        }
+
+        this.changeDetector.detectChanges();
+    }
+
+    private mapPmTruckData(item: PMTruckResponse, index: number): PMTableData {
+        return {
+            id: item.id,
+            isChecked: item.status.name === PMStatus.Active || index < 4,
+            svg: `assets/svg/common/repair-pm/${item.logoName}`,
+            title: item.title,
+            mileage: MethodsCalculationsHelper.convertNumberInThousandSep(
+                item.mileage
+            ),
+            defaultMileage:
+                MethodsCalculationsHelper.convertNumberInThousandSep(
+                    item.mileage
+                ),
+            status: item.status,
+        };
+    }
+
+    private mapPmTrailerData(
+        item: PMTrailerResponse,
+        index: number
+    ): PMTableData {
+        return {
+            id: item.id,
+            isChecked: item.status.name === PMStatus.Active || index < 1,
+            svg: `assets/svg/common/repair-pm/${item.logoName}`,
+            title: item.title,
+            mileage: MethodsCalculationsHelper.convertNumberInThousandSep(
+                item.months
+            ),
+            defaultMileage:
+                MethodsCalculationsHelper.convertNumberInThousandSep(
+                    item.months
+                ),
+            status: item.status,
+        };
     }
 
     public identity(index: number, item: any): number {
