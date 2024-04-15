@@ -36,6 +36,7 @@ import player from 'lottie-web';
 import { StoreModule } from '@ngrx/store';
 import { ArticleReducer } from './pages/dashboard/state/dashboard.reducer';
 import { authReducer } from './pages/website/state/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 function playerFactory() {
     return player;
@@ -74,6 +75,7 @@ function playerFactory() {
         StoreModule.forRoot({
             auth: authReducer,
         }),
+        EffectsModule.forRoot([]),
     ],
     providers: [
         {
