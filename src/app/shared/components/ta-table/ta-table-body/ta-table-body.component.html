@@ -416,13 +416,13 @@
                                                         [src]="
                                                             row[column.field]
                                                                 .isDnu
-                                                                ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
+                                                                ? 'assets/svg/truckassist-table/dnu-icon.svg'
                                                                 : !row[
                                                                       column
                                                                           .field
                                                                   ].isClosed
-                                                                ? '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
-                                                                : '../../../../../../assets/svg/common/ic_closed_broker.svg'
+                                                                ? 'assets/svg/truckassist-table/ban-icon.svg'
+                                                                : 'assets/svg/common/ic_closed_broker.svg'
                                                         "
                                                         [svgStyle]="{
                                                             'width.px': '18',
@@ -764,7 +764,7 @@
                                                 class="avatar-owner"
                                                 alt="avatar"
                                                 *ngIf="row.isOwner"
-                                                src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
+                                                src="assets/svg/truckassist-table/owner-badge.svg"
                                             />
                                         </div>
                                         <div
@@ -826,7 +826,7 @@
                                                         onActivateUser(row)
                                                     "
                                                     [src]="
-                                                        '../../../../../../assets/svg/truckassist-table/user-archived.svg'
+                                                        'assets/svg/truckassist-table/user-archived.svg'
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': '17',
@@ -947,8 +947,8 @@
                                             *ngIf="row[column.field].type"
                                             [src]="
                                                 row[column.field].type === 'LTL'
-                                                    ? '../../../../../../assets/svg/truckassist-table/load-ltl.svg'
-                                                    : '../../../../../../assets/svg/truckassist-table/load-flt.svg'
+                                                    ? 'assets/svg/truckassist-table/load-ltl.svg'
+                                                    : 'assets/svg/truckassist-table/load-flt.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '14',
@@ -2609,8 +2609,8 @@
                                             class="customer-icon"
                                             [src]="
                                                 row[column.field].isDnu
-                                                    ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
-                                                    : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
+                                                    ? 'assets/svg/truckassist-table/dnu-icon.svg'
+                                                    : 'assets/svg/truckassist-table/ban-icon.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
@@ -2685,7 +2685,7 @@
                                                 class="avatar-owner"
                                                 alt="avatar"
                                                 *ngIf="row.isOwner"
-                                                src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
+                                                src="assets/svg/truckassist-table/owner-badge.svg"
                                             />
                                         </div>
                                         <span
@@ -4207,7 +4207,7 @@
                                         >
                                             <svg-icon
                                                 [src]="
-                                                    '../../../../../../assets/svg/truckassist-table/insurance-icon.svg'
+                                                    'assets/svg/truckassist-table/insurance-icon.svg'
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': '18',
@@ -4352,7 +4352,7 @@
                                         >
                                             <svg-icon
                                                 [src]="
-                                                    '../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                                    'assets/svg/truckassist-table/dropdown/dropdown.svg'
                                                 "
                                                 [svgStyle]="{
                                                     'width.px': '18',
@@ -4403,7 +4403,7 @@
                                     <svg-icon
                                         class="violation-icon"
                                         [src]="
-                                            '../../../../../../assets/svg/truckassist-table/driver-violation.svg'
+                                            'assets/svg/truckassist-table/driver-violation.svg'
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
@@ -4417,7 +4417,7 @@
                                         *ngIf="!showInspectinDescriptionEdit"
                                         class="oss-icon"
                                         [src]="
-                                            '../../../../../../assets/svg/truckassist-table/violation-oss-icon.svg'
+                                            'assets/svg/truckassist-table/violation-oss-icon.svg'
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
@@ -4462,7 +4462,7 @@
                                         "
                                         class="edit-icon"
                                         [src]="
-                                            '../../../../../../assets/svg/truckassist-table/edit-icon.svg'
+                                            'assets/svg/truckassist-table/edit-icon.svg'
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
@@ -4637,7 +4637,7 @@
                                         <svg-icon
                                             class="paid-icon"
                                             [src]="
-                                                '../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+                                                'assets/svg/truckassist-table/applicant-wrong-icon.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
@@ -4652,7 +4652,7 @@
                                         <svg-icon
                                             class="attachment-icon"
                                             [src]="
-                                                '../../../../../../assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg'
+                                                'assets/svg/truckassist-table/attachment/attachemnt-regular-svgIcon.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
@@ -4679,7 +4679,7 @@
                                             popoverClass="table-dropdown-popover"
                                             triggers="manual"
                                             [src]="
-                                                '../../../../../../assets/svg/truckassist-table/dropdown/dropdown.svg'
+                                                'assets/svg/truckassist-table/dropdown/dropdown.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
@@ -4703,7 +4703,7 @@
                                         <svg-icon
                                             class="paid-icon"
                                             [src]="
-                                                '../../../../../../assets/svg/truckassist-table/download-icon.svg'
+                                                'assets/svg/truckassist-table/download-icon.svg'
                                             "
                                             [svgStyle]="{
                                                 'width.px': '18',
@@ -4764,7 +4764,7 @@
                                     <svg-icon
                                         class="paid-icon"
                                         [src]="
-                                            '../../../../../../assets/svg/truckassist-table/download-icon.svg'
+                                            'assets/svg/truckassist-table/download-icon.svg'
                                         "
                                         [svgStyle]="{
                                             'width.px': '18',
@@ -4940,7 +4940,7 @@
                 <div class="pm-item" *ngIf="item.pmDescription">
                     <svg-icon
                         [src]="
-                            '../../../../../../assets/svg/common/repair-pm/' +
+                            'assets/svg/common/repair-pm/' +
                             item.pmDescription.logoName
                         "
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"

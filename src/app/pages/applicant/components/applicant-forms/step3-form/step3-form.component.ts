@@ -29,24 +29,24 @@ import {
 import moment from 'moment';
 
 // services
-import { FormService } from 'src/app/shared/services/form.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 // store
-import { ApplicantQuery } from '../../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // helpers
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // enums
-import { InputSwitchActions } from '../../../enums/input-switch-actions.enum';
-import { SelectedMode } from '../../../enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
-import { License } from '../../../pages/applicant-application/models/license.model';
+import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
 import {
     ApplicantModalResponse,
     CdlEndorsementResponse,

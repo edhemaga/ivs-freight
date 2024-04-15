@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCopyComponent } from './ta-copy.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 
 describe('TaCopyComponent', () => {
     let component: TaCopyComponent;

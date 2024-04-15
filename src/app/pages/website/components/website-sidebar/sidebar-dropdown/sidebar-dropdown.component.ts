@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 // services
-import { WebsiteActionsService } from '../../../services/website-actions.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // enums
-import { WebsiteStringEnum } from '../../../enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 @Component({
     selector: 'app-sidebar-dropdown',

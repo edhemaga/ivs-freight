@@ -15,18 +15,18 @@ import {
 } from 'appcoretruckassist';
 
 // store
-import { TrailerActiveStore } from '../../pages/trailer/state/trailer-active-state/trailer-active.store';
-import { TrailerInactiveStore } from '../../pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
-import { TrailersMinimalListStore } from '../../pages/trailer/state/trailer-minimal-list-state/trailer-minimal.store';
-import { TrailerItemStore } from '../../pages/trailer/state/trailer-details-state/trailer-details.store';
-import { TrailerDetailsListStore } from '../../pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
-import { TrailerActiveQuery } from '../../pages/trailer/state/trailer-active-state/trailer-active.query';
-import { TrailerInactiveQuery } from '../../pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
-import { TrailersMinimalListQuery } from '../../pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerActiveStore } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
+import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { TrailersMinimalListStore } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailerItemStore } from '@pages/trailer/state/trailer-details-state/trailer-details.store';
+import { TrailerDetailsListStore } from '@pages/trailer/state/trailer-details-list-state/trailer-details-list.store';
+import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
+import { TrailerInactiveQuery } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
+import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.query';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {

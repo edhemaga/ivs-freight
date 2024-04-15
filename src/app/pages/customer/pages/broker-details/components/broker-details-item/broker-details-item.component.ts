@@ -8,13 +8,13 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Modals
-import { ReviewComment } from 'src/app/shared/models/review-comment.model';
+import { ReviewComment } from '@shared/models/review-comment.model';
 
 // Decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // Services
-import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 // Models
 import { BrokerResponse, UpdateReviewCommand } from 'appcoretruckassist';

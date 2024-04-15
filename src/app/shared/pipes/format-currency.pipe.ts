@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'formatCurrency',
     standalone: true,
 })
-export class FormatCurrency implements PipeTransform {
+export class FormatCurrencyPipe implements PipeTransform {
     transform(currency: any) {
         if (currency) {
             return (

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BrokerModalComponent } from './broker-modal.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
 describe('BrokerModalComponent', () => {
     let component: BrokerModalComponent;

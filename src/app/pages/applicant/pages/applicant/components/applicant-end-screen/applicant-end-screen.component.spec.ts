@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantEndScreenComponent } from './applicant-end-screen.component';
+import { ApplicantEndScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
 
 describe('ApplicantEndScreenComponent', () => {
     let component: ApplicantEndScreenComponent;

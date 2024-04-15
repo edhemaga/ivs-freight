@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // constants
-import { DispatchConstants } from 'src/app/pages/dispatch/utils/constants/dispatch.constants';
+import { DispatchConstants } from '@pages/dispatch/utils/constants/dispatch.constants';
 
 // models
-import { TruckTrailer } from '../models/truck-trailer.model';
+import { TruckTrailer } from '@pages/dispatch/models/truck-trailer.model';
 
 @Pipe({
     name: 'colorFinder',

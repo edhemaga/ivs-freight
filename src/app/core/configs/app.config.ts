@@ -1,13 +1,10 @@
-import {
-    Configuration,
-    ConfigurationParameters,
-} from '../../../../appcoretruckassist/configuration';
+import { Configuration, ConfigurationParameters } from 'appcoretruckassist';
 
 // enviroment
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 // services
-import { WebsiteUserLoggedService } from '../../pages/website/services/website-user-logged.service';
+import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 
 export const configFactory = (
     userLoggedService?: WebsiteUserLoggedService

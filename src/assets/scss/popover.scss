@@ -327,13 +327,13 @@
 
             .progress-info-container {
                 margin-top: 10px;
-                
+
                 .progress-info-title {
                     margin-bottom: 2px;
                     font-size: 11px;
                     font-weight: 700;
                     line-height: 14px;
-                    color: #FFFFFFB2;
+                    color: #ffffffb2;
                 }
 
                 .progress-info-text {
@@ -343,7 +343,6 @@
                 }
             }
         }
-        
     }
 
     @-webkit-keyframes progressAnimation {
@@ -598,7 +597,7 @@
                             }
 
                             .some-selected {
-                                background-image: url('../../assets/svg/truckassist-table/some-selected-chack-mark.svg');
+                                background-image: url('/assets/svg/truckassist-table/some-selected-chack-mark.svg');
                                 background-color: #6f9ee0;
                                 background-repeat: no-repeat;
                                 background-position: center;
@@ -612,7 +611,7 @@
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
                                 background-color: #6f9ee0;
-                                background-image: url('../../assets/svg/truckassist-table/check-new.svg') !important;
+                                background-image: url('/assets/svg/truckassist-table/check-new.svg') !important;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;

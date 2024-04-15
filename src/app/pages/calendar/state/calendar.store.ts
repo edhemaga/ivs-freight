@@ -1,7 +1,8 @@
-import { ICalendar } from '../models/calendar.model';
-
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
+
+// models
+import { ICalendar } from '@pages/calendar/models/calendar.model';
 
 export interface CalendarState extends EntityState<ICalendar, string> {}
 

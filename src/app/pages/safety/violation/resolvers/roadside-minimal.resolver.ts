@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { catchError, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 import { Resolve } from '@angular/router';
 
+import { Observable, of, catchError, tap } from 'rxjs';
+
 // services
-import { RoadsideService } from '../services/roadside.service';
+import { RoadsideService } from '@pages/safety/violation/services/roadside.service';
 
 // models
 import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
@@ -13,7 +13,7 @@ import { RoadsideInspectionMinimalListResponse } from 'appcoretruckassist';
 import {
     RoadsideMinimalListState,
     RoadsideMinimalListStore,
-} from '../state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.store';
+} from '@pages/safety/violation/state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.store';
 
 @Injectable({
     providedIn: 'root',

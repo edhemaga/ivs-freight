@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { TrailerService } from '../../../shared/services/trailer.service';
+
+import { forkJoin, Observable, tap } from 'rxjs';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { TrailerService } from '@shared/services/trailer.service';
+
+// store
 import {
     TrailerActiveState,
     TrailerActiveStore,
-} from '../state/trailer-active-state/trailer-active.store';
+} from '@pages/trailer/state/trailer-active-state/trailer-active.store';
 
 @Injectable({
     providedIn: 'root',

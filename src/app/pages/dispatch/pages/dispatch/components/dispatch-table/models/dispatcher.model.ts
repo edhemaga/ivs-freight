@@ -1,5 +1,5 @@
 import { DispatchBoardResponse, DispatchResponse } from 'appcoretruckassist';
-import { DispatcherHosResponse } from '../../../../../models/dispatcher-hos-response.model';
+import { DispatcherHosResponse } from '@pages/dispatch/models/dispatcher-hos-response.model';
 
 interface DispatchBoardLResponse extends DispatchResponse {
     isPhone?: boolean;

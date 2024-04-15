@@ -14,14 +14,14 @@ import { Router } from '@angular/router';
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // store
-import { BrokerStore } from 'src/app/pages/customer/state/broker-state/broker.store';
-import { ShipperStore } from 'src/app/pages/customer/state/shipper-state/shipper.store';
-import { RepairShopStore } from 'src/app/pages/repair/state/repair-shop-state/repair-shop.store';
+import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
+import { ShipperStore } from '@pages/customer/state/shipper-state/shipper.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
 // services
-import { BrokerService } from 'src/app/pages/customer/services/broker.service';
-import { ShipperService } from 'src/app/pages/customer/services/shipper.service';
-import { RepairService } from 'src/app/shared/services/repair.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
+import { RepairService } from '@shared/services/repair.service';
 
 @Injectable({
     providedIn: 'root',

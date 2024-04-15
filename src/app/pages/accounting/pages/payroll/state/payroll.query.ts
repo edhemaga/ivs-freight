@@ -4,7 +4,10 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { PayrollState, PayrollStore } from './payroll.store';
+import {
+    PayrollState,
+    PayrollStore,
+} from '@pages/accounting/pages/payroll/state/payroll.store';
 
 @Injectable({
     providedIn: 'root',

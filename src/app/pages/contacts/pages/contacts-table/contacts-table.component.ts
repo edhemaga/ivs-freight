@@ -3,39 +3,39 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { ContactsModalComponent } from '../contacts-modal/contacts-modal.component';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // service
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ContactsService } from '../../../../shared/services/contacts.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ContactsService } from '@shared/services/contacts.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
-import { ContactState } from '../../state/contact.store';
-import { ContactQuery } from '../../state/contact.query';
+import { ContactState } from '@pages/contacts/state/contact.store';
+import { ContactQuery } from '@pages/contacts/state/contact.query';
 
 // pipes
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // helpers
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { getToolsContactsColumnDefinition } from 'src/app/shared/utils/settings/table-settings/contacts-columns';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
-import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { getToolsContactsColumnDefinition } from '@shared/utils/settings/table-settings/contacts-columns';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // enums
-import { ContactsStringEnum } from '../../enums/contacts-string.enum';
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { ContactsStringEnum } from '@pages/contacts/enums/contacts-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // data for cards
-import { ContactsCardData } from '../../utils/constants/contacts-card-data.constants';
-import { CardTableData } from 'src/app/shared/models/table-models/card-table-data.model';
+import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 
 // models
 import {
@@ -44,14 +44,14 @@ import {
     GetCompanyContactListResponse,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import { ContactsBackFilter } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-back-filter.model';
-import { ContactsPhone } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-phone.model';
-import { ContactsEmail } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-email.model';
-import { ContactsTableToolbarAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
-import { ContactsTableBodyAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-body-action.model';
-import { ContactsTableHeadAction } from 'src/app/pages/contacts/pages/contacts-table/models/contacts-table-head-action.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
+import { ContactsBackFilter } from '@pages/contacts/pages/contacts-table/models/contacts-back-filter.model';
+import { ContactsPhone } from '@pages/contacts/pages/contacts-table/models/contacts-phone.model';
+import { ContactsEmail } from '@pages/contacts/pages/contacts-table/models/contacts-email.model';
+import { ContactsTableToolbarAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
+import { ContactsTableBodyAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-body-action.model';
+import { ContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-head-action.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 @Component({
     selector: 'app-contacts-table',

@@ -1,10 +1,10 @@
-import { TableBodyColumnsAvatar } from './table-body-columns-avatar.model';
-import { TableBodyColumnsColorTemplate } from './table-body-columns-color-template.model';
-import { TableBodyColumnsHeadIconStyle } from './table-body-columns-head-icon-style.model';
-import { TableBodyColumnsImageHover } from './table-body-columns-image-hover.model';
-import { TableBodyColumnsLink } from './table-body-columns-link.model';
-import { TableBodyColumnsProgress } from './table-body-columns-progress.model';
-import { TableBodyColumnsSvgDimensions } from './table-body-columns-svg-dimensions.model';
+import { TableBodyColumnsAvatar } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-avatar.model';
+import { TableBodyColumnsColorTemplate } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-color-template.model';
+import { TableBodyColumnsHeadIconStyle } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-head-icon-style.model';
+import { TableBodyColumnsImageHover } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-image-hover.model';
+import { TableBodyColumnsLink } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-link.model';
+import { TableBodyColumnsProgress } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-progress.model';
+import { TableBodyColumnsSvgDimensions } from '@shared/components/ta-table/ta-table-body/models/table-body-columns-svg-dimensions.model';
 
 export interface TableBodyColumns {
     ngTemplate?: string;

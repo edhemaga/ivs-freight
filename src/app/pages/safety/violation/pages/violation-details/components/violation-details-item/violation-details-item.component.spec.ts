@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViolationDetailsSingleComponent } from './violation-details-item.component';
+import { ViolationDetailsItemComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-item/violation-details-item.component';
 
-describe('ViolationDetailsSingleComponent', () => {
-    let component: ViolationDetailsSingleComponent;
-    let fixture: ComponentFixture<ViolationDetailsSingleComponent>;
+describe('ViolationDetailsItemComponent', () => {
+    let component: ViolationDetailsItemComponent;
+    let fixture: ComponentFixture<ViolationDetailsItemComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ViolationDetailsSingleComponent],
+            declarations: [ViolationDetailsItemComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ViolationDetailsSingleComponent);
+        fixture = TestBed.createComponent(ViolationDetailsItemComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+
+import { Observable, of, catchError, tap } from 'rxjs';
 
 // services
-import { RoadsideService } from '../services/roadside.service';
+import { RoadsideService } from '@pages/safety/violation/services/roadside.service';
 
 // store
 import {
     RoadItemState,
     RoadItemStore,
-} from '../state/roadside-details-state/roadside-details.store';
-import { RoadsideDetailsListStore } from '../state/roadside-details-state/roadside-details-list-state/roadside-details-list.store';
+} from '@pages/safety/violation/state/roadside-details-state/roadside-details.store';
+import { RoadsideDetailsListStore } from '@pages/safety/violation/state/roadside-details-state/roadside-details-list-state/roadside-details-list.store';
 
 // models
 import { RoadsideInspectionResponse } from 'appcoretruckassist';

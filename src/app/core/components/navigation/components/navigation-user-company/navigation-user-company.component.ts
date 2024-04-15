@@ -17,8 +17,8 @@ import { SelectCompanyResponse } from 'appcoretruckassist';
 import { SignInResponse } from 'appcoretruckassist';
 
 // services
-import { NavigationService } from '../../services/navigation.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 @Component({
     selector: 'app-navigation-user-company',

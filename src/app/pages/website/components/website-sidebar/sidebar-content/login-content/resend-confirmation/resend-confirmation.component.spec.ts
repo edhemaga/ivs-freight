@@ -1,25 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResendConfirmationComponent } from './resend-confirmation.component';
+import { ResendConfirmationComponent } from '@pages/website/components/website-sidebar/sidebar-content/login-content/resend-confirmation/resend-confirmation.component';
 
 describe('ResendConfirmationComponent', () => {
-  let component: ResendConfirmationComponent;
-  let fixture: ComponentFixture<ResendConfirmationComponent>;
+    let component: ResendConfirmationComponent;
+    let fixture: ComponentFixture<ResendConfirmationComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ ResendConfirmationComponent ]
-    })
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            declarations: [ResendConfirmationComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ResendConfirmationComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ResendConfirmationComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

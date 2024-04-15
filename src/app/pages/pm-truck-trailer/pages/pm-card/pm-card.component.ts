@@ -9,15 +9,15 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Models
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-pm-card',

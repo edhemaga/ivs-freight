@@ -2,7 +2,7 @@ import { RepairShopPMResponse, TruckShortResponse, TruckTypeResponse } from 'app
 import {
     DropdownItem,
     PmTruckProgressData,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+} from '@shared/models/card-models/card-table-data.model';
 
 export interface PmTruck {
     textUnit: string;

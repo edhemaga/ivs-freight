@@ -1,5 +1,8 @@
-import { ArticleAction, ArticleActionType } from './dashboard.actions';
-import { Article } from './dashboard.model';
+import {
+    ArticleAction,
+    ArticleActionType,
+} from '@pages/dashboard/state/dashboard.actions';
+import { Article } from '@pages/dashboard/state/dashboard.model';
 
 const initialState: Array<Article> = [
     {

@@ -4,11 +4,11 @@ import { Resolve } from '@angular/router';
 import { forkJoin, Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { AccountService } from '../services/account.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { AccountService } from '@pages/account/services/account.service';
 
 // store
-import { AccountState, AccountStore } from '../state/account.store';
+import { AccountState, AccountStore } from '@pages/account/state/account.store';
 
 @Injectable({
     providedIn: 'root',

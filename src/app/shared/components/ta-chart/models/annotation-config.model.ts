@@ -1,4 +1,4 @@
-import type { ChartAnnotationPositionStringEnum } from '../enums/chart-annotation-position-string.enum';
+import type { ChartAnnotationPositionStringEnum } from '@shared/components/ta-chart/enums/chart-annotation-position-string.enum';
 
 export interface AnnotationConfig {
     type: ChartAnnotationPositionStringEnum;

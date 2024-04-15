@@ -190,7 +190,6 @@
                     transition: right 0.1s;
 
                     &.infinity {
-                        //   background-image: url("../../img/infinity.svg");
                         background-repeat: no-repeat;
                         background-position: center;
                     }
@@ -456,7 +455,6 @@
             right: 1px;
             top: 50%;
             border-radius: 100%;
-            // background-image: url('../../../assets/img/empty_ckeckmark.svg');
             background-size: 100%;
 
             transform: translateY(-50%);
@@ -577,7 +575,6 @@
         right: 1px;
         top: 1px;
         border-radius: 3px;
-        //   background-image: url('../../../assets/img/empty_ckeckmark.svg');
         background-repeat: no-repeat;
         background-size: 30px 30px;
 

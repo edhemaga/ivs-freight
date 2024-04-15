@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountModalComponent } from './account-modal.component';
+import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 
 describe('AccountModalComponent', () => {
     let component: AccountModalComponent;

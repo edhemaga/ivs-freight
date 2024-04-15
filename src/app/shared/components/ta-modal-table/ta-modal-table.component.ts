@@ -23,28 +23,28 @@ import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '../ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from 'src/app/shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // services
-import { TaInputService } from '../ta-input/services/ta-input.service';
-import { ContactsService } from 'src/app/shared/services/contacts.service';
-import { RepairService } from '../../services/repair.service';
-import { PmService } from 'src/app/pages/pm-truck-trailer/services/pm.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ContactsService } from '@shared/services/contacts.service';
+import { RepairService } from '@shared/services/repair.service';
+import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 
 // constants
-import { ModalTableConstants } from 'src/app/shared/components/ta-modal-table/utils/constants/modal-table.constants';
+import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/modal-table.constants';
 
 // enums
-import { TaModalTableStringEnum } from 'src/app/shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
 // validations
 import {
     descriptionValidation,
     phoneExtension,
     phoneFaxRegex,
-} from '../ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -54,13 +54,13 @@ import {
     DepartmentResponse,
     EnumValue,
 } from 'appcoretruckassist';
-import { RepairDescriptionResponse } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
-import { RepairSubtotal } from 'src/app/pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
-import { PMTableData } from 'src/app/pages/pm-truck-trailer/pages/models/pm-table-data.model';
-import { PmDropdownOptions } from '../../models/pm-dropdown-options.model';
+import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
+import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+import { PMTableData } from '@pages/pm-truck-trailer/pages/models/pm-table-data.model';
+import { PmDropdownOptions } from '@shared/models/pm-dropdown-options.model';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-ta-modal-table',

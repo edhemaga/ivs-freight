@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantHosRulesComponent } from './applicant-hos-rules.component';
+import { ApplicantHosRulesComponent } from '@pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.component';
 
 describe('ApplicantHosRulesComponent', () => {
     let component: ApplicantHosRulesComponent;

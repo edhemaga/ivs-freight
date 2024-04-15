@@ -1,5 +1,5 @@
 // models
-import { BarChartAxes } from './bar-chart.model';
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export interface ChartDefaultConfig {
     type: string;

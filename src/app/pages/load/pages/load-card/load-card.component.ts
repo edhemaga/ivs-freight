@@ -6,33 +6,33 @@ import {
     SimpleChanges,
     OnChanges,
 } from '@angular/core';
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
-import { FormatMilesPipe } from 'src/app/shared/pipes/format-miles.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { FormatMilesPipe } from '@shared/pipes/format-miles.pipe';
 
 // models
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
-import { LoadQuery } from 'src/app/shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
+import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatMilesPipe, FormatCurrency, CardHelper],
+    providers: [FormatMilesPipe, FormatCurrencyPipe, CardHelper],
 })
 export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data

@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 
 // store
-import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
+import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 
 @Injectable({
     providedIn: 'root',

@@ -10,26 +10,26 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-//Animations
+// Animations
 import { animate, style, transition, trigger } from '@angular/animations';
 
-//Modules
+// Modules
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//Constants
-import { NoteConfigConstants } from './utils/constants/note-config.constants';
+// Constants
+import { NoteConfigConstants } from '@shared/components/ta-note-container/utils/constants/note-config.constants';
 
-//Components
-import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+// Components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-//Models
-import { NoteColors } from './models/note-colors.model';
-import { NoteActiveOptions } from './models/note-active-options.model';
+// Models
+import { NoteColors } from '@shared/components/ta-note-container/models/note-colors.model';
+import { NoteActiveOptions } from '@shared/components/ta-note-container/models/note-active-options.model';
 
-//Enums
-import { NoteSelectedColorStringEnum } from './enums/note-selected-color-string.enum';
-import { NoteDefaultStringEnum } from './enums/note-default-string.enum';
+// Enums
+import { NoteSelectedColorStringEnum } from '@shared/components/ta-note-container/enums/note-selected-color-string.enum';
+import { NoteDefaultStringEnum } from '@shared/components/ta-note-container/enums/note-default-string.enum';
 
 @Component({
     selector: 'app-ta-note-container',

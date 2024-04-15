@@ -4,20 +4,20 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // store
-import { RoadsideInactiveState } from '../../state/roadside-state/roadside-inactive/roadside-inactive.store';
-import { RoadsideActiveState } from '../../state/roadside-state/roadside-active/roadside-active.store';
-import { RoadsideActiveQuery } from '../../state/roadside-state/roadside-active/roadside-active.query';
-import { RoadsideInactiveQuery } from '../../state/roadside-state/roadside-inactive/roadside-inactive.query';
+import { RoadsideInactiveState } from '@pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.store';
+import { RoadsideActiveState } from '@pages/safety/violation/state/roadside-state/roadside-active/roadside-active.store';
+import { RoadsideActiveQuery } from '@pages/safety/violation/state/roadside-state/roadside-active/roadside-active.query';
+import { RoadsideInactiveQuery } from '@pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.query';
 
 // helpers
-import { getRoadsideInspectionColums } from 'src/app/shared/utils/settings/table-settings/safety-columns';
+import { getRoadsideInspectionColums } from '@shared/utils/settings/table-settings/safety-columns';
 
 // components
-import { ViolationModalComponent } from 'src/app/pages/safety/violation/pages/violation-modal/violation-modal.component';
+import { ViolationModalComponent } from '@pages/safety/violation/pages/violation-modal/violation-modal.component';
 
 @Component({
     selector: 'app-violation-table',

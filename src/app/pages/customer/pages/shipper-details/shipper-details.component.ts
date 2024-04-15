@@ -3,20 +3,20 @@ import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // Services
-import { ShipperService } from '../../services/shipper.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Store
-import { ShipperMinimalListStore } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
-import { ShipperDetailsListStore } from '../../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
-import { ShipperDetailsStore } from '../../state/shipper-state/shipper-details-state/shipper-details.store';
-import { ShipperMinimalListQuery } from '../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
-import { ShipperDetailsListQuery } from '../../state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
+import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
+import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
+import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
+import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
+import { ShipperDetailsListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
 
 @Component({
     selector: 'app-shipper-details',

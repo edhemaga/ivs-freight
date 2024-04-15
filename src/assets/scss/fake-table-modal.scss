@@ -1,10 +1,10 @@
-@import '../../theme/variables.scss';
+@import 'src/theme/variables';
 
 //----------------  Common-fake-table-modal  ----------------
 .common-fake-table-modal {
     overflow-x: scroll;
 
-    scrollbar-width: none !important; /* Firefox */
+    scrollbar-width: none !important;
 
     &::-webkit-scrollbar {
         width: 3px;

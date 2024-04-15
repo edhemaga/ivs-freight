@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WelcomeComponent } from './welcome.component';
+import { WelcomeComponent } from '@pages/website/components/website-sidebar/sidebar-content/welcome-content/welcome.component';
 
 describe('WelcomeComponent', () => {
     let component: WelcomeComponent;

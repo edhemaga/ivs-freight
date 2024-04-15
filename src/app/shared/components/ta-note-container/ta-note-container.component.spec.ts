@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaNoteContainerComponent } from './ta-note-container.component';
+import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
 
 describe('TaNoteContainerComponent', () => {
     let component: TaNoteContainerComponent;

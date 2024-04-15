@@ -8,23 +8,23 @@ import { Subject, takeUntil } from 'rxjs';
 import {
     isAnyPropertyInObjectFalse,
     isAnyValueInArrayTrue,
-} from '../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // store
-import { ApplicantQuery } from '../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // animations
 import {
     slideLeft,
     slideRight,
-} from '../../animations/applicant-route.animation';
+} from '@pages/applicant/animations/applicant-route.animation';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
-import { InputSwitchActions } from '../../enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { INavigation } from '../../models/navigation.model';
+import { INavigation } from '@pages/applicant/models/navigation.model';
 
 @Component({
     selector: 'app-applicant',

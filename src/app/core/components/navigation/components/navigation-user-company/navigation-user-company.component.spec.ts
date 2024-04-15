@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavigationUserCompanyComponent } from './navigation-user-company.component';
+import { NavigationUserCompanyComponent } from '@core/components/navigation/components/navigation-user-company/navigation-user-company.component';
 
 describe('NavigationUserCompanyComponent', () => {
     let component: NavigationUserCompanyComponent;

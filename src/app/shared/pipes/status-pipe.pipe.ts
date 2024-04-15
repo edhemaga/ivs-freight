@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { IDispatchModel } from '../components/ta-status-switch/models/dispatch.model';
+import { IDispatchModel } from '@shared/components/ta-status-switch/models/dispatch.model';
 
 const STATUS_COLORS = {
     '-1': 'F276EF',

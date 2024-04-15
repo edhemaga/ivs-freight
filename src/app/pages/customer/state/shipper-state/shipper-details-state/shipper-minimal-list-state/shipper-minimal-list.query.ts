@@ -7,7 +7,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     ShipperMinimalListState,
     ShipperMinimalListStore,
-} from './shipper-minimal-list.store';
+} from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
 
 @Injectable({ providedIn: 'root' })
 export class ShipperMinimalListQuery extends QueryEntity<ShipperMinimalListState> {

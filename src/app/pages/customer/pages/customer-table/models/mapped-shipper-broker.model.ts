@@ -9,8 +9,8 @@ import {
     ReviewResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import { DropdownItem } from 'src/app/shared/models/card-models/card-table-data.model';
-import { LoadBroker } from '../../../../../shared/models/load-broker.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { LoadBroker } from '@shared/models/load-broker.model';
 import { TimeOnly } from 'appcoretruckassist/model/timeOnly';
 
 export interface MappedShipperBroker {

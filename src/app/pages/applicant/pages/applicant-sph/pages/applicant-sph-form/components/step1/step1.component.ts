@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // store
-import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // models
 import { SphPreviousEmployerProspectResponse } from 'appcoretruckassist';

@@ -14,11 +14,11 @@ import {
     phoneExtension,
     addressValidation,
     addressUnitValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     repairShopValidation,
     rentValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -28,27 +28,27 @@ import {
 } from 'appcoretruckassist';
 
 // animations
-import { tabsModalAnimation } from '../../../../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // services
-import { ModalService } from '../../../../../../shared/components/ta-modal/services/modal.service';
-import { TaInputService } from '../../../../../../shared/components/ta-input/services/ta-input.service';
-import { RepairService } from 'src/app/shared/services/repair.service';
-import { FormService } from '../../../../../../shared/services/form.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { RepairService } from '@shared/services/repair.service';
+import { FormService } from '@shared/services/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
-import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputAddressDropdownComponent } from '../../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 
 // pipes
-import { ActiveItemsPipe } from '../../../../../../shared/pipes/active-Items.pipe';
+import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 
 // utils
-import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-repairshop-modal',
@@ -249,8 +249,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private updateRepariShop(id: number) {
-        const { addressUnit, rent, servicesHelper, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
         const newData: any = {
             id: id,
@@ -304,8 +303,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepairShop() {
-        const { addressUnit, rent, servicesHelper, ...form } =
-            this.repairShopForm.value;
+        const { addressUnit, rent, ...form } = this.repairShopForm.value;
 
         const newData: any = {
             ...form,

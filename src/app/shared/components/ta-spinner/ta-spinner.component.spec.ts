@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaSpinnerComponent } from './ta-spinner.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 describe('TaSpinnerComponent', () => {
     let component: TaSpinnerComponent;

@@ -1,9 +1,9 @@
-import { ChartAxisPositionEnum } from 'src/app/shared/components/ta-chart/enums/chart-axis-position-string.enum';
-import { ChartColorsStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-colors-string.enum';
-import { ChartDefaultStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-default-string.enum';
-import { ChartImagesStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-images-string.enum';
-import { ChartLegendDataStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-legend-data-string.enum';
-import { ChartTypesStringEnum } from 'src/app/shared/components/ta-chart/enums/chart-types-string.enum';
+import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
+import { ChartColorsStringEnum } from '@shared/components/ta-chart/enums/chart-colors-string.enum';
+import { ChartDefaultStringEnum } from '@shared/components/ta-chart/enums/chart-default-string.enum';
+import { ChartImagesStringEnum } from '@shared/components/ta-chart/enums/chart-images-string.enum';
+import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
+import { ChartTypesStringEnum } from '@shared/components/ta-chart/enums/chart-types-string.enum';
 
 export class DriverDetailsCard {
     static BAR_CHART_CONFIG = {

@@ -2,7 +2,7 @@ import { RepairShopPMResponse, TrailerShortResponse } from 'appcoretruckassist';
 import {
     DropdownItem,
     PmTrailerProgressData,
-} from 'src/app/shared/models/card-models/card-table-data.model';
+} from '@shared/models/card-models/card-table-data.model';
 
 export interface PmTrailer {
     textUnit: string;

@@ -11,4 +11,6 @@ export const environment = {
         inputFormat: 'MM/dd/yy',
     },
     messageLimit: 25,
+    encryptionDecryptionKey:
+        '__+_+_+#!.../>!$!$&*&!$CHICAGOTRUCKASSISTNIS$!&$&*)))__)!)#__+_+_+#!.../>',
 };

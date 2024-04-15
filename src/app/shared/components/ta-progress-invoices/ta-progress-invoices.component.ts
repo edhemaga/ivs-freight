@@ -6,7 +6,9 @@ import {
     OnInit,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormatCurrency } from '../../pipes/format-currency.pipe';
+
+// pipes
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 @Component({
     selector: 'app-ta-progress-invoices',
@@ -14,7 +16,12 @@ import { FormatCurrency } from '../../pipes/format-currency.pipe';
     styleUrls: ['./ta-progress-invoices.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, FormatCurrency],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FormatCurrencyPipe,
+    ],
 })
 export class TaProgressInvoicesComponent implements OnInit {
     @Input() invoiceDays: string = '';

@@ -1,8 +1,8 @@
 // enums
-import { DashboardStringEnum } from '../../../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 // models
-import { MapStates } from '../../models/map-states.model';
+import { MapStates } from '@pages/dashboard/pages/dashboard-by-state/models/map-states.model';
 
 export class DashboardStateConstants {
     static usaStates: MapStates = {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ApplicantPspAuthorizationComponent } from './applicant-psp-authorization.component';
+import { ApplicantPspAuthorizationComponent } from '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.component';
 
 const routes: Routes = [
     {

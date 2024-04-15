@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { AccountingPayrollComponent } from './accounting-payroll.component';
+import { AccountingPayrollComponent } from '@pages/accounting/pages/accounting-payroll/accounting-payroll.component';
 
 describe('AccountingPayrollComponent', () => {
     let component: AccountingPayrollComponent;

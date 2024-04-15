@@ -1,4 +1,4 @@
-import { AnswerChoices } from './answer-choices.model';
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 
 export interface ApplicantQuestion {
     title: string;

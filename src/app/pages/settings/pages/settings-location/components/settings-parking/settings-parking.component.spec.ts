@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsParkingComponent } from './settings-parking.component';
+import { SettingsParkingComponent } from '@pages/settings/pages/settings-location/components/settings-parking/settings-parking.component';
 
 describe('SettingsParkingComponent', () => {
     let component: SettingsParkingComponent;

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaUploadDropzoneComponent } from './ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
 describe('TaUploadDropzoneComponent', () => {
     let component: TaUploadDropzoneComponent;

@@ -632,7 +632,7 @@ export function getDriverColumnsDefinition() {
             avatar: null,
             progress: null,
             hoverTemplate: {
-                urlStart: '../assets/img/svgs/states/',
+                urlStart: '/assets/img/svgs/states/',
                 field: 'licenseData[0].state.key',
                 urlEnd: '.svg',
             },

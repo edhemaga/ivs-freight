@@ -5,8 +5,8 @@ import {
     UpdateContactEmailCommand,
     UpdateContactPhoneCommand,
 } from 'appcoretruckassist';
-import { ContactLabelData } from './contact-label-data.model';
-import { tableDropdownContent } from 'src/app/shared/models/card-models/card-table-data.model';
+import { ContactLabelData } from '@pages/contacts/pages/contacts-table/models/contact-label-data.model';
+import { tableDropdownContent } from '@shared/models/card-models/card-table-data.model';
 
 export class ContactTableData {
     id: number;

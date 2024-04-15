@@ -4,13 +4,13 @@ import { Resolve } from '@angular/router';
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // services
-import { AccidentService } from '../services/accident.service';
+import { AccidentService } from '@pages/safety/accident/services/accident.service';
 
 // store
 import {
     AccidentNonReportedState,
     AccidentNonReportedStore,
-} from '../state/accident-non-reported/accident-non-reported.store';
+} from '@pages/safety/accident/state/accident-non-reported/accident-non-reported.store';
 
 // models
 import { AccidentListResponse } from 'appcoretruckassist';

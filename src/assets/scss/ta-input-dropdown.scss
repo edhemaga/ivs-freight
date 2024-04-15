@@ -276,7 +276,7 @@
                         right: 6px;
                         top: 28%;
                         transform: translateY(-50%);
-                        content: url('../../assets/svg/common/ic_confirm.svg');
+                        content: url('/assets/svg/common/ic_confirm.svg');
                         width: 14px;
                         height: 10px;
                     }
@@ -1143,7 +1143,7 @@
                                 &::after {
                                     position: absolute;
                                     right: 11px;
-                                    content: url('../..//assets/svg/common/ic_confirm.svg');
+                                    content: url('/assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
                                 }
@@ -1233,7 +1233,7 @@
                                 &::after {
                                     position: absolute;
                                     right: -26px;
-                                    content: url('../..//assets/svg/common/ic_confirm.svg');
+                                    content: url('/assets/svg/common/ic_confirm.svg');
                                     width: 14px;
                                     height: 10px;
                                 }

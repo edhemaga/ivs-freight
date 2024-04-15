@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
+
 import { Observable } from 'rxjs';
-import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
+
+// store
+import { TrailerInactiveState } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
 @Injectable({
     providedIn: 'root',

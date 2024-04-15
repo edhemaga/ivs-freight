@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // enums
-import { DashboardStringEnum } from '../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 @Pipe({
     name: 'setCustomSubperiodWidth',

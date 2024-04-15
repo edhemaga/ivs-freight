@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 // services
-import { WebsiteActionsService } from 'src/app/pages/website/services/website-actions.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // enums
-import { WebsiteStringEnum } from 'src/app/pages/website/enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 @Component({
     selector: 'app-register-user-have-account-helper',

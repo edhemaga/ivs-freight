@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContactsModalComponent } from './contacts-modal.component';
+import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
 
 describe('ContactsModalComponent', () => {
     let component: ContactsModalComponent;

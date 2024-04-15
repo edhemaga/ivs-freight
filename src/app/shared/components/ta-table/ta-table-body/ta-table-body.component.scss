@@ -226,7 +226,7 @@ table.truckassist-table-body-style {
 
                         .table-checkbox:checked + .table-checkbox-label {
                             background-color: $ta-blue-13;
-                            background-image: url('../../../../../assets/svg/truckassist-table/check-new.svg');
+                            background-image: url('/assets/svg/truckassist-table/check-new.svg');
                             background-repeat: no-repeat;
                             background-position: center;
                             transition: background-color 0.25s;
@@ -324,7 +324,7 @@ table.truckassist-table-body-style {
                             height: 24px;
                             background-repeat: no-repeat;
                             background-position: center;
-                            background-image: url('../../../../../assets/svg/truckassist-table/citation-icon.svg');
+                            background-image: url('/assets/svg/truckassist-table/citation-icon.svg');
                             display: flex;
                             justify-content: center;
                             align-items: center;
@@ -470,7 +470,7 @@ table.truckassist-table-body-style {
                                 height: 18px;
                                 background-repeat: no-repeat;
                                 background-position: center;
-                                background-image: url('../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg');
+                                background-image: url('/assets/svg/truckassist-table/customer/contact-column-avatar.svg');
                             }
                         }
 
@@ -486,7 +486,7 @@ table.truckassist-table-body-style {
                                 height: 18px;
                                 background-repeat: no-repeat;
                                 background-position: center;
-                                background-image: url('../../../../../assets/svg/truckassist-table/customer/calendar.svg');
+                                background-image: url('/assets/svg/truckassist-table/customer/calendar.svg');
                             }
 
                             .work-hour-time {
@@ -960,10 +960,10 @@ table.truckassist-table-body-style {
                             height: 18px;
                             background-repeat: no-repeat;
                             background-position: center;
-                            background-image: url('../../../../../assets/svg/truckassist-table/hire-applicant.svg');
+                            background-image: url('/assets/svg/truckassist-table/hire-applicant.svg');
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg');
+                                background-image: url('/assets/svg/truckassist-table/hire-applicant-selected-row.svg');
                             }
                         }
 
@@ -978,18 +978,18 @@ table.truckassist-table-body-style {
                         }
 
                         .not-favorite-icon {
-                            background-image: url('../../../../../assets/svg/truckassist-table/favorite.svg');
+                            background-image: url('/assets/svg/truckassist-table/favorite.svg');
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/favorite-selected-row.svg');
+                                background-image: url('/assets/svg/truckassist-table/favorite-selected-row.svg');
                             }
                         }
 
                         .is-favorite-icon {
-                            background-image: url('../../../../../assets/svg/truckassist-table/is-favorite.svg');
+                            background-image: url('/assets/svg/truckassist-table/is-favorite.svg');
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/is-favorite-icon-hover.svg');
+                                background-image: url('/assets/svg/truckassist-table/is-favorite-icon-hover.svg');
                             }
                         }
 
@@ -1506,68 +1506,68 @@ table.truckassist-table-body-style {
 
                             /* Regular Type Icon */
                             .truck {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg');
                             }
 
                             .trailer {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg');
                             }
 
                             .mobile {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg');
                             }
 
                             .shop {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg');
                             }
 
                             .towing {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg');
                             }
 
                             .parts {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg');
                             }
 
                             .tire {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg');
                             }
 
                             .dealer {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg');
                             }
 
                             /* Active Type Icon */
                             .truck-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg');
                             }
 
                             .trailer-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg');
                             }
 
                             .mobile-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg');
                             }
 
                             .shop-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg');
                             }
 
                             .towing-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg');
                             }
 
                             .parts-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg');
                             }
 
                             .tire-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg');
                             }
 
                             .dealer-active {
-                                background: url('../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
+                                background: url('/assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg');
                             }
                         }
 
@@ -1734,18 +1734,18 @@ table.truckassist-table-body-style {
                         }
 
                         .password-hidden {
-                            background-image: url('../../../../../assets/svg/truckassist-table/password-locked.svg');
+                            background-image: url('/assets/svg/truckassist-table/password-locked.svg');
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/show-password.svg');
+                                background-image: url('/assets/svg/truckassist-table/show-password.svg');
                             }
                         }
 
                         .password-showing {
-                            background-image: url('../../../../../assets/svg/truckassist-table/showing-password.svg');
+                            background-image: url('/assets/svg/truckassist-table/showing-password.svg');
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/hide-password.svg');
+                                background-image: url('/assets/svg/truckassist-table/hide-password.svg');
                             }
                         }
 
@@ -1781,28 +1781,28 @@ table.truckassist-table-body-style {
                             }
 
                             .like-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/like.svg');
+                                background-image: url('/assets/svg/truckassist-table/like.svg');
                                 margin-right: 2px;
                             }
 
                             .did-like-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/has-like.svg');
+                                background-image: url('/assets/svg/truckassist-table/has-like.svg');
                                 margin-right: 2px;
 
                                 &:hover {
-                                    background-image: url('../../../../../assets/svg/truckassist-table/has-like-icon-hover.svg');
+                                    background-image: url('/assets/svg/truckassist-table/has-like-icon-hover.svg');
                                 }
                             }
 
                             .dislike-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/dislike.svg');
+                                background-image: url('/assets/svg/truckassist-table/dislike.svg');
                             }
 
                             .did-dislike-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/has-dislike.svg');
+                                background-image: url('/assets/svg/truckassist-table/has-dislike.svg');
 
                                 &:hover {
-                                    background-image: url('../../../../../assets/svg/truckassist-table/has-dislike-icon-hover.svg');
+                                    background-image: url('/assets/svg/truckassist-table/has-dislike-icon-hover.svg');
                                 }
                             }
 
@@ -2037,15 +2037,15 @@ table.truckassist-table-body-style {
                             }
 
                             .done-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/applicant-done-icon.svg');
+                                background-image: url('/assets/svg/truckassist-table/applicant-done-icon.svg');
                             }
 
                             .wrong-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg');
+                                background-image: url('/assets/svg/truckassist-table/applicant-wrong-icon.svg');
                             }
 
                             .complete-icon {
-                                background-image: url('../../../../../assets/svg/truckassist-table/applicant-complete-icon.svg');
+                                background-image: url('/assets/svg/truckassist-table/applicant-complete-icon.svg');
                             }
                         }
 
@@ -2810,7 +2810,7 @@ table.truckassist-table-body-style {
                         }
 
                         .contact-avatar {
-                            background-image: url('../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg');
+                            background-image: url('/assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg');
                         }
                     }
 
@@ -2827,18 +2827,18 @@ table.truckassist-table-body-style {
                         }
 
                         .like-icon {
-                            background-image: url('../../../../../assets/svg/truckassist-table/like-row-hover.svg') !important;
+                            background-image: url('/assets/svg/truckassist-table/like-row-hover.svg') !important;
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/like-icon-hover.svg') !important;
+                                background-image: url('/assets/svg/truckassist-table/like-icon-hover.svg') !important;
                             }
                         }
 
                         .dislike-icon {
-                            background-image: url('../../../../../assets/svg/truckassist-table/dislike-row-hover.svg') !important;
+                            background-image: url('/assets/svg/truckassist-table/dislike-row-hover.svg') !important;
 
                             &:hover {
-                                background-image: url('../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
+                                background-image: url('/assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
                             }
                         }
                     }
@@ -2881,7 +2881,7 @@ table.truckassist-table-body-style {
                     }
 
                     .contact-avatar {
-                        background-image: url('../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg') !important;
                     }
                 }
 
@@ -2901,52 +2901,52 @@ table.truckassist-table-body-style {
                     }
 
                     .like-icon {
-                        background-image: url('../../../../../assets/svg/truckassist-table/like-row-hover.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/like-row-hover.svg') !important;
 
                         &:hover {
-                            background-image: url('../../../../../assets/svg/truckassist-table/like-icon-hover.svg') !important;
+                            background-image: url('/assets/svg/truckassist-table/like-icon-hover.svg') !important;
                         }
                     }
 
                     .dislike-icon {
-                        background-image: url('../../../../../assets/svg/truckassist-table/dislike-row-hover.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/dislike-row-hover.svg') !important;
 
                         &:hover {
-                            background-image: url('../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
+                            background-image: url('/assets/svg/truckassist-table/dislike-icon-hover.svg') !important;
                         }
                     }
                 }
 
                 // HIRE
                 .hire-icon {
-                    background-image: url('../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg') !important;
+                    background-image: url('/assets/svg/truckassist-table/hire-applicant-selected-row.svg') !important;
 
                     &:hover {
-                        background-image: url('../../../../../assets/svg/truckassist-table/hire-applicant-icon-hover.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/hire-applicant-icon-hover.svg') !important;
                     }
                 }
 
                 // FAVORITE
                 .not-favorite-icon {
-                    background-image: url('../../../../../assets/svg/truckassist-table/favorite-selected-row.svg') !important;
+                    background-image: url('/assets/svg/truckassist-table/favorite-selected-row.svg') !important;
 
                     &:hover {
-                        background-image: url('../../../../../assets/svg/truckassist-table/favorite-icon-hover.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/favorite-icon-hover.svg') !important;
                     }
                 }
 
                 // PROGRESS
                 .applicant-status-container {
                     .done-icon {
-                        background-image: url('../../../../../assets/svg/truckassist-table/applicant-done-icon-select-row.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/applicant-done-icon-select-row.svg') !important;
                     }
 
                     .wrong-icon {
-                        background-image: url('../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/applicant-wrong-icon.svg') !important;
                     }
 
                     .complete-icon {
-                        background-image: url('../../../../../assets/svg/truckassist-table/applicant-complete-icon-select-row.svg') !important;
+                        background-image: url('/assets/svg/truckassist-table/applicant-complete-icon-select-row.svg') !important;
                     }
                 }
             }

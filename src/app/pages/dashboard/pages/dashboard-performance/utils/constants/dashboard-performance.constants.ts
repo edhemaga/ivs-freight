@@ -1,9 +1,9 @@
 // enums
-import { DashboardStringEnum } from '../../../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 // models
-import { DashboardTab } from '../../../../models/dashboard-tab.model';
-import { PerformanceDataItem } from '../../models/performance-data-item.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { PerformanceDataItem } from '@pages/dashboard/pages/dashboard-performance/models/performance-data-item.model';
 
 export class DashboardPerformanceConstants {
     static PERFORMANCE_TABS: DashboardTab[] = [

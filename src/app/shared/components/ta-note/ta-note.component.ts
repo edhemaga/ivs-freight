@@ -11,38 +11,41 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
+
 import { Subject } from 'rxjs';
+
+// moment
 import moment from 'moment';
 
-//animations
+// animations
 import { animate, style, transition, trigger } from '@angular/animations';
 
-//services
-import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
-import { DetailsDataService } from '../../services/details-data.service';
-import { SharedService } from '../../services/shared.service';
+// services
+import { NoteUpdateService } from '@shared/services/note-update.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { SharedService } from '@shared/services/shared.service';
 
-//popover
+// popover
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-//pipes
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+// pipes
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // helpers
-import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 
 //components
-import { TaNoteContainerComponent } from '../ta-note-container/ta-note-container.component';
-import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
-//models
-import { activeOptions } from './models/active-options-models';
+// models
+import { ActiveOptions } from '@shared/components/ta-note/models/active-options-models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
@@ -117,7 +120,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     //note container
     public showCollorPattern: boolean;
     public buttonsExpanded = false;
-    public activeOptions: activeOptions;
+    public activeOptions: ActiveOptions;
     public selectedPaternColor: string = '#6C6C6C';
 
     //properties and values

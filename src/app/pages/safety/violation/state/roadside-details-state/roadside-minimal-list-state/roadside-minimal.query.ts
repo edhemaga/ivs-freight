@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     RoadsideMinimalListState,
     RoadsideMinimalListStore,
-} from './roadside-minimal.store';
+} from '@pages/safety/violation/state/roadside-details-state/roadside-minimal-list-state/roadside-minimal.store';
 
 @Injectable({ providedIn: 'root' })
 export class RoadsideMinimalListQuery extends QueryEntity<RoadsideMinimalListState> {

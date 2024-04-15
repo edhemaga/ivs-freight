@@ -1,9 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import { takeUntil, Subject } from 'rxjs';
 
-// state
-import { FilterStateStore } from '../state/filter-state.store';
+// store
+import { FilterStateStore } from '@shared/components/ta-filter/state/filter-state.store';
 
 // models
 import {
@@ -17,8 +18,9 @@ import {
     TruckService,
     TrailerService,
 } from 'appcoretruckassist';
+
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
 export class FilterStateService implements OnDestroy {

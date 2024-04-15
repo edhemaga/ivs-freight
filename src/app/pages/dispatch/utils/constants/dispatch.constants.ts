@@ -1,4 +1,4 @@
-import { TruckTrailer } from '../../models/truck-trailer.model';
+import { TruckTrailer } from '@pages/dispatch/models/truck-trailer.model';
 
 export class DispatchConstants {
     static TRAILER_TYPES: TruckTrailer[] = [

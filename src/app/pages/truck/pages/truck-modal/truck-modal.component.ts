@@ -22,18 +22,18 @@ import { Subject, takeUntil, skip, tap } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
-import { TruckService } from 'src/app/shared/services/truck.service';
-import { VinDecoderService } from '../../../../shared/services/vin-decoder.service';
-import { FormService } from '../../../../shared/services/form.service';
-import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckService } from '@shared/services/truck.service';
+import { VinDecoderService } from '@shared/services/vin-decoder.service';
+import { FormService } from '@shared/services/form.service';
+import { EditTagsService } from '@shared/services/edit-tags.service';
 
 // animations
-import { tabsModalAnimation } from '../../../../shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // validations
 import {
@@ -46,21 +46,21 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
-import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
-import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
-import { TaNgxSliderComponent } from '../../../../shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // models
 import {

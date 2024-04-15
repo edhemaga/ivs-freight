@@ -1,4 +1,4 @@
-import { Tabs } from 'src/app/shared/models/tabs.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 export class RatingReviewTabsConstants {
     static TABS: Tabs[] = [

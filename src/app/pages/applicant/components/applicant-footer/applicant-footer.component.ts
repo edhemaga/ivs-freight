@@ -19,23 +19,23 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // moment
 import moment from 'moment';
 
 // services
-import { ApplicantService } from '../../services/applicant.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantQuery } from '../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
-import { InputSwitchActions } from '../../enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { IdNameList } from '../../models/lists.model';
+import { IdNameList } from '@pages/applicant/models/lists.model';
 import {
     ApplicantCompanyInfoResponse,
     ApplicantResponse,

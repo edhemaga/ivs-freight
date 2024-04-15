@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverCdlModalComponent } from './driver-cdl-modal.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 describe('DriverCdlModalComponent', () => {
     let component: DriverCdlModalComponent;

@@ -4,14 +4,14 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
-import { TruckService } from '../../../shared/services/truck.service';
+import { TruckService } from '@shared/services/truck.service';
 
 // store
 import {
     TruckItemState,
     TruckItemStore,
-} from '../state/truck-details-state/truck.details.store';
-import { TrucksDetailsListStore } from '../state/truck-details-list-state/truck-details-list.store';
+} from '@pages/truck/state/truck-details-state/truck.details.store';
+import { TrucksDetailsListStore } from '@pages/truck/state/truck-details-list-state/truck-details-list.store';
 
 @Injectable({
     providedIn: 'root',

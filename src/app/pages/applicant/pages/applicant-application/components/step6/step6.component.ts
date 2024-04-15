@@ -34,26 +34,26 @@ import {
     filterUnceckedRadiosId,
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
-} from '../../../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // validations
 import {
     name2_24Validation,
     phoneFaxRegex,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantService } from '../../../../services/applicant.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantQuery } from '../../../../state/applicant.query';
-import { ApplicantStore } from '../../../../state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { SelectedMode } from '../../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
 import {
@@ -62,8 +62,8 @@ import {
     CreateEducationReviewCommand,
     EducationFeedbackResponse,
 } from 'appcoretruckassist/model/models';
-import { ApplicantQuestion } from '../../models/applicant-question.model';
-import { Contact } from '../../models/contact.model';
+import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
+import { Contact } from '@pages/applicant/pages/applicant-application/models/contact.model';
 
 @Component({
     selector: 'app-step6',

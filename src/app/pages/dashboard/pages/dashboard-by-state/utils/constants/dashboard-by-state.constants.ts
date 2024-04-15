@@ -1,6 +1,6 @@
-import { DashboardTab } from '../../../../models/dashboard-tab.model';
-import { DropdownItem } from '../../../../../../shared/models/dropdown-item.model';
-import { BarChartValues } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { BarChartValues } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 
 export class DashboardByStateConstants {
     static BY_STATE_DROPDOWN_DATA: DropdownItem[] = [

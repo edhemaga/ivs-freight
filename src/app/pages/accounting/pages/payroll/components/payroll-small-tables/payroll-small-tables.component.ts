@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 // Components
-import { PayrollCreditBonusComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
-import { PayrollBonusModalComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
-import { PayrollDeductionModalComponent } from 'src/app/pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
+import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
+import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
+import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-import { PayrollSmallTableConfigConstants } from './utils/constants/payroll-small-tables-config.constants';
-import { PayrollSmallTableConfigResizeConstants } from './utils/constants/payroll-small-tables-config-resize.constants';
+import { PayrollSmallTableConfigConstants } from '@pages/accounting/pages/payroll/components/payroll-small-tables/utils/constants/payroll-small-tables-config.constants';
+import { PayrollSmallTableConfigResizeConstants } from '@pages/accounting/pages/payroll/components/payroll-small-tables/utils/constants/payroll-small-tables-config-resize.constants';
 
 @Component({
     selector: 'app-payroll-small-tables',

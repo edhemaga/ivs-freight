@@ -1,4 +1,4 @@
-import type { TruckAttachment } from './truck-attachment.model';
+import type { TruckAttachment } from '@pages/truck/pages/truck-table/models/truck-attachment.model';
 
 export interface TruckLeasePurchase {
     id: string;

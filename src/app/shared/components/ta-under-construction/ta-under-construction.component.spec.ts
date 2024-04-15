@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaUnderConstructionComponent } from './ta-under-construction.component';
+import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 
 describe('TaUnderConstructionComponent', () => {
     let component: TaUnderConstructionComponent;

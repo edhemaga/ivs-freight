@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaFilterComponent } from './ta-filter.component';
+import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
 
 describe('TaFilterComponent', () => {
     let component: TaFilterComponent;

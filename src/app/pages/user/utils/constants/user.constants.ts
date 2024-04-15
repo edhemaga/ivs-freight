@@ -1,9 +1,9 @@
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
 import { CompanyUserResponse } from 'appcoretruckassist';
-import { UserTableDropdown } from '../../models/user-table-dropdown.model';
+import { UserTableDropdown } from '@pages/user/models/user-table-dropdown.model';
 
 export class UserConstants {
     static getUserTableDropdown(

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaLogoChangeComponent } from './ta-logo-change.component';
+import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 
 describe('TaLogoChangeComponent', () => {
     let component: TaLogoChangeComponent;

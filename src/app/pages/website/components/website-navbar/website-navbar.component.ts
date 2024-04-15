@@ -4,16 +4,16 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // utils
-import { WebsiteConstants } from '../../utils/constants/website.constants';
+import { WebsiteConstants } from '@pages/website/utils/constants/website.constants';
 
 // services
-import { WebsiteActionsService } from '../../services/website-actions.service';
+import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // enums
-import { WebsiteStringEnum } from '../../enums/website-string.enum';
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
-import { NavigationModel } from '../../models/navigation.model';
+import { NavigationModel } from '@pages/website/models/navigation.model';
 
 @Component({
     selector: 'app-website-navbar',

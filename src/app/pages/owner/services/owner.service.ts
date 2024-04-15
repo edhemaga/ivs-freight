@@ -1,4 +1,21 @@
 import { Injectable } from '@angular/core';
+
+import { Observable, tap } from 'rxjs';
+
+// Store
+import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
+import { OwnerActiveStore } from '@pages/owner/state/owner-active-state/owner-active.store';
+import { OwnerInactiveQuery } from '@pages/owner/state/owner-inactive-state/owner-inactive.query';
+import { OwnerInactiveStore } from '@pages/owner/state/owner-inactive-state/owner-inactive.store';
+
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
+
+// Enums
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+
+// models
 import {
     CreateResponse,
     GetOwnerListResponse,
@@ -6,20 +23,6 @@ import {
     OwnerResponse,
     OwnerService as OwnerBackendService,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-
-//Store
-import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
-import { OwnerActiveStore } from '../state/owner-active-state/owner-active.store';
-import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
-import { OwnerInactiveStore } from '../state/owner-inactive-state/owner-inactive.store';
-
-//Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
-
-//Enums
-import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
 
 @Injectable({
     providedIn: 'root',

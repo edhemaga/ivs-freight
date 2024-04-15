@@ -12,27 +12,27 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // Models
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
-import { SendDataCard } from 'src/app/shared/models/card-models/send-data-card.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
-import { TimeFormatPipe } from 'src/app/shared/pipes/time-format-am-pm.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // Helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-customer-card',
     templateUrl: './customer-card.component.html',
     styleUrls: ['./customer-card.component.scss'],
-    providers: [FormatCurrency, TimeFormatPipe, CardHelper],
+    providers: [FormatCurrencyPipe, TimeFormatPipe, CardHelper],
 })
 export class CustomerCardComponent implements OnInit, OnChanges, OnDestroy {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();

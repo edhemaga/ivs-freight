@@ -17,13 +17,13 @@ import { FormsModule } from '@angular/forms';
 import moment from 'moment';
 
 // services
-import { CalendarDateTimePickerService } from './services/calendar-datetime-picker.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 
 // components
-import { TaCustomDateTimePickersDateCalendarsComponent } from './components/ta-custom-datetime-pickers-date-calendars/ta-custom-datetime-pickers-date-calendars.component';
+import { TaCustomDateTimePickersDateCalendarsComponent } from '@shared/components/ta-custom-datetime-pickers/components/ta-custom-datetime-pickers-date-calendars/ta-custom-datetime-pickers-date-calendars.component';
 
 // models
-import { ITaInput } from '../ta-input/config/ta-input.config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-ta-custom-datetime-pickers',
@@ -175,13 +175,6 @@ export class TaCustomDatetimePickersComponent
                     this.scrollTypes.pmAmScroll * 22;
             }, 0);
         } else {
-            const date =
-                isNaN(this.outputType[0]) ||
-                isNaN(this.outputType[2]) ||
-                isNaN(this.outputType[4])
-                    ? null
-                    : `${this.outputType[0]}/${this.outputType[2]}/${this.outputType[4]}`;
-
             this.calendarService.scrollToDate.next(
                 `${
                     this.dateTime.getMonth() + 1
@@ -203,7 +196,6 @@ export class TaCustomDatetimePickersComponent
         this.calendarService.dateChanged.next(
             new Date(currentDate + ' ' + this.selectedDateTime)
         );
-        //this.dropdown.close();
 
         this.closePopover.emit();
     }

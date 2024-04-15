@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel.component';
+import { TaUploadFilesCarouselComponent } from '@shared/components/ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
 describe('TaUploadFilesCarouselComponent', () => {
     let component: TaUploadFilesCarouselComponent;

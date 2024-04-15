@@ -1,4 +1,5 @@
-@import '../truck-details-item/truck-details-item.component.scss';
+@import 'src/theme/variables';
+
 app-truck-details-card {
     :root {
         --dynamic-colour: #aaa;

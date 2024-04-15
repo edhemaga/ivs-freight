@@ -11,26 +11,26 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { OwnerData } from '../../models/owner-data.model';
-import { CardDetails } from 'src/app/shared/models/card-models/card-table-data.model';
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardDataResult } from 'src/app/shared/models/card-models/card-data-result.model';
+import { OwnerData } from '@pages/owner/models/owner-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // enum
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // component
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
-import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-owner-card',

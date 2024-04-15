@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
-import { forkJoin, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+
+import { forkJoin, Observable, tap } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { PmService } from '../services/pm.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 
 // Store
 import {
     PmTrailerState,
     PmTrailerStore,
-} from '../state/pm-trailer-state/pm-trailer.store';
-import { PmListTrailerStore } from '../state/pm-list-trailer-state/pm-list-trailer.store';
+} from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.store';
+import { PmListTrailerStore } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.store';
 
 // Models
 import { PMTrailerListResponse, PMTrailerUnitListResponse, TableConfigResponse } from 'appcoretruckassist';

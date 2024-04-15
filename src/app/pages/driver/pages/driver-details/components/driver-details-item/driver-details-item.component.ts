@@ -14,17 +14,17 @@ import moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 
 //Services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DriverCdlService } from '../../../../services/driver-cdl.service';
-import { DriverMedicalService } from '../../../../services/driver-medical.service';
-import { DriverMvrService } from '../../../../services/driver-mvr.service';
-import { DriverTestService } from '../../../../services/driver-test.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
+import { DriverMedicalService } from '@pages/driver/services/driver-medical.service';
+import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
+import { DriverTestService } from '@pages/driver/services/driver-test.service';
 
 //Components
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Models
 import { GetMvrModalResponse } from 'appcoretruckassist';
@@ -38,12 +38,12 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
-import { cardComponentAnimation } from 'src/app/shared/animations/card-component.animation';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 //Helpers
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import { Titles } from 'src/app/core/decorators/titles.decorator';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
+import { Titles } from '@core/decorators/titles.decorator';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Titles()
 @Component({
@@ -538,7 +538,7 @@ export class DriverDetailsItemComponent
             );
         }, 200);
     }
-    public openCommand(cdl?: any, modal?: string) {
+    public openCommand(cdl?: any) {
         if (this.activeCdl.length) {
             let data = this.drivers;
             this.modalService.openModal(
@@ -638,7 +638,7 @@ export class DriverDetailsItemComponent
         componentData.showDetails = !componentData.showDetails;
     }
     /**Function retrun id */
-    public identity(index: number, item: any): number {
+    public identity(index: number, _: any): number {
         return index;
     }
 

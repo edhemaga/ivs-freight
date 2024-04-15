@@ -20,19 +20,19 @@ import {
     SwitchDispatchCommand,
     UpdateDispatchCommand,
 } from 'appcoretruckassist';
-import { DispatchBoardLocalResponse } from './models/dispatcher.model';
+import { DispatchBoardLocalResponse } from '@pages/dispatch/pages/dispatch/components/dispatch-table/models/dispatcher.model';
 
 // Pipes
-import { ColorFinderPipe } from '../../../../pipes/color-finder.pipe';
+import { ColorFinderPipe } from '@pages/dispatch/pipes/color-finder.pipe';
 
 // Services
-import { DispatcherService } from '../../../../services/dispatcher.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Modals
-import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-dispatch-table',
