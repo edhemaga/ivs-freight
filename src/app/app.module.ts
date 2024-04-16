@@ -45,9 +45,6 @@ import { WebsiteUserLoggedService } from '@pages/website/services/website-user-l
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
 
-// store
-import { ArticleReducer } from '@pages/dashboard/state/dashboard.reducer';
-
 // lottie
 import player from 'lottie-web';
 function playerFactory() {

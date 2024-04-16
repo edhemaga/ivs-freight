@@ -94,14 +94,6 @@
     ></app-ta-toolbar-filters>
 
     <div class="selected-container d-flex align-items-center">
-        <ng-container *ngIf="tableRowsSelected.length">
-            <div
-                class="border-container d-flex justify-content-center align-items-center"
-            >
-                <div class="border"></div>
-            </div>
-        </ng-container>
-
         <div class="selected-container-wrapper d-flex align-items-center">
             <ng-container *ngIf="tableRowsSelected.length">
                 <div
@@ -165,7 +157,7 @@
             </ng-container>
 
             <!-- Print -->
-            <ng-container *ngIf="tableRowsSelected.length">
+            <ng-container *ngIf="false">
                 <div
                     class="action-div d-flex justify-content-center align-items-center"
                 >
@@ -298,14 +290,14 @@
         <!-- TOOLBAR OPTIONS -->
 
         <ng-container *ngIf="activeViewMode === 'List'">
-            <ng-container *ngFor="let option of OptionsPopupContent">
+            <ng-container *ngFor="let option of optionsPopupContent">
                 <div>
                     <!-- Option Border -->
                     <div
                         class="toolbar-option-border-container"
                         *ngIf="
                             option.hasTopBorder &&
-                            !OptionsPopupContent[0].active
+                            !optionsPopupContent[0].active
                         "
                     >
                         <div class="option-border"></div>
@@ -385,14 +377,14 @@
             </ng-container>
 
             <!-- Option -->
-            <ng-container *ngIf="OptionsPopupContent[0].active">
+            <ng-container *ngIf="optionsPopupContent[0].active">
                 <div class="options-border-container">
                     <div class="options-border"></div>
                 </div>
             </ng-container>
 
             <!-- COLUMNS LIST  -->
-            <div class="columns-options" *ngIf="OptionsPopupContent[0].active">
+            <div class="columns-options" *ngIf="optionsPopupContent[0].active">
                 <div class="columns-container">
                     <ng-container
                         *ngFor="
@@ -406,6 +398,7 @@
                                 (click)="onToaggleColumn(column, i)"
                                 class="column"
                             >
+                                asdas
                                 <div class="checkbox" *ngIf="!column.isPined">
                                     <input
                                         [checked]="!column.hidden"
