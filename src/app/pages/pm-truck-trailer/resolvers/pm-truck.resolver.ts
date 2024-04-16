@@ -5,12 +5,18 @@ import { forkJoin, Observable, tap } from 'rxjs';
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
+import { PmListTruckStore } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.store';
 
 // Store
 import {
     PmTruckState,
     PmTruckStore,
 } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.store';
+import {
+    PMTruckListResponse,
+    PMTruckUnitListResponse,
+    TableConfigResponse,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -19,17 +25,21 @@ export class PmTruckResolver implements Resolve<PmTruckState> {
     constructor(
         // Store
         private pmTruckStore: PmTruckStore,
+        private pmListTruckStore: PmListTruckStore,
 
         // Services
         private pmService: PmService,
         private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<any> {
+    resolve(): Observable<
+        [PMTruckUnitListResponse, TableConfigResponse, PMTruckListResponse]
+    > {
         return forkJoin([
             this.pmService.getPMTruckUnitList(),
             this.tableService.getTableConfig(13),
+            this.pmService.getPMTruckList(),
         ]).pipe(
-            tap(([pmTruckPagination, tableConfig]) => {
+            tap(([pmTruckPagination, tableConfig, truckPmList]) => {
                 localStorage.setItem(
                     'pmTruckTableCount',
                     JSON.stringify({
@@ -45,6 +55,8 @@ export class PmTruckResolver implements Resolve<PmTruckState> {
                         JSON.stringify(config)
                     );
                 }
+
+                this.pmListTruckStore.set(truckPmList.pagination.data);
 
                 this.pmTruckStore.set(pmTruckPagination.pagination.data);
             })

@@ -3,4 +3,5 @@ export interface CardDataResult {
     key?: string;
     secondKey?: string;
     thirdKey?: string;
+    field?: string;
 }

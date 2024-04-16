@@ -276,6 +276,10 @@
         padding-left: 30px;
     }
 
+    &.dropdown-input-image-pm {
+        padding-left: 37px;
+    }
+
     &.dropdown-input-image-without-text-transparent,
     &.multiple-input-values {
         color: $input-transparent-color;
@@ -653,7 +657,15 @@
         }
     }
     // -------------------
-    &.input-commands,
+    &.input-commands {
+        background-color: $default-focus-input !important;
+        color: $default-focus-content !important;
+
+        &.blue-commands {
+            background-color: $default-focus-input-blue-commands !important;
+        }
+    }
+
     &.dropdown-label-active {
         background-color: $default-focus-input !important;
         color: $default-focus-content !important;

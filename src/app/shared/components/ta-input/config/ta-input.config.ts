@@ -41,6 +41,7 @@ export interface ITaInput {
     textTransform?: 'capitalize' | 'uppercase' | 'lowercase';
     textAlign?: string | 'center';
     blackInput?: boolean; // has only black background && input clear, no validations
+    blueInput?: boolean;
     textBlueColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
     incorrectInput?: boolean;
     dangerMark?: boolean;
@@ -94,8 +95,18 @@ export interface ITaInput {
             name?: string;
             svg?: string;
         };
+        thirdCommand?: {
+            popup?: {
+                name?: string;
+                backgroundColor?: string;
+            }
+            name?: string;
+            svg?: string;
+        };
         setTimeout?: number; // if must keep focus on input
+        blueCommands?: boolean;
     };
+    defaultValue?: string; // default input value for Reset command
 
     // ***************** DROPDOWNS *****************
 

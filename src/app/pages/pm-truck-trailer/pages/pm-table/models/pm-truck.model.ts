@@ -1,15 +1,42 @@
-import { FilterData } from '@pages/pm-truck-trailer/pages/pm-table/models/filter-data.model';
+import { RepairShopPMResponse, TruckShortResponse, TruckTypeResponse } from 'appcoretruckassist';
+import {
+    DropdownItem,
+    PmTruckProgressData,
+} from '@shared/models/card-models/card-table-data.model';
 
 export interface PmTruck {
     textUnit: string;
     textOdometer: string;
-    oilFilter: FilterData;
-    airFilter: FilterData;
-    transFluid: FilterData;
-    belts: FilterData;
+    acCompressor?: PmTruckProgressData;
+    airCompressor?: PmTruckProgressData;
+    airFilter?: PmTruckProgressData;
+    alignment?: PmTruckProgressData;
+    battery?: PmTruckProgressData;
+    belts?: PmTruckProgressData;
+    brakeChamber?: PmTruckProgressData;
+    engTuneUp?: PmTruckProgressData;
+    fuelPump?: PmTruckProgressData;
+    oilFilter?: PmTruckProgressData;
+    oilPump?: PmTruckProgressData;
+    radiator?: PmTruckProgressData;
+    transFluid?: PmTruckProgressData;
+    turbo?: PmTruckProgressData;
+    waterPump?: PmTruckProgressData;
     textInv: string;
-    textLastShop: string;
+    textLastShop: RepairShopPMResponse;
     lastService: string;
-    repairShop: string;
+    repairShop: RepairShopPMResponse;
     ruMake: string;
+    truckTypeClass: string;
+    truckTypeIcon: string;
+    tableTruckName: string;
+    truckType: TruckTypeResponse;
+    tableTruckColor: string;
+    additionalData: any;
+    tableDropdownContent: {
+        hasContent: boolean;
+        content: DropdownItem[];
+    };
+    truck: TruckShortResponse;
+    pmId: number;
 }

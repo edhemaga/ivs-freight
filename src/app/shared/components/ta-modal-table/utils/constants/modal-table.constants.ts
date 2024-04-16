@@ -24,6 +24,20 @@ export class ModalTableConstants {
         'EMAIL',
     ];
 
+    static PM_TRUCK_TABLE_HEADER_ITEMS: string[] = [
+        'Sort',
+        'Checkbox',
+        'TITLE',
+        'MILES',
+    ];
+
+    static PM_TRAILER_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'Checkbox',
+        'TITLE',
+        'MONTHS',
+    ];
+
     static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
 
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];

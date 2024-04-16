@@ -13,11 +13,18 @@ import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-moda
 // Models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { PmTrailer } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-trailer.model';
 import { PmTruck } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-truck.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { PmTableColumns } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-columns.model';
+import { PmTableAction } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-action.model';
+import {
+    PMStatus,
+    PMTrailerUnitResponse,
+    PMTruckUnitResponse,
+} from 'appcoretruckassist';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -37,15 +44,18 @@ import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enu
 // Store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
+import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
+import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 
 @Component({
     selector: 'app-pm-table',
     templateUrl: './pm-table.component.html',
     styleUrls: ['./pm-table.component.scss'],
-    providers: [ThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe, ThousandToShortFormatPipe],
 })
 export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -75,6 +85,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
+    public customColumnsTruck: PmTableColumns[] = [];
+    public customColumnsTrailer: PmTableColumns[] = [];
 
     constructor(
         // Services
@@ -85,18 +97,29 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // Store
         private pmTruckQuery: PmTruckQuery,
         private pmTrailerQuery: PmTrailerQuery,
+        private pmListTruckQuery: PmListTruckQuery,
+        private pmListTrailerQuery: PmListTrailerQuery,
 
         // Pipes
-        private thousandSeparator: ThousandSeparatorPipe
+        private thousandSeparator: ThousandSeparatorPipe,
+        private thousandToShortFormatPipe: ThousandToShortFormatPipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
+        this.setCustomPmColumns();
+
         this.sendPMData();
 
         this.resetColumns();
 
         this.toogleColumns();
+
+        this.actionAnimationSubscribe();
+
+        this.pmListSubscribe();
+
+        console.log('pm-table');
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -161,49 +184,10 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.initTableOptions();
 
-        const truckCount = JSON.parse(
-            localStorage.getItem('pmTruckTableCount')
-        );
-
-        const trailerCount = JSON.parse(
-            localStorage.getItem('pmTrailerTableCount')
-        );
-
-        this.tableData = [
-            {
-                title: TableStringEnum.TRUCK_2,
-                field: TableStringEnum.ACTIVE,
-                length: truckCount.pmTruck,
-                data: this.getTableData(TableStringEnum.TRUCK),
-                extended: false,
-                selectTab: true,
-                gridNameTitle: TableStringEnum.PM_2,
-                stateName: TableStringEnum.PM_TRUCKS,
-                tableConfiguration: TableStringEnum.PM_TRUCK,
-                isActive: this.selectedTab === TableStringEnum.ACTIVE,
-                gridColumns: this.getGridColumns(TableStringEnum.PM_TRUCK),
-            },
-            {
-                title: TableStringEnum.TRAILER_3,
-                field: TableStringEnum.INACTIVE,
-                length: trailerCount.pmTrailer,
-                data: this.getTableData(TableStringEnum.TRAILER_2),
-                extended: false,
-                selectTab: true,
-                gridNameTitle: TableStringEnum.PM_2,
-                stateName: TableStringEnum.PM_TRAILERS,
-                tableConfiguration: TableStringEnum.PM_TRAILER,
-                isActive: this.selectedTab === TableStringEnum.INACTIVE,
-                gridColumns: this.getGridColumns(TableStringEnum.PM_TRAILER),
-            },
-        ];
-
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
-
-        this.setPmData(td);
+        this.getTableCountData();
     }
 
-    private getGridColumns(configType: string): any {
+    private getGridColumns(configType: string): PmTableColumns[] {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
@@ -241,57 +225,51 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // Data until backend point is fixed
-    private getDumyData(
-        numberOfCopy: number,
-        dataType: string
-    ): (PmTruck | PmTrailer)[] {
-        const newDumyData = {
-            expirationDays: 8350,
-            expirationDaysText: '8350',
-            totalValueText: '6 month period',
-            percentage: 20,
-        };
+    private getTableCountData(): void {
+        const truckCount = JSON.parse(
+            localStorage.getItem('pmTruckTableCount')
+        );
 
-        const truck: PmTruck = {
-            textUnit: '12345',
-            textOdometer: '567,364',
-            oilFilter: newDumyData,
-            airFilter: newDumyData,
-            transFluid: newDumyData,
-            belts: newDumyData,
-            textInv: 'W444-444',
-            textLastShop: 'NEXTRAN TRUCKS',
-            lastService: '04/04/24',
-            ruMake: 'Carrier',
-            repairShop: 'ARMEN’S TIRE AND SERVICE',
-        };
+        const trailerCount = JSON.parse(
+            localStorage.getItem('pmTrailerTableCount')
+        );
 
-        const trailer: PmTrailer = {
-            textUnit: '123',
-            textOdometer: '1,267,305',
-            lastService: '01/29/21',
-            repairShop: 'ARMEN’S TIRE AND SERVICE',
-            color: '#7040A1',
-            svgIcon: 'Treba da se sredi',
-            alignment: newDumyData,
-            general: newDumyData,
-            ptoNumber: newDumyData,
-            ruMake: 'Carrier',
-            reeferUnit: newDumyData,
-        };
+        this.tableData = [
+            {
+                title: TableStringEnum.TRUCK_2,
+                field: TableStringEnum.ACTIVE,
+                length: truckCount.pmTruck,
+                data: this.getTableData(TableStringEnum.TRUCK),
+                extended: false,
+                selectTab: true,
+                gridNameTitle: TableStringEnum.PM_2,
+                stateName: TableStringEnum.PM_TRUCKS,
+                tableConfiguration: TableStringEnum.PM_TRUCK,
+                isActive: this.selectedTab === TableStringEnum.ACTIVE,
+                gridColumns: this.getAllTableColumns(TableStringEnum.PM_TRUCK),
+            },
+            {
+                title: TableStringEnum.TRAILER_3,
+                field: TableStringEnum.INACTIVE,
+                length: trailerCount.pmTrailer,
+                data: this.getTableData(TableStringEnum.TRAILER_2),
+                extended: false,
+                selectTab: true,
+                gridNameTitle: TableStringEnum.PM_2,
+                stateName: TableStringEnum.PM_TRAILERS,
+                tableConfiguration: TableStringEnum.PM_TRAILER,
+                isActive: this.selectedTab === TableStringEnum.INACTIVE,
+                gridColumns: this.getAllTableColumns(
+                    TableStringEnum.PM_TRAILER
+                ),
+            },
+        ];
 
-        let data = [];
+        const activeTableData = this.tableData.find(
+            (table) => table.field === this.selectedTab
+        );
 
-        for (let i = 0; i < numberOfCopy; i++) {
-            if (dataType === TableStringEnum.TRUCK) {
-                data.push(truck);
-            } else {
-                data.push(trailer);
-            }
-        }
-
-        return data;
+        this.setPmData(activeTableData);
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -326,32 +304,35 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any): void {
-        switch (this.selectedTab) {
-            case TableStringEnum.ACTIVE: {
-                this.modalService.openModal(
-                    PmModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        header: TableStringEnum.TRUCK_2,
-                        action: TableStringEnum.UNIT_PM,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.INACTIVE: {
-                this.modalService.openModal(
-                    PmModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        header: TableStringEnum.TRAILER_3,
-                        action: TableStringEnum.UNIT_PM,
-                    }
-                );
-                break;
-            }
+    public onTableBodyActions(event: PmTableAction): void {
+        switch (event.type) {
+            case TableStringEnum.CONFIGURE:
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.truck.id,
+                            data: event.data,
+                        }
+                    );
+                } else {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.trailer.id,
+                            data: event.data,
+                        }
+                    );
+                }
+
             default: {
                 break;
             }
@@ -412,156 +393,18 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (dataType === TableStringEnum.TRUCK) {
             const truckUnits = this.pmTruckQuery.getAll();
             const truckUnitsData = truckUnits.map((truckUnit) => {
-                const truck: any = {
-                    truckTypeClass: truckUnit.truck.truckType.logoName.replace(
-                        TableStringEnum.SVG,
-                        TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                    ),
-                    truckTypeIcon: truckUnit.truck.truckType.logoName,
-                    tableTruckName: truckUnit.truck.truckType.name,
-                    truckType: truckUnit.truck.truckType,
-                    tableTruckColor: this.setTruckTooltipColor(
-                        truckUnit.truck.truckType.name
-                    ),
-                    textUnit: truckUnit.truck.truckNumber,
-                    textOdometer: truckUnit.odometer
-                        ? truckUnit.odometer.toString()
-                        : '86,125',
-                    textInv: truckUnit.invoice,
-                    textLastShop: truckUnit.lastShop,
-                    lastService: truckUnit.lastService ?? '04/03/24',
-                    ruMake: 'Carrier',
-                    repairShop: 'ARMEN’S TIRE AND SERVICE',
-                    additionalData: { note: '' },
-                    tableDropdownContent: {
-                        hasContent: true,
-                        content: this.getPMDropdownContent(),
-                    },
-                };
-
-                const defaultPMData = {
-                    expirationMiles: null,
-                    expirationMilesText: null,
-                    totalValueText: null,
-                    percentage: null,
-                };
-
-                const truckPMColumns = this.getGridColumns(
-                    TableStringEnum.PM_TRUCK
-                );
-
-                truckUnit.pMs.map((pm) => {
-                    const pmColumn = truckPMColumns.find(
-                        (column) => column.name === pm.title
-                    );
-
-                    if (pm.passedMileage) {
-                        truck[pmColumn.field] = {
-                            expirationMiles: pm.mileage - pm.passedMileage,
-                            expirationMilesText:
-                                this.thousandSeparator.transform(
-                                    pm.mileage - pm.passedMileage
-                                ),
-                            totalValueText:
-                                this.thousandSeparator.transform(pm.mileage) +
-                                ' mi',
-                            percentage:
-                                Math.floor(
-                                    this.calculatePercentage(
-                                        pm.mileage,
-                                        pm.passedMileage
-                                    )
-                                ) ?? null,
-                        };
-                    } else {
-                        truck[pmColumn.field] = defaultPMData;
-                    }
-                });
-
-                return truck;
+                return this.mapPmTruckData(truckUnit);
             });
 
             return truckUnitsData;
         } else {
             const trailerUnits = this.pmTrailerQuery.getAll();
             const trailerUnitsData = trailerUnits.map((trailerUnit) => {
-                const trailer: any = {
-                    tableTrailerTypeIcon:
-                        trailerUnit.trailer.trailerType.logoName,
-                    tableTrailerName: trailerUnit.trailer.trailerType.name,
-                    tableTrailerColor: this.setTrailerTooltipColor(
-                        trailerUnit.trailer.trailerType.name
-                    ),
-                    tableTrailerTypeClass:
-                        trailerUnit.trailer.trailerType.logoName.replace(
-                            TableStringEnum.SVG,
-                            TableStringEnum.EMPTY_STRING_PLACEHOLDER
-                        ),
-                    textUnit: trailerUnit.trailer.trailerNumber,
-                    textOdometer: trailerUnit.odometer
-                        ? trailerUnit.odometer.toString()
-                        : '86,125',
-                    lastService: trailerUnit.lastService ?? '01/29/21',
-                    repairShop: 'ARMEN’S TIRE AND SERVICE',
-                    ruMake: 'Carrier',
-                    additionalData: { note: '' },
-                    tableDropdownContent: {
-                        hasContent: true,
-                        content: this.getPMDropdownContent(),
-                    },
-                };
-
-                const defaultPMData = {
-                    expirationDays: null,
-                    expirationDaysText: null,
-                    totalValueText: null,
-                    percentage: null,
-                };
-
-                const trailerColumns = this.getGridColumns(
-                    TableStringEnum.PM_TRAILER
-                );
-
-                trailerUnit.pMs.map((pm) => {
-                    const pmColumn = trailerColumns.find(
-                        (column) => column.name === pm.title
-                    );
-
-                    if (pm.passedMonths) {
-                        trailer[pmColumn.field] = {
-                            expirationDays: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ),
-                            expirationDaysText: Math.abs(
-                                pm.months * 30 - pm.passedMonths * 30
-                            ).toString(),
-                            totalValueText: pm.months + ' month period',
-                            percentage: Math.floor(
-                                this.calculatePercentage(
-                                    pm.months,
-                                    pm.passedMonths
-                                )
-                            ),
-                        };
-                    } else {
-                        trailer[pmColumn.field] = defaultPMData;
-                    }
-                });
-
-                return trailer;
+                return this.mapPmTrailerData(trailerUnit);
             });
 
             return trailerUnitsData;
         }
-    }
-
-    private calculatePercentage(partialValue, totalValue): number {
-        if (!partialValue || !totalValue) {
-            return null;
-        }
-
-        const percentageValue = (100 * partialValue) / totalValue;
-        return percentageValue <= 100 ? percentageValue : 0;
     }
 
     // Toogle Columns
@@ -584,6 +427,312 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // Get PM Dropdown Content
     private getPMDropdownContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_PM_CONTENT;
+    }
+
+    private actionAnimationSubscribe(): void {
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.animation === TableStringEnum.UPDATE) {
+                    const updatedPm =
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? this.mapPmTruckData(res.data)
+                            : this.mapPmTrailerData(res.data);
+
+                    this.viewData = this.viewData.map((pm) => {
+                        if (pm.pmId === res.id) {
+                            pm = updatedPm;
+                        }
+
+                        return pm;
+                    });
+                }
+            });
+    }
+
+    private pmListSubscribe(): void {
+        this.pmService.currentPmListTruck
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.setCustomPmColumns();
+                    this.sendPMData();
+                }
+            });
+
+        this.pmService.currentPmListTrailer
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.setCustomPmColumns();
+                    this.sendPMData();
+                }
+            });
+    }
+
+    private mapPmTruckData(truckUnit: PMTruckUnitResponse): PmTruck {
+        const truck = {
+            truckTypeClass: truckUnit.truck.truckType.logoName.replace(
+                TableStringEnum.SVG,
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER
+            ),
+            truckTypeIcon: truckUnit.truck.truckType.logoName,
+            tableTruckName: truckUnit.truck.truckType.name,
+            truckType: truckUnit.truck.truckType,
+            tableTruckColor: this.setTruckTooltipColor(
+                truckUnit.truck.truckType.name
+            ),
+            textUnit: truckUnit.truck.truckNumber,
+            textOdometer: truckUnit.odometer
+                ? truckUnit.odometer.toString()
+                : null,
+            textInv: truckUnit.invoice,
+            textLastShop: truckUnit.lastShop,
+            lastService: truckUnit.lastService ?? null,
+            ruMake: 'Carrier',
+            repairShop: truckUnit.lastShop,
+            additionalData: { note: '' },
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getPMDropdownContent(),
+            },
+            truck: truckUnit.truck,
+            pmId: truckUnit.id,
+        };
+
+        const defaultPMData = {
+            expirationMiles: null,
+            expirationMilesText: null,
+            totalValueText: null,
+            percentage: null,
+        };
+
+        const truckPMColumns = this.getAllTableColumns(
+            TableStringEnum.PM_TRUCK
+        );
+
+        truckUnit.pMs.forEach((pm) => {
+            const pmColumn = truckPMColumns.find(
+                (column) => column.name === pm.title
+            );
+
+            if (pmColumn) {
+                if (
+                    pm.diffMileage &&
+                    pmColumn.isSelectColumn &&
+                    pm.status?.name !== PMStatus.Inactive
+                ) {
+                    truck[pmColumn.field] = {
+                        expirationMiles: pm.diffMileage,
+                        expirationMilesText: this.thousandSeparator.transform(
+                            pm.diffMileage
+                        ),
+                        totalValueText:
+                            this.thousandToShortFormatPipe.transform(
+                                pm.mileage
+                            ) + ' mi',
+                        percentage: Math.floor(pm.percentage),
+                    };
+                } else {
+                    truck[pmColumn.field] = defaultPMData;
+                }
+            }
+        });
+
+        return truck;
+    }
+
+    private mapPmTrailerData(trailerUnit: PMTrailerUnitResponse): PmTrailer {
+        const trailer: PmTrailer = {
+            tableTrailerTypeIcon: trailerUnit.trailer.trailerType.logoName,
+            tableTrailerName: trailerUnit.trailer.trailerType.name,
+            tableTrailerColor: this.setTrailerTooltipColor(
+                trailerUnit.trailer.trailerType.name
+            ),
+            tableTrailerTypeClass:
+                trailerUnit.trailer.trailerType.logoName.replace(
+                    TableStringEnum.SVG,
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                ),
+            textUnit: trailerUnit.trailer.trailerNumber,
+            textOdometer: trailerUnit.odometer
+                ? trailerUnit.odometer.toString()
+                : null,
+            lastService: trailerUnit.lastService ?? null,
+            repairShop: trailerUnit.lastShop,
+            ruMake: 'Carrier',
+            additionalData: { note: '' },
+            tableDropdownContent: {
+                hasContent: true,
+                content: this.getPMDropdownContent(),
+            },
+            trailer: trailerUnit.trailer,
+            pmId: trailerUnit.id,
+        };
+
+        const defaultPMData = {
+            expirationDays: null,
+            expirationDaysText: null,
+            totalValueText: null,
+            percentage: null,
+        };
+
+        const trailerColumns = this.getAllTableColumns(
+            TableStringEnum.PM_TRAILER
+        );
+
+        trailerUnit.pMs.forEach((pm) => {
+            const pmColumn = trailerColumns.find(
+                (column) => column.name === pm.title
+            );
+
+            if (
+                pm.diffDays &&
+                pmColumn.isSelectColumn &&
+                pm.status?.name !== PMStatus.Inactive
+            ) {
+                trailer[pmColumn.field] = {
+                    expirationDays: Math.abs(pm.diffDays),
+                    expirationDaysText: Math.abs(pm.diffDays).toString(),
+                    totalValueText: pm.months + ' month period',
+                    percentage: Math.floor(pm.percentage),
+                };
+            } else {
+                trailer[pmColumn.field] = defaultPMData;
+            }
+        });
+
+        return trailer;
+    }
+
+    private setCustomPmColumns(): void {
+        const pmListTruck = this.pmListTruckQuery.getAll();
+        const pmListTrailer = this.pmListTrailerQuery.getAll();
+
+        const customColumnsPmTruck = pmListTruck.filter((pm) =>
+            pm.logoName.includes(TableStringEnum.CUSTOM)
+        );
+        const customColumnsPmTrailer = pmListTrailer.filter((pm) =>
+            pm.logoName.includes(TableStringEnum.CUSTOM)
+        );
+
+        const truckColumnsLength = this.getGridColumns(
+            TableStringEnum.PM_TRUCK
+        ).length;
+
+        this.customColumnsTruck = customColumnsPmTruck.map(
+            (customColumn, index) => {
+                return {
+                    ngTemplate: TableStringEnum.PROGRESS_MILES,
+                    title: customColumn.title,
+                    field: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    name: customColumn.title,
+                    sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    hidden: false,
+                    isPined: false,
+                    width: 150,
+                    minWidth: 101,
+                    filter: '',
+                    isNumeric: true,
+                    index: truckColumnsLength + 1,
+                    sortable: true,
+                    isActionColumn: false,
+                    isSelectColumn:
+                        customColumn.status.name === PMStatus.Inactive
+                            ? false
+                            : true,
+                    filterable: false,
+                    disabled: false,
+                    export: true,
+                    resizable: true,
+                };
+            }
+        );
+
+        const trailerColumnsLength = this.getGridColumns(
+            TableStringEnum.PM_TRAILER
+        ).length;
+
+        this.customColumnsTrailer = customColumnsPmTrailer.map(
+            (customColumn, index) => {
+                return {
+                    ngTemplate: TableStringEnum.PROGRESS,
+                    title: customColumn.title,
+                    field: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    name: customColumn.title,
+                    sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
+                    hidden: false,
+                    isPined: false,
+                    width: 150,
+                    minWidth: 101,
+                    filter: '',
+                    isNumeric: true,
+                    index: trailerColumnsLength + 1,
+                    sortable: true,
+                    isActionColumn: false,
+                    isSelectColumn:
+                        customColumn.status.name === PMStatus.Inactive
+                            ? false
+                            : true,
+                    filterable: false,
+                    disabled: false,
+                    export: true,
+                    resizable: true,
+                };
+            }
+        );
+    }
+
+    private getAllTableColumns(configType: string): PmTableColumns[] {
+        if (configType === TableStringEnum.PM_TRUCK) {
+            const truckColumns = this.getGridColumns(configType);
+            const pmListTruck = this.pmListTruckQuery.getAll();
+
+            truckColumns.forEach((column) => {
+                if (column.ngTemplate === TableStringEnum.PROGRESS_MILES) {
+                    const findPmListColumn = pmListTruck.find(
+                        (pm) => pm.title === column.name
+                    );
+
+                    if (findPmListColumn) {
+                        column.isSelectColumn =
+                            findPmListColumn.status.name === PMStatus.Inactive
+                                ? false
+                                : true;
+
+                        if (column.disabled) {
+                            column.hidden = false;
+                            column.disabled = false;
+                        }
+                    } else {
+                        column.hidden = true;
+                        column.disabled = true;
+                    }
+                }
+            });
+
+            return [...truckColumns, ...this.customColumnsTruck];
+        } else {
+            const trailerColumns = this.getGridColumns(configType);
+            const pmListTrailer = this.pmListTrailerQuery.getAll();
+
+            trailerColumns.forEach((column) => {
+                if (column.ngTemplate === TableStringEnum.PROGRESS) {
+                    const findPmListColumn = pmListTrailer.find(
+                        (pm) => pm.title === column.name
+                    );
+
+                    if (findPmListColumn) {
+                        column.isSelectColumn =
+                            findPmListColumn.status.name === PMStatus.Inactive
+                                ? false
+                                : true;
+                    }
+                }
+            });
+
+            return [...trailerColumns, ...this.customColumnsTrailer];
+        }
     }
 
     ngOnDestroy(): void {

@@ -483,6 +483,7 @@ model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
+model/getMobileFuelTransactionTrucksResponse.ts
 model/getMobileRepairShopCountResponse.ts
 model/getModalFuelStopFranchiseByIdResponse.ts
 model/getModalFuelStopFranchiseResponse.ts
@@ -582,8 +583,17 @@ model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
 model/milesStopPayrollResponse.ts
 model/milesStopResponse.ts
+model/mobileFuelStopExpensesChartResponse.ts
+model/mobileFuelStopExpensesResponse.ts
+model/mobileFuelStopListResponse.ts
+model/mobileFuelStopResponse.ts
+model/mobileFuelStopResponsePagination.ts
+model/mobileFuelStopShortResponse.ts
+model/mobileFuelTransactionResponse.ts
+model/mobileFuelTransactionResponsePagination.ts
 model/mobileGpsDataCommand.ts
 model/mobileRepairShopDetailsResponse.ts
+model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
 model/moveToApplicantsCommand.ts
@@ -605,6 +615,7 @@ model/ownerTableResponse.ts
 model/ownerTableResponsePagination.ts
 model/ownerType.ts
 model/pMStatus.ts
+model/pMTrailerDefaultDropdownResponse.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts
 model/pMTrailerResponsePagination.ts
@@ -612,6 +623,7 @@ model/pMTrailerShortResponse.ts
 model/pMTrailerUnitListResponse.ts
 model/pMTrailerUnitResponse.ts
 model/pMTrailerUnitResponsePagination.ts
+model/pMTruckDefaultDropdownResponse.ts
 model/pMTruckListResponse.ts
 model/pMTruckResponse.ts
 model/pMTruckResponsePagination.ts
@@ -668,6 +680,7 @@ model/payrollMilesShortResponse.ts
 model/payrollMinimalListResponse.ts
 model/payrollMinimalResponse.ts
 model/payrollMinimalResponsePagination.ts
+model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts
 model/payrollOwnerResponsePagination.ts
 model/payrollPaymentCommand.ts
@@ -697,6 +710,7 @@ model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
+model/ratingReviewResponse.ts
 model/ratingSetResponse.ts
 model/refreshTokenCommand.ts
 model/registrationModalResponse.ts
@@ -715,6 +729,7 @@ model/repairIntervalResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
 model/repairListResponse.ts
+model/repairMainModuleResponse.ts
 model/repairModalResponse.ts
 model/repairResponse.ts
 model/repairResponsePagination.ts
@@ -736,11 +751,13 @@ model/repairShopModalResponse.ts
 model/repairShopNewListResponse.ts
 model/repairShopOpenHoursCommand.ts
 model/repairShopOpenHoursResponse.ts
+model/repairShopPMResponse.ts
 model/repairShopResponse.ts
 model/repairShopResponsePagination.ts
 model/repairShopServiceTypeCommand.ts
 model/repairShopServiceTypeResponse.ts
 model/repairShopShortResponse.ts
+model/repairShortResponse.ts
 model/repairType.ts
 model/repairUnitType.ts
 model/repairedVehicleListResponse.ts
@@ -826,7 +843,6 @@ model/testResponse.ts
 model/testResult.ts
 model/testType.ts
 model/timeInterval.ts
-model/timeOnly.ts
 model/timeSpan.ts
 model/tireSizeResponse.ts
 model/titleModalResponse.ts
@@ -892,6 +908,7 @@ model/truckFilterResponse.ts
 model/truckFilterResponsePagination.ts
 model/truckFuelConsumptionChartResponse.ts
 model/truckFuelConsumptionResponse.ts
+model/truckFuelTransactionResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckIntervalResponse.ts
 model/truckListResponse.ts
@@ -1016,6 +1033,7 @@ model/violationCategoryResponse.ts
 model/violationCommand.ts
 model/violationIntervalResponse.ts
 model/violationResponse.ts
+model/voidRegistrationCommand.ts
 model/weatherDataResponse.ts
 model/weatherDaysResponse.ts
 model/wheelsType.ts
