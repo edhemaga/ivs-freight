@@ -84,6 +84,7 @@ export class CardHelper {
                         ...resultsRowsForCards,
                         {
                             title: row.title,
+                            field: row.field,
                             key,
                             secondKey,
                             thirdKey,

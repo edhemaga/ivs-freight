@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RatingReviewResponse } from './ratingReviewResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { EnumValue } from './enumValue';
 import { RepairShopContactListResponse } from './repairShopContactListResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
-import { ReviewResponse } from './reviewResponse';
 
 
 export interface RepairShopListDto { 
@@ -40,7 +40,7 @@ export interface RepairShopListDto {
     upCount?: number;
     downCount?: number;
     commentCount?: number;
-    reviews?: Array<ReviewResponse> | null;
+    ratingReviews?: Array<RatingReviewResponse> | null;
     contacts?: Array<RepairShopContactListResponse> | null;
     cost?: number;
     lastVisited?: string | null;
@@ -60,5 +60,6 @@ export interface RepairShopListDto {
     contactCount?: number | null;
     shopServiceType?: EnumValue;
     dateDeactivated?: string | null;
+    visitedByMe?: boolean;
 }
 

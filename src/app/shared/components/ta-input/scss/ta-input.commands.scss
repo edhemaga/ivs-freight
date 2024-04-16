@@ -83,4 +83,97 @@
             }
         }
     }
+
+    .ta-input-command-third {
+        border-radius: 1px;
+        display: block;
+        z-index: 20;
+        cursor: pointer;
+
+        .ta-input-command-svg-third {
+            svg {
+                width: 18px !important;
+                height: 18px !important;
+                overflow: visible;
+                transition: transform 0.3s;
+
+                path {
+                    fill: $focus-commands-path;
+                }
+                rect {
+                    transition: transform 0.3s;
+                    transform: scale(1);
+                    transform-origin: center;
+                    fill: $focus-commands-rect;
+                }
+            }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: $default-focus-commands-rect-hover;
+                    }
+                }
+            }
+        }
+    }
+
+    &.blue-commands {
+        .ta-input-command-svg-first, .ta-input-command-svg-second, .ta-input-command-svg-third {
+            svg {
+                rect {  
+                    fill: none;
+                }
+
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                        fill: $default-focus-commands-rect-hover-blue-commands;
+                    }
+
+                    path {
+                        fill: $ta-blue-17;
+                    }
+                }
+            }
+        }
+    }
+
+    &.blue-commands-focus {
+        .ta-input-command-svg-first, .ta-input-command-svg-second, .ta-input-command-svg-third {
+            svg {
+                rect {  
+                    fill: $white-4;
+                }
+
+                path {
+                    fill: $ta-blue-15;
+                }
+            }
+
+            &:hover {
+                svg {
+                    overflow: visible;
+                    rect {
+                        transform: scale(1.2);
+                        transform-origin: center;
+                        transition: transform 0.3s;
+                    }
+                }
+            }
+        }
+    }
 }

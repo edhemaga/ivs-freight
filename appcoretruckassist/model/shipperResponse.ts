@@ -10,10 +10,9 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { RatingReviewResponse } from './ratingReviewResponse';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
-import { ReviewResponse } from './reviewResponse';
-import { TimeOnly } from './timeOnly';
 
 
 export interface ShipperResponse { 
@@ -36,18 +35,21 @@ export interface ShipperResponse {
     note?: string | null;
     shippingHoursSameReceiving?: boolean;
     shipperContacts?: Array<ShipperContactResponse> | null;
-    reviews?: Array<ReviewResponse> | null;
+    ratingReviews?: Array<RatingReviewResponse> | null;
     status?: number;
     downCount?: number;
     upCount?: number;
+    commentCount?: number;
     currentCompanyUserRating?: number | null;
     rating?: number;
     pickups?: number;
     deliveries?: number;
-    avgPickupTime?: TimeOnly;
-    avgDeliveryTime?: TimeOnly;
+    avgPickupTimeInMin?: number | null;
+    avgDeliveryTimeInMin?: number | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     createdAt?: string;
+    updatedAt?: string;
+    lastUsedAt?: string | null;
 }
 
