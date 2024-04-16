@@ -9,6 +9,7 @@ import {
     QueryList,
     EventEmitter,
     Output,
+    OnDestroy,
 } from '@angular/core';
 import {
     FormsModule,
@@ -21,42 +22,42 @@ import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 
 // pipes
-import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
-import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 
 // validators
-import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaAutoclosePopoverComponent } from '../ta-autoclose-popover/ta-autoclose-popover.component';
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '../ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaAutoclosePopoverComponent } from '@shared/components/ta-autoclose-popover/ta-autoclose-popover.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // services
-import { FilterStateService } from './services/filter-state.service';
-import { TruckassistTableService } from '../../services/truckassist-table.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // constants
-import { DirectiveConstants } from './utils/constants/directive.constants';
-import { FilterConfigConstants } from './utils/constants/filter-config.constants';
+import { DirectiveConstants } from '@shared/components/ta-filter/utils/constants/directive.constants';
+import { FilterConfigConstants } from '@shared/components/ta-filter/utils/constants/filter-config.constants';
 
 // animations
+import { areaLeftSideAnimation } from '@shared/components/ta-filter/animations/area-left-side.animation';
+import { areaRightSideAnimation } from '@shared/components/ta-filter/animations/area-right-side.animation';
+import { closeForm } from '@shared/components/ta-filter/animations/close-form.animation';
+import { inOutAnimation } from '@shared/components/ta-filter/animations/in-out.animation';
+import { showAnimation } from '@shared/components/ta-filter/animations/show.animation';
+import { stateHeader } from '@shared/components/ta-filter/animations/state-header.animation';
 
-import { areaLeftSideAnimation } from './animations/area-left-side.animation';
-import { areaRightSideAnimation } from './animations/area-right-side.animation';
-import { closeForm } from './animations/close-form.animation';
-import { inOutAnimation } from './animations/in-out.animation';
-import { showAnimation } from './animations/show.animation';
-import { stateHeader } from './animations/state-header.animation';
 // models
-import { ArrayStatus } from './model/array-status.model';
+import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -71,7 +72,7 @@ import { ArrayStatus } from './model/array-status.model';
 
         // compoenents
         TaAutoclosePopoverComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaProfileImagesComponent,
         TaInputComponent,
         TaInputAddressDropdownComponent,
@@ -94,7 +95,7 @@ import { ArrayStatus } from './model/array-status.model';
         areaLeftSideAnimation('areaLeftSideAnimation'),
     ],
 })
-export class TaFilterComponent implements OnInit {
+export class TaFilterComponent implements OnInit, OnDestroy {
     @ViewChild('t2') t2: any;
     @ViewChild('mainFilter') mainFilter: any;
     @ViewChild(TaAutoclosePopoverComponent)
@@ -784,37 +785,30 @@ export class TaFilterComponent implements OnInit {
             .subscribe((res: any) => {
                 if (this.type === 'truckTypeFilter') {
                     if (res?.animation === 'truck-type-update') {
-                        const newData = res.data.map(
-                            (type: any, index: number) => {
-                                type['icon'] =
-                                    'assets/svg/common/trucks/' + type.logoName;
-                                return type;
-                            }
-                        );
+                        const newData = res.data.map((type: any) => {
+                            type['icon'] =
+                                'assets/svg/common/trucks/' + type.logoName;
+                            return type;
+                        });
 
                         this.truckTypeArray = newData;
                     }
                 } else if (this.type === 'trailerTypeFilter') {
                     if (res?.animation === 'trailer-type-update') {
-                        const newData = res.data.map(
-                            (type: any, index: number) => {
-                                type['icon'] =
-                                    'assets/svg/common/trailers/' +
-                                    type.logoName;
-                                return type;
-                            }
-                        );
+                        const newData = res.data.map((type: any) => {
+                            type['icon'] =
+                                'assets/svg/common/trailers/' + type.logoName;
+                            return type;
+                        });
                         this.trailerTypeArray = newData;
                     }
                 } else if (this.type === 'categoryRepairFilter') {
                     if (res?.animation === 'repair-category-update') {
-                        const newData = res.data.map(
-                            (type: any, index: number) => {
-                                type['icon'] =
-                                    'assets/svg/common/category/' + type.logo;
-                                return type;
-                            }
-                        );
+                        const newData = res.data.map((type: any) => {
+                            type['icon'] =
+                                'assets/svg/common/category/' + type.logo;
+                            return type;
+                        });
                         this.categoryRepairArray = newData;
                     }
                 } else if (this.type === 'categoryFuelFilter') {
@@ -826,7 +820,7 @@ export class TaFilterComponent implements OnInit {
                         const usaArray = [];
                         const canadaArray = [];
 
-                        res.data.map((state: any, index: number) => {
+                        res.data.map((state: any) => {
                             if (state.countryType.name == 'Canada') {
                                 canadaArray.push(state);
                             } else {
@@ -847,7 +841,7 @@ export class TaFilterComponent implements OnInit {
                 ) {
                     if (res?.animation === 'pm-truck-data-update') {
                         const newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
+                            (type: any) => {
                                 type['icon'] =
                                     'assets/svg/common/repair-pm/' +
                                     type.logoName;
@@ -863,7 +857,7 @@ export class TaFilterComponent implements OnInit {
                 ) {
                     if (res?.animation === 'pm-trailer-data-update') {
                         const newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
+                            (type: any) => {
                                 type['icon'] =
                                     'assets/svg/common/repair-pm/' +
                                     type.logoName;
@@ -876,7 +870,7 @@ export class TaFilterComponent implements OnInit {
                 } else if (this.type === 'userFilter') {
                     if (res?.animation === 'dispatch-data-update') {
                         const newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
+                            (type: any) => {
                                 type['name'] = type.fullName;
                                 return type;
                             }
@@ -887,7 +881,7 @@ export class TaFilterComponent implements OnInit {
                 } else if (this.type === 'truckFilter') {
                     if (res?.animation === 'truck-list-update') {
                         const newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
+                            (type: any) => {
                                 type['name'] = type.truckNumber;
                                 return type;
                             }
@@ -897,7 +891,7 @@ export class TaFilterComponent implements OnInit {
                 } else if (this.type === 'trailerFilter') {
                     if (res?.data) {
                         const newData = res.data.pagination.data.map(
-                            (type: any, index: number) => {
+                            (type: any) => {
                                 type['name'] = type.trailerNumber;
                                 return type;
                             }
@@ -1494,8 +1488,6 @@ export class TaFilterComponent implements OnInit {
                 };
             } else if (this.type === 'moneyFilter') {
                 if (this.subType === 'all') {
-                    const formActive = 0;
-
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
                     ).slice(1);
@@ -2043,7 +2035,7 @@ export class TaFilterComponent implements OnInit {
         filterTextHead?.classList.remove('inactiveHeader');
     }
 
-    public onTabChange(event: any, type: string): void {
+    public onTabChange(event: any): void {
         this.sideAnimation = true;
         this.areaFilterSelected = event.name;
     }

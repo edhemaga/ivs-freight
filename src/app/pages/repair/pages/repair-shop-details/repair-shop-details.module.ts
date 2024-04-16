@@ -1,34 +1,34 @@
 // Modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 // Routing
-import { RepairShopDetailsRoutes } from './repair-shop-details.routing';
+import { RepairShopDetailsRoutingModule } from '@pages/repair/pages/repair-shop-details/repair-shop-details-routing.module';
 
 // Components
-import { RepairShopDetailsComponent } from './repair-shop-details.component';
-import { RepairShopDetailsItemComponent } from './components/repair-shop-details-item/repair-shop-details-item.component';
-import { RepairShopCardViewComponent } from './components/repair-shop-details-card/repair-shop-details-card.component';
-import { TaChartComponent } from 'src/app/shared/components/ta-chart/ta-chart.component';
-import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { TaProfileImagesComponent } from 'src/app/shared/components/ta-profile-images/ta-profile-images.component';
-import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
-import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaDetailsDropdownComponent } from 'src/app/shared/components/ta-details-dropdown/ta-details-dropdown.component';
-import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { RepairShopDetailsComponent } from '@pages/repair/pages/repair-shop-details/repair-shop-details.component';
+import { RepairShopDetailsItemComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/repair-shop-details-item.component';
+import { RepairShopCardViewComponent } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/repair-shop-details-card.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 // Pipes
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 @NgModule({
     declarations: [
@@ -39,7 +39,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
     exports: [RepairShopCardViewComponent, SharedModule],
     imports: [
         // Routes
-        RepairShopDetailsRoutes,
+        RepairShopDetailsRoutingModule,
 
         // Modules
         CommonModule,
@@ -64,7 +64,7 @@ import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
 
         // Pipes
         FormatDatePipe,
-        FormatCurrency,
+        FormatCurrencyPipe,
     ],
 })
 export class RepairShopDetailsModule {}

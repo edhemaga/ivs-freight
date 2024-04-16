@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     TrailerMinimalListState,
     TrailersMinimalListStore,
-} from './trailer-minimal.store';
+} from '@pages/trailer/state/trailer-minimal-list-state/trailer-minimal.store';
 
 @Injectable({ providedIn: 'root' })
 export class TrailersMinimalListQuery extends QueryEntity<TrailerMinimalListState> {

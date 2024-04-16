@@ -2,26 +2,26 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
-import { ViolationDetailsRoutes } from './violation-details.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { ViolationDetailsRoutingModule } from '@pages/safety/violation/pages/violation-details/violation-details-routing.module';
+import { SharedModule } from '@shared/shared.module';
 
 // pipes
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // components
-import { TaCounterComponent } from 'src/app/shared/components/ta-counter/ta-counter.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaProgressExpirationComponent } from 'src/app/shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCommonCardComponent } from 'src/app/shared/components/ta-common-card/ta-common-card.component';
-import { TaDetailsHeaderComponent } from 'src/app/shared/components/ta-details-header/ta-details-header.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaDetailsHeaderCardComponent } from 'src/app/shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { ViolationDetailsComponent } from './violation-details.component';
-import { ViolationDetailsItemComponent } from './components/violation-details-item/violation-details-item.component';
-import { ViolationDetailsCardComponent } from './components/violation-details-card/violation-details-card.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { ViolationDetailsComponent } from '@pages/safety/violation/pages/violation-details/violation-details.component';
+import { ViolationDetailsItemComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-item/violation-details-item.component';
+import { ViolationDetailsCardComponent } from '@pages/safety/violation/pages/violation-details/components/violation-details-card/violation-details-card.component';
 
 @NgModule({
     declarations: [
@@ -35,9 +35,9 @@ import { ViolationDetailsCardComponent } from './components/violation-details-ca
 
         // components
         CommonModule,
-        ViolationDetailsRoutes,
+        ViolationDetailsRoutingModule,
         SharedModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaDetailsHeaderCardComponent,
         TaCustomCardComponent,
         TaCopyComponent,

@@ -11,16 +11,14 @@ import {
     addressValidation,
     addressUnitValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // store
-import { ApplicantQuery } from '../../../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // models
-import {
-    AnswerChoices,
-    ApplicantQuestion,
-} from '../../../../models/applicant-question.model';
+import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 import {
     ApplicantModalResponse,
     EnumValue,

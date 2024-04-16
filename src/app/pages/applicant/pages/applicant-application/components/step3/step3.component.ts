@@ -24,24 +24,24 @@ import {
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
-} from '../../../../utils/helpers/applicant.helper';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantService } from '../../../../services/applicant.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantStore } from '../../../../state/applicant.store';
-import { ApplicantQuery } from '../../../../state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../../enums/selected-mode.enum';
-import { InputSwitchActions } from '../../../../enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { LicenseModel } from '../../../../models/cdl-information';
-import { AnswerChoices } from '../../../../models/applicant-question.model';
+import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 import {
     ApplicantModalResponse,
     ApplicantResponse,
@@ -81,7 +81,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public licenseArray: LicenseModel[] = [];
+    public licenseArray: License[] = [];
 
     public stepValues: any;
     public stepHasValues: boolean = false;

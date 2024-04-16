@@ -14,21 +14,21 @@ import {
     firstNameValidation,
     lastNameValidation,
     phoneFaxRegex,
-} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
-import { ApplicantAdminResponse } from '../../../../../../appcoretruckassist';
+import { ApplicantAdminResponse } from 'appcoretruckassist';
 
 // services
-import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
-import { ApplicantService } from 'src/app/shared/services/applicant.service';
-import { FormService } from '../../../../shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ApplicantService } from '@shared/services/applicant.service';
+import { FormService } from '@shared/services/form.service';
 
 // components
-import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
-import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-applicant-modal',

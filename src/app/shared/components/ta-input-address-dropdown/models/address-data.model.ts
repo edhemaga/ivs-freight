@@ -1,6 +1,8 @@
-import type { AddressEntity } from 'appcoretruckassist';
-import type { InputAddressCommandsStringEnum } from '../enums/input-address-commands-string.enum';
-import type { LongLat } from './long-lat.model';
+import { InputAddressCommandsStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-commands-string.enum';
+
+// models
+import { AddressEntity } from 'appcoretruckassist';
+import { LongLat } from '@shared/components/ta-input-address-dropdown/models/long-lat.model';
 
 export interface AddressData {
     address: AddressEntity;

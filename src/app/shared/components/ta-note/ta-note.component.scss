@@ -46,8 +46,23 @@
     }
 
     .note_button_hold {
+        height: 26px;
+        width: 26px;
+        padding: 4px;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: $dark-2;
+
+            svg {
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
+
         .note-btn {
-            width: 16px;
+            width: 18px;
             height: 18px;
             cursor: pointer;
         }
@@ -55,41 +70,15 @@
         svg-icon {
             svg {
                 display: flex;
-                path {
-                    fill: #aaaaaa;
-                }
-            }
-        }
-
-        &.note-normal-icon,
-        &.note-note-empty {
-            svg {
-                path {
-                    fill: #aaaaaa;
-                }
-            }
-
-            &:hover {
-                svg {
-                    path {
-                        fill: #6c6c6c;
-                    }
-                }
             }
         }
 
         &.note-all-expanded {
+            background-color: $ta-black !important;
+
             svg {
                 path {
-                    fill: #6d82c7;
-                }
-            }
-
-            &:hover {
-                svg {
-                    path {
-                        fill: #536bc2;
-                    }
+                    fill: #ffffffb2 !important;
                 }
             }
         }
@@ -304,10 +293,10 @@
             white-space: break-spaces;
             overflow: auto;
             outline: none;
-            color: #6c6c6c;
+            color: $bw-9;
             font-size: 11px;
             margin: 0 0 0 auto;
-            line-height: 12px;
+            line-height: 14px;
             padding: 3px 6px;
             font-weight: 500;
 
@@ -321,7 +310,9 @@
                 background: rgb(108, 108, 108, 0.2);
             }
 
-            span, div {
+            span,
+            div,
+            b {
                 &::-moz-selection {
                     color: $bw6-2;
                     background: rgb(108, 108, 108, 0.2);
@@ -333,55 +324,81 @@
                 }
             }
 
-            span[style*='color: rgb(83, 107, 194)'],
-            span[style*='color: rgb(83, 107, 194)'] span {
+            font[color='#dadada'], font[color='#424242']  {
+                color: $bw-9;
                 &::-moz-selection {
-                    color: rgb(83, 107, 194) !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
+                    color: rgb(218, 218, 218) !important;
+                    background: rgb(218, 218, 218, 0.2)!important;
                 }
-
+            
                 &::selection {
-                    color: rgb(83, 107, 194) !important;
-                    background: rgb(83, 107, 194, 0.2) !important;
+                    color: rgb(218, 218, 218) !important;
+                    background: rgb(218, 218, 218, 0.2)!important;
                 }
             }
 
-            span[style*='color: rgb(38, 166, 144)'],
-            span[style*='color: rgb(38, 166, 144)'] span {
+            font[color='#6692f1'], font[color='#3b73ed'] {
+                color: $ta-blue-13;
                 &::-moz-selection {
-                    color: rgb(38, 166, 144) !important;
-                    background: rgb(38, 166, 144, 0.2) !important;
+                    color: rgb(102, 146, 241) !important;
+                    background: rgb(102, 146, 241, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(38, 166, 144) !important;
-                    background: rgb(38, 166, 144, 0.2) !important;
+                    color: rgb(102, 146, 241) !important;
+                    background: rgb(102, 146, 241, 0.2) !important;
                 }
             }
 
-            span[style*='color: rgb(239, 83, 80)'],
-            span[style*='color: rgb(239, 83, 80)'] span {
+            font[color='#56b4ac'], font[color='#259f94'] {
+                color: $ta-green;
                 &::-moz-selection {
-                    color: rgb(239, 83, 80) !important;
-                    background: rgb(239, 83, 80, 0.2) !important;
+                    color: rgb(86, 180, 172) !important;
+                    background: rgb(86, 180, 172, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(239, 83, 80);
-                    background: rgb(239, 83, 80, 0.2) !important;
+                    color: rgb(86, 180, 172) !important;
+                    background: rgb(86, 180, 172, 0.2) !important;
                 }
             }
 
-            span[style*='color: rgb(255, 167, 38)'],
-            span[style*='color: rgb(255, 167, 38)'] span {
+            font[color='#e66767'], font[color='#df3c3c'] {
+                color: $ta-red-10;
                 &::-moz-selection {
-                    color: rgb(255, 167, 38) !important;
-                    background: rgb(255, 167, 38, 0.2) !important;
+                    color: rgb(230, 103, 103) !important;
+                    background: rgb(230, 103, 103, 0.2) !important;
                 }
-
+            
                 &::selection {
-                    color: rgb(255, 167, 38);
-                    background: rgb(255, 167, 38, 0.2) !important;
+                    color: rgb(230, 103, 103) !important;
+                    background: rgb(230, 103, 103, 0.2) !important;
+                }
+            }
+
+            font[color='#fab15c'], font[color='#f89b2e'] {
+                color: $ta-yellow-1;
+                &::-moz-selection {
+                    color: rgb(250, 177, 92) !important;
+                    background: rgb(250, 177, 92, 0.2) !important;
+                }
+            
+                &::selection {
+                    color: rgb(250, 177, 92) !important;
+                    background: rgb(250, 177, 92, 0.2) !important;
+                }
+            }
+
+            font[color='#b370f0'], font[color='#9e47ec'] {
+                color: $ta-purple-1;
+                &::-moz-selection {
+                    color: rgb(179, 112, 240) !important;
+                    background: rgb(179, 112, 240, 0.2) !important;
+                }
+            
+                &::selection {
+                    color: rgb(179, 112, 240) !important;
+                    background: rgb(179, 112, 240, 0.2) !important;
                 }
             }
 
@@ -419,7 +436,7 @@
         .container_separate {
             padding: 0 4px;
             .container_separate_inner {
-                height: 2px;
+                height: 1px;
 
                 border-radius: 1px;
                 background-color: $ta-black;
@@ -427,8 +444,29 @@
         }
 
         .note_container {
+            &:first-child {
+                flex: 1;
+            }
             width: 100%;
-            padding: 5px 0px 5px 2px;
+            padding: 4px 4px 4px 2px;
+
+            svg-icon {
+                height: 14px;
+                width: 14px;
+                cursor: pointer;
+
+                svg {
+                    display: flex;
+                }
+
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-red-15;
+                        }
+                    }
+                }
+            }
         }
     }
 

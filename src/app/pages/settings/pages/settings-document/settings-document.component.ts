@@ -2,25 +2,24 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
-import { SettingsCompanyService } from '../../services/settings-company.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { EditTagsService } from '@shared/services/edit-tags.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // model
-import { File } from 'src/app/shared/models/card-table-data.model';
-import { FileEvent } from 'src/app/core/model/file-event.model';
-import { SettingsDocumentStringEnum } from './enums/settings-document-string.enum';
-import { tableBodyOptions as TableBodyOptions } from 'src/app/core/components/shared/model/tableBody';
-
-import { UploadFile } from 'src/app/shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { File } from '@shared/models/card-models/card-table-data.model';
+import { FileEvent } from '@shared/models/file-event.model';
+import { SettingsDocumentStringEnum } from '@pages/settings/pages/settings-document/enums/settings-document-string.enum';
+import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import {
     CreateWithUploadsResponse,
     FileResponse,
 } from 'appcoretruckassist/model/models';
-import { DocumentActionConfig } from 'src/app/core/model/document-action-config';
+import { DocumentActionConfig } from '@pages/settings/pages/settings-document/models/document-action-config';
 
 // constants
-import { SettingsDocumentsConstants } from './utils/constants/settings-document.constants';
+import { SettingsDocumentsConstants } from '@pages/settings/pages/settings-document/utils/constants/settings-document.constants';
 
 @Component({
     selector: 'app-settings-document',
@@ -42,7 +41,7 @@ export class SettingsDocumentComponent
     public showDropzone: boolean = false;
 
     public selectedTab: string = SettingsDocumentsConstants.SELECTED_TAB;
-    public tableOptions: TableBodyOptions =
+    public tableOptions: TableBodyOptionActions =
         SettingsDocumentsConstants.INITIAL_TABLE_OPTIONS;
     public tableData = SettingsDocumentsConstants.INITIAL_TABLE_DATA;
     public resizeObserver: ResizeObserver;

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SettingsTerminalComponent } from './settings-terminal.component';
+import { SettingsTerminalComponent } from '@pages/settings/pages/settings-location/components/settings-terminal/settings-terminal.component';
 
 describe('SettingsTerminalComponent', () => {
     let component: SettingsTerminalComponent;

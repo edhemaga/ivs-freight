@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaTabSwitchComponent } from './ta-tab-switch.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 describe('TaTabSwitchComponent', () => {
     let component: TaTabSwitchComponent;

@@ -18,34 +18,37 @@ import {
     trigger,
 } from '@angular/animations';
 
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 // bootstrap
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { ModalService } from './services/modal.service';
-import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 // components
-import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
-} from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaCustomScrollbarComponent } from '../ta-custom-scrollbar/ta-custom-scrollbar.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
+} from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // guards
-import { AuthGuard } from '../../../core/guards/authentication.guard';
+import { AuthGuard } from '@core/guards/authentication.guard';
+
+// models
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-modal',
@@ -65,7 +68,7 @@ import { AuthGuard } from '../../../core/guards/authentication.guard';
         // components
         TaCustomScrollbarComponent,
         TaUploadDropzoneComponent,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaTabSwitchComponent,
     ],

@@ -18,14 +18,14 @@ import {
 import { skip, Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { TaInputService } from '../../../../shared/components/ta-input/services/ta-input.service';
-import { ModalService } from '../../../../shared/components/ta-modal/services/modal.service';
-import { TrailerService } from 'src/app/shared/services/trailer.service';
-import { VinDecoderService } from '../../../../shared/services/vin-decoder.service';
-import { FormService } from '../../../../shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TrailerService } from '@shared/services/trailer.service';
+import { VinDecoderService } from '@shared/services/vin-decoder.service';
+import { FormService } from '@shared/services/form.service';
 
 // animations
-import { tab_modal_animation } from '../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // validations
 import {
@@ -39,23 +39,23 @@ import {
     yearValidation,
     yearValidRegex,
     trailerVolumeValidation,
-} from '../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // components
-import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
-import { RepairOrderModalComponent } from '../../../../pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaModalComponent } from '../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxCardComponent } from '../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaCustomCardComponent } from '../../../../shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '../../../../shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '../../../../shared/components/ta-input-note/ta-input-note.component';
-import { TaCheckboxComponent } from '../../../../shared/components/ta-checkbox/ta-checkbox.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // helpers
-import { MethodsCalculationsHelper } from '../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // bootstrap
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -71,7 +71,7 @@ import {
     selector: 'app-trailer-modal',
     templateUrl: './trailer-modal.component.html',
     styleUrls: ['./trailer-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
     standalone: true,

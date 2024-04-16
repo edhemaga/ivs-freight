@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     DriversInactiveState,
     DriversInactiveStore,
-} from './driver-inactive.store';
+} from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 
 @Injectable({ providedIn: 'root' })
 export class DriversInactiveQuery extends QueryEntity<DriversInactiveState> {

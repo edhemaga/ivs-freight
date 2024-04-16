@@ -1,11 +1,11 @@
 // enums
-import { DashboardStringEnum } from '../../../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 // models
-import { DropdownListItem } from '../../../../models/dropdown-list-item.model';
-import { DropdownItem } from '../../../../models/dropdown-item.model';
-import { DashboardTab } from '../../../../models/dashboard-tab.model';
-import { TopRatedListItem } from '../../models/top-rated-list-item.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
 
 export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: DropdownItem[] = [

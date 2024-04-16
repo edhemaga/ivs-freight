@@ -11,26 +11,26 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 // Components
-import { BrokerModalComponent } from 'src/app/pages/customer/pages/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from 'src/app/pages/customer/pages/shipper-modal/shipper-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { BrokerService } from '../../services/broker.service';
-import { ShipperService } from '../../services/shipper.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ReviewsRatingService } from 'src/app/shared/services/reviews-rating.service';
-import { MapsService } from 'src/app/shared/services/maps.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { TableCardDropdownActionsService } from 'src/app/shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
+import { ModalService } from '@shared/services/modal.service';
+import { BrokerService } from '@pages/customer/services/broker.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { MapsService } from '@shared/services/maps.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 
 // Store
-import { BrokerState } from '../../state/broker-state/broker.store';
-import { ShipperState } from '../../state/shipper-state/shipper.store';
-import { BrokerQuery } from '../../state/broker-state/broker.query';
-import { ShipperQuery } from '../../state/shipper-state/shipper.query';
+import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
+import { ShipperState } from '@pages/customer/state/shipper-state/shipper.store';
+import { BrokerQuery } from '@pages/customer/state/broker-state/broker.query';
+import { ShipperQuery } from '@pages/customer/state/shipper-state/shipper.query';
 
 // Models
 import {
@@ -40,46 +40,39 @@ import {
     ShipperListResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import {
-    CardRows,
-    TableOptionsInterface,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { CustomerBodyResponse } from './models/customer-body-response.model';
-import { CustomerUpdateRating } from './models/customer-update-rating.model';
-import { CustomerViewDataResponse } from './models/customer-viewdata-response.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CustomerBodyResponse } from '@pages/customer/pages/customer-table/models/customer-body-response.model';
+import { CustomerUpdateRating } from '@pages/customer/pages/customer-table/models/customer-update-rating.model';
+import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
 import {
     CardDetails,
     DropdownItem,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import { MappedShipperBroker } from './models/mapped-shipper-broker.model';
-import {
-    FilterOptionBroker,
-    FilterOptionshipper,
-} from 'src/app/core/components/shared/model/table-components/customer.modals';
-import {
-    DataForCardsAndTables,
-    TableColumnConfig,
-} from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+} from '@shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
+import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
+import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 // Constants
-import { CustomerCardDataConfigConstants } from './utils/constants/customer-card-data-config.constants';
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
+import { CustomerCardDataConfigConstants } from '@pages/customer/pages/customer-table/utils/constants/customer-card-data-config.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // Pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
-import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
+import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import {
     getBrokerColumnDefinition,
     getShipperColumnDefinition,
-} from 'src/assets/utils/settings/customer-columns';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+} from '@shared/utils/settings/table-settings/customer-columns';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-customer-table',
@@ -97,7 +90,7 @@ export class CustomerTableComponent
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
     public customerTableData: any[] = [];
-    public tableOptions: TableOptionsInterface;
+    public tableOptions;
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
@@ -107,10 +100,10 @@ export class CustomerTableComponent
     public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public inactiveTabClicked: boolean = false;
-    public activeTableData: DataForCardsAndTables;
+    public activeTableData: CardTableData;
     public backBrokerFilterQuery: FilterOptionBroker =
         TableDropdownComponentConstants.BROKER_BACK_FILTER;
-    public backShipperFilterQuery: FilterOptionshipper =
+    public backShipperFilterQuery: FilterOptionShipper =
         TableDropdownComponentConstants.SHIPPER_BACK_FILTER;
     public mapListData = [];
 
@@ -703,7 +696,7 @@ export class CustomerTableComponent
         }
     }
 
-    private setCustomerData(td: DataForCardsAndTables): void {
+    private setCustomerData(td: CardTableData): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -1001,7 +994,7 @@ export class CustomerTableComponent
     }
 
     // Toolbar Actions
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Add Call
 
         if (event.action === TableStringEnum.OPEN_MODAL) {
@@ -1134,7 +1127,7 @@ export class CustomerTableComponent
             }
         } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -1147,7 +1140,7 @@ export class CustomerTableComponent
             );
         } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -1167,7 +1160,7 @@ export class CustomerTableComponent
                         : TableStringEnum.OPEN,
             };
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -1193,7 +1186,7 @@ export class CustomerTableComponent
         // Delete Call
         else if (event.type === TableStringEnum.DELETE) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
                 {
                     type: TableStringEnum.DELETE,

@@ -9,15 +9,15 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantService } from '../../../../services/applicant.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantStore } from '../../../../state/applicant.store';
-import { ApplicantQuery } from '../../../../state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
 import {

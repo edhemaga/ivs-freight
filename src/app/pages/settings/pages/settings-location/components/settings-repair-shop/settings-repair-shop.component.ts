@@ -4,28 +4,28 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { SettingsLocationService } from '../../services/settings-location.service';
-import { RepairService } from 'src/app/shared/services/repair.service';
-import { CompanyRepairShopService } from '../../../../services/company-repairshop.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { RepairService } from '@shared/services/repair.service';
+import { CompanyRepairShopService } from '@pages/settings/services/company-repairshop.service';
 
 // pipes
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // core
 import { RepairShopResponse } from 'appcoretruckassist';
 
 // utils
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 @Component({
     selector: 'app-settings-repair-shop',
     templateUrl: './settings-repair-shop.component.html',
     styleUrls: ['./settings-repair-shop.component.scss'],
-    providers: [FormatCurrency],
+    providers: [FormatCurrencyPipe],
 })
 export class SettingsRepairShopComponent implements OnInit, OnDestroy {
     public repairShopData: any;
@@ -41,7 +41,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
-        private FormatCurrency: FormatCurrency,
+        private FormatCurrencyPipe: FormatCurrencyPipe,
         private repairService: RepairService,
         private activatedRoute: ActivatedRoute
     ) {}
@@ -205,7 +205,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         return (
             data.payPeriod.name +
             ' Rent ' +
-            `-  ${this.FormatCurrency.transform(data.rent)}`
+            `-  ${this.FormatCurrencyPipe.transform(data.rent)}`
         );
     }
 

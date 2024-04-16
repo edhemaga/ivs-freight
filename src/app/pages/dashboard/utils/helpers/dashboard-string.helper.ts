@@ -1,4 +1,4 @@
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 export class DashboardStringHelper {
     static capitalizeFirstLetter(text: string) {

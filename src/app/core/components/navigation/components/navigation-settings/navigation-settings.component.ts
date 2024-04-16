@@ -11,15 +11,29 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { settings } from '../../utils/constants/navigation-data.constants';
-import { FooterData, Settings } from '../../models/navigation.model';
+
+// constants
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+
+// animations
 import {
-    DropDownAnimation,
-    navigation_route_animation,
-} from '../../animations/navigation.animation';
-import { NavigationService } from '../../services/navigation.service';
+    dropDownAnimation,
+    navigationRouteAnimation,
+} from '@core/components/navigation/animations/navigation.animation';
+
+// services
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+
+// components
+import { TaTooltipSlideComponent } from '@shared/components/ta-tooltip-slide/ta-tooltip-slide.component';
+
+// models
+import { NavigationSettings } from '@core/components/navigation/models/navigation-settings.model';
+import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
+
 @Component({
     selector: 'app-navigation-settings',
     templateUrl: './navigation-settings.component.html',
@@ -33,8 +47,8 @@ import { TaTooltipSlideComponent } from 'src/app/shared/components/ta-tooltip-sl
         TaTooltipSlideComponent,
     ],
     animations: [
-        navigation_route_animation('showHideDetails'),
-        DropDownAnimation,
+        navigationRouteAnimation('showHideDetails'),
+        dropDownAnimation,
     ],
 })
 export class NavigationSettingsComponent implements OnInit, OnChanges {
@@ -49,9 +63,11 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
     @Input() selectedRoute: string;
     @Input() selectedSubRoute: string;
     @Output() activatedSettingsRoute = new EventEmitter<any>();
-    public footer: FooterData[] = settings;
+
+    public footer: NavigationFooterData[] = NavigationDataConstants.settings;
     public showToolTip: boolean;
     public magicBoxAnime: boolean = true;
+
     constructor(
         private router: Router,
         private navigationService: NavigationService
@@ -95,7 +111,7 @@ export class NavigationSettingsComponent implements OnInit, OnChanges {
             type: !this.isSettingsPanelOpen,
         });
     }
-    public changeRouteSettings(subroute: Settings): void {
+    public changeRouteSettings(subroute: NavigationSettings): void {
         this.router.navigate([`/company${subroute.route}`]);
     }
 }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverDetailsCardComponent } from './driver-details-card.component';
+import { DriverDetailsCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/driver-details-card.component';
 
 describe('DriverDetailsCardComponent', () => {
     let component: DriverDetailsCardComponent;

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaProgresBarComponent } from './ta-progres-bar.component';
+import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 describe('TaProgresBarComponent', () => {
     let component: TaProgresBarComponent;

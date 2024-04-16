@@ -4,7 +4,7 @@ import {
     LoadStopCommand,
     LoadType,
 } from 'appcoretruckassist';
-import { Tags } from '../../../shared/models/tags.model';
+import { Tags } from '@shared/models/tags.model';
 
 export interface Load {
     id?: number;

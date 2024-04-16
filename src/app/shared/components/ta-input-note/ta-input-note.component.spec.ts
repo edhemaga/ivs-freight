@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaInputNoteComponent } from './ta-input-note.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 describe('TaInputNoteComponent', () => {
     let component: TaInputNoteComponent;

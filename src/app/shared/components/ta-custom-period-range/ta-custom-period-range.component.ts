@@ -22,12 +22,12 @@ import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
 import moment from 'moment';
 
 // components
-import { TaInputComponent } from '../ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // models
-import { CustomPeriodRange } from 'src/app/pages/dashboard/models/custom-period-range.model';
-import { DropdownListItem } from 'src/app/pages/dashboard/models/dropdown-list-item.model';
+import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 
 @Component({
     selector: 'app-ta-custom-period-range',

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback.component';
+import { ApplicantReviewFeedbackComponent } from '@pages/applicant/components/applicant-review-feedback/applicant-review-feedback.component';
 
 describe('ApplicantReviewFeedbackComponent', () => {
     let component: ApplicantReviewFeedbackComponent;

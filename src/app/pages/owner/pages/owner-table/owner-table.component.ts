@@ -2,54 +2,54 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // Components
-import { OwnerModalComponent } from 'src/app/pages/owner/pages/owner-modal/owner-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
-import { TruckModalComponent } from 'src/app/pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from 'src/app/pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // Models
 import { GetOwnerListResponse } from 'appcoretruckassist';
-import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
+import { getOwnerColumnDefinition } from '@shared/utils/settings/table-settings/owner-columns';
 import {
     CardDetails,
     DropdownItem,
-    GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
-import { OwnerTableData } from '../../models/owner-table-data.model';
-import { OwnerFilter } from '../../models/owner-filter.model';
-import { OwnerData } from '../../models/owner-data.model';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+} from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { OwnerTableData } from '@pages/owner/models/owner-table-data.model';
+import { OwnerFilter } from '@pages/owner/models/owner-filter.model';
+import { OwnerData } from '@pages/owner/models/owner-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { OwnerService } from '../../services/owner.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { ModalService } from '@shared/services/modal.service';
+import { OwnerService } from '@pages/owner/services/owner.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // Store
-import { OwnerActiveQuery } from '../../state/owner-active-state/owner-active.query';
-import { OwnerActiveState } from '../../state/owner-active-state/owner-active.store';
-import { OwnerInactiveQuery } from '../../state/owner-inactive-state/owner-inactive.query';
+import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
+import { OwnerActiveState } from '@pages/owner/state/owner-active-state/owner-active.store';
+import { OwnerInactiveQuery } from '@pages/owner/state/owner-inactive-state/owner-inactive.query';
 import {
     OwnerInactiveState,
     OwnerInactiveStore,
-} from '../../state/owner-inactive-state/owner-inactive.store';
+} from '@pages/owner/state/owner-inactive-state/owner-inactive.store';
 
 //Enum
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Pipes
-import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 //Constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { OwnerConfiguration } from './utils/constants/owner-configuration.constants';
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { OwnerConfiguration } from '@pages/owner/pages/owner-table/utils/constants/owner-configuration.constants';
 
 // helpers
-import { DropdownContentHelper } from 'src/app/shared/utils/helpers/dropdown-content.helper';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
+import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 @Component({
     selector: 'app-owner-table',
@@ -347,7 +347,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -604,7 +604,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : getOwnerColumnDefinition();
     }
 
-    private setOwnerData(td: DataForCardsAndTables) {
+    private setOwnerData(td: CardTableData) {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -706,7 +706,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(OwnerModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -764,7 +764,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -806,7 +806,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ownerBackFilter(this.backFilterQuery, true);
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,
@@ -829,7 +829,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...event,

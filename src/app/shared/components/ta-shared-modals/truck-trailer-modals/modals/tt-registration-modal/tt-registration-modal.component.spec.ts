@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TtRegistrationModalComponent } from './tt-registration-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 
 describe('TtRegistrationModalComponent', () => {
     let component: TtRegistrationModalComponent;

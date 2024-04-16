@@ -1,12 +1,18 @@
-<div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}" [class.remove_pointers]="removePointers">
+<div
+    class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}"
+    [class.remove_pointers]="removePointers"
+>
     <div class="ta-upload-files-carousel" #fileHolder>
         <div
             class="carousel-slider"
             #fileSlider
             [ngClass]="{
-                'multiple-slider': ['medium', 'large', 'small', 'extralarge'].includes(
-                    this.customClass?.toLowerCase()
-                )
+                'multiple-slider': [
+                    'medium',
+                    'large',
+                    'small',
+                    'extralarge'
+                ].includes(this.customClass?.toLowerCase())
             }"
             [ngStyle]="{
                 transform: 'translateX(' + translateXMultipleSlides + 'px)'

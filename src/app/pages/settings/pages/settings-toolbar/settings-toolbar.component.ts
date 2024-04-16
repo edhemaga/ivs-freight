@@ -4,13 +4,13 @@ import { OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 //States
-import { OfficeStore } from '../../state/setting-ofice-state/company-office.store';
-import { ParkingStore } from '../../state/parking-state/company-parking.store';
-import { CompanyRepairShopStore } from '../../state/setting-reapir-shop-state/company-repairshop.store';
-import { TerminalStore } from '../../state/settings-terminal-state/company-terminal.store';
+import { OfficeStore } from '@pages/settings/state/setting-ofice-state/company-office.store';
+import { ParkingStore } from '@pages/settings/state/parking-state/company-parking.store';
+import { CompanyRepairShopStore } from '@pages/settings/state/setting-reapir-shop-state/company-repairshop.store';
+import { TerminalStore } from '@pages/settings/state/settings-terminal-state/company-terminal.store';
 
 //Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-settings-toolbar',

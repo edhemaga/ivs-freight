@@ -6,20 +6,19 @@ import {
     OnDestroy,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subject, take, takeUntil } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Subject, take, takeUntil, distinctUntilChanged } from 'rxjs';
 
 // Services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { RepairService } from '../../../../shared/services/repair.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { RepairService } from '@shared/services/repair.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // Store
-import { RepairDetailsQuery } from '../../state/repair-details-state/repair-details.query';
-import { RepairDetailsStore } from '../../state/repair-details-state/repair-details.store';
+import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
+import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 
 // Models
 import { RepairShopResponse } from 'appcoretruckassist';

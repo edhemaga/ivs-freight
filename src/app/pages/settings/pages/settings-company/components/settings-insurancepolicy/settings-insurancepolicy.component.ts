@@ -14,24 +14,24 @@ import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // services
-import { SettingsCompanyService } from '../../../../services/settings-company.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // components
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
     styleUrls: ['./settings-insurancepolicy.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations: [card_component_animation('showHideCardBody')],
+    animations: [cardComponentAnimation('showHideCardBody')],
 })
 export class SettingsInsurancepolicyComponent
     implements OnChanges, OnDestroy, OnInit
@@ -170,7 +170,7 @@ export class SettingsInsurancepolicyComponent
             }
             case 'delete-item': {
                 this.modalService.openModal(
-                    TaConfirmationModalComponent,
+                    ConfirmationModalComponent,
                     { size: 'small' },
                     {
                         id: insurance.id,

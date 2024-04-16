@@ -1,4 +1,4 @@
-@import '../../../../../theme/variables.scss';
+@import 'src/theme/variables.scss';
 
 :root {
     --route-color-1: #3074d3;
@@ -287,7 +287,6 @@
             height: 18px;
             cursor: grab;
 
-            //background-image: url('../../../../../assets/svg/common/ic_route_card.svg');
             background-repeat: no-repeat;
 
             z-index: 2;

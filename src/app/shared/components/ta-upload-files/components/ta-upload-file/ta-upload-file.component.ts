@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -25,39 +26,24 @@ import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { PDFDocumentProxy, PdfViewerModule } from 'ng2-pdf-viewer';
 
 // components
-import { TaInputComponent } from '../../../ta-input/ta-input.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaSpinnerComponent } from '../../../ta-spinner/ta-spinner.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
 // services
-import { TaInputService } from '../../../ta-input/services/ta-input.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // pipes
-import { UrlExtensionPipe } from 'src/app/shared/components/ta-upload-files/pipes/url-extension.pipe';
-import { ByteConvertPipe } from 'src/app/shared/components/ta-upload-files/pipes/byte-convert.pipe';
+import { UrlExtensionPipe } from '@shared/components/ta-upload-files/pipes/url-extension.pipe';
+import { ByteConvertPipe } from '@shared/components/ta-upload-files/pipes/byte-convert.pipe';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-export interface UploadFile {
-    fileId?: number;
-    name?: any;
-    fileName?: string;
-    url: string | any;
-    extension?: string;
-    guid?: string;
-    size?: number;
-    fileSize?: number;
-    tags?: any;
-    realFile?: File;
-    tagId?: any;
-    incorrect?: boolean;
-    tagChanged?: boolean;
-    savedTag?: any;
-    tagGeneratedByUser?: boolean;
-    lastHovered?: boolean;
-}
+// models
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+
 @Component({
     selector: 'app-ta-upload-file',
     templateUrl: './ta-upload-file.component.html',
@@ -69,7 +55,7 @@ export interface UploadFile {
     imports: [
         CommonModule,
         FormsModule,
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         ReactiveFormsModule,
         PdfViewerModule,
         ByteConvertPipe,
@@ -81,7 +67,7 @@ export interface UploadFile {
         TaInputComponent,
     ],
 })
-export class TaUploadFileComponent implements OnInit, OnDestroy {
+export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
     @ViewChild(TaInputComponent) inputRef: TaInputComponent;
     @Input() customClassName: string;
@@ -305,7 +291,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
     public setTags() {
         if (this.hasTagsDropdown && this.tags?.length) {
-            this.tags.map((item, i) => {
+            this.tags.map((item) => {
                 item = {
                     ...item,
                     checked: false,

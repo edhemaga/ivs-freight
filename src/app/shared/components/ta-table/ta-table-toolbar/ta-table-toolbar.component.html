@@ -298,14 +298,14 @@
         <!-- TOOLBAR OPTIONS -->
 
         <ng-container *ngIf="activeViewMode === 'List'">
-            <ng-container *ngFor="let option of optionsPopupContent">
+            <ng-container *ngFor="let option of OptionsPopupContent">
                 <div>
                     <!-- Option Border -->
                     <div
                         class="toolbar-option-border-container"
                         *ngIf="
                             option.hasTopBorder &&
-                            !optionsPopupContent[0].active
+                            !OptionsPopupContent[0].active
                         "
                     >
                         <div class="option-border"></div>
@@ -385,14 +385,14 @@
             </ng-container>
 
             <!-- Option -->
-            <ng-container *ngIf="optionsPopupContent[0].active">
+            <ng-container *ngIf="OptionsPopupContent[0].active">
                 <div class="options-border-container">
                     <div class="options-border"></div>
                 </div>
             </ng-container>
 
             <!-- COLUMNS LIST  -->
-            <div class="columns-options" *ngIf="optionsPopupContent[0].active">
+            <div class="columns-options" *ngIf="OptionsPopupContent[0].active">
                 <div class="columns-container">
                     <ng-container
                         *ngFor="
@@ -488,7 +488,7 @@
                                                 'height.px': 12.66
                                             }"
                                             [src]="
-                                                '../../../../../../assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
+                                                'assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
                                             "
                                         ></svg-icon>
                                     </div>

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 // models
-import { HighlightText } from '../../core/model/searchFilter';
+import { HighlightText } from '@shared/models/highlight-text.model';
 
 @Pipe({
     name: 'taHighlight',
@@ -17,7 +17,7 @@ export class HighlightSearchPipe implements PipeTransform {
             chips = chips.sort((a, b) => {
                 return b.text.length - a.text.length;
             });
-            chips.forEach((item, key) => {
+            chips.forEach((item) => {
                 if (item.text && text) {
                     let pattern = item.text
                         .toString()

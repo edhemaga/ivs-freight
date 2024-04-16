@@ -30,28 +30,28 @@ import { ChartsModule } from 'ng2-charts';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 
-//helpers
-import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { hexToRgbA } from '../../../../assets/utils/methods-global';
+// helpers
+import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
+import { ChartHelper } from '@shared/components/ta-chart/utils/helpers/chart.helper';
 
-//models
-import { AnnotationConfig } from './models/annotation-config.model';
-import { Axis } from './models/axis.model';
-import { BasicChartConfig } from './models/basic-chart-config.model';
-import { ChartDataProperties } from './models/chart-data-properties.model';
-import { LegendAttributes } from './models/legend-attributes.model';
-import { OnHoverProperties } from './models/on-hover-properties.model';
+// models
+import { AnnotationConfig } from '@shared/components/ta-chart/models/annotation-config.model';
+import { Axis } from '@shared/components/ta-chart/models/axis.model';
+import { BasicChartConfig } from '@shared/components/ta-chart/models/basic-chart-config.model';
+import { ChartDataProperties } from '@shared/components/ta-chart/models/chart-data-properties.model';
+import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
+import { OnHoverProperties } from '@shared/components/ta-chart/models/on-hover-properties.model';
 
-//enums
+// enums
+import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
+import { ChartAnnotationPositionStringEnum } from '@shared/components/ta-chart/enums/chart-annotation-position-string.enum';
 
-import { ChartAxisPositionEnum } from './enums/chart-axis-position-string.enum';
-import { ChartAnnotationPositionStringEnum } from './enums/chart-annotation-position-string.enum';
-//Properties from dashboard
-import { BarChartAxes } from 'src/app/pages/dashboard/models/dashboard-chart-models/bar-chart.model';
-import { TopRatedListItem } from 'src/app/pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
-import { ChartInitProperties } from 'src/app/pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
-import { ByStateListItem } from 'src/app/pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
-import { ChartConstants } from './utils/constants/chart.constants';
+// Properties from dashboard
+import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
+import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
+import { ChartInitProperties } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
+import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
+import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
 
 @Component({
     selector: 'app-ta-chart',
@@ -595,8 +595,8 @@ export class TaChartComponent implements OnInit, OnChanges {
         let startcolorRGBA, endColorRGBA, lineHovered;
 
         if (color) {
-            startcolorRGBA = hexToRgbA('#' + color, 0.4);
-            endColorRGBA = hexToRgbA('#' + color, 0);
+            startcolorRGBA = ChartHelper.hexToRgbA('#' + color, 0.4);
+            endColorRGBA = ChartHelper.hexToRgbA('#' + color, 0);
         }
 
         let averageAnnotation = 0;

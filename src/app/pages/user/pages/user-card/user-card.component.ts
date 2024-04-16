@@ -1,17 +1,15 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 // models
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-user-card',
@@ -31,8 +29,8 @@ export class UserCardComponent implements OnChanges {
 
     public isCardFlippedCheckInCards: number[] = [];
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(

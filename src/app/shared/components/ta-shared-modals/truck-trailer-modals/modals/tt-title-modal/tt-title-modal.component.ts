@@ -13,21 +13,21 @@ import { CommonModule } from '@angular/common';
 import { TitleModalResponse, TitleResponse } from 'appcoretruckassist';
 
 // services
-import { TaInputService } from '../../../../ta-input/services/ta-input.service';
-import { ModalService } from '../../../../ta-modal/services/modal.service';
-import { TruckTrailerService } from '../../services/truck-trailer.service';
-import { FormService } from '../../../../../services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
+import { FormService } from '@shared/services/form.service';
 
 // utils
-import { MethodsCalculationsHelper } from '../../../../../utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // components
-import { TaModalComponent } from '../../../../ta-modal/ta-modal.component';
-import { TaInputComponent } from '../../../../ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '../../../../ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '../../../../ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from '../../../../ta-upload-files/ta-upload-files.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 @Component({
     selector: 'app-tt-title-modal',

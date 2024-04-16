@@ -1,4 +1,4 @@
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class ContactsCardData {
     static rows: number = 4;

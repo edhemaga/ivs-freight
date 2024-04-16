@@ -1,5 +1,3 @@
-import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
-import { ImageBase64Service } from '../../services/image-base64.service';
 import {
     AfterViewInit,
     Component,
@@ -12,31 +10,39 @@ import {
     SimpleChanges,
     ViewChild,
 } from '@angular/core';
-import { CroppieDirective, CroppieModule } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import Croppie from 'croppie';
 
 import { Subject, takeUntil } from 'rxjs';
+
+// modules
+import { CroppieDirective, CroppieModule } from 'angular-croppie-module';
+import Croppie from 'croppie';
+
+// services
+import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // bootstrap
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { UploadFile } from '../ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import {
     DropZoneConfig,
     TaUploadDropzoneComponent,
-} from '../ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaNgxSliderComponent } from '../ta-ngx-slider/ta-ngx-slider.component';
+} from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // pipe
-import { LogoSliderPipe } from './pipes/logo-slider.pipe';
+import { LogoSliderPipe } from '@shared/components/ta-logo-change/pipes/logo-slider.pipe';
+
+// models
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
     selector: 'app-ta-logo-change',
@@ -53,7 +59,7 @@ import { LogoSliderPipe } from './pipes/logo-slider.pipe';
         NgbPopoverModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaUploadDropzoneComponent,
         TaNgxSliderComponent,
 

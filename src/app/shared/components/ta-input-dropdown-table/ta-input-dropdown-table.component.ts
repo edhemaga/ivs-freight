@@ -20,7 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { SharedModule } from '../../../core/components/shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 // models
 import {
@@ -29,37 +29,37 @@ import {
     Trucks,
     Comment,
     Rating,
-} from '../../models/card-table-data.model';
-import { Tabs } from '../../../core/components/shared/model/modal-tabs';
-import { CardRows } from '../../../core/components/shared/model/card-data.model';
+} from '@shared/models/card-models/card-table-data.model';
+import { Tabs } from '@shared/models/tabs.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // services
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // pipes
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
 // enums
-import { TaInputDropdownTableStringEnum } from 'src/app/shared/components/ta-input-dropdown-table/enums/ta-input-dropdown-table-string.enum';
+import { TaInputDropdownTableStringEnum } from '@shared/components/ta-input-dropdown-table/enums/ta-input-dropdown-table-string.enum';
 
 // constants
-import { RatingReviewTabsConstants } from './utils/constants/rating-review-tabs.constants';
+import { RatingReviewTabsConstants } from '@shared/components/ta-input-dropdown-table/utils/constants/rating-review-tabs.constants';
 
 // helpers
-import { CardDropdownHelper } from '../../utils/helpers/card-dropdown-helper';
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { AvatarColorsHelper } from 'src/app/shared/utils/helpers/avatar-colors.helper';
+import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // components
-import { TaCommentComponent } from '../ta-comment/ta-comment.component';
-import { TaNewCommentComponent } from './components/ta-new-comment/ta-new-comment.component';
-import { TaTabSwitchComponent } from '../ta-tab-switch/ta-tab-switch.component';
-import { TaCustomCardComponent } from '../ta-custom-card/ta-custom-card.component';
+import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
+import { TaNewCommentComponent } from '@shared/components/ta-input-dropdown-table/components/ta-new-comment/ta-new-comment.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 // models
 import { DepartmentResponse } from 'appcoretruckassist';
-import { ContactsData } from './models/contacts-data.model';
+import { ContactsData } from '@shared/components/ta-input-dropdown-table/models/contacts-data.model';
 
 @Component({
     selector: 'app-ta-input-dropdown-table',

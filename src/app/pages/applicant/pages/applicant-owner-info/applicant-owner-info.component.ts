@@ -21,7 +21,7 @@ import {
 import {
     anyInputInLineIncorrect,
     isFormValueNotEqual,
-} from '../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // validations
 import {
@@ -36,21 +36,21 @@ import {
     vinNumberValidation,
     yearValidation,
     yearValidRegex,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantService } from '../../services/applicant.service';
-import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
-import { VinDecoderService } from 'src/app/shared/services/vin-decoder.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
+import { BankVerificationService } from '@shared/services/bank-verification.service';
+import { VinDecoderService } from '@shared/services/vin-decoder.service';
 
 // store
-import { ApplicantStore } from '../../state/applicant.store';
-import { ApplicantQuery } from '../../state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../enums/selected-mode.enum';
-import { InputSwitchActions } from '../../enums/input-switch-actions.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
 import {
@@ -67,7 +67,7 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { IdNameList } from '../../models/lists.model';
+import { IdNameList } from '@pages/applicant/models/lists.model';
 
 @Component({
     selector: 'app-owner-info',

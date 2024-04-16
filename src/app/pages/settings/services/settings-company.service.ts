@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
-//core
+// models
 import {
     CompanyModalResponse,
     CompanyResponse,
@@ -15,18 +15,18 @@ import {
     UpdateFactoringCompanyCommand,
 } from 'appcoretruckassist';
 
-//Component
-import { SettingsBasicModalComponent } from '../pages/settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../pages/settings-modals/settings-company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../pages/settings-modals/settings-company-modals/settings-factoring-modal/settings-factoring-modal.component';
+// components
+import { SettingsBasicModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/settings-factoring-modal.component';
 
-//Service
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+// services
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
-//Store
-import { CompanyStore } from '../state/company-state/company-settings.store';
+// store
+import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {

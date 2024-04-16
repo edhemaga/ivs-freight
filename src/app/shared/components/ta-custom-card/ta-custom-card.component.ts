@@ -11,27 +11,27 @@ import {
 import { CommonModule } from '@angular/common';
 
 // animations
-import { card_modal_animation } from '../../../core/components/shared/animations/card-modal.animation';
+import { cardModalAnimation } from '@shared/animations/card-modal.animation';
 
 // services
-import { TaUploadFileService } from '../ta-upload-files/services/ta-upload-file.service';
+import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaCheckboxComponent } from '../ta-checkbox/ta-checkbox.component';
-import { TaCounterComponent } from '../ta-counter/ta-counter.component';
-import { TaPayrollStatusesComponent } from '../ta-payroll-statuses/ta-payroll-statuses.component';
-import { TaLikeDislikeComponent } from '../ta-like-dislike/ta-like-dislike.component';
-import { TaNoteContainerComponent } from '../ta-note/ta-note-container/ta-note-container.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaPayrollStatusesComponent } from '@shared/components/ta-payroll-statuses/ta-payroll-statuses.component';
+import { TaLikeDislikeComponent } from '@shared/components/ta-like-dislike/ta-like-dislike.component';
+import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
 
 @Component({
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
     styleUrls: ['./ta-custom-card.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [cardModalAnimation('showHideCardBody')],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     standalone: true,

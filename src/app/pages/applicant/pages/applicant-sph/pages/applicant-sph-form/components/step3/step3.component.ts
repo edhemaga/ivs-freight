@@ -16,32 +16,32 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import {
     filterUnceckedRadiosId,
     isAnyRadioInArrayUnChecked,
-} from 'src/app/pages/applicant/utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // validations
 import {
     phoneFaxRegex,
     addressValidation,
     addressUnitValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ApplicantSphService } from '../../services/applicant-sph.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ApplicantSphService } from '@pages/applicant/pages/applicant-sph/pages/applicant-sph-form/services/applicant-sph.service';
 
 // store
-import { ApplicantQuery } from 'src/app/pages/applicant/state/applicant.query';
-import { ApplicantStore } from 'src/app/pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
-import { InputSwitchActions } from 'src/app/pages/applicant/enums/input-switch-actions.enum';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
-import { ApplicantQuestion } from 'src/app/pages/applicant/models/applicant-question.model';
+import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
 import { AddressEntity } from 'appcoretruckassist';
 import { CreatePreviousEmployerDrugAndAlcoholCommand } from 'appcoretruckassist/model/models';
 

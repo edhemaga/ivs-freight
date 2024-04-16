@@ -10,14 +10,14 @@ import {
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { DispatcherService } from '../../services/dispatcher.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 
 // Decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // Store
-import { DispatcherQuery } from '../../state/dispatcher.query';
+import { DispatcherQuery } from '@pages/dispatch/state/dispatcher.query';
 
 @Titles()
 @Component({

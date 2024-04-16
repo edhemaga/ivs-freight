@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaCustomCardV2Component } from './ta-custom-card-v2.component';
+import { TaCustomCardV2Component } from '@shared/components/ta-custom-card-v2/ta-custom-card-v2.component';
 
 describe('TaCustomCardV2Component', () => {
     let component: TaCustomCardV2Component;

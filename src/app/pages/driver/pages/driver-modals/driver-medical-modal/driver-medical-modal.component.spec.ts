@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DriverMedicalModalComponent } from './driver-medical-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 
 describe('DriverMedicalModalComponent', () => {
     let component: DriverMedicalModalComponent;

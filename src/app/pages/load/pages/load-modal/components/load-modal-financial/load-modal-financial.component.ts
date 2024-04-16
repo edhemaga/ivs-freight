@@ -11,13 +11,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 //Animations
-import { card_modal_animation } from '../../../../../../core/components/shared/animations/card-modal.animation';
+import { cardModalAnimation } from '@shared/animations/card-modal.animation';
 
 //Helpers
-import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 //Components
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -27,7 +27,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     selector: 'app-load-modal-financial',
     templateUrl: './load-modal-financial.component.html',
     styleUrls: ['./load-modal-financial.component.scss'],
-    animations: [card_modal_animation('showHideCardBody')],
+    animations: [cardModalAnimation('showHideCardBody')],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
@@ -38,7 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         NgbModule,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class LoadModalFinancialComponent implements OnChanges {

@@ -22,19 +22,19 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { FormService } from '../../services/form.service';
+import { FormService } from '@shared/services/form.service';
 
-// pipe
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+// pipes
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // helpers
-import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 
 @Component({
     selector: 'app-ta-notice-of-asignment',

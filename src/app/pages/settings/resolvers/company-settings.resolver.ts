@@ -3,15 +3,15 @@ import { Injectable } from '@angular/core';
 
 import { catchError, Observable, of, tap } from 'rxjs';
 
-// core
+// mopdels
 import { CompanyResponse } from 'appcoretruckassist';
 
 // service
-import { SettingsCompanyService } from '../services/settings-company.service';
+import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 
 // store
-import { CompanyQuery } from '../state/company-state/company-settings.query';
-import { CompanyStore } from '../state/company-state/company-settings.store';
+import { CompanyQuery } from '@pages/settings/state/company-state/company-settings.query';
+import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
 
 @Injectable({ providedIn: 'root' })
 export class CompanySettingsResolver implements Resolve<CompanyResponse[]> {

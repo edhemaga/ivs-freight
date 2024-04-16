@@ -1,3 +1,5 @@
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
     Component,
     EventEmitter,
@@ -26,32 +28,30 @@ import {
     FormsModule,
 } from '@angular/forms';
 
-//Config
-import { ITaInput } from '../ta-input/config/ta-input.config';
+// Config
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
-//Services
-import { AddressService } from '../../services/address.service';
+// Services
+import { AddressService } from '@shared/services/address.service';
 
-//Components
-import { AppTooltipComponent } from '../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { TaInputDropdownComponent } from '../ta-input-dropdown/ta-input-dropdown.component';
+// Components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
-//Modules
-import { ReactiveFormsModule } from '@angular/forms';
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
 
-//Models
+// enums
+import { InputAddressCommandsStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-commands-string.enum';
+import { InputAddressStopTypesStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-stop-types-string.enum';
+import { InputAddressTypeStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-type-string.enum';
+import { InputAddressLayersStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-layers-string.enum';
 
-import { InputAddressCommandsStringEnum } from './enums/input-address-commands-string.enum';
-import { InputAddressStopTypesStringEnum } from './enums/input-address-stop-types-string.enum';
-import { InputAddressTypeStringEnum } from './enums/input-address-type-string.enum';
-import { InputAddressLayersStringEnum } from './enums/input-address-layers-string.enum';
-
-import { AddressData } from './models/address-data.model';
-import { AddressList } from './models/address-list.model';
-import { CommandsHandler } from './models/commands-handler.model';
+// models
+import { AddressData } from '@shared/components/ta-input-address-dropdown/models/address-data.model';
+import { AddressList } from '@shared/components/ta-input-address-dropdown/models/address-list.model';
+import { CommandsHandler } from '@shared/components/ta-input-address-dropdown/models/commands-handler.model';
 
 @Component({
     selector: 'app-ta-input-address-dropdown',
@@ -63,15 +63,15 @@ import { CommandsHandler } from './models/commands-handler.model';
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
-        // Module
+        // Modules
         CommonModule,
         FormsModule,
         NgbModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
-        AppTooltipComponent,
+        // Components
+        TaAppTooltipV2Component,
         TaInputDropdownComponent,
     ],
 })

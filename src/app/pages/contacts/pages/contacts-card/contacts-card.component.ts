@@ -2,14 +2,14 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
 // models
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-contacts-card',

@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavigationProfileUpdateModalComponent } from './navigation-profile-update-modal.component';
+import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 describe('NavigationProfileUpdateModalComponent', () => {
     let component: NavigationProfileUpdateModalComponent;

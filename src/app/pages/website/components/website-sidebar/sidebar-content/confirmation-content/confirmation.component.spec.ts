@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfirmationComponent } from './confirmation.component';
+import { ConfirmationComponent } from '@pages/website/components/website-sidebar/sidebar-content/confirmation-content/confirmation.component';
 
 describe('ConfirmationComponent', () => {
     let component: ConfirmationComponent;

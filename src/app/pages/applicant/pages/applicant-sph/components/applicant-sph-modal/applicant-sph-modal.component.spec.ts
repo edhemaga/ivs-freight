@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantSphModalComponent } from './applicant-sph-modal.component';
+import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
 
 describe('ApplicantSphModalComponent', () => {
     let component: ApplicantSphModalComponent;

@@ -1,4 +1,4 @@
-import { Tabs } from 'src/app/core/components/shared/model/modal-tabs';
+import { Tabs } from '@shared/models/tabs.model';
 
 export class RatingReviewTabsConstants {
     static TABS: Tabs[] = [

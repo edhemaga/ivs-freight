@@ -1,23 +1,22 @@
 import { Injectable, OnDestroy } from '@angular/core';
+
 import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 // Services
-import { FormDataService } from 'src/app/shared/services/form-data.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import {
-    BrokerService as BrokerMainService,
-    RatingReviewService,
-} from 'appcoretruckassist';
+import { FormDataService } from '@shared/services/form-data.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Store
-import { BrokerStore } from '../state/broker-state/broker.store';
-import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
-import { BrokerDetailsListStore } from '../state/broker-details-state/broker-details-list-state/broker-details-list.store';
-import { BrokerDetailsStore } from '../state/broker-details-state/broker-details.store';
-import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
+import { BrokerStore } from '@pages/customer/state/broker-state/broker.store';
+import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
+import { BrokerDetailsListStore } from '@pages/customer/state/broker-details-state/broker-details-list-state/broker-details-list.store';
+import { BrokerDetailsStore } from '@pages/customer/state/broker-details-state/broker-details.store';
+import { BrokerMinimalListQuery } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.query';
 
 // Models
 import {
+    BrokerService as BrokerMainService,
+    RatingReviewService,
     BrokerMinimalListResponse,
     BrokerModalResponse,
     BrokerResponse,
@@ -39,13 +38,10 @@ export class BrokerService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
     constructor(
-        // Services
         private brokerService: BrokerMainService,
         private ratingReviewService: RatingReviewService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
-
-        // Store
         private brokerStore: BrokerStore,
         private brokerMinimalStore: BrokerMinimalListStore,
         private bls: BrokerDetailsListStore,

@@ -17,13 +17,13 @@ import { FuelTransactionResponse } from 'appcoretruckassist';
 import { ClusterResponse } from 'appcoretruckassist';
 
 // services
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
 // store
-import { FuelStore } from '../../pages/fuel/state/fule-state/fuel-state.store';
+import { FuelStore } from '@pages/fuel/state/fuel-state/fuel-state.store';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',

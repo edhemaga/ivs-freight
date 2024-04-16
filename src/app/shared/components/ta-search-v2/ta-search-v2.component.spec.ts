@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaSearchV2Component } from './ta-search-v2.component';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 describe('TaSearchV2Component', () => {
     let component: TaSearchV2Component;

@@ -1,4 +1,4 @@
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 
 export class DashboardSubperiodConstants {
     static TODAY_ID_LIST: number[] = [1, 2, 3];

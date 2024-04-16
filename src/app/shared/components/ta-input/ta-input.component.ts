@@ -1,3 +1,5 @@
+import { ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectorRef,
@@ -19,35 +21,49 @@ import {
     FormsModule,
     ReactiveFormsModule,
 } from '@angular/forms';
-import { ITaInput } from './config/ta-input.config';
-import { TaInputService } from './services/ta-input.service';
+
+import { combineLatest, Subject, takeUntil } from 'rxjs';
+
+// modules
 import {
     NgbDropdownConfig,
     NgbPopover,
     NgbModule,
     NgbPopoverModule,
 } from '@ng-bootstrap/ng-bootstrap';
-import { CalendarDateTimePickerService } from '../ta-custom-datetime-pickers/services/calendar-datetime-picker.service';
-import moment from 'moment';
-
-import { combineLatest, Subject, takeUntil } from 'rxjs';
-import { ThousandSeparatorPipe } from '../../pipes/thousand-separator.pipe';
-import { MethodsCalculationsHelper } from '../../utils/helpers/methods-calculations.helper';
-import { FormService } from '../../services/form.service';
-import { ImageBase64Service } from '../../services/image-base64.service';
-import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgxMaskModule } from 'ngx-mask';
-import { InputTypePipe } from './pipes/input-type.pipe';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
-import { InputErrorPipe } from './pipes/input-error.pipe';
-import { TaCustomDatetimePickersComponent } from '../ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
-import { TaProfileImagesComponent } from '../ta-profile-images/ta-profile-images.component';
-import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { HoverSvgDirective } from '../../directives/hover-svg.directive';
+
+// moment
+import moment from 'moment';
+
+// configs
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { InputTypePipe } from '@shared/components/ta-input/pipes/input-type.pipe';
+import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
+import { InputErrorPipe } from '@shared/components/ta-input/pipes/input-error.pipe';
+
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// directives
+import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
+
+// services
+import { TaInputService } from '@shared/services/ta-input.service';
+import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
+import { FormService } from '@shared/services/form.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+
+// components
+import { TaCustomDatetimePickersComponent } from '@shared/components/ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-ta-input',
@@ -73,7 +89,7 @@ import { HoverSvgDirective } from '../../directives/hover-svg.directive';
         NgbPopoverModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaCustomDatetimePickersComponent,
         TaSpinnerComponent,
         TaProfileImagesComponent,

@@ -9,17 +9,15 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Models
-import { CardDetails } from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Helpers
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-pm-card',
@@ -48,8 +46,8 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     constructor(

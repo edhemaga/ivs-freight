@@ -13,19 +13,19 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OnDestroy } from '@angular/core';
 
 //Components
-import { TaSearchComponent } from 'src/app/shared/components/ta-search/ta-search.component';
-import { TaFilterComponent } from '../../../../ta-filter/ta-filter.component';
-import { TaSpecialFilterComponent } from 'src/app/shared/components/ta-special-filter/ta-special-filter.component';
+import { TaSearchComponent } from '@shared/components/ta-search/ta-search.component';
+import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
+import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/ta-special-filter.component';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
-import { MoneyFilterPipe } from 'src/app/shared/pipes/money-filter.pipe';
-import { FormatCurrency } from 'src/app/shared/pipes/format-currency.pipe';
+import { MoneyFilterPipe } from '@shared/pipes/money-filter.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -38,7 +38,7 @@ import { TruckassistTableService } from 'src/app/shared/services/truckassist-tab
         TaSearchComponent,
         TaFilterComponent,
         AngularSvgIconModule,
-        FormatCurrency,
+        FormatCurrencyPipe,
         MoneyFilterPipe,
         TaSpecialFilterComponent,
     ],

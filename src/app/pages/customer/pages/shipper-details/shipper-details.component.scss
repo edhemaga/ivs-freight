@@ -1,4 +1,4 @@
-@import '/src/assets/scss/repair-details-items.scss';
+@import 'src/assets/scss/repair-details-items.scss';
 
 app-shipper-details {
     .items-header {
@@ -76,10 +76,10 @@ app-shipper-details {
         height: 18px;
     }
 
-    .repair-details-container{
-        .header-toolbar{
-            .header-text-arrow-down{
-                .header-name{
+    .repair-details-container {
+        .header-toolbar {
+            .header-text-arrow-down {
+                .header-name {
                     margin-left: 4px !important;
                 }
             }

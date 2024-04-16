@@ -1,26 +1,18 @@
-// models
-import {
-    RepairBackFilterModal,
-    ShopbBckFilterQueryInterface,
-} from '../../../core/model/repair.model';
-import {
-    FilterOptionBroker,
-    FilterOptionshipper,
-} from '../../../core/components/shared/model/table-components/customer.modals';
-import {
-    FilterOptionApplicant,
-    FilterOptionDriver,
-} from '../../../core/components/shared/model/table-components/driver-modal';
-import { DropdownItem } from '../../models/card-table-data.model';
-import { FilterOptionsLoad } from '../../../core/components/shared/model/table-components/load-modal';
-
-import { SortTypes } from '../../../core/model/fuel';
+import { OwnerBackFilterQuery } from '@shared/models/owner-back-filter-query.model';
+import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
+import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model'; // models
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
+import { ShopBackFilterQuery } from '@pages/repair/pages/repair-table/models/shop-back-filter-query.model';
+import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
+import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
+import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
+import { SortTypes } from '@shared/models/sort-types.model';
 
 // enums
-import { TableStringEnum } from '../../enums/table-string.enum';
-import { OwnerBackFilterQuery } from 'src/app/shared/models/owner-back-filter-query.model';
-import { TrailerBackFilterQueryInterface } from 'src/app/pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
-import { TruckFilter } from 'src/app/pages/truck/pages/truck-table/models/truck-filter.model';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {
@@ -129,7 +121,7 @@ export class TableDropdownComponentConstants {
         searchThree: undefined,
     };
 
-    static SHIPPER_BACK_FILTER: FilterOptionshipper = {
+    static SHIPPER_BACK_FILTER: FilterOptionShipper = {
         stateIds: undefined,
         long: undefined,
         lat: undefined,
@@ -437,7 +429,7 @@ export class TableDropdownComponentConstants {
         searchThree: undefined,
     };
 
-    static REPAIR_BACK_FILTER_QUERY: RepairBackFilterModal = {
+    static REPAIR_BACK_FILTER_QUERY: RepairBackFilter = {
         repairShopId: undefined,
         unitType: 1,
         dateFrom: undefined,
@@ -457,7 +449,7 @@ export class TableDropdownComponentConstants {
         searchThree: undefined,
     };
 
-    static SHOP_FILTER_QUERY: ShopbBckFilterQueryInterface = {
+    static SHOP_FILTER_QUERY: ShopBackFilterQuery = {
         active: 1,
         pinned: undefined,
         companyOwned: undefined,

@@ -11,38 +11,41 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
+
 import { Subject } from 'rxjs';
+
+// moment
 import moment from 'moment';
 
-//animations
+// animations
 import { animate, style, transition, trigger } from '@angular/animations';
 
-//services
-import { NoteUpdateService } from 'src/app/shared/services/note-update.service';
-import { DetailsDataService } from '../../services/details-data.service';
-import { SharedService } from '../../services/shared.service';
+// services
+import { NoteUpdateService } from '@shared/services/note-update.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { SharedService } from '@shared/services/shared.service';
 
-//popover
+// popover
 import { NgbModule, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
-//pipes
-import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+// pipes
+import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // helpers
-import { CopyPasteHelper } from '../../utils/helpers/copy-paste.helper';
+import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
 
 //components
-import { TaNoteContainerComponent } from './ta-note-container/ta-note-container.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaSpinnerComponent } from '../ta-spinner/ta-spinner.component';
+import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
-//models
-import { activeOptions } from './models/active-options-models';
+// models
+import { ActiveOptions } from '@shared/components/ta-note/models/active-options-models';
 import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
 
 @Component({
@@ -59,7 +62,7 @@ import { EntityTypeNote } from 'appcoretruckassist/model/entityTypeNote';
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaSpinnerComponent,
         TaNoteContainerComponent,
 
@@ -117,7 +120,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     //note container
     public showCollorPattern: boolean;
     public buttonsExpanded = false;
-    public activeOptions: activeOptions;
+    public activeOptions: ActiveOptions;
     public selectedPaternColor: string = '#6C6C6C';
 
     //properties and values
@@ -154,12 +157,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
 
     @HostListener('window:resize', ['$event'])
-    onWindowResize(event: Event) {
+    onWindowResize() {
         if (this.isDispatch) {
             this.setNoteParentWidth();
         }
     }
 
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngAfterViewInit(): void {
         this.value = this._note;
         this.setNoteParentWidth();
@@ -255,7 +259,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         ev.preventDefault();
     }
 
-    public valueChange(event: string): void {
+    public valueChange(event: string, deleteAll?: boolean): void {
         this.value = event;
         this.checkActiveItems();
         this.lastTypeTime = moment().unix();
@@ -265,7 +269,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
                 if (moment().unix() - this.lastTypeTime >= 2) {
                     this.saveIntervalStarted = false;
                     clearInterval(this.saveInterval);
-                    this.saveNote(true);
+                    this.saveNote(true, deleteAll);
                 }
             }, 100);
         }
@@ -277,7 +281,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         }
     }
 
-    public saveNote(autoSave?: boolean): void {
+    public saveNote(autoSave?: boolean, deleteAll?: boolean): void {
         setTimeout(() => {
             if (!autoSave && this.openedAll) {
                 this.closeNote();
@@ -297,12 +301,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
             }, 700);
             this.updateNote();
         }
-        if (this.dispatchIndex == -1) this.saveNoteValue.emit(this.value);
-        else
-            this.saveNoteValue.emit({
-                note: this.value,
-                dispatchIndex: this.dispatchIndex,
-            });
+        if (deleteAll) this.closeNote();
     }
 
     private closeNote(): void {
@@ -312,6 +311,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this._note = this.value;
+
+        this.transferNoteData();
     }
 
     public maxLimitForContenteditableDiv(
@@ -407,6 +408,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
 
     public onPaste(event: ClipboardEvent): void {
         CopyPasteHelper.onPaste(event);
+    }
+
+    private transferNoteData(): void {
+        if (this.dispatchIndex === -1) this.saveNoteValue.emit(this.value);
+        else
+            this.saveNoteValue.emit({
+                note: this.value,
+                dispatchIndex: this.dispatchIndex,
+            });
     }
 
     public ngOnDestroy(): void {

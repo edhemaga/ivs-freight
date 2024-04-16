@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // guards
-import { AuthGuard } from 'src/app/core/guards/authentication.guard';
+import { AuthGuard } from '@core/guards/authentication.guard';
 
 // components
-import { WebsiteMainComponent } from './pages/website-main/website-main.component';
-import { SelectCompanyComponent } from './components/website-sidebar/sidebar-content/login-content/select-company/select-company.component';
+import { WebsiteMainComponent } from '@pages/website/pages/website-main/website-main.component';
+import { SelectCompanyComponent } from '@pages/website/components/website-sidebar/sidebar-content/login-content/select-company/select-company.component';
 
-import { WebsiteUnderConstructionComponent } from './components/website-under-construction/website-under-construction.component';
+import { WebsiteUnderConstructionComponent } from '@pages/website/components/website-under-construction/website-under-construction.component';
 
 const routes: Routes = [
     {

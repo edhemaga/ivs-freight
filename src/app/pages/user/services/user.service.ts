@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 // services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // store
-import { UserStore } from '../state/user.store';
-import { UserQuery } from '../state/user.query';
+import { UserStore } from '@pages/user/state/user.store';
+import { UserQuery } from '@pages/user/state/user.query';
 
 // models
 import {

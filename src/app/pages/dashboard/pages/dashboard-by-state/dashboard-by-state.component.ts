@@ -10,36 +10,36 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Subject, takeUntil, tap } from 'rxjs';
 
 // services
-import { DashboardByStateService } from './services/dashboard-by-state.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { DashboardByStateService } from '@pages/dashboard/pages/dashboard-by-state/services/dashboard-by-state.service';
+import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
-import { DashboardStringEnum } from '../../enums/dashboard-string.enum';
-import { DashboardChartStringEnum } from '../../enums/dashboard-chart-string.enum';
+import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { DashboardChartStringEnum } from '@pages/dashboard/enums/dashboard-chart-string.enum';
 
 // helpers
-import { DashboardHelper } from '../../utils/helpers/dashboard.helper';
-import { DashboardArrayHelper } from '../../utils/helpers/dashboard-array-helper';
+import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
+import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
 
 // constants
-import { DashboardByStateConstants } from './utils/constants/dashboard-by-state.constants';
-import { DashboardSubperiodConstants } from '../../utils/constants/dashboard-subperiod.constants';
-import { DashboardTopRatedConstants } from '../dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
-import { DashboardColors } from '../../utils/constants/dashboard-colors.constants';
+import { DashboardByStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-by-state.constants';
+import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
+import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants/dashboard-top-rated.constants';
+import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colors.constants';
 
 // models
-import { ByStateListItem } from './models/by-state-list-item.model';
-import { DropdownItem } from '../../models/dropdown-item.model';
-import { DashboardTab } from '../../models/dashboard-tab.model';
-import { DropdownListItem } from '../../models/dropdown-list-item.model';
-import { ByStateColorsPallete } from '../../models/colors-pallete.model';
-import { CustomPeriodRange } from '../../models/custom-period-range.model';
+import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
+import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
+import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
+import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
+import { CustomPeriodRange } from '@pages/dashboard/models/custom-period-range.model';
 import {
     BarChart,
     BarChartAxes,
     BarChartConfig,
     BarChartValues,
-} from '../../models/dashboard-chart-models/bar-chart.model';
+} from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import {
     ByStateReportType,
     IntervalLabelResponse,
@@ -47,9 +47,9 @@ import {
     SubintervalType,
     TimeInterval,
 } from 'appcoretruckassist';
-import { ByStateApiArguments } from './models/by-state-api-arguments.model';
-import { ByStateWithLoadStopApiArguments } from './models/by-state-with-load-stop-api-arguments.model';
-import { MapListItem } from './models/map-list-item.model';
+import { ByStateApiArguments } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-api-arguments.model';
+import { ByStateWithLoadStopApiArguments } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-with-load-stop-api-arguments.model';
+import { MapListItem } from '@pages/dashboard/pages/dashboard-by-state/models/map-list-item.model';
 
 @Component({
     selector: 'app-dashboard-pickup-by-state',

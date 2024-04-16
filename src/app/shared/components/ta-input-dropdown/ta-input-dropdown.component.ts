@@ -1,4 +1,3 @@
-import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
 import {
     ControlValueAccessor,
     NgControl,
@@ -21,6 +20,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { debounceTime, skip, Subject, takeUntil } from 'rxjs';
+
 // bootstrap
 import {
     NgbPopover,
@@ -29,34 +30,34 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // animation
-import { inputDropdownAnimation } from './animations/input-dropdown.animation';
+import { inputDropdownAnimation } from '@shared/components/ta-input-dropdown/animations/input-dropdown.animation';
 
 // uuid
 import { v4 as uuidv4 } from 'uuid';
 
 // config
-import { ITaInput } from '../ta-input/config/ta-input.config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // components
-import { TaAppTooltipComponent } from '../ta-app-tooltip/ta-app-tooltip.component';
-import { TaInputComponent } from '../ta-input/ta-input.component';
-import { TaProfileImagesComponent } from 'src/app/shared/components/ta-profile-images/ta-profile-images.component';
-import { LoadModalProgressBarComponent } from 'src/app/pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
+import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 
 // utils
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // pipes
-import { FormControlPipe } from '../ta-input/pipes/form-control.pipe';
-import { DropdownCountPipe } from './pipes/dropdown-count.pipe';
-import { HighlightSearchPipe } from '../../pipes/highlight-search.pipe';
-import { TaSvgPipe } from '../../pipes/ta-svg.pipe';
+import { FormControlPipe } from '@shared/components/ta-input/pipes/form-control.pipe';
+import { DropdownCountPipe } from '@shared/components/ta-input-dropdown/pipes/dropdown-count.pipe';
+import { HighlightSearchPipe } from '@shared/pipes/highlight-search.pipe';
+import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directive
-import { HoverSvgDirective } from '../../directives/hover-svg.directive';
+import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 
 @Component({
     selector: 'app-ta-input-dropdown',

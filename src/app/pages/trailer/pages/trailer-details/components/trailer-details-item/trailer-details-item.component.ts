@@ -11,13 +11,13 @@ import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // components
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // animations
 import {
@@ -28,19 +28,16 @@ import {
     state,
     keyframes,
 } from '@angular/animations';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // helpers
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // moment
 import moment from 'moment';
-
-// models
-import { TableOptions } from 'src/app/core/model/table.model';
 
 @Titles()
 @Component({
@@ -49,7 +46,7 @@ import { TableOptions } from 'src/app/core/model/table.model';
     styleUrls: ['./trailer-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardAnimation', [
             state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [
@@ -87,8 +84,8 @@ export class TrailerDetailsItemComponent
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest: TableOptions;
-    public dataFHWA: TableOptions;
+    public dataTest;
+    public dataFHWA;
     public toggler: boolean[] = [];
     public currentDate: string;
 

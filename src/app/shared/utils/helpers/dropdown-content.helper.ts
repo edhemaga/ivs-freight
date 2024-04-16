@@ -1,8 +1,8 @@
 // models
-import { DropdownItem } from '../../models/card-table-data.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // enums
-import { TableStringEnum } from '../../enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class DropdownContentHelper {
     static getDropdownShipperContent(data): DropdownItem[] {

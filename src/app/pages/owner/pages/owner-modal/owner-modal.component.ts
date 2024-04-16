@@ -28,18 +28,18 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     ssnNumberRegex,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 //Components
-import { TruckModalComponent } from '../../../../pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputAddressDropdownComponent } from '../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 //Models
 import {
@@ -50,11 +50,11 @@ import {
 } from 'appcoretruckassist';
 
 //Services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { OwnerService } from 'src/app/pages/owner/services/owner.service';
-import { BankVerificationService } from '../../../../shared/services/bank-verification.service';
-import { FormService } from '../../../../shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { OwnerService } from '@pages/owner/services/owner.service';
+import { BankVerificationService } from '@shared/services/bank-verification.service';
+import { FormService } from '@shared/services/form.service';
 
 @Component({
     selector: 'app-owner-modal',

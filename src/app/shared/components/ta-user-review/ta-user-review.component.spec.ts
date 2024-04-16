@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaUserReviewComponent } from './ta-user-review.component';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 
 describe('TaUserReviewComponent', () => {
     let component: TaUserReviewComponent;

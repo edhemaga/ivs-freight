@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadDetailsCardComponent } from './load-details-card.component';
+import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
 
 describe('LoadDetailsCardComponent', () => {
     let component: LoadDetailsCardComponent;

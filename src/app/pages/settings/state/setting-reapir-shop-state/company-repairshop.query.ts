@@ -6,7 +6,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     CompanyRepairShopState,
     CompanyRepairShopStore,
-} from './company-repairshop.store';
+} from '@pages/settings/state/setting-reapir-shop-state/company-repairshop.store';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyRepairShopQuery extends QueryEntity<CompanyRepairShopState> {

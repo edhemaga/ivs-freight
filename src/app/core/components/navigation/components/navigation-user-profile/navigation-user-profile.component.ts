@@ -1,4 +1,4 @@
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -10,24 +10,30 @@ import { Router } from '@angular/router';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// animations
 import {
-    DropDownAnimation,
-    navigation_route_animation,
-} from '../../animations/navigation.animation';
+    dropDownAnimation,
+    navigationRouteAnimation,
+} from '@core/components/navigation/animations/navigation.animation';
 
-//Model
-import { userNavigationData } from '../../utils/constants/navigation-data.constants';
-import { NavigationUserPanel } from '../../models/navigation.model';
+// models
+import { NavigationUserPanel } from '@core/components/navigation/models/navigation-user-panel.model';
 
-//Services
-import { NavigationService } from '../../services/navigation.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
+// constants
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
-//Components
-import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
+// services
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { ModalService } from '@shared/services/modal.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+
+// components
+import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -37,20 +43,24 @@ import { NavigationProfileUpdateModalComponent } from 'src/app/core/components/n
     standalone: true,
     imports: [CommonModule, FormsModule, AngularSvgIconModule],
     animations: [
-        navigation_route_animation('showHideDetails'),
-        DropDownAnimation,
+        navigationRouteAnimation('showHideDetails'),
+        dropDownAnimation,
     ],
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     @Input() isNavigationHovered: boolean = false;
     @Input() isUserPanelOpen: boolean = false;
     @Input() companiesExists: boolean;
     @Input() isUserCompanyDetailsOpen: boolean;
-    public userNavigationData: NavigationUserPanel[] = userNavigationData;
+
+    public userNavigationData: NavigationUserPanel[] =
+        NavigationDataConstants.userNavigationData;
     public currentUserStatus: string = 'online';
     isActiveMagicLine = true;
     public loggedUser: any = null;
+
     constructor(
         public router: Router,
         private websiteAuthService: WebsiteAuthService,
@@ -128,7 +138,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    public identity(index: number, item: NavigationUserPanel): number {
+    public identity(_: number, item: NavigationUserPanel): number {
         return item.id;
     }
 

@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, Observable, map } from 'rxjs';
 
 // services
-import { MilesStoreService } from '../services/miles-store.service';
+import { MilesStoreService } from '@pages/miles/services/miles-store.service';
 
 //s tore
-import { MilesTableStore } from '../state/miles.store';
+import { MilesTableStore } from '@pages/miles/state/miles.store';
 
 @Injectable({
     providedIn: 'root',

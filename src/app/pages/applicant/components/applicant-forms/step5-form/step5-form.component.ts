@@ -33,26 +33,26 @@ import moment from 'moment';
 import {
     anyInputInLineIncorrect,
     isFormValueEqual,
-} from '../../../utils/helpers/applicant.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
 
 // validations
 import {
     addressValidation,
     descriptionValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // sevices
-import { FormService } from 'src/app/shared/services/form.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
+import { TaInputService } from '@shared/services/ta-input.service';
 
 // store
-import { ApplicantQuery } from '../../../state/applicant.query';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
-import { ViolationModel } from '../../../models/violations.model';
+import { Violation } from '@pages/applicant/pages/applicant-application/models/violation.model';
 import {
     ApplicantModalResponse,
     TruckTypeResponse,
@@ -341,7 +341,7 @@ export class Step5FormComponent
         const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
 
-        const saveData: ViolationModel = {
+        const saveData: Violation = {
             ...violationsForm,
             isEditingViolation: false,
             vehicleTypeLogoName: this.vehicleType.find(
@@ -380,7 +380,7 @@ export class Step5FormComponent
         const { firstRowReview, secondRowReview, ...violationsForm } =
             this.violationsForm.value;
 
-        const saveData: ViolationModel = {
+        const saveData: Violation = {
             ...violationsForm,
             isEditingViolation: false,
             vehicleTypeLogoName: this.vehicleType.find(

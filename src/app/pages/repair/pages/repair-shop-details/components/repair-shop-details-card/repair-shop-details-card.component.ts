@@ -13,12 +13,12 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { map, Subject, takeUntil } from 'rxjs';
 
 // Store
-import { RepairDetailsQuery } from '../../../../state/repair-details-state/repair-details.query';
+import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
 
 // Services
-import { RepairService } from '../../../../../../shared/services/repair.service';
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { RepairService } from '@shared/services/repair.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Models
 import { RepairShopResponse } from 'appcoretruckassist';

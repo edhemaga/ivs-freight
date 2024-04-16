@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { RepairShopStore } from './repair-shop.store';
+import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 
 // Models
 import { RepairShopResponse } from 'appcoretruckassist';

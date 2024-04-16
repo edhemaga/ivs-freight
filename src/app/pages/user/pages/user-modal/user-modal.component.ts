@@ -39,52 +39,52 @@ import {
     phoneFaxRegex,
     routingBankValidation,
     salaryValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { FormService } from 'src/app/shared/services/form.service';
-import { UserService } from 'src/app/pages/user/services/user.service';
-import { BankVerificationService } from 'src/app/shared/services/bank-verification.service';
-import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { FormService } from '@shared/services/form.service';
+import { UserService } from '@pages/user/services/user.service';
+import { BankVerificationService } from '@shared/services/bank-verification.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 
 //Animation
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-//Core
-import { AddressEntity, CreateResponse, EnumValue } from 'appcoretruckassist';
+//Utils
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+//Models
 import {
     CompanyUserModalResponse,
     CompanyUserResponse,
     CreateCompanyUserCommand,
     UpdateCompanyUserCommand,
-} from '../../../../../../appcoretruckassist';
-
-//Utils
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
-
-//Models
-import { CheckUserByEmailResponse } from '../../../../../../appcoretruckassist/model/checkUserByEmailResponse';
+    CheckUserByEmailResponse,
+    AddressEntity,
+    CreateResponse,
+    EnumValue,
+} from 'appcoretruckassist';
 
 //Components
-import { SettingsOfficeModalComponent } from 'src/app/pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from 'src/app/shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaCheckboxCardComponent } from 'src/app/shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaNgxSliderComponent } from 'src/app/shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 @Component({
     selector: 'app-user-modal',
     templateUrl: './user-modal.component.html',
     styleUrls: ['./user-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, BankVerificationService],
     standalone: true,
     imports: [
@@ -95,7 +95,7 @@ import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dro
         AngularSvgIconModule,
 
         // components
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,

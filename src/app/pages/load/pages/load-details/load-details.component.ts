@@ -3,15 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, take } from 'rxjs';
 
 //Services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { LoadService } from '../../../../shared/services/load.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { LoadService } from '@shared/services/load.service';
 
 //Models
 import { LoadResponse } from 'appcoretruckassist';
-import { MapRouteModel } from 'src/app/core/components/shared/model/map-route';
+import { MapRoute } from '@shared/models/map-route.model';
 
 //Store
-import { LoadDetailsListQuery } from '../../state/load-details-state/load-details-list-state/load-d-list.query';
+import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
 
 interface IStopRoutes {
     longitude: number;
@@ -32,7 +32,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public statusIsClosed: boolean;
     public dataTest: any;
-    public loadStopRoutes: MapRouteModel[] = [];
+    public loadStopRoutes: MapRoute[] = [];
     constructor(
         private activated_route: ActivatedRoute,
         private detailsPageService: DetailsPageService,

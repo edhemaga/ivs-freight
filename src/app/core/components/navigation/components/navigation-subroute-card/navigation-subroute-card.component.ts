@@ -6,10 +6,11 @@ import {
     Input,
     OnChanges,
     Output,
-    SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DynamicNavHeightPipe } from '../../pipes/dynamic-nav-card.pipe';
+
+// pipes
+import { DynamicNavHeightPipe } from '@core/components/navigation/pipes/dynamic-nav-card.pipe';
 @Component({
     selector: 'app-navigation-subroute-card',
     templateUrl: './navigation-subroute-card.component.html',
@@ -24,8 +25,10 @@ export class NavigationSubrouteCardComponent implements OnChanges {
     @Input() slowAnimation: boolean = false;
 
     @Output() subrouteContainerActive = new EventEmitter<Boolean>();
+
     constructor(private cdRef: ChangeDetectorRef) {}
-    ngOnChanges(changes: SimpleChanges) {
+
+    ngOnChanges() {
         this.subrouteContainerActive.emit(this.isNavigationCardActive);
         this.cdRef.detectChanges();
     }

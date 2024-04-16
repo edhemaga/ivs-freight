@@ -17,18 +17,18 @@ import {
     isAnyValueInArrayFalse,
     isEveryValueInArrayTrue,
     isFormValueNotEqual,
-} from '../../../../utils/helpers/applicant.helper';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+} from '@pages/applicant/utils/helpers/applicant.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // services
-import { ApplicantService } from '../../../../services/applicant.service';
+import { ApplicantService } from '@pages/applicant/services/applicant.service';
 
 // store
-import { ApplicantStore } from '../../../../state/applicant.store';
-import { ApplicantQuery } from '../../../../state/applicant.query';
+import { ApplicantStore } from '@pages/applicant/state/applicant.store';
+import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
-import { SelectedMode } from '../../../../enums/selected-mode.enum';
+import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
 // models
 import {
@@ -41,7 +41,7 @@ import {
     ApplicantResponse,
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
-import { WorkExpereienceModel } from '../../../../models/work-experience.model';
+import { WorkExpereience } from '@pages/applicant/pages/applicant-application/models/work-experience.model';
 
 @Component({
     selector: 'app-step2',
@@ -60,7 +60,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public workExperienceArray: WorkExpereienceModel[] = [
+    public workExperienceArray: WorkExpereience[] = [
         {
             id: 1,
             isEditingWorkExperience: false,

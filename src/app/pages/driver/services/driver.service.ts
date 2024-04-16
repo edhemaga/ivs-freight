@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 
-//Models
+// models
 import { DriverService as DriverBackendService } from 'appcoretruckassist';
 import {
     CheckOwnerSsnEinResponse,
@@ -17,25 +17,25 @@ import {
     DriverPayrollResponse,
 } from 'appcoretruckassist';
 
-//Store
-import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
-import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriversInactiveStore } from '../state/driver-inactive-state/driver-inactive.store';
-import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
-import { DriversDetailsListStore } from '../state/driver-details-list-state/driver-details-list.store';
+// store
+import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
-//Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { FormDataService } from 'src/app/shared/services/form-data.service';
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { FormDataService } from '@shared/services/form-data.service';
 
-//Components
-import { DriverModal } from 'src/app/core/components/shared/model/table-components/driver-modal';
+// components
+import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.model';
 
-//Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -213,7 +213,7 @@ export class DriverService {
     public deleteDriverById(
         driverId: number,
         tableSelectedTab?: string
-    ): Observable<DriverModal> {
+    ): Observable<DriverModel> {
         return this.driverService.apiDriverIdDelete(driverId).pipe(
             tap(() => {
                 const driverCount = JSON.parse(
@@ -293,7 +293,7 @@ export class DriverService {
     public updateDriver(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPut().pipe(
-            tap((res: any) => {
+            tap(() => {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[data.id];

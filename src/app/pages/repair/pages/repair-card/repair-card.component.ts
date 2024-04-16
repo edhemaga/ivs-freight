@@ -19,24 +19,20 @@ import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // Models
-import {
-    CardDetails,
-    SendDataCard,
-} from 'src/app/shared/models/card-table-data.model';
-import {
-    CardRows,
-    DataResult,
-} from 'src/app/core/components/shared/model/card-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 
 // Services
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Helpers
-import { CardArrayHelper } from 'src/app/shared/utils/helpers/card-array-helper';
-import { CardHelper } from 'src/app/shared/utils/helpers/card-helper';
+import { CardArrayHelper } from '@shared/utils/helpers/card-array-helper';
+import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 @Component({
     selector: 'app-repair-card',
@@ -76,8 +72,8 @@ export class RepairCardComponent
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
 
-    public cardsFront: DataResult[][][] = [];
-    public cardsBack: DataResult[][][] = [];
+    public cardsFront: CardDataResult[][][] = [];
+    public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
 
     public itemsForRepair: string[] = [];

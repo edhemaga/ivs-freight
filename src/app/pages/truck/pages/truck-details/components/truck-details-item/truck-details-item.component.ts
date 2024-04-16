@@ -23,24 +23,24 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // moment
 import moment from 'moment';
 
 // services
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { TruckTrailerService } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
 
 // helpers
-import { DropActionNameHelper } from 'src/app/shared/utils/helpers/drop-action-name.helper';
-import { MethodsCalculationsHelper } from 'src/app/shared/utils/helpers/methods-calculations.helper';
+import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // animations
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 @Titles()
 @Component({
@@ -49,7 +49,7 @@ import { card_component_animation } from 'src/app/core/components/shared/animati
     styleUrls: ['./truck-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
     animations: [
-        card_component_animation('showHideCardBody'),
+        cardComponentAnimation('showHideCardBody'),
         trigger('cardAnimation', [
             state('in', style({ opacity: 1, 'max-height': '0px' })),
             transition(':enter', [

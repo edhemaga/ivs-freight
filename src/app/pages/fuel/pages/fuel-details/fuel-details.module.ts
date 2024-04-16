@@ -1,14 +1,18 @@
-import { FuelDetailsComponent } from './fuel-details.component';
-import { FuelDetailsItemComponent } from './components/fuel-details-item/fuel-details-item.component';
-
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { FuelDetailsRoutes } from './fuel-details.routing';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
-import { TaTableBodyComponent } from 'src/app/shared/components/ta-table/ta-table-body/ta-table-body.component';
-import { TaTableHeadComponent } from 'src/app/shared/components/ta-table/ta-table-head/ta-table-head.component';
-import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
+// components
+import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
+import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
+import { FuelDetailsComponent } from '@pages/fuel/pages/fuel-details/fuel-details.component';
+import { FuelDetailsItemComponent } from '@pages/fuel/pages/fuel-details/components/fuel-details-item/fuel-details-item.component';
+
+// modules
+import { FuelDetailsRoutingModule } from '@pages/fuel/pages/fuel-details/fuel-details-routing.module';
+import { SharedModule } from '@shared/shared.module';
+
+// pipes
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [FuelDetailsComponent, FuelDetailsItemComponent],
@@ -17,7 +21,7 @@ import { FormatDatePipe } from 'src/app/shared/pipes/format-date.pipe';
     imports: [
         CommonModule,
         SharedModule,
-        FuelDetailsRoutes,
+        FuelDetailsRoutingModule,
         TaTableBodyComponent,
         TaTableHeadComponent,
         FormatDatePipe,

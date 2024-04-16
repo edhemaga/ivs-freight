@@ -4,11 +4,11 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil, take, Subject } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { RoadsideService } from '../../services/roadside.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { RoadsideService } from '@pages/safety/violation/services/roadside.service';
 
 // store
-import { RoadsideDetailsListQuery } from '../../state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
+import { RoadsideDetailsListQuery } from '@pages/safety/violation/state/roadside-details-state/roadside-details-list-state/roadside-details-list.query';
 
 // models
 import { LoadResponse, RoadsideInspectionResponse } from 'appcoretruckassist';

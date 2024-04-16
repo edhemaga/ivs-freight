@@ -4,25 +4,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
 
 // services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { DropDownService } from 'src/app/shared/services/drop-down.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { TruckService } from '../../../../shared/services/truck.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { TruckService } from '@shared/services/truck.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // store
-import { TrucksDetailsListQuery } from '../../state/truck-details-list-state/truck-details-list.query';
-import { TrucksMinimalListQuery } from '../../state/truck-details-minima-list-state/truck-details-minimal.query';
-import { TrucksMinimalListStore } from '../../state/truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckItemStore } from '../../state/truck-details-state/truck.details.store';
+import { TrucksDetailsListQuery } from '@pages/truck/state/truck-details-list-state/truck-details-list.query';
+import { TrucksMinimalListQuery } from '@pages/truck/state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListStore } from '@pages/truck/state/truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckItemStore } from '@pages/truck/state/truck-details-state/truck.details.store';
 
 // components
-import { TtRegistrationModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtTitleModalComponent } from 'src/app/shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
+import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-truck-details',

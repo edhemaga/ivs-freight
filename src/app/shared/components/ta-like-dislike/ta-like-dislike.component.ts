@@ -1,29 +1,32 @@
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     Component,
     EventEmitter,
     Input,
+    OnChanges,
     OnDestroy,
     OnInit,
     Output,
     ViewEncapsulation,
 } from '@angular/core';
 
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 // services
 import {
     PopulateLikeDislikeModel,
     TaLikeDislikeService,
-} from './services/ta-like-dislike.service';
-import { DetailsDataService } from '../../services/details-data.service';
+} from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // models
-import { SendDataCard } from '../../models/card-table-data.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 
 // enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-like-dislike',
@@ -39,7 +42,7 @@ import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
         AngularSvgIconModule,
     ],
 })
-export class TaLikeDislikeComponent implements OnInit, OnDestroy {
+export class TaLikeDislikeComponent implements OnInit, OnChanges, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @Output() likesDislakes: EventEmitter<SendDataCard> = new EventEmitter();

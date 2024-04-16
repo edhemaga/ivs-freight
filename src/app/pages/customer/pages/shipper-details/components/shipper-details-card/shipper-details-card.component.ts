@@ -15,11 +15,11 @@ import { Subject, takeUntil } from 'rxjs';
 import moment from 'moment';
 
 // Store
-import { ShipperMinimalListQuery } from '../../../../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
+import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 
 // Services
-import { DetailsPageService } from 'src/app/shared/services/details-page.service';
-import { ShipperService } from '../../../../services/shipper.service';
+import { DetailsPageService } from '@shared/services/details-page.service';
+import { ShipperService } from '@pages/customer/services/shipper.service';
 
 @Component({
     selector: 'app-shipper-details-card',

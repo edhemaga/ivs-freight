@@ -2,80 +2,76 @@ import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { forkJoin, map, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
-// Components
-import { DriverModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
-import { DriverCdlModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from 'src/app/pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
-import { ApplicantModalComponent } from 'src/app/pages/applicant/pages/applicant-modal/applicant-modal.component';
+// components
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
+import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
 
-// Services
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DriverService } from '../../services/driver.service';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { ApplicantService } from '../../../../shared/services/applicant.service';
-import { AddressService } from 'src/app/shared/services/address.service';
+// services
+import { ModalService } from '@shared/services/modal.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ApplicantService } from '@shared/services/applicant.service';
+import { AddressService } from '@shared/services/address.service';
 
-// Queries
-import { DriversActiveQuery } from '../../state/driver-active-state/driver-active.query';
-import { ApplicantTableQuery } from '../../state/applicant-state/applicant-table.query';
-
-// Store
-import { DriversActiveState } from '../../state/driver-active-state/driver-active.store';
+// store
+import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
-} from '../../state/driver-inactive-state/driver-inactive.store';
-import { DriversInactiveQuery } from '../../state/driver-inactive-state/driver-inactive.query';
-import { ApplicantTableStore } from '../../state/applicant-state/applicant-table.store';
+} from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
+import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applicant-table.store';
+import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
 
-// Pipes
+// pipes
 import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from 'src/app/shared/pipes/name-initials.pipe';
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
-// Modals
-import {
-    AvatarColors,
-    FilterOptionApplicant,
-    FilterOptionDriver,
-    OnTableBodyActionsModal,
-    OnTableHeadActionsModal,
-    MappedApplicantData,
-} from 'src/app/core/components/shared/model/table-components/driver-modal';
-import { DataForCardsAndTables } from 'src/app/core/components/shared/model/table-components/all-tables.modal';
+// Globals
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { DriverTableConfiguration } from '@pages/driver/pages/driver-table/utils/constants/driver-table-configuration.constants';
+
+// settings
+import { getLoadModalColumnDefinition } from '@shared/utils/settings/modal-settings/load-modal-columns';
+import { getApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/applicant-columns';
+import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
+
+// helpers
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+
+// models
+import { MappedApplicantData } from '@pages/driver/pages/driver-table/models/mapped-applicant-data.model';
+import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
+import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
+import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
+import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import {
     ApplicantShortResponse,
     DriverListResponse,
     DriverResponse,
 } from 'appcoretruckassist';
-import { getLoadModalColumnDefinition } from 'src/assets/utils/settings/modal-columns-configuration/table-load-modal-columns';
-import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
-
-// Globals
-import { MethodsGlobalHelper } from 'src/app/shared/utils/helpers/methods-global.helper';
-import { CardRows } from 'src/app/core/components/shared/model/card-data.model';
-
-import {
-    DropdownItem,
-    GridColumn,
-    ToolbarActions,
-} from 'src/app/shared/models/card-table-data.model';
-
-// Enums
-import { TableStringEnum } from 'src/app/shared/enums/table-string.enum';
-
-// Constants
-import { TableDropdownComponentConstants } from 'src/app/shared/utils/constants/table-dropdown-component.constants';
-import { DriverTableConfiguration } from './utils/constants/driver-table-configuration.constants';
-
-//Helpers
-import { DataFilterHelper } from 'src/app/shared/utils/helpers/data-filter.helper';
 
 @Component({
     selector: 'app-driver-table',
@@ -98,7 +94,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = true;
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
-    public activeTableData: DataForCardsAndTables;
+    public activeTableData: CardTableData;
     public driverBackFilterQuery: FilterOptionDriver =
         TableDropdownComponentConstants.DRIVER_BACK_FILTER;
     public applicantBackFilterQuery: FilterOptionApplicant =
@@ -380,7 +376,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         };
                     });
                     this.modalService.openModal(
-                        TaConfirmationModalComponent,
+                        ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
                         {
                             data: null,
@@ -675,7 +671,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private setDriverData(tdata: DataForCardsAndTables): void {
+    private setDriverData(tdata: CardTableData): void {
         this.columns = tdata.gridColumns;
 
         if (tdata.data.length) {
@@ -964,7 +960,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableRev: {
                 title: TableStringEnum.INCOMPLETE,
                 iconLink:
-                    '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg',
+                    'assets/svg/truckassist-table/applicant-wrong-icon.svg',
             },
             hire: false,
             isFavorite: false,
@@ -1265,7 +1261,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    public onToolBarAction(event: ToolbarActions): void {
+    public onToolBarAction(event: TableToolbarActions): void {
         // Open Modal
         if (event.action === TableStringEnum.OPEN_MODAL) {
             if (this.selectedTab === TableStringEnum.APPLICANTS) {
@@ -1366,7 +1362,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             });
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
@@ -1381,7 +1377,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableHeadActions(event: OnTableHeadActionsModal): void {
+    public onTableHeadActions(event: TableHeadActions): void {
         if (event.action === TableStringEnum.SORT) {
             this.mapingIndex = 0;
 
@@ -1405,7 +1401,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OnTableBodyActionsModal): void {
+    public onTableBodyActions(event: TableBodyActions): void {
         const mappedEvent = {
             ...event,
             data: {
@@ -1479,7 +1475,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
@@ -1493,7 +1489,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,

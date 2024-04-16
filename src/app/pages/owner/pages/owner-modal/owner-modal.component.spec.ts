@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OwnerModalComponent } from './owner-modal.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 
 describe('OwnerModalComponent', () => {
     let component: OwnerModalComponent;

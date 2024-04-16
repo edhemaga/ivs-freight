@@ -10,11 +10,11 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
-import { Titles } from 'src/app/core/decorators/titles.decorator';
+import { Titles } from '@core/decorators/titles.decorator';
 
 // services
-import { SharedService } from 'src/app/shared/services/shared.service';
-import { DashboardService } from '../../services/dashboard.service';
+import { SharedService } from '@shared/services/shared.service';
+import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 @Titles()
 @Component({

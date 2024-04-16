@@ -1,4 +1,4 @@
-import { Attachment } from "../../../shared/models/attachment.model";
+import { Attachment } from '@shared/models/attachment.model';
 
 export interface DriverMedical {
     id?: string;

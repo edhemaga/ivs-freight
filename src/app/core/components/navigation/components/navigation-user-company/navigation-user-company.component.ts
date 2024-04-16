@@ -7,16 +7,18 @@ import {
     EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { FormsModule } from '@angular/forms';
 
-//Models
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// models
 import { SelectCompanyResponse } from 'appcoretruckassist';
 import { SignInResponse } from 'appcoretruckassist';
 
-//Services
-import { NavigationService } from '../../services/navigation.service';
-import { WebsiteAuthService } from 'src/app/pages/website/services/website-auth.service';
+// services
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 @Component({
     selector: 'app-navigation-user-company',

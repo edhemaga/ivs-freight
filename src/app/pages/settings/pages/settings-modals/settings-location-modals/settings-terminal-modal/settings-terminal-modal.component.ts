@@ -20,11 +20,11 @@ import {
     parkingSlotValidation,
     phoneExtension,
     terminalNameValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import {
     phoneFaxRegex,
     rentValidation,
-} from '../../../../../../shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // models
 import {
@@ -34,33 +34,32 @@ import {
     TerminalResponse,
     UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { Address } from '../../../../../../core/components/shared/model/address';
 
 // animation
-import { tab_modal_animation } from '../../../../../../core/components/shared/animations/tabs-modal.animation';
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // services
-import { SettingsLocationService } from 'src/app/pages/settings/pages/settings-location/services/settings-location.service';
-import { ModalService } from '../../../../../../shared/components/ta-modal/services/modal.service';
-import { TaInputService } from '../../../../../../shared/components/ta-input/services/ta-input.service';
-import { FormService } from 'src/app/shared/services/form.service';
+import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
 
 // components
-import { TaInputComponent } from '../../../../../../shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '../../../../../../shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '../../../../../../shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '../../../../../../shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaCheckboxCardComponent } from '../../../../../../shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputAddressDropdownComponent } from '../../../../../../shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // utils
-import { MethodsCalculationsHelper } from '../../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-settings-terminal-modal',
     templateUrl: './settings-terminal-modal.component.html',
     styleUrls: ['./settings-terminal-modal.component.scss'],
-    animations: [tab_modal_animation('animationTabsModal')],
+    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
@@ -139,7 +138,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         params: { height: '0px' },
     };
 
-    public selectedAddress: Address | AddressEntity = null;
+    public selectedAddress: AddressEntity = null;
 
     public payPeriods: any[] = [];
     public selectedPayPeriod: any = null;

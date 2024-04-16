@@ -13,32 +13,35 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+import { distinctUntilChanged, Subject, takeUntil, throttleTime } from 'rxjs';
+
+// bootstrap
 import {
     NgbActiveModal,
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
-import { distinctUntilChanged, Subject, takeUntil, throttleTime } from 'rxjs';
-import { CommonModule } from '@angular/common';
 
 // moment
 import moment from 'moment';
 
 // Helpers
-import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { PriceCalculationArrayPipe } from './pipes/price-calculation-array.pipe';
-import { ActiveItemsPipe } from 'src/app/shared/pipes/active-Items.pipe';
-import { FormatPhonePipe } from 'src/app/shared/pipes/format-phone.pipe';
+import { PriceCalculationArrayPipe } from '@pages/repair/pages/repair-modals/repair-order-modal/pipes/price-calculation-array.pipe';
+import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 // Services
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { FormService } from 'src/app/shared/services/form.service';
-import { EditTagsService } from 'src/app/shared/services/edit-tags.service';
-import { RepairService } from 'src/app/shared/services/repair.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { ModalService } from '@shared/services/modal.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { FormService } from '@shared/services/form.service';
+import { EditTagsService } from '@shared/services/edit-tags.service';
+import { RepairService } from '@shared/services/repair.service';
 
 // Models
 import {
@@ -47,9 +50,9 @@ import {
     RepairShopResponse,
     RepairResponse,
 } from 'appcoretruckassist';
-import { RepairTypes } from './models/repair-types.model';
-import { RepairSubtotal } from './models/repair-subtotal.model';
-import { RepairData } from './models/repair-data.model';
+import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
+import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -59,25 +62,25 @@ import {
     invoiceValidation,
     repairOdometerValidation,
     vehicleUnitValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // constants
-import { RepairOrderConstants } from './utils/constants/repair-order.constant';
+import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants/repair-order.constant';
 
 // components
-import { TruckModalComponent } from '../../../../../pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '../../../../../pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { AppTooltipComponent } from 'src/app/core/components/shared/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from 'src/app/shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
-import { TaCopyComponent } from 'src/app/shared/components/ta-copy/ta-copy.component';
-import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/ta-modal-table.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -94,7 +97,7 @@ import { TaModalTableComponent } from 'src/app/shared/components/ta-modal-table/
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputDropdownComponent,

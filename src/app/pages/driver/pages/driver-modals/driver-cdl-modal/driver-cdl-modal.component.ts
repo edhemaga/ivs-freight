@@ -12,30 +12,30 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
 
 //Services
-import { DriverCdlService } from 'src/app/pages/driver/services/driver-cdl.service';
-import { DriverService } from 'src/app/pages/driver/services/driver.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { TaInputService } from 'src/app/shared/components/ta-input/services/ta-input.service';
-import { FormService } from 'src/app/shared/services/form.service';
+import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
+import { DriverService } from '@pages/driver/services/driver.service';
+import { ModalService } from '@shared/services/modal.service';
+import { TaInputService } from '@shared/services/ta-input.service';
+import { FormService } from '@shared/services/form.service';
 
 //Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Components
-import { AppTooltipComponent } from '../../../../../core/components/shared/app-tooltip/app-tooltip.component';
-import { TaModalComponent } from 'src/app/shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from 'src/app/shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from 'src/app/shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from 'src/app/shared/components/ta-input/ta-input.component';
-import { TaCustomCardComponent } from 'src/app/shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from 'src/app/shared/components/ta-input-note/ta-input-note.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 //Helpers
-import { MethodsCalculationsHelper } from '../../../../../shared/utils/helpers/methods-calculations.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import {
     cdlCANADAValidation,
     cdlUSValidation,
-} from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+} from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 @Component({
     selector: 'app-driver-cdl-modal',
@@ -51,7 +51,7 @@ import {
         AngularSvgIconModule,
 
         // Component
-        AppTooltipComponent,
+        TaAppTooltipV2Component,
         TaModalComponent,
         TaInputDropdownComponent,
         TaUploadFilesComponent,

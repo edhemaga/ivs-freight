@@ -10,22 +10,37 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { FooterData } from '../../models/navigation.model';
-import { footerData } from '../../utils/constants/navigation-data.constants';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { Router, RouterModule } from '@angular/router';
-import { NavigationService } from '../../services/navigation.service';
-import {
-    navigation_magic_line,
-    navigation_route_animation,
-} from '../../animations/navigation.animation';
-import { ImageBase64Service } from 'src/app/shared/services/image-base64.service';
-import { UserProfileUpdateService } from 'src/app/shared/services/user-profile-update.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NavigationSettingsComponent } from '../navigation-settings/navigation-settings.component';
-import { UserDataPipe } from '../../pipes/user-data.pipe';
+import { Router, RouterModule } from '@angular/router';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
+import { NavigationService } from '@core/components/navigation/services/navigation.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
+
+// components
+import { NavigationSettingsComponent } from '@core/components/navigation/components/navigation-settings/navigation-settings.component';
+
+// pipes
+import { UserDataPipe } from '@core/components/navigation/pipes/user-data.pipe';
+
+// animations
+import {
+    navigationMagicLine,
+    navigationRouteAnimation,
+} from '@core/components/navigation/animations/navigation.animation';
+
+// constants
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+
+// models
+import { NavigationFooterData } from '@core/components/navigation/models/navigation-footer-data.model';
 
 @Component({
     selector: 'app-navigation-footer',
@@ -42,8 +57,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
         AngularSvgIconModule,
     ],
     animations: [
-        navigation_route_animation('showHideDetails'),
-        navigation_magic_line('showHideDetailsMagicLine'),
+        navigationRouteAnimation('showHideDetails'),
+        navigationMagicLine('showHideDetailsMagicLine'),
     ],
     providers: [UserDataPipe],
 })
@@ -64,7 +79,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     @Output() userActivatedSettingsRoute = new EventEmitter<boolean>();
 
     public currentUserStatus: string = 'online';
-    public footerData: FooterData[] = footerData;
+    public footerData: NavigationFooterData[] =
+        NavigationDataConstants.footerData;
     public loggedUser: any = null;
     public mouseOverMiddleNav: boolean = false;
     public mouseOverFooter: boolean = false;
@@ -74,6 +90,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
     public midleRouteActive: boolean = false;
     public showToolTip: boolean;
     public magicBoxAnime: boolean = true;
+
     constructor(
         private router: Router,
         private navigationService: NavigationService,
@@ -206,7 +223,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    public isActiveFooterRoute(item: FooterData): boolean {
+    public isActiveFooterRoute(item: NavigationFooterData): boolean {
         if (item.id !== 3) {
             return this.router.url.includes(item.route);
         }
@@ -226,7 +243,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
         }, 50);
     }
 
-    public identity(index: number, item: FooterData): number {
+    public identity(index: number, item: NavigationFooterData): number {
         return item.id;
     }
 

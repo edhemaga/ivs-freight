@@ -41,14 +41,13 @@ $carrierassist-fe-theme: mat.define-light-theme(
 
 /* You can add global styles to this file, and also import other style files */
 @import './theme/variables';
-@import './assets/scss/grid';
+@import 'assets/scss/grid';
 @import './theme/main';
-@import './assets/scss/floating-label';
-@import './assets/scss/global';
-@import './assets/scss/general';
-@import './assets/scss/cards';
+@import 'assets/scss/floating-label';
+@import 'assets/scss/global';
+@import 'assets/scss/general';
+@import 'assets/scss/cards';
 
-// html, body { height: 100%; }
 body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
@@ -60,27 +59,29 @@ html {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
-@import './assets/scss/modal';
-@import './assets/scss/form';
-@import './assets/scss/input-validation';
-@import './assets/scss/tooltip';
-@import './assets/scss/buttons';
-@import './assets/scss/ta-select';
-@import './assets/scss/popover.scss';
-@import './assets/scss/google-address.scss';
-@import './assets/scss/custompickers.scss';
-@import './assets/scss/special-svgs.scss';
-@import './assets/scss/ta-input-dropdown.scss';
-@import './assets/scss/ta-input-multiselect-dropdown.scss';
-@import './assets/scss/detail-cards.scss';
-@import './assets/scss/ngxslider.scss';
-@import './assets/scss/fonts.scss';
-@import './assets/scss/toast-messages.scss';
-@import './assets/scss/table';
-@import './assets/scss/dispatcher.scss';
-@import './assets/scss/accounting.scss';
-@import './assets/scss/payroll.scss';
-@import './assets/scss/fake-table-modal.scss';
+
+@import 'assets/scss/modal';
+@import 'assets/scss/form';
+@import 'assets/scss/input-validation';
+@import 'assets/scss/tooltip';
+@import 'assets/scss/buttons';
+@import 'assets/scss/ta-select';
+@import 'assets/scss/popover.scss';
+@import 'assets/scss/google-address.scss';
+@import 'assets/scss/custompickers.scss';
+@import 'assets/scss/special-svgs.scss';
+@import 'assets/scss/ta-input-dropdown.scss';
+@import 'assets/scss/ta-input-multiselect-dropdown.scss';
+@import 'assets/scss/detail-cards.scss';
+@import 'assets/scss/ngxslider.scss';
+@import 'assets/scss/fonts.scss';
+@import 'assets/scss/toast-messages.scss';
+@import 'assets/scss/table';
+@import 'assets/scss/dispatcher.scss';
+@import 'assets/scss/accounting.scss';
+@import 'assets/scss/payroll.scss';
+@import 'assets/scss/fake-table-modal.scss';
 @import '~overlayscrollbars/css/OverlayScrollbars.css';
-@import './assets/scss/applicant.scss';
-@import './assets/scss/table-modal';
+@import 'assets/scss/applicant.scss';
+@import 'assets/scss/table-modal';
+@import 'assets//scss/note.scss';

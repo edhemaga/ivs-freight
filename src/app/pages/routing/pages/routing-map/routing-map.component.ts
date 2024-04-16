@@ -22,35 +22,35 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 
-//Constants
-import * as AppConst from '../../../../const';
+// constants
+import { MapConstants } from '@shared/utils/constants/map.constants';
 
-//Models
+// models
 import { AddressEntity } from 'appcoretruckassist';
 import { GetMapListResponse, GetRouteListResponse } from 'appcoretruckassist';
 
-//Methods
-import { imageMapType } from 'src/assets/utils/methods-global';
+// helpers
+import { RoutingHelper } from '@pages/routing/utils/helpers/routing.helper';
 
-//Services
-import { MapsService } from 'src/app/shared/services/maps.service';
-import { ModalService } from 'src/app/shared/components/ta-modal/services/modal.service';
-import { ConfirmationService } from 'src/app/core/components/modals/ta-confirmation-modal/services/confirmation.service';
-import { DetailsDataService } from 'src/app/shared/services/details-data.service';
-import { NotificationService } from 'src/app/shared/services/notification.service';
-import { RoutingStateService } from '../../../../shared/services/routing-state.service';
+// services
+import { MapsService } from '@shared/services/maps.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { NotificationService } from '@shared/services/notification.service';
+import { RoutingStateService } from '@shared/services/routing-state.service';
 
-//States
-import { RoutingStateQuery } from '../../state/routing-state/routing-state.query';
+// store
+import { RoutingStateQuery } from '@pages/routing/state/routing-state.query';
 
-//Pipes
-import { ThousandSeparatorPipe } from 'src/app/shared/pipes/thousand-separator.pipe';
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
-//Validators
-import { addressValidation } from 'src/app/shared/components/ta-input/validators/ta-input.regex-validations';
+// validators
+import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-//Components
-import { TaConfirmationModalComponent } from 'src/app/core/components/modals/ta-confirmation-modal/ta-confirmation/ta-confirmation-modal.component';
+// components
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -216,9 +216,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     mapHover: boolean = false;
 
     public agmMap: any;
-    public styles: any = AppConst.GOOGLE_MAP_STYLES;
+    public styles: any = MapConstants.GOOGLE_MAP_STYLES;
     mapRestrictions = {
-        latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+        latLngBounds: MapConstants.NORTH_AMERICA_BOUNDS,
         strictBounds: true,
     };
 
@@ -1632,7 +1632,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             };
 
             this.modalService.openModal(
-                TaConfirmationModalComponent,
+                ConfirmationModalComponent,
                 { size: 'small' },
                 {
                     ...routeObj,
@@ -2492,7 +2492,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         if (on) {
             if (!this.tileNeXRad.length) {
                 for (const rad of this.allNexrad) {
-                    this.tileNeXRad.push(imageMapType(rad));
+                    this.tileNeXRad.push(RoutingHelper.imageMapType(rad));
                 }
             }
             for (const tile of this.tileNeXRad) {

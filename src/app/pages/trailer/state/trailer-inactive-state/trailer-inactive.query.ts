@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     TrailerInactiveState,
     TrailerInactiveStore,
-} from './trailer-inactive.store';
+} from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerInactiveQuery extends QueryEntity<TrailerInactiveState> {

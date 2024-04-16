@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { ShipperState, ShipperStore } from './shipper.store';
+
+// store
+import {
+    ShipperState,
+    ShipperStore,
+} from '@pages/customer/state/shipper-state/shipper.store';
 
 @Injectable({ providedIn: 'root' })
 export class ShipperQuery extends QueryEntity<ShipperState> {

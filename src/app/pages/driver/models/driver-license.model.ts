@@ -1,8 +1,8 @@
-import { Attachment } from 'src/app/shared/models/attachment.model';
-import { Country } from 'src/app/shared/models/country.model';
-import { DriverEndorsement } from './driver-endorsement.model';
-import { Class } from 'src/app/shared/models/class.model';
-import { State } from 'src/app/shared/models/state.model';
+import { Attachment } from '@shared/models/attachment.model';
+import { Country } from '@shared/models/country.model';
+import { DriverEndorsement } from '@pages/driver/models/driver-endorsement.model';
+import { Class } from '@shared/models/class.model';
+import { State } from '@shared/models/state.model';
 
 export interface DriverLicense {
     id: string;
