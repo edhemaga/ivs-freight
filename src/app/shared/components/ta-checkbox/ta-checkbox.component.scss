@@ -69,6 +69,10 @@
                 background-color: #6d82c7 !important;
             }
         }
+
+        &.down-position {
+            top: 3px;
+        }
     }
 
     &:hover .ta-checkbox ~ .ta-mark {

@@ -409,7 +409,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                 id: 3,
                 nameDefault: 'Review & Rating',
                 template: 'review',
-                length: data?.reviews?.length ? data.reviews.length : 0,
+                length: data?.ratingReviews?.length ? data.ratingReviews.length : 0,
                 hasDateArrow: false,
                 hide: false,
                 data: data,

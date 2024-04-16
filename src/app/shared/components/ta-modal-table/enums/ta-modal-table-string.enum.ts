@@ -3,9 +3,12 @@ export enum TaModalTableStringEnum {
     EMAIL_TABLE_ITEMS = 'emailTableItems',
     DESCRIPTION_TABLE_ITEMS = 'descriptionTableItems',
     CONTACT_TABLE_ITEMS = 'contactTableItems',
+    PM_TABLE_ITEMS = 'pmTableItems',
 
     CONTACT_PHONE_TYPE = 'contact-phone-type',
     CONTACT_EMAIL_TYPE = 'contact-email-type',
+    PM_TRUCK_TYPE = 'pm-truck-type',
+    PM_TRAILER_TYPE = 'pm-trailer-type',
 
     EMAIL = 'email',
 

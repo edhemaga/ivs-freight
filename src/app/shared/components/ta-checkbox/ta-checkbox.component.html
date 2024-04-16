@@ -25,7 +25,8 @@
             class="ta-mark"
             [ngClass]="{
                 invalid: getSuperControl.errors?.['required'] && getSuperControl.touched,
-                disabled: disabledStillCheckMark
+                disabled: disabledStillCheckMark,
+                'down-position': moveIconDown
             }"
         ></span>
 

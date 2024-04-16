@@ -615,6 +615,7 @@ model/ownerTableResponse.ts
 model/ownerTableResponsePagination.ts
 model/ownerType.ts
 model/pMStatus.ts
+model/pMTrailerDefaultDropdownResponse.ts
 model/pMTrailerListResponse.ts
 model/pMTrailerResponse.ts
 model/pMTrailerResponsePagination.ts
@@ -622,6 +623,7 @@ model/pMTrailerShortResponse.ts
 model/pMTrailerUnitListResponse.ts
 model/pMTrailerUnitResponse.ts
 model/pMTrailerUnitResponsePagination.ts
+model/pMTruckDefaultDropdownResponse.ts
 model/pMTruckListResponse.ts
 model/pMTruckResponse.ts
 model/pMTruckResponsePagination.ts
@@ -708,6 +710,7 @@ model/previousEmployerModalResponse.ts
 model/previousEmployerRequestResponse.ts
 model/problemDetails.ts
 model/pspAuthFeedbackResponse.ts
+model/ratingReviewResponse.ts
 model/ratingSetResponse.ts
 model/refreshTokenCommand.ts
 model/registrationModalResponse.ts

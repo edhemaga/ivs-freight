@@ -1,15 +1,28 @@
-import { FilterData } from '@pages/pm-truck-trailer/pages/pm-table/models/filter-data.model';
+import { RepairShopPMResponse, TrailerShortResponse } from 'appcoretruckassist';
+import {
+    DropdownItem,
+    PmTrailerProgressData,
+} from '@shared/models/card-models/card-table-data.model';
 
 export interface PmTrailer {
     textUnit: string;
     textOdometer: string;
     lastService: string;
-    repairShop: string;
-    color: string;
-    svgIcon: string;
+    repairShop: RepairShopPMResponse;
     ruMake: string;
-    ptoNumber: FilterData;
-    reeferUnit: FilterData;
-    alignment: FilterData;
-    general: FilterData;
+    alignment?: PmTrailerProgressData;
+    general?: PmTrailerProgressData;
+    ptoPump?: PmTrailerProgressData;
+    reeferUnit?: PmTrailerProgressData;
+    tableTrailerTypeIcon: string;
+    tableTrailerName: string;
+    tableTrailerColor: string;
+    tableTrailerTypeClass: string;
+    additionalData: any;
+    tableDropdownContent: {
+        hasContent: boolean;
+        content: DropdownItem[];
+    };
+    trailer: TrailerShortResponse;
+    pmId: number;
 }
