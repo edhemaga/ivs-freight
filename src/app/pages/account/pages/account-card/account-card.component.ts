@@ -12,6 +12,7 @@ import {
 import { FormControl, UntypedFormArray } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { DOCUMENT } from '@angular/common';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -19,13 +20,13 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
+import { AccountData } from '@pages/account/pages/account-card/models/account-data.model';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { AccountStringEnum } from '../../enums/account-string.enum';
 import { AccountService } from '../../services/account.service';
 import { ModalService } from '@shared/services/modal.service';
 
@@ -35,8 +36,8 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // enums
 import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
-import { DOCUMENT } from '@angular/common';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { AccountStringEnum } from '../../enums/account-string.enum';
 
 @Component({
     selector: 'app-account-card',
@@ -144,9 +145,9 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
         return item;
     }
 
-    public onCardActions(event: any): void {
+    public onCardActions(event: AccountData): void {
         switch (event.type) {
-            case AccountStringEnum.EDIT_ACCONUT: {
+            case AccountStringEnum.EDIT_ACCOUNT:
                 this.modalService.openModal(
                     AccountModalComponent,
                     { size: TableActionsStringEnum.SMALL },
@@ -156,8 +157,7 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 );
                 break;
-            }
-            case TableActionsStringEnum.GO_TO_LINK: {
+            case TableActionsStringEnum.GO_TO_LINK:
                 if (event.data?.url) {
                     const url = !event.data.url.startsWith('https://')
                         ? 'https://' + event.data.url
@@ -166,16 +166,13 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
                     this.documentRef.defaultView.open(url, '_blank');
                 }
                 break;
-            }
-            case TableActionsStringEnum.COPY_PASSWORD: {
+            case TableActionsStringEnum.COPY_PASSWORD:
                 this.clipboard.copy(event.data.password);
                 break;
-            }
-            case TableActionsStringEnum.COPY_USERNAME: {
+            case TableActionsStringEnum.COPY_USERNAME:
                 this.clipboard.copy(event.data.username);
                 break;
-            }
-            case AccountStringEnum.DELETE_ACCOUNT: {
+            case AccountStringEnum.DELETE_ACCOUNT:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -187,10 +184,8 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 );
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

@@ -415,14 +415,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             return owner;
                         });
 
-                        const inetval = setInterval(() => {
+                        const interval = setInterval(() => {
                             this.viewData =
                                 MethodsGlobalHelper.closeAnimationAction(
                                     false,
                                     this.viewData
                                 );
 
-                            clearInterval(inetval);
+                            clearInterval(interval);
                         }, 2300);
                     }
 
@@ -445,14 +445,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         return owner;
                     });
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
                 }
 
@@ -473,7 +473,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             }
                         );
 
-                        const inetval = setInterval(() => {
+                        const interval = setInterval(() => {
                             this.viewData =
                                 MethodsGlobalHelper.closeAnimationAction(
                                     false,
@@ -481,7 +481,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 );
 
                             this.viewData.splice(ownerIndex, 1);
-                            clearInterval(inetval);
+                            clearInterval(interval);
                         }, 900);
                     }
 

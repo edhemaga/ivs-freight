@@ -50,6 +50,7 @@ import {
 } from '@shared/models/card-models/card-table-data.model';
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
+import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
 // constants
 import { AccountFilterConstants } from './utils/constants/account-filter.constants';
@@ -76,7 +77,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public accounts: AccountState[];
 
     //Filter
-    public backFilterQuery = {...AccountFilterConstants.accountFilterQuery};
+    public backFilterQuery: AccountFilter = {...AccountFilterConstants.accountFilterQuery};
 
     // Data to display from model Broker
     public displayRowsFront: CardRows[] =
@@ -102,7 +103,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.sendAccountData();
 
-        this.confiramtionSubscribe();
+        this.confirmationSubscribe();
 
         this.accountResetColumns();
 
@@ -201,14 +202,14 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 2300);
 
                     this.updateDataCount();
@@ -230,14 +231,14 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
                                 this.viewData
                             );
 
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 1000);
                 }
 
@@ -257,7 +258,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     );
 
-                    const inetval = setInterval(() => {
+                    const interval = setInterval(() => {
                         this.viewData =
                             MethodsGlobalHelper.closeAnimationAction(
                                 false,
@@ -265,7 +266,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             );
 
                         this.viewData.splice(accountIndex, 1);
-                        clearInterval(inetval);
+                        clearInterval(interval);
                     }, 900);
 
                     this.updateDataCount();
@@ -454,8 +455,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return [
             {
                 title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_ACCONUT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                name: TableStringEnum.EDIT_ACCOUNT,
+                svgUrl: TableStringEnum.EDIT_IMAGE,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -466,7 +467,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: data.url ? TableStringEnum.GO_TO_LINK : TableStringEnum.NO_LINK,
                 name: data.url ? TableStringEnum.GO_TO_LINK_2 : TableStringEnum.NO_LINK_2,
-                svgUrl: 'assets/svg/common/ic_web.svg',
+                svgUrl: TableStringEnum.WEB_IMAGE,
                 mutedStyle: data.url ? false : true,
                 svgStyle: {
                     width: 18,
@@ -480,7 +481,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.COPY_USERNAME,
                 name: TableStringEnum.COPY_USERNAME_2,
-                svgUrl: 'assets/svg/applicant/user.svg',
+                svgUrl: TableStringEnum.USER_IMAGE,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -493,7 +494,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.COPY_PASSWORD,
                 name: TableStringEnum.COPY_PASSWORD_2,
-                svgUrl: 'assets/svg/common/ic_password.svg',
+                svgUrl: TableStringEnum.PASSWORD_IMAGE,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -529,7 +530,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.DELETE_2,
                 name: TableStringEnum.DELETE_ACCOUNT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+                svgUrl: TableStringEnum.DELETE_IMAGE,
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -629,7 +630,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.backFilterQuery.pageIndex++;
                 this.accountBackFilter(this.backFilterQuery, true);
                 break;
-            case AccountStringEnum.EDIT_ACCONUT:
+            case AccountStringEnum.EDIT_ACCOUNT:
                 this.modalService.openModal(
                     AccountModalComponent,
                     { size: TableActionsStringEnum.SMALL },
@@ -725,7 +726,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.accountService.updateNote(noteData);
     }
 
-    private confiramtionSubscribe(): void {
+    private confirmationSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -761,13 +762,13 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.updateDataCount();
 
-                const inetval = setInterval(() => {
+                const interval = setInterval(() => {
                     this.viewData = MethodsGlobalHelper.closeAnimationAction(
                         true,
                         this.viewData
                     );
 
-                    clearInterval(inetval);
+                    clearInterval(interval);
                 }, 900);
 
                 this.tableService.sendRowsSelected([]);

@@ -226,7 +226,7 @@ export class AccountService {
     }): void {
         const storeAccounts = this.accountQuery.getAll();
 
-        storeAccounts.map((account: CompanyAccountResponse) => {
+        storeAccounts.forEach((account: CompanyAccountResponse) => {
             if (data.id === account.id) {
                 this.accountStore.update(account.id, (entity) => ({
                     ...entity,

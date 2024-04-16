@@ -1,5 +1,7 @@
+import { AccountFilter } from "../../models/account-filter.model";
+
 export class AccountFilterConstants {
-    static accountFilterQuery = {
+    static accountFilterQuery: AccountFilter = {
         labelId: undefined,
         pageIndex: 1,
         pageSize: 25,
