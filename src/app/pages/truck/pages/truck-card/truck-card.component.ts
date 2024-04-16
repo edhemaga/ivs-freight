@@ -124,8 +124,8 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
     public trackCard(id: number): number {
         return id;
     }
-    onCardActions(e: TruckBodyResponse) {
-        this.onCardAction.emit(e);
+    public onCardActions(event: TruckBodyResponse): void {
+        this.onCardAction.emit(event);
     }
 
     ngOnDestroy() {

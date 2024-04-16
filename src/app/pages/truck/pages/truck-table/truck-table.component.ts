@@ -148,7 +148,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.InactiveTabCardsConfig();
+                this.inactiveTabCardsConfig();
                 break;
 
             default:
@@ -162,15 +162,12 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    let filteredCardRowsFront = res.front_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
 
-                    let filteredCardRowsBack = res.back_side.filter(
-                        (row) => row !== null
-                    );
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle = 'truckNumber';
+                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
@@ -179,16 +176,17 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    private InactiveTabCardsConfig(): void {
+    private inactiveTabCardsConfig(): void {
         this.truckCardModalQuery.inactive$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    let filteredCardRowsFront = res.front_side.filter(Boolean);
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
 
-                    let filteredCardRowsBack = res.back_side.filter(Boolean);
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle = 'truckNumber';
+                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
 
                     this.sendDataToCardsFront = filteredCardRowsFront;
 

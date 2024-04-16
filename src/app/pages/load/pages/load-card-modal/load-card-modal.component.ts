@@ -38,7 +38,7 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
 
 // constants
-import { LoadCardsModalConstants } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/utils/constants/load-modal.constants';
+import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
@@ -46,9 +46,9 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
 
 @Component({
-    selector: 'app-load-cards-modal',
-    templateUrl: './load-cards-modal.component.html',
-    styleUrls: ['./load-cards-modal.component.scss'],
+    selector: 'app-load-card-modal',
+    templateUrl: './load-card-modal.component.html',
+    styleUrls: ['./load-card-modal.component.scss'],
     standalone: true,
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
@@ -64,7 +64,7 @@ import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/car
         TaCheckboxComponent,
     ],
 })
-export class LoadCardsModalComponent implements OnInit, OnDestroy {
+export class LoadCardModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public cardsForm: FormGroup;

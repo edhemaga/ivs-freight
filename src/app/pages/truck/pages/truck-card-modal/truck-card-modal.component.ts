@@ -4,12 +4,15 @@ import {
     OnInit,
     ViewEncapsulation,
     ChangeDetectorRef,
+    OnDestroy,
 } from '@angular/core';
 import {
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
+    FormGroup,
 } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 
 // Enums
 import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
@@ -30,13 +33,14 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 // Models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { TruckCardDataState } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.store';
 
 // Store
 import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
 
 // Constants
 import { TruckCardsModalData } from '@pages/truck/pages/truck-card-modal/constants/truck-cards-modal.constants';
-import { LoadCardsModalConstants } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/utils/constants/load-modal.constants';
+import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
 
 @Component({
     selector: 'app-truck-card-modal',
@@ -57,14 +61,14 @@ import { LoadCardsModalConstants } from '@shared/components/ta-shared-modals/car
         TaCheckboxComponent,
     ],
 })
-export class TruckCardModalComponent implements OnInit {
-    public cardsForm: any;
+export class TruckCardModalComponent implements OnInit, OnDestroy {
+    public cardsForm: FormGroup;
 
-    public dataFront: any[];
-    public dataBack: any[];
+    public dataFront: CardRows[];
+    public dataBack: CardRows[];
 
-    public setDefaultDataFront: any[];
-    public setDefaultDataBack: any[];
+    public setDefaultDataFront: CardRows[];
+    public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
         LoadCardsModalConstants.defaultCardsValues;
@@ -78,6 +82,7 @@ export class TruckCardModalComponent implements OnInit {
     public tabSelected: string;
 
     public titlesInForm: string[] = [];
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -122,42 +127,48 @@ export class TruckCardModalComponent implements OnInit {
     }
 
     public getDataFromStore(): void {
-        this.modalService.tabObservable$.pipe().subscribe((res) => {
-            this.tabSelected = res;
-            switch (res) {
-                case CardsModalEnum.ACTIVE:
-                    this.closedTabModalConfig();
-                    break;
+        this.modalService.tabObservable$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.tabSelected = res;
+                switch (res) {
+                    case CardsModalEnum.ACTIVE:
+                        this.closedTabModalConfig();
+                        break;
 
-                case CardsModalEnum.INACTIVE:
-                    this.inactiveTabMOdal();
-                    break;
+                    case CardsModalEnum.INACTIVE:
+                        this.inactiveTabModal();
+                        break;
 
-                default:
-                    break;
-            }
-            this.tabSelected = res;
-        });
+                    default:
+                        break;
+                }
+                this.tabSelected = res;
+            });
     }
 
     private closedTabModalConfig(): void {
-        this.truckCardModalQuery.active$.pipe().subscribe((data: any) => {
-            this.setDataForModal(data);
-            this.setDefaultDataFront = TruckCardsModalData.frontDataLoad;
+        this.truckCardModalQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: TruckCardDataState) => {
+                this.setDataForModal(data);
+                this.setDefaultDataFront = TruckCardsModalData.frontDataLoad;
 
-            this.setDefaultDataBack = TruckCardsModalData.BackDataLoad;
-        });
+                this.setDefaultDataBack = TruckCardsModalData.BackDataLoad;
+            });
     }
-    private inactiveTabMOdal(): void {
-        this.truckCardModalQuery.inactive$.pipe().subscribe((data: any) => {
-            this.setDataForModal(data);
-            this.setDefaultDataFront = TruckCardsModalData.frontDataLoad;
+    private inactiveTabModal(): void {
+        this.truckCardModalQuery.inactive$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: TruckCardDataState) => {
+                this.setDataForModal(data);
+                this.setDefaultDataFront = TruckCardsModalData.frontDataLoad;
 
-            this.setDefaultDataBack = TruckCardsModalData.BackDataLoad;
-        });
+                this.setDefaultDataBack = TruckCardsModalData.BackDataLoad;
+            });
     }
 
-    private setDataForModal(data: any): void {
+    private setDataForModal(data: TruckCardDataState): void {
         this.dataFront = data.front_side;
 
         this.dataBack = data.back_side;
@@ -310,16 +321,20 @@ export class TruckCardModalComponent implements OnInit {
     }
 
     public getValueForm(): void {
-        this.cardsForm.valueChanges.pipe().subscribe((value) => {
-            const valuesInform = Object.values(value);
+        this.cardsForm.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                const valuesInform = Object.values(value);
 
-            this.filterTitlesFromForm(valuesInform);
+                this.filterTitlesFromForm(valuesInform);
 
-            this.defaultCardsValues.numberOfRows = parseInt(value.numberOfRows);
+                this.defaultCardsValues.numberOfRows = parseInt(
+                    value.numberOfRows
+                );
 
-            this.resetForm = true;
-            this.hasFormChanged = true;
-        });
+                this.resetForm = true;
+                this.hasFormChanged = true;
+            });
     }
 
     private filterTitlesFromForm(valuesInform: CardRows[]): void {
@@ -354,5 +369,10 @@ export class TruckCardModalComponent implements OnInit {
         } else {
             this.resetForm = true;
         }
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

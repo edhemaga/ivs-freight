@@ -42,7 +42,7 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { TaToolbarFiltersComponent } from '@shared/components/ta-table/ta-table-toolbar/components/ta-toolbar-filters/ta-toolbar-filters.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
-import { LoadCardsModalComponent } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
+import { LoadCardModalComponent } from '@pages/load/pages/load-card-modal/load-card-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
 import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/truck-card-modal.component';
 
@@ -73,7 +73,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TaToolbarFiltersComponent,
         TruckCardModalComponent,
         TaInputDropdownComponent,
-        LoadCardsModalComponent,
+        LoadCardModalComponent,
         ConfirmationResetModalComponent,
     ],
 })
@@ -211,7 +211,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 size: TableStringEnum.SMALL,
             });
         } else {
-            this.modalService.openModal(LoadCardsModalComponent, {
+            this.modalService.openModal(LoadCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         }
