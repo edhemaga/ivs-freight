@@ -14,6 +14,7 @@ import { TruckService } from '@shared/services/truck.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -21,6 +22,7 @@ import { TruckInactiveQuery } from '@pages/truck/state/truck-inactive-state/truc
 import { TruckActiveState } from '@pages/truck/state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
 import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truck-inactive.store';
+import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.query';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
@@ -104,10 +106,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private truckInactiveQuery: TruckInactiveQuery,
         private truckInactiveStore: TruckInactiveStore,
         private thousandSeparator: ThousandSeparatorPipe,
-        public datePipe: DatePipe
+        public datePipe: DatePipe,
+        private TruckCardsModalService: TruckCardsModalService,
+        private truckCardModalQuery: truckCardModalQuery
     ) {}
 
     ngOnInit(): void {
+        this.updateCardView();
+
         this.sendTruckData();
 
         this.confirmationSubscribe();
@@ -135,6 +141,59 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 10);
     }
 
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.activeTabCardsConfig();
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.inactiveTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+        this.TruckCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private activeTabCardsConfig(): void {
+        this.truckCardModalQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private inactiveTabCardsConfig(): void {
+        this.truckCardModalQuery.inactive$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.TRUCK_NUMBER;
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
     // Confirmation Subscribe
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
@@ -502,6 +561,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setTruckData(td);
+        this.updateCardView();
     }
 
     private getGridColumns(configType: string): string[] {
