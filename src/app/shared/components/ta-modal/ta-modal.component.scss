@@ -11,7 +11,25 @@
         background-color: rgba(0, 0, 0, 0.3);
     }
 }
-
+.modal-date-logo {
+    height: 26px;
+    width: 26px;
+    cursor: pointer !important;
+    position: relative;
+    svg {
+        &:hover {
+            cursor: pointer;
+            path {
+                fill: #919191;
+            }
+        }
+    }
+}
+.modal-date-border {
+    height: 18px;
+    margin-right: 4px;
+    border-right: 1px solid #cccccc;
+}
 .modal-container {
     width: 480px;
     height: auto;
@@ -209,6 +227,12 @@
                 }
             }
         }
+    }
+    .not-clickable {
+        pointer-events: none;
+        cursor: not-allowed;
+        background: #f7f7f7 !important;
+        color: #cccccc !important;
     }
 
     .modal-footer {

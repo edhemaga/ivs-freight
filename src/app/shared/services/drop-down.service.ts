@@ -77,6 +77,55 @@ export class DropDownService {
                 );
                 break;
             }
+            case 'void': {
+                let voidData = data.registrations.find((e) => e.id === any.id);
+                let cdlsArray = data.registrations.map((e) => {
+                    if (e.voidedOn) {
+                        return {
+                            id: e.id,
+                            name: e.licensePlate,
+                        };
+                    }
+                });
+                cdlsArray = cdlsArray.filter((item) => item !== undefined);
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        data: {
+                            ...voidData,
+                        },
+                        template: 'void',
+                        type: 'void',
+                        modalHeader: true,
+                        array: cdlsArray?.length > 0 ? cdlsArray : [],
+                    }
+                );
+
+                break;
+            }
+            case 'activate':
+                {
+                    console.log(data);
+                    const mappedEvent = {
+                        ...event,
+                        data: {
+                            ...data,
+                            number: data.licensePlate,
+                        },
+                    };
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: 'small' },
+                        {
+                            ...mappedEvent,
+                            template: 'void',
+                            type: 'activate',
+                            svg: true,
+                        }
+                    );
+                }
+                break;
             case 'delete-medical': {
                 const mappedEvent = {
                     ...any,

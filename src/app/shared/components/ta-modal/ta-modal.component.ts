@@ -24,6 +24,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
+// pipes
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
+
 // bootstrap
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -66,6 +69,7 @@ import { UploadFile } from '@shared/components/ta-upload-files/models/upload-fil
         NgbModule,
 
         // components
+        FormatDatePipe,
         TaCustomScrollbarComponent,
         TaUploadDropzoneComponent,
         TaAppTooltipV2Component,
@@ -116,6 +120,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isDeactivated: boolean;
     @Input() isDNU: boolean;
     @Input() isBFB: boolean;
+    @Input() editDate: boolean;
     @Input() resendEmail: boolean;
     @Input() modalAdditionalPart: boolean;
     @Input() topDivider: boolean = true;
@@ -198,7 +203,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.onModalStatus();
         this.onModalSpinner();
-
         this.uploadFileService.visibilityDropZone$
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
@@ -220,7 +224,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
         //     this.isDropZoneVisible = true;
         // });
     }
-
     public dragLeave() {
         // $("body").on('dragleave', (event: any) => {
         //     event.preventDefault();

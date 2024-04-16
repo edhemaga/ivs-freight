@@ -14,7 +14,7 @@ $color-white: #ffffff;
 $color-gray: #919191;
 $color-gray-dark: #6c6c6c;
 $border-radius: 3px;
-
+@import 'src/theme/variables.scss';
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $color-white;
@@ -226,8 +226,6 @@ $border-radius: 3px;
         line-height: 20px;
         z-index: 100;
         svg {
-            display: flex;
-
             path {
                 fill: #919191 !important;
             }
@@ -242,7 +240,7 @@ $border-radius: 3px;
         z-index: 100;
         svg {
             path {
-                fill: #6d82c7;
+                fill: $bc1;
             }
         }
         cursor: pointer;

@@ -378,8 +378,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         id: -1,
         chartType: 1,
     };
-    public performance: any[] = [];
-    isWideScreen: boolean = false;
+    public performance: any = [];
+    public isWideScreen: boolean = false;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -572,7 +572,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.truckService
             .getPerformace(id, chartType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item: any) => {
+            .subscribe((item) => {
                 this.performance = item;
             });
     }

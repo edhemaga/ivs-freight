@@ -31,7 +31,6 @@ import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck
     providers: [DetailsPageService],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
-    // @Input() data:any=null;
     private destroy$ = new Subject<void>();
     public truckDetailsConfig: any[] = [];
     public dataTest: any;
@@ -79,7 +78,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         let truckData = {
             ...this.TruckItemStore?.getValue()?.entities[dataId],
         };
-
         this.initTableOptions(truckData);
 
         this.tableService.currentActionAnimation
@@ -104,7 +102,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'activate': {
-                            this.changeTruckStatus(res?.id);
+                            if (res.template !== 'void') {
+                                this.changeTruckStatus(res?.id);
+                            }
                             break;
                         }
                         case 'deactivate': {
@@ -242,7 +242,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: 'Edit',
                     name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                     iconName: 'edit',
                     show: true,
                     disabled: data.status == 0 ? true : false,
@@ -370,30 +370,51 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
-                data: data.registrations,
+                data: this.sortObjectsByExpDate(data.registrations),
                 status: data?.status == 0 ? true : false,
+                isExpired: this.check(data.registrations),
             },
             {
                 id: 2,
                 name: 'FHWA Inspection',
                 template: 'fhwa-insepction',
                 length: data?.inspections?.length ? data.inspections.length : 0,
-                data: data.inspections,
+                data: this.sortObjectsByExpDate(data.inspections),
                 status: data?.status == 0 ? true : false,
+                isExpired: this.check(data.inspections),
             },
             {
                 id: 3,
                 name: 'Title',
                 template: 'title',
                 length: data?.titles?.length ? data.titles.length : 0,
-                data: data.titles,
+                data: this.sortObjectsByExpDate(data.titles),
                 status: data?.status == 0 ? true : false,
-            },
-            {
-                id: 4,
+                isExpired: this.check(data.titles),
             },
         ];
         this.truckId = data?.id ? data.id : null;
+    }
+
+    check(data) {
+        return data.every((item) => {
+            return item.voidedOn !== null || this.isExpired(item.expDate);
+        });
+    }
+
+    sortObjectsByExpDate(data) {
+        let dateSort = Array.from(data).sort((obj1: any, obj2: any) => {
+            const date1 = new Date(obj1.expDate).getTime();
+            const date2 = new Date(obj2.expDate).getTime();
+            return date2 - date1;
+        });
+        return dateSort;
+    }
+
+    isExpired(expDate: string): boolean {
+        const currentDateTime = new Date().getTime();
+        const expirationDateTime = new Date(expDate).getTime();
+        return expirationDateTime < currentDateTime;
     }
 
     ngOnDestroy(): void {

@@ -219,6 +219,37 @@ export class TruckService implements OnDestroy {
         );
     }
 
+    public voidRegistration(
+        voidedReg: number,
+        unVoidedReg?: number
+    ): Observable<TruckResponse> {
+        return this.RegistrationService.apiRegistrationVoidPost({
+            registrationIdToBeVoided: voidedReg,
+            registrationIdToBeUnVoided: unVoidedReg,
+        }).pipe(
+            tap(() => {
+                const truckId = this.truckItem.getValue().ids[0];
+                const truckItem = this.truckItem.getValue();
+                const trucksList = JSON.parse(
+                    JSON.stringify(truckItem.entities)
+                );
+                let truckData = trucksList[truckId];
+                this.getTruckRegistrationsById(truckId).subscribe({
+                    next: (res: any) => {
+                        truckData.registrations = res;
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: truckData,
+                            id: truckData.id,
+                        });
+
+                        this.tdlStore.add(truckData);
+                        this.truckItem.set([truckData]);
+                    },
+                });
+            })
+        );
+    }
     public deleteTruckById(
         truckId: number,
         tableSelectedTab?: string

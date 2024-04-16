@@ -32,13 +32,16 @@
                         i == 0 && reg.expDate > currentDate ? true : false
                     "
                     [notExpired]="currentDate > reg.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true"
+                    [openCloseStatus]="i !== 0"
+                    [voidedDate]="formatDate(reg.voidedOn)"
+                    [isDeactivated]="reg.voidedOn !== null ? true : false"
                     [optionsId]="reg.id"
+                    [danger]="true"
                     (dropActions)="
                         optionsEvent($event, trucks.data, 'registration')
                     "
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-endor">
                                 <div class="card-item">
@@ -65,6 +68,12 @@
                                         </app-ta-copy>
                                     </div>
                                 </div>
+                                <div class="card-item" *ngIf="reg.voidedOn">
+                                    <div class="card-item-name">Voided</div>
+                                    <div class="card-item-value">
+                                        {{ formatDate(reg.voidedOn) }}
+                                    </div>
+                                </div>
                             </div>
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
@@ -78,6 +87,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div
                             [@showHideCardBody]="
                                 toggler[i + 'registration'] ? 'true' : 'false'
@@ -187,7 +197,7 @@
                         optionsEvent($event, trucks.data, 'inspection')
                     "
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
@@ -305,7 +315,7 @@
                     [weeklyWidth]="'28'"
                     [haveHeaderText]="true"
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-endor">
                                 <div class="card-item">

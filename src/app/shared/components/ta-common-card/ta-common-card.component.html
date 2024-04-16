@@ -100,9 +100,15 @@
 
                         <ng-container
                             *ngIf="
-                                ((!isCardOpen && expDateClose && !forcedOpen) ||
-                                    testDate) &&
-                                !notExpired
+                                (!isCardOpen &&
+                                    expDateClose &&
+                                    !forcedOpen &&
+                                    !notExpired) ||
+                                (isDeactivated &&
+                                    notExpired &&
+                                    !isCardOpen &&
+                                    !forcedOpen) ||
+                                testDate
                             "
                         >
                             <span
@@ -113,15 +119,14 @@
                                 class="open-name"
                             >
                                 <ng-container
-                                    *ngIf="!isDeactivated && !testDate"
+                                    *ngIf="
+                                        isDeactivated && notExpired && !testDate
+                                    "
                                 >
-                                    <span>Expired on {{ expDateClose }}</span>
+                                    <span>Voided {{ voidedDate }}</span>
                                 </ng-container>
-
-                                <ng-container
-                                    *ngIf="isDeactivated && !testDate"
-                                >
-                                    <span>Voided on {{ voidedDate }}</span>
+                                <ng-container *ngIf="!notExpired && !testDate">
+                                    <span>Expired {{ expDateClose }}</span>
                                 </ng-container>
 
                                 <ng-container *ngIf="testDate && !isCardOpen">
@@ -131,7 +136,12 @@
                         </ng-container>
 
                         <ng-container
-                            *ngIf="!isCardOpen && !forcedOpen && notExpired"
+                            *ngIf="
+                                !isCardOpen &&
+                                !forcedOpen &&
+                                !isDeactivated &&
+                                notExpired
+                            "
                         >
                             <span>
                                 {{ expDateClose }}
@@ -208,6 +218,13 @@
                     (click)="clickedCardName(cardNameCurrent)"
                     class="dots-common-cards"
                 >
+                    <ng-container *ngIf="isDeactivated && isCardOpen">
+                        <div
+                            class="voided-button d-flex justify-content-center"
+                        >
+                            <p>Voided</p>
+                        </div>
+                    </ng-container>
                     <app-ta-details-dropdown
                         [options]="options.actions"
                         [id]="optionsId"

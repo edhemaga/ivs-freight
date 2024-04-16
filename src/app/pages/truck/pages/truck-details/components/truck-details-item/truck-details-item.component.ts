@@ -41,6 +41,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 @Titles()
 @Component({
@@ -90,6 +91,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     truckName: string = '';
     isAccountVisible: boolean = true;
     accountText: string = null;
+    public voidActive: boolean = false;
     public truckData: any;
     public dataEdit: any;
     public dataFHWA: any;
@@ -99,10 +101,16 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private confirmationService: ConfirmationService,
         private notificationService: NotificationService,
         private commonTruckService: TruckTrailerService,
-        private dropDownService: DropDownService
+        private dropDownService: DropDownService,
+        private truckService: TruckService
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
+        this.truck.map((object) => {
+            if (object.name === 'Registration') {
+                this.voidActive = this.checkVoidedAndNotExpired(object.data);
+            }
+        });
         if (changes.truck?.currentValue != changes.truck?.previousValue) {
             //this.truck = changes.truck?.currentValue;
             //his.initTableOptions();
@@ -111,6 +119,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit(): void {
         // Confirmation Subscribe
+
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -126,12 +135,21 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                             }
                             break;
                         }
+                        case 'void': {
+                            this.truckService
+                                .voidRegistration(
+                                    res.data.id,
+                                    res?.array[0]?.id
+                                )
+                                .subscribe();
+                        }
                         default: {
                             break;
                         }
                     }
                 },
             });
+
         this.initTableOptions();
         this.currentDate = moment(new Date()).format();
     }
@@ -139,7 +157,19 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     public onShowDetails(componentData: any) {
         componentData.showDetails = !componentData.showDetails;
     }
+    public checkVoidedAndNotExpired(objects) {
+        const currentDate = new Date();
 
+        return objects.some((object) => {
+            if (object.voidedOn !== undefined && object.voidedOn !== null) {
+                const voidedOnDate = new Date(object.voidedOn);
+                return voidedOnDate >= currentDate;
+            } else {
+                const expDate = new Date(object.expDate);
+                return expDate >= currentDate;
+            }
+        });
+    }
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {
@@ -176,21 +206,11 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     title: 'border',
                 },
                 {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
-                    show: true,
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
-                    show: true,
-                },
-                {
-                    title: 'border',
+                    title: 'Void',
+                    name: 'void',
+                    svg: 'assets/svg/common/ic_cancel_violation.svg',
+                    redIcon: true,
+                    iconName: 'deactivate-item',
                 },
                 {
                     title: 'Delete',
@@ -235,23 +255,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     name: 'view-details',
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
                     iconName: 'view-details',
-                    show: true,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
-                    show: true,
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
                     show: true,
                 },
                 {
