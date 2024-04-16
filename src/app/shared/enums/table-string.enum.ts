@@ -230,6 +230,7 @@ export enum TableStringEnum {
     // Truck
     EDIT_TRUCK = 'edit-truck',
     ADD_TRUCK = 'add-truck',
+    TRUCK_NUMBER = 'truckNumber',
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
