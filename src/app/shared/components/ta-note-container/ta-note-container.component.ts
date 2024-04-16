@@ -72,7 +72,7 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
     //Colors
     public selectedPaternColor: string = NoteSelectedColorStringEnum.GRAY_RGB;
     public activeOptions: NoteActiveOptions = {
-        ...NoteConfigConstants.NoteActiveOptions,
+        ...NoteConfigConstants.noteActiveOptions,
     };
     public containerColors: NoteColors[];
     public selectedColorName: NoteColors;
@@ -220,8 +220,8 @@ export class TaNoteContainerComponent implements OnInit, OnDestroy {
     private setContainerColors(): void {
         this.containerColors =
             this.type === NoteDefaultStringEnum.DARK
-                ? [...NoteConfigConstants.NoteDarkColors]
-                : [...NoteConfigConstants.NoteLightColors];
+                ? [...NoteConfigConstants.noteDarkColors]
+                : [...NoteConfigConstants.noteLightColors];
 
         this.selectedColorName = {
             name: this.containerColors[0].name,

@@ -1,5 +1,5 @@
 export enum AccountStringEnum {
-    EDIT_ACCONUT = 'edit-account',
+    EDIT_ACCOUNT = 'edit-account',
     DELETE_ACCOUNT = 'delete-account',
     ACCOUNT = 'ACCOUNT',
     ACCOUNTS = 'Accounts',
