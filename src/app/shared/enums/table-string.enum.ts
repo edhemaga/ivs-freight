@@ -63,6 +63,7 @@ export enum TableStringEnum {
 
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
+    ADD_NEW_3 = 'ADD NEW',
 
     SEND_MESSAGE = 'send-message',
     SEND_MESSAGE_2 = 'Send Message',
@@ -287,6 +288,7 @@ export enum TableStringEnum {
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
+    REPAIR_MODAL = 'repair-modal',
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -302,6 +304,15 @@ export enum TableStringEnum {
     EDIT_TRUCK_PM_HEADER = 'Edit Truck PM',
     EDIT_TRAILER_PM_HEADER = 'Edit Trailer PM',
     CUSTOM = 'custom',
+    DEFAULT_PMS = 'defaultPMs',
+    NEW_PMS = 'newPMs',
+    TITLE_2 = 'title',
+    ID = 'id',
+    IS_CHECKED = 'isChecked',
+    REPAIR_PM = 'repair-pm',
+    PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
+    PM_DEFAULT_MILEAGE = '10,000',
+    PM_DEFAULT_MONTHS = '6',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -436,4 +447,14 @@ export enum TableStringEnum {
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
     RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
+
+    // Actions
+    SAVE = 'save',
+
+    // Progress
+    PROGRESS = 'progress',
+    PROGRESS_MILES = 'progressMiles',
+
+    CUSTOM_FIELD = 'customField',
+    COMMON = 'common',
 }

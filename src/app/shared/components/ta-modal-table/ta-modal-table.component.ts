@@ -57,10 +57,11 @@ import {
 import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/models/pm-table-data.model';
-import { PmDropdownOptions } from '@shared/models/pm-dropdown-options.model';
+import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -128,9 +129,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public repairDepartmentOptions: DepartmentResponse[];
 
     // pm table
-    public pmTruckOptions: PmDropdownOptions[] = [];
-    public pmTrailerOptions: PmDropdownOptions[] = [];
-    public activePmDropdownItem: EnumValue[] = [];
+    public pmTruckOptions: ModalTableDropdownOption[] = [];
+    public pmTrailerOptions: ModalTableDropdownOption[] = [];
+    public activePmDropdownItem: ModalTableDropdownOption[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -178,7 +179,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    public onSelectDropdown(event: any, action: string, index?: number): void {
+    public onSelectDropdown(
+        event: ModalTableDropdownOption,
+        action: string,
+        index?: number
+    ): void {
         switch (action) {
             case TaModalTableStringEnum.CONTACT_PHONE_TYPE:
                 this.selectedContactPhoneType[index] = event;
@@ -198,13 +203,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             svg: event.logoName,
                             title: event.title,
                             mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    event.mileage ?? 10000
-                                ),
+                                event.mileage ??
+                                TableStringEnum.PM_DEFAULT_MILEAGE,
                             defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    event.mileage ?? 10000
-                                ),
+                                event.mileage ??
+                                TableStringEnum.PM_DEFAULT_MILEAGE,
                             value: event.title,
                         });
                 }
@@ -220,13 +223,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             svg: event.logoName,
                             title: event.title,
                             mileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    event.mileage ?? 6
-                                ),
+                                event.mileage ??
+                                TableStringEnum.PM_DEFAULT_MONTHS,
                             defaultMileage:
-                                MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    event.mileage ?? 6
-                                ),
+                                event.mileage ??
+                                TableStringEnum.PM_DEFAULT_MONTHS,
                             value: event.title,
                         });
                 }
@@ -263,17 +264,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
-                        let pmDropdownList: PmDropdownOptions[] = [
+                        const pmDropdownList: ModalTableDropdownOption[] = [
                             {
                                 id: 7655,
-                                name: 'ADD NEW',
-                                logoName: '',
-                                folder: 'common',
-                                subFolder: 'repair-pm',
-                                mileage:
-                                    MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        10000
-                                    ),
+                                name: TableStringEnum.ADD_NEW_3,
+                                logoName: null,
+                                folder: TableStringEnum.COMMON,
+                                subFolder: TableStringEnum.REPAIR_PM,
+                                mileage: TableStringEnum.PM_DEFAULT_MILEAGE,
                             },
                         ];
 
@@ -282,8 +280,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                                 id: index + 1,
                                 name: pmTruck.title,
                                 logoName: pmTruck.logoName,
-                                folder: 'common',
-                                subFolder: 'repair-pm',
+                                folder: TableStringEnum.COMMON,
+                                subFolder: TableStringEnum.REPAIR_PM,
                                 mileage:
                                     MethodsCalculationsHelper.convertNumberInThousandSep(
                                         pmTruck.mileage
@@ -302,13 +300,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
-                        let pmDropdownList: PmDropdownOptions[] = [
+                        const pmDropdownList: ModalTableDropdownOption[] = [
                             {
                                 id: 7655,
-                                name: 'ADD NEW',
-                                logoName: '',
-                                folder: 'common',
-                                subFolder: 'repair-pm',
+                                name: TableStringEnum.ADD_NEW_3,
+                                logoName: null,
+                                folder: TableStringEnum.COMMON,
+                                subFolder: TableStringEnum.REPAIR_PM,
                                 mileage: '6',
                             },
                         ];
@@ -318,8 +316,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                                 id: index + 1,
                                 name: pmTrailer.title,
                                 logoName: pmTrailer.logoName,
-                                folder: 'common',
-                                subFolder: 'repair-pm',
+                                folder: TableStringEnum.COMMON,
+                                subFolder: TableStringEnum.REPAIR_PM,
                                 mileage: pmTrailer.months.toString(),
                             });
                         });
@@ -457,15 +455,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             newFormArrayRow = this.formBuilder.group({
                 id: [null],
                 isChecked: [true, [Validators.required]],
-                svg: [
-                    'assets/svg/common/repair-pm/ic_custom_pm.svg',
-                    [Validators.required],
-                ],
-                title: [null],
+                svg: [TableStringEnum.PM_DEFAULT_SVG, [Validators.required]],
+                title: [null, [Validators.required, ...descriptionValidation]],
                 mileage: [null, [Validators.required]],
                 defaultMileage: [null, [Validators.required]],
-                status: [null, [Validators.required]],
-                value: [null, [...descriptionValidation]],
+                status: [null],
+                value: [null],
             });
         }
 

@@ -10,7 +10,7 @@ import { MethodsCalculationsHelper } from '../utils/helpers/methods-calculations
 export class ThousandToShortFormatPipe implements PipeTransform {
     transform(value: number): string {
         return MethodsCalculationsHelper.convertThousandToShortFormat(
-            value ? value : 0
+            value ?? 0
         );
     }
 }

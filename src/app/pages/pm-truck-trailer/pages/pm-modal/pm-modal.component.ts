@@ -13,7 +13,7 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
 } from '@angular/forms';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
@@ -95,6 +95,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public removedPMs: number[] = [];
 
+    public isFormValid: boolean = false;
+
     constructor(
         // Form
         private formBuilder: UntypedFormBuilder,
@@ -112,10 +114,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.action?.includes('unit-pm')) {
-            // TODO: Proveri sa bokija da li je povezao kako treba
+        if (this.editData?.action?.includes(TableStringEnum.UNIT_PM)) {
             this.disableCardAnimation = true;
         }
+
         this.getPMList();
     }
 
@@ -134,11 +136,11 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     public get defaultPMs(): UntypedFormArray {
-        return this.PMform.get('defaultPMs') as UntypedFormArray;
+        return this.PMform.get(TableStringEnum.DEFAULT_PMS) as UntypedFormArray;
     }
 
     public get newPMs(): UntypedFormArray {
-        return this.PMform.get('newPMs') as UntypedFormArray;
+        return this.PMform.get(TableStringEnum.NEW_PMS) as UntypedFormArray;
     }
 
     private createDefaultPMs(
@@ -195,7 +197,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public activePMs() {
         return this.newPMs.controls.reduce((accumulator, item: any) => {
-            if (item.get('isChecked').value) {
+            if (item.get(TableStringEnum.IS_CHECKED).value) {
                 return (accumulator = accumulator + 1);
             } else {
                 return (accumulator = accumulator);
@@ -204,7 +206,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     public removeNewPMs(index: number) {
-        if (this.editData.type === 'new') {
+        if (this.editData.type === TableStringEnum.NEW) {
             if (this.newPMs.at(index).value.id) {
                 switch (this.editData.header) {
                     case TableStringEnum.TRUCK_2:
@@ -227,24 +229,23 @@ export class PmModalComponent implements OnInit, OnDestroy {
     }
 
     public removeDefaultPMs(index: number) {
-        if (this.editData.type === 'new') {
+        if (this.editData.type === TableStringEnum.NEW) {
             if (this.defaultPMs.at(index).value.id) {
                 switch (this.editData.header) {
-                    case 'Truck': {
+                    case TableStringEnum.TRUCK_2:
                         this.deleteTruckPMList(
                             this.defaultPMs.at(index).value.id
                         );
                         break;
-                    }
-                    case 'Trailer': {
+
+                    case TableStringEnum.TRAILER_3:
                         this.deleteTrailerPMList(
                             this.defaultPMs.at(index).value.id
                         );
                         break;
-                    }
-                    default: {
+
+                    default:
                         break;
-                    }
                 }
             }
 
@@ -252,54 +253,32 @@ export class PmModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onChangeValueNewPM(ind: number) {
-        this.newPMs
-            .at(ind)
-            .get('value')
-            .valueChanges.pipe(debounceTime(2000), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.newPMs.at(ind).get('hidden').patchValue(true);
-                }
-            });
-    }
-
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case TableStringEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
-                        case 'repair-modal': {
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: RepairOrderModalComponent,
-                                size: 'large',
-                                type: this.editData?.type2,
-                                closing: 'fastest',
-                            });
+                        case TableStringEnum.REPAIR_MODAL:
+                            this.openRepairModal();
+
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 }
                 break;
-            }
-            case 'save': {
-                if (this.PMform.invalid || !this.isFormDirty) {
+
+            case TableStringEnum.SAVE:
+                if (!this.isFormValid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.PMform);
                     return;
                 }
 
                 switch (this.editData.type) {
-                    case 'new': {
+                    case TableStringEnum.NEW:
                         switch (this.editData.header) {
-                            case 'Truck': {
+                            case TableStringEnum.TRUCK_2:
                                 if (this.removedPMs?.length) {
                                     this.removedPMs.map((removedPmIndex) => {
                                         this.removeNewPMs(removedPmIndex);
@@ -313,8 +292,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                     close: false,
                                 });
                                 break;
-                            }
-                            case 'Trailer': {
+
+                            case TableStringEnum.TRAILER_3:
                                 if (this.removedPMs?.length) {
                                     this.removedPMs.map((removedPmIndex) => {
                                         this.removeNewPMs(removedPmIndex);
@@ -328,14 +307,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                                     close: false,
                                 });
                                 break;
-                            }
-                            default: {
+
+                            default:
                                 break;
-                            }
                         }
                         break;
-                    }
-                    case 'edit': {
+
+                    case TableStringEnum.EDIT:
                         switch (this.editData.header) {
                             case TableStringEnum.EDIT_TRUCK_PM_HEADER: {
                                 this.addUpdatePMTruckUnit();
@@ -361,18 +339,15 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         }
 
                         break;
-                    }
-                    default: {
+
+                    default:
                         break;
-                    }
                 }
 
                 break;
-            }
 
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -416,7 +391,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    this.PMform.get('newPMs').patchValue(this.pmTableData);
+                    this.PMform.get(TableStringEnum.NEW_PMS).patchValue(
+                        this.pmTableData
+                    );
                     this.changeDetector.detectChanges();
                 },
                 error: () => {},
@@ -463,7 +440,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    this.PMform.get('newPMs').patchValue(this.pmTableData);
+                    this.PMform.get(TableStringEnum.NEW_PMS).patchValue(
+                        this.pmTableData
+                    );
                 },
                 error: () => {},
             });
@@ -509,7 +488,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    this.PMform.get('newPMs').patchValue(this.pmTableData);
+                    this.PMform.get(TableStringEnum.NEW_PMS).patchValue(
+                        this.pmTableData
+                    );
                 },
                 error: () => {},
             });
@@ -555,7 +536,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    this.PMform.get('newPMs').patchValue(this.pmTableData);
+                    this.PMform.get(TableStringEnum.NEW_PMS).patchValue(
+                        this.pmTableData
+                    );
                 },
                 error: () => {},
             });
@@ -564,18 +547,18 @@ export class PmModalComponent implements OnInit, OnDestroy {
     private addPMTruckList() {
         const newData: UpdatePMTruckDefaultListCommand = {
             pmTruckDefaults: [
-                ...this.newPMs.controls.map((item: any, index) => {
+                ...this.newPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
-                        title: item.get('title').value,
+                        id: item.get(TableStringEnum.ID).value,
+                        title: item.get(TableStringEnum.TITLE_2).value,
                         mileage:
                             MethodsCalculationsHelper.convertThousanSepInNumber(
-                                item.get('mileage').value
+                                item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
@@ -590,23 +573,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type2,
-                                    closing: 'slowlest',
-                                });
+                            case TableStringEnum.REPAIR_MODAL:
+                                this.openRepairModal();
+
                                 break;
-                            }
-                            default: {
+
+                            default:
                                 break;
-                            }
                         }
                     } else {
                         this.modalService.setModalSpinner({
@@ -629,17 +602,17 @@ export class PmModalComponent implements OnInit, OnDestroy {
     private addPMTrailerList() {
         const newData: UpdatePMTrailerListDefaultCommand = {
             pmTrailerDefaults: [
-                ...this.newPMs.controls.map((item: any, index) => {
+                ...this.newPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
-                        title: item.get('title').value,
+                        id: item.get(TableStringEnum.ID).value,
+                        title: item.get(TableStringEnum.TITLE_2).value,
                         months: MethodsCalculationsHelper.convertThousanSepInNumber(
-                            item.get('mileage').value
+                            item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
@@ -654,20 +627,11 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type2,
-                                    closing: 'slowlest',
-                                });
+                            case TableStringEnum.REPAIR_MODAL:
+                                this.openRepairModal();
+
                                 break;
-                            }
+
                             default: {
                                 break;
                             }
@@ -697,30 +661,30 @@ export class PmModalComponent implements OnInit, OnDestroy {
             pmTrucks: [
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
+                        id: item.get(TableStringEnum.ID).value,
                         mileage:
                             MethodsCalculationsHelper.convertThousanSepInNumber(
-                                item.get('mileage').value
+                                item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
+                        id: item.get(TableStringEnum.ID).value,
                         mileage:
                             MethodsCalculationsHelper.convertThousanSepInNumber(
-                                item.get('mileage').value
+                                item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
                             index < 4
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
@@ -735,23 +699,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type2,
-                                    closing: 'slowlest',
-                                });
+                            case TableStringEnum.REPAIR_MODAL:
+                                this.openRepairModal();
+
                                 break;
-                            }
-                            default: {
+
+                            default:
                                 break;
-                            }
                         }
                     } else {
                         this.modalService.setModalSpinner({
@@ -777,28 +731,28 @@ export class PmModalComponent implements OnInit, OnDestroy {
             pmTrailers: [
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
+                        id: item.get(TableStringEnum.ID).value,
                         months: MethodsCalculationsHelper.convertThousanSepInNumber(
-                            item.get('mileage').value
+                            item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
                     return {
-                        id: item.get('id').value,
+                        id: item.get(TableStringEnum.ID).value,
                         months: MethodsCalculationsHelper.convertThousanSepInNumber(
-                            item.get('mileage').value
+                            item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
                             index < 1
                                 ? PMStatus.Default
-                                : item.get('isChecked').value
+                                : item.get(TableStringEnum.IS_CHECKED).value
                                 ? PMStatus.Active
                                 : PMStatus.Inactive,
                     };
@@ -813,23 +767,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type2,
-                                    closing: 'slowlest',
-                                });
+                            case TableStringEnum.REPAIR_MODAL:
+                                this.openRepairModal();
+
                                 break;
-                            }
-                            default: {
+
+                            default:
                                 break;
-                            }
                         }
                     } else {
                         this.modalService.setModalSpinner({
@@ -851,29 +795,32 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     private getPMList() {
         // Global List
-        if (this.editData.type === 'new') {
+        if (this.editData.type === TableStringEnum.NEW) {
             switch (this.editData.header) {
-                case 'Truck': {
+                case TableStringEnum.TRUCK_2:
                     this.getPMTruckList();
                     break;
-                }
-                case 'Trailer': {
+
+                case TableStringEnum.TRAILER_3:
                     this.getPMTrailerList();
                     break;
-                }
-                default: {
+
+                default:
                     break;
-                }
             }
         }
         // Per Unit list
         else {
-            if (['Truck', 'Trailer'].includes(this.editData?.type)) {
+            if (
+                [TableStringEnum.TRUCK_2, TableStringEnum.TRAILER_3].includes(
+                    this.editData?.type
+                )
+            ) {
                 const data = JSON.parse(
                     sessionStorage.getItem(this.editData.key)
                 );
 
-                if (this.editData.type === 'Truck') {
+                if (this.editData.type === TableStringEnum.TRUCK_2) {
                     this.editData = {
                         ...this.editData,
                         id: data.id,
@@ -881,13 +828,13 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             textUnit: data.unit,
                         },
                         type2: this.editData.type,
-                        type: 'edit',
+                        type: TableStringEnum.EDIT,
                         header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
-                        action: 'unit-pm',
+                        action: TableStringEnum.UNIT_PM,
                     };
                 }
 
-                if (this.editData.type === 'Trailer') {
+                if (this.editData.type === TableStringEnum.TRAILER_3) {
                     this.editData = {
                         ...this.editData,
                         id: data.id,
@@ -895,9 +842,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             textUnit: data.unit,
                         },
                         type2: this.editData.type,
-                        type: 'edit',
+                        type: TableStringEnum.EDIT,
                         header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
-                        action: 'unit-pm',
+                        action: TableStringEnum.UNIT_PM,
                     };
                 }
             }
@@ -934,9 +881,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
     public handleModalTableValueEmit(modalTableDataValue): void {
         let pmNames = [];
 
-        modalTableDataValue.map((pmItem) => {
+        modalTableDataValue.forEach((pmItem) => {
             const existingPmIndex = this.newPMs.controls.findIndex(
-                (newPm) => newPm.get('title').value === pmItem.title
+                (newPm) =>
+                    newPm.get(TableStringEnum.TITLE_2).value === pmItem.title
             );
 
             if (pmItem.title && pmItem.mileage && existingPmIndex === -1) {
@@ -982,7 +930,9 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
         if (pmNames?.length) {
             this.newPMs.controls.map((newPm, index) => {
-                if (!pmNames.includes(newPm.get('title').value)) {
+                if (
+                    !pmNames.includes(newPm.get(TableStringEnum.TITLE_2).value)
+                ) {
                     if (!this.removedPMs.includes(index))
                         this.removedPMs.push(index);
                 }
@@ -990,6 +940,10 @@ export class PmModalComponent implements OnInit, OnDestroy {
         }
 
         this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(validStatus: boolean): void {
+        this.isFormValid = validStatus;
     }
 
     private mapPmTruckData(item: PMTruckResponse, index: number): PMTableData {
@@ -1027,6 +981,20 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ),
             status: item.status,
         };
+    }
+
+    public openRepairModal(): void {
+        this.modalService.setProjectionModal({
+            action: TableStringEnum.CLOSE,
+            payload: {
+                key: this.editData?.key,
+                value: null,
+            },
+            component: RepairOrderModalComponent,
+            size: TableStringEnum.LARGE,
+            type: this.editData?.type2,
+            closing: TableStringEnum.FASTEST,
+        });
     }
 
     public identity(index: number, item: any): number {

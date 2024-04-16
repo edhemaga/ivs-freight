@@ -24,7 +24,7 @@ import {
     PMStatus,
     PMTrailerUnitResponse,
     PMTruckUnitResponse,
-} from 'appcoretruckassist'
+} from 'appcoretruckassist';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -118,6 +118,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.actionAnimationSubscribe();
 
         this.pmListSubscribe();
+
+        console.log('pm-table');
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -263,9 +265,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
+        const activeTableData = this.tableData.find(
+            (table) => table.field === this.selectedTab
+        );
 
-        this.setPmData(td);
+        this.setPmData(activeTableData);
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -302,7 +306,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public onTableBodyActions(event: PmTableAction): void {
         switch (event.type) {
-            case TableStringEnum.CONFIGURE: {
+            case TableStringEnum.CONFIGURE:
                 if (this.selectedTab === TableStringEnum.ACTIVE) {
                     this.modalService.openModal(
                         PmModalComponent,
@@ -328,7 +332,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     );
                 }
-            }
+
             default: {
                 break;
             }
@@ -507,28 +511,31 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             TableStringEnum.PM_TRUCK
         );
 
-        truckUnit.pMs.map((pm) => {
+        truckUnit.pMs.forEach((pm) => {
             const pmColumn = truckPMColumns.find(
                 (column) => column.name === pm.title
             );
 
-            if (
-                pm.diffMileage &&
-                pmColumn.isSelectColumn &&
-                pm.status?.name !== PMStatus.Inactive
-            ) {
-                truck[pmColumn.field] = {
-                    expirationMiles: pm.diffMileage,
-                    expirationMilesText: this.thousandSeparator.transform(
-                        pm.diffMileage
-                    ),
-                    totalValueText:
-                        this.thousandToShortFormatPipe.transform(pm.mileage) +
-                        ' mi',
-                    percentage: Math.floor(pm.percentage),
-                };
-            } else {
-                truck[pmColumn.field] = defaultPMData;
+            if (pmColumn) {
+                if (
+                    pm.diffMileage &&
+                    pmColumn.isSelectColumn &&
+                    pm.status?.name !== PMStatus.Inactive
+                ) {
+                    truck[pmColumn.field] = {
+                        expirationMiles: pm.diffMileage,
+                        expirationMilesText: this.thousandSeparator.transform(
+                            pm.diffMileage
+                        ),
+                        totalValueText:
+                            this.thousandToShortFormatPipe.transform(
+                                pm.mileage
+                            ) + ' mi',
+                        percentage: Math.floor(pm.percentage),
+                    };
+                } else {
+                    truck[pmColumn.field] = defaultPMData;
+                }
             }
         });
 
@@ -574,7 +581,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             TableStringEnum.PM_TRAILER
         );
 
-        trailerUnit.pMs.map((pm) => {
+        trailerUnit.pMs.forEach((pm) => {
             const pmColumn = trailerColumns.find(
                 (column) => column.name === pm.title
             );
@@ -616,11 +623,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customColumnsTruck = customColumnsPmTruck.map(
             (customColumn, index) => {
                 return {
-                    ngTemplate: 'progressMiles',
+                    ngTemplate: TableStringEnum.PROGRESS_MILES,
                     title: customColumn.title,
-                    field: 'customField' + (index + 1),
+                    field: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     name: customColumn.title,
-                    sortName: 'customField' + (index + 1),
+                    sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     hidden: false,
                     isPined: false,
                     width: 150,
@@ -649,11 +656,11 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.customColumnsTrailer = customColumnsPmTrailer.map(
             (customColumn, index) => {
                 return {
-                    ngTemplate: 'progress',
+                    ngTemplate: TableStringEnum.PROGRESS,
                     title: customColumn.title,
-                    field: 'customField' + (index + 1),
+                    field: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     name: customColumn.title,
-                    sortName: 'customField' + (index + 1),
+                    sortName: TableStringEnum.CUSTOM_FIELD + (index + 1),
                     hidden: false,
                     isPined: false,
                     width: 150,
@@ -681,8 +688,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             const truckColumns = this.getGridColumns(configType);
             const pmListTruck = this.pmListTruckQuery.getAll();
 
-            truckColumns.map((column) => {
-                if (column.ngTemplate === 'progressMiles') {
+            truckColumns.forEach((column) => {
+                if (column.ngTemplate === TableStringEnum.PROGRESS_MILES) {
                     const findPmListColumn = pmListTruck.find(
                         (pm) => pm.title === column.name
                     );
@@ -692,6 +699,14 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             findPmListColumn.status.name === PMStatus.Inactive
                                 ? false
                                 : true;
+
+                        if (column.disabled) {
+                            column.hidden = false;
+                            column.disabled = false;
+                        }
+                    } else {
+                        column.hidden = true;
+                        column.disabled = true;
                     }
                 }
             });
@@ -701,8 +716,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             const trailerColumns = this.getGridColumns(configType);
             const pmListTrailer = this.pmListTrailerQuery.getAll();
 
-            trailerColumns.map((column) => {
-                if (column.ngTemplate === 'progress') {
+            trailerColumns.forEach((column) => {
+                if (column.ngTemplate === TableStringEnum.PROGRESS) {
                     const findPmListColumn = pmListTrailer.find(
                         (pm) => pm.title === column.name
                     );
