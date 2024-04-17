@@ -34,18 +34,23 @@ import { TrucksMinimalListQuery } from '@pages/truck/state/truck-details-minima-
 // enums
 import { ChartAxisPositionEnum } from '@shared/components/ta-chart/enums/chart-axis-position-string.enum';
 import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
+
 // constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
+import { TruckDetailsConstants } from '@pages/truck/pages/truck-details/utils/constants/truck-details.constants';
 
 // components
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 
 // models
-import { TruckResponse } from 'appcoretruckassist';
+import { TruckResponse, TruckPerformanceResponse } from 'appcoretruckassist';
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
+
 @Component({
     selector: 'app-truck-details-card',
     templateUrl: './truck-details-card.component.html',
@@ -378,8 +383,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         id: -1,
         chartType: 1,
     };
-    public performance: any[] = [];
-    isWideScreen: boolean = false;
+    public performance: TruckPerformanceResponse;
+    public isWideScreen: boolean = false;
+    public ownerHistoryHeader: { label: string }[] =
+        TruckDetailsConstants.ownerHistoryHeader;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
@@ -572,7 +579,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.truckService
             .getPerformace(id, chartType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item: any) => {
+            .subscribe((item) => {
                 this.performance = item;
             });
     }
@@ -649,19 +656,19 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    class: 'regular-text',
-                    contentType: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    class: TableStringEnum.REGULAR_TEXT,
+                    contentType: TableStringEnum.EDIT,
                 },
 
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
                     text: 'Are you sure you want to delete driver(s)?',
-                    class: 'delete-text',
-                    contentType: 'delete',
+                    class: TableStringEnum.DELETE_TEXT,
+                    iconName: TableStringEnum.DELETE,
                 },
             ],
             export: true,
@@ -740,7 +747,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         switch (action) {
-            case 'previous': {
+            case TruckDetailsEnum.PREVIOUS: {
                 currentIndex = --currentIndex;
                 if (currentIndex != -1) {
                     this.detailsPageDriverSer.getDataDetailId(
@@ -753,7 +760,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 }
                 break;
             }
-            case 'next': {
+            case TruckDetailsEnum.NEXT: {
                 currentIndex = ++currentIndex;
                 if (
                     currentIndex !== -1 &&

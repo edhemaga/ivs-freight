@@ -7,7 +7,8 @@ export interface Confirmation {
         | 'activate'
         | 'deactivate'
         | 'info'
-        | 'reset'; // if type is info => subtype must be: archive | ban list | dnu | void;
+        | 'reset'
+        | 'void'; // if type is info => subtype must be: archive | ban list | dnu | void;
     id?: number; // id for item
     data?: any;
     array?: any[]; // multiple array of objects

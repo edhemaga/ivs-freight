@@ -2,20 +2,23 @@
     [modalTitle]="
         editData.cdlStatus
             ? editData.cdlStatus.concat(' ', 'CDL')
-            : (editData?.type === 'info'
-                  ? editData?.subType === 'archive'
-                      ? editData?.subType?.substring(0, 1).toUpperCase() +
-                        editData?.subType?.substring(1)
-                      : 'Move'
-                  : editData?.type === 'multiple delete'
-                  ? 'Delete'
-                  : editData?.type?.substring(0, 1).toUpperCase() +
-                    editData?.type?.substring(1)) +
-              (editData?.template === 'fuel stop'
-                  ? ' Fuel Stop'
-                  : editData?.template === ' contact'
-                  ? 'Contact'
-                  : ' Confirmation')
+            : editData?.type === 'info'
+            ? editData?.subType === 'archive'
+                ? editData?.subType?.substring(0, 1).toUpperCase() +
+                  editData?.subType?.substring(1)
+                : 'Move'
+            : editData?.type === 'multiple delete'
+            ? 'Delete'
+            : editData?.template === 'void'
+            ? ' Void Registration '
+            : editData?.type?.substring(0, 1).toUpperCase() +
+                  editData?.type?.substring(1) +
+                  editData?.template ===
+              'fuel stop'
+            ? ' Fuel Stop'
+            : editData?.template === ' contact'
+            ? 'Contact'
+            : ' Confirmation'
     "
     [editName]="
         editData.cdlStatus
@@ -29,6 +32,13 @@
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [showCounter]="true"
+    [disableDelete]="
+        editData?.array?.length
+            ? editData?.array?.length && !selectedCdl?.id
+                ? true
+                : false
+            : false
+    "
     [headerSvg]="
         editData?.type === 'multiple delete' ? 'delete' : editData?.type
     "
@@ -265,6 +275,50 @@
                                 : editData?.data?.address?.address
                         }}
                     </p>
+                </div>
+            </ng-container>
+
+            <!-- void -->
+            <ng-container *ngIf="['void'].includes(editData?.template)">
+                <div
+                    class="confirmation-info d-flex flex-column justify-content-center"
+                >
+                    <div class="d-flex flex-row justify-content-left">
+                        <img
+                            class="avatar-img"
+                            src="/assets/svg/void.svg"
+                            alt="avatar"
+                        />
+                        <div>
+                            <p
+                                class="m-0 confirmation-text-1 d-flex align-items-center"
+                            >
+                                {{ editData?.data.state?.stateShortName }}
+                                {{ editData?.data.licensePlate }}
+                            </p>
+                            <p class="m-0 confirmation-text-2">
+                                {{ editData?.data.expDate | formatDateP }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- CDL dropdown slecet if Cdl array is sent -->
+                    <div *ngIf="editData?.array?.length > 0">
+                        <div class="col-12 void-holder" [formGroup]="cdlForm">
+                            <app-ta-input-dropdown
+                                formControlName="cdlId"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'New Active Registration',
+                                    isRequired: true,
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-264'
+                                }"
+                                [options]="editData?.array"
+                                (selectedItem)="onSelectDropdown($event, 'cdl')"
+                            ></app-ta-input-dropdown>
+                        </div>
+                    </div>
                 </div>
             </ng-container>
 
@@ -601,12 +655,21 @@
         </ng-container>
 
         <!-- Normal Header -->
-
+        <ng-container *ngIf="editData.type === 'void'">
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to
+                    {{ editData.type }}
+                    selected registration
+                </p>
+            </div>
+        </ng-container>
         <div
             *ngIf="
                 !editData.rating &&
                 !editData.subTypeStatus &&
-                editData.subType !== 'cdl void'
+                editData.subType !== 'cdl void' &&
+                editData.type !== 'void'
             "
             class="confirmation-header"
         >
@@ -631,15 +694,28 @@
         <!-- Icon -->
 
         <div class="confirmation-icon">
-            <svg-icon
-                [src]="
-                    'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
-                "
-                [svgStyle]="{
-                    'width.px': '90',
-                    'height.px': '90'
-                }"
-            ></svg-icon>
+            <ng-container *ngIf="editData?.type === 'void'">
+                <svg-icon
+                    [src]="
+                        'assets/svg/common/confirmation/ic_confirmation_print.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '90',
+                        'height.px': '90'
+                    }"
+                ></svg-icon>
+            </ng-container>
+            <ng-container *ngIf="editData?.type !== 'void'">
+                <svg-icon
+                    [src]="
+                        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '90',
+                        'height.px': '90'
+                    }"
+                ></svg-icon>
+            </ng-container>
         </div>
     </div>
 </app-ta-modal>

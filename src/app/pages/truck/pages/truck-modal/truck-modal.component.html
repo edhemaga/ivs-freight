@@ -4,6 +4,7 @@
     [editName]="editData?.data?.truckNumber"
     [isModalValid]="truckForm.valid && isFormDirty"
     [saveAndAddNew]="editData?.type !== 'edit'"
+    [editDate]="editData?.type === 'edit'"
     (action)="onModalAction($event)"
 >
     <div origin class="origin-part-modal">
@@ -107,6 +108,19 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-2">
+                            <app-ta-input
+                                formControlName="year"
+                                [inputConfig]="{
+                                    name: 'Year',
+                                    type: 'text',
+                                    label: 'Year',
+                                    isRequired: true,
+                                    minLength: 4,
+                                    maxLength: 4
+                                }"
+                            ></app-ta-input>
+                        </div>
                         <div class="col-6">
                             <app-ta-input
                                 formControlName="vin"
@@ -126,7 +140,7 @@
                                 }"
                             ></app-ta-input>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <app-ta-input-dropdown
                                 formControlName="truckMakeId"
                                 [template]="'svg-template'"
@@ -154,7 +168,7 @@
                         </div>
                     </div>
                     <div class="row last-row">
-                        <div class="col-6">
+                        <div class="col-8">
                             <app-ta-input
                                 formControlName="model"
                                 [inputConfig]="{
@@ -169,19 +183,7 @@
                                 (blurInput)="onBlurTruckModel()"
                             ></app-ta-input>
                         </div>
-                        <div class="col-2">
-                            <app-ta-input
-                                formControlName="year"
-                                [inputConfig]="{
-                                    name: 'Year',
-                                    type: 'text',
-                                    label: 'Year',
-                                    isRequired: true,
-                                    minLength: 4,
-                                    maxLength: 4
-                                }"
-                            ></app-ta-input>
-                        </div>
+
                         <div class="col-4 no-p-left">
                             <app-ta-input-dropdown
                                 formControlName="colorId"
@@ -274,7 +276,8 @@
                                 documents.length ? documents.length : 0
                             "
                             [cardName]="'Document'"
-                            [isCardOpen]="documents.length > 0"
+                            [isCardOpen]="true"
+                            [disabledCard]="true"
                         >
                             <app-ta-upload-files
                                 [files]="documents"
@@ -324,6 +327,22 @@
                             "
                         ></app-ta-input-dropdown>
 
+                        <app-ta-input
+                            formControlName="emptyWeight"
+                            [inputConfig]="{
+                                name: 'Empty Weight',
+                                type: 'text',
+                                label: 'Empty Weight',
+                                minLength: 4,
+                                maxLength: 6,
+                                placeholderText: 'ibs',
+                                thousandSeparator: true
+                            }"
+                        ></app-ta-input>
+                    </div>
+
+                    <!-- Second Row -->
+                    <div class="truck-additional-two-columns">
                         <app-ta-input-dropdown
                             formControlName="truckEngineModelId"
                             [inputConfig]="{
@@ -339,22 +358,6 @@
                                 onSelectDropdown($event, 'engine-model')
                             "
                         ></app-ta-input-dropdown>
-                    </div>
-
-                    <!-- Second Row -->
-                    <div class="truck-additional-two-columns">
-                        <app-ta-input
-                            formControlName="emptyWeight"
-                            [inputConfig]="{
-                                name: 'Empty Weight',
-                                type: 'text',
-                                label: 'Empty Weight',
-                                minLength: 4,
-                                maxLength: 6,
-                                placeholderText: 'ibs',
-                                thousandSeparator: true
-                            }"
-                        ></app-ta-input>
 
                         <app-ta-input-dropdown
                             formControlName="engineOilType"
@@ -375,14 +378,6 @@
 
                     <!-- Third Row -->
                     <div class="truck-additional-three-columns">
-                        <app-ta-input
-                            formControlName="transmissionModel"
-                            [inputConfig]="{
-                                name: 'Transmission Model',
-                                type: 'text',
-                                label: 'Transmission Model'
-                            }"
-                        ></app-ta-input>
                         <app-ta-input-dropdown
                             formControlName="fuelType"
                             [inputConfig]="{
@@ -408,10 +403,6 @@
                                 thousandSeparator: true
                             }"
                         ></app-ta-input>
-                    </div>
-
-                    <!-- Fourth Row -->
-                    <div class="truck-additional-three-columns">
                         <app-ta-input-dropdown
                             formControlName="apUnit"
                             [inputConfig]="{
@@ -424,6 +415,66 @@
                             [options]="apUnits"
                             [activeItem]="selectedAPUnit"
                             (selectedItem)="onSelectDropdown($event, 'ap-unit')"
+                        ></app-ta-input-dropdown>
+                    </div>
+
+                    <!-- Fourth Row -->
+                    <div class="truck-additional-three-columns">
+                        <app-ta-input
+                            formControlName="transmissionModel"
+                            [inputConfig]="{
+                                name: 'Transmission Model',
+                                type: 'text',
+                                label: 'Transmission Model'
+                            }"
+                        ></app-ta-input>
+                        <app-ta-input-dropdown
+                            formControlName="shifter"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Shifter',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-164'
+                            }"
+                            [options]="shifters"
+                            [activeItem]="selectedShifter"
+                            (selectedItem)="onSelectDropdown($event, 'shifter')"
+                        ></app-ta-input-dropdown>
+                        <app-ta-input-dropdown
+                            formControlName="gearRatio"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Gear Ratio',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-135'
+                            }"
+                            [options]="gearRatios"
+                            [activeItem]="selectedGearRatio"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'gear-ratio')
+                            "
+                        ></app-ta-input-dropdown>
+                    </div>
+
+                    <!-- Fifth Row -->
+
+                    <div class="truck-additional-three-columns">
+                        <app-ta-input-dropdown
+                            formControlName="tireSizeId"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Tire Size',
+                                isDropdown: true,
+                                dropdownWidthClass: 'w-col-134'
+                            }"
+                            [options]="tireSize"
+                            [activeItem]="selectedTireSize"
+                            (selectedItem)="
+                                onSelectDropdown($event, 'tire-size')
+                            "
                         ></app-ta-input-dropdown>
                         <app-ta-input
                             formControlName="axles"
@@ -450,7 +501,7 @@
                         ></app-ta-input-dropdown>
                     </div>
 
-                    <!-- Fifth Row -->
+                    <!-- Sixth Row -->
                     <div class="truck-additional-three-columns">
                         <app-ta-input
                             formControlName="wheelBase"
@@ -491,55 +542,6 @@
                             [activeItem]="selectedRearWheels"
                             (selectedItem)="
                                 onSelectDropdown($event, 'rear-wheels')
-                            "
-                        ></app-ta-input-dropdown>
-                    </div>
-
-                    <!-- Sixth Row -->
-                    <div class="truck-additional-three-columns">
-                        <app-ta-input-dropdown
-                            formControlName="shifter"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Shifter',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
-                            }"
-                            [options]="shifters"
-                            [activeItem]="selectedShifter"
-                            (selectedItem)="onSelectDropdown($event, 'shifter')"
-                        ></app-ta-input-dropdown>
-
-                        <app-ta-input-dropdown
-                            formControlName="tireSizeId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Tire Size',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134'
-                            }"
-                            [options]="tireSize"
-                            [activeItem]="selectedTireSize"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'tire-size')
-                            "
-                        ></app-ta-input-dropdown>
-
-                        <app-ta-input-dropdown
-                            formControlName="gearRatio"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Gear Ratio',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-135'
-                            }"
-                            [options]="gearRatios"
-                            [activeItem]="selectedGearRatio"
-                            (selectedItem)="
-                                onSelectDropdown($event, 'gear-ratio')
                             "
                         ></app-ta-input-dropdown>
                     </div>

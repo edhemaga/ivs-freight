@@ -77,6 +77,56 @@ export class DropDownService {
                 );
                 break;
             }
+            case 'void': {
+                let voidData = data.registrations.find(
+                    (registration) => registration.id === any.id
+                );
+                let cdlsArray = data.registrations.map((registration) => {
+                    if (registration.voidedOn) {
+                        return {
+                            id: registration.id,
+                            name: registration.licensePlate,
+                        };
+                    }
+                });
+                cdlsArray = cdlsArray.filter((item) => item);
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: 'small' },
+                    {
+                        data: {
+                            ...voidData,
+                        },
+                        template: 'void',
+                        type: 'void',
+                        modalHeader: true,
+                        array: cdlsArray?.length > 0 ? cdlsArray : [],
+                    }
+                );
+
+                break;
+            }
+            case 'activate':
+                {
+                    const mappedEvent = {
+                        ...event,
+                        data: {
+                            ...data,
+                            number: data.licensePlate,
+                        },
+                    };
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: 'small' },
+                        {
+                            ...mappedEvent,
+                            template: 'void',
+                            type: 'activate',
+                            svg: true,
+                        }
+                    );
+                }
+                break;
             case 'delete-medical': {
                 const mappedEvent = {
                     ...any,
