@@ -35,7 +35,7 @@ import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truc
 import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
 
 // helpers
-import { TruckSortByDate } from '@pages/truck/pages/truck-details/utils/helpers/truck-sort-by-date.function';
+import { TruckSortByDateHelper } from '@pages/truck/pages/truck-details/utils/helpers/truck-sort-by-date.helper';
 
 @Component({
     selector: 'app-truck-details',
@@ -398,7 +398,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
-                data: TruckSortByDate.sortObjectsByExpDate(data.registrations),
+                data: TruckSortByDateHelper.sortObjectsByExpDate(
+                    data.registrations
+                ),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.registrations),
             },
@@ -407,7 +409,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.FHWA_INSPECTION,
                 template: TruckDetailsEnum.FHWA_INSPECTION_2,
                 length: data?.inspections?.length ? data.inspections.length : 0,
-                data: TruckSortByDate.sortObjectsByExpDate(data.inspections),
+                data: TruckSortByDateHelper.sortObjectsByExpDate(
+                    data.inspections
+                ),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.inspections),
             },
@@ -416,7 +420,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.TITLE_2,
                 template: TruckDetailsEnum.TITLE,
                 length: data?.titles?.length ? data.titles.length : 0,
-                data: TruckSortByDate.sortObjectsByExpDate(data.titles),
+                data: TruckSortByDateHelper.sortObjectsByExpDate(data.titles),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.titles),
             },

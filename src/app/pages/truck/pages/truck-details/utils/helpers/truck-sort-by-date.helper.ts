@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
 
-export class TruckSortByDate {
+export class TruckSortByDateHelper {
     static sortObjectsByExpDate(
         data: TruckDetailsConfigData[]
     ): TruckDetailsConfigData[] {
