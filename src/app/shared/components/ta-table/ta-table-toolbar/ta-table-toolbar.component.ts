@@ -352,8 +352,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             let curentGroupName = '',
                 index = null;
 
-            console.log('this.columnsOptions', this.columnsOptions);
-
             this.columnsOptions.map((column) => {
                 if (
                     column?.groupName &&

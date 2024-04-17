@@ -75,17 +75,17 @@
                     <ng-container
                         *ngIf="
                             tableData[0].title === 'Contacts' &&
-                            (column.tableHeadTitle === 'PHONE' ||
-                                column.tableHeadTitle === 'EMAIL')
+                            (column.name === 'PHONE' || column.name === 'EMAIL')
                         "
                     >
                         <div
                             class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
                         >
                             <p
                                 class="m-0 ta-font-extra-bold th-title-double-subtitle"
                             >
-                                {{ column.tableHeadTitle }}
+                                {{ column.name }}
                             </p>
 
                             <p class="m-0 ta-font-bold th-title">PRIMARY</p>
@@ -96,8 +96,8 @@
                         *ngIf="
                             tableData[0].title !== 'Contacts' ||
                             (tableData[0].title === 'Contacts' &&
-                                column.tableHeadTitle !== 'PHONE' &&
-                                column.tableHeadTitle !== 'EMAIL')
+                                column.name !== 'PHONE' &&
+                                column.name !== 'EMAIL')
                         "
                     >
                         <div
@@ -493,17 +493,18 @@
                         <ng-container
                             *ngIf="
                                 tableData[0].title === 'Contacts' &&
-                                (column.tableHeadTitle === 'PHONE' ||
-                                    column.tableHeadTitle === 'EMAIL')
+                                (column.name === 'PHONE' ||
+                                    column.name === 'EMAIL')
                             "
                         >
                             <div
                                 class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
                             >
                                 <p
                                     class="m-0 ta-font-extra-bold th-title-double-subtitle"
                                 >
-                                    {{ column.tableHeadTitle }}
+                                    {{ column.name }}
                                 </p>
 
                                 <p class="m-0 ta-font-bold th-title">PRIMARY</p>
@@ -514,8 +515,8 @@
                             *ngIf="
                                 tableData[0].title !== 'Contacts' ||
                                 (tableData[0].title === 'Contacts' &&
-                                    column.tableHeadTitle !== 'PHONE' &&
-                                    column.tableHeadTitle !== 'EMAIL')
+                                    column.name !== 'PHONE' &&
+                                    column.name !== 'EMAIL')
                             "
                         >
                             <div
@@ -857,9 +858,13 @@
         </div>
 
         <!-- Actions -->
-        <tr class="tr actions-columns-container">
+        <tr
+            class="tr actions-columns-container justify-content-end"
+            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+        >
             <th
                 *ngFor="let column of actionColumns; let i = index"
+                class="d-flex align-items-center justify-content-center"
                 [ngStyle]="{
                     width: column.isAction ? column.width + 'px' : '0px',
                     'min-width.px': column?.minWidth

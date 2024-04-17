@@ -21,6 +21,7 @@ export class FormService implements OnDestroy {
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(() => {
                 let current_value = form.value;
+
                 if (
                     Object.keys(diff(this.originalValue, current_value))
                         .length !== 0

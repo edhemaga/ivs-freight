@@ -53,6 +53,7 @@ import {
 } from 'appcoretruckassist';
 import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+
 @Component({
     selector: 'app-ta-modal-table',
     standalone: true,
@@ -436,16 +437,22 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     subtotal: data.subtotal,
                 });
             }
+
+            if (i === modalTableData.length - 1) {
+                if (
+                    this.getFormArray().status === TaModalTableStringEnum.VALID
+                ) {
+                    this.modalTableValidStatusEmitter.emit(true);
+                } else {
+                    this.modalTableValidStatusEmitter.emit(false);
+                }
+            }
         }
     }
 
     private checkForInputChanges(): void {
         this.getFormArray()
-            ?.valueChanges.pipe(
-                distinctUntilChanged(),
-                throttleTime(2),
-                takeUntil(this.destroy$)
-            )
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
                     this.getModalTableDataValue();
