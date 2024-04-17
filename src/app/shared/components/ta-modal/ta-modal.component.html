@@ -617,8 +617,13 @@
                                         : 'multiple delete'
                                 )
                             "
-                            class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
+                            class="modal-delete-btn modal-confirmation-btn"
                             type="button"
+                            [ngClass]="{
+                                'modal-gray-btn': ['reset'].includes(
+                                    confirmationData?.type
+                                )
+                            }"
                         >
                             Yes
                         </button>

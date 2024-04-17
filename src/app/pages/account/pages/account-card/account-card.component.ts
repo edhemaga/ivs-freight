@@ -27,7 +27,7 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { AccountService } from '../../services/account.service';
+import { AccountService } from '@pages/account/services/account.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // components
@@ -35,9 +35,9 @@ import { AccountModalComponent } from '@pages/account/pages/account-modal/accoun
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
-import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { AccountStringEnum } from '../../enums/account-string.enum';
+import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
 
 @Component({
     selector: 'app-account-card',
@@ -48,11 +48,11 @@ import { AccountStringEnum } from '../../enums/account-string.enum';
 export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
-        
-        @Input() set viewData(value: CardDetails[]) {
-            this._viewData = value;
-            this.getTransformedCardsData();
-        }
+
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+        this.getTransformedCardsData();
+    }
     @Input() selectedTab: string;
 
     // Card body endpoints
@@ -132,7 +132,6 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
             }
         }
     }
-
 
     public saveNoteValue(note: string, id: number): void {
         this.saveValueNote.emit({

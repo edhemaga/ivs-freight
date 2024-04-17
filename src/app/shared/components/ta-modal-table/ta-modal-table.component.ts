@@ -38,6 +38,7 @@ import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/con
 
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // validations
 import {
@@ -56,12 +57,11 @@ import {
 } from 'appcoretruckassist';
 import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
-import { PMTableData } from '@pages/pm-truck-trailer/pages/models/pm-table-data.model';
+import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -615,16 +615,22 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     value: data.title,
                 });
             }
+
+            if (i === modalTableData.length - 1) {
+                if (
+                    this.getFormArray().status === TaModalTableStringEnum.VALID
+                ) {
+                    this.modalTableValidStatusEmitter.emit(true);
+                } else {
+                    this.modalTableValidStatusEmitter.emit(false);
+                }
+            }
         }
     }
 
     private checkForInputChanges(): void {
         this.getFormArray()
-            ?.valueChanges.pipe(
-                distinctUntilChanged(),
-                throttleTime(2),
-                takeUntil(this.destroy$)
-            )
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
                     this.getModalTableDataValue();
