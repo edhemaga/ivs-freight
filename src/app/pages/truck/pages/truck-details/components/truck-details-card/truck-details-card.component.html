@@ -191,9 +191,10 @@
                                 }}
                             </p>
                         </ng-container>
-                        <ng-container *ngIf="!truck.assignedTo.driver.avatar">
+                        <ng-container
+                            *ngIf="truck.assignedTo.driver.avatar !== ''"
+                        >
                             <img
-                                *ngIf="truck.assignedTo.driver.avatar !== ''"
                                 class="driverAvatarImg"
                                 [src]="
                                     imageBase64Service.sanitizer(
@@ -762,59 +763,68 @@
                     <div class="owner-history-container">
                         <div class="status-container">
                             <div class="status-header">
-                                <div class="status-item">
-                                    <p class="p-status">COMPANY</p>
-                                </div>
-                                <div class="status-item">
-                                    <p class="p-status">FROM - TO</p>
-                                </div>
-                                <div class="status-item">
-                                    <p class="p-status">DURATION</p>
+                                <div
+                                    class="status-item"
+                                    *ngFor="let item of ownerHistoryHeader"
+                                >
+                                    <p class="p-status">{{ item.label }}</p>
                                 </div>
                             </div>
                             <div class="truck-card-line"></div>
-                            <div
-                                class="status-items"
+                            <ng-container
                                 *ngFor="
                                     let owHist of truck.ownerHistories
                                         | keyvalue : sortKeys;
                                     trackBy: identity
                                 "
                             >
-                                <div
-                                    class="item-wrapper d-flex justify-content-evenly"
-                                >
-                                    <p class="employment">
-                                        {{ owHist.value.name }}
-                                    </p>
+                                <div class="status-items">
+                                    <div class="item-wrapper">
+                                        <p class="employment">
+                                            {{ owHist.value.name }}
+                                        </p>
 
-                                    <p class="date-from-to">
-                                        {{
-                                            owHist.value.startDate | formatDateP
-                                        }}
-                                        -
-                                        <span *ngIf="owHist.value.endDate">{{
-                                            owHist.value.endDate | formatDateP
-                                        }}</span>
-                                        <span *ngIf="!owHist.value.endDate"
-                                            >Today</span
-                                        >
-                                    </p>
-                                    <p class="duration">
-                                        <span
-                                            *ngIf="
-                                                owHist?.value.duration?.Years
-                                            "
-                                        >
-                                            {{ owHist.value.duration.Years }} y
-                                        </span>
-                                        <span>
-                                            {{ owHist.value.duration.Days }} d
-                                        </span>
-                                    </p>
+                                        <p class="date-from-to">
+                                            {{
+                                                owHist.value.startDate
+                                                    | formatDateP
+                                            }}
+                                            -
+                                            <ng-container
+                                                *ngIf="owHist.value.endDate"
+                                            >
+                                                <span>{{
+                                                    owHist.value.endDate
+                                                        | formatDateP
+                                                }}</span>
+                                            </ng-container>
+                                            <ng-container
+                                                *ngIf="owHist.value.endDate"
+                                            >
+                                                <span>Today</span>
+                                            </ng-container>
+                                        </p>
+                                        <p class="duration">
+                                            <span
+                                                *ngIf="
+                                                    owHist?.value.duration
+                                                        ?.Years
+                                                "
+                                            >
+                                                {{
+                                                    owHist.value.duration.Years
+                                                }}
+                                                y
+                                            </span>
+                                            <span>
+                                                {{ owHist.value.duration.Days }}
+                                                d
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="truck-card-line"></div>
                                 </div>
-                                <div class="truck-card-line"></div>
-                            </div>
+                            </ng-container>
                         </div>
                     </div>
                 </ng-container>

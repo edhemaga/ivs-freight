@@ -279,48 +279,48 @@
             </ng-container>
 
             <!-- void -->
-
-            <div
-                *ngIf="['void'].includes(editData?.template)"
-                class="confirmation-info d-flex flex-column justify-content-center"
-            >
-                <div class="d-flex flex-row justify-content-left">
-                    <img
-                        class="avatar-img"
-                        src="/assets/svg/void.svg"
-                        alt="avatar"
-                    />
-                    <div>
-                        <p
-                            class="m-0 confirmation-text-1 d-flex align-items-center"
-                        >
-                            {{ editData?.data.state?.stateShortName }}
-                            {{ editData?.data.licensePlate }}
-                        </p>
-                        <p class="m-0 confirmation-text-2">
-                            {{ editData?.data.expDate | formatDateP }}
-                        </p>
+            <ng-container *ngIf="['void'].includes(editData?.template)">
+                <div
+                    class="confirmation-info d-flex flex-column justify-content-center"
+                >
+                    <div class="d-flex flex-row justify-content-left">
+                        <img
+                            class="avatar-img"
+                            src="/assets/svg/void.svg"
+                            alt="avatar"
+                        />
+                        <div>
+                            <p
+                                class="m-0 confirmation-text-1 d-flex align-items-center"
+                            >
+                                {{ editData?.data.state?.stateShortName }}
+                                {{ editData?.data.licensePlate }}
+                            </p>
+                            <p class="m-0 confirmation-text-2">
+                                {{ editData?.data.expDate | formatDateP }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- CDL dropdown slecet if Cdl array is sent -->
+                    <div *ngIf="editData?.array?.length > 0">
+                        <div class="col-12 void-holder" [formGroup]="cdlForm">
+                            <app-ta-input-dropdown
+                                formControlName="cdlId"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'New Active Registration',
+                                    isRequired: true,
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-264'
+                                }"
+                                [options]="editData?.array"
+                                (selectedItem)="onSelectDropdown($event, 'cdl')"
+                            ></app-ta-input-dropdown>
+                        </div>
                     </div>
                 </div>
-                <!-- CDL dropdown slecet if Cdl array is sent -->
-                <div *ngIf="editData?.array?.length > 0">
-                    <div class="col-12 void-holder" [formGroup]="cdlForm">
-                        <app-ta-input-dropdown
-                            formControlName="cdlId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'New Active Registration',
-                                isRequired: true,
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-264'
-                            }"
-                            [options]="editData?.array"
-                            (selectedItem)="onSelectDropdown($event, 'cdl')"
-                        ></app-ta-input-dropdown>
-                    </div>
-                </div>
-            </div>
+            </ng-container>
 
             <!-- CDL -->
 
@@ -655,13 +655,15 @@
         </ng-container>
 
         <!-- Normal Header -->
-        <div *ngIf="editData.type === 'void'" class="confirmation-header">
-            <p class="m-0 ta-font-medium">
-                Are you sure you want to
-                {{ editData.type }}
-                selected registration
-            </p>
-        </div>
+        <ng-container *ngIf="editData.type === 'void'">
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to
+                    {{ editData.type }}
+                    selected registration
+                </p>
+            </div>
+        </ng-container>
         <div
             *ngIf="
                 !editData.rating &&

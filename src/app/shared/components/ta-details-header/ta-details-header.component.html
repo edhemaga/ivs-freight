@@ -111,11 +111,12 @@
                     >
                     </app-ta-counter>
                     -->
-                    <svg-icon
-                        *ngIf="danger || counterData === 0"
-                        class="danger-svg"
-                        src="assets/svg/common/ic_danger.svg"
-                    ></svg-icon>
+                    <ng-container *ngIf="danger || counterData === 0">
+                        <svg-icon
+                            class="danger-svg"
+                            src="assets/svg/common/ic_danger.svg"
+                        ></svg-icon>
+                    </ng-container>
                     <div class="header-text-arrow-down">
                         <p
                             [ngClass]="{ 'pl-6-header': loadNames }"

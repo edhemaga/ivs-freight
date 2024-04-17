@@ -28,12 +28,21 @@ import { Titles } from '@core/decorators/titles.decorator';
 // moment
 import moment from 'moment';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
+
+// models
+import { TruckDetailsConfigModel } from '@pages/truck/pages/truck-details/models/Truck-details-config.model';
+import { TruckDetailsConfigDataModel } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { NotificationService } from '@shared/services/notification.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
+import { TruckService } from 'src/app/shared/services/truck.service';
 
 // helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
@@ -41,7 +50,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
-import { TruckService } from 'src/app/shared/services/truck.service';
 
 @Titles()
 @Component({
@@ -91,7 +99,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     truckName: string = '';
     isAccountVisible: boolean = true;
     accountText: string = null;
-    public voidActive: boolean = false;
+    public isVoidActive: boolean = false;
     public truckData: any;
     public dataEdit: any;
     public dataFHWA: any;
@@ -106,9 +114,9 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.truck.map((object) => {
-            if (object.name === 'Registration') {
-                this.voidActive = this.checkVoidedAndNotExpired(object.data);
+        this.truck.map((object: TruckDetailsConfigModel) => {
+            if (object.name === TruckDetailsEnum.REGISTRATION) {
+                this.isVoidActive = this.checkVoidedAndNotExpired(object.data);
             }
         });
         if (changes.truck?.currentValue != changes.truck?.previousValue) {
@@ -125,24 +133,31 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe({
                 next: (res: any) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'registration') {
+                        case TableStringEnum.DELETE: {
+                            if (
+                                res.template === TruckDetailsEnum.REGISTRATION_2
+                            ) {
                                 this.deleteRegistrationByIdFunction(res?.id);
-                            } else if (res.template === 'inspection') {
+                            } else if (
+                                res.template === TruckDetailsEnum.INSPECTION
+                            ) {
                                 this.deleteInspectionByIdFunction(res?.id);
-                            } else if (res.template === 'title') {
+                            } else if (
+                                res.template === TruckDetailsEnum.TITLE
+                            ) {
                                 this.deleteTitleByIdFunction(res?.id);
                             }
                             break;
                         }
-                        case 'void': {
+                        case TruckDetailsEnum.VOID_2:
                             this.truckService
                                 .voidRegistration(
                                     res.data.id,
                                     res?.array[0]?.id
                                 )
+                                .pipe(takeUntil(this.destroy$))
                                 .subscribe();
-                        }
+
                         default: {
                             break;
                         }
@@ -157,15 +172,17 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     public onShowDetails(componentData: any) {
         componentData.showDetails = !componentData.showDetails;
     }
-    public checkVoidedAndNotExpired(objects) {
-        const currentDate = new Date();
+    public checkVoidedAndNotExpired(
+        objects: TruckDetailsConfigDataModel[]
+    ): boolean {
+        const currentDate = moment().valueOf();
 
         return objects.some((object) => {
             if (object.voidedOn !== undefined && object.voidedOn !== null) {
-                const voidedOnDate = new Date(object.voidedOn);
+                const voidedOnDate = moment(object.voidedOn).valueOf();
                 return voidedOnDate >= currentDate;
             } else {
-                const expDate = new Date(object.expDate);
+                const expDate = moment(object.expDate).valueOf();
                 return expDate >= currentDate;
             }
         });
@@ -186,39 +203,39 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                     show: true,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
+                    title: TableStringEnum.VIEW_DETAILS_2,
+                    name: TableStringEnum.VIEW_DETAILS,
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
+                    iconName: TableStringEnum.VIEW_DETAILS,
                     show: true,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'Void',
-                    name: 'void',
+                    title: TruckDetailsEnum.VOID,
+                    name: TruckDetailsEnum.VOID_2,
                     svg: 'assets/svg/common/ic_cancel_violation.svg',
                     redIcon: true,
-                    iconName: 'deactivate-item',
+                    iconName: TruckDetailsEnum.DEACTIVATE_ITEM,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -241,32 +258,32 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                     show: true,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
+                    title: TableStringEnum.VIEW_DETAILS_2,
+                    name: TableStringEnum.VIEW_DETAILS,
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
+                    iconName: TableStringEnum.VIEW_DETAILS,
                     show: true,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -349,7 +366,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     public downloadAllFiles(type: string, index: number) {
         switch (type) {
-            case 'fhwa': {
+            case TruckDetailsEnum.FHWA: {
                 if (
                     this.fhwaUpload._results[index] &&
                     this.fhwaUpload._results[index].downloadAllFiles
@@ -358,7 +375,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 break;
             }
-            case 'registration': {
+            case TruckDetailsEnum.REGISTRATION_2: {
                 if (
                     this.registrationUpload._results[index] &&
                     this.registrationUpload._results[index].downloadAllFiles
@@ -367,7 +384,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 break;
             }
-            case 'title': {
+            case TruckDetailsEnum.TITLE: {
                 if (
                     this.titleUpload._results[index] &&
                     this.titleUpload._results[index].downloadAllFiles

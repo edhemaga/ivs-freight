@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 @keyframes change {
     from {
         color: #6c6c6c;
@@ -20,7 +22,6 @@
 .voided-button {
     align-items: center;
     font-size: 11px;
-    font-weight: 700;
     line-height: 14px;
     text-align: left;
     color: #df3c3c;
@@ -29,7 +30,7 @@
     padding: 2px 0px 0px 0px;
     border-radius: 2px 0px 0px 0px;
     opacity: 0px;
-    background: #fbe9e9;
+    background: $white-6;
 }
 .text-icon-common {
     display: flex;
@@ -125,7 +126,7 @@
 
         &.active {
             max-height: 1200px;
-            transition: all 0.2s ease-in-out;
+            transition: height 0.2s ease-in-out;
         }
         .dates {
             display: flex;

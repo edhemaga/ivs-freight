@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Subject, take, takeUntil } from 'rxjs';
+
+// moment
+import moment from 'moment';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
@@ -24,6 +26,14 @@ import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modal
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
+
+// Models
+import { TruckDetailsConfigModel } from '@pages/truck/pages/truck-details/models/Truck-details-config.model';
+import { TruckDetailsConfigDataModel } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+
 @Component({
     selector: 'app-truck-details',
     templateUrl: './truck-details.component.html',
@@ -32,7 +42,7 @@ import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public truckDetailsConfig: any[] = [];
+    public truckDetailsConfig: TruckDetailsConfigModel[] = [];
     public dataTest: any;
     registrationLength: number;
     inspectionLength: number;
@@ -95,19 +105,19 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: any) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'truck') {
+                        case TableStringEnum.DELETE: {
+                            if (res.template === TableStringEnum.TRUCK) {
                                 this.deleteTruckById(res?.id);
                             }
                             break;
                         }
-                        case 'activate': {
-                            if (res.template !== 'void') {
+                        case TableStringEnum.ACTIVATE: {
+                            if (res.template !== TruckDetailsEnum.VOID_2) {
                                 this.changeTruckStatus(res?.id);
                             }
                             break;
                         }
-                        case 'deactivate': {
+                        case TableStringEnum.DEACTIVATE: {
                             this.changeTruckStatus(res?.id);
                             break;
                         }
@@ -166,7 +176,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
 
     public deleteTruckById(id: number) {
-        let status = this.truckObject.status == 0 ? 'inactive' : 'active';
+        let status =
+            this.truckObject.status == 0
+                ? TableStringEnum.INACTIVE
+                : TableStringEnum.ACTIVE;
 
         let last = this.truckList?.at(-1);
         if (
@@ -240,45 +253,57 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                     show: true,
                     disabled: data.status == 0 ? true : false,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'Add New',
+                    title: TableStringEnum.ADD_NEW_2,
                     svg: 'assets/svg/common/dropdown-arrow.svg',
-                    iconName: 'add-new',
+                    iconName: TableStringEnum.ADD_NEW,
                     disabled: data.status == 0 ? true : false,
                     subType: [
-                        { subName: 'Registration', actionName: 'Registration' },
                         {
-                            subName: 'FHWA Inspection',
-                            actionName: 'FHWA Inspection',
+                            subName: TruckDetailsEnum.REGISTRATION,
+                            actionName: TruckDetailsEnum.REGISTRATION,
                         },
-                        { subName: 'Title', actionName: 'Title' },
                         {
-                            subName: 'Lease / Rent',
-                            actionName: 'Lease / Purchase',
+                            subName: TruckDetailsEnum.FHWA_INSPECTION,
+                            actionName: TruckDetailsEnum.FHWA_INSPECTION,
+                        },
+                        {
+                            subName: TruckDetailsEnum.TITLE_2,
+                            actionName: TruckDetailsEnum.TITLE_2,
+                        },
+                        {
+                            subName: TruckDetailsEnum.LEASE_RENT,
+                            actionName: TruckDetailsEnum.LEASE_RENT,
                         },
                     ],
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: data.status == 0 ? 'Activate' : 'Deactivate',
-                    name: data.status == 0 ? 'activate' : 'deactivate',
+                    title:
+                        data.status == 0
+                            ? TableStringEnum.ACTIVATE_2
+                            : TableStringEnum.DEACTIVATE_2,
+                    name:
+                        data.status == 0
+                            ? TableStringEnum.ACTIVATE
+                            : TableStringEnum.DEACTIVATE,
                     svg: 'assets/svg/common/ic_deactivate.svg',
-                    iconName: 'activate-item',
+                    iconName: TableStringEnum.ACTIVATE_ITEM,
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
                     show: data.status == 1 || data.status == 0 ? true : false,
@@ -286,11 +311,11 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     blueIcon: data.status == 0 ? true : false,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.TRUCK,
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -308,41 +333,41 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         const truck = truckData;
 
         switch (action.toLowerCase()) {
-            case 'registration': {
+            case TruckDetailsEnum.REGISTRATION_2: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: truck.id,
                         payload: truck,
-                        type: 'add-registration',
-                        modal: 'truck',
+                        type: TableStringEnum.ADD_REGISTRATION,
+                        modal: TableStringEnum.TRUCK,
                     }
                 );
                 break;
             }
-            case 'fhwa inspection': {
+            case TruckDetailsEnum.FHWA_INSPECTION_3: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: truck.id,
                         payload: truck,
-                        type: 'add-inspection',
-                        modal: 'truck',
+                        type: TableStringEnum.ADD_INSPECTION,
+                        modal: TableStringEnum.TRUCK,
                     }
                 );
                 break;
             }
-            case 'title': {
+            case TruckDetailsEnum.TITLE: {
                 this.modalService.openModal(
                     TtTitleModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: truck.id,
                         payload: truck,
-                        type: 'add-title',
-                        modal: 'truck',
+                        type: TruckDetailsEnum.ADD_TITLE,
+                        modal: TableStringEnum.TRUCK,
                     }
                 );
                 break;
@@ -358,15 +383,15 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckDetailsConfig = [
             {
                 id: 0,
-                name: 'Truck Detail',
-                template: 'general',
+                name: TruckDetailsEnum.TRUCK_DETAIL,
+                template: TruckDetailsEnum.GENERAL,
                 data: data,
                 status: data?.status == 0 ? true : false,
             },
             {
                 id: 1,
-                name: 'Registration',
-                template: 'registration',
+                name: TruckDetailsEnum.REGISTRATION,
+                template: TruckDetailsEnum.REGISTRATION_2,
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
@@ -376,8 +401,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 2,
-                name: 'FHWA Inspection',
-                template: 'fhwa-insepction',
+                name: TruckDetailsEnum.FHWA_INSPECTION,
+                template: TruckDetailsEnum.FHWA_INSPECTION_2,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 data: this.sortObjectsByExpDate(data.inspections),
                 status: data?.status == 0 ? true : false,
@@ -385,8 +410,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 3,
-                name: 'Title',
-                template: 'title',
+                name: TruckDetailsEnum.TITLE_2,
+                template: TruckDetailsEnum.TITLE,
                 length: data?.titles?.length ? data.titles.length : 0,
                 data: this.sortObjectsByExpDate(data.titles),
                 status: data?.status == 0 ? true : false,
@@ -396,24 +421,33 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckId = data?.id ? data.id : null;
     }
 
-    check(data) {
-        return data.every((item) => {
-            return item.voidedOn !== null || this.isExpired(item.expDate);
+    public check(data: TruckDetailsConfigDataModel[]): boolean {
+        return data.every((item: TruckDetailsConfigDataModel) => {
+            return item.voidedOn || this.isExpired(item.expDate);
         });
     }
 
-    sortObjectsByExpDate(data) {
-        let dateSort = Array.from(data).sort((obj1: any, obj2: any) => {
-            const date1 = new Date(obj1.expDate).getTime();
-            const date2 = new Date(obj2.expDate).getTime();
-            return date2 - date1;
-        });
+    public sortObjectsByExpDate(
+        data: TruckDetailsConfigDataModel[]
+    ): TruckDetailsConfigDataModel[] {
+        const dateSort = Array.from(data).sort(
+            (
+                obj1: TruckDetailsConfigDataModel,
+                obj2: TruckDetailsConfigDataModel
+            ) => {
+                const date1 = moment(obj1.expDate).valueOf();
+
+                const date2 = moment(obj2.expDate).valueOf();
+
+                return date2 - date1;
+            }
+        );
         return dateSort;
     }
 
-    isExpired(expDate: string): boolean {
-        const currentDateTime = new Date().getTime();
-        const expirationDateTime = new Date(expDate).getTime();
+    public isExpired(expDate: string): boolean {
+        const currentDateTime = moment().valueOf();
+        const expirationDateTime = moment(expDate).valueOf();
         return expirationDateTime < currentDateTime;
     }
 

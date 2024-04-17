@@ -27,14 +27,14 @@
                             ? 'assets/svg/truckassist-table/note/Note.svg'
                             : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
-                    [expDateClose]="formatDate(reg.expDate)"
+                    [expDateClose]="reg.expDate | formatDateP"
                     [isCardOpen]="
                         i == 0 && reg.expDate > currentDate ? true : false
                     "
                     [notExpired]="currentDate > reg.expDate ? false : true"
                     [openCloseStatus]="i !== 0"
-                    [voidedDate]="formatDate(reg.voidedOn)"
-                    [isDeactivated]="reg.voidedOn !== null ? true : false"
+                    [voidedDate]="reg.voidedOn | formatDateP"
+                    [isDeactivated]="reg.voidedOn ? true : false"
                     [optionsId]="reg.id"
                     [danger]="true"
                     (dropActions)="
@@ -71,7 +71,7 @@
                                 <div class="card-item" *ngIf="reg.voidedOn">
                                     <div class="card-item-name">Voided</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(reg.voidedOn) }}
+                                        {{ reg.voidedOn | formatDateP }}
                                     </div>
                                 </div>
                             </div>

@@ -78,16 +78,18 @@ export class DropDownService {
                 break;
             }
             case 'void': {
-                let voidData = data.registrations.find((e) => e.id === any.id);
-                let cdlsArray = data.registrations.map((e) => {
-                    if (e.voidedOn) {
+                let voidData = data.registrations.find(
+                    (registration) => registration.id === any.id
+                );
+                let cdlsArray = data.registrations.map((registration) => {
+                    if (registration.voidedOn) {
                         return {
-                            id: e.id,
-                            name: e.licensePlate,
+                            id: registration.id,
+                            name: registration.licensePlate,
                         };
                     }
                 });
-                cdlsArray = cdlsArray.filter((item) => item !== undefined);
+                cdlsArray = cdlsArray.filter((item) => item);
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -106,7 +108,6 @@ export class DropDownService {
             }
             case 'activate':
                 {
-                    console.log(data);
                     const mappedEvent = {
                         ...event,
                         data: {
