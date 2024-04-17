@@ -31,11 +31,11 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 
 // Models
-import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truck-details-config.model';
 import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
 
 // helpers
 import { TruckSortByDateHelper } from '@pages/truck/pages/truck-details/utils/helpers/truck-sort-by-date.helper';
+import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truck-details-config.model';
 
 @Component({
     selector: 'app-truck-details',
