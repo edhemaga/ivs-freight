@@ -608,7 +608,7 @@
                                     'contact',
                                     'reset modal',
                                     'user',
-                                    'owner',
+                                    'owner'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -642,6 +642,11 @@
                                 'not-clickable': disableDelete
                             }"
                             type="button"
+                            [ngClass]="{
+                                'modal-gray-btn': ['reset'].includes(
+                                    confirmationData?.type
+                                )
+                            }"
                         >
                             Yes
                         </button>

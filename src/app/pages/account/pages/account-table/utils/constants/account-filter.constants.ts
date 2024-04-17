@@ -1,4 +1,4 @@
-import { AccountFilter } from "../../models/account-filter.model";
+import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
 export class AccountFilterConstants {
     static accountFilterQuery: AccountFilter = {
