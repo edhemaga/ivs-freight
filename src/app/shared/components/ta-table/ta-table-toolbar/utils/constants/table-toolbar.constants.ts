@@ -1,7 +1,7 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
-import { OptionsPopupContent } from '../../models/options-popup-content.model';
+import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 export class TableToolbarConstants {
     static optionsPopupContent: OptionsPopupContent[] = [

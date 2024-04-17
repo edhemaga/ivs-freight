@@ -12,13 +12,13 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { AccountService } from '@pages/account/services/account.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { AccountState } from '@pages/account/state/account.store';
@@ -53,7 +53,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
 // constants
-import { AccountFilterConstants } from './utils/constants/account-filter.constants';
+import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
 
 @Component({
     selector: 'app-account-table',
@@ -77,7 +77,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public accounts: AccountState[];
 
     //Filter
-    public backFilterQuery: AccountFilter = {...AccountFilterConstants.accountFilterQuery};
+    public backFilterQuery: AccountFilter = {
+        ...AccountFilterConstants.accountFilterQuery,
+    };
 
     // Data to display from model Broker
     public displayRowsFront: CardRows[] =
@@ -465,8 +467,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 svgClass: TableStringEnum.REGULAR,
             },
             {
-                title: data.url ? TableStringEnum.GO_TO_LINK : TableStringEnum.NO_LINK,
-                name: data.url ? TableStringEnum.GO_TO_LINK_2 : TableStringEnum.NO_LINK_2,
+                title: data.url
+                    ? TableStringEnum.GO_TO_LINK
+                    : TableStringEnum.NO_LINK,
+                name: data.url
+                    ? TableStringEnum.GO_TO_LINK_2
+                    : TableStringEnum.NO_LINK_2,
                 svgUrl: TableStringEnum.WEB_IMAGE,
                 mutedStyle: data.url ? false : true,
                 svgStyle: {
@@ -692,9 +698,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             note: companyAcountData.note ?? null,
         };
         this.accountService
-            .updateCompanyAccount(
-                newdata,
-            )
+            .updateCompanyAccount(newdata)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
@@ -750,15 +754,17 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .deleteAccountList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.viewData = this.viewData.map((account: AccountResponse) => {
-                    ids.map((id) => {
-                        if (account.id === id)
-                            account.actionAnimation =
-                                TableActionsStringEnum.DELETE_MULTIPLE;
-                    });
+                this.viewData = this.viewData.map(
+                    (account: AccountResponse) => {
+                        ids.map((id) => {
+                            if (account.id === id)
+                                account.actionAnimation =
+                                    TableActionsStringEnum.DELETE_MULTIPLE;
+                        });
 
-                    return account;
-                });
+                        return account;
+                    }
+                );
 
                 this.updateDataCount();
 

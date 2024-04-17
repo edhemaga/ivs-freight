@@ -31,8 +31,8 @@ import {
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
 } from 'appcoretruckassist';
-import { PmUpdateTruckUnitListCommand } from '../../models/pm-update-truck-unit-list-command.model';
-import { PMTableData } from '../models/pm-table-data.model';
+import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
+import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 
 // Validators
 import { descriptionValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';

@@ -57,7 +57,7 @@ import {
 } from 'appcoretruckassist';
 import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
-import { PMTableData } from '@pages/pm-truck-trailer/pages/models/pm-table-data.model';
+import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 
 // helpers

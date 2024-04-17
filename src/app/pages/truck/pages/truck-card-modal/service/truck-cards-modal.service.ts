@@ -2,13 +2,13 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // Store
-import { TruckCardDataStore } from '../state/truck-card-modal.store';
+import { TruckCardDataStore } from '@pages/truck/pages/truck-card-modal/state/truck-card-modal.store';
 
 // Models
-import { CardsModalData } from 'src/app/shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
 // Helpers
-import { CompareObjectsModal } from 'src/app/shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
+import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
 @Injectable({
     providedIn: 'root',

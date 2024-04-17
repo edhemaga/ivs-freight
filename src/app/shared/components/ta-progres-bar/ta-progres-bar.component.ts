@@ -7,8 +7,8 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 
 // Pipes
-import { ThousandToShortFormatPipe } from '../../pipes/thousand-to-short-format.pipe';
-import { ProgressDropdownData } from './models/progress-dropdown-data.model';
+import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
+import { ProgressDropdownData } from '@shared/components/ta-progres-bar/models/progress-dropdown-data.model';
 
 @Component({
     selector: 'app-ta-progres-bar',
