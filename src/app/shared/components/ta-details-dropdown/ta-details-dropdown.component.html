@@ -90,22 +90,21 @@
                                 action.openSubtype ? true : false
                             "
                         >
-                            <div
-                                class="subtypeTitle"
-                                *ngFor="let sub of action.subType"
-                                (click)="subTypeAction(action, sub, $event)"
-                            >
-                                {{ sub.subName }}
-                            </div>
+                            <ng-container *ngFor="let sub of action.subType">
+                                <div
+                                    class="subtypeTitle"
+                                    (click)="subTypeAction(action, sub, $event)"
+                                >
+                                    {{ sub.subName }}
+                                </div>
+                            </ng-container>
                         </div>
                     </div>
-                    <div
-                        class="border-holder"
-                        @borderShowAnimation
-                        *ngIf="action.title == 'border'"
-                    >
-                        <div class="action-border-line"></div>
-                    </div>
+                    <ng-container *ngIf="action.title == 'border'">
+                        <div class="border-holder" @borderShowAnimation>
+                            <div class="action-border-line"></div>
+                        </div>
+                    </ng-container>
                 </div>
             </ng-container>
         </div>

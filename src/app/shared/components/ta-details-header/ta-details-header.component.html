@@ -111,7 +111,7 @@
                     >
                     </app-ta-counter>
                     -->
-                    <ng-container *ngIf="danger || counterData === 0">
+                    <ng-container *ngIf="danger || !counterData">
                         <svg-icon
                             class="danger-svg"
                             src="assets/svg/common/ic_danger.svg"

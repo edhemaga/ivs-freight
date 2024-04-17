@@ -1,10 +1,10 @@
-import type { TruckDetailsConfigDataModel } from './truck-details-config-data.model';
+import type { TruckDetailsConfigData } from './truck-details-config-data.model';
 
-export interface TruckDetailsConfigModel {
+export interface TruckDetailsConfig {
     id: number;
     name: string;
     template: string;
-    data: TruckDetailsConfigDataModel[];
+    data: TruckDetailsConfigData[];
     length?: number;
     status?: boolean;
     isExpired?: boolean;

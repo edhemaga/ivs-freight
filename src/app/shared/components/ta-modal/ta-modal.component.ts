@@ -25,7 +25,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 // pipes
-import { FormatDatePipe } from '../../pipes/format-date.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 // bootstrap
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';

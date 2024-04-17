@@ -25,4 +25,13 @@ export enum TruckDetailsEnum {
     COMPANY = 'COMPANY',
     FROM_TO = 'FROM - TO',
     DURATION = 'DURATION',
+
+    EDIT_SVG = 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+    EDIT_SVG_2 = 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+    DROPDOWN_ARROW_SVG = 'assets/svg/common/dropdown-arrow.svg',
+    DEACTIVATE_SVG = 'assets/svg/common/ic_deactivate.svg',
+    HAZARDOUS_INFO_SVG = 'assets/svg/common/ic_hazardous-info.svg',
+    CANCEL_VIOLATION_SVG = 'assets/svg/common/ic_cancel_violation.svg',
+    TRASH_UPDATE_SVG = 'assets/svg/common/ic_trash_updated.svg',
+    ARE_YOU_WANT_TO_DELETE_DRIVERS = 'Are you sure you want to delete driver(s)?',
 }

@@ -1,6 +1,6 @@
 import type { FileResponse, StateResponse } from 'appcoretruckassist';
 
-export interface TruckDetailsConfigDataModel {
+export interface TruckDetailsConfigData {
     id?: number;
     issueDate?: string;
     expDate?: string;

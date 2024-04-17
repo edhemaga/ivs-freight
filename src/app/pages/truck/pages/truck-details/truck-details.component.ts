@@ -31,8 +31,11 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 
 // Models
-import { TruckDetailsConfigModel } from '@pages/truck/pages/truck-details/models/Truck-details-config.model';
-import { TruckDetailsConfigDataModel } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truck-details-config.model';
+import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+
+// helpers
+import { TruckSortByDate } from '@pages/truck/pages/truck-details/utils/helpers/truck-sort-by-date.function';
 
 @Component({
     selector: 'app-truck-details',
@@ -42,7 +45,7 @@ import { TruckDetailsConfigDataModel } from '@pages/truck/pages/truck-details/mo
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
-    public truckDetailsConfig: TruckDetailsConfigModel[] = [];
+    public truckDetailsConfig: TruckDetailsConfig[] = [];
     public dataTest: any;
     registrationLength: number;
     inspectionLength: number;
@@ -255,7 +258,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 {
                     title: TableStringEnum.EDIT_2,
                     name: TableStringEnum.EDIT,
-                    svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
+                    svg: TruckDetailsEnum.EDIT_SVG_2,
                     iconName: TableStringEnum.EDIT,
                     show: true,
                     disabled: data.status == 0 ? true : false,
@@ -265,7 +268,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: TableStringEnum.ADD_NEW_2,
-                    svg: 'assets/svg/common/dropdown-arrow.svg',
+                    svg: TruckDetailsEnum.DROPDOWN_ARROW_SVG,
                     iconName: TableStringEnum.ADD_NEW,
                     disabled: data.status == 0 ? true : false,
                     subType: [
@@ -302,7 +305,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                         data.status == 0
                             ? TableStringEnum.ACTIVATE
                             : TableStringEnum.DEACTIVATE,
-                    svg: 'assets/svg/common/ic_deactivate.svg',
+                    svg: TruckDetailsEnum.DEACTIVATE_SVG,
                     iconName: TableStringEnum.ACTIVATE_ITEM,
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
@@ -314,7 +317,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     title: TableStringEnum.DELETE_2,
                     name: TableStringEnum.DELETE_ITEM,
                     type: TableStringEnum.TRUCK,
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    svg: TruckDetailsEnum.TRASH_UPDATE_SVG,
                     iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
@@ -395,7 +398,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 length: data?.registrations?.length
                     ? data.registrations.length
                     : 0,
-                data: this.sortObjectsByExpDate(data.registrations),
+                data: TruckSortByDate.sortObjectsByExpDate(data.registrations),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.registrations),
             },
@@ -404,7 +407,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.FHWA_INSPECTION,
                 template: TruckDetailsEnum.FHWA_INSPECTION_2,
                 length: data?.inspections?.length ? data.inspections.length : 0,
-                data: this.sortObjectsByExpDate(data.inspections),
+                data: TruckSortByDate.sortObjectsByExpDate(data.inspections),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.inspections),
             },
@@ -413,7 +416,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.TITLE_2,
                 template: TruckDetailsEnum.TITLE,
                 length: data?.titles?.length ? data.titles.length : 0,
-                data: this.sortObjectsByExpDate(data.titles),
+                data: TruckSortByDate.sortObjectsByExpDate(data.titles),
                 status: data?.status == 0 ? true : false,
                 isExpired: this.check(data.titles),
             },
@@ -421,28 +424,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.truckId = data?.id ? data.id : null;
     }
 
-    public check(data: TruckDetailsConfigDataModel[]): boolean {
-        return data.every((item: TruckDetailsConfigDataModel) => {
+    public check(data: TruckDetailsConfigData[]): boolean {
+        return data.every((item: TruckDetailsConfigData) => {
             return item.voidedOn || this.isExpired(item.expDate);
         });
-    }
-
-    public sortObjectsByExpDate(
-        data: TruckDetailsConfigDataModel[]
-    ): TruckDetailsConfigDataModel[] {
-        const dateSort = Array.from(data).sort(
-            (
-                obj1: TruckDetailsConfigDataModel,
-                obj2: TruckDetailsConfigDataModel
-            ) => {
-                const date1 = moment(obj1.expDate).valueOf();
-
-                const date2 = moment(obj2.expDate).valueOf();
-
-                return date2 - date1;
-            }
-        );
-        return dateSort;
     }
 
     public isExpired(expDate: string): boolean {

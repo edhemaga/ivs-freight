@@ -68,12 +68,14 @@
                                         </app-ta-copy>
                                     </div>
                                 </div>
-                                <div class="card-item" *ngIf="reg.voidedOn">
-                                    <div class="card-item-name">Voided</div>
-                                    <div class="card-item-value">
-                                        {{ reg.voidedOn | formatDateP }}
+                                <ng-container *ngIf="reg.voidedOn">
+                                    <div class="card-item">
+                                        <div class="card-item-name">Voided</div>
+                                        <div class="card-item-value">
+                                            {{ reg.voidedOn | formatDateP }}
+                                        </div>
                                     </div>
-                                </div>
+                                </ng-container>
                             </div>
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">

@@ -33,8 +33,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 
 // models
-import { TruckDetailsConfigModel } from '@pages/truck/pages/truck-details/models/Truck-details-config.model';
-import { TruckDetailsConfigDataModel } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truck-details-config.model';
+import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
 
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
@@ -42,7 +42,7 @@ import { NotificationService } from '@shared/services/notification.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
-import { TruckService } from 'src/app/shared/services/truck.service';
+import { TruckService } from '@shared/services/truck.service';
 
 // helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
@@ -114,7 +114,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.truck.map((object: TruckDetailsConfigModel) => {
+        this.truck.map((object: TruckDetailsConfig) => {
             if (object.name === TruckDetailsEnum.REGISTRATION) {
                 this.isVoidActive = this.checkVoidedAndNotExpired(object.data);
             }
@@ -173,12 +173,12 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         componentData.showDetails = !componentData.showDetails;
     }
     public checkVoidedAndNotExpired(
-        objects: TruckDetailsConfigDataModel[]
+        objects: TruckDetailsConfigData[]
     ): boolean {
         const currentDate = moment().valueOf();
 
         return objects.some((object) => {
-            if (object.voidedOn !== undefined && object.voidedOn !== null) {
+            if (object.voidedOn) {
                 const voidedOnDate = moment(object.voidedOn).valueOf();
                 return voidedOnDate >= currentDate;
             } else {
@@ -205,7 +205,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 {
                     title: TableStringEnum.EDIT_2,
                     name: TableStringEnum.EDIT,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    svg: TruckDetailsEnum.EDIT_SVG,
                     iconName: TableStringEnum.EDIT,
                     show: true,
                 },
@@ -215,7 +215,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 {
                     title: TableStringEnum.VIEW_DETAILS_2,
                     name: TableStringEnum.VIEW_DETAILS,
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    svg: TruckDetailsEnum.HAZARDOUS_INFO_SVG,
                     iconName: TableStringEnum.VIEW_DETAILS,
                     show: true,
                 },
@@ -225,7 +225,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 {
                     title: TruckDetailsEnum.VOID,
                     name: TruckDetailsEnum.VOID_2,
-                    svg: 'assets/svg/common/ic_cancel_violation.svg',
+                    svg: TruckDetailsEnum.CANCEL_VIOLATION_SVG,
                     redIcon: true,
                     iconName: TruckDetailsEnum.DEACTIVATE_ITEM,
                 },
@@ -233,8 +233,8 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     title: TableStringEnum.DELETE_2,
                     name: TableStringEnum.DELETE_ITEM,
                     type: TableStringEnum.DRIVER,
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    text: TruckDetailsEnum.ARE_YOU_WANT_TO_DELETE_DRIVERS,
+                    svg: TruckDetailsEnum.TRASH_UPDATE_SVG,
                     iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,

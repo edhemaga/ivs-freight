@@ -183,7 +183,12 @@
                         class="assignTo-item"
                         *ngIf="truck?.assignedTo?.driver?.id"
                     >
-                        <ng-container *ngIf="!truck.assignedTo.driver.avatar">
+                        <ng-container
+                            *ngIf="
+                                !truck.assignedTo.driver.avatar;
+                                else avatarImage
+                            "
+                        >
                             <p>
                                 {{
                                     truck.assignedTo.driver.firstName[0] +
@@ -191,9 +196,7 @@
                                 }}
                             </p>
                         </ng-container>
-                        <ng-container
-                            *ngIf="truck.assignedTo.driver.avatar !== ''"
-                        >
+                        <ng-container #avatarImage>
                             <img
                                 class="driverAvatarImg"
                                 [src]="
@@ -763,12 +766,13 @@
                     <div class="owner-history-container">
                         <div class="status-container">
                             <div class="status-header">
-                                <div
-                                    class="status-item"
+                                <ng-container
                                     *ngFor="let item of ownerHistoryHeader"
                                 >
-                                    <p class="p-status">{{ item.label }}</p>
-                                </div>
+                                    <div class="status-item">
+                                        <p class="p-status">{{ item.label }}</p>
+                                    </div>
+                                </ng-container>
                             </div>
                             <div class="truck-card-line"></div>
                             <ng-container
@@ -805,17 +809,20 @@
                                             </ng-container>
                                         </p>
                                         <p class="duration">
-                                            <span
+                                            <ng-container
                                                 *ngIf="
                                                     owHist?.value.duration
                                                         ?.Years
                                                 "
                                             >
-                                                {{
-                                                    owHist.value.duration.Years
-                                                }}
-                                                y
-                                            </span>
+                                                <span>
+                                                    {{
+                                                        owHist.value.duration
+                                                            .Years
+                                                    }}
+                                                    y
+                                                </span>
+                                            </ng-container>
                                             <span>
                                                 {{ owHist.value.duration.Days }}
                                                 d

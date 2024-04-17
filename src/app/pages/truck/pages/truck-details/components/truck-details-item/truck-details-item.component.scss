@@ -1,4 +1,5 @@
 @import '../../truck-details.component.scss';
+@import 'src/theme/variables.scss';
 
 app-truck-details-item {
     .truck-toolbar-plus {
@@ -23,8 +24,8 @@ app-truck-details-item {
         cursor: pointer;
         border-radius: 2px 0px 0px 0px;
         opacity: 0px;
-        background: #3b73ed;
-        color: #ffffff;
+        background: $ta-blue-13;
+        color: $white;
         font-size: 14px;
         line-height: 18px;
         text-align: center;
@@ -80,7 +81,7 @@ app-truck-details-item {
         height: 40px;
 
         .note-textarea {
-            color: #6c6c6c !important;
+            color: $bw6-2 !important;
             font-weight: 500 !important;
             &::-moz-selection {
                 color: $bw6-2;
@@ -263,7 +264,7 @@ app-truck-details-item {
             margin-top: 8px;
         }
         .note-textarea {
-            color: #6c6c6c !important;
+            color: $bw6-2 !important;
             &::-moz-selection {
                 color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
@@ -397,7 +398,7 @@ app-truck-details-item {
             height: 23px !important;
             padding: 0px !important;
             .note-textarea {
-                color: #6c6c6c !important;
+                color: $bw6-2 !important;
                 font-weight: 500 !important;
                 &::-moz-selection {
                     color: $bw6-2;
