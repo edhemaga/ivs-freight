@@ -2,7 +2,7 @@ import { NoteActiveOptions } from '@shared/components/ta-note-container/models/n
 import { NoteColors } from '@shared/components/ta-note-container/models/note-colors.model';
 
 export class NoteConfigConstants {
-    static NoteDarkColors: NoteColors[] = [
+    static noteDarkColors: NoteColors[] = [
         {
             color: 'rgb(218, 218, 218)',
             name: 'Gray',
@@ -29,7 +29,7 @@ export class NoteConfigConstants {
         },
     ];
 
-    static NoteLightColors: NoteColors[] = [
+    static noteLightColors: NoteColors[] = [
         {
             color: 'rgb(66, 66, 66)',
             name: 'Black',
@@ -56,7 +56,7 @@ export class NoteConfigConstants {
         },
     ];
 
-    static NoteActiveOptions: NoteActiveOptions = {
+    static noteActiveOptions: NoteActiveOptions = {
         bold: false,
         italic: false,
         foreColor: false,

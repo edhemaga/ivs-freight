@@ -2,6 +2,8 @@ import {
     ApplicantResponse,
     BrokerResponse,
     DriverResponse,
+    PMTrailerUnitResponse,
+    PMTruckUnitResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
 
@@ -16,4 +18,6 @@ type CombinedResponses =
     | ShipperResponse
     | BrokerResponse
     | DriverResponse
-    | ApplicantResponse;
+    | ApplicantResponse
+    | PMTruckUnitResponse
+    | PMTrailerUnitResponse;

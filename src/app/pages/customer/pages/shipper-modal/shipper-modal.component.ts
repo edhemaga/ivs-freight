@@ -473,8 +473,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     )
                     .subscribe({
                         next: (res: ShipperResponse) => {
-                            if (res.reviews.length) {
-                                this.reviews = res.reviews.map((item: any) => ({
+                            if (res.ratingReviews.length) {
+                                this.reviews = res.ratingReviews.map((item: any) => ({
                                     ...item,
                                     companyUser: {
                                         ...item.companyUser,

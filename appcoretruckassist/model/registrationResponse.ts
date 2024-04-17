@@ -19,6 +19,7 @@ export interface RegistrationResponse {
     issueDate?: string;
     expDate?: string;
     licensePlate?: string | null;
+    voidedOn?: string | null;
     note?: string | null;
     files?: Array<FileResponse> | null;
 }

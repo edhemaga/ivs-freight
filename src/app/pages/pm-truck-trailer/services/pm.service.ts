@@ -1,24 +1,53 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // Models
 import {
+    PMTrailerDefaultDropdownResponse,
     PMTrailerListResponse,
+    PMTrailerResponse,
     PMTrailerUnitListResponse,
+    PMTruckDefaultDropdownResponse,
     PMTruckListResponse,
+    PMTruckResponse,
     PMTruckUnitListResponse,
     RepairService,
     UpdatePMTrailerListDefaultCommand,
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
-    UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
+
+// Store
+import { PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
+import { PmTrailerStore } from '../state/pm-trailer-state/pm-trailer.store';
+import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
+import { PmListTruckStore } from '../state/pm-list-truck-state/pm-list-truck.store';
+import { PmListTrailerStore } from '../state/pm-list-trailer-state/pm-list-trailer.store';
+
+// Model
+import { PmUpdateTruckUnitListCommand } from '../models/pm-update-truck-unit-list-command.model';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PmService {
-    constructor(private repairService: RepairService) {}
+    private destroy$ = new Subject<void>();
+    private pmListTruck = new BehaviorSubject<PMTruckResponse[]>(null);
+    public currentPmListTruck = this.pmListTruck.asObservable();
+    private pmListTrailer = new BehaviorSubject<PMTrailerResponse[]>(null);
+    public currentPmListTrailer = this.pmListTrailer.asObservable();
+
+    constructor(
+        // Services
+        private repairService: RepairService,
+        private tableService: TruckassistTableService,
+
+        // Store
+        private pmTruckStore: PmTruckStore,
+        private pmTrailerStore: PmTrailerStore,
+        private pmListTruckStore: PmListTruckStore,
+        private pmListTrailerStore: PmListTrailerStore
+    ) {}
 
     // ------------------------  Truck --------------------------
     // Get PM Truck List
@@ -30,6 +59,7 @@ export class PmService {
     public getPMTruckUnitList(
         truckId?: number,
         hideInactivePMs?: number,
+        truckTypeId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -41,6 +71,7 @@ export class PmService {
         return this.repairService.apiRepairPmTruckUnitListGet(
             truckId,
             hideInactivePMs,
+            truckTypeId,
             pageIndex,
             pageSize,
             companyId,
@@ -60,19 +91,69 @@ export class PmService {
     public addUpdatePMTruckList(
         data: UpdatePMTruckDefaultListCommand
     ): Observable<object> {
-        return this.repairService.apiRepairPmTruckPut(data);
+        return this.repairService.apiRepairPmTruckPut(data).pipe(
+            tap(() => {
+                this.getPMTruckUnitList()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (pmTruckUnitList) => {
+                            this.pmTruckStore.set(
+                                pmTruckUnitList.pagination.data
+                            );
+
+                            this.getPMTruckList()
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: (pmTruckList) => {
+                                        this.pmListTruckStore.set(
+                                            pmTruckList.pagination.data
+                                        );
+
+                                        this.pmListTruck.next(
+                                            pmTruckList.pagination.data
+                                        );
+                                    },
+                                });
+                        },
+                    });
+            })
+        );
     }
 
     // Update PM Truck Unit
     public addUpdatePMTruckUnit(
-        data: UpdatePMTruckUnitListCommand
+        data: PmUpdateTruckUnitListCommand
     ): Observable<object> {
-        return this.repairService.apiRepairPmTruckUnitPut(data);
+        return this.repairService.apiRepairPmTruckUnitPut(data).pipe(
+            tap(() => {
+                this.getPMTruckUnitList(data.truckId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (pm) => {
+                            this.pmTruckStore.remove(
+                                ({ id }) => id === data.pmId
+                            );
+                            this.pmTruckStore.add(pm.pagination.data[0]);
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: pm.pagination.data[0],
+                                id: pm.pagination.data[0].id,
+                            });
+                        },
+                    });
+            })
+        );
     }
 
     // Delete PM Truck List
     public deletePMTruckById(id: number): Observable<object> {
         return this.repairService.apiRepairPmTruckIdDelete(id);
+    }
+
+    // Get Truck PM dropdown
+    public getPMTruckDropdown(): Observable<PMTruckDefaultDropdownResponse[]> {
+        return this.repairService.apiRepairPmTruckDropdownGet();
     }
 
     // ------------------------  Trailer --------------------------
@@ -101,6 +182,7 @@ export class PmService {
     public getPMTrailerUnitList(
         trailerId?: number,
         hideInactivePMs?: number,
+        trailerTypeId?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -112,6 +194,7 @@ export class PmService {
         return this.repairService.apiRepairPmTrailerUnitListGet(
             trailerId,
             hideInactivePMs,
+            trailerTypeId,
             pageIndex,
             pageSize,
             companyId,
@@ -133,14 +216,59 @@ export class PmService {
     public addUpdatePMTrailerList(
         data: UpdatePMTrailerListDefaultCommand
     ): Observable<object> {
-        return this.repairService.apiRepairPmTrailerPut(data);
+        return this.repairService.apiRepairPmTrailerPut(data).pipe(
+            tap(() => {
+                this.getPMTrailerUnitList()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (pmTrailerUnitList) => {
+                            this.pmTrailerStore.set(
+                                pmTrailerUnitList.pagination.data
+                            );
+
+                            this.getPMTrailerList()
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: (pmTrailerList) => {
+                                        this.pmListTrailerStore.set(
+                                            pmTrailerList.pagination.data
+                                        );
+
+                                        this.pmListTrailer.next(
+                                            pmTrailerList.pagination.data
+                                        );
+                                    },
+                                });
+                        },
+                    });
+            })
+        );
     }
 
     // Update PM Trailer Unit
     public addUpdatePMTrailerUnit(
         data: UpdatePMTrailerUnitListCommand
     ): Observable<object> {
-        return this.repairService.apiRepairPmTrailerUnitPut(data);
+        return this.repairService.apiRepairPmTrailerUnitPut(data).pipe(
+            tap(() => {
+                this.getPMTrailerUnitList(data.trailerId)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (pm) => {
+                            this.pmTrailerStore.remove(
+                                ({ id }) => id === data.trailerId
+                            );
+                            this.pmTrailerStore.add(pm.pagination.data[0]);
+
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: pm.pagination.data[0],
+                                id: pm.pagination.data[0].id,
+                            });
+                        },
+                    });
+            })
+        );
     }
 
     // Delete Pm Trailer List
@@ -158,5 +286,12 @@ export class PmService {
 
     public getRepairPmTruckFilter() {
         return this.repairService.apiRepairPmTruckFilterListGet();
+    }
+
+    // Get Trailer PM dropdown
+    public getPMTrailerDropdown(): Observable<
+        PMTrailerDefaultDropdownResponse[]
+    > {
+        return this.repairService.apiRepairPmTrailerDropdownGet();
     }
 }

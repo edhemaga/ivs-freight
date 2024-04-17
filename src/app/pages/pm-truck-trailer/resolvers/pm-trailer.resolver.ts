@@ -12,6 +12,10 @@ import {
     PmTrailerState,
     PmTrailerStore,
 } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.store';
+import { PmListTrailerStore } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.store';
+
+// Models
+import { PMTrailerListResponse, PMTrailerUnitListResponse, TableConfigResponse } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -20,17 +24,19 @@ export class PmTrailerResolver implements Resolve<PmTrailerState> {
     constructor(
         // Store
         private pmTrailerStore: PmTrailerStore,
+        private pmListTrailerStore: PmListTrailerStore,
 
         // Services
         private pmService: PmService,
         private tableService: TruckassistTableService
     ) {}
-    resolve(): Observable<any> {
+    resolve(): Observable<[PMTrailerUnitListResponse, TableConfigResponse, PMTrailerListResponse]> {
         return forkJoin([
             this.pmService.getPMTrailerUnitList(undefined, undefined, 1),
             this.tableService.getTableConfig(14),
+            this.pmService.getPMTrailerList()
         ]).pipe(
-            tap(([pmTrailerPagination, tableConfig]) => {
+            tap(([pmTrailerPagination, tableConfig, trailerPmList]) => {
                 localStorage.setItem(
                     'pmTrailerTableCount',
                     JSON.stringify({
@@ -46,6 +52,8 @@ export class PmTrailerResolver implements Resolve<PmTrailerState> {
                         JSON.stringify(config)
                     );
                 }
+
+                this.pmListTrailerStore.set(trailerPmList.pagination.data);
 
                 this.pmTrailerStore.set(pmTrailerPagination.pagination.data);
             })

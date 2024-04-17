@@ -338,6 +338,14 @@
                                 right: 13px;
                             }
                         }
+
+                        &.radiator, &.turbo, &.alignment, &.accompressor, &.aircompressor, &.fuelpump, &.waterpump, &.oilpump, &.brakechamber, &.battery, &.enginetuneup {
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                }
+                            }
+                        }
                     }
 
                     .svgtext-template-text {

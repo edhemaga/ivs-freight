@@ -3,7 +3,11 @@
         <!-- Pined -->
         <tr
             class="tr pined-columns-container"
-            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+            [ngClass]="{
+                'tr-height-2':
+                    tableData[0].title === 'Contacts' ||
+                    tableData[0].gridNameTitle === 'PM'
+            }"
         >
             <th
                 [resizeColumn]="column.resizable && !locked"
@@ -32,7 +36,9 @@
                         column.ngTemplate !== 'user-checkbox',
                     'remuve-head-title':
                         column.width < 68 && !locked && !rezaizeing,
-                    'align-items-end': tableData[0].title === 'Contacts'
+                    'align-items-end':
+                        tableData[0].title === 'Contacts' ||
+                        tableData[0].gridNameTitle === 'PM'
                 }"
             >
                 <!-- Selected Row Count -->
@@ -440,7 +446,11 @@
             cdkDropList
             (cdkDropListDropped)="onReorder($event)"
             class="tr not-pined-columns-container"
-            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+            [ngClass]="{
+                'tr-height-2':
+                    tableData[0].title === 'Contacts' ||
+                    tableData[0].gridNameTitle === 'PM'
+            }"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             id="scroll"
         >
@@ -475,7 +485,9 @@
                         'remuve-head-title':
                             column.width < 68 && !locked && !rezaizeing,
                         'space-left': i === 0,
-                        'align-items-end': tableData[0].title === 'Contacts'
+                        'align-items-end':
+                            tableData[0].title === 'Contacts' ||
+                            tableData[0].gridNameTitle === 'PM'
                     }"
                 >
                     <!-- Title -->
@@ -492,9 +504,11 @@
                     >
                         <ng-container
                             *ngIf="
-                                tableData[0].title === 'Contacts' &&
-                                (column.name === 'PHONE' ||
-                                    column.name === 'EMAIL')
+                                (tableData[0].title === 'Contacts' &&
+                                    (column.name === 'PHONE' ||
+                                        column.name === 'EMAIL')) ||
+                                (tableData[0].gridNameTitle === 'PM' &&
+                                    column.tableHeadTitle === 'REPAIR SHOP')
                             "
                         >
                             <div
@@ -507,16 +521,26 @@
                                     {{ column.name }}
                                 </p>
 
-                                <p class="m-0 ta-font-bold th-title">PRIMARY</p>
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{
+                                        tableData[0].title === 'Contacts'
+                                            ? 'PRIMARY'
+                                            : 'NAME'
+                                    }}
+                                </p>
                             </div>
                         </ng-container>
 
                         <ng-container
                             *ngIf="
-                                tableData[0].title !== 'Contacts' ||
-                                (tableData[0].title === 'Contacts' &&
-                                    column.name !== 'PHONE' &&
-                                    column.name !== 'EMAIL')
+                                (tableData[0].title !== 'Contacts' ||
+                                    (tableData[0].title === 'Contacts' &&
+                                        column.name !== 'PHONE' &&
+                                        column.name !== 'EMAIL')) &&
+                                (tableData[0].gridNameTitle !== 'PM' ||
+                                    (tableData[0].gridNameTitle === 'PM' &&
+                                        column.tableHeadTitle !==
+                                            'REPAIR SHOP'))
                             "
                         >
                             <div
