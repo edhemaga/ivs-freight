@@ -124,6 +124,17 @@
                                                             row.secondKey
                                                         "
                                                         [text]="row.key"
+                                                        [hasPopover]="true"
+                                                        [type]="
+                                                            selectedTab ===
+                                                            'active'
+                                                                ? 'miles'
+                                                                : 'days'
+                                                        "
+                                                        [data]="card"
+                                                        [columnField]="
+                                                            row.field
+                                                        "
                                                     ></app-ta-progres-bar>
                                                 </span>
                                             </div>

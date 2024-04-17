@@ -286,7 +286,7 @@ p {
         //padding-right: 4px !important;
     }
 }
-.cards-container {
+.card-container {
     //padding: 0 6px;
     .card-body-cdl {
         display: grid;
@@ -353,8 +353,8 @@ p {
         }
         .card-row-endor {
             display: grid;
-            grid-template-columns: 50% 50%;
-            column-gap: 21px;
+            grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+            gap: 6px;
             margin-bottom: 4px;
         }
         .card-row-progress {
@@ -508,12 +508,12 @@ p {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
-        
+
                     &::selection {
                         color: $bw6-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
-        
+
                     span,
                     div,
                     b {
@@ -521,79 +521,79 @@ p {
                             color: $bw6-2;
                             background: rgb(108, 108, 108, 0.2);
                         }
-        
+
                         &::selection {
                             color: $bw6-2;
                             background: rgb(108, 108, 108, 0.2);
                         }
                     }
-        
+
                     font[color='#dadada'] {
                         &::-moz-selection {
                             color: rgb(218, 218, 218) !important;
-                            background: rgb(218, 218, 218, 0.2)!important;
+                            background: rgb(218, 218, 218, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(218, 218, 218) !important;
-                            background: rgb(218, 218, 218, 0.2)!important;
+                            background: rgb(218, 218, 218, 0.2) !important;
                         }
                     }
-        
+
                     font[color='#6692f1'] {
                         &::-moz-selection {
                             color: rgb(102, 146, 241) !important;
                             background: rgb(102, 146, 241, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(102, 146, 241) !important;
                             background: rgb(102, 146, 241, 0.2) !important;
                         }
                     }
-        
+
                     font[color='#56b4ac'] {
                         &::-moz-selection {
                             color: rgb(86, 180, 172) !important;
                             background: rgb(86, 180, 172, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(86, 180, 172) !important;
                             background: rgb(86, 180, 172, 0.2) !important;
                         }
                     }
-        
+
                     font[color='#e66767'] {
                         &::-moz-selection {
                             color: rgb(230, 103, 103) !important;
                             background: rgb(230, 103, 103, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(230, 103, 103) !important;
                             background: rgb(230, 103, 103, 0.2) !important;
                         }
                     }
-        
+
                     font[color='#fab15c'] {
                         &::-moz-selection {
                             color: rgb(250, 177, 92) !important;
                             background: rgb(250, 177, 92, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(250, 177, 92) !important;
                             background: rgb(250, 177, 92, 0.2) !important;
                         }
                     }
-        
+
                     font[color='#b370f0'] {
                         &::-moz-selection {
                             color: rgb(179, 112, 240) !important;
                             background: rgb(179, 112, 240, 0.2) !important;
                         }
-                    
+
                         &::selection {
                             color: rgb(179, 112, 240) !important;
                             background: rgb(179, 112, 240, 0.2) !important;

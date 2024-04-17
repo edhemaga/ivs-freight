@@ -3731,127 +3731,105 @@
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
                                         *ngIf="column.ngTemplate === 'progress'"
-                                        #ngbProgress="ngbPopover"
-                                        [autoClose]="true"
-                                        [ngbPopover]="milesProgressPopover"
-                                        [placement]="'bottom-left bottom-right'"
-                                        container="body"
-                                        popoverClass="table-progress-popover"
-                                        triggers="manual"
-                                        (hidden)="progressDropdownActive = -1"
-                                        (click)="
-                                            row[column.field]?.percentage
-                                                ? toggleProgressDropdown(
-                                                      ngbProgress,
-                                                      row,
-                                                      column
-                                                  )
-                                                : {}
-                                        "
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                row[column.field]?.percentage
-                                            "
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
                                         >
-                                            <span
-                                                class="checkbox-tooltip"
-                                                type="button"
-                                                ngbTooltip
-                                                [mainTooltip]="column.title"
-                                                tooltipBackground="#424242"
-                                                position="bottom"
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.expirationDaysText
+                                                "
                                             >
-                                                <app-ta-progres-bar
-                                                    [percents]="
-                                                        row[column.field]
-                                                            .percentage
-                                                    "
-                                                    [text]="
-                                                        row[column.field]
-                                                            .expirationDaysText
-                                                    "
-                                                    [data]="row"
-                                                    [column]="column"
-                                                    [hasPopover]="true"
-                                                    [isTable]="true"
-                                                    [type]="'days'"
-                                                ></app-ta-progres-bar>
-                                            </span>
-                                        </ng-container>
-                                    </div>
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    [mainTooltip]="column.title"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                >
+                                                    <app-ta-progres-bar
+                                                        [percents]="
+                                                            row[column.field]
+                                                                .percentage
+                                                        "
+                                                        [text]="
+                                                            row[column.field]
+                                                                .expirationDaysText
+                                                        "
+                                                        [data]="row"
+                                                        [columnField]="
+                                                            column.field
+                                                        "
+                                                        [hasPopover]="true"
+                                                        [isTable]="true"
+                                                        [type]="'days'"
+                                                    ></app-ta-progres-bar>
+                                                </span>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- MILES PROGRESS COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
                                             'progressMiles'
                                         "
-                                        #ngbProgress="ngbPopover"
-                                        [autoClose]="true"
-                                        [ngbPopover]="milesProgressPopover"
-                                        [placement]="'bottom-left bottom-right'"
-                                        container="body"
-                                        popoverClass="table-progress-popover"
-                                        triggers="manual"
-                                        (hidden)="progressDropdownActive = -1"
-                                        (click)="
-                                            row[column.field]?.percentage
-                                                ? toggleProgressDropdown(
-                                                      ngbProgress,
-                                                      row,
-                                                      column
-                                                  )
-                                                : {}
-                                        "
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                row[column.field]?.percentage
-                                            "
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
                                         >
-                                            <span
-                                                class="checkbox-tooltip"
-                                                type="button"
-                                                ngbTooltip
-                                                [mainTooltip]="column.title"
-                                                tooltipBackground="#424242"
-                                                position="bottom"
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.expirationMilesText
+                                                "
                                             >
-                                                <app-ta-progres-bar
-                                                    [percents]="
-                                                        row[column.field]
-                                                            .percentage
-                                                    "
-                                                    [text]="
-                                                        row[column.field]
-                                                            .expirationMilesText
-                                                    "
-                                                    [data]="row"
-                                                    [column]="column"
-                                                    [hasPopover]="true"
-                                                    [isTable]="true"
-                                                    [type]="'miles'"
-                                                ></app-ta-progres-bar>
-                                            </span>
-                                        </ng-container>
-                                    </div>
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    [mainTooltip]="column.title"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                >
+                                                    <app-ta-progres-bar
+                                                        [percents]="
+                                                            row[column.field]
+                                                                .percentage
+                                                        "
+                                                        [text]="
+                                                            row[column.field]
+                                                                .expirationMiles
+                                                        "
+                                                        [data]="row"
+                                                        [columnField]="
+                                                            column.field
+                                                        "
+                                                        [hasPopover]="true"
+                                                        [isTable]="true"
+                                                        [type]="'miles'"
+                                                    ></app-ta-progres-bar>
+                                                </span>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- APPLICANT PROGRESS COLUMN -->
                                     <div
@@ -5011,130 +4989,6 @@
             *ngFor="let item of [{}, {}, {}, {}]; let i = index"
         >
             Active
-        </div>
-    </div>
-</ng-template>
-
-<!-- MILES PROGRESS POPOVER -->
-<ng-template #milesProgressPopover>
-    <div class="progress-dropdown">
-        <div class="progress-header">
-            <div class="progress-title">
-                <ng-container
-                    *ngIf="progressDropdownData.column.expirationMilesText"
-                >
-                    {{
-                        progressDropdownData.column.expirationMiles > 0
-                            ? progressDropdownData.column.expirationMilesText
-                            : 0
-                    }}
-                    <span
-                        *ngIf="
-                            progressDropdownData.column.percentage > 0 &&
-                            progressDropdownData.column.percentage < 100
-                        "
-                    >
-                        mi to go</span
-                    >
-                    <span *ngIf="!progressDropdownData.column.percentage">
-                        mi over</span
-                    >
-                </ng-container>
-                <ng-container
-                    *ngIf="progressDropdownData.column.expirationDaysText"
-                >
-                    {{
-                        progressDropdownData.column.expirationDays > 0
-                            ? progressDropdownData.column.expirationDaysText
-                            : 0
-                    }}
-                    <span
-                        *ngIf="
-                            progressDropdownData.column.percentage > 0 &&
-                            progressDropdownData.column.percentage < 100
-                        "
-                    >
-                        days left</span
-                    >
-                    <span *ngIf="!progressDropdownData.column.percentage">
-                        days ago</span
-                    >
-                </ng-container>
-            </div>
-            <div class="progress-total">
-                {{ progressDropdownData.column.totalValueText }}
-            </div>
-        </div>
-        <div
-            class="table-progress-bar-container"
-            [ngClass]="{
-                'bg-expired-container': !progressDropdownData.column.percentage,
-                'bg-sliver-container':
-                    progressDropdownData.column.percentage >= 50 &&
-                    progressDropdownData.column.percentage < 100,
-                'bg-orange-container':
-                    progressDropdownData.column.percentage >= 20 &&
-                    progressDropdownData.column.percentage < 50,
-                'bg-danger-container':
-                    progressDropdownData.column.percentage > 0 &&
-                    progressDropdownData.column.percentage < 20,
-                'bg-inactive-container':
-                    progressDropdownData.column.percentage === 100
-            }"
-        >
-            <div
-                [ngClass]="{
-                    'bg-progress-sliver':
-                        progressDropdownData.column.percentage >= 50 &&
-                        progressDropdownData.column.percentage < 100,
-                    'bg-progress-orange':
-                        progressDropdownData.column.percentage >= 20 &&
-                        progressDropdownData.column.percentage < 50,
-                    'bg-progress-danger':
-                        progressDropdownData.column.percentage > 0 &&
-                        progressDropdownData.column.percentage < 20
-                }"
-                [ngStyle]="{
-                    width: progressDropdownData.column.percentage + '%'
-                }"
-                class="table-progress-bar"
-            ></div>
-        </div>
-        <div class="progress-dropdown-body">
-            <div class="progress-dual-info-container">
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Last Serviced</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.lastService ?? 'No data' }}
-                    </div>
-                </div>
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Odometer</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.textOdometer ?? 'No data' }}
-                    </div>
-                </div>
-            </div>
-            <div class="progress-info-container">
-                <div class="progress-info-title">Repair Shop</div>
-                <div class="progress-info-text">
-                    {{ progressDropdownData.row.repairShop ?? 'No data' }}
-                </div>
-            </div>
-            <div class="progress-dual-info-container">
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Invoice</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.textInv ?? 'No data' }}
-                    </div>
-                </div>
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Cost</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.cost ?? 'No data' }}
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </ng-template>

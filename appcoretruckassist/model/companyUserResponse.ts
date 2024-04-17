@@ -35,7 +35,6 @@ export interface CompanyUserResponse {
     salary?: number | null;
     startDate?: string;
     is1099?: boolean;
-    isW_2?: boolean;
     bank?: BankResponse;
     routingNumber?: string | null;
     accountNumber?: string | null;
@@ -49,5 +48,6 @@ export interface CompanyUserResponse {
     lastLogin?: string | null;
     createdAt?: string;
     updatedAt?: string;
+    deactivatedAt?: string | null;
 }
 

@@ -42,11 +42,15 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { TaToolbarFiltersComponent } from '@shared/components/ta-table/ta-table-toolbar/components/ta-toolbar-filters/ta-toolbar-filters.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
-import { LoadCardsModalComponent } from '@shared/components/ta-shared-modals/cards-modal/load-cards-modal/load-cards-modal.component';
+import { LoadCardModalComponent } from '@pages/load/pages/load-card-modal/load-card-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/truck-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// constants
+import { TableToolbarConstants } from './utils/constants/table-toolbar.constants';
 
 // models
 import { TableType } from 'appcoretruckassist';
@@ -70,8 +74,9 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         // components
         TaAppTooltipComponent,
         TaToolbarFiltersComponent,
+        TruckCardModalComponent,
         TaInputDropdownComponent,
-        LoadCardsModalComponent,
+        LoadCardModalComponent,
         ConfirmationResetModalComponent,
     ],
 })
@@ -88,48 +93,13 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     @Input() columns: any[];
     @Input() selectedDispatcher: any;
     @Input() dispathcboardTableLocked: boolean;
+
     public listName: string = '';
     public optionsPopup: string | TemplateRef<any>;
     public optionsPopupOpen: boolean = false;
     public tableLocked: boolean = true;
-    public OptionsPopupContent: OptionsPopupContent[] = [
-        {
-            text: TableStringEnum.COLUMNS,
-            svgPath: 'assets/svg/truckassist-table/columns-new.svg',
-            active: false,
-            hide: false,
-            showBackToList: false,
-            hasOwnSubOpions: true,
-            backToListIcon:
-                'assets/svg/truckassist-table/arrow-back-to-list.svg',
-        },
-        {
-            text: TableStringEnum.UNLOCK_TABLE,
-            svgPath: 'assets/svg/truckassist-table/lock-new.svg',
-            active: false,
-            hide: false,
-        },
-        {
-            text: TableStringEnum.RESET_TABLE,
-            svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
-            isInactive: true,
-            active: false,
-            hide: false,
-        },
-        {
-            text: TableStringEnum.IMPORT,
-            svgPath: 'assets/svg/truckassist-table/import-new.svg',
-            active: false,
-            hide: false,
-            hasTopBorder: true,
-        },
-        {
-            text: TableStringEnum.EXPORT,
-            svgPath: 'assets/svg/truckassist-table/export-new.svg',
-            active: false,
-            hide: false,
-        },
-    ];
+    public optionsPopupContent: OptionsPopupContent[] =
+        TableToolbarConstants.optionsPopupContent;
     public tableRowsSelected: any[] = [];
     public activeTableData: any = {};
     public toolbarWidth: string = '';
@@ -204,9 +174,15 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public openCards(): void {
-        this.modalService.openModal(LoadCardsModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        if (this.listName === TableStringEnum.TRUCK_2) {
+            this.modalService.openModal(TruckCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else {
+            this.modalService.openModal(LoadCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        }
 
         this.popover.close();
     }
@@ -282,7 +258,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.OptionsPopupContent[2].isInactive = tableColumnsConfig
+        this.optionsPopupContent[2].isInactive = tableColumnsConfig
             ? false
             : true;
 
@@ -503,8 +479,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     // Show Toolbar Options Popup
     public onShowOptions(optionsPopup): void {
-        this.OptionsPopupContent[0].active = false;
-        this.OptionsPopupContent.map((option) => {
+        this.optionsPopupContent[0].active = false;
+        this.optionsPopupContent.map((option) => {
             if (option.text !== TableStringEnum.COLUMNS) {
                 option.hide = false;
             }
@@ -536,11 +512,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             this.tableLocked = !this.tableLocked;
 
-            this.OptionsPopupContent[1].text = this.tableLocked
+            this.optionsPopupContent[1].text = this.tableLocked
                 ? TableStringEnum.UNLOCK_TABLE
                 : TableStringEnum.LOCK_TABLE;
 
-            this.OptionsPopupContent[1].svgPath = this.tableLocked
+            this.optionsPopupContent[1].svgPath = this.tableLocked
                 ? 'assets/svg/truckassist-table/lock-new.svg'
                 : 'assets/svg/truckassist-table/new-unlocked-table.svg';
 
@@ -565,7 +541,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
             this.checkAreAllSelectedInGroup();
 
-            this.OptionsPopupContent.map((option) => {
+            this.optionsPopupContent.map((option) => {
                 if (option.text !== TableStringEnum.COLUMNS) {
                     option.hide = action.active;
                 }
@@ -574,7 +550,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (
             action.text === TableStringEnum.RESET_TABLE &&
-            !this.OptionsPopupContent[2].isInactive
+            !this.optionsPopupContent[2].isInactive
         ) {
             this.onShowOptions(this.optionsPopup);
 

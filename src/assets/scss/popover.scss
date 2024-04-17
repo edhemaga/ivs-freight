@@ -276,7 +276,7 @@
         margin-top: -6px;
         width: 260px;
         height: 200px;
-        background: #2f2f2f;
+        background: $ta-black-2;
         border-radius: 3px;
         padding: 8px;
         box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
@@ -320,9 +320,6 @@
 
         .progress-dropdown-body {
             .progress-dual-info-container {
-                display: flex;
-                align-items: center;
-
                 .progress-info-container {
                     width: 50%;
                 }

@@ -725,8 +725,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     )
                     .subscribe({
                         next: (res: BrokerResponse) => {
-                            if (res.reviews.length) {
-                                this.reviews = res.reviews.map((item: any) => ({
+                            if (res.ratingReviews.length) {
+                                this.reviews = res.ratingReviews.map((item: any) => ({
                                     ...item,
                                     companyUser: {
                                         ...item.companyUser,

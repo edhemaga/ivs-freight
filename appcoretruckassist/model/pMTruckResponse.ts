@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairShortResponse } from './repairShortResponse';
 import { EnumValue } from './enumValue';
 
 
@@ -18,7 +19,9 @@ export interface PMTruckResponse {
     title?: string | null;
     status?: EnumValue;
     mileage?: number;
-    passedMileage?: number | null;
+    diffMileage?: number | null;
     logoName?: string | null;
+    percentage?: number | null;
+    lastService?: RepairShortResponse;
 }
 

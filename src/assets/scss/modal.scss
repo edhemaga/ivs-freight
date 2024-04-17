@@ -443,8 +443,8 @@ ngb-modal-window[aria-hidden='true'] {
                     text-align: center;
                     font-size: 14px;
                     font-weight: 700;
-                    color: #f44336;
-                    background-color: #eeeeee;
+                    color: $white;
+                    background: $ta-red-11;
                     outline: none;
                     border: none;
                     margin: 0;
@@ -455,11 +455,10 @@ ngb-modal-window[aria-hidden='true'] {
                     -ms-user-select: none;
                     user-select: none;
                     line-height: 18px;
-                    transition: all 0.3s ease-in-out;
+                    transition: background 0.3s ease-in-out;
 
                     &:hover {
-                        color: #ffffff;
-                        background-color: #f44336;
+                        background: $ta-red-14;
                     }
                 }
 
