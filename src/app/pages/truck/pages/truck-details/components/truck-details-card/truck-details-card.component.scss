@@ -26,7 +26,6 @@ app-truck-details-card {
         display: flex;
         flex-direction: column;
         .feature-row {
-            display: flex;
             justify-content: space-between;
             height: 26px;
             .feature-item {
@@ -39,11 +38,11 @@ app-truck-details-card {
                 .hide-feature {
                     svg {
                         path {
-                            fill: #cccccc;
+                            fill: $ta-light-grey-6;
                         }
                     }
                     text-decoration: line-through;
-                    color: #cccccc;
+                    color: $ta-light-grey-6;
                 }
             }
         }
@@ -62,10 +61,7 @@ app-truck-details-card {
     .custom-card-single {
         background-color: #ffffff;
         border-radius: 3px;
-        padding-left: 4px;
-        padding-top: 1px;
-        padding-right: 5px;
-        padding-bottom: 1px;
+        padding: 1px 5px 1px 4px;
         max-width: 440px;
         margin-top: 8px;
     }
@@ -89,16 +85,11 @@ app-truck-details-card {
     .item-wrapper-line {
         margin: 0;
         height: 2px;
-        margin-top: 6px;
-        margin-bottom: 8px;
-        margin-right: -6px;
-        margin-left: -6px !important;
+        margin: 6px -6px 8px -6px;
         border-radius: 1px;
         background-color: $white;
     }
     .item-wrapper {
-        display: flex;
-        justify-content: flex-start;
         flex-direction: row;
         .item-wrapper-first-row {
             display: flex;
@@ -110,7 +101,7 @@ app-truck-details-card {
                 line-height: 18px;
                 text-align: left;
                 margin-right: 5px;
-                color: #424242;
+                color: $ta-black;
             }
 
             .duration {
@@ -120,7 +111,7 @@ app-truck-details-card {
                 font-weight: 400;
                 line-height: 18px;
                 text-align: left;
-                color: #919191;
+                color: $muted;
             }
             .duration::before {
                 content: '\2022'; /* Unicode character for bullet point */
@@ -128,7 +119,7 @@ app-truck-details-card {
         }
     }
     .details-cards {
-        background-color: #ffffff;
+        background-color: $white;
         width: 440px;
         padding: 9px 6px;
     }
@@ -139,7 +130,7 @@ app-truck-details-card {
         }
         .note-body {
             .note-textarea {
-                color: #6c6c6c !important;
+                color: $bw6-2 !important;
                 font-weight: 500 !important;
                 &::-moz-selection {
                     color: $bw6-2;
@@ -340,7 +331,7 @@ app-truck-details-card {
                 transition: 0.2s ease all;
                 &:hover {
                     path {
-                        fill: #6c6c6c;
+                        fill: $bw6-2;
                     }
                 }
             }
@@ -396,8 +387,6 @@ app-truck-details-card {
     }
 }
 .chart-template-performance {
-    display: flex;
-    justify-content: space-evenly;
     font-family: Montserrat;
     font-size: 11px;
     font-weight: 700;

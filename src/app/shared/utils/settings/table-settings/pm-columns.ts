@@ -1,4 +1,4 @@
-import { PmTableColumns } from 'src/app/pages/pm-truck-trailer/pages/pm-table/models/pm-table-columns.model';
+import { PmTableColumns } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-columns.model';
 
 // PM TRUCK COLUMN DEFINITION
 export function getTruckPMColumnDefinition(): PmTableColumns[] {

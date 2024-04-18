@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, switchMap } from 'rxjs';
-import { WebsiteAuthService } from '../services/website-auth.service';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { AccountService } from 'appcoretruckassist';
 
 import * as AuthActions from './auth.actions';

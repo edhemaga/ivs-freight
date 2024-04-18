@@ -8,7 +8,7 @@ import {
 } from './truck-card-modal.store';
 
 // Enum
-import { CardsModalEnum } from 'src/app/shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
 
 @Injectable({ providedIn: 'root' })
 export class truckCardModalQuery extends QueryEntity<TruckCardDataState> {

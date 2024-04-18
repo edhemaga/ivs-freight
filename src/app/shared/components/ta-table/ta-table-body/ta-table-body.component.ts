@@ -691,6 +691,11 @@ export class TaTableBodyComponent
 
                 this.dropdownActions = [...actions];
 
+                // remove this line when we enable those options
+                this.dropdownActions = this.dropdownActions.filter(
+                    (_, index) => index === 0 || index === 5
+                );
+
                 tooltip.open({ data: this.dropdownActions });
             }
         }

@@ -135,7 +135,9 @@ export class DropActionNameHelper {
                 }
             }
         }
-
+        if (any.type === 'void') {
+            dropAction = 'void';
+        }
         return dropAction;
     }
 }
