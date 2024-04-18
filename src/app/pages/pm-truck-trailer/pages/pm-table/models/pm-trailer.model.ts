@@ -1,4 +1,4 @@
-import { RepairShopPMResponse, TrailerShortResponse } from 'appcoretruckassist';
+import { TrailerShortResponse } from 'appcoretruckassist';
 import {
     DropdownItem,
     PmTrailerProgressData,
@@ -6,10 +6,13 @@ import {
 
 export interface PmTrailer {
     textUnit: string;
-    textOdometer: string;
-    lastService: string;
-    repairShop: RepairShopPMResponse;
-    ruMake: string;
+    textOdometer?: string;
+    lastService?: string;
+    textRepairShop?: string;
+    textRepairShopAddress?: string;
+    textMake?: string;
+    textModel?: string;
+    textYear?: number;
     alignment?: PmTrailerProgressData;
     general?: PmTrailerProgressData;
     ptoPump?: PmTrailerProgressData;
@@ -18,7 +21,7 @@ export interface PmTrailer {
     tableTrailerName: string;
     tableTrailerColor: string;
     tableTrailerTypeClass: string;
-    additionalData: any;
+    note?: string;
     tableDropdownContent: {
         hasContent: boolean;
         content: DropdownItem[];

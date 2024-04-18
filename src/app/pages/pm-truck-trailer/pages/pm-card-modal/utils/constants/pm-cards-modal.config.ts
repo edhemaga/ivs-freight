@@ -1,16 +1,15 @@
-import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
 
-export class PmCardDataConfigConstants {
-    static ROWS: number = 4;
+export class PMCardsModalConfig {
+    static rows: number = 4;
 
-    static PAGE: string = 'PM';
+    static page: string = 'PM';
 
-    static CARD_TITLE: string = 'textUnit';
+    static card_title: string = 'textUnit';
 
-    // Data for active front
-    static DISPLAY_ROWS_FRONT_ACTIVE: CardRows[] = [    
+    static displayRowsFrontTruck: CardRows[] = [
         {
-            title: 'Oil & Filter',
+            title: 'Engine Oil & Filter',
             field: 'oilFilter',
             key: 'oilFilter.expirationMiles',
             secondKey: 'oilFilter.percentage',
@@ -22,7 +21,7 @@ export class PmCardDataConfigConstants {
             secondKey: 'airFilter.percentage',
         },
         {
-            title: 'Trans. Fluid',
+            title: 'Transmission Fluid',
             field: 'transFluid',
             key: 'transFluid.expirationMiles',
             secondKey: 'transFluid.percentage',
@@ -33,10 +32,11 @@ export class PmCardDataConfigConstants {
             key: 'belts.expirationMiles',
             secondKey: 'belts.percentage',
         },
+        null,
+        null,
     ];
 
-    // Data for active back
-    static DISPLAY_ROWS_BACK_ACTIVE: CardRows[] = [
+    static displayRowsBackTruck: CardRows[] = [
         {
             title: 'Make',
             key: 'textMake',
@@ -50,13 +50,14 @@ export class PmCardDataConfigConstants {
             key: 'lastService',
         },
         {
-            title: 'Repair Shop',
+            title: 'Repair Shop - Name',
             key: 'textRepairShop',
         },
+        null,
+        null,
     ];
 
-    // Data for inactive front
-    static DISPLAY_ROWS_FRONT_INACTIVE: CardRows[] = [
+    static displayRowsFrontTrailer: CardRows[] = [
         {
             title: 'General',
             field: 'general',
@@ -81,10 +82,11 @@ export class PmCardDataConfigConstants {
             key: 'ptoPump.expirationDaysText',
             secondKey: 'ptoPump.percentage',
         },
+        null,
+        null,
     ];
 
-    // Data for inactive back
-    static DISPLAY_ROWS_BACK_INACTIVE: CardRows[] = [
+    static displayRowsBackTrailer: CardRows[] = [
         {
             title: 'Make',
             key: 'textMake',
@@ -98,8 +100,10 @@ export class PmCardDataConfigConstants {
             key: 'lastService',
         },
         {
-            title: 'Repair Shop',
-            key: 'repairShop',
+            title: 'Repair Shop - Name',
+            key: 'textRepairShop',
         },
+        null,
+        null,
     ];
 }
