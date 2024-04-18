@@ -61,14 +61,7 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    <ng-container
-                                        *ngFor="
-                                            let title of titleArray;
-                                            trackBy: trackCard
-                                        "
-                                    >
-                                        {{ title[i] }}
-                                    </ng-container>
+                                    {{ card.name }}
                                 </span>
                             </span>
                         </div>
@@ -76,7 +69,64 @@
 
                     <!-- Card body front-->
 
-                    <div
+                    <div class="card-body-content flipped">
+                        <ng-container
+                            *ngFor="
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
+                                trackBy: trackCard
+                            "
+                        >
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
+                                    </div>
+
+                                    <div
+                                        class="bottom-item-body d-flex align-items-center"
+                                        [ngStyle]="{
+                                            marginTop:
+                                                cardRow.title === 'Fleet'
+                                                    ? '3px'
+                                                    : 0
+                                        }"
+                                    >
+                                        <ng-container
+                                            *ngIf="cardRow.title === 'Fleet'"
+                                        >
+                                            <app-ta-input-dropdown-table
+                                                [data]="card"
+                                                [type]="'owner'"
+                                            ></app-ta-input-dropdown-table>
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                cardRow.title !== 'Fleet' &&
+                                                cardRow.title !== 'Owner Type'
+                                            "
+                                        >
+                                            {{ card[cardRow.key] ?? '/' }}
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                cardRow.title == 'Owner Type'
+                                            "
+                                        >
+                                            {{ card['ownerType']['name'] ?? '/' }}
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <!--<div
                         class="flipped"
                         [ngClass]="{
                             'card-body-content':
@@ -84,7 +134,6 @@
                                 !isAllCardsFlipp
                         }"
                     >
-                        <!-- Card body item -->
 
                         <ng-container
                             *ngFor="
@@ -132,7 +181,7 @@
                                 </div>
                             </ng-container>
                         </ng-container>
-                    </div>
+                    </div> -->
 
                     <!-- Card body Back -->
 

@@ -27,6 +27,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { OwnerService } from '@pages/owner/services/owner.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/services/owner-cards-modal.service';
 
 // Store
 import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
@@ -36,6 +37,7 @@ import {
     OwnerInactiveState,
     OwnerInactiveStore,
 } from '@pages/owner/state/owner-inactive-state/owner-inactive.store';
+import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/owner-card-modal.query';
 
 //Enum
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -98,7 +100,9 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private ownerService: OwnerService,
         private phonePipe: FormatPhonePipe,
         private ownerInactiveStore: OwnerInactiveStore,
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private ownerCardsModalService: OwnerCardsModalService,
+        private ownerCardModalQuery: OwnerCardModalQuery,
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
@@ -490,6 +494,63 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.activeTabCardsConfig();
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.inactiveTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+        this.ownerCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private activeTabCardsConfig(): void {
+        this.ownerCardModalQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.NAME;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+
+                    console.log(this.displayRowsFront, 'displayRowsFront')
+                    console.log(this.displayRowsBack, 'displayback')
+                }
+            });
+    }
+
+    private inactiveTabCardsConfig(): void {
+        this.ownerCardModalQuery.inactive$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.NAME;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
     private observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -580,6 +641,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setOwnerData(td);
+        this.updateCardView();
     }
 
     private updateDataCount(): void {
