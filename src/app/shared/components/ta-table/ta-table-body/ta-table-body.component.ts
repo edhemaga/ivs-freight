@@ -68,7 +68,10 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // models
-import { CompanyAccountLabelResponse } from 'appcoretruckassist';
+import {
+    CompanyAccountLabelResponse,
+    SignInResponse,
+} from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
@@ -171,6 +174,8 @@ export class TaTableBodyComponent
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
 
+    public companyUser: SignInResponse;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -259,16 +264,7 @@ export class TaTableBodyComponent
                 this.chipsForHighlight = chips.length ? chips : [];
             });
 
-        // Scrolling Virtual Container
-        // this.sharedService.emitTableScrolling
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((offSet: any) => {
-        //         if (offSet < 84) {
-        //             this.virtualScrollViewport.scrollToOffset(0);
-        //         } else if (offSet > 84) {
-        //             this.virtualScrollViewport.scrollToOffset(offSet);
-        //         }
-        //     });
+        this.getCompanyUser();
     }
 
     // --------------------------------NgOnChanges---------------------------------
@@ -692,11 +688,16 @@ export class TaTableBodyComponent
                 this.dropdownActions = [...actions];
 
                 // remove this line when we enable those options
-                this.dropdownActions = this.dropdownActions.filter(
+                /*  this.dropdownActions = this.dropdownActions.filter(
                     (_, index) => index === 0 || index === 5
                 );
+ */
+                const dropdownData = {
+                    companyUserId: row.companyUserId,
+                    data: this.dropdownActions,
+                };
 
-                tooltip.open({ data: this.dropdownActions });
+                tooltip.open({ data: dropdownData });
             }
         }
 
@@ -960,6 +961,11 @@ export class TaTableBodyComponent
             hoverCode: this.selectedContactColor.hoverCode,
         };
     }
+
+    private getCompanyUser(): void {
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
+    }
+
     // --------------------------------ON DESTROY---------------------------------
     ngOnDestroy(): void {
         this.destroy$.next();

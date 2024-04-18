@@ -108,19 +108,19 @@ export class ContactsTableComponent
     ngOnInit(): void {
         this.sendContactData();
 
-        this.contractResetColumns();
+        this.contactResetColumns();
 
-        this.contractResize();
+        this.contactResize();
 
         this.confirmationSubscribe();
 
-        this.contractCurrentToaggleColumn();
+        this.contactCurrentToaggleColumn();
 
-        this.contractCurrentSearchTableData();
+        this.contactCurrentSearchTableData();
 
-        this.contractCurrentActionAnimation();
+        this.contactCurrentActionAnimation();
 
-        this.contractCurrentDeleteSelectedRows();
+        this.contactCurrentDeleteSelectedRows();
     }
 
     ngAfterViewInit(): void {
@@ -129,7 +129,7 @@ export class ContactsTableComponent
         }, 10);
     }
 
-    private contractResetColumns(): void {
+    private contactResetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
@@ -139,7 +139,7 @@ export class ContactsTableComponent
             });
     }
 
-    private contractResize(): void {
+    private contactResize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
@@ -157,7 +157,7 @@ export class ContactsTableComponent
             });
     }
 
-    private contractCurrentToaggleColumn(): void {
+    private contactCurrentToaggleColumn(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
@@ -172,7 +172,7 @@ export class ContactsTableComponent
             });
     }
 
-    private contractCurrentSearchTableData(): void {
+    private contactCurrentSearchTableData(): void {
         this.tableService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -199,7 +199,7 @@ export class ContactsTableComponent
             });
     }
 
-    private contractCurrentActionAnimation(): void {
+    private contactCurrentActionAnimation(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
@@ -282,7 +282,7 @@ export class ContactsTableComponent
             });
     }
 
-    private contractCurrentDeleteSelectedRows(): void {
+    private contactCurrentDeleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
@@ -570,7 +570,7 @@ export class ContactsTableComponent
             });
     }
 
-    private saveContractLabel(data: CompanyAccountLabelResponse): void {
+    private saveContactLabel(data: CompanyAccountLabelResponse): void {
         this.contactService
             .updateCompanyContactLabel({
                 id: data.id,
@@ -582,31 +582,31 @@ export class ContactsTableComponent
     }
 
     private updateCompanyContactLabel(event: ContactsTableBodyAction): void {
-        // const companyContractData = this.viewData.find(
+        // const companyContactData = this.viewData.find(
         //     (e: CreateCompanyContactCommand) => e.id === event.id
         // );
 
         const newdata: UpdateCompanyContactCommand = {
-            // id: companyContractData.id ?? null,
-            // name: companyContractData.name ?? null,
+            // id: companyContactData.id ?? null,
+            // name: companyContactData.name ?? null,
             // companyContactLabelId: event.data ? event.data.id : null,
-            // avatar: companyContractData.avatar ?? null,
-            // address: companyContractData.address ?? null,
-            // shared: companyContractData.shared ?? null,
-            // note: companyContractData.note ?? null,
-            // contactEmails: companyContractData.contactEmails
-            //     ? this.createContactEmails(companyContractData.contactEmails[0])
+            // avatar: companyContactData.avatar ?? null,
+            // address: companyContactData.address ?? null,
+            // shared: companyContactData.shared ?? null,
+            // note: companyContactData.note ?? null,
+            // contactEmails: companyContactData.contactEmails
+            //     ? this.createContactEmails(companyContactData.contactEmails[0])
             //     : null,
-            // contactPhones: companyContractData.contactPhones
-            //     ? this.createContactPhones(companyContractData.contactPhones[0])
+            // contactPhones: companyContactData.contactPhones
+            //     ? this.createContactPhones(companyContactData.contactPhones[0])
             //     : null,
         };
 
         this.contactService
             .updateCompanyContact(
                 newdata
-                // companyContractData.colorRes,
-                // companyContractData.colorLabels
+                // companyContactData.colorRes,
+                // companyContactData.colorLabels
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe();
@@ -698,7 +698,7 @@ export class ContactsTableComponent
                 }
             );
         } else if (event.type === TableStringEnum.UPDATE_LABEL) {
-            this.saveContractLabel(event.data);
+            this.saveContactLabel(event.data);
         } else if (event.type === TableStringEnum.UPDATE_LABEL) {
             this.updateCompanyContactLabel(event);
         }

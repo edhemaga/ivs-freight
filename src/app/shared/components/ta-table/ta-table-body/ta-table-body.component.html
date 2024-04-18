@@ -4859,7 +4859,7 @@
                 'table-list-dropdown-inner-dropdown-active':
                     action?.isInnerDropActive
             }"
-            *ngFor="let action of data"
+            *ngFor="let action of data.data"
         >
             <!-- Action -->
             <div
@@ -4873,7 +4873,11 @@
                     'table-list-dropdown-content-muted': action.mutedStyle,
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
                     'table-list-dropdown-content-dropdown-active':
-                        action?.isInnerDropActive
+                        action?.isInnerDropActive,
+                        'table-list-dropdown-content-dropdown-disabled':
+                        action.title === 'Delete' &&
+                        tableData[0].title === 'Contacts' &&
+                        companyUser.companyUserId !== data.companyUserId
                 }"
                 [ngStyle]="action.tableListDropdownContentStyle"
             >
