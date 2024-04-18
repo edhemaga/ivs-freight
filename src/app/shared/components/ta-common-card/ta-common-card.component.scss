@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 @keyframes change {
     from {
         color: #6c6c6c;
@@ -17,7 +19,19 @@
 .card-flex {
     height: 42px !important;
 }
-
+.voided-button {
+    align-items: center;
+    font-size: 11px;
+    line-height: 14px;
+    text-align: left;
+    color: #df3c3c;
+    height: 18px;
+    width: 53px;
+    padding: 2px 0px 0px 0px;
+    border-radius: 2px 0px 0px 0px;
+    opacity: 0px;
+    background: $white-6;
+}
 .text-icon-common {
     display: flex;
     align-items: flex-start;
@@ -46,25 +60,28 @@
 
     .card-close-title {
         color: #919191 !important;
-
-        
     }
     &:hover {
         .card-close-title {
-            color: #2F2F2F !important;
+            color: #2f2f2f !important;
         }
 
         .second-name {
-            color: #2F2F2F;
+            color: #2f2f2f;
         }
 
-        .positiveResult{
-            color: #EF5350;
-            background: linear-gradient(0deg, rgba(229, 115, 115, 0.2), rgba(229, 115, 115, 0.2)), #FFFFFF;
+        .positiveResult {
+            color: #ef5350;
+            background: linear-gradient(
+                    0deg,
+                    rgba(229, 115, 115, 0.2),
+                    rgba(229, 115, 115, 0.2)
+                ),
+                #ffffff;
         }
 
-        .open-name{
-            color: #2F2F2F;
+        .open-name {
+            color: #2f2f2f;
         }
     }
 }
@@ -72,8 +89,7 @@
     font-size: 14px;
     font-weight: 800;
     color: #6c6c6c;
-    
-    
+
     //height: 22px;
     //center align
     height: 28px;
@@ -101,7 +117,6 @@
     width: 100%;
     padding: 0px 8px;
 
-
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
@@ -111,7 +126,7 @@
 
         &.active {
             max-height: 1200px;
-            transition: all 0.200s ease-in-out;
+            transition: height 0.2s ease-in-out;
         }
         .dates {
             display: flex;
@@ -183,12 +198,11 @@
                 }
             }
         }
-       
-        &.insuranceCard{
+
+        &.insuranceCard {
             margin-left: 4px !important;
             margin-right: 4px !important;
         }
-
     }
 }
 
@@ -215,7 +229,7 @@ p {
     align-items: center;
     svg {
         transform: rotate(180deg);
-       
+
         path {
             fill: #6d82c7 !important;
             &:hover {
@@ -280,7 +294,6 @@ p {
     justify-content: space-between;
     padding-left: 4px !important;
     padding-right: 0px !important;
-
 }
 .drop-common {
     height: 21px;
@@ -290,7 +303,7 @@ p {
     line-height: 20px;
     cursor: pointer;
     transition: all 0.4s ease-in-out;
-    
+
     svg {
         position: relative;
         right: -2px;
@@ -302,7 +315,7 @@ p {
         }
     }
 
-    .footer-icon-holder-new{
+    .footer-icon-holder-new {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -389,25 +402,25 @@ p {
     margin-left: 12px;
     //width: 150px;
     overflow: hidden;
-    
+
     text-overflow: ellipsis;
 
-    &.resultHolder{
+    &.resultHolder {
         padding: 2px 6px;
 
         font-size: 11px;
         font-weight: 800;
 
         border-radius: 2px;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
     }
 
-    &.positiveResult{
-        background-color: #F7F7F7;
-        color: #E57373;
+    &.positiveResult {
+        background-color: #f7f7f7;
+        color: #e57373;
     }
 
-    &.reason-span{
+    &.reason-span {
         max-width: 110px;
         white-space: nowrap;
     }
@@ -438,18 +451,22 @@ p {
     padding-top: 0 !important;
 }
 
-.openedCardResults{
+.openedCardResults {
+    &.resultHolder {
+        color: #2f2f2f;
 
-    &.resultHolder{
-        color: #2F2F2F;
-    
-        &.positiveResult{
-            background: linear-gradient(0deg, rgba(229, 115, 115, 0.2), rgba(229, 115, 115, 0.2)), #FFFFFF;
-            color: #EF5350;
+        &.positiveResult {
+            background: linear-gradient(
+                    0deg,
+                    rgba(229, 115, 115, 0.2),
+                    rgba(229, 115, 115, 0.2)
+                ),
+                #ffffff;
+            color: #ef5350;
         }
     }
 }
 
-.openedTitle{
-    color: #2F2F2F;
+.openedTitle {
+    color: #2f2f2f;
 }

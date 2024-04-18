@@ -12,13 +12,13 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
-import { ConfirmationModalComponent } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { AccountService } from '@pages/account/services/account.service';
-import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // store
 import { AccountState } from '@pages/account/state/account.store';
@@ -54,7 +54,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
 
 // constants
-import { AccountFilterConstants } from './utils/constants/account-filter.constants';
+import { AccountFilterConstants } from '@pages/account/pages/account-table/utils/constants/account-filter.constants';
 
 @Component({
     selector: 'app-account-table',

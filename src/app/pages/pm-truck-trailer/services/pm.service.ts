@@ -18,14 +18,14 @@ import {
 } from 'appcoretruckassist';
 
 // Store
-import { PmTruckStore } from '../state/pm-truck-state/pm-truck.store';
-import { PmTrailerStore } from '../state/pm-trailer-state/pm-trailer.store';
-import { TruckassistTableService } from 'src/app/shared/services/truckassist-table.service';
-import { PmListTruckStore } from '../state/pm-list-truck-state/pm-list-truck.store';
-import { PmListTrailerStore } from '../state/pm-list-trailer-state/pm-list-trailer.store';
+import { PmTruckStore } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.store';
+import { PmTrailerStore } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.store';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { PmListTruckStore } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.store';
+import { PmListTrailerStore } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.store';
 
 // Model
-import { PmUpdateTruckUnitListCommand } from '../models/pm-update-truck-unit-list-command.model';
+import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
 
 @Injectable({
     providedIn: 'root',

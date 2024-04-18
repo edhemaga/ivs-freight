@@ -103,9 +103,7 @@ export class ContactsService {
     ): Observable<any> {
         return this.contactService.apiCompanycontactPut(data).pipe(
             tap(() => {
-                const subContact = this.getCompanyContactById(
-                    data.id
-                ).subscribe({
+                this.getCompanyContactById(data.id).subscribe({
                     next: (contact: CompanyContactResponse | any) => {
                         this.contactStore.remove(({ id }) => id === data.id);
                         colors && (contact.colorRes = colors);
@@ -117,8 +115,6 @@ export class ContactsService {
                             data: contact,
                             id: contact.id,
                         });
-
-                        subContact.unsubscribe();
                     },
                 });
             })

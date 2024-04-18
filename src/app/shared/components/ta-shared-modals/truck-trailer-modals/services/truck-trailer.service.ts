@@ -58,7 +58,7 @@ export class TruckTrailerService {
             tap((res) => {
                 // Truck Add Registration
                 if (res.id) {
-                    let newTitleId = res.id;
+                    const newTitleId = res.id;
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
                     let newData = truckData[data.truckId];
@@ -75,7 +75,6 @@ export class TruckTrailerService {
                                     data: newData,
                                     id: newData.id,
                                 });
-                                truckById.unsubscribe();
                             },
                         });
                 }
@@ -168,9 +167,10 @@ export class TruckTrailerService {
             tap((res: any) => {
                 // Truck Add Inspection
                 if (data.truckId) {
+                    const newTitleId = res.id;
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
-                    let newData = truckData[data.truckId];
+                    const newData = truckData[data.truckId];
 
                     let truckById = this.truckService
                         .getTruckInspectionByInspectionId(res.id)
@@ -184,7 +184,6 @@ export class TruckTrailerService {
                                     data: newData,
                                     id: newData.id,
                                 });
-                                truckById.unsubscribe();
                             },
                         });
                 } else if (data.trailerId) {

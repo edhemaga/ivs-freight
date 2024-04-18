@@ -32,9 +32,9 @@ import { AccountModalComponent } from '@pages/account/pages/account-modal/accoun
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
-import { TableActionsStringEnum } from 'src/app/shared/enums/table-actions-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { AccountStringEnum } from '../../enums/account-string.enum';
+import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
 
 @Component({
     selector: 'app-account-card',

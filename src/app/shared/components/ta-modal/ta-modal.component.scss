@@ -11,7 +11,25 @@
         background-color: rgba(0, 0, 0, 0.3);
     }
 }
-
+.modal-date-logo {
+    height: 26px;
+    width: 26px;
+    cursor: pointer !important;
+    position: relative;
+    svg {
+        &:hover {
+            cursor: pointer;
+            path {
+                fill: $muted;
+            }
+        }
+    }
+}
+.modal-date-border {
+    height: 18px;
+    margin-right: 4px;
+    border-right: 1px solid $ta-light-grey-6;
+}
 .modal-container {
     width: 480px;
     height: auto;
@@ -32,7 +50,7 @@
             z-index: 9999;
             top: 16px;
             left: 14px;
-            color: #6c6c6c;
+            color: $bw6-2;
             font-size: 18px;
             font-weight: 800;
             margin: 0;
@@ -41,22 +59,22 @@
         .ta-modal-dropzone {
             position: absolute;
             top: 0;
-            border: 4px dashed #e5e5e5;
+            border: 4px dashed $ta-light-grey;
         }
 
         &-hovered {
             .ta-modal-dropzone {
                 position: absolute;
                 top: 0;
-                border: 4px dashed #ffffff;
-                background-color: #eeeeee;
+                border: 4px dashed $white;
+                background-color: $bw2;
 
                 .ta-modal-dropzone-label {
-                    background-color: #eeeeee;
+                    background-color: $bw2;
                 }
 
                 .ta-modal-dropzone-text {
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
             }
         }
@@ -209,6 +227,12 @@
                 }
             }
         }
+    }
+    .not-clickable {
+        pointer-events: none;
+        cursor: not-allowed;
+        background: $ta-light-grey-5 !important;
+        color: $ta-light-grey-6 !important;
     }
 
     .modal-footer {

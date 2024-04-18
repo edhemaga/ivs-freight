@@ -4,8 +4,6 @@ table {
     width: 100%;
     thead {
         display: flex;
-        // background: white;
-        // margin: 2px 0;
 
         .table-border-scroll-section-container {
             position: relative;
@@ -412,13 +410,7 @@ table {
 
 .actions-columns-container {
     padding: 2px 2px 2px 1px;
-    justify-content: flex-end;
-
-    th {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    margin-left: 6px;
 }
 
 // Drag Preview
