@@ -4,7 +4,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 // model
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-import { OwnerCardsModalConfig } from '../constants/owner-cards-modal.config';
+import { OwnerCardsModalConfig } from '@pages/owner/pages/owner-card-modal/constants/owner-cards-modal.config';
 
 export interface OwnerCardDataState extends EntityState<CardRows> {}
 

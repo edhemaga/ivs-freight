@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OwnerCardModalComponent } from './owner-card-modal.component';
+import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
 
 describe('OwnerCardModalComponent', () => {
   let component: OwnerCardModalComponent;
