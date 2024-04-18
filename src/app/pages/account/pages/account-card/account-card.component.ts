@@ -3,14 +3,12 @@ import {
     EventEmitter,
     Inject,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
 } from '@angular/core';
 import { FormControl, UntypedFormArray } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { DOCUMENT } from '@angular/common';
 
@@ -27,7 +25,6 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { AccountService } from '@pages/account/services/account.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // components
@@ -45,13 +42,12 @@ import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
     styleUrls: ['./account-card.component.scss'],
     providers: [CardHelper],
 })
-export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
+export class AccountCardComponent implements OnInit, OnDestroy {
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
 
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
-        this.getTransformedCardsData();
     }
     @Input() selectedTab: string;
 
@@ -59,58 +55,49 @@ export class AccountCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() cardTitle: string;
     @Input() rows: number[];
     @Input() displayRowsFront: CardRows[];
+    @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
 
+    public isCardFlippedCheckInCards: number[] = [];
     public cardData: CardDetails;
     public _viewData: CardDetails[];
+    public isAllCardsFlipp: boolean = false;
 
     public dropdownSelectionArray = new UntypedFormArray([]);
     public selectedContactLabel: CompanyAccountLabelResponse[] = [];
 
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
 
     private destroy$ = new Subject<void>();
 
     constructor(
         private tableService: TruckassistTableService,
         private cardHelper: CardHelper,
-        private accountService: AccountService,
         private modalService: ModalService,
         private clipboard: Clipboard,
         @Inject(DOCUMENT) private readonly documentRef: Document
     ) {}
 
     ngOnInit(): void {
+        this.flipAllCards();
+        
         this._viewData.length && this.labelDropdown();
     }
 
-    ngOnChanges(cardChanges: SimpleChanges) {
-        if (cardChanges?.displayRowsFront?.currentValue)
-            this.getTransformedCardsData();
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
+    public flipAllCards(): void {
+        this.tableService.isFlipedAllCards
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.isAllCardsFlipp = res;
 
-        const cardTitles = this.cardHelper.renderCards(
-            this._viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this._viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = [];
+            });
     }
 
     // When checkbox is selected
