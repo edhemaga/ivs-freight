@@ -259,6 +259,6 @@ export class CardHelper {
             this.isCardFlippedCheckInCards = this.isCardFlippedArrayComparasion;
         }
 
-        return this.isCardFlippedCheckInCards;
+        return [...this.isCardFlippedCheckInCards];
     }
 }

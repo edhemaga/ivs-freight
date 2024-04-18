@@ -36,7 +36,9 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 })
 export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     // All data
-    @Input() viewData: CardDetails[];
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
 
     // Page
     @Input() selectedTab: string;
@@ -60,6 +62,7 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
+    public _viewData: CardDetails[];
 
     constructor(
         private tableService: TruckassistTableService,
@@ -89,19 +92,19 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
         this.titleArray = [];
 
         const cardTitles = this.cardHelper.renderCards(
-            this.viewData,
+            this._viewData,
             this.cardTitle,
             null
         );
 
         const frontOfCards = this.cardHelper.renderCards(
-            this.viewData,
+            this._viewData,
             null,
             this.displayRowsFront
         );
 
         const backOfCards = this.cardHelper.renderCards(
-            this.viewData,
+            this._viewData,
             null,
             this.displayRowsBack
         );
@@ -131,7 +134,7 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
