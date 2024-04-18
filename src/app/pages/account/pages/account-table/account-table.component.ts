@@ -23,6 +23,7 @@ import { ConfirmationService } from 'src/app/shared/components/ta-shared-modals/
 // store
 import { AccountState } from '@pages/account/state/account.store';
 import { AccountQuery } from '@pages/account/state/account.query';
+import { accountCardModalQuery } from '../account-card-modal/state/account-card-modal.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from '@shared/utils/settings/table-settings/tools-accounts-columns';
@@ -77,18 +78,21 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public accounts: AccountState[];
 
     //Filter
-    public backFilterQuery: AccountFilter = {...AccountFilterConstants.accountFilterQuery};
+    public backFilterQuery: AccountFilter = {
+        ...AccountFilterConstants.accountFilterQuery,
+    };
 
     // Data to display from model Broker
     public displayRowsFront: CardRows[] =
+        AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
+
+    public displayRowsBack: CardRows[] =
         AccountCardData.DISPLAY_ROWS_FRONT_ACTIVE;
 
     //Card config
     public cardTitle: string = AccountCardData.CARD_TITLE;
     public page: string = AccountCardData.PAGE;
     public rows: number = AccountCardData.ROWS;
-
-    public sendDataToCardsFront: CardRows[];
 
     constructor(
         private modalService: ModalService,
@@ -97,6 +101,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private accountService: AccountService,
         private clipboard: Clipboard,
         private confiramtionService: ConfirmationService,
+        private accountCardModalQuery: accountCardModalQuery,
         @Inject(DOCUMENT) private readonly documentRef: Document
     ) {}
 
@@ -380,6 +385,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setAccountData(td);
+
+        this.tabCardsConfig();
     }
 
     private updateDataCount(): void {
@@ -465,8 +472,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 svgClass: TableStringEnum.REGULAR,
             },
             {
-                title: data.url ? TableStringEnum.GO_TO_LINK : TableStringEnum.NO_LINK,
-                name: data.url ? TableStringEnum.GO_TO_LINK_2 : TableStringEnum.NO_LINK_2,
+                title: data.url
+                    ? TableStringEnum.GO_TO_LINK
+                    : TableStringEnum.NO_LINK,
+                name: data.url
+                    ? TableStringEnum.GO_TO_LINK_2
+                    : TableStringEnum.NO_LINK_2,
                 svgUrl: TableStringEnum.WEB_IMAGE,
                 mutedStyle: data.url ? false : true,
                 svgStyle: {
@@ -692,9 +703,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             note: companyAcountData.note ?? null,
         };
         this.accountService
-            .updateCompanyAccount(
-                newdata,
-            )
+            .updateCompanyAccount(newdata)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
@@ -750,15 +759,17 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .deleteAccountList(ids)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.viewData = this.viewData.map((account: AccountResponse) => {
-                    ids.map((id) => {
-                        if (account.id === id)
-                            account.actionAnimation =
-                                TableActionsStringEnum.DELETE_MULTIPLE;
-                    });
+                this.viewData = this.viewData.map(
+                    (account: AccountResponse) => {
+                        ids.map((id) => {
+                            if (account.id === id)
+                                account.actionAnimation =
+                                    TableActionsStringEnum.DELETE_MULTIPLE;
+                        });
 
-                    return account;
-                });
+                        return account;
+                    }
+                );
 
                 this.updateDataCount();
 
@@ -773,6 +784,26 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    private tabCardsConfig(): void {
+        this.accountCardModalQuery.active$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    console.log(res, 'resdata')
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.NAME;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+                }
             });
     }
 
