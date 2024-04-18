@@ -32,46 +32,38 @@ export class ContactsResolver implements Resolve<ContactState> {
             this.contactService.companyContactLabelsColorList(),
             this.contactService.getCompanyContactModal(),
         ]).pipe(
-            tap(
-                ([
-                    contactPagination,
-                    tableConfig,
-                    colorRes,
-                    contractLabels,
-                ]) => {
+            tap(([contactPagination, tableConfig, colorRes, contactLabels]) => {
+                localStorage.setItem(
+                    'contactTableCount',
+                    JSON.stringify({
+                        contact: contactPagination.count,
+                    })
+                );
+
+                if (tableConfig) {
+                    const config = JSON.parse(tableConfig.config);
+
                     localStorage.setItem(
-                        'contactTableCount',
-                        JSON.stringify({
-                            contact: contactPagination.count,
-                        })
+                        `table-${tableConfig.tableType}-Configuration`,
+                        JSON.stringify(config)
                     );
-
-                    if (tableConfig) {
-                        const config = JSON.parse(tableConfig.config);
-
-                        localStorage.setItem(
-                            `table-${tableConfig.tableType}-Configuration`,
-                            JSON.stringify(config)
-                        );
-                    }
-
-                    const contactLabels = contractLabels.labels.map((item) => {
-                        return { ...item, dropLabel: true };
-                    });
-
-                    const contactTableData =
-                        contactPagination.pagination.data.reverse();
-
-                    contactTableData.map(
-                        (e: ContactsTableData) => (
-                            (e.colorRes = colorRes),
-                            (e.colorLabels = contactLabels)
-                        )
-                    );
-
-                    this.contactStore.set(contactTableData);
                 }
-            )
+
+                const mappedContactLabels = contactLabels.labels.map((item) => {
+                    return { ...item, dropLabel: true };
+                });
+
+                const contactTableData = contactPagination.pagination.data;
+
+                contactTableData.map(
+                    (e: ContactsTableData) => (
+                        (e.colorRes = colorRes),
+                        (e.colorLabels = mappedContactLabels)
+                    )
+                );
+
+                this.contactStore.set(contactTableData);
+            })
         );
     }
 }
