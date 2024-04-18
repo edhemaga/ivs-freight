@@ -426,6 +426,7 @@ export class ContactsTableComponent
         );
 
         const contactData = this.getTabData();
+
         this.tableData = [
             {
                 title: ContactsStringEnum.CONTACTS,
