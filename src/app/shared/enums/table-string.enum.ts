@@ -465,6 +465,7 @@ export enum TableStringEnum {
     WEB_IMAGE = 'assets/svg/common/ic_web.svg',
     PASSWORD_IMAGE = 'assets/svg/common/ic_password.svg',
     DELETE_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+    ACCOUNT = 'Account',
 
     // Actions
     SAVE = 'save',
