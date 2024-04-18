@@ -23,7 +23,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 // store
 import { AccountState } from '@pages/account/state/account.store';
 import { AccountQuery } from '@pages/account/state/account.query';
-import { accountCardModalQuery } from '../account-card-modal/state/account-card-modal.query';
+import { accountCardModalQuery } from '@pages/account/pages/account-card-modal/state/account-card-modal.query';
 
 // utils
 import { getToolsAccountsColumnDefinition } from '@shared/utils/settings/table-settings/tools-accounts-columns';
@@ -792,7 +792,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    console.log(res, 'resdata')
                     const filteredCardRowsFront =
                         res.front_side.filter(Boolean);
 

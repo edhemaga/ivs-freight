@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountCardModalComponent } from './account-card-modal.component';
+import { AccountCardModalComponent } from '@pages/account/pages/account-card-modal/account-card-modal.component';
 
 describe('AccountCardModalComponent', () => {
   let component: AccountCardModalComponent;

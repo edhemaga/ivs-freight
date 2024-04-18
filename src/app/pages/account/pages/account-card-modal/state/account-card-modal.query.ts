@@ -5,7 +5,7 @@ import { QueryEntity } from '@datorama/akita';
 import {
     AccountCardDataStore,
     AccountCardDataState,
-} from './account-card-modal.store';
+} from '@pages/account/pages/account-card-modal/state/account-card-modal.store';
 
 // Enum
 import { CardsModalEnum } from 'src/app/shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
