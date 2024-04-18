@@ -693,7 +693,13 @@ export class TaTableBodyComponent
 
                 // remove this line when we enable those options
                 this.dropdownActions = this.dropdownActions.filter(
-                    (_, index) => index === 0 || index === 5
+                    (data) =>
+                        ![
+                            'share',
+                            'print',
+                            'send-sms',
+                            'view-details',
+                        ].includes(data.name)
                 );
 
                 tooltip.open({ data: this.dropdownActions });

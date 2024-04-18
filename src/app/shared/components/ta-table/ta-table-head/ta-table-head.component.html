@@ -6,7 +6,8 @@
             [ngClass]="{
                 'tr-height-2':
                     tableData[0].title === 'Contacts' ||
-                    tableData[0].gridNameTitle === 'PM'
+                    tableData[0].gridNameTitle === 'PM' ||
+                    tableData[0].gridNameTitle === 'Truck'
             }"
         >
             <th
@@ -38,7 +39,8 @@
                         column.width < 68 && !locked && !rezaizeing,
                     'align-items-end':
                         tableData[0].title === 'Contacts' ||
-                        tableData[0].gridNameTitle === 'PM'
+                        tableData[0].gridNameTitle === 'PM' ||
+                        tableData[0].gridNameTitle === 'Truck'
                 }"
             >
                 <!-- Selected Row Count -->
@@ -97,13 +99,311 @@
                             <p class="m-0 ta-font-bold th-title">PRIMARY</p>
                         </div>
                     </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Owner Details'
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === ' NAME'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    OWNER
+                                </p>
+                            </ng-container>
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === ' NAME';
+                                    else showCommition
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </ng-container>
+                            <ng-template #showCommition>
+                                <p class="m-0 ta-font-bold th-title">COMM</p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
 
                     <ng-container
                         *ngIf="
-                            tableData[0].title !== 'Contacts' ||
-                            (tableData[0].title === 'Contacts' &&
-                                column.name !== 'PHONE' &&
-                                column.name !== 'EMAIL')
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'FHWA Inspection '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'TERM'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FHWA
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Registration Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'PLATE NUMBER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    LICENCE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Title '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'NUMBER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    TITLE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Purchase Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'PRICE'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    PURCHASE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Assigned To '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'DRIVER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    ASSIGNED
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Fuel Detail'
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'FUEL TYPE'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FUEL
+                                </p>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === 'FUEL TYPE';
+                                    else showSecond
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[1] }}
+                                </p>
+                            </ng-container>
+                            <ng-template #showSecond>
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Assigned To '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'DRIVER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    ASSIGNED
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Toll Device '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === 'TOLL TRANSPONDER'
+                                "
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    TOLL DEVICE
+                                </p>
+                            </ng-container>
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle ===
+                                        'TOLL TRANSPONDER';
+                                    else showCommition
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[1] }}
+                                </p>
+                            </ng-container>
+                            <ng-template #showCommition>
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableData[0].tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Wheel Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'FRONT WHEELS'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FUEL
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            (tableData[0].title !== 'Contacts' ||
+                                (tableData[0].title === 'Contacts' &&
+                                    column.name !== 'PHONE' &&
+                                    column.name !== 'EMAIL')) &&
+                            (tableData[0].gridNameTitle !== 'PM' ||
+                                (tableData[0].gridNameTitle === 'PM' &&
+                                    column.tableHeadTitle !== 'REPAIR SHOP')) &&
+                            column?.groupName !== 'Owner Details' &&
+                            column?.groupName !== 'Registration Detail ' &&
+                            column?.groupName !== 'FHWA Inspection ' &&
+                            column?.groupName !== 'Assigned To ' &&
+                            column?.groupName !== 'Purchase Detail ' &&
+                            column?.groupName !== 'Title ' &&
+                            column?.groupName !== 'Fuel Detail' &&
+                            column?.groupName !== 'Wheel Detail ' &&
+                            column?.groupName !== 'Toll Device '
                         "
                     >
                         <div
@@ -449,7 +749,8 @@
             [ngClass]="{
                 'tr-height-2':
                     tableData[0].title === 'Contacts' ||
-                    tableData[0].gridNameTitle === 'PM'
+                    tableData[0].gridNameTitle === 'PM' ||
+                    tableData[0].gridNameTitle === 'Truck'
             }"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             id="scroll"
@@ -487,7 +788,8 @@
                         'space-left': i === 0,
                         'align-items-end':
                             tableData[0].title === 'Contacts' ||
-                            tableData[0].gridNameTitle === 'PM'
+                            tableData[0].gridNameTitle === 'PM' ||
+                            tableData[0].gridNameTitle === 'Truck'
                     }"
                 >
                     <!-- Title -->
@@ -530,7 +832,241 @@
                                 </p>
                             </div>
                         </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Owner Details'
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="column.tableHeadTitle === ' NAME'"
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        OWNER
+                                    </p>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="
+                                        column.tableHeadTitle === ' NAME';
+                                        else showCommition
+                                    "
+                                >
+                                    <p class="m-0 ta-font-bold th-title">
+                                        {{ column.tableHeadTitle }}
+                                    </p>
+                                </ng-container>
+                                <ng-template #showCommition>
+                                    <p class="m-0 ta-font-bold th-title">
+                                        COMM
+                                    </p>
+                                </ng-template>
+                            </div>
+                        </ng-container>
 
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'FHWA Inspection '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="column.tableHeadTitle === 'TERM'"
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        FHWA
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Registration Detail '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        column.tableHeadTitle === 'PLATE NUMBER'
+                                    "
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        LICENCE
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Title '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="column.tableHeadTitle === 'NUMBER'"
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        TITLE
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Purchase Detail '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="column.tableHeadTitle === 'PRICE'"
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        PURCHASE
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Assigned To '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="column.tableHeadTitle === 'DRIVER'"
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        ASSIGNED
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Toll Device '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        column.tableHeadTitle ===
+                                        'TOLL TRANSPONDER'
+                                    "
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        TOLL DEVICE
+                                    </p>
+                                </ng-container>
+                                <ng-container
+                                    *ngIf="
+                                        column.tableHeadTitle ===
+                                            'TOLL TRANSPONDER';
+                                        else showCommition
+                                    "
+                                >
+                                    <p class="m-0 ta-font-bold th-title">
+                                        {{
+                                            column.tableHeadTitle.split(' ')[1]
+                                        }}
+                                    </p>
+                                </ng-container>
+                                <ng-template #showCommition>
+                                    <p class="m-0 ta-font-bold th-title">
+                                        {{
+                                            column.tableHeadTitle.split(' ')[0]
+                                        }}
+                                    </p>
+                                </ng-template>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].tableConfiguration === 'TRUCK' &&
+                                column.groupName === 'Wheel Detail '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column justify-content-center th-title-double"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container
+                                    *ngIf="
+                                        column.tableHeadTitle === 'FRONT WHEELS'
+                                    "
+                                >
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        FUEL
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </div>
+                        </ng-container>
                         <ng-container
                             *ngIf="
                                 (tableData[0].title !== 'Contacts' ||
@@ -540,7 +1076,16 @@
                                 (tableData[0].gridNameTitle !== 'PM' ||
                                     (tableData[0].gridNameTitle === 'PM' &&
                                         column.tableHeadTitle !==
-                                            'REPAIR SHOP'))
+                                            'REPAIR SHOP')) &&
+                                column?.groupName !== 'Owner Details' &&
+                                column?.groupName !== 'Registration Detail ' &&
+                                column?.groupName !== 'FHWA Inspection ' &&
+                                column?.groupName !== 'Assigned To ' &&
+                                column?.groupName !== 'Purchase Detail ' &&
+                                column?.groupName !== 'Title ' &&
+                                column?.groupName !== 'Fuel Detail' &&
+                                column?.groupName !== 'Wheel Detail ' &&
+                                column?.groupName !== 'Toll Device '
                             "
                         >
                             <div
