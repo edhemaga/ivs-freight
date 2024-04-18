@@ -190,7 +190,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public labelsPayTerms: any[] = [];
     public labelsDepartments: any[] = [];
 
-    public selectedContractDepartmentFormArray: any[] = [];
+    public selectedContactDepartmentFormArray: any[] = [];
 
     public selectedPayTerm: any = null;
 
@@ -466,7 +466,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public removeBrokerContacts(id: number) {
         this.brokerContacts.removeAt(id);
-        this.selectedContractDepartmentFormArray.splice(id, 1);
+        this.selectedContactDepartmentFormArray.splice(id, 1);
 
         if (this.brokerContacts.length === 0) {
             this.brokerForm.markAsUntouched();
@@ -726,15 +726,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: BrokerResponse) => {
                             if (res.ratingReviews.length) {
-                                this.reviews = res.ratingReviews.map((item: any) => ({
-                                    ...item,
-                                    companyUser: {
-                                        ...item.companyUser,
-                                        avatar: item.companyUser.avatar,
-                                    },
-                                    commentContent: item.comment,
-                                    rating: item.ratingFromTheReviewer,
-                                }));
+                                this.reviews = res.ratingReviews.map(
+                                    (item: any) => ({
+                                        ...item,
+                                        companyUser: {
+                                            ...item.companyUser,
+                                            avatar: item.companyUser.avatar,
+                                        },
+                                        commentContent: item.comment,
+                                        rating: item.ratingFromTheReviewer,
+                                    })
+                                );
 
                                 const reviewIndex = this.reviews.findIndex(
                                     (item) =>
@@ -819,7 +821,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'contact-department': {
-                this.selectedContractDepartmentFormArray[index] = event;
+                this.selectedContactDepartmentFormArray[index] = event;
                 break;
             }
             default: {
@@ -923,7 +925,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         for (let index = 0; index < brokerContacts.length; index++) {
             brokerContacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
+                this.selectedContactDepartmentFormArray[index].id;
         }
 
         newData = {
@@ -962,7 +964,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                         this.selectedBillingAddress = null;
                         this.selectedBillingPoBox = null;
-                        this.selectedContractDepartmentFormArray = [];
+                        this.selectedContactDepartmentFormArray = [];
                         this.selectedPayTerm = null;
                         this.selectedPhysicalAddress = null;
                         this.selectedPhysicalPoBox = null;
@@ -1074,7 +1076,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         for (let index = 0; index < brokerContacts.length; index++) {
             brokerContacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
+                this.selectedContactDepartmentFormArray[index].id;
         }
 
         newData = {
@@ -1255,7 +1257,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 })
                             );
 
-                            this.selectedContractDepartmentFormArray.push(
+                            this.selectedContactDepartmentFormArray.push(
                                 contact.department
                             );
                         }
