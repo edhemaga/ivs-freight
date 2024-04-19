@@ -5,22 +5,28 @@ import {
     Validators,
 } from '@angular/forms';
 
-import { Subject, takeUntil, tap } from 'rxjs';
+// rxjs
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
-import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 // validations
 import { passwordValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
-import { Store } from '@ngrx/store';
-import { authLogin } from '@pages/website/state/auth.actions';
+
+// store
+import { Store, select } from '@ngrx/store';
+
+// actions
+import { authLogin } from '@pages/website/state/actions/login/auth.actions';
+
+// selectors
 import {
     selectAuthLoginError,
-    selectLoggedUser,
+    selectAuthLoginLoading,
 } from '@pages/website/state/auth.selector';
 
 @Component({
@@ -31,26 +37,35 @@ import {
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
+    displaySpinner$: Observable<boolean>;
+
     public loginForm: UntypedFormGroup;
 
-    public displaySpinner: boolean = false;
-
     constructor(
+        // form
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private inputService: TaInputService,
-        private websiteAuthService: WebsiteAuthService,
+        // store
         private store: Store
-    ) {
-        this.store
-            .select(selectAuthLoginError)
-            .subscribe((error) => console.log('LOGIN ERROR', error));
-        this.store
-            .select(selectLoggedUser)
-            .subscribe((user) => console.log('LOGIN SUCCESS', user));
-    }
+    ) {}
 
     ngOnInit(): void {
+        this.subscribeToStoreSelectors();
         this.createForm();
+    }
+
+    private subscribeToStoreSelectors(): void {
+        this.store
+            .select(selectAuthLoginError)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((error) => {
+                if (!error) return;
+                this.loginForm.get(error.type).setErrors(error.error);
+            });
+
+        this.displaySpinner$ = this.store.pipe(select(selectAuthLoginLoading));
     }
 
     private createForm(): void {
@@ -68,15 +83,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public onKeyDown(event: { keyCode: number }): void {
-        if (event.keyCode === 13) this.userNgrxLogin();
+        if (event.keyCode === 13) this.userLogin();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) this.userNgrxLogin();
+        if (event.notDisabledClick) this.userLogin();
     }
 
-    private userNgrxLogin() {
-        console.log("FORM VALID", this.loginForm.invalid);
+    private userLogin(): void {
         if (this.loginForm.invalid) {
             this.inputService.markInvalid(this.loginForm);
 
@@ -84,50 +98,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
 
         this.store.dispatch(authLogin(this.loginForm.value));
-    }
-
-    private userLogin() {
-        if (this.loginForm.invalid) {
-            this.inputService.markInvalid(this.loginForm);
-
-            return;
-        }
-
-        this.displaySpinner = true;
-
-        this.websiteAuthService
-            .accountLogin(this.loginForm.value)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap({
-                    next: () => {
-                        this.displaySpinner = false;
-                    },
-                    error: (error) => {
-                        this.displaySpinner = false;
-
-                        const errorMessage = error.error.error;
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.THIS_USER_DOESENT_EXIST
-                        ) {
-                            this.loginForm
-                                .get(WebsiteStringEnum.EMAIL_ADDRESS)
-                                .setErrors({ userDoesntExist: true });
-                        }
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.WRONG_PASSWORD_TRY_AGAIN
-                        )
-                            this.loginForm
-                                .get(WebsiteStringEnum.PASSWORD)
-                                .setErrors({ wrongPassword: true });
-                    },
-                })
-            )
-            .subscribe();
     }
 
     ngOnDestroy(): void {

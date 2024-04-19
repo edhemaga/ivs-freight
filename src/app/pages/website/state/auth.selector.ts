@@ -1,14 +1,43 @@
-import { createSelector } from '@ngrx/store';
-import { AuthState } from './auth.reducer';
+// store
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-const selectLogin = (state: AuthState) => state;
+// models
+import { AuthState } from '@pages/website/state/auth.model';
+import { SignInResponse } from 'appcoretruckassist';
+
+// enums
+import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
+
+export const selectAuthState = createFeatureSelector<AuthState>('auth');
 
 export const selectAuthLoginError = createSelector(
-    selectLogin,
-    (state) => state.error
+    selectAuthState,
+    (state): { type: string; error: Record<string, boolean> } => {
+        if (!state.error) return null;
+        const errorMessage = state.error.error;
+
+        if (errorMessage === WebsiteStringEnum.THIS_USER_DOESENT_EXIST) {
+            return {
+                type: WebsiteStringEnum.EMAIL_ADDRESS,
+                error: { userDoesntExist: true },
+            };
+        } else if (
+            errorMessage === WebsiteStringEnum.WRONG_PASSWORD_TRY_AGAIN
+        ) {
+            return {
+                type: WebsiteStringEnum.PASSWORD,
+                error: { wrongPassword: true },
+            };
+        }
+    }
 );
 
 export const selectLoggedUser = createSelector(
-    selectLogin,
-    (state) => state.user
+    selectAuthState,
+    (state): SignInResponse => state.user
+);
+
+export const selectAuthLoginLoading = createSelector(
+    selectAuthState,
+    (state): boolean => state.loading
 );

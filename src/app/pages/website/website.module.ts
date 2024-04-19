@@ -37,8 +37,14 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+
+// ngrx
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffect } from './state/auth.effect';
+import { StoreModule } from '@ngrx/store';
+
+// ngrx reducers
+import { authReducer } from './state/auth.reducer';
 
 @NgModule({
     declarations: [
@@ -84,6 +90,8 @@ import { AuthEffect } from './state/auth.effect';
 
         // ngrx effects
         EffectsModule.forFeature([AuthEffect]),
+        //ngrx reducers
+        StoreModule.forFeature('auth', authReducer),
     ],
 })
-export class WebsiteModule { }
+export class WebsiteModule {}
