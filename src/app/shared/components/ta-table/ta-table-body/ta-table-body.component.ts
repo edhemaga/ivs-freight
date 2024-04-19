@@ -697,7 +697,7 @@ export class TaTableBodyComponent
                             'view-details',
                         ].includes(data.name)
                 );
- */
+
                 const dropdownData = {
                     companyUserId: row.companyUserId,
                     data: this.dropdownActions,

@@ -387,24 +387,7 @@
                         </div>
                     </ng-container>
                     <ng-container
-                        *ngIf="
-                            (tableData[0].title !== 'Contacts' ||
-                                (tableData[0].title === 'Contacts' &&
-                                    column.name !== 'PHONE' &&
-                                    column.name !== 'EMAIL')) &&
-                            (tableData[0].gridNameTitle !== 'PM' ||
-                                (tableData[0].gridNameTitle === 'PM' &&
-                                    column.tableHeadTitle !== 'REPAIR SHOP')) &&
-                            column?.groupName !== 'Owner Details' &&
-                            column?.groupName !== 'Registration Detail ' &&
-                            column?.groupName !== 'FHWA Inspection ' &&
-                            column?.groupName !== 'Assigned To ' &&
-                            column?.groupName !== 'Purchase Detail ' &&
-                            column?.groupName !== 'Title ' &&
-                            column?.groupName !== 'Fuel Detail' &&
-                            column?.groupName !== 'Wheel Detail ' &&
-                            column?.groupName !== 'Toll Device '
-                        "
+                        *ngIf="column | toolbarTableHeadTitlePipe : tableData"
                     >
                         <div
                             class="th-title"
@@ -1069,23 +1052,7 @@
                         </ng-container>
                         <ng-container
                             *ngIf="
-                                (tableData[0].title !== 'Contacts' ||
-                                    (tableData[0].title === 'Contacts' &&
-                                        column.name !== 'PHONE' &&
-                                        column.name !== 'EMAIL')) &&
-                                (tableData[0].gridNameTitle !== 'PM' ||
-                                    (tableData[0].gridNameTitle === 'PM' &&
-                                        column.tableHeadTitle !==
-                                            'REPAIR SHOP')) &&
-                                column?.groupName !== 'Owner Details' &&
-                                column?.groupName !== 'Registration Detail ' &&
-                                column?.groupName !== 'FHWA Inspection ' &&
-                                column?.groupName !== 'Assigned To ' &&
-                                column?.groupName !== 'Purchase Detail ' &&
-                                column?.groupName !== 'Title ' &&
-                                column?.groupName !== 'Fuel Detail' &&
-                                column?.groupName !== 'Wheel Detail ' &&
-                                column?.groupName !== 'Toll Device '
+                                column | toolbarTableHeadTitlePipe : tableData
                             "
                         >
                             <div
