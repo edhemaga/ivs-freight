@@ -16,6 +16,12 @@ import { passwordValidation } from '@shared/components/ta-input/validators/ta-in
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
+import { Store } from '@ngrx/store';
+import { authLogin } from '@pages/website/state/auth.actions';
+import {
+    selectAuthLoginError,
+    selectLoggedUser,
+} from '@pages/website/state/auth.selector';
 
 @Component({
     selector: 'app-login',
@@ -32,8 +38,16 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
-        private websiteAuthService: WebsiteAuthService
-    ) {}
+        private websiteAuthService: WebsiteAuthService,
+        private store: Store
+    ) {
+        this.store
+            .select(selectAuthLoginError)
+            .subscribe((error) => console.log('LOGIN ERROR', error));
+        this.store
+            .select(selectLoggedUser)
+            .subscribe((user) => console.log('LOGIN SUCCESS', user));
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -54,11 +68,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public onKeyDown(event: { keyCode: number }): void {
-        if (event.keyCode === 13) this.userLogin();
+        if (event.keyCode === 13) this.userNgrxLogin();
     }
 
     public onGetBtnClickValue(event: { notDisabledClick: boolean }): void {
-        if (event.notDisabledClick) this.userLogin();
+        if (event.notDisabledClick) this.userNgrxLogin();
+    }
+
+    private userNgrxLogin() {
+        console.log("FORM VALID", this.loginForm.invalid);
+        if (this.loginForm.invalid) {
+            this.inputService.markInvalid(this.loginForm);
+
+            return;
+        }
+
+        this.store.dispatch(authLogin(this.loginForm.value));
     }
 
     private userLogin() {
