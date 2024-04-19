@@ -4,22 +4,22 @@ import { createAction, props } from '@ngrx/store';
 
 // models
 import { SignInResponse } from 'appcoretruckassist';
-import { LoginProps } from '@pages/website/state/auth.model';
+import { LoginProps } from '@pages/website/state/models/auth-login.model';
 
 // enums
-import { AuthLoginEnums } from '@pages/website/state/auth.enums';
+import { AuthLoginEnum } from '@pages/website/state/auth.enums';
 
 export const authLogin = createAction(
-    AuthLoginEnums.LOGIN,
+    AuthLoginEnum.LOGIN,
     props<LoginProps>()
 );
 
 export const authLoginSuccess = createAction(
-    AuthLoginEnums.LOGIN_SUCCESS,
+    AuthLoginEnum.LOGIN_SUCCESS,
     props<SignInResponse>()
 );
 
 export const authLoginError = createAction(
-    AuthLoginEnums.LOGIN_ERROR,
+    AuthLoginEnum.LOGIN_ERROR,
     props<{ error: HttpErrorResponse }>()
 );

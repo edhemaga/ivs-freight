@@ -2,7 +2,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 // models
-import { AuthState } from '@pages/website/state/auth.model';
+import { AuthState } from '@pages/website/state/models/auth-state.model';
 import { SignInResponse } from 'appcoretruckassist';
 
 // enums

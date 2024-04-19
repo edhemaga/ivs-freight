@@ -27,7 +27,7 @@ import { authLogin } from '@pages/website/state/actions/login/auth.actions';
 import {
     selectAuthLoginError,
     selectAuthLoginLoading,
-} from '@pages/website/state/auth.selector';
+} from '@pages/website/state/selectors/auth-login.selector';
 
 @Component({
     selector: 'app-login',
@@ -37,7 +37,7 @@ import {
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    displaySpinner$: Observable<boolean>;
+    public displaySpinner$: Observable<boolean>;
 
     public loginForm: UntypedFormGroup;
 

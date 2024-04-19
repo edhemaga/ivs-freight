@@ -5,7 +5,7 @@ import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from '@pages/website/state/actions/login/auth.actions';
 
 //models
-import { AuthState } from '@pages/website/state/auth.model';
+import { AuthState } from '@pages/website/state/models/auth-state.model';
 
 export const authState: AuthState = {
     user: undefined,

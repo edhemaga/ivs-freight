@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // models
-import { LoginProps } from '@pages/website/state/auth.model';
+import { LoginProps } from '@pages/website/state/models/auth-login.model';
 import { SignInResponse } from 'appcoretruckassist';
 
 // environment
@@ -17,7 +17,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
     constructor(public http: HttpClient) {}
 
-    authLogin(loginData: LoginProps): Observable<SignInResponse> {
+    public authLogin(loginData: LoginProps): Observable<SignInResponse> {
         return this.http.post<SignInResponse>(
             `${environment.API_ENDPOINT}/api/account/login`,
             loginData
