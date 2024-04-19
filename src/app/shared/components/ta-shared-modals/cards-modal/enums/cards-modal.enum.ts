@@ -11,10 +11,13 @@ export enum CardsModalEnum {
     ACTIVE = 'active',
     CLOSED = 'closed',
     INACTIVE = 'inactive',
+    TRUCK = 'truck',
+    TRAILER = 'trailer',
 
     CHECKED = 'checked',
     NUMBER_OF_ROWS = 'numberOfRows',
 
+    FRONT_SELECTED = 'frontSelectedTitle_',
     FRONT_SELECTED_0 = 'frontSelectedTitle_0',
     FRONT_SELECTED_1 = 'frontSelectedTitle_1',
     FRONT_SELECTED_2 = 'frontSelectedTitle_2',
@@ -22,6 +25,7 @@ export enum CardsModalEnum {
     FRONT_SELECTED_4 = 'frontSelectedTitle_4',
     FRONT_SELECTED_5 = 'frontSelectedTitle_5',
 
+    BACK_SELECTED = 'backSelectedTitle_',
     BACK_SELECTED_0 = 'backSelectedTitle_0',
     BACK_SELECTED_1 = 'backSelectedTitle_1',
     BACK_SELECTED_2 = 'backSelectedTitle_2',

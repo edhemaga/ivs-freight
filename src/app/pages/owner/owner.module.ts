@@ -8,6 +8,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Pipe
 import { MaskNumberPipe } from '@pages/owner/pages/owner-card/pipes/mask-number.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 
 // Components
 import { OwnerTableComponent } from '@pages/owner/pages//owner-table/owner-table.component';
@@ -31,6 +32,7 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 
         // Pipe
         MaskNumberPipe,
+        FlipCardsPipe,
 
         // Components
         TaTableToolbarComponent,

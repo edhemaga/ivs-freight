@@ -45,6 +45,9 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 import { LoadCardModalComponent } from '@pages/load/pages/load-card-modal/load-card-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
 import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/truck-card-modal.component';
+import { PMCardModalComponent } from '@pages/pm-truck-trailer/pages/pm-card-modal/pm-card-modal.component';
+import { AccountCardModalComponent } from '@pages/account/pages/account-card-modal/account-card-modal.component';
+import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -55,6 +58,7 @@ import { TableToolbarConstants } from './utils/constants/table-toolbar.constants
 // models
 import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
 @Titles()
 @Component({
@@ -78,6 +82,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TaInputDropdownComponent,
         LoadCardModalComponent,
         ConfirmationResetModalComponent,
+        ToolbarTableHeadTitlePipe,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -176,6 +181,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public openCards(): void {
         if (this.listName === TableStringEnum.TRUCK_2) {
             this.modalService.openModal(TruckCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.PM_2) {
+            this.modalService.openModal(PMCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.ACCOUNT) {
+            this.modalService.openModal(AccountCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.OWNER) {
+            this.modalService.openModal(OwnerCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {

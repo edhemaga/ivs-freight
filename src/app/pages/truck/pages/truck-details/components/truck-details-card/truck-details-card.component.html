@@ -196,7 +196,7 @@
                                 }}
                             </p>
                         </ng-container>
-                        <ng-container #avatarImage>
+                        <ng-template #avatarImage>
                             <img
                                 class="driverAvatarImg"
                                 [src]="
@@ -206,7 +206,7 @@
                                 "
                                 alt="driver-image"
                             />
-                        </ng-container>
+                        </ng-template>
                         <p class="assignTo-value">
                             {{ truck.assignedTo.driver.firstName }}
                             {{ truck.assignedTo.driver.lastName }}
@@ -926,11 +926,11 @@
                     >
                         <div class="first">
                             <p>Mileage</p>
-                            <p class="main">{{ performance.fuelCost }} mi</p>
+                            <p class="main">{{ performance?.fuelCost }} mi</p>
                         </div>
                         <div class="second">
                             <p>Fuel Cost</p>
-                            <p class="main">$ {{ performance.miles }}</p>
+                            <p class="main">$ {{ performance?.miles }}</p>
                         </div>
                     </div>
                 </div>

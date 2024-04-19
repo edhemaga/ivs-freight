@@ -25,14 +25,17 @@ export interface PmTruck {
     textInv: string;
     textLastShop: RepairShopPMResponse;
     lastService: string;
-    repairShop: RepairShopPMResponse;
-    ruMake: string;
+    textRepairShop: string;
+    textRepairShopAddress: string;
+    textMake: string;
+    textModel?: string;
+    textYear?: number;
     truckTypeClass: string;
     truckTypeIcon: string;
     tableTruckName: string;
     truckType: TruckTypeResponse;
     tableTruckColor: string;
-    additionalData: any;
+    note?: string;
     tableDropdownContent: {
         hasContent: boolean;
         content: DropdownItem[];

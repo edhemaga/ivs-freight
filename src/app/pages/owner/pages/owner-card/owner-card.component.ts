@@ -2,11 +2,9 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
     Output,
-    SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -38,14 +36,13 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
     styleUrls: ['./owner-card.component.scss'],
     providers: [CardHelper],
 })
-export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
+export class OwnerCardComponent implements OnInit, OnDestroy {
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
 
     // All data
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
-        this.getTransformedCardsData();
     }
 
     // Page
@@ -79,49 +76,14 @@ export class OwnerCardComponent implements OnInit, OnChanges, OnDestroy {
         this.flipAllCards();
     }
 
-    ngOnChanges(cardChanges: SimpleChanges) {
-        if (
-            cardChanges?.displayRowsBack?.currentValue ||
-            cardChanges?.displayRowsFront?.currentValue
-        )
-            this.getTransformedCardsData();
-    }
-
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
-
-        const cardTitles = this.cardHelper.renderCards(
-            this._viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this._viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        const backOfCards = this.cardHelper.renderCards(
-            this._viewData,
-            null,
-            this.displayRowsBack
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
-    }
-
     public flipAllCards(): void {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.isAllCardsFlipp = res;
+
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = []; 
             });
     }
 

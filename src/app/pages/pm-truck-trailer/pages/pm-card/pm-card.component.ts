@@ -18,6 +18,13 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Components
+import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 @Component({
     selector: 'app-pm-card',
@@ -51,7 +58,11 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     public titleArray: string[][] = [];
 
     constructor(
+        // Services
         private tableService: TruckassistTableService,
+        private modalService: ModalService,
+
+        // Helpers
         private cardHelper: CardHelper
     ) {}
 
@@ -61,8 +72,8 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnChanges(cardChanges: SimpleChanges) {
         if (
-            cardChanges.displayRowsBack.currentValue ||
-            cardChanges.displayRowsFront.currentValue
+            cardChanges.displayRowsBack?.currentValue ||
+            cardChanges.displayRowsFront?.currentValue
         )
             this.getTransformedCardsData();
     }
@@ -117,6 +128,41 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     // Flip card based on card index
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
+    }
+
+    public onCardActions(event): void {
+        switch (event.type) {
+            case TableStringEnum.CONFIGURE:
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.truck.id,
+                            data: event.data,
+                        }
+                    );
+                } else {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.trailer.id,
+                            data: event.data,
+                        }
+                    );
+                }
+
+            default: {
+                break;
+            }
+        }
     }
 
     public trackCard(item: number): number {

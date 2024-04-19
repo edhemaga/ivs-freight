@@ -39,7 +39,7 @@ export class PmCardDataConfigConstants {
     static DISPLAY_ROWS_BACK_ACTIVE: CardRows[] = [
         {
             title: 'Make',
-            key: 'ruMake',
+            key: 'textMake',
         },
         {
             title: 'Odometer',
@@ -51,7 +51,7 @@ export class PmCardDataConfigConstants {
         },
         {
             title: 'Repair Shop',
-            key: 'repairShop',
+            key: 'textRepairShop',
         },
     ];
 
@@ -87,7 +87,7 @@ export class PmCardDataConfigConstants {
     static DISPLAY_ROWS_BACK_INACTIVE: CardRows[] = [
         {
             title: 'Make',
-            key: 'ruMake',
+            key: 'textMake',
         },
         {
             title: 'Odometer',
