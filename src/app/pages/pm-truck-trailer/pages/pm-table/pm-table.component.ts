@@ -7,6 +7,7 @@ import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
 } from '@shared/utils/settings/table-settings/pm-columns';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
@@ -26,6 +27,8 @@ import {
     PMTrailerUnitResponse,
     PMTruckUnitResponse,
 } from 'appcoretruckassist';
+import { PMTruckFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-truck-filter.model';
+import { PMTrailerFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-trailer-filter.model';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -36,12 +39,15 @@ import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
+import { PMTruckFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-truck-filter.constants';
+import { PMTrailerFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-trailer-filter.constants';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // Store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
@@ -91,6 +97,14 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public customColumnsTruck: PmTableColumns[] = [];
     public customColumnsTrailer: PmTableColumns[] = [];
 
+    // Filter
+    public pmTruckBackFilterQuery: PMTruckFilter = {
+        ...PMTruckFilterConstants.pmTruckFilterQuery,
+    };
+    public pmTrailerBackFilterQuery: PMTrailerFilter = {
+        ...PMTrailerFilterConstants.pmTrailerFilterQuery,
+    };
+
     constructor(
         // Services
         private modalService: ModalService,
@@ -126,6 +140,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.actionAnimationSubscribe();
 
         this.pmListSubscribe();
+
+        this.pmCurrentSearchTableData();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -163,6 +179,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showGeneralPmBtn: true,
                 hideOpenModalButton: true,
+                hideDeleteButton: true,
+                hideActivationButton: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -276,7 +294,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.setPmData(activeTableData);
-        
+
         this.updateCardView();
     }
 
@@ -344,6 +362,26 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onTableHeadActions(event): void {
+        if (event.action === TableActionsStringEnum.SORT) {
+            if (event.direction) {
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.pmTruckBackFilterQuery.sort = event.direction;
+
+                    this.pmTruckBackFilterQuery.pageIndex = 1;
+
+                    this.pmTruckBackFilter(this.pmTruckBackFilterQuery);
+                } else {
+                    this.pmTrailerBackFilterQuery.sort = event.direction;
+
+                    this.pmTrailerBackFilterQuery.pageIndex = 1;
+
+                    this.pmTrailerBackFilter(this.pmTrailerBackFilterQuery);
+                }
+            } else this.sendPMData();
         }
     }
 
@@ -806,6 +844,103 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sendDataToCardsFront = filteredCardRowsFront;
 
                     this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private pmTruckBackFilter(filter: PMTruckFilter): void {
+        this.pmService
+            .getPMTruckUnitList(
+                filter.truckId,
+                filter.hideInactivePMs,
+                filter.truckTypeId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                let newData = [];
+
+                res.pagination.data.map((data) => {
+                    newData.push(this.mapPmTruckData(data));
+                });
+
+                this.viewData = [...newData];
+            });
+    }
+
+    private pmTrailerBackFilter(filter: PMTrailerFilter): void {
+        this.pmService
+            .getPMTrailerUnitList(
+                filter.trailerId,
+                filter.hideInactivePMs,
+                filter.trailerTypeId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                let newData = [];
+
+                res.pagination.data.map((data) => {
+                    newData.push(this.mapPmTrailerData(data));
+                });
+
+                this.viewData = [...newData];
+            });
+    }
+
+    // Search
+    private pmCurrentSearchTableData(): void {
+        this.tableService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
+                        this.pmTruckBackFilterQuery.pageIndex = 1;
+
+                        const searchEvent = MethodsGlobalHelper.tableSearch(
+                            res,
+                            this.pmTruckBackFilterQuery
+                        );
+
+                        if (searchEvent) {
+                            if (searchEvent.action === TableStringEnum.API) {
+                                this.pmTruckBackFilter(searchEvent.query);
+                            } else if (
+                                searchEvent.action === TableStringEnum.STORE
+                            ) {
+                                this.sendPMData();
+                            }
+                        }
+                    } else {
+                        this.pmTrailerBackFilterQuery.pageIndex = 1;
+
+                        const searchEvent = MethodsGlobalHelper.tableSearch(
+                            res,
+                            this.pmTrailerBackFilterQuery
+                        );
+
+                        if (searchEvent) {
+                            if (searchEvent.action === TableStringEnum.API) {
+                                this.pmTrailerBackFilter(searchEvent.query);
+                            } else if (
+                                searchEvent.action === TableStringEnum.STORE
+                            ) {
+                                this.sendPMData();
+                            }
+                        }
+                    }
                 }
             });
     }
