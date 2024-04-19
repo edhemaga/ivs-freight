@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 // Store
-import { PMCardDataStore, PMCardDataState } from './pm-card-modal.store';
+import { PMCardDataStore, PMCardDataState } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.store';
 
 // Enum
-import { CardsModalEnum } from 'src/app/shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
 
 @Injectable({ providedIn: 'root' })
 

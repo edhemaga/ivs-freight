@@ -24,7 +24,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Components
-import { PmModalComponent } from '../pm-modal/pm-modal.component';
+import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 @Component({
     selector: 'app-pm-card',

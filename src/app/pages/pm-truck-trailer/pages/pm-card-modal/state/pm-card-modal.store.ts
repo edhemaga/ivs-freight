@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // Models
-import { CardRows } from 'src/app/shared/models/card-models/card-rows.model';
-import { CardsModalData } from 'src/app/shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-import { PMCardsModalConfig } from '../utils/constants/pm-cards-modal.config';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
+import { PMCardsModalConfig } from '@pages/pm-truck-trailer/pages/pm-card-modal/utils/constants/pm-cards-modal.config';
 
 export interface PMCardDataState extends EntityState<CardRows> {}
 
