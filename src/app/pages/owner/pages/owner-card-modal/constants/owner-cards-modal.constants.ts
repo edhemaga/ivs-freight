@@ -24,7 +24,7 @@ export class OwnerCardsModalData {
             selected: true,
         },
     ];
-    static BackDataLoad: CardRows[] = [
+    static backDataLoad: CardRows[] = [
         {
             title: 'Owner Type',
             key: 'ownerType.name',

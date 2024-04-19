@@ -23,7 +23,7 @@ export class AccountCardsModalData {
             selected: true,
         },
     ];
-    static BackDataLoad: CardRows[] = [];
+    static backDataLoad: CardRows[] = [];
     static allDataLoad: CardRows[] = [
         {
             id: 1,

@@ -525,9 +525,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.displayRowsFront = filteredCardRowsFront;
 
                     this.displayRowsBack = filteredCardRowsBack;
-
-                    console.log(this.displayRowsFront, 'displayRowsFront')
-                    console.log(this.displayRowsBack, 'displayback')
                 }
             });
     }

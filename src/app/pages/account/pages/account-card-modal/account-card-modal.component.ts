@@ -142,7 +142,7 @@ export class AccountCardModalComponent implements OnInit, OnDestroy {
                 this.setDataForModal(data);
                 this.setDefaultDataFront = AccountCardsModalData.frontDataLoad;
 
-                this.setDefaultDataBack = AccountCardsModalData.BackDataLoad;
+                this.setDefaultDataBack = AccountCardsModalData.backDataLoad;
             });
     }
 

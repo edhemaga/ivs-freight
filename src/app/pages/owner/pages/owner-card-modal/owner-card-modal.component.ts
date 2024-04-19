@@ -143,7 +143,6 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
                     default:
                         break;
                 }
-                this.tabSelected = res;
             });
     }
 
@@ -154,7 +153,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
                 this.setDataForModal(data);
                 this.setDefaultDataFront = OwnerCardsModalData.frontDataLoad;
 
-                this.setDefaultDataBack = OwnerCardsModalData.BackDataLoad;
+                this.setDefaultDataBack = OwnerCardsModalData.backDataLoad;
             });
     }
     private inactiveTabModal(): void {
@@ -164,7 +163,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
                 this.setDataForModal(data);
                 this.setDefaultDataFront = OwnerCardsModalData.frontDataLoad;
 
-                this.setDefaultDataBack = OwnerCardsModalData.BackDataLoad;
+                this.setDefaultDataBack = OwnerCardsModalData.backDataLoad;
             });
     }
 
