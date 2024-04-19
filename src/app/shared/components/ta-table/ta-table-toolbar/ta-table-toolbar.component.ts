@@ -47,6 +47,7 @@ import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-mo
 import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/truck-card-modal.component';
 import { PMCardModalComponent } from '@pages/pm-truck-trailer/pages/pm-card-modal/pm-card-modal.component';
 import { AccountCardModalComponent } from '@pages/account/pages/account-card-modal/account-card-modal.component';
+import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -186,6 +187,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.ACCOUNT) {
             this.modalService.openModal(AccountCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.OWNER) {
+            this.modalService.openModal(OwnerCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {
