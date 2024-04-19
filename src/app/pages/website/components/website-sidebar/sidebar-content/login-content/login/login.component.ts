@@ -5,17 +5,29 @@ import {
     Validators,
 } from '@angular/forms';
 
-import { Subject, takeUntil, tap } from 'rxjs';
+// rxjs
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
-import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 
 // validations
 import { passwordValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
+
+// store
+import { Store, select } from '@ngrx/store';
+
+// actions
+import { authLogin } from '@pages/website/state/actions/login/auth.actions';
+
+// selectors
+import {
+    selectAuthLoginError,
+    selectAuthLoginLoading,
+} from '@pages/website/state/selectors/auth-login.selector';
 
 @Component({
     selector: 'app-login',
@@ -25,18 +37,35 @@ import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 export class LoginComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
+    public displaySpinner$: Observable<boolean>;
+
     public loginForm: UntypedFormGroup;
 
-    public displaySpinner: boolean = false;
-
     constructor(
+        // form
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private inputService: TaInputService,
-        private websiteAuthService: WebsiteAuthService
+        // store
+        private store: Store
     ) {}
 
     ngOnInit(): void {
+        this.subscribeToStoreSelectors();
         this.createForm();
+    }
+
+    private subscribeToStoreSelectors(): void {
+        this.store
+            .select(selectAuthLoginError)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((error) => {
+                if (!error) return;
+                this.loginForm.get(error.type).setErrors(error.error);
+            });
+
+        this.displaySpinner$ = this.store.pipe(select(selectAuthLoginLoading));
     }
 
     private createForm(): void {
@@ -61,48 +90,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (event.notDisabledClick) this.userLogin();
     }
 
-    private userLogin() {
+    private userLogin(): void {
         if (this.loginForm.invalid) {
             this.inputService.markInvalid(this.loginForm);
 
             return;
         }
 
-        this.displaySpinner = true;
-
-        this.websiteAuthService
-            .accountLogin(this.loginForm.value)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap({
-                    next: () => {
-                        this.displaySpinner = false;
-                    },
-                    error: (error) => {
-                        this.displaySpinner = false;
-
-                        const errorMessage = error.error.error;
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.THIS_USER_DOESENT_EXIST
-                        ) {
-                            this.loginForm
-                                .get(WebsiteStringEnum.EMAIL_ADDRESS)
-                                .setErrors({ userDoesntExist: true });
-                        }
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.WRONG_PASSWORD_TRY_AGAIN
-                        )
-                            this.loginForm
-                                .get(WebsiteStringEnum.PASSWORD)
-                                .setErrors({ wrongPassword: true });
-                    },
-                })
-            )
-            .subscribe();
+        this.store.dispatch(authLogin(this.loginForm.value));
     }
 
     ngOnDestroy(): void {
