@@ -20,7 +20,7 @@ import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { AccountCardsModalService } from '@pages/account/pages/account-card-modal/services/account-cards-modal.service';
+import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/services/owner-cards-modal.service';
 
 // Components
 import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
@@ -33,19 +33,19 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 // Models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-import { AccountCardDataState } from '@pages/account/pages/account-card-modal/state/account-card-modal.store';
+import { OwnerCardDataState } from '@pages/owner/pages/owner-card-modal/state/owner-card-modal.store';
 
 // Store
-import { accountCardModalQuery } from '@pages/account/pages/account-card-modal/state/account-card-modal.query';
+import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/owner-card-modal.query';
 
 // Constants
-import { AccountCardsModalData } from '@pages/account/pages/account-card-modal/constants/account-cards-modal.constants';
+import { OwnerCardsModalData } from '@pages/owner/pages/owner-card-modal/constants/owner-cards-modal.constants';
 import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
 
 @Component({
-    selector: 'app-account-card-modal',
-    templateUrl: './account-card-modal.component.html',
-    styleUrls: ['./account-card-modal.component.scss'],
+    selector: 'app-owner-card-modal',
+    templateUrl: './owner-card-modal.component.html',
+    styleUrls: ['./owner-card-modal.component.scss'],
     standalone: true,
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
@@ -61,7 +61,7 @@ import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils
         TaCheckboxComponent,
     ],
 })
-export class AccountCardModalComponent implements OnInit, OnDestroy {
+export class OwnerCardModalComponent implements OnInit, OnDestroy {
     public cardsForm: FormGroup;
 
     public dataFront: CardRows[];
@@ -73,7 +73,7 @@ export class AccountCardModalComponent implements OnInit, OnDestroy {
     public defaultCardsValues: CardsModalData =
         LoadCardsModalConstants.defaultCardsValues;
 
-    public cardsAllData: CardRows[] = AccountCardsModalData.allDataLoad;
+    public cardsAllData: CardRows[] = OwnerCardsModalData.allDataLoad;
 
     public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
@@ -86,9 +86,9 @@ export class AccountCardModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private accountCardModalQuery: accountCardModalQuery,
+        private ownerCardModalQuery: OwnerCardModalQuery,
         private cdr: ChangeDetectorRef,
-        private modalService: AccountCardsModalService
+        private modalService: OwnerCardsModalService
     ) {}
 
     ngOnInit(): void {
@@ -131,22 +131,43 @@ export class AccountCardModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.tabSelected = res;
-                this.closedTabModalConfig();
+                switch (res) {
+                    case CardsModalEnum.ACTIVE:
+                        this.closedTabModalConfig();
+                        break;
+
+                    case CardsModalEnum.INACTIVE:
+                        this.inactiveTabModal();
+                        break;
+
+                    default:
+                        break;
+                }
             });
     }
 
     private closedTabModalConfig(): void {
-        this.accountCardModalQuery.active$
+        this.ownerCardModalQuery.active$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((data: AccountCardDataState) => {
+            .subscribe((data: OwnerCardDataState) => {
                 this.setDataForModal(data);
-                this.setDefaultDataFront = AccountCardsModalData.frontDataLoad;
+                this.setDefaultDataFront = OwnerCardsModalData.frontDataLoad;
 
-                this.setDefaultDataBack = AccountCardsModalData.backDataLoad;
+                this.setDefaultDataBack = OwnerCardsModalData.backDataLoad;
+            });
+    }
+    private inactiveTabModal(): void {
+        this.ownerCardModalQuery.inactive$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: OwnerCardDataState) => {
+                this.setDataForModal(data);
+                this.setDefaultDataFront = OwnerCardsModalData.frontDataLoad;
+
+                this.setDefaultDataBack = OwnerCardsModalData.backDataLoad;
             });
     }
 
-    private setDataForModal(data: AccountCardDataState): void {
+    private setDataForModal(data: OwnerCardDataState): void {
         this.dataFront = data.front_side;
 
         this.dataBack = data.back_side;
