@@ -13,11 +13,20 @@ import {
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
+
+// icon
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+//services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
+// directives
 import { ResizeColumnDirective } from '@shared/components/ta-table/ta-table-head/directives/resize-column.directive';
+
+// pipe
+import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
 const rotate: { [key: string]: any } = {
     asc: '',
@@ -39,6 +48,7 @@ const rotate: { [key: string]: any } = {
         ResizeColumnDirective,
         DragDropModule,
         NgbPopoverModule,
+        ToolbarTableHeadTitlePipe,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -58,6 +58,7 @@ import { TableToolbarConstants } from './utils/constants/table-toolbar.constants
 // models
 import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
 @Titles()
 @Component({
@@ -81,6 +82,7 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TaInputDropdownComponent,
         LoadCardModalComponent,
         ConfirmationResetModalComponent,
+        ToolbarTableHeadTitlePipe,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {

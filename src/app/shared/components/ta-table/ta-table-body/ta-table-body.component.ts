@@ -688,10 +688,16 @@ export class TaTableBodyComponent
                 this.dropdownActions = [...actions];
 
                 // remove this line when we enable those options
-                /*  this.dropdownActions = this.dropdownActions.filter(
-                    (_, index) => index === 0 || index === 5
+                this.dropdownActions = this.dropdownActions.filter(
+                    (data) =>
+                        ![
+                            'share',
+                            'print',
+                            'send-sms',
+                            'view-details',
+                        ].includes(data.name)
                 );
- */
+
                 const dropdownData = {
                     companyUserId: row.companyUserId,
                     data: this.dropdownActions,
