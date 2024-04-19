@@ -1,3 +1,5 @@
+import { TableBodyColumnsImageHover } from "@shared/components/ta-table/ta-table-body/models/table-body-columns-image-hover.model";
+
 export interface PmTableColumns {
     ngTemplate: string;
     title: string;
@@ -30,6 +32,7 @@ export interface PmTableColumns {
     isDate?: boolean;
     tableHeadTitle?: string;
     isAction?: boolean;
+    imageHover?: TableBodyColumnsImageHover | null;
 }
 
 interface SvgDimensionsData {

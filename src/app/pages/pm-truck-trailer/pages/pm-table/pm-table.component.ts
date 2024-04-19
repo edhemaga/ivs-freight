@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 // Helpers
 import {
@@ -30,6 +31,7 @@ import {
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
+import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal/service/pm-cards-modal.service';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -46,6 +48,7 @@ import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-tr
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
 import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
+import { PMCardModalQuery } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.query';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -93,20 +96,25 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private pmService: PmService,
+        private pmCardsModalService: PMCardsModalService,
 
         // Store
         private pmTruckQuery: PmTruckQuery,
         private pmTrailerQuery: PmTrailerQuery,
         private pmListTruckQuery: PmListTruckQuery,
         private pmListTrailerQuery: PmListTrailerQuery,
+        private pmCardModalQuery: PMCardModalQuery,
 
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
-        private thousandToShortFormatPipe: ThousandToShortFormatPipe
+        private thousandToShortFormatPipe: ThousandToShortFormatPipe,
+        public datePipe: DatePipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
+        this.updateCardView();
+
         this.setCustomPmColumns();
 
         this.sendPMData();
@@ -118,8 +126,6 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.actionAnimationSubscribe();
 
         this.pmListSubscribe();
-
-        console.log('pm-table');
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -270,6 +276,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.setPmData(activeTableData);
+        
+        this.updateCardView();
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -471,7 +479,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapPmTruckData(truckUnit: PMTruckUnitResponse): PmTruck {
-        const truck = {
+        const truck: PmTruck = {
             truckTypeClass: truckUnit.truck.truckType.logoName.replace(
                 TableStringEnum.SVG,
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER
@@ -484,14 +492,22 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ),
             textUnit: truckUnit.truck.truckNumber,
             textOdometer: truckUnit.odometer
-                ? truckUnit.odometer.toString()
+                ? this.thousandSeparator.transform(truckUnit.odometer)
                 : null,
             textInv: truckUnit.invoice,
             textLastShop: truckUnit.lastShop,
-            lastService: truckUnit.lastService ?? null,
-            ruMake: 'Carrier',
-            repairShop: truckUnit.lastShop,
-            additionalData: { note: '' },
+            lastService: truckUnit.lastService
+                ? this.datePipe.transform(
+                      truckUnit.lastService,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            textMake: truckUnit.truck?.truckMake?.name,
+            textModel: truckUnit.truck?.model,
+            textYear: truckUnit.truck?.year,
+            textRepairShop: truckUnit.lastShop?.name,
+            textRepairShopAddress: truckUnit.lastShop?.address?.address,
+            note: null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -523,9 +539,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     pm.status?.name !== PMStatus.Inactive
                 ) {
                     truck[pmColumn.field] = {
-                        expirationMiles: pm.diffMileage,
+                        expirationMiles: Math.abs(pm.diffMileage),
                         expirationMilesText: this.thousandSeparator.transform(
-                            pm.diffMileage
+                            Math.abs(pm.diffMileage).toString()
                         ),
                         totalValueText:
                             this.thousandToShortFormatPipe.transform(
@@ -556,12 +572,20 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ),
             textUnit: trailerUnit.trailer.trailerNumber,
             textOdometer: trailerUnit.odometer
-                ? trailerUnit.odometer.toString()
+                ? this.thousandSeparator.transform(trailerUnit.odometer)
                 : null,
-            lastService: trailerUnit.lastService ?? null,
-            repairShop: trailerUnit.lastShop,
-            ruMake: 'Carrier',
-            additionalData: { note: '' },
+            lastService: trailerUnit.lastService
+                ? this.datePipe.transform(
+                      trailerUnit.lastService,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            textRepairShop: trailerUnit.lastShop?.name,
+            textRepairShopAddress: trailerUnit.lastShop?.address?.address,
+            textMake: trailerUnit.trailer?.trailerMake?.name,
+            textModel: trailerUnit.trailer?.model,
+            textYear: trailerUnit.trailer?.year,
+            note: '',
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -733,6 +757,57 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return [...trailerColumns, ...this.customColumnsTrailer];
         }
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.truckTabCardsConfig();
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.trailerTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+
+        this.pmCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private truckTabCardsConfig(): void {
+        this.pmCardModalQuery.truck$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private trailerTabCardsConfig(): void {
+        this.pmCardModalQuery.trailer$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
     }
 
     ngOnDestroy(): void {
