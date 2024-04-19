@@ -19,6 +19,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // Pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { ValueByStringPathPipe } from '@shared/pipes/value-by-string-path.pipe';
 
 @NgModule({
     declarations: [PmTableComponent, PmCardComponent],
@@ -40,6 +41,7 @@ import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 
         // Pipes
         FlipCardsPipe,
+        ValueByStringPathPipe,
     ],
 })
 export class PmTruckTrailerModule {}

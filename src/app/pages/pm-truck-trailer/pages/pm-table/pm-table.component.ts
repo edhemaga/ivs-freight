@@ -864,7 +864,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                let newData = [];
+                const newData = [];
 
                 res.pagination.data.map((data) => {
                     newData.push(this.mapPmTruckData(data));
@@ -890,7 +890,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                let newData = [];
+                const newData = [];
 
                 res.pagination.data.map((data) => {
                     newData.push(this.mapPmTrailerData(data));

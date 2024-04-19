@@ -101,24 +101,22 @@
                                                     tooltipBackground="#424242"
                                                     position="bottom"
                                                     [disableTooltip]="
-                                                        valueByStringPathInstance.getValueByStringPath(
-                                                            card,
-                                                            cardRow.key
-                                                        ) === '/'
+                                                        (card
+                                                            | valueByStringPath
+                                                                : cardRow.key) ===
+                                                        '/'
                                                     "
                                                 >
                                                     <app-ta-progres-bar
                                                         [percents]="
-                                                            valueByStringPathInstance.getValueByStringPath(
-                                                                card,
-                                                                cardRow.secondKey
-                                                            )
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.secondKey
                                                         "
                                                         [text]="
-                                                            valueByStringPathInstance.getValueByStringPath(
-                                                                card,
-                                                                cardRow.key
-                                                            )
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.key
                                                         "
                                                         [hasPopover]="true"
                                                         [type]="
@@ -141,10 +139,9 @@
                                             class="bottom-item-body d-flex align-items-center gap"
                                         >
                                             {{
-                                                valueByStringPathInstance.getValueByStringPath(
-                                                    card,
-                                                    cardRow.key
-                                                )
+                                                card
+                                                    | valueByStringPath
+                                                        : cardRow.key
                                             }}
                                         </div>
                                     </ng-container>
