@@ -1,17 +1,16 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
+import { SignInResponse } from 'appcoretruckassist';
 
 export interface State {
-    home: number;
-    away: number;
+    user: SignInResponse;
 }
 
 export const authState: State = {
-    home: 0,
-    away: 0,
+    user: undefined,
 };
 
 export const authReducer = createReducer(
     authState,
-    on(AuthActions.authLogin, (state) => ({ ...state, home: state.home + 1 }))
+    on(AuthActions.authLogin, (state) => ({ ...state, user: state.user }))
 );
