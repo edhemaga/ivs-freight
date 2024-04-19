@@ -40,11 +40,11 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 
 // ngrx
 import { EffectsModule } from '@ngrx/effects';
-import { AuthEffect } from './state/auth.effect';
+import { AuthEffect } from '@pages/website/state/auth.effect';
 import { StoreModule } from '@ngrx/store';
 
 // ngrx reducers
-import { authReducer } from './state/auth.reducer';
+import { authReducer } from '@pages/website/state/auth.reducer';
 
 @NgModule({
     declarations: [
