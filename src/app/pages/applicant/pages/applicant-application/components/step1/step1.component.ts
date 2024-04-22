@@ -28,16 +28,12 @@ import {
     anyInputInLineIncorrect,
     isAnyValueInArrayTrue,
     isFormValueNotEqual,
-    isAnyRadioInArrayUnChecked,
-    filterUnceckedRadiosId,
     isAnyValueInArrayFalse,
 } from '@pages/applicant/utils/helpers/applicant.helper';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { questions } from '@pages/applicant/utils/data/questions';
-import { openAnnotationArray } from '@pages/applicant/utils/data/formAnnotations';
-import { displayRadioRequiredNoteArray } from '@pages/applicant/utils/data/displayRadioRequiredNoteArray';
+import { ApplicantApplicationConstants } from '../../utils/constants/applicant-application.constants';
 
 // validations
 import {
@@ -64,6 +60,7 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { ApplicantApplicationStringEnum } from '../../enums/applicant-application-string.enum';
 
 // models
 import {
@@ -73,8 +70,11 @@ import {
     PersonalInfoFeedbackResponse,
     ApplicantResponse,
     ApplicantModalResponse,
+    ApplicantPreviousAddressResponse,
+    ApplicantPersonalInfoReviewResponse,
 } from 'appcoretruckassist/model/models';
-import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
+import { AnswerChoices } from '../../models/answer-choices.model';
+import { AnnotationItem } from '../../models/annotationItem.model'
 
 @Component({
     selector: 'app-step1',
@@ -89,8 +89,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
     public selectedMode: string = SelectedMode.APPLICANT;
 
     public personalInfoRadios: any;
-    public displayRadioRequiredNoteArray = displayRadioRequiredNoteArray;
-
+    public displayRadioRequiredNoteArray = ApplicantApplicationConstants.displayRadioRequiredNoteArray;
+    public questions = ApplicantApplicationConstants.questions;
+    public openAnnotationArray = ApplicantApplicationConstants.openAnnotationArray;
     public subscription: Subscription;
 
     public stepValues: any;
@@ -108,6 +109,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public selectedBank: any = null;
     public selectedAddresses: AddressEntity[] | any = [];
+
 
     public banksDropdownList: BankResponse[] = [];
 
@@ -128,8 +130,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public previousAddressOnEdit: string;
     public previousAddressUnitOnEdit: string;
-    public questions: ApplicantQuestion[] = questions;
-    public openAnnotationArray = openAnnotationArray;
+
     public documents: any[] = [];
     public documentsForDeleteIds: number[] = [];
     public displayDocumentsRequiredNote: boolean = false;
@@ -149,7 +150,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         private bankVerificationService: BankVerificationService,
         private applicantStore: ApplicantStore,
         private applicantQuery: ApplicantQuery,
-        private abstractControl: AbstractControl
     ) {}
 
     ngOnInit(): void {
@@ -262,27 +262,27 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         } = stepValues;
     
         this.personalInfoForm.patchValue({
-            isAgreement: isAgreed,
-            firstName,
-            lastName,
-            dateOfBirth: doB ? MethodsCalculationsHelper.convertDateFromBackend(doB) : null,
-            ssn,
-            phone,
-            bankId: bankName || null,
-            accountNumber,
-            routingNumber,
-            usCitizen,
-            legalWork,
-            anotherName,
-            inMilitary,
-            felony,
-            misdemeanor,
-            drunkDriving,
-            anotherNameExplain: anotherNameDescription,
-            inMilitaryExplain: inMilitaryDescription,
-            felonyExplain: felonyDescription,
-            misdemeanorExplain: misdemeanorDescription,
-            drunkDrivingExplain: drunkDrivingDescription,
+            [ApplicantApplicationStringEnum.IsAgreement]: isAgreed,
+            [ApplicantApplicationStringEnum.FirstName]: firstName,
+            [ApplicantApplicationStringEnum.LastName]: lastName,
+            [ApplicantApplicationStringEnum.DateOfBirth]: doB ? MethodsCalculationsHelper.convertDateFromBackend(doB) : null,
+            [ApplicantApplicationStringEnum.SSN]: ssn,
+            [ApplicantApplicationStringEnum.Phone]: phone,
+            [ApplicantApplicationStringEnum.BankId]: bankName || null,
+            [ApplicantApplicationStringEnum.AccountNumber]: accountNumber,
+            [ApplicantApplicationStringEnum.RoutingNumber]: routingNumber,
+            [ApplicantApplicationStringEnum.UsCitizen]: usCitizen,
+            [ApplicantApplicationStringEnum.LegalWork]: legalWork,
+            [ApplicantApplicationStringEnum.AnotherName]: anotherName,
+            [ApplicantApplicationStringEnum.InMilitary]: inMilitary,
+            [ApplicantApplicationStringEnum.Felony]: felony,
+            [ApplicantApplicationStringEnum.Misdemeanor]: misdemeanor,
+            [ApplicantApplicationStringEnum.DrunkDriving]: drunkDriving,
+            [ApplicantApplicationStringEnum.AnotherNameExplain]: anotherNameDescription,
+            [ApplicantApplicationStringEnum.InMilitaryExplain]: inMilitaryDescription,
+            [ApplicantApplicationStringEnum.FelonyExplain]: felonyDescription,
+            [ApplicantApplicationStringEnum.MisdemeanorExplain]: misdemeanorDescription,
+            [ApplicantApplicationStringEnum.DrunkDrivingExplain]: drunkDrivingDescription,
         });
     
         this.stepValues = stepValues;
@@ -298,34 +298,27 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.updateFeedbackValues(personalInfoReview, previousAddresses);
     }
     
-    private updateRadioButtons(usCitizen: boolean, legalWork: boolean, anotherName: boolean, inMilitary: boolean, felony: boolean, misdemeanor: boolean, drunkDriving: boolean): void {
-        const radioButtons = [
-          { controlName: 'usCitizen', index: 0 },
-          { controlName: 'legalWork', index: 1 },
-          { controlName: 'anotherName', index: 2, explainField: 'anotherNameExplain' },
-          { controlName: 'inMilitary', index: 3, explainField: 'inMilitaryExplain' },
-          { controlName: 'felony', index: 4, explainField: 'felonyExplain' },
-          { controlName: 'misdemeanor', index: 5, explainField: 'misdemeanorExplain' },
-          { controlName: 'drunkDriving', index: 6, explainField: 'drunkDrivingExplain' }
-        ];
-      
-        const isAgreementValue = this.personalInfoForm.get('isAgreement').value;
-        if (isAgreementValue) {
-          radioButtons.forEach(({ controlName, index, explainField }) => {
-            const value = controlName === 'usCitizen' ? usCitizen :
-                          controlName === 'legalWork' ? legalWork :
-                          controlName === 'anotherName' ? anotherName :
-                          controlName === 'inMilitary' ? inMilitary :
-                          controlName === 'felony' ? felony :
-                          controlName === 'misdemeanor' ? misdemeanor :
-                          controlName === 'drunkDriving' ? drunkDriving : null;
-      
+private updateRadioButtons(usCitizen: boolean, legalWork: boolean, anotherName: boolean, inMilitary: boolean, felony: boolean, misdemeanor: boolean, drunkDriving: boolean): void {
+    const radioButtons = [
+        { controlName: ApplicantApplicationStringEnum.UsCitizen, index: 0 },
+        { controlName: ApplicantApplicationStringEnum.LegalWork, index: 1 },
+        { controlName: ApplicantApplicationStringEnum.AnotherName, index: 2, explainField: ApplicantApplicationStringEnum.AnotherNameExplain },
+        { controlName: ApplicantApplicationStringEnum.InMilitary, index: 3, explainField: ApplicantApplicationStringEnum.InMilitaryExplain },
+        { controlName: ApplicantApplicationStringEnum.Felony, index: 4, explainField: ApplicantApplicationStringEnum.FelonyExplain },
+        { controlName: ApplicantApplicationStringEnum.Misdemeanor, index: 5, explainField: ApplicantApplicationStringEnum.MisdemeanorExplain },
+        { controlName: ApplicantApplicationStringEnum.DrunkDriving, index: 6, explainField: ApplicantApplicationStringEnum.DrunkDrivingExplain }
+    ];
+
+    const isAgreementValue = this.personalInfoForm.get(ApplicantApplicationStringEnum.IsAgreement)?.value;
+    if (isAgreementValue) {
+        radioButtons.forEach(({ controlName, index, explainField }) => {
+            const value = this.personalInfoForm.get(controlName)?.value ?? null;
             this.setRadioButtonsCheckedValue(value, this.personalInfoRadios[index], explainField);
-          });
-        }
-      }
+        });
+    }
+}
           
-      private setRadioButtonsCheckedValue(value: boolean, radioGroup: any, explainField?: string): void {
+      private setRadioButtonsCheckedValue(value: boolean, radioGroup: { buttons: { checked: boolean }[] }, explainField?: string): void {
         const [radioButtonTrue, radioButtonFalse] = radioGroup.buttons;
       
         radioButtonTrue.checked = value === true;
@@ -336,78 +329,89 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
       }
       
-      private updatePreviousAddresses(previousAddresses: any[], address: any, personalInfoReview: any): void {
+      private updatePreviousAddresses(previousAddresses: ApplicantPreviousAddressResponse[], address: AddressEntity, personalInfoReview: ApplicantPersonalInfoReviewResponse): void {
         if (!previousAddresses) return;
-      
+    
         this.previousAddresses.clear();
         this.previousAddressesId = previousAddresses.map(item => item.id);
-        const addresses = [...previousAddresses, address];
-      
-        this.selectedAddresses = addresses.map((item, index) => index === addresses.length - 1 ? item : item.address);
-      
+        const addresses = [...previousAddresses.map(p => p.address), address]; 
+        this.selectedAddresses = addresses;
+    
         addresses.forEach((item, i) => {
-          const newAddressFormGroup = this.createNewAddress();
-          const isLastAddress = i === addresses.length - 1;
-      
-          this.previousAddresses.push(newAddressFormGroup);
-          this.isEditingArray.push({
-            id: i,
-            isEditing: isLastAddress,
-            isEditingAddress: false,
-            isFirstAddress: false,
-          });
-      
-          newAddressFormGroup.patchValue({
-            address: isLastAddress ? address.address : item.address.address,
-            addressUnit: isLastAddress ? address.addressUnit : item.address.addressUnit,
-            [`cardReview${i + 1}`]: this.getReviewMessage(i, personalInfoReview),
-          });
+            const newAddressFormGroup = this.createNewAddress();
+            const isLastAddress = i === addresses.length - 1;
+    
+            this.previousAddresses.push(newAddressFormGroup);
+            this.isEditingArray.push({
+                id: i,
+                isEditing: isLastAddress,
+                isEditingAddress: false,
+                isFirstAddress: false,
+            });
+    
+            newAddressFormGroup.patchValue({
+                address: isLastAddress ? address.address : item.address,
+                addressUnit: isLastAddress ? address.addressUnit : item.addressUnit,
+                [`cardReview${i + 1}`]: this.getReviewMessage(i, personalInfoReview),
+            });
         });
-      }
+    }
     
-    
-      private getReviewMessage(index: number, personalInfoReview: any): string | null {
+    private getReviewMessage(index: number, personalInfoReview: ApplicantPersonalInfoReviewResponse): string | null {
         if (!personalInfoReview) return null;
-        const reviewFields = ['personalInfoMessage', 'phoneMessage', 'ssnMessage', 'accountNumberMessage',
-            'anotherNameMessage', 'inMilitaryMessage', 'felonyMessage', 'misdemeanorMessage', 'drunkDrivingMessage'];
-      
-        return personalInfoReview[reviewFields[index]] || null;
-      }
-      
-      private updateReviewValues(personalInfoReview: any): void {
-        if (!personalInfoReview) return;
-      
-        const reviewFields = ['personalInfoMessage', 'phoneMessage', 'ssnMessage', 'accountNumberMessage',
-            'anotherNameMessage', 'inMilitaryMessage', 'felonyMessage', 'misdemeanorMessage', 'drunkDrivingMessage'];
-      
-        reviewFields.forEach((field, index) => {
-          this.personalInfoForm.patchValue({
-            [`firstRowReview`]: personalInfoReview[reviewFields[0]],
-            [`secondRowReview`]: personalInfoReview[reviewFields[1]],
-            [`thirdRowReview`]: personalInfoReview[reviewFields[2]],
-            [`fourthRowReview`]: personalInfoReview[reviewFields[3]],
-            [`questionReview${index + 3}`]: personalInfoReview[reviewFields[index + 4]],
-          });
-        });
-      
-        this.updateOpenAnnotationArray(personalInfoReview);
-      }
-      
+        const reviewFieldKeys = {
+            0: ApplicantApplicationStringEnum.FirstName,
+            1: ApplicantApplicationStringEnum.Phone,
+            2: ApplicantApplicationStringEnum.SSN,
+            3: ApplicantApplicationStringEnum.AccountNumber,
+            4: ApplicantApplicationStringEnum.AnotherName,
+            5: ApplicantApplicationStringEnum.InMilitary,
+            6: ApplicantApplicationStringEnum.Felony,
+            7: ApplicantApplicationStringEnum.Misdemeanor,
+            8: ApplicantApplicationStringEnum.DrunkDriving
+        };
     
-    private updateOpenAnnotationArray(personalInfoReview: any): void {
+        return personalInfoReview[`${reviewFieldKeys[index]}Message`] || null;
+    }
+    
+      
+    private updateReviewValues(personalInfoReview: ApplicantPersonalInfoReviewResponse): void {
         if (!personalInfoReview) return;
     
-        const annotationFields = [
-            { index: 0, keys: ['isFirstNameValid', 'isLastNameValid', 'isDoBValid'] },
-            { index: 1, keys: ['isPhoneValid'] },
-            { index: 7, keys: ['isSsnValid'] },
-            { index: 8, keys: ['isAccountNumberValid'] },
-            { index: 11, keys: ['isAnotherNameValid'] },
-            { index: 12, keys: ['isInMilitaryValid'] },
-            { index: 13, keys: ['isFelonyValid'] },
-            { index: 14, keys: ['isMisdemeanorValid'] },
-            { index: 15, keys: ['isDrunkDrivingValid'] },
+        const reviewFieldKeys = [
+            ApplicantApplicationStringEnum.FirstName,
+            ApplicantApplicationStringEnum.Phone,
+            ApplicantApplicationStringEnum.SSN,
+            ApplicantApplicationStringEnum.AccountNumber,
+            ApplicantApplicationStringEnum.AnotherName,
+            ApplicantApplicationStringEnum.InMilitary,
+            ApplicantApplicationStringEnum.Felony,
+            ApplicantApplicationStringEnum.Misdemeanor,
+            ApplicantApplicationStringEnum.DrunkDriving
         ];
+    
+        reviewFieldKeys.forEach((fieldEnum, index) => {
+            this.personalInfoForm.patchValue({
+                [`firstRowReview`]: personalInfoReview[`${fieldEnum}Message`],
+                [`secondRowReview`]: personalInfoReview[`${fieldEnum}Message`],
+                [`thirdRowReview`]: personalInfoReview[`${fieldEnum}Message`],
+                [`fourthRowReview`]: personalInfoReview[`${fieldEnum}Message`],
+                [`questionReview${index + 3}`]: personalInfoReview[`${fieldEnum}Message`],
+            });
+        });
+    
+        this.updateOpenAnnotationArray(personalInfoReview);
+    }
+    
+      
+    
+    private updateOpenAnnotationArray(personalInfoReview: ApplicantPersonalInfoReviewResponse): void {
+        if (!personalInfoReview) return;
+    
+        const annotationFields = this.questions.map((question, index) => ({
+            index, 
+            keys: [question.formControlName], 
+        }));
     
         annotationFields.forEach(({ index, keys }) => {
             const lineInputs = keys.map(key => !personalInfoReview[key]);
@@ -425,7 +429,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.hasIncorrectFields = this.openAnnotationArray.some(item => item.lineInputs.includes(true));
     }
     
-    private updateFeedbackValues(personalInfoReview: any, previousAddresses: any[]): void {
+    
+    private updateFeedbackValues(personalInfoReview: ApplicantPersonalInfoReviewResponse, previousAddresses: ApplicantPreviousAddressResponse[]): void {
         if (personalInfoReview) {
             this.stepFeedbackValues = { ...this.stepFeedbackValues, ...personalInfoReview };
         }
@@ -462,7 +467,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     
-    private handleBankSelection(event: any): void {
+    private handleBankSelection(event: BankResponse): void {
         this.selectedBank = event;
         this.isBankSelected = !!event;
     
@@ -481,8 +486,9 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         });
     }
     
-    private handleAnswerChoice(event: any): void {
-        const selectedCheckbox = event.find((radio: { checked: boolean }) => radio.checked);
+    private handleAnswerChoice(event: AnswerChoices): void {
+        const selectedCheckbox = event;
+    
         const selectedQuestion = this.questions[selectedCheckbox.index];
     
         const selectedFormControlName = selectedQuestion.formControlName;
@@ -522,7 +528,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     }
     
-
     private onBankSelected() {
         this.personalInfoForm
             .get('bankId')
@@ -561,31 +566,33 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    public onFilesAction(event: any): void {
-        this.documents = event.files;
-
+    public onFilesAction(fileActionEvent: {
+        files: File[];
+        action: 'add' | 'delete';
+    }): void {
+        this.documents = fileActionEvent.files;
+    
         this.displayDocumentsRequiredNote = false;
-
-        switch (event.action) {
+    
+        switch (fileActionEvent.action) {
             case 'add':
                 this.personalInfoForm
                     .get('files')
-                    .patchValue(JSON.stringify(event.files));
-
+                    .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
             case 'delete':
                 this.personalInfoForm
                     .get('files')
                     .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
+                        fileActionEvent.files.length ? JSON.stringify(fileActionEvent.files) : null
                     );
-
                 break;
-
+    
             default:
                 break;
         }
     }
+    
 
     private createNewAddress(): UntypedFormGroup {
         this.cardReviewIndex++;
@@ -798,7 +805,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.updateHasIncorrectFields();
     }
     
-    private handleCardInput(selectedInputsLine: any, inputIndex: number): void {
+    private handleCardInput(selectedInputsLine: AnnotationItem, inputIndex: number): void {
         selectedInputsLine.lineInputs[inputIndex] = !selectedInputsLine.lineInputs[inputIndex];
         selectedInputsLine.displayAnnotationButton = !selectedInputsLine.displayAnnotationButton;
     
@@ -810,7 +817,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.updateCardReview(selectedInputsLine, 'card', event);
     }
     
-    private handleRegularInput(selectedInputsLine: any, event: any, inputIndex: number, lineIndex: number): void {
+    private handleRegularInput(selectedInputsLine: AnnotationItem, event: any, inputIndex: number, lineIndex: number): void {
         if (event) {
             selectedInputsLine.lineInputs[inputIndex] = true;
     
@@ -970,51 +977,52 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                             return o;
                         }, {});
     
-                        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(filteredFieldsWithIncorrectValues).reduce((o, key) => {
-                            const keyName = key;
-    
+                        const filteredUpdatedFieldsWithIncorrectValues = Object.keys(filteredFieldsWithIncorrectValues).reduce((updatedFields, key) => {
+                            const fieldName = key;
+                        
                             const match = Object.keys(this.stepValues)
-                                .filter((item) => item.toLowerCase().includes(keyName))
+                                .filter((item) => item.toLowerCase().includes(fieldName))
                                 .pop();
-    
-                            o[keyName] = updatedFormValues[match];
-    
-                            if (keyName === 'dob') {
-                                o['dob'] = updatedFormValues.dateOfBirth;
+                        
+                            updatedFields[fieldName] = updatedFormValues[match];
+                        
+                            if (fieldName === 'dob') {
+                                updatedFields['dob'] = updatedFormValues.dateOfBirth;
                             }
-    
-                            if (keyName === 'address') {
-                                o['address'] = JSON.stringify({
+                        
+                            if (fieldName === 'address') {
+                                updatedFields['address'] = JSON.stringify({
                                     address: updatedFormValues.previousAddresses[updatedFormValues.previousAddresses.length - 1].address,
                                 });
                             }
-    
-                            if (keyName === 'addressunit') {
-                                o['addressunit'] = updatedFormValues.previousAddresses[updatedFormValues.previousAddresses.length - 1].addressUnit;
+                        
+                            if (fieldName === 'addressunit') {
+                                updatedFields['addressunit'] = updatedFormValues.previousAddresses[updatedFormValues.previousAddresses.length - 1].addressUnit;
                             }
-    
-                            if (keyName === 'anothername') {
-                                o['anothername'] = updatedFormValues.anotherNameExplain;
+                        
+                            if (fieldName === 'anothername') {
+                                updatedFields['anothername'] = updatedFormValues.anotherNameExplain;
                             }
-    
-                            if (keyName === 'inmilitary') {
-                                o['inmilitary'] = updatedFormValues.inMilitaryExplain;
+                        
+                            if (fieldName === 'inmilitary') {
+                                updatedFields['inmilitary'] = updatedFormValues.inMilitaryExplain;
                             }
-    
-                            if (keyName === 'felony') {
-                                o['felony'] = updatedFormValues.felonyExplain;
+                        
+                            if (fieldName === 'felony') {
+                                updatedFields['felony'] = updatedFormValues.felonyExplain;
                             }
-    
-                            if (keyName === 'misdemeanor') {
-                                o['misdemeanor'] = updatedFormValues.misdemeanorExplain;
+                        
+                            if (fieldName === 'misdemeanor') {
+                                updatedFields['misdemeanor'] = updatedFormValues.misdemeanorExplain;
                             }
-    
-                            if (keyName === 'drunkdriving') {
-                                o['drunkdriving'] = updatedFormValues.drunkDrivingExplain;
+                        
+                            if (fieldName === 'drunkdriving') {
+                                updatedFields['drunkdriving'] = updatedFormValues.drunkDrivingExplain;
                             }
-    
-                            return o;
+                        
+                            return updatedFields;
                         }, {});
+                        
     
                         let reviewedCorrectItemsIndex: any = [];
     
@@ -1126,13 +1134,13 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         }
     
         const selectedAddresses = previousAddresses
-            .filter((address: any) => address.address)
-            .map((address: any) => ({ ...address, addressUnit: address.addressUnit || null, county: null }));
+            .filter((address: AddressEntity) => address.address)
+            .map((address: AddressEntity) => ({ ...address, addressUnit: address.addressUnit || null, county: null }));
         const lastActiveAddress = selectedAddresses[selectedAddresses.length - 1];
         const stepPreviousAddresses = this.stepValues?.previousAddresses;
         const storePreviousAddresses = selectedAddresses
             .filter((_, index) => index !== selectedAddresses.length - 1)
-            .map((address: any, index: number) => ({
+            .map((address: AddressEntity, index: number) => ({
                 ...(this.stepHasValues || this.selectedMode === SelectedMode.FEEDBACK) && {
                     id: stepPreviousAddresses[index]?.id,
                     previousAddressReview: stepPreviousAddresses[index]?.previousAddressReview,
