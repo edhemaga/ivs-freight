@@ -80,9 +80,7 @@ function playerFactory() {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),
-        StoreModule.forRoot({
-            auth: authReducer,
-        }),
+        StoreModule.forRoot([]),
         EffectsModule.forRoot([]),
 
         // routing

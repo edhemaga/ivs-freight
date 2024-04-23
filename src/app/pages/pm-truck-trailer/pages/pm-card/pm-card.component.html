@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -58,14 +58,7 @@
                                     type="button"
                                     customClass="mt-1"
                                 >
-                                    <ng-container
-                                        *ngFor="
-                                            let title of titleArray;
-                                            trackBy: trackCard
-                                        "
-                                    >
-                                        {{ title[i] }}
-                                    </ng-container>
+                                    {{ card.textUnit }}
                                 </span>
                             </span>
                         </div>
@@ -73,167 +66,87 @@
 
                     <!-- Card body front-->
 
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
-                        }"
-                    >
+                    <div class="card-body-content flipped">
                         <!-- Card body item -->
 
                         <ng-container
                             *ngFor="
-                                let rowsFront of cardsFront;
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsFront[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
-
-                                        <ng-container *ngIf="row.field">
-                                            <div
-                                                class="bottom-item-body d-flex align-items-center"
-                                            >
-                                                <div
-                                                    class="progresbar-pm d-flex align-items-center"
-                                                >
-                                                    <span
-                                                        [class.checkbox-tooltip]="
-                                                            row.key === '/'
-                                                        "
-                                                        type="button"
-                                                        ngbTooltip
-                                                        mainTooltip="View PM"
-                                                        tooltipBackground="#424242"
-                                                        position="bottom"
-                                                        [disableTooltip]="
-                                                            row.key === '/'
-                                                        "
-                                                    >
-                                                        <app-ta-progres-bar
-                                                            [percents]="
-                                                                row.secondKey
-                                                            "
-                                                            [text]="row.key"
-                                                            [hasPopover]="true"
-                                                            [type]="
-                                                                selectedTab ===
-                                                                'active'
-                                                                    ? 'miles'
-                                                                    : 'days'
-                                                            "
-                                                            [data]="card"
-                                                            [columnField]="
-                                                                row.field
-                                                            "
-                                                        ></app-ta-progres-bar>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="!row.field">
-                                            <div
-                                                class="bottom-item-body d-flex align-items-center gap"
-                                            >
-                                                {{ row.key }}
-                                            </div>
-                                        </ng-container>
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
                                     </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div>
 
-                    <!-- Card body back -->
-
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
-                        }"
-                    >
-                        <ng-container
-                            *ngFor="
-                                let rowsBack of cardsBack;
-                                trackBy: trackCard
-                            "
-                        >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsBack[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
-
-                                        <ng-container *ngIf="row.field">
+                                    <ng-container *ngIf="cardRow.field">
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center"
+                                        >
                                             <div
-                                                class="bottom-item-body d-flex align-items-center"
+                                                class="progresbar-pm d-flex align-items-center"
                                             >
-                                                <div
-                                                    class="progresbar-pm d-flex align-items-center"
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    mainTooltip="View PM"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                    [disableTooltip]="
+                                                        (card
+                                                            | valueByStringPath
+                                                                : cardRow.key) ===
+                                                        '/'
+                                                    "
                                                 >
-                                                    <span
-                                                        [class.checkbox-tooltip]="
-                                                            row.key === '/'
+                                                    <app-ta-progres-bar
+                                                        [percents]="
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.secondKey
                                                         "
-                                                        type="button"
-                                                        ngbTooltip
-                                                        mainTooltip="View PM"
-                                                        tooltipBackground="#424242"
-                                                        position="bottom"
-                                                        [disableTooltip]="
-                                                            row.key === '/'
+                                                        [text]="
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.key
                                                         "
-                                                    >
-                                                        <app-ta-progres-bar
-                                                            [percents]="
-                                                                row.secondKey
-                                                            "
-                                                            [text]="row.key"
-                                                            [hasPopover]="true"
-                                                            [type]="
-                                                                selectedTab ===
-                                                                'active'
-                                                                    ? 'miles'
-                                                                    : 'days'
-                                                            "
-                                                            [data]="card"
-                                                            [columnField]="
-                                                                row.field
-                                                            "
-                                                        ></app-ta-progres-bar>
-                                                    </span>
-                                                </div>
+                                                        [hasPopover]="true"
+                                                        [type]="
+                                                            selectedTab ===
+                                                            'active'
+                                                                ? 'miles'
+                                                                : 'days'
+                                                        "
+                                                        [data]="card"
+                                                        [columnField]="
+                                                            cardRow.field
+                                                        "
+                                                    ></app-ta-progres-bar>
+                                                </span>
                                             </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="!row.field">
-                                            <div
-                                                class="bottom-item-body d-flex align-items-center gap"
-                                            >
-                                                {{ row.key }}
-                                            </div>
-                                        </ng-container>
-                                    </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!cardRow.field">
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
+                                        >
+                                            {{
+                                                card
+                                                    | valueByStringPath
+                                                        : cardRow.key
+                                            }}
+                                        </div>
+                                    </ng-container>
                                 </div>
-                            </ng-container>
+                            </div>
                         </ng-container>
                     </div>
                 </div>

@@ -72,7 +72,7 @@
 
         <app-sidebar-confirm-btn
             [disabledValue]="loginForm.invalid"
-            [displaySpinner]="displaySpinner"
+            [displaySpinner]="displaySpinner$ | async"
             (clickValueEmitter)="onGetBtnClickValue($event)"
         ></app-sidebar-confirm-btn>
     </form>
