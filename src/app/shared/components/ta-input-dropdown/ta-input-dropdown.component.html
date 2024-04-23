@@ -116,20 +116,27 @@
         (incorrectEvent)="onIncorrectInput($event)"
     ></app-ta-input>
 
-    <!-- Dropdown icon only -->
-
-    <svg-icon
-        *ngIf="inputConfig.isIconInput"
-        #t2="ngbPopover"
-        [ngbPopover]="taInputDropdownPopover"
-        popoverClass="ta-input-dropdown"
-        [autoClose]="'outside'"
-        [container]="'body'"
-        [placement]="['bottom-left']"
-        class="input-icon"
-        src="assets/svg/common/repair-pm/ic_battery.svg"
-        [svgStyle]="{ 'width.px': '26', 'height.px': '26' }"
-    ></svg-icon>
+    <!-- Dropdown icon instead of input -->
+    <ng-container *ngIf="inputConfig.isIconInput">
+        <div
+            class="d-flex justify-content-center align-items-center input-icon-container"
+            [ngClass]="{
+                valid: inputConfig?.isValidIcon,
+                active: popoverRef?.isOpen()
+            }"
+        >
+            <svg-icon
+                #t2="ngbPopover"
+                [ngbPopover]="taInputDropdownPopover"
+                popoverClass="ta-input-dropdown"
+                [autoClose]="'outside'"
+                [container]="'body'"
+                [placement]="['bottom-left']"
+                class="input-icon"
+                [src]="'assets/svg/common/repair-pm/' + inputConfig?.inputIcon"
+            ></svg-icon>
+        </div>
+    </ng-container>
 </div>
 
 <ng-template #taInputDropdownPopover>

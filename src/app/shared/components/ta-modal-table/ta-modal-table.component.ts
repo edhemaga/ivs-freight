@@ -177,7 +177,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (
-            !changes.isNewRowCreated?.firstChange &&
+            !changes.dropdownData?.firstChange &&
             changes.dropdownData?.currentValue
         ) {
             this.getDropdownLists(changes.dropdownData.currentValue);

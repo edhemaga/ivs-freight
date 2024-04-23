@@ -219,7 +219,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // If open with truck tab
         else {
             this.onTabChange(this.typeOfRepair[0]);
-            this.getRepairDropdowns(51, null, 'Trucks', false);
+            this.getRepairDropdowns(null, null, 'Trucks', false);
         }
     }
 
@@ -556,7 +556,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.selectedUnit = event;
 
-                    if (event.trailerType) {
+                    if (event?.trailerType) {
                         this.selectedUnit = {
                             ...this.selectedUnit,
                             logoName: event.trailerType?.logoName,
@@ -564,7 +564,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     } else {
                         this.selectedUnit = {
                             ...this.selectedUnit,
-                            logoName: event.truckType?.logoName,
+                            logoName: event?.truckType?.logoName,
                         };
                     }
 
@@ -591,13 +591,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                               this.selectedUnit?.id,
                               null,
                               'Trucks',
-                              true
+                              false
                           )
                         : this.getRepairDropdowns(
                               null,
                               this.selectedUnit?.id,
                               'Trailers',
-                              true
+                              false
                           );
 
                     if (
@@ -807,7 +807,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RepairModalResponse) => {
                     if (onlyPMS) return;
-
                     // Unit Trucks
                     this.unitTrucks = res.trucks.map((item) => {
                         return {

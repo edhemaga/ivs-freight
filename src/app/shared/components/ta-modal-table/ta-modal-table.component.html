@@ -366,18 +366,24 @@
                                 type: 'text',
                                 label: '',
                                 placeholderInsteadOfLabel: true,
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-200',
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                isIconInput: true,
                                 hideClear: true,
+                                isDropdown: true,
+                                isDisabled:
+                                    !truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                    !truckTrailerRepairPmOptions?.trailerPmDropdownList,
+                                isIconInput: selectedTruckTrailerRepairPm[i],
+                                isValidIcon: descriptionItemRow.valid,
+                                inputIcon:
+                                    selectedTruckTrailerRepairPm[i]?.logoName,
+                                dropdownWidthClass: 'w-col-200',
                                 blackInput:
                                     getFormArray().at(i).get('pm').value &&
                                     !isInputHoverRows[i][1]
                             }"
                             [canAddNew]="true"
-                            [activeItem]="selectedTruckTrailerRepairPm"
+                            [activeItem]="selectedTruckTrailerRepairPm[i]"
                             [options]="
                                 truckTrailerRepairPmOptions?.truckPmDropdownList ||
                                 truckTrailerRepairPmOptions?.trailerPmDropdownList
