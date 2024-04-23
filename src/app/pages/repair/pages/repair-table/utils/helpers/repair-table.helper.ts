@@ -99,7 +99,6 @@ export class RepairTableHelper {
         };
 
         if (repairType === TableStringEnum.ORDER) {
-            // Insert the additional object between the second and third objects
             commonDropdownContent.splice(2, 0, orderDropdownContent);
         }
 

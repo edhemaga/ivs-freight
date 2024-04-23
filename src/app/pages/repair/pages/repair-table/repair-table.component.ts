@@ -73,7 +73,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
 // helpers
-import { RepairTableHelper } from '@pages/truck/pages/truck-table/utils/helpers/repair-table.helper';
+import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 
 @Component({
     selector: 'app-repair-table',
