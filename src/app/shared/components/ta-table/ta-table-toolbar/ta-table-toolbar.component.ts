@@ -236,6 +236,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                         .tableRowsSelected.length
                         ? true
                         : false;
+
+                    this.activeTableData.moneyCount =
+                        this.tableRowsSelected.reduce((total, selectRow) => {
+                            const cost = selectRow.tableData?.tableCost;
+                            if (cost) {
+                                const num = parseFloat(
+                                    cost.replace(/\$|,/g, '')
+                                );
+                                total += num;
+                            }
+                            return total;
+                        }, 0);
                 }
 
                 if (this.options.toolbarActions.showCountSelectedInList) {

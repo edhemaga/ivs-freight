@@ -78,6 +78,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
     selectableRow: any[] = [];
     showBorder: boolean = false;
 
+    repairUnitStringBoolean: boolean = false;
+    repairShopDetailsStringBoolean: boolean = false;
+    repairItemDetailsStringBoolean: boolean = false;
+
     constructor(
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef
@@ -213,6 +217,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.pinedWidth = 0;
         this.actionsWidth = 0;
 
+        this.repairItemDetailsStringBoolean = false;
+        this.repairShopDetailsStringBoolean = false;
+        this.repairUnitStringBoolean = false;
+
         this.columns.map((column, index) => {
             if (!column.hasOwnProperty('isPined')) {
                 column.isPined = false;
@@ -241,6 +249,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                 ) {
                     this.pinedWidth += 6;
                 }
+            }
+
+            if (this.tableData[0]?.gridNameTitle === 'Repair') {
+                this.setVisibleTableHead(v);
             }
 
             /* Not Pined Columns */
@@ -431,6 +443,27 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
     }
 
+    setVisibleTableHead(data) {
+        data.showRepairTitle = false;
+        if (!this.repairUnitStringBoolean && data.groupName === 'Unit ') {
+            data.showRepairTitle = true;
+            this.repairUnitStringBoolean = true;
+        }
+        if (
+            !this.repairShopDetailsStringBoolean &&
+            data.groupName === 'Shop Detail '
+        ) {
+            data.showRepairTitle = true;
+            this.repairShopDetailsStringBoolean = true;
+        }
+        if (
+            !this.repairItemDetailsStringBoolean &&
+            data.groupName === 'Item Detail '
+        ) {
+            data.showRepairTitle = true;
+            this.repairItemDetailsStringBoolean = true;
+        }
+    }
     // Pin Column
     onPinColumn(column: any) {
         column.isPined = !column.isPined;

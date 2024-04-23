@@ -291,6 +291,11 @@ export enum TableStringEnum {
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
     REPAIR_MODAL = 'repair-modal',
+    ALL_BILS = 'All Bills',
+    ALL_BILS_2 = 'all-bills',
+    ALL_ORDERS = 'All Orders',
+    ALL_ORDERS_2 = 'all-orders',
+    FINISH_ORDER_2 = 'Finish Order',
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',

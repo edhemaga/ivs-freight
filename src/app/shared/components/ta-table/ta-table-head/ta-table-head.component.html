@@ -7,7 +7,8 @@
                 'tr-height-2':
                     tableData[0].title === 'Contacts' ||
                     tableData[0].gridNameTitle === 'PM' ||
-                    tableData[0].gridNameTitle === 'Truck'
+                    tableData[0].gridNameTitle === 'Truck' ||
+                    tableData[0].gridNameTitle === 'Repair'
             }"
         >
             <th
@@ -40,7 +41,8 @@
                     'align-items-end':
                         tableData[0].title === 'Contacts' ||
                         tableData[0].gridNameTitle === 'PM' ||
-                        tableData[0].gridNameTitle === 'Truck'
+                        tableData[0].gridNameTitle === 'Truck' ||
+                        tableData[0].gridNameTitle === 'Repair'
                 }"
             >
                 <!-- Selected Row Count -->
@@ -383,6 +385,75 @@
 
                             <p class="m-0 ta-font-bold th-title">
                                 {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].gridNameTitle === 'Repair' &&
+                            column.groupName === 'Unit '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column border-test justify-content-center th-title"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container *ngIf="column.showRepairTitle">
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    UNIT
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].gridNameTitle === 'Repair' &&
+                            column.groupName === 'Shop Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column border-test justify-content-center th-title"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container *ngIf="column.showRepairTitle">
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    REPAIR SHOP
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            tableData[0].gridNameTitle === 'Repair' &&
+                            column.groupName === 'Item Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column border-test justify-content-center th-title"
+                            (click)="sortHeaderClick(column)"
+                        >
+                            <ng-container *ngIf="column.showRepairTitle">
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    ITEM
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
                             </p>
                         </div>
                     </ng-container>
@@ -733,7 +804,8 @@
                 'tr-height-2':
                     tableData[0].title === 'Contacts' ||
                     tableData[0].gridNameTitle === 'PM' ||
-                    tableData[0].gridNameTitle === 'Truck'
+                    tableData[0].gridNameTitle === 'Truck' ||
+                    tableData[0].gridNameTitle === 'Repair'
             }"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
             id="scroll"
@@ -772,7 +844,8 @@
                         'align-items-end':
                             tableData[0].title === 'Contacts' ||
                             tableData[0].gridNameTitle === 'PM' ||
-                            tableData[0].gridNameTitle === 'Truck'
+                            tableData[0].gridNameTitle === 'Truck' ||
+                            tableData[0].gridNameTitle === 'Repair'
                     }"
                 >
                     <!-- Title -->
@@ -1047,6 +1120,75 @@
 
                                 <p class="m-0 ta-font-bold th-title">
                                     {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].gridNameTitle === 'Repair' &&
+                                column.groupName === 'Unit '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column border-test justify-content-center th-title"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container *ngIf="column.showRepairTitle">
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        UNIT
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].gridNameTitle === 'Repair' &&
+                                column.groupName === 'Shop Detail '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column border-test justify-content-center th-title"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container *ngIf="column.showRepairTitle">
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        REPAIR SHOP
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                tableData[0].gridNameTitle === 'Repair' &&
+                                column.groupName === 'Item Detail '
+                            "
+                        >
+                            <div
+                                class="d-flex flex-column border-test justify-content-center th-title"
+                                (click)="sortHeaderClick(column)"
+                            >
+                                <ng-container *ngIf="column.showRepairTitle">
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        ITEM
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1396,7 +1538,11 @@
         <!-- Actions -->
         <tr
             class="tr actions-columns-container align-items-end"
-            [ngClass]="{ 'tr-height-2': tableData[0].title === 'Contacts' }"
+            [ngClass]="{
+                'tr-height-2':
+                    tableData[0].title === 'Contacts' ||
+                    tableData[0].gridNameTitle === 'Repair'
+            }"
         >
             <th
                 *ngFor="let column of actionColumns; let i = index"

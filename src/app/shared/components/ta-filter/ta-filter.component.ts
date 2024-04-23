@@ -890,7 +890,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 } else if (this.type === 'trailerFilter') {
                     if (res?.data) {
-                        const newData = res.data.pagination.data.map(
+                        const newData = res.data?.pagination?.data.map(
                             (type: any) => {
                                 type['name'] = type.trailerNumber;
                                 return type;

@@ -552,6 +552,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'View Details',
             name: 'view-details',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
@@ -564,6 +570,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'Share',
             name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
@@ -571,6 +583,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'Print',
             name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             hasBorder: true,
         },
         {
