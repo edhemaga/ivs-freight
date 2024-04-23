@@ -64,6 +64,16 @@
                             {{ cardsSecTitle }}
                         </h5>
                     </ng-container>
+
+                    <ng-container
+                        *ngIf="showCounter && confirmationData?.array?.length"
+                    >
+                        <div
+                            class="modal-header-counter d-flex align-items-center justify-content-center ta-font-extra-bold"
+                        >
+                            {{ confirmationData.array.length }}
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
@@ -609,7 +619,9 @@
                                     'reset modal',
                                     'user',
                                     'truck',
-                                    'owner'
+                                    'owner',
+                                    'repair',
+                                    'repair-shop'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"

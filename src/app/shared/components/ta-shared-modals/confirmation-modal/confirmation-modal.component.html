@@ -7,7 +7,9 @@
                 ? editData?.subType?.substring(0, 1).toUpperCase() +
                   editData?.subType?.substring(1)
                 : 'Move'
-            : editData?.type === 'multiple delete'
+            : editData?.type === 'multiple delete' &&
+              editData?.template !== 'repair' &&
+              editData?.template !== 'repair-shop'
             ? 'Delete'
             : editData?.template === 'void'
             ? ' Void Registration '
@@ -18,6 +20,10 @@
             ? ' Fuel Stop'
             : editData?.template === ' contact'
             ? 'Contact'
+            : editData?.template === 'repair'
+            ? 'Delete Repair / Order'
+            : editData?.template === 'repair-shop'
+            ? 'Delete Repair Shop'
             : ' Confirmation'
     "
     [editName]="
@@ -227,13 +233,12 @@
                 </p>
             </div>
 
-            <!-- Shipper, Repair Shop -->
+            <!-- Shipper -->
 
             <div
                 *ngIf="
                     [
                         'shipper',
-                        'repair shop',
                         'Company Parking',
                         'Company Office',
                         'Company Repair Shop',
@@ -425,6 +430,35 @@
                     {{ editData?.data?.routeType }}
                 </p>
             </div>
+
+            <!-- Repair -->
+
+            <ng-container *ngIf="['repair'].includes(editData?.template)">
+                <div class="confirmation-body-content">
+                    <p class="m-0 text-1 ta-font-bold">
+                        Unit {{ editData?.data?.tableUnit }}
+                        <ng-container *ngIf="editData?.data?.tableCost"
+                            >- {{ editData.data.tableCost }}</ng-container
+                        >
+                    </p>
+                    <p class="m-0 text-2">
+                        {{ editData?.data?.tableShopName }}
+                    </p>
+                </div>
+            </ng-container>
+
+            <!-- Repair Shop -->
+
+            <ng-container *ngIf="['repair-shop'].includes(editData?.template)">
+                <div class="confirmation-body-content">
+                    <p class="m-0 text-1 ta-font-bold">
+                        {{ editData?.data?.name }}
+                    </p>
+                    <p class="m-0 text-2">
+                        {{ editData?.data?.address }}
+                    </p>
+                </div>
+            </ng-container>
         </div>
 
         <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
@@ -588,13 +622,9 @@
                         </div>
                     </div>
                 </ng-container>
-                <!-- Shipper, Repair Shop -->
+                <!-- Shipper -->
                 <div
-                    *ngIf="
-                        ['shipper', 'repair shop', 'parking'].includes(
-                            editData?.template
-                        )
-                    "
+                    *ngIf="['shipper', 'parking'].includes(editData?.template)"
                     class="confirmation-info"
                 >
                     <p class="m-0 confirmation-text-1">
@@ -604,6 +634,47 @@
                         Address: {{ item?.data?.address?.address }}
                     </p>
                 </div>
+
+                <!-- Repair -->
+
+                <ng-container *ngIf="['repair'].includes(editData?.template)">
+                    <div
+                        class="confirmation-body-content"
+                        [ngClass]="{
+                            'mb-2': i !== editData.array.length - 1
+                        }"
+                    >
+                        <p class="m-0 text-1 ta-font-bold">
+                            Unit {{ item?.data?.tableUnit }}
+                            <ng-container *ngIf="item?.data?.tableCost"
+                                >- {{ item.data.tableCost }}</ng-container
+                            >
+                        </p>
+                        <p class="m-0 text-2">
+                            {{ item?.data?.tableShopName }}
+                        </p>
+                    </div>
+                </ng-container>
+
+                <!-- Repair Shop -->
+
+                <ng-container
+                    *ngIf="['repair-shop'].includes(editData?.template)"
+                >
+                    <div
+                        class="confirmation-body-content"
+                        [ngClass]="{
+                            'mb-2': i !== editData.array.length - 1
+                        }"
+                    >
+                        <p class="m-0 text-1 ta-font-bold">
+                            {{ item?.data?.name }}
+                        </p>
+                        <p class="m-0 text-2">
+                            {{ item?.data?.address }}
+                        </p>
+                    </div>
+                </ng-container>
             </div>
         </div>
 
@@ -674,20 +745,12 @@
             class="confirmation-header"
         >
             <p class="m-0 ta-font-medium">
-                Are you sure you want to
                 {{
-                    editData?.type === 'info'
-                        ? editData?.subType
-                        : editData?.type === 'multiple delete'
-                        ? 'delete' + ' ' + 'selected'
-                        : editData.type
+                    editData?.type
+                        | confirmationModalText
+                            : editData?.template
+                            : editData?.subType
                 }}
-                {{ editData?.type === 'multiple delete' ? null : 'selected' }}
-                {{
-                    editData?.type === 'multiple delete'
-                        ? editData?.template + 's'
-                        : editData?.template
-                }}?
             </p>
         </div>
 

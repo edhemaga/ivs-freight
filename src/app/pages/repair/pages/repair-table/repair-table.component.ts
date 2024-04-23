@@ -183,14 +183,61 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.getSelectedTabTableData();
 
         this.confiramtionSubscribe();
+
+        this.deleteSelectedRows();
     }
 
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.template === TableStringEnum.INFO)
-                    this.changeRepairShopStatus(res.data);
+                if (res) {
+                    if (res.template === TableStringEnum.INFO) {
+                        this.changeRepairShopStatus(res.data);
+                    } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                            this.repairService
+                                .deleteRepairShopList(res.array)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
+                        } else {
+                            this.repairService
+                                .deleteRepairList(res.array, this.selectedTab)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: (res) => {
+                                        console.log(
+                                            'confirmation delete res',
+                                            res
+                                        );
+                                        // this.updateDataCount();
+                                    },
+                                    error: () => {},
+                                });
+                        }
+                    } else if (res.type === TableStringEnum.DELETE) {
+                        if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                            this.repairService
+                                .deleteRepairShopById(res.id)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
+                        } else {
+                            this.repairService
+                                .deleteRepairById(res.id, this.selectedTab)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: (res) => {
+                                        console.log(
+                                            'confirmation delete res',
+                                            res
+                                        );
+                                        this.updateDataCount();
+                                    },
+                                    error: () => {},
+                                });
+                        }
+                    }
+                }
             });
     }
 
@@ -329,7 +376,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repair(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => { // - added any because res.data is throwing an error
+            .subscribe((res: any) => {
+                // - added any because res.data is throwing an error
                 this.updateDataCount();
 
                 // On Add Repair
@@ -1175,16 +1223,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
+                            ...event,
+                            template: TableStringEnum.REPAIR_SHOP,
                             type: TableStringEnum.DELETE,
-                        }
-                    );
-                    this.confiramtionService.confirmationData$.subscribe(
-                        (response) => {
-                            if (response.type === TableStringEnum.DELETE)
-                                this.repairService
-                                    .deleteRepairShopById(event.id)
-                                    .pipe(takeUntil(this.destroy$))
-                                    .subscribe();
                         }
                     );
 
@@ -1195,25 +1236,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         ConfirmationModalComponent,
                         { size: TableStringEnum.DELETE },
                         {
+                            ...event,
+                            template: TableStringEnum.REPAIR_2,
                             type: TableStringEnum.DELETE,
-                        }
-                    );
-                    this.confiramtionService.confirmationData$.subscribe(
-                        (response) => {
-                            if (response.type === TableStringEnum.DELETE) {
-                                this.repairService
-                                    .deleteRepairById(
-                                        event?.id,
-                                        this.selectedTab
-                                    )
-                                    .pipe(takeUntil(this.destroy$))
-                                    .subscribe({
-                                        next: () => {
-                                            this.updateDataCount();
-                                        },
-                                        error: () => {},
-                                    });
-                            }
+                            subType:
+                                this.selectedTab === TableStringEnum.ACTIVE
+                                    ? TableStringEnum.TRUCK
+                                    : TableStringEnum.TRAILER_2,
                         }
                     );
                     break;
@@ -1356,6 +1385,44 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 (table) => table.field === this.selectedTab
             );
         }
+    }
+
+    // Delete Selected Rows
+    private deleteSelectedRows(): void {
+        this.tableService.currentDeleteSelectedRows
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                if (response.length) {
+                    const mappedRes = response.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                            },
+                        };
+                    });
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template:
+                                this.selectedTab !== TableStringEnum.REPAIR_SHOP
+                                    ? TableStringEnum.REPAIR_2
+                                    : TableStringEnum.REPAIR_SHOP,
+                            type:
+                                mappedRes?.length > 1
+                                    ? TableStringEnum.MULTIPLE_DELETE
+                                    : TableStringEnum.DELETE,
+                            subType:
+                                this.selectedTab === TableStringEnum.ACTIVE
+                                    ? TableStringEnum.TRUCK
+                                    : TableStringEnum.TRAILER_2,
+                        }
+                    );
+                }
+            });
     }
 
     // Show More Data

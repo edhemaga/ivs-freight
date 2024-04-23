@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, of, takeUntil, tap } from 'rxjs';
 
 // models
 import {
@@ -240,8 +240,15 @@ export class RepairService implements OnDestroy {
     }
 
     // Delete Repair List
-    public deleteRepairList(): Observable<any> {
-        return;
+    public deleteRepairList(
+        ids: number[],
+        tabSelected?: string
+    ): Observable<any> {
+        console.log('deleteRepairList ids', ids);
+        console.log('deleteRepairList tabSelected', tabSelected);
+        //return this.repairService.apiRepairListDelete(ids).pipe(tap(() => {}));
+
+        return of();
     }
 
     public autocompleteRepairByDescription(
@@ -509,6 +516,13 @@ export class RepairService implements OnDestroy {
                 });
             })
         );
+    }
+
+    public deleteRepairShopList(ids: number[]): Observable<any> {
+        console.log('deleteRepairShopList ids', ids);
+        //return this.repairService.apiRepairshopListDelete(ids).pipe(tap(() => {}));
+
+        return of();
     }
 
     public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
