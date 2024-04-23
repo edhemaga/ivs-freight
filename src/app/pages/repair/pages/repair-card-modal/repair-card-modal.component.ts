@@ -147,7 +147,6 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
                     default:
                         break;
                 }
-                this.tabSelected = res;
             });
     }
 
