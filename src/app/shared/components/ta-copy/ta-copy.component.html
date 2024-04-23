@@ -1,13 +1,17 @@
-<div class="app-ta-copy-wrapper" (click)="copyText(copyValue)" (mouseleave)="textCopied = false">
-    <div 
-        class="icon-text-cont" 
+<div
+    class="app-ta-copy-wrapper"
+    (click)="copyText(copyValue)"
+    (mouseleave)="textCopied = false"
+>
+    <div
+        class="icon-text-cont"
         [ngClass]="{ copied: textCopied }"
-        [tooltipBackground]="textCopied ? '#536BC2' : '#6c6c6c'"
+        [tooltipBackground]="textCopied ? '#0B49D1' : '#424242'"
         ngbTooltip
         [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
-        position="top"
+        position="bottom"
         [autoClose]="false"
-        >
+    >
         <div
             class="copy-value"
             [class.leftIconOrder]="leftSideIcon"
@@ -19,29 +23,32 @@
                 'max-width': maxWidth
             }"
         >
-            <span 
-                *ngIf="!accountCompany && !arrayText" 
+            <span
+                *ngIf="!accountCompany && !arrayText"
                 class="copy-text"
                 [class.boldVinSpan]="boldText"
                 >{{
-                hasEye
-                    ? (copyValue | hideAccount: 'account':isVisible)
-                    : copyValue
-            }}</span>
-            <span *ngIf="accountCompany  && !arrayText" 
+                    hasEye
+                        ? (copyValue | hideAccount : 'account' : isVisible)
+                        : copyValue
+                }}</span
+            >
+            <span
+                *ngIf="accountCompany && !arrayText"
                 class="copy-text"
                 [class.boldVinSpan]="boldText"
-            >{{
-                hasEye
-                    ? (copyValue | hidePassword: 'account':isVisible)
-                    : copyValue
-            }}</span>
-            <span *ngIf="arrayText" >{{copyValue[0]}}<span class="boldVinSpan">{{copyValue[1]}}</span> </span>
-        </div>
-        <div 
-            class="app-icon-copy"
-            [class.leftIconOrder]="leftSideIcon"   
+                >{{
+                    hasEye
+                        ? (copyValue | hidePassword : 'account' : isVisible)
+                        : copyValue
+                }}</span
             >
+            <span *ngIf="arrayText"
+                >{{ copyValue[0]
+                }}<span class="boldVinSpan">{{ copyValue[1] }}</span>
+            </span>
+        </div>
+        <div class="app-icon-copy" [class.leftIconOrder]="leftSideIcon">
             <span
                 *ngIf="hasEye"
                 tooltipBackground="#6c6c6c"
@@ -63,12 +70,9 @@
                     }}"
                 ></svg-icon>
             </span>
-            <span
-                [ngClass]="{ copied: textCopied }"
-            >
+            <span [ngClass]="{ copied: textCopied }">
                 <svg-icon
                     class="card-icon-copy"
-                    [class.extraPadding]="leftSideIcon"
                     src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
             </span>

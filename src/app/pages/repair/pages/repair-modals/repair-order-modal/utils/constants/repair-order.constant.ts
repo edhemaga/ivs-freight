@@ -1,5 +1,6 @@
 import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
 import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 export class RepairOrderConstants {
     static REPAIR_TYPES: RepairTypes[] = [
@@ -42,6 +43,24 @@ export class RepairOrderConstants {
         {
             id: 4,
             name: 'Trailer',
+            checked: false,
+        },
+    ];
+
+    static SERVICE_TABS: Tabs[] = [
+        {
+            id: 5,
+            name: 'IN STORE',
+            checked: false,
+        },
+        {
+            id: 6,
+            name: 'AT LOCATION',
+            checked: false,
+        },
+        {
+            id: 7,
+            name: 'COMBINED',
             checked: false,
         },
     ];

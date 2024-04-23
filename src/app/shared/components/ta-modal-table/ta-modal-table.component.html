@@ -57,23 +57,16 @@
 
                 <ng-container
                     *ngIf="
-                        i === 1 &&
-                        !isDescriptionTable &&
-                        !isContactTable &&
-                        !isPMTruckTable &&
-                        !isPMTrailerTable
+                        i
+                            | setHeaderRequiredStar
+                                : isPhoneTable
+                                : isEmailTable
+                                : isDescriptionTable
+                                : isContactTable
+                                : isPMTruckTable
+                                : isPMTrailerTable
                     "
                 >
-                    <span class="m-0 ta-font-bold">*</span>
-                </ng-container>
-
-                <ng-container
-                    *ngIf="i !== 0 && i !== 2 && i == 5 && isDescriptionTable"
-                >
-                    <span class="m-0 ta-font-bold">*</span>
-                </ng-container>
-
-                <ng-container *ngIf="i !== 0 && i !== 4 && isContactTable">
                     <span class="m-0 ta-font-bold">*</span>
                 </ng-container>
             </div>
@@ -367,26 +360,32 @@
 
                         <app-ta-input-dropdown
                             formControlName="pm"
+                            [template]="'svgtext-template'"
                             [inputConfig]="{
                                 name: 'pm',
                                 type: 'text',
                                 label: '',
                                 placeholderInsteadOfLabel: true,
-                                textTransform: 'capitalize',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-197',
+                                dropdownWidthClass: 'w-col-200',
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
+                                isIconInput: true,
+                                hideClear: true,
                                 blackInput:
                                     getFormArray().at(i).get('pm').value &&
                                     !isInputHoverRows[i][1]
                             }"
-                            [activeItem]="null"
-                            [options]="contactEmailTypeOptions"
+                            [canAddNew]="true"
+                            [activeItem]="selectedTruckTrailerRepairPm"
+                            [options]="
+                                truckTrailerRepairPmOptions?.truckPmDropdownList ||
+                                truckTrailerRepairPmOptions?.trailerPmDropdownList
+                            "
                             (selectedItem)="
                                 onSelectDropdown(
                                     $event,
-                                    'contact-email-type',
+                                    'pm-truck-trailer-repair-type',
                                     i
                                 )
                             "
@@ -408,7 +407,7 @@
                                 hideRequiredCheck: true,
                                 blackInput:
                                     getFormArray().at(i).get('qty').value &&
-                                    !isInputHoverRows[i][0]
+                                    !isInputHoverRows[i][2]
                             }"
                             (mouseenter)="handleInputHover(true, i, 2)"
                             (mouseleave)="handleInputHover(false, i, 2)"
@@ -430,7 +429,7 @@
                                 hideRequiredCheck: true,
                                 blackInput:
                                     getFormArray().at(i).get('price').value &&
-                                    !isInputHoverRows[i][0]
+                                    !isInputHoverRows[i][3]
                             }"
                             (mouseenter)="handleInputHover(true, i, 3)"
                             (mouseleave)="handleInputHover(false, i, 3)"
@@ -612,6 +611,7 @@
         </ng-container>
 
         <!-- PM Table -->
+
         <ng-container *ngIf="isPMTruckTable || isPMTrailerTable">
             <div class="d-flex flex-column pm-table-container scrollable">
                 <ng-container
