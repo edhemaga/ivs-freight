@@ -238,7 +238,6 @@ export class RepairCardComponent
     }
 
     public onCardActions(event: any): void {
-        console.log(event.type, this.selectedTab);
         switch (event.type) {
             case TableStringEnum.VIEW_DETAILS:
                 if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
