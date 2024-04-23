@@ -15,9 +15,9 @@ import { RepairService } from '@shared/services/repair.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
-
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
+import { RepairCardsModalService } from '../repair-card-modal/services/repair-cards-modal.service';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -32,6 +32,7 @@ import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
+import { RepairCardModalQuery } from '../repair-card-modal/state/repair-card-modal.query';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -42,6 +43,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { RepairCardConfigConstants } from '@pages/repair/utils/constants/repair-card-config.constants';
+import { RepairConfiguration } from '@pages/repair/pages/repair-table/utils/constants/repair-configuration.constants';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -105,6 +107,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public shopFilterQuery: ShopBackFilterQuery =
         TableDropdownComponentConstants.SHOP_FILTER_QUERY;
 
+    public displayRowsFront: CardRows[] =
+        RepairConfiguration.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        RepairConfiguration.displayRowsBackActive;
+
     public mapListData: MapList[] = [];
 
     //Data to display from model Truck
@@ -148,12 +155,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private reviewRatingService: ReviewsRatingService,
         private mapsService: MapsService,
         private confiramtionService: ConfirmationService,
+        private repairCardsModalService: RepairCardsModalService,
 
         // Store
         private repairShopQuery: RepairShopQuery,
         private repairTruckQuery: RepairTruckQuery,
         private repairTrailerQuery: RepairTrailerQuery,
         private repairTrailerStore: RepairTrailerStore,
+        private repairCardModalQuery: RepairCardModalQuery,
 
         // Pipes
         public datePipe: DatePipe,
@@ -329,7 +338,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repair(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => { // - added any because res.data is throwing an error
+            .subscribe((res: any) => {
+                // - added any because res.data is throwing an error
                 this.updateDataCount();
 
                 // On Add Repair
@@ -594,6 +604,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setRepairData(td);
+        this.updateCardView();
     }
 
     // Check If Selected Tab Has Active View Mode
@@ -1470,5 +1481,80 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.mapListData = mapListResponse.pagination.data;
             this.ref.detectChanges();
         }
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.activeTabCardsConfig();
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.inactiveTabCardsConfig();
+                break;
+            case TableStringEnum.REPAIR_SHOP:
+                this.shopTabCardsConfig();
+                break;
+            default:
+                break;
+        }
+        this.repairCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private activeTabCardsConfig(): void {
+        this.repairCardModalQuery.truck$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.INVOICE;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private inactiveTabCardsConfig(): void {
+        this.repairCardModalQuery.trailer$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.INVOICE;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private shopTabCardsConfig(): void {
+        this.repairCardModalQuery.repairShop$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.cardTitle = TableStringEnum.NAME;
+
+                    this.displayRowsFront = filteredCardRowsFront;
+
+                    this.displayRowsBack = filteredCardRowsBack;
+                }
+            });
     }
 }

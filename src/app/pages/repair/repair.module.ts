@@ -24,6 +24,8 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
 
 @NgModule({
     declarations: [RepairTableComponent, RepairCardComponent],
@@ -50,6 +52,8 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
         // Pipes
         FormatDatePipe,
+        FlipCardsPipe,
+        NFormatterPipe,
     ],
 })
 export class RepairModule {}

@@ -315,6 +315,7 @@ export enum TableStringEnum {
     PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     PM_DEFAULT_MILEAGE = '10,000',
     PM_DEFAULT_MONTHS = '6',
+    INVOICE = "invoice",
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
