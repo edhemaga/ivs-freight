@@ -82,20 +82,21 @@ export class RepairOrderConstants {
             id: 3,
             name: 'Money Code',
         },
+        { id: 4, name: 'Quick' },
         {
-            id: 4,
+            id: 5,
             name: 'Q. pay (Zelle)',
         },
         {
-            id: 5,
+            id: 6,
             name: 'Q. pay (Venmo)',
         },
         {
-            id: 6,
-            name: 'Q. pay (Cashapp',
+            id: 7,
+            name: 'Q. pay (Cashapp)',
         },
         {
-            id: 7,
+            id: 8,
             name: 'Q. pay (PayPal)',
         },
     ];

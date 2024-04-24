@@ -11,7 +11,7 @@ import {
 } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { LoadBroker } from '@shared/models/load-broker.model';
-/* import { TimeOnly } from 'appcoretruckassist/model/timeOnly'; */
+import { TimeOnly } from '@pages/customer/pages/customer-table/models/time-only.model';
 
 export interface MappedShipperBroker {
     id?: number;
@@ -63,8 +63,8 @@ export interface MappedShipperBroker {
     tableLoads?: string;
     tableAddressPhysical?: string;
     tableAddressBilling?: string;
-    tableAverageWatingTimePickup?: string /* | TimeOnly */;
-    tableAverageWatingTimeDelivery?: string /* | TimeOnly */;
+    tableAverageWatingTimePickup?: string | TimeOnly;
+    tableAverageWatingTimeDelivery?: string | TimeOnly;
     tableAvailableHoursShipping?: string;
     tableAvailableHoursReceiving?: string;
     tablePaymentDetailAvailCredit?: string;

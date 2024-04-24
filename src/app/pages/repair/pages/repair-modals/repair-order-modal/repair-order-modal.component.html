@@ -3,9 +3,7 @@
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [editData]="editData"
     [editName]="editData?.data?.textUnit"
-    [isModalValid]="
-        repairOrderForm.valid && isFormDirty && isEachDescriptionRowValid
-    "
+    [isModalValid]="true"
     [modalTitle]="
         !editData?.type?.includes('edit')
             ? 'Add Repair'
@@ -23,7 +21,7 @@
     "
     (action)="onModalAction($event)"
     (onTabHeaderChange)="onModalHeaderTabChange($event)"
->
+    ><!--  repairOrderForm.valid && isFormDirty && isEachDescriptionRowValid -->
     <form
         [formGroup]="repairOrderForm"
         class="form-container form-container-without-mb"
@@ -425,8 +423,8 @@
                         [ngClass]="{
                             active: repair.active,
                             inactive:
-                                repair.notExistInRepairSHop && !repair.active,
-                            disabled: !this.selectedRepairShop
+                                repair.notExistInRepairSHop && repair.active,
+                            disabled: !repair.active || !this.selectedRepairShop
                         }"
                         (click)="activeRepairService(repair)"
                     >

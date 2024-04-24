@@ -30,8 +30,9 @@ import {
 // moment
 import moment from 'moment';
 
-// Hhelpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { RepairOrderHelper } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/helpers/repair-order.helper';
 
 // pipes
 import { PriceCalculationArrayPipe } from '@pages/repair/pages/repair-modals/repair-order-modal/pipes/price-calculation-array.pipe';
@@ -183,10 +184,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public unitId: number;
     public drivers: RepairDriverResponse[] = [];
     public selectedDriver: RepairDriverResponse;
-    public isDriverSelected: boolean = true;
+    public isDriverSelected: boolean = false;
 
     public isEachDescriptionRowValid: boolean = true;
-    public isRepairShopSelected: boolean = true;
 
     public selectedPayType: string;
     public descriptions = [];
@@ -307,11 +307,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                 break;
             case 'save':
-                if (this.repairOrderForm.invalid || !this.isFormDirty) {
+                /*  if (this.repairOrderForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.repairOrderForm);
                     return;
-                }
-
+                } */
                 if (this.editData.type.includes('edit')) {
                     this.updateRepair(this.editData.id);
 
@@ -329,6 +328,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
                 break;
             case 'delete':
                 if (this.editData) {
@@ -418,7 +418,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public onTabChange(event: Tabs, action?: string, type?: string) {
         if (type === RepairOrderModalStringEnum.SERVICE) {
-            this.repairOrderForm.get('shopServiceType').patchValue(event.name);
+            this.repairOrderForm
+                .get(RepairOrderModalStringEnum.SHOP_SERVICE_TYPE)
+                .patchValue(event.name);
         } else {
             this.isTruckOrTrailer = event.name;
 
@@ -659,6 +661,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             }
                         );
 
+                        this.repairOrderForm
+                            .get(RepairOrderModalStringEnum.SHOP_SERVICE_TYPE)
+                            .patchValue(RepairOrderModalStringEnum.IN_STORE);
+
                         this.repairService
                             .getRepairShopById(this.selectedRepairShop.id)
                             .pipe(takeUntil(this.destroy$))
@@ -833,6 +839,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RepairModalResponse) => {
                     if (onlyPMS) return;
+
                     // Unit Trucks
                     this.unitTrucks = res.trucks.map((item) => {
                         return {
@@ -942,7 +949,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private addRepair() {
-        const { date, odometer, invoice, ...form } = this.repairOrderForm.value;
+        const { date, odometer, invoice, payType, datePaid, ...form } =
+            this.repairOrderForm.value;
 
         let documents = [];
         let tagsArray = [];
@@ -975,9 +983,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.repairOrderForm.get('unitType').value === 'Trailer'
                         ? this.selectedUnit.id
                         : null,
-                repairShopId: this.selectedRepairShop
-                    ? this.selectedRepairShop.id
-                    : null,
+                date: MethodsCalculationsHelper.convertDateToBackend(date),
+                repairShopId: this.selectedRepairShop?.id ?? null,
+                items: this.descriptions,
                 serviceTypes: this.services.map((item) => {
                     return {
                         serviceType: item.serviceType,
@@ -1018,12 +1026,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items: this.descriptions,
                 files: documents,
                 tags: tagsArray,
+                payType: RepairOrderHelper.premapPayType(payType),
+                datePaid:
+                    MethodsCalculationsHelper.convertDateToBackend(datePaid),
             };
         }
 
         console.log('newData', newData);
 
-        /*     this.repairService
+        this.repairService
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1046,7 +1057,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         this.headerTabs = this.headerTabs.map((item, index) => {
                             return {
                                 ...item,
-                                checked: index === 0,
+                                checked: !index,
                             };
                         });
 
@@ -1054,7 +1065,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             (item, index) => {
                                 return {
                                     ...item,
-                                    checked: index === 0,
+                                    checked: !index,
                                 };
                             }
                         );
@@ -1099,7 +1110,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
-            }); */
+            });
     }
 
     private updateRepair(id: number) {
