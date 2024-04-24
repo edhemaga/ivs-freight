@@ -109,6 +109,7 @@ export class ModalInputFormComponent implements OnInit, ControlValueAccessor {
     }
 
     public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
+        console.log(selectedRow, 'selectedRowselectedRowselectedRow')
         switch (selectedRow.title) {
             case CardsModalEnum.EMPTY:
                 const emptyObj = {

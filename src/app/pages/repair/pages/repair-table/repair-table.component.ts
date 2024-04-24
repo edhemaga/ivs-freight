@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -73,6 +73,8 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+import { Store, select } from '@ngrx/store';
+import { selectInactiveTabCards } from '../repair-card-modal/state/repair-card-modal.selectors';
 
 @Component({
     selector: 'app-repair-table',
@@ -144,6 +146,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    truck$: Observable<any>;
+
     constructor(
         // Router
         public router: Router,
@@ -163,6 +167,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private repairTrailerQuery: RepairTrailerQuery,
         private repairTrailerStore: RepairTrailerStore,
         private repairCardModalQuery: RepairCardModalQuery,
+        private store: Store,
 
         // Pipes
         public datePipe: DatePipe,
@@ -173,6 +178,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        this.subscribeToStoreSelectors();
         this.sendRepairData();
 
         this.setTableFilter();
@@ -1525,6 +1531,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    // this.truck$ = this.store.select(selectActiveTabCards);
+
+                    // // Subscribe to the truck$ observable to get its emitted values
+                    // this.truck$
+                    //     .pipe(takeUntil(this.destroy$))
+                    //     .subscribe((value) => {
+                    //         console.log(value, 'value');
+                    //     });
+
+                    // console.log(this.truck$, 'storeeee');
                     const filteredCardRowsFront =
                         res.front_side.filter(Boolean);
 
@@ -1556,5 +1572,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.displayRowsBack = filteredCardRowsBack;
                 }
             });
+    }
+
+    private subscribeToStoreSelectors(): void {
+        // this.store
+        //     .select(selectActiveTabCards)
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((res) => {
+        //         console.log(res, 'ressssss')
+        //     });
+
+        this.truck$ = this.store.pipe(select(selectInactiveTabCards));
+
+        console.log(this.truck$, 'data i get')
     }
 }
