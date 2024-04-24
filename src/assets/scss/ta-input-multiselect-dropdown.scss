@@ -1,7 +1,53 @@
 @import 'src/app/shared/components/ta-input/scss/ta-input.clear.scss';
 @import 'src/app/shared/components/ta-input/scss/ta-input.colors.scss';
 
+@import 'src/theme/variables.scss';
+
 .application-dropdown {
+    // icon instead of input
+    .input-icon-container {
+        width: 26px;
+        height: 26px;
+        border-radius: 2px;
+        padding: 4px;
+        background: transparent;
+        cursor: pointer;
+        transition: background 0.2s ease-in-out;
+
+        .input-icon {
+            svg {
+                path {
+                    fill: $bw5;
+                    transition: fill 0.2s ease-in-out;
+                }
+            }
+        }
+
+        &.valid {
+            background: transparent;
+
+            .input-icon {
+                svg {
+                    path {
+                        fill: $ta-blue-13;
+                    }
+                }
+            }
+        }
+
+        &.active {
+            background: $ta-black;
+
+            .input-icon {
+                svg {
+                    path {
+                        fill: $bw-9;
+                    }
+                }
+            }
+        }
+    }
+
     // Merged Dropdown Body with Input
     &.merge-dropdown-body-with-input {
         padding: 4px;
