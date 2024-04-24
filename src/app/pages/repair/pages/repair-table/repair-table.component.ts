@@ -17,7 +17,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ModalService } from '@shared/services/modal.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
-import { RepairCardsModalService } from '../repair-card-modal/services/repair-cards-modal.service';
+import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -32,7 +32,7 @@ import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
-import { RepairCardModalQuery } from '../repair-card-modal/state/repair-card-modal.query';
+import { RepairCardModalQuery } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.query';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';

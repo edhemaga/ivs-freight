@@ -88,8 +88,12 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private repairCardModalQuery: RepairCardModalQuery,
         private cdr: ChangeDetectorRef,
+
+        //Store
+        private repairCardModalQuery: RepairCardModalQuery,
+
+        //Service
         private modalService: RepairCardsModalService
     ) {}
 

@@ -6,7 +6,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
 // constants
-import { RepairCardsModalConfig } from '../constants/repair-cards-modal.config';
+import { RepairCardsModalConfig } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.config';
 
 export interface RepairCardDataState extends EntityState<CardRows> {}
 
