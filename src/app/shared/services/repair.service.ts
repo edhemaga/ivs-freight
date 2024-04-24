@@ -244,8 +244,6 @@ export class RepairService implements OnDestroy {
         ids: number[],
         tabSelected?: string
     ): Observable<any> {
-        console.log('deleteRepairList ids', ids);
-        console.log('deleteRepairList tabSelected', tabSelected);
         //return this.repairService.apiRepairListDelete(ids).pipe(tap(() => {}));
 
         return of();
@@ -519,7 +517,6 @@ export class RepairService implements OnDestroy {
     }
 
     public deleteRepairShopList(ids: number[]): Observable<any> {
-        console.log('deleteRepairShopList ids', ids);
         //return this.repairService.apiRepairshopListDelete(ids).pipe(tap(() => {}));
 
         return of();

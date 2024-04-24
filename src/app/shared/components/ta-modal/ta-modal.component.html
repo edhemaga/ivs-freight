@@ -621,7 +621,8 @@
                                     'truck',
                                     'owner',
                                     'repair',
-                                    'repair-shop'
+                                    'repair-shop',
+                                    'info'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -786,6 +787,12 @@
                         <button
                             (click)="onAction('business')"
                             class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                            [ngClass]="{
+                                'modal-blue-btn':
+                                    confirmationData?.type === 'open',
+                                'modal-gray-btn':
+                                    confirmationData?.type !== 'open'
+                            }"
                             type="button"
                         >
                             Yes

@@ -30,4 +30,7 @@ export interface RepairBody {
     items?: Array<RepairItemResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
+    name?: string;
+    address?: string;
+    isClosed?: boolean;
 }
