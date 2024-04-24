@@ -15,7 +15,6 @@ export interface AddIntegrationCommand {
     userId?: string | null;
     carrierId?: string | null;
     password?: string | null;
-    twoFactorAuthSecret?: string | null;
     integrationProviderId?: number;
 }
 

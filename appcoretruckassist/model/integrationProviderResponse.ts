@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
 export interface IntegrationProviderResponse { 
     id?: number;
     title?: string | null;
-    integrationType?: EnumValue;
     logoName?: string | null;
     url?: string | null;
 }

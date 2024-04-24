@@ -19,8 +19,6 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CompanyUserListResponse } from '../model/companyUserListResponse';
-// @ts-ignore
 import { CompanyUserModalResponse } from '../model/companyUserModalResponse';
 // @ts-ignore
 import { CompanyUserResponse } from '../model/companyUserResponse';
@@ -28,6 +26,8 @@ import { CompanyUserResponse } from '../model/companyUserResponse';
 import { CreateCompanyUserCommand } from '../model/createCompanyUserCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
+// @ts-ignore
+import { GetCompanyUserListResponse } from '../model/getCompanyUserListResponse';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
 // @ts-ignore
@@ -377,7 +377,6 @@ export class CompanyUserService {
 
     /**
      * @param active 
-     * @param departmentId 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -388,19 +387,15 @@ export class CompanyUserService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyuserListGet(active?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CompanyUserListResponse>;
-    public apiCompanyuserListGet(active?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CompanyUserListResponse>>;
-    public apiCompanyuserListGet(active?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyUserListResponse>>;
-    public apiCompanyuserListGet(active?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiCompanyuserListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCompanyUserListResponse>;
+    public apiCompanyuserListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCompanyUserListResponse>>;
+    public apiCompanyuserListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCompanyUserListResponse>>;
+    public apiCompanyuserListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>active, 'Active');
-        }
-        if (departmentId !== undefined && departmentId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>departmentId, 'DepartmentId');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -472,7 +467,7 @@ export class CompanyUserService {
         }
 
         let localVarPath = `/api/companyuser/list`;
-        return this.httpClient.request<CompanyUserListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<GetCompanyUserListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

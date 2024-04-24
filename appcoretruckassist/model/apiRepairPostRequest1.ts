@@ -11,8 +11,10 @@
  */
 import { RepairType } from './repairType';
 import { RepairUnitType } from './repairUnitType';
+import { ShopServiceType } from './shopServiceType';
 import { RepairItemCommand } from './repairItemCommand';
 import { RepairServiceTypeCommand } from './repairServiceTypeCommand';
+import { PayTypeEnum } from './payTypeEnum';
 import { CreateTagCommand } from './createTagCommand';
 
 
@@ -32,8 +34,8 @@ export interface ApiRepairPostRequest1 {
     Items?: Array<RepairItemCommand>;
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
-    ShopServiceType?: number;
-    PayType?: number;
+    ShopServiceType?: ShopServiceType;
+    PayType?: PayTypeEnum;
     DatePaid?: string;
 }
 

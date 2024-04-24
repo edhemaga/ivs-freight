@@ -12,7 +12,6 @@
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TagResponse } from './tagResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
-import { EnumValue } from './enumValue';
 import { ServiceTypeResponse } from './serviceTypeResponse';
 import { PMTrailerShortResponse } from './pMTrailerShortResponse';
 import { PMTruckShortResponse } from './pMTruckShortResponse';
@@ -27,6 +26,5 @@ export interface RepairModalResponse {
     pmTrucks?: Array<PMTruckShortResponse> | null;
     pmTrailers?: Array<PMTrailerShortResponse> | null;
     tags?: Array<TagResponse> | null;
-    payTypes?: Array<EnumValue> | null;
 }
 

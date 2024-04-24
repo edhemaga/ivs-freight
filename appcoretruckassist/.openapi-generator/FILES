@@ -1,4 +1,5 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -273,11 +274,9 @@ model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
-model/companyUserListItemResponse.ts
-model/companyUserListItemResponsePagination.ts
-model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
+model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
@@ -477,6 +476,7 @@ model/getCompanyAccountLabelListResponse.ts
 model/getCompanyAccountListResponse.ts
 model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
+model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
@@ -594,10 +594,8 @@ model/mobileFuelTransactionResponse.ts
 model/mobileFuelTransactionResponsePagination.ts
 model/mobileGpsDataCommand.ts
 model/mobileRepairShopDetailsResponse.ts
-model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
 model/mobileRepairShopExpensesResponse.ts
-model/mobileRepairShopListResponse.ts
 model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
@@ -647,6 +645,7 @@ model/parkingSlotType.ts
 model/passwordResponse.ts
 model/patchNoteCommand.ts
 model/payPeriod.ts
+model/payTypeEnum.ts
 model/payrollBonusDeductionResponse.ts
 model/payrollBonusDescriptionAutocompleteResponse.ts
 model/payrollBonusMinimalResponse.ts
@@ -815,6 +814,7 @@ model/shipperModalResponse.ts
 model/shipperResponse.ts
 model/shipperResponsePagination.ts
 model/shipperShortResponse.ts
+model/shopServiceType.ts
 model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts

@@ -22,6 +22,5 @@ export interface RepairShopModalResponse {
     payPeriods?: Array<EnumValue> | null;
     monthlyDays?: Array<EnumValue> | null;
     departments?: Array<DepartmentResponse> | null;
-    shopServiceTypes?: Array<EnumValue> | null;
 }
 
