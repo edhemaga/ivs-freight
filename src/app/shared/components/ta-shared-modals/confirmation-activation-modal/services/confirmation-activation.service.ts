@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ConfirmationActivation } from '../models/confirmation-activation.model';
+
+// Models
+import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models/confirmation-activation.model';
 
 @Injectable({
     providedIn: 'root',

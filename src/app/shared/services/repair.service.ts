@@ -236,8 +236,6 @@ export class RepairService {
         ids: number[],
         tabSelected?: string
     ): Observable<any> {
-        //return this.repairService.apiRepairListDelete(ids).pipe(tap(() => {}));
-
         return of();
     }
 
@@ -492,8 +490,6 @@ export class RepairService {
     }
 
     public deleteRepairShopList(ids: number[]): Observable<any> {
-        //return this.repairService.apiRepairshopListDelete(ids).pipe(tap(() => {}));
-
         return of();
     }
 

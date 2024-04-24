@@ -44,7 +44,7 @@ export class ConfirmationActivationModalComponent {
         private ngbActiveModal: NgbActiveModal
     ) {}
 
-    public onModalAction(data: ConfirmationActivation) {
+    public onModalAction(data: ConfirmationActivation): void {
         this.confirmationActivationService.setConfirmationActivationData(data);
 
         this.ngbActiveModal.close();
