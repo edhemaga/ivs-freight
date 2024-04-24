@@ -4,10 +4,10 @@ import { Resolve } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 
 // core
-import { IntegrationService } from 'appcoretruckassist';
 
 // state
 import { IntegrationStore } from '@pages/settings/state/settings-integration-state/integrationActiveStore';
+import { IntegrationService } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +19,7 @@ export class CompanyIntegrationsResolver implements Resolve<any> {
     ) {}
 
     resolve(): Observable<any> {
-        return this.integrationService.apiIntegrationListGet([1, 1, 25]).pipe(
+        return this.integrationService.apiIntegrationListGet(1, 1, 25).pipe(
             tap((integrationPagination) => {
                 localStorage.setItem(
                     'integrationTableCount',
