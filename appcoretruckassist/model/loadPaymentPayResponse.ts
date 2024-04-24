@@ -15,6 +15,7 @@ import { EnumValue } from './enumValue';
 export interface LoadPaymentPayResponse { 
     id?: number;
     paymentType?: EnumValue;
+    paymentMethod?: EnumValue;
     pay?: number;
     payDate?: string;
 }

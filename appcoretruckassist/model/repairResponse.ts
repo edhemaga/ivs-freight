@@ -39,5 +39,10 @@ export interface RepairResponse {
     items?: Array<RepairItemResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
+    driverId?: number | null;
+    driverFirstName?: string | null;
+    driverLastName?: string | null;
+    payType?: EnumValue;
+    datePaid?: string | null;
 }
 

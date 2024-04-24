@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileRepairShopDetailsResponse } from './mobileRepairShopDetailsResponse';
 
 
-export interface EditIntegrationCommand { 
-    id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    twoFactorAuthSecret?: string | null;
-    integrationProviderId?: number;
+export interface MobileRepairShopDetailsResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MobileRepairShopDetailsResponse> | null;
 }
 

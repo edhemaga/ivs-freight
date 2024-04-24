@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileRepairShopExpensesChartResponse } from './mobileRepairShopExpensesChartResponse';
 
 
-export interface EditIntegrationCommand { 
-    id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    twoFactorAuthSecret?: string | null;
-    integrationProviderId?: number;
+export interface MobileRepairShopExpensesResponse { 
+    cost?: number | null;
+    repair?: number | null;
+    repairShopExpensesChartResponse?: Array<MobileRepairShopExpensesChartResponse> | null;
 }
 
