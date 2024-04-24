@@ -1,4 +1,5 @@
 import {
+    AddressEntity,
     EnumValue,
     FileResponse,
     RepairItemResponse,
@@ -31,6 +32,6 @@ export interface RepairBody {
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     name?: string;
-    address?: string;
+    address?: AddressEntity;
     isClosed?: boolean;
 }

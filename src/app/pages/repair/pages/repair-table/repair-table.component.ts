@@ -1274,7 +1274,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     ? TableStringEnum.OPEN
                     : TableStringEnum.CLOSE,
             };
-            
+
             this.modalService.openModal(
                 ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
@@ -1286,7 +1286,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     tableType:
                         ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
                     modalTitle: event.data.name,
-                    modalSecondTitle: event.data.address,
+                    modalSecondTitle: event.data?.address?.address
+                        ? event.data.address.address
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
         }
