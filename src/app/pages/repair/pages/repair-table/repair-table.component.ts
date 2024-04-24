@@ -190,15 +190,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.deleteSelectedRows();
     }
-
+    
+    // TODO - Add to store logic
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    if (res.template === TableStringEnum.INFO) {
-                        this.changeRepairShopStatus(res.data);
-                    } else if (res.type === TableStringEnum.MULTIPLE_DELETE) {
+                    if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.repairService
                                 .deleteRepairShopList(res.array)
@@ -923,8 +922,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private getRepairDropdownContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
-
+    
     // Get Repair Dropdown Content
+
+    // TODO - Add to store logic
     private getShopDropdownContent(shopData): DropdownItem[] {
         const defaultDropdownContent =
             TableDropdownComponentConstants.DROPDOWN_SHOP;
@@ -1414,6 +1415,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
+    
+    // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
