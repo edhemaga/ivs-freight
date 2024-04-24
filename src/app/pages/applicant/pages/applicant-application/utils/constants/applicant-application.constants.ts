@@ -1,4 +1,4 @@
-import { AnnotationItem } from "../../models/annotationItem.model";
+import { AnnotationItem } from "../../models/annotation-item.model";
 import { ApplicantQuestion } from "../../models/applicant-question.model";
 
 export class ApplicantApplicationConstants {
@@ -77,11 +77,10 @@ export class ApplicantApplicationConstants {
             ]
         }
     ];
-
+    
     public static openAnnotationArray: AnnotationItem[] = [
         { lineIndex: 0, lineInputs: [false, false, false], displayAnnotationButton: false, displayAnnotationTextArea: false },
         { lineIndex: 1, lineInputs: [false], displayAnnotationButton: false, displayAnnotationTextArea: false },
-        // Osigurajte da svaki objekat ima sve potrebne atribute:
         { lineIndex: 7, lineInputs: [false, false], displayAnnotationButton: false, displayAnnotationTextArea: false },
         { lineIndex: 8, lineInputs: [false, false], displayAnnotationButton: false, displayAnnotationTextArea: false },
         { lineIndex: 9, lineInputs: [false], displayAnnotationButton: false, displayAnnotationTextArea: false },

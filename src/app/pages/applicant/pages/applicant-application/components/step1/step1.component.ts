@@ -33,7 +33,7 @@ import {
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { ApplicantApplicationConstants } from '../../utils/constants/applicant-application.constants';
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 // validations
 import {
@@ -60,7 +60,7 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
-import { ApplicantApplicationStringEnum } from '../../enums/applicant-application-string.enum';
+import { ApplicantApplicationStringEnum } from '@pages/applicant/pages/applicant-application/enums/applicant-application-string.enum';
 
 // models
 import {
@@ -73,8 +73,8 @@ import {
     ApplicantPreviousAddressResponse,
     ApplicantPersonalInfoReviewResponse,
 } from 'appcoretruckassist/model/models';
-import { AnswerChoices } from '../../models/answer-choices.model';
-import { AnnotationItem } from '../../models/annotationItem.model'
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
+import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model'
 
 @Component({
     selector: 'app-step1',

@@ -21,8 +21,3 @@ export enum ApplicantApplicationStringEnum {
     MisdemeanorExplain = 'misdemeanorExplain',
     DrunkDrivingExplain = 'drunkDrivingExplain',
 }
-export enum InputSwitchActions {
-    BANK = 'BANK',
-    ANSWER_CHOICE = 'ANSWER_CHOICE',
-    PREVIOUS_ADDRESS = 'PREVIOUS_ADDRESS'
-}
