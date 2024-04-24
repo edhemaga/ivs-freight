@@ -133,6 +133,7 @@
                 border-radius: 2px;
                 background: transparent;
                 transition: background 0.3s ease-in-out;
+                cursor: pointer !important;
 
                 &:hover {
                     background: $ta-blue-16;
