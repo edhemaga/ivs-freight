@@ -160,7 +160,7 @@
                         type: 'text',
                         label: 'Driver',
                         isDropdown: true,
-                        isDisabled: isDriverSelected,
+                        isDisabled: !isDriverSelected,
                         textTransform: 'capitalize',
                         minLength: 1,
                         maxLength: 8,
@@ -169,7 +169,7 @@
                     }"
                     [activeItem]="selectedDriver"
                     [options]="drivers"
-                    (selectedItem)="onSelectDropDown($event, 'repair-unit')"
+                    (selectedItem)="onSelectDropDown($event, 'driver')"
                 ></app-ta-input-dropdown>
             </ng-container>
 
@@ -384,19 +384,19 @@
                 (modalTableValidStatusEmitter)="
                     handleModalTableValidStatusEmit($event)
                 "
-                (total)="totalValue($event)"
+                (totalCostValueEmitter)="getTotalCostValueEmit($event)"
             >
             </app-ta-modal-table>
 
-            <ng-container
-                *ngIf="selectedHeaderTab === 1"
-                class="row item-total-row"
-            >
+            <ng-container *ngIf="selectedHeaderTab === 1">
                 <div class="item-total d-flex justify-content-between">
-                    <span class="item-total-text ta-font-semi-bold"
-                        >Total Cost</span
-                    >
-                    {{ total | currency }}
+                    <span class="item-total-title ta-font-semi-bold"
+                        >Total Cost
+                    </span>
+
+                    <span class="item-total-cost ta-font-bold">
+                        {{ total | currency }}
+                    </span>
                 </div>
             </ng-container>
         </app-ta-custom-card>
@@ -412,6 +412,7 @@
             <app-ta-tab-switch
                 [tabs]="serviceTabs"
                 [type]="'type2-modal-popup'"
+                [isDisabled]="!this.selectedRepairShop"
                 (switchClicked)="onTabChange($event, null, 'service')"
             ></app-ta-tab-switch>
 
@@ -425,7 +426,7 @@
                             active: repair.active,
                             inactive:
                                 repair.notExistInRepairSHop && !repair.active,
-                            disabled: false
+                            disabled: !this.selectedRepairShop
                         }"
                         (click)="activeRepairService(repair)"
                     >

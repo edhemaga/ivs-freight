@@ -441,31 +441,11 @@
                             (mouseleave)="handleInputHover(false, i, 3)"
                         ></app-ta-input>
 
-                        <ng-container
-                            *ngFor="
-                                let subtotal of subtotals;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <ng-container *ngIf="subtotal.index === i">
-                                <div
-                                    class="subtotal ta-font-semi-bold d-flex justify-content-end"
-                                >
-                                    <ng-container *ngIf="subtotal.subtotal">
-                                        {{ subtotal.subtotal | currency }}
-                                    </ng-container>
-
-                                    <ng-container
-                                        *ngIf="
-                                            subtotal.index === i &&
-                                            !subtotal.subtotal
-                                        "
-                                    >
-                                        {{ 0 | currency }}
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                        </ng-container>
+                        <div class="subtotal d-flex justify-content-end">
+                            <p class="m-0 ta-font-semi-bold">
+                                {{ subTotals[i].subtotal ?? 0 | currency }}
+                            </p>
+                        </div>
                     </div>
                 </ng-container>
             </div>

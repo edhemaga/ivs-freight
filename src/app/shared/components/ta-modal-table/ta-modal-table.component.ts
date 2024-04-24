@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
+    AbstractControl,
     ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
@@ -57,9 +58,11 @@ import { HeaderRequiredStarPipe } from '@shared/components/ta-modal-table/pipes/
 import {
     ContactEmailResponse,
     ContactPhoneResponse,
+    CreateContactEmailCommand,
     CreateContactPhoneCommand,
     DepartmentResponse,
     EnumValue,
+    RepairItemCommand,
 } from 'appcoretruckassist';
 import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -106,10 +109,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() dropdownData: TruckTrailerPmDropdownLists;
 
     @Output() modalTableValueEmitter = new EventEmitter<
-        CreateContactPhoneCommand[]
+        | CreateContactPhoneCommand[]
+        | CreateContactEmailCommand[]
+        | RepairItemCommand[]
     >();
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
-    @Output() total = new EventEmitter<RepairSubtotal[]>();
+    @Output() totalCostValueEmitter = new EventEmitter<RepairSubtotal[]>();
 
     private destroy$ = new Subject<void>();
 
@@ -134,7 +139,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     // description table
     public selectedTruckTrailerRepairPm = [];
     public truckTrailerRepairPmOptions = [];
-    public subtotals: RepairSubtotal[] = [];
+    public subTotals: RepairSubtotal[] = [];
 
     // pm table
     public pmTruckOptions: ModalTableDropdownOption[] = [];
@@ -382,7 +387,25 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getModalTableDataValue(): void {
-        const modalTableValue = this.getFormArray().value;
+        let modalTableValue = this.getFormArray().value;
+
+        if (this.isDescriptionTable) {
+            modalTableValue = modalTableValue.map(
+                (itemRow: AbstractControl, index: number) => {
+                    return {
+                        ...itemRow,
+                        subtotal: this.subTotals[index]?.subtotal,
+                        pmTruckId:
+                            this.selectedTruckTrailerRepairPm[index]?.truckId &&
+                            this.selectedTruckTrailerRepairPm[index]?.id,
+                        pmTrailerId:
+                            this.selectedTruckTrailerRepairPm[index]
+                                ?.trailerId &&
+                            this.selectedTruckTrailerRepairPm[index]?.id,
+                    };
+                }
+            );
+        }
 
         this.modalTableValueEmitter.emit(modalTableValue);
     }
@@ -420,6 +443,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     private createFormArrayRow(): void {
         const newIsInputHoverRow = this.createIsHoverRow();
+
         let newFormArrayRow: UntypedFormGroup;
 
         if (this.isPhoneTable) {
@@ -505,38 +529,38 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 throttleTime(2)
             )
             .subscribe((items: RepairDescriptionResponse[]) => {
-                if (items.length) this.subtotals = [];
+                if (items.length) this.subTotals = [];
 
                 items.forEach((item, index) => {
                     const calculateSubtotal =
                         parseInt(String(item.qty)) * parseInt(item.price);
 
-                    const existingItemIndex = this.subtotals.findIndex(
+                    const existingItemIndex = this.subTotals.findIndex(
                         (item) => item.index === index
                     );
 
                     if (calculateSubtotal) {
                         if (existingItemIndex !== -1) {
-                            this.subtotals[existingItemIndex].subtotal =
+                            this.subTotals[existingItemIndex].subtotal =
                                 calculateSubtotal;
                         } else {
-                            this.subtotals.push({
+                            this.subTotals.push({
                                 subtotal: calculateSubtotal,
                                 index: index,
                             });
                         }
                     } else {
                         if (existingItemIndex !== -1) {
-                            this.subtotals[existingItemIndex].subtotal = 0;
+                            this.subTotals[existingItemIndex].subtotal = 0;
                         } else {
-                            this.subtotals.push({
+                            this.subTotals.push({
                                 subtotal: 0,
                                 index: index,
                             });
                         }
                     }
 
-                    this.total.emit(this.subtotals);
+                    this.totalCostValueEmitter.emit(this.subTotals);
                 });
             });
     }
