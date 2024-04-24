@@ -93,7 +93,8 @@ import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dro
 export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isPhoneTable?: boolean = false;
     @Input() isEmailTable?: boolean = false;
-    @Input() isDescriptionTable?: boolean = false;
+    @Input() isRepairBillTable?: boolean = false;
+    @Input() isRepairOrderTable?: boolean = false;
     @Input() isContactTable?: boolean = false;
     @Input() isPMTruckTable?: boolean = false;
     @Input() isPMTrailerTable?: boolean = false;
@@ -136,7 +137,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     // contacts table
     public repairDepartmentOptions: DepartmentResponse[];
 
-    // description table
+    // repair bill table
     public selectedTruckTrailerRepairPm = [];
     public truckTrailerRepairPmOptions = [];
     public subTotals: RepairSubtotal[] = [];
@@ -195,7 +196,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.modalTableForm = this.formBuilder.group({
             phoneTableItems: this.formBuilder.array([]),
             emailTableItems: this.formBuilder.array([]),
-            descriptionTableItems: this.formBuilder.array([]),
+            repairBillTableItems: this.formBuilder.array([]),
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
         });
@@ -275,22 +276,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.contactPhoneTypeOptions = res.contactPhoneType;
                     this.contactEmailTypeOptions = res.contactEmailType;
                 });
-        }
-
-        if (this.isDescriptionTable) {
+        } else if (this.isRepairBillTable) {
             this.truckTrailerRepairPmOptions = dropdownData;
-        }
-
-        if (this.isContactTable) {
+        } else if (this.isContactTable) {
             this.repairService
                 .getRepairShopModalDropdowns()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.repairDepartmentOptions = res.departments;
                 });
-        }
-
-        if (this.isPMTruckTable) {
+        } else if (this.isPMTruckTable) {
             this.pmService
                 .getPMTruckDropdown()
                 .pipe(takeUntil(this.destroy$))
@@ -324,9 +319,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         this.pmTruckOptions = pmDropdownList;
                     },
                 });
-        }
-
-        if (this.isPMTrailerTable) {
+        } else if (this.isPMTrailerTable) {
             this.pmService
                 .getPMTrailerDropdown()
                 .pipe(takeUntil(this.destroy$))
@@ -364,24 +357,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isPhoneTable)
             this.modalTableHeaders =
                 ModalTableConstants.PHONE_TABLE_HEADER_ITEMS;
-
-        if (this.isEmailTable)
+        else if (this.isEmailTable)
             this.modalTableHeaders =
                 ModalTableConstants.EMAIL_TABLE_HEADER_ITEMS;
-
-        if (this.isDescriptionTable)
+        else if (this.isRepairBillTable)
             this.modalTableHeaders =
-                ModalTableConstants.DESCRIPTION_TABLE_HEADER_ITEMS;
-
-        if (this.isContactTable)
+                ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS;
+        else if (this.isContactTable)
             this.modalTableHeaders =
                 ModalTableConstants.CONTACT_TABLE_HEADER_ITEMS;
-
-        if (this.isPMTruckTable)
+        else if (this.isPMTruckTable)
             this.modalTableHeaders =
                 ModalTableConstants.PM_TRUCK_TABLE_HEADER_ITEMS;
-
-        if (this.isPMTrailerTable)
+        else if (this.isPMTrailerTable)
             this.modalTableHeaders =
                 ModalTableConstants.PM_TRAILER_TABLE_HEADER_ITEMS;
     }
@@ -389,7 +377,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     private getModalTableDataValue(): void {
         let modalTableValue = this.getFormArray().value;
 
-        if (this.isDescriptionTable) {
+        if (this.isRepairBillTable) {
             modalTableValue = modalTableValue.map(
                 (itemRow: AbstractControl, index: number) => {
                     return {
@@ -415,26 +403,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             return this.modalTableForm.get(
                 TaModalTableStringEnum.PHONE_TABLE_ITEMS
             ) as UntypedFormArray;
-
-        if (this.isEmailTable) {
+        else if (this.isEmailTable) {
             return this.modalTableForm.get(
                 TaModalTableStringEnum.EMAIL_TABLE_ITEMS
             ) as UntypedFormArray;
-        }
-
-        if (this.isDescriptionTable) {
+        } else if (this.isRepairBillTable) {
             return this.modalTableForm.get(
-                TaModalTableStringEnum.DESCRIPTION_TABLE_ITEMS
+                TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS
             ) as UntypedFormArray;
-        }
-
-        if (this.isContactTable) {
+        } else if (this.isContactTable) {
             return this.modalTableForm.get(
                 TaModalTableStringEnum.CONTACT_TABLE_ITEMS
             ) as UntypedFormArray;
-        }
-
-        if (this.isPMTruckTable || this.isPMTrailerTable) {
+        } else if (this.isPMTruckTable || this.isPMTrailerTable) {
             return this.modalTableForm.get(
                 TaModalTableStringEnum.PM_TABLE_ITEMS
             ) as UntypedFormArray;
@@ -457,9 +438,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 ...this.isContactPhoneExtExist,
                 false,
             ];
-        }
-
-        if (this.isEmailTable) {
+        } else if (this.isEmailTable) {
             newFormArrayRow = this.formBuilder.group({
                 email: [null, [Validators.required]],
                 contactEmailType: [null],
@@ -470,18 +449,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 TaModalTableStringEnum.EMAIL,
                 this.destroy$
             );
-        }
-
-        if (this.isDescriptionTable) {
+        } else if (this.isRepairBillTable) {
             newFormArrayRow = this.formBuilder.group({
                 description: [null, [Validators.required]],
                 pm: [null],
                 qty: [null, [Validators.required]],
                 price: [null, [Validators.required]],
             });
-        }
-
-        if (this.isContactTable) {
+        } else if (this.isContactTable) {
             newFormArrayRow = this.formBuilder.group({
                 fullName: [null, [Validators.required]],
                 departmant: [null, [Validators.required]],
@@ -500,9 +475,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 TaModalTableStringEnum.EMAIL,
                 this.destroy$
             );
-        }
-
-        if (this.isPMTruckTable || this.isPMTrailerTable) {
+        } else if (this.isPMTruckTable || this.isPMTrailerTable) {
             newFormArrayRow = this.formBuilder.group({
                 id: [null],
                 isChecked: [true, [Validators.required]],
@@ -522,7 +495,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     public calculateSubtotal(): void {
         this.modalTableForm
-            .get(TaModalTableStringEnum.DESCRIPTION_TABLE_ITEMS)
+            .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 distinctUntilChanged(),
@@ -571,16 +544,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isPhoneTable) {
             this.isContactPhoneExtExist.splice(index, 1);
             this.selectedContactPhoneType.splice(index, 1);
-        }
+        } else if (this.isEmailTable)
+            this.selectedContactEmailType.splice(index, 1);
 
-        if (this.isEmailTable) this.selectedContactEmailType.splice(index, 1);
-
-        if (
-            this.isDescriptionTable ||
-            this.isPMTruckTable ||
-            this.isPMTrailerTable
-        )
-            this.getModalTableDataValue();
+        this.getModalTableDataValue();
     }
 
     private createIsHoverRow(): boolean[] {
@@ -620,9 +587,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 if (data.contactPhoneType.name)
                     this.selectedContactPhoneType[i] = data.contactPhoneType;
-            }
-
-            if (this.isEmailTable) {
+            } else if (this.isEmailTable) {
                 const data = modalTableData[i] as ContactEmailResponse;
 
                 this.getFormArray().at(i).patchValue({
@@ -638,9 +603,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 if (data.contactEmailType.name)
                     this.selectedContactEmailType[i] = data.contactEmailType;
-            }
-
-            if (this.isDescriptionTable) {
+            } else if (this.isRepairBillTable) {
                 const data = modalTableData[i] as RepairDescriptionResponse;
 
                 this.getFormArray().at(i).patchValue({
@@ -650,9 +613,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     price: data.price,
                     subtotal: data.subtotal,
                 });
-            }
-
-            if (this.isPMTruckTable || this.isPMTrailerTable) {
+            } else if (this.isPMTruckTable || this.isPMTrailerTable) {
                 const data = modalTableData[i] as PMTableData;
 
                 this.getFormArray().at(i).patchValue({

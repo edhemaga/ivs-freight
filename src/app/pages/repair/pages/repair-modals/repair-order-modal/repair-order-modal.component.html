@@ -375,7 +375,8 @@
             (onActionEvent)="addItem($event)"
         >
             <app-ta-modal-table
-                [isDescriptionTable]="true"
+                [isRepairBillTable]="true"
+                [isRepairOrderTable]="selectedHeaderTab === 2"
                 [isNewRowCreated]="isDescriptionRowCreated"
                 [dropdownData]="truckTrailerPmDropdownLists"
                 (modalTableValueEmitter)="handleModalTableValueEmit($event)"

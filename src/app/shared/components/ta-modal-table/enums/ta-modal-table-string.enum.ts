@@ -1,7 +1,7 @@
 export enum TaModalTableStringEnum {
     PHONE_TABLE_ITEMS = 'phoneTableItems',
     EMAIL_TABLE_ITEMS = 'emailTableItems',
-    DESCRIPTION_TABLE_ITEMS = 'descriptionTableItems',
+    REPAIR_BILL_TABLE_ITEMS = 'repairBillTableItems',
     CONTACT_TABLE_ITEMS = 'contactTableItems',
     PM_TABLE_ITEMS = 'pmTableItems',
 

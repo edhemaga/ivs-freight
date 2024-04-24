@@ -6,7 +6,7 @@ export class ModalTableConstants {
         'TYPE',
     ];
 
-    static DESCRIPTION_TABLE_HEADER_ITEMS: string[] = [
+    static REPAIR_BILL_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'DESCRIPTION',
         'PM',

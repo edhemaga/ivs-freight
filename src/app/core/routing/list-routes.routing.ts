@@ -95,7 +95,7 @@ export class ListRoutes {
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
-                /*   repairTruck: RepairTruckResolver,
+                /* repairTruck: RepairTruckResolver,
                 repairTrailer: RepairTrailerResolver,
                 repairShop: RepairShopResolver, */
             },
