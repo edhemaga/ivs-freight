@@ -47,6 +47,12 @@ import {
     phoneFaxRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// pipes
+import { HeaderRequiredStarPipe } from '@shared/components/ta-modal-table/pipes/header-required-star.pipe';
+
 // models
 import {
     ContactEmailResponse,
@@ -59,9 +65,7 @@ import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/rep
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
-
-// helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -76,20 +80,22 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
+
+        // pipes
+        HeaderRequiredStarPipe,
     ],
     templateUrl: './ta-modal-table.component.html',
     styleUrls: ['./ta-modal-table.component.scss'],
 })
 export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() isPhoneTable: boolean = false;
-    @Input() isEmailTable: boolean = false;
-    @Input() isDescriptionTable: boolean = false;
-    @Input() isContactTable: boolean = false;
-    @Input() isPMTruckTable: boolean = false;
-    @Input() isPMTrailerTable: boolean = false;
+    @Input() isPhoneTable?: boolean = false;
+    @Input() isEmailTable?: boolean = false;
+    @Input() isDescriptionTable?: boolean = false;
+    @Input() isContactTable?: boolean = false;
+    @Input() isPMTruckTable?: boolean = false;
+    @Input() isPMTrailerTable?: boolean = false;
 
     @Input() isNewRowCreated: boolean = false;
-
     @Input() isEdit: boolean = false;
 
     @Input() modalTableData:
@@ -97,12 +103,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | ContactEmailResponse[]
         | RepairDescriptionResponse[]
         | PMTableData[] = [];
+    @Input() dropdownData: TruckTrailerPmDropdownLists;
 
     @Output() modalTableValueEmitter = new EventEmitter<
         CreateContactPhoneCommand[]
     >();
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
-
     @Output() total = new EventEmitter<RepairSubtotal[]>();
 
     private destroy$ = new Subject<void>();
@@ -122,11 +128,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public selectedContactEmailType: EnumValue[] = [];
     public contactEmailTypeOptions: EnumValue[] = [];
 
-    // description table
-    public subtotals: RepairSubtotal[] = [];
-
-    // repair table
+    // contacts table
     public repairDepartmentOptions: DepartmentResponse[];
+
+    // description table
+    public selectedTruckTrailerRepairPm = [];
+    public truckTrailerRepairPmOptions = [];
+    public subtotals: RepairSubtotal[] = [];
 
     // pm table
     public pmTruckOptions: ModalTableDropdownOption[] = [];
@@ -135,9 +143,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private contactService: ContactsService,
+
+        // services
         private inputService: TaInputService,
-        private shopService: RepairService,
+        private contactService: ContactsService,
+        private repairService: RepairService,
         private pmService: PmService
     ) {}
 
@@ -164,6 +174,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         ) {
             this.createFormArrayRow();
             this.getModalTableDataValue();
+        }
+
+        if (
+            !changes.dropdownData?.firstChange &&
+            changes.dropdownData?.currentValue
+        ) {
+            this.getDropdownLists(changes.dropdownData.currentValue);
         }
     }
 
@@ -233,12 +250,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
 
                 break;
+            case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
+                if (event) this.selectedTruckTrailerRepairPm[index] = event;
+
+                break;
             default:
                 break;
         }
     }
 
-    private getDropdownLists(): void {
+    private getDropdownLists(
+        dropdownData?: TruckTrailerPmDropdownLists[]
+    ): void {
         if (this.isPhoneTable || this.isEmailTable) {
             this.contactService
                 .getCompanyContactModal()
@@ -249,8 +272,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
         }
 
+        if (this.isDescriptionTable) {
+            this.truckTrailerRepairPmOptions = dropdownData;
+        }
+
         if (this.isContactTable) {
-            this.shopService
+            this.repairService
                 .getRepairShopModalDropdowns()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {

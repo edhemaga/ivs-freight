@@ -29,21 +29,6 @@
     }
 }
 
-.repair-shop-services {
-    grid-template-columns: 120px repeat(4, 120px);
-    grid-template-rows: repeat(2, 26px);
-
-    .repair-shop-service {
-        flex-direction: row;
-    }
-}
-
-.repair-order {
-    ::ng-deep .content-holder {
-        margin-bottom: 0px !important;
-    }
-}
-
 .repair-type {
     margin: 22px 0 22px 0;
 
@@ -52,14 +37,12 @@
     }
 }
 
-.not-exist-in-shop {
-    background: $ta-light-grey-5;
-    color: $ta-light-grey-6 !important;
-    pointer-events: none;
+.repair-shop-services {
+    margin-top: 12px;
+    grid-template-columns: 120px repeat(4, 120px);
+    grid-template-rows: repeat(2, 26px);
 
-    svg {
-        path {
-            fill: $ta-light-grey-6;
-        }
+    .repair-shop-service {
+        flex-direction: row;
     }
 }

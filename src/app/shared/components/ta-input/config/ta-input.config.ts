@@ -63,6 +63,9 @@ export interface ITaInput {
     };
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
     customClass?: string; // - 'datetimeclass' -> date/time pickers, 'datetimeclass dark -> date/time pickers dark
+    isIconInput?: boolean; // display icon instead of regular input
+    isValidIcon?: boolean; // display icon instead of regular input
+    inputIcon?: string; // display icon instead of regular input
 
     // ***************** Multiple Inputs & Labels *****************
     multipleInputValues?: {
@@ -99,7 +102,7 @@ export interface ITaInput {
             popup?: {
                 name?: string;
                 backgroundColor?: string;
-            }
+            };
             name?: string;
             svg?: string;
         };

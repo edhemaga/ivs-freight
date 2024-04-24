@@ -444,6 +444,8 @@ export class TaInputDropdownComponent
                 }
             }
             this.getSuperControl.markAsDirty();
+
+            this.popoverRef.close();
         }
 
         if (this._template === 'fuel-franchise') {

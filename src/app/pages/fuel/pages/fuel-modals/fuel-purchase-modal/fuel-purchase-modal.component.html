@@ -188,7 +188,7 @@
             <div class="col-12">
                 <div
                     *ngIf="selectedFuelStop"
-                    class="selected-item-container"
+                    class="d-flex flex-column selected-item-container"
                     [ngClass]="{
                         'non-editable':
                             editData?.type === 'edit' &&
@@ -198,7 +198,7 @@
                     <div class="selected-item-label">
                         Fuel Stop <span>*</span>
                     </div>
-                    <p class="selected-item-name">
+                    <p class="m-0 ta-font-bold selected-item-name">
                         {{ selectedFuelStop?.businessName }}
                         {{
                             selectedFuelStop?.name &&
@@ -207,10 +207,12 @@
                                 : ''
                         }}
                     </p>
-                    <div class="selected-item-additional">
+                    <div
+                        class="d-flex align-items-center selected-item-additional"
+                    >
                         <div
                             *ngIf="selectedFuelStop?.address"
-                            class="selected-item-info"
+                            class="d-flex align-items-center selected-item-info"
                         >
                             <svg-icon
                                 src="assets/svg/common/ic_address.svg"
