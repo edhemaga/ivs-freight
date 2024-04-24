@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RatingReviewResponse } from './ratingReviewResponse';
 import { RepairShopExpensesResponse } from './repairShopExpensesResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
-import { ReviewResponse } from './reviewResponse';
 
 
 export interface MobileRepairShopDetailsResponse { 
@@ -28,9 +28,13 @@ export interface MobileRepairShopDetailsResponse {
     upCount?: number;
     downCount?: number;
     reviewCount?: number;
+    commentCount?: number;
+    lastUsed?: string | null;
+    totalVisits?: number;
+    totalCost?: number | null;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     repairExpenses?: RepairShopExpensesResponse;
-    reviews?: Array<ReviewResponse> | null;
+    ratingReviews?: Array<RatingReviewResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

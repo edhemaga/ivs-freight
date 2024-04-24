@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponse } from './companyUserListItemResponse';
 
 
-export interface EditIntegrationCommand { 
-    id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    twoFactorAuthSecret?: string | null;
-    integrationProviderId?: number;
+export interface CompanyUserListItemResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyUserListItemResponse> | null;
 }
 

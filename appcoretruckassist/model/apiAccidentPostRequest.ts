@@ -18,7 +18,10 @@ export interface ApiAccidentPostRequest {
     Report?: string;
     Reported?: boolean;
     Towing?: boolean;
-    VehicloNo?: number;
+    HazMat?: boolean;
+    Fatality?: number;
+    Injury?: number;
+    VehicleNo?: number;
     AddressAccident_City?: string;
     AddressAccident_State?: string;
     AddressAccident_County?: string;
@@ -34,6 +37,7 @@ export interface ApiAccidentPostRequest {
     Date?: string;
     Time?: string;
     DriverId?: number;
+    CoDriverId?: number;
     TruckId?: number;
     TrailerId?: number;
     Citations?: Array<CitationCommand>;
@@ -44,8 +48,6 @@ export interface ApiAccidentPostRequest {
     RoadSurfaceCondition?: string;
     LightCondition?: string;
     ReportingAgency?: string;
-    PoliceOfficer?: string;
-    BagdeNo?: string;
     AddressAuthority_City?: string;
     AddressAuthority_State?: string;
     AddressAuthority_County?: string;
@@ -56,8 +58,11 @@ export interface ApiAccidentPostRequest {
     AddressAuthority_ZipCode?: string;
     AddressAuthority_StateShortName?: string;
     AddressAuthority_AddressUnit?: string;
-    PhoneOfficer?: string;
+    AuthorityPhoneNumber?: string;
     Fax?: string;
+    PoliceOfficer?: string;
+    PhoneOfficer?: string;
+    BagdeNo?: string;
     Origin_City?: string;
     Origin_State?: string;
     Origin_County?: string;

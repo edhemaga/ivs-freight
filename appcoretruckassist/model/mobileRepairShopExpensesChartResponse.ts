@@ -11,12 +11,11 @@
  */
 
 
-export interface EditIntegrationCommand { 
-    id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    twoFactorAuthSecret?: string | null;
-    integrationProviderId?: number;
+export interface MobileRepairShopExpensesChartResponse { 
+    repair?: number | null;
+    repairCost?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

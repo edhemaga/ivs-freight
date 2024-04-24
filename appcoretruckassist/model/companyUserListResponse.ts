@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponsePagination } from './companyUserListItemResponsePagination';
 
 
-export interface EditIntegrationCommand { 
-    id?: number;
-    userId?: string | null;
-    carrierId?: string | null;
-    password?: string | null;
-    twoFactorAuthSecret?: string | null;
-    integrationProviderId?: number;
+export interface CompanyUserListResponse { 
+    pagination?: CompanyUserListItemResponsePagination;
+    activeCount?: number;
+    inactiveCount?: number;
 }
 
