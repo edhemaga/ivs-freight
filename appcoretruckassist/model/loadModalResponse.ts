@@ -45,6 +45,7 @@ export interface LoadModalResponse {
     suspensions?: Array<EnumValue> | null;
     additionalBillingTypes?: Array<EnumValue> | null;
     paymentTypes?: Array<EnumValue> | null;
+    paymentMethods?: Array<EnumValue> | null;
     generalCommodities?: Array<EnumValue> | null;
     timeTypes?: Array<EnumValue> | null;
     secures?: Array<EnumValue> | null;

@@ -6,6 +6,12 @@
     margin-top: 11px;
     display: grid;
     gap: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(302px, 1fr));
+}
+.card-container {
+    margin-top: 11px;
+    display: grid;
+    gap: 4px;
     grid-template-columns: repeat(auto-fill, max(302px, 1fr));
 }
 .custom-card {

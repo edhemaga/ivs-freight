@@ -11,4 +11,5 @@ export interface CardRows {
     hasLiked?: string;
     hasDislike?: string;
     selected?: boolean;
+    field?: string;
 }

@@ -10,6 +10,7 @@
             [statusInactive]="item.status"
             [isInactive]="item.status"
             [optionsId]="truckId"
+            [danger]="item.isExpired || item.voidedDate"
             (dropActions)="optionsDrop($event)"
             (openModalAction)="onModalAction($event)"
         >

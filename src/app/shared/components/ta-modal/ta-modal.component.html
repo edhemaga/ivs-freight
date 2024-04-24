@@ -44,7 +44,6 @@
                     </ng-container>
 
                     <!-- Header title -->
-
                     <h5 class="modal-title">{{ modalTitle }}</h5>
 
                     <!-- Header name -->
@@ -68,6 +67,24 @@
                 </div>
 
                 <div class="modal-header-rightside">
+                    <ng-container *ngIf="editDate">
+                        <div
+                            ngbTooltip
+                            mainTooltip="Added    {{
+                                editData.data.createdAt | formatDateP
+                            }} <br> Edited    {{
+                                editData.data.updatedAt | formatDateP
+                            }}"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            class="modal-date-logo"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/date.svg"
+                            ></svg-icon>
+                        </div>
+                        <div class="modal-date-border"></div>
+                    </ng-container>
                     <!-- Hazardous Logo -->
 
                     <ng-container *ngIf="isVisibleHazardous">
@@ -589,7 +606,9 @@
                                 'active-cancel-btn': [
                                     'fuel stop',
                                     'contact',
-                                    'reset modal'
+                                    'reset modal',
+                                    'user',
+                                    'owner'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -602,9 +621,12 @@
 
                     <ng-container
                         *ngIf="
-                            ['delete', 'multiple delete', 'reset'].includes(
-                                confirmationData?.type
-                            )
+                            [
+                                'delete',
+                                'multiple delete',
+                                'reset',
+                                'void'
+                            ].includes(confirmationData?.type)
                         "
                     >
                         <button
@@ -616,7 +638,15 @@
                                 )
                             "
                             class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
+                            [ngClass]="{
+                                'not-clickable': disableDelete
+                            }"
                             type="button"
+                            [ngClass]="{
+                                'modal-gray-btn': ['reset'].includes(
+                                    confirmationData?.type
+                                )
+                            }"
                         >
                             Yes
                         </button>

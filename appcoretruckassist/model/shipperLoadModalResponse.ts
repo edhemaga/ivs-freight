@@ -19,6 +19,7 @@ export interface ShipperLoadModalResponse {
     address?: AddressEntity;
     longitude?: number | null;
     latitude?: number | null;
-    loadsCount?: number;
+    pickupCount?: number;
+    deliveryCount?: number;
 }
 

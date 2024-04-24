@@ -10,6 +10,7 @@ export enum CardsModalEnum {
     TEMPLATE = 'template',
     ACTIVE = 'active',
     CLOSED = 'closed',
+    INACTIVE = 'inactive',
 
     CHECKED = 'checked',
     NUMBER_OF_ROWS = 'numberOfRows',

@@ -46,7 +46,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
     selector: 'app-ta-maps',
     templateUrl: './ta-maps.component.html',
-    styleUrls: ['./ta-maps.component.scss'] /* '/src/assets/scss/maps.scss' */,
+    styleUrls: [
+        './ta-maps.component.scss',
+        '../../../../assets/scss/maps.scss',
+    ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [

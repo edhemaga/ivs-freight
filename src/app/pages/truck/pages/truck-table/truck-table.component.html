@@ -37,6 +37,7 @@
                 [displayRowsFront]="sendDataToCardsFront"
                 [displayRowsBack]="sendDataToCardsBack"
                 [page]="page"
+                (onCardAction)="onTableBodyActions($event)"
             >
             </app-truck-card>
             <!-- Show More -->

@@ -33,6 +33,7 @@ export enum TableStringEnum {
     RESEND_INVITATION = 'resend-invitation',
     RESET = 'reset',
     RESET_MODAL = 'reset modal',
+    EDIT_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
 
     // List or card
     LIST = 'List',
@@ -63,6 +64,7 @@ export enum TableStringEnum {
 
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
+    ADD_NEW_3 = 'ADD NEW',
 
     SEND_MESSAGE = 'send-message',
     SEND_MESSAGE_2 = 'Send Message',
@@ -229,6 +231,7 @@ export enum TableStringEnum {
     // Truck
     EDIT_TRUCK = 'edit-truck',
     ADD_TRUCK = 'add-truck',
+    TRUCK_NUMBER = 'truckNumber',
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
     REGISTRATION = 'Registration',
@@ -287,6 +290,7 @@ export enum TableStringEnum {
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
+    REPAIR_MODAL = 'repair-modal',
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -297,6 +301,20 @@ export enum TableStringEnum {
     NEW = 'new',
     GENERIC_PM = 'generic-pm',
     UNIT_PM = 'unit-pm',
+    CONFIGURE = 'configure',
+    ADD_REPAIR_BILL = 'add-repair-bill',
+    EDIT_TRUCK_PM_HEADER = 'Edit Truck PM',
+    EDIT_TRAILER_PM_HEADER = 'Edit Trailer PM',
+    CUSTOM = 'custom',
+    DEFAULT_PMS = 'defaultPMs',
+    NEW_PMS = 'newPMs',
+    TITLE_2 = 'title',
+    ID = 'id',
+    IS_CHECKED = 'isChecked',
+    REPAIR_PM = 'repair-pm',
+    PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
+    PM_DEFAULT_MILEAGE = '10,000',
+    PM_DEFAULT_MONTHS = '6',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -431,4 +449,30 @@ export enum TableStringEnum {
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
     RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
+
+    //Account
+    DELETE_ACCOUNT = 'delete-account',
+    COPY_PASSWORD = 'Copy Password',
+    COPY_PASSWORD_2 = 'copy-password',
+    COPY_USERNAME = 'Copy Username',
+    COPY_USERNAME_2 = 'copy-username',
+    EDIT_ACCOUNT = 'edit-account',
+    GO_TO_LINK = 'Go to Link',
+    NO_LINK = 'No Link',
+    GO_TO_LINK_2 = 'go-to-link',
+    NO_LINK_2 = 'no-link',
+    USER_IMAGE = 'assets/svg/applicant/user.svg',
+    WEB_IMAGE = 'assets/svg/common/ic_web.svg',
+    PASSWORD_IMAGE = 'assets/svg/common/ic_password.svg',
+    DELETE_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+
+    // Actions
+    SAVE = 'save',
+
+    // Progress
+    PROGRESS = 'progress',
+    PROGRESS_MILES = 'progressMiles',
+
+    CUSTOM_FIELD = 'customField',
+    COMMON = 'common',
 }

@@ -791,8 +791,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     // }
 
                     // Reviews
-                    if (res.reviews?.length) {
-                        this.reviews = res.reviews.map((item: any) => ({
+                    if (res.ratingReviews?.length) {
+                        this.reviews = res.ratingReviews.map((item: any) => ({
                             ...item,
                             companyUser: {
                                 ...item.companyUser,
@@ -1358,8 +1358,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     )
                     .subscribe({
                         next: (res: RepairShopResponse) => {
-                            if (res.reviews?.length) {
-                                this.reviews = res.reviews.map((item: any) => ({
+                            if (res.ratingReviews?.length) {
+                                this.reviews = res.ratingReviews.map((item: any) => ({
                                     ...item,
                                     companyUser: {
                                         ...item.companyUser,

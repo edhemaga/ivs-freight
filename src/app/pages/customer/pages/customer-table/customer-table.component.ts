@@ -824,11 +824,11 @@ export class CustomerTableComponent
                 ? data.address.address
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLoads: TableStringEnum.NA,
-            tableAverageWatingTimePickup: data?.avgPickupTime
-                ? data.avgPickupTime
+            tableAverageWatingTimePickup: data?.avgPickupTimeInMin
+                ? data.avgPickupTimeInMin.toString()
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAverageWatingTimeDelivery: data?.avgDeliveryTime
-                ? data.avgDeliveryTime
+            tableAverageWatingTimeDelivery: data?.avgDeliveryTimeInMin
+                ? data.avgDeliveryTimeInMin.toString()
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableAvailableHoursShipping:

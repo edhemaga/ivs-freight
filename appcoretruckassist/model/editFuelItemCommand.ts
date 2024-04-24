@@ -13,7 +13,7 @@ import { ItemFuel } from './itemFuel';
 
 
 export interface EditFuelItemCommand { 
-    id?: number;
+    id?: number | null;
     itemfuel?: ItemFuel;
     price?: number;
     qty?: number;

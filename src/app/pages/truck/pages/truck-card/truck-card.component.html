@@ -1,4 +1,4 @@
-<div class="cards-container">
+<div class="card-container">
     <ng-container
         *ngFor="let card of viewData; let i = index; trackBy: trackCard"
     >
@@ -51,7 +51,15 @@
                         <!-- Card Title -->
 
                         <div class="name d-flex ta-font-bold">
-                            <span class="title">
+                            <span
+                                class="title"
+                                (click)="
+                                    goToDetailsPage(
+                                        card,
+                                        '/list/truck/' + card.id + '/details'
+                                    )
+                                "
+                            >
                                 <span
                                     class="title-tooltip"
                                     type="button"
@@ -229,6 +237,7 @@
 
                         <app-ta-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->
@@ -256,7 +265,7 @@
                                 class="expand-card"
                                 type="button"
                                 ngbTooltip
-                                mainTooltip="Expand Card"
+                                mainTooltip="Flip"
                                 tooltipBackground="#424242"
                                 position="bottom"
                                 [ngClass]="{

@@ -16,6 +16,8 @@ import { NgIdleModule } from '@ng-idle/core';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { LottieModule } from 'ngx-lottie';
 import { StoreModule } from '@ngrx/store';
+import { authReducer } from '@pages/website/state/auth.reducer';
+import { EffectsModule } from '@ngrx/effects';
 
 // routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -42,9 +44,6 @@ import { configFactory } from '@core/configs/app.config';
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
-
-// store
-import { ArticleReducer } from '@pages/dashboard/state/dashboard.reducer';
 
 // lottie
 import player from 'lottie-web';
@@ -82,8 +81,9 @@ function playerFactory() {
             warnOnNgModelWithFormControl: 'never',
         }),
         StoreModule.forRoot({
-            course: ArticleReducer,
+            auth: authReducer,
         }),
+        EffectsModule.forRoot([]),
 
         // routing
         AppRoutingModule,

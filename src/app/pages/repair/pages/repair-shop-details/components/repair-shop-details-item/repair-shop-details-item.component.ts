@@ -281,7 +281,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
         };
     }
     public getReviews(reviewsData: RepairShopResponse) {
-        this.reviewsRepair = reviewsData?.reviews?.map((item) => {
+        this.reviewsRepair = reviewsData?.ratingReviews?.map((item) => {
             return {
                 ...item,
                 companyUser: {
@@ -291,7 +291,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                         : 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.ratingFromTheReviewer,
+                rating: item.thumb, // item.ratingFromTheReviewer doesn't exist in response
             };
         });
     }
