@@ -39,7 +39,7 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
     CompanyUserResponse,
-    GetCompanyUserListResponse,
+    /*  GetCompanyUserListResponse, */
 } from 'appcoretruckassist';
 
 @Component({
@@ -76,6 +76,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     backFilterQuery = {
         active: 1,
+        departmentId: null,
         pageIndex: 1,
         pageSize: 25,
         companyId: undefined,
@@ -569,6 +570,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     userBackFilter(
         filter: {
             active: number;
+            departmentId: number;
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -583,6 +585,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .getUsers(
                 filter.active,
                 filter.pageIndex,
+                filter.departmentId,
                 filter.pageSize,
                 filter.companyId,
                 filter.sort,
@@ -591,7 +594,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((users: GetCompanyUserListResponse) => {
+            .subscribe((users /* : GetCompanyUserListResponse */) => {
                 if (!isShowMore) {
                     this.viewData = users.pagination.data;
 
