@@ -34,11 +34,6 @@
                 line-height: 22px;
                 color: $ta-black;
 
-                max-width: 70%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-
                 &::-moz-selection {
                     background: rgb(66, 66, 66, 0.2);
                     color: $ta-black;
@@ -49,8 +44,15 @@
                     color: $ta-black;
                 }
 
-                &.shorter-text {
-                    max-width: 68%;
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
                 }
             }
 

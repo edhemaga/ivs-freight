@@ -544,7 +544,7 @@
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
                                     <p
-                                        class="m-0 text-1 ta-font-bold"
+                                        class="m-0 text-1 ta-font-bold limit-text"
                                         [class.shorter-text]="
                                             !editData?.data?.status
                                         "
@@ -641,7 +641,7 @@
                         <ng-container *ngSwitchCase="'repair-review'">
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
-                                    <p class="m-0 text-1 ta-font-bold">
+                                    <p class="m-0 text-1 ta-font-bold limit-text">
                                         {{ editData?.data?.comment }}
                                     </p>
 
@@ -955,7 +955,7 @@
                             >
                                 <div class="d-flex align-items-center">
                                     <p
-                                        class="m-0 text-1 ta-font-bold"
+                                        class="m-0 text-1 ta-font-bold limit-text"
                                         [class.shorter-text]="
                                             !item?.data?.status
                                         "
