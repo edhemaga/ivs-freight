@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -62,13 +62,13 @@
                                         position="bottom"
                                         customClass="mt-1"
                                     >
-                                        <ng-container
-                                            *ngFor="let title of titleArray"
-                                        >
-                                            <span class="title-tooltip">
-                                                {{ title[i] }}
-                                            </span>
-                                        </ng-container>
+                                        <span class="title-tooltip">
+                                            {{
+                                                selectedTab !== 'repair-shop'
+                                                    ? card.invoice
+                                                    : card.name
+                                            }}
+                                        </span>
                                     </span></span
                                 >
 
@@ -86,229 +86,169 @@
 
                     <!-- Card body front-->
 
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
-                        }"
-                    >
-                        <!-- Card body item -->
-
+                    <div class="card-body-content flipped">
                         <ng-container
                             *ngFor="
-                                let rowsFront of cardsFront;
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <ng-container *ngFor="let row of rowsFront[i]">
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div
-                                            class="top-item-body d-flex align-items-center"
-                                        >
-                                            {{ row.title }}
-                                        </div>
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
                                     </div>
+                                </div>
+                                <div
+                                    #parentElement
+                                    class="bottom-item-body d-flex align-items-center"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Item Detail • Description'
+                                        "
+                                    >
+                                        <div
+                                            class="items-container-body d-flex align-items-center"
+                                        >
+                                            <span
+                                                class="checkbox-tooltip d-flex"
+                                                type="button"
+                                                ngbTooltip
+                                                mainTooltip="View Items"
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                                customClass="mt-2"
+                                            >
+                                                <div
+                                                    (click)="
+                                                        onShowDescriptionDropdown(
+                                                            description,
+                                                            card
+                                                        )
+                                                    "
+                                                    #description="ngbPopover"
+                                                    class="description-container d-flex align-items-center"
+                                                    [ngbPopover]="
+                                                        descriptionCardsPopover
+                                                    "
+                                                    container="body"
+                                                    [placement]="'bottom-left'"
+                                                    popoverClass="table-description-popover"
+                                                    [style.width.px]="
+                                                        elementWidth
+                                                    "
+                                                    triggers="manual"
+                                                ></div>
+                                                <div
+                                                    #itemsRepair
+                                                    class="items-container"
+                                                    [innerHTML]="
+                                                        itemsForRepair[i]
+                                                    "
+                                                ></div>
+                                            </span>
+                                        </div>
+                                    </ng-container>
 
-                                    <div
-                                        #parentElement
-                                        class="bottom-item-body d-flex align-items-center"
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Unit Detail • Type'
+                                        "
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                selectedTab === 'inactive'
+                                                    ? '/assets/svg/common/trailers/' +
+                                                      card.trailer.trailerType
+                                                          .logoName
+                                                    : '/assets/svg/common/trucks/' +
+                                                      card.truck.truckType
+                                                          .logoName
+                                            "
+                                        ></svg-icon>
+                                        {{
+                                            selectedTab === 'inactive'
+                                                ? card.trailer.trailerType.name
+                                                : card.truck.truckType.name
+                                        }}
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Services'"
                                     >
                                         <ng-container
-                                            *ngIf="row.title === 'Item'"
+                                            *ngFor="
+                                                let item of card.serviceTypes
+                                            "
                                         >
-                                            <div
-                                                class="items-container-body d-flex align-items-center"
-                                            >
-                                                <span
-                                                    class="checkbox-tooltip d-flex"
-                                                    type="button"
-                                                    ngbTooltip
-                                                    mainTooltip="View Items"
-                                                    tooltipBackground="#424242"
-                                                    position="bottom"
-                                                    customClass="mt-2"
-                                                >
-                                                    <div
-                                                        (click)="
-                                                            onShowDescriptionDropdown(
-                                                                description,
-                                                                card
-                                                            )
-                                                        "
-                                                        #description="ngbPopover"
-                                                        class="description-container d-flex align-items-center"
-                                                        [ngbPopover]="
-                                                            descriptionCardsPopover
-                                                        "
-                                                        container="body"
-                                                        [placement]="
-                                                            'bottom-left'
-                                                        "
-                                                        popoverClass="table-description-popover"
-                                                        [style.width.px]="
-                                                            elementWidth
-                                                        "
-                                                        triggers="manual"
-                                                    ></div>
-                                                    <div
-                                                        #itemsRepair
-                                                        class="items-container"
-                                                        [innerHTML]="
-                                                            itemsForRepair[i]
-                                                        "
-                                                    ></div>
-                                                </span>
-                                            </div>
-                                        </ng-container>
-
-                                        <!-- If finished or not -->
-                                        <ng-container
-                                            *ngIf="row.title === 'Repair Shop'"
-                                        >
-                                            <ng-container
-                                                *ngIf="card.isRepairOrder"
-                                            >
-                                                {{ card?.repairShop?.name }}
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="!card.isRepairOrder"
-                                            >
-                                                {{
-                                                    card?.tabelDescriptionDropTotal
-                                                }}
-                                            </ng-container>
-                                        </ng-container>
-
-                                        <!-- Repair Shop -->
-                                        <ng-container
-                                            *ngIf="row.title === 'Services'"
-                                        >
-                                            <ng-container
-                                                *ngFor="
-                                                    let item of card.serviceTypes
+                                            <svg-icon
+                                                class="service-svg"
+                                                [src]="
+                                                    '/assets/svg/common/repair-services/' +
+                                                    item.logoName
                                                 "
-                                            >
-                                                <svg-icon
-                                                    class="service-svg"
-                                                    [src]="
-                                                        '/assets/svg/common/repair-services/' +
-                                                        item.logoName
-                                                    "
-                                                    [ngClass]="{
-                                                        'active-svg':
-                                                            item.active
-                                                    }"
-                                                ></svg-icon>
-                                            </ng-container>
+                                                [ngClass]="{
+                                                    'active-svg': item.active
+                                                }"
+                                            ></svg-icon>
                                         </ng-container>
+                                    </ng-container>
 
-                                        <!-- Rest of body items -->
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title !==
+                                                'Item Detail • Description' &&
+                                            cardRow.title !== 'Services' &&
+                                            cardRow.title !==
+                                                'Item Detail • Cost' &&
+                                            cardRow.title !==
+                                                'Unit Detail • Type'
+                                        "
+                                    >
+                                        {{
+                                            cardRow.thirdKey
+                                                ? card[cardRow.key][
+                                                      cardRow.secondKey
+                                                  ][cardRow.thirdKey]
+                                                : cardRow.secondKey
+                                                ? card[cardRow.key][
+                                                      cardRow.secondKey
+                                                  ]
+                                                : card[cardRow.key]
+                                                ? card[cardRow.key]
+                                                : '/'
+                                        }}
 
                                         <ng-container
                                             *ngIf="
-                                                row.title !== 'Item' &&
-                                                row.title !== 'Repair Shop' &&
-                                                row.title !== 'Services'
+                                                cardRow.title ===
+                                                    'Unit Detail • Odometer' &&
+                                                card[cardRow.key]
                                             "
                                         >
-                                            {{ row.key }}
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div>
-
-                    <!-- Card body Back -->
-
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
-                        }"
-                    >
-                        <!-- First item in back of the card -->
-
-                        <ng-container
-                            *ngFor="
-                                let rowsBack of cardsBack;
-                                trackBy: trackCard
-                            "
-                        >
-                            <ng-container *ngFor="let row of rowsBack[i]">
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div
-                                            class="top-item-body d-flex align-items-center"
+                                            <span class="muted"
+                                                >mi</span
+                                            ></ng-container
                                         >
-                                            {{ row.title }}
-                                        </div>
-
-                                        <div
-                                            class="bottom-item-body d-flex align-items-center gap"
-                                        >
-                                            <!-- Odometer -->
-                                            <ng-container
-                                                *ngIf="row.title === 'Odometer'"
-                                            >
-                                                {{ row.key }}
-                                                <span class="muted">mi</span>
-                                            </ng-container>
-
-                                            <!-- Rest of items in repair page body -->
-                                            <ng-container
-                                                *ngIf="row.title !== 'Odometer'"
-                                            >
-                                                {{ row.key }}
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    row.title ===
-                                                    'Rating & Review'
-                                                "
-                                            >
-                                                <div
-                                                    class="rating-holder d-flex"
-                                                >
-                                                    <span
-                                                        class="rating ta-font-semi-bold d-flex align-items-center"
-                                                    >
-                                                        <svg-icon
-                                                            class="svg-like"
-                                                            [src]="
-                                                                'assets/svg/common/ic_like.svg'
-                                                            "
-                                                        ></svg-icon>
-                                                        <span>
-                                                            {{ row.key }}
-                                                        </span>
-                                                    </span>
-                                                    <span
-                                                        class="rating ta-font-semi-bold d-flex align-items-center"
-                                                    >
-                                                        <svg-icon
-                                                            class="svg-dislike"
-                                                            [src]="
-                                                                'assets/svg/common/ic_dislike.svg'
-                                                            "
-                                                        ></svg-icon>
-                                                        <span>
-                                                            {{ row.secondKey }}
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </div>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title ===
+                                            'Item Detail • Cost'
+                                        "
+                                    >
+                                        ${{ card[cardRow.key] | nFormatter }}
+                                    </ng-container>
                                 </div>
-                            </ng-container>
+                            </div>
                         </ng-container>
                     </div>
                 </div>
@@ -321,6 +261,7 @@
 
                         <app-ta-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->
@@ -332,6 +273,7 @@
                                 [note]="card.note"
                                 [mainData]="card"
                                 [entityId]="card.id"
+                                [entityType]="'RepairShop'"
                                 [openedAll]="false"
                                 [parking]="false"
                             >

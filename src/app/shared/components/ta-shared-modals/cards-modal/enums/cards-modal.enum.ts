@@ -13,6 +13,7 @@ export enum CardsModalEnum {
     INACTIVE = 'inactive',
     TRUCK = 'truck',
     TRAILER = 'trailer',
+    REPAIR_SHOP = 'repairShop',
 
     CHECKED = 'checked',
     NUMBER_OF_ROWS = 'numberOfRows',

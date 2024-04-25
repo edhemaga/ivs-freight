@@ -30,6 +30,8 @@
         origin
     >
         <ng-container *ngIf="selectedHeaderTab === 1">
+            <!-- Invoice, Date, Pay Type, Date Paid -->
+
             <div class="repair-modal-bill-first-row">
                 <app-ta-input
                     formControlName="invoice"
@@ -59,7 +61,6 @@
 
                 <app-ta-input-dropdown
                     formControlName="payType"
-                    [canOpenModal]="true"
                     [inputConfig]="{
                         name: 'payType',
                         type: 'text',
@@ -70,6 +71,7 @@
                         maxLength: 8,
                         dropdownWidthClass: 'w-col-145'
                     }"
+                    [canOpenModal]="true"
                     [options]="paid"
                     [activeItem]="selectedPayType"
                     (selectedItem)="onSelectDropDown($event, 'paid-type')"
@@ -92,6 +94,8 @@
         </ng-container>
 
         <div class="repair-modal-bill-first-row">
+            <!-- Order No, Date -->
+
             <ng-container *ngIf="selectedHeaderTab === 2">
                 <app-ta-input
                     formControlName="orderNo"
@@ -119,11 +123,15 @@
                 ></app-ta-input>
             </ng-container>
 
+            <!-- Tabs -->
+
             <app-ta-tab-switch
-                (switchClicked)="onTypeOfRepair($event)"
+                (switchClicked)="onTabChange($event)"
                 [tabs]="typeOfRepair"
                 [type]="'type2-modal-popup'"
             ></app-ta-tab-switch>
+
+            <!-- Unit -->
 
             <app-ta-input-dropdown
                 formControlName="unit"
@@ -134,17 +142,6 @@
                     label: 'Unit',
                     isDropdown: true,
                     isRequired: true,
-                    dropdownImageInput: {
-                        withText: true,
-                        svg: true,
-                        image: false,
-                        url: selectedUnit?.logoName,
-                        template: 'truck',
-                        class: selectedUnit?.name
-                            ?.trim()
-                            .replace(' ', '')
-                            .toLowerCase()
-                    },
                     dropdownWidthClass: 'w-col-145 truck-trailer-dropdown',
                     customClass: 'truck-trailer-dropdown'
                 }"
@@ -152,6 +149,8 @@
                 [activeItem]="selectedUnit"
                 (selectedItem)="onSelectDropDown($event, 'repair-unit')"
             ></app-ta-input-dropdown>
+
+            <!-- Driver -->
 
             <ng-container *ngIf="selectedHeaderTab === 1">
                 <app-ta-input-dropdown
@@ -174,6 +173,8 @@
                 ></app-ta-input-dropdown>
             </ng-container>
 
+            <!-- Odometar -->
+
             <ng-container *ngIf="selectedHeaderTab === 1">
                 <app-ta-input
                     formControlName="odometer"
@@ -190,35 +191,44 @@
             </ng-container>
         </div>
 
-        <div class="row repair-type">
+        <!-- Repair Shop -->
+
+        <div class="repair-type">
             <div class="col-12 repair-shop-input">
+                <!-- Repair Shop Card -->
+
                 <ng-container *ngIf="selectedRepairShop">
-                    <div class="selected-item-container">
+                    <div class="d-flex flex-column selected-item-container">
                         <div class="selected-item-label">
                             Repair Shop
 
                             <ng-container *ngIf="selectedHeaderTab === 1"
-                                >*</ng-container
+                                ><span>*</span></ng-container
                             >
                         </div>
 
-                        <p class="selected-item-name">
+                        <p class="m-0 ta-font-bold selected-item-name">
                             {{ selectedRepairShop?.name }}
 
                             <svg-icon
-                                [ngClass]="{
-                                    active: selectedRepairShop?.pinned
-                                }"
                                 class="selected-item-star"
                                 src="assets/svg/common/ic_star.svg"
+                                [svgStyle]="{
+                                    'width.px': '14',
+                                    'height.px': '14'
+                                }"
                             ></svg-icon>
                         </p>
 
-                        <div class="selected-item-additional">
+                        <div
+                            class="d-flex align-items-center selected-item-additional"
+                        >
                             <ng-container *ngIf="selectedRepairShop?.phone">
-                                <div class="selected-item-info">
+                                <div
+                                    class="d-flex align-items-center selected-item-info"
+                                >
                                     <svg-icon
-                                        [class.hideSvgOnCopy]="
+                                        [class.hide-svg-on-copy]="
                                             hideIconIndex == 1
                                         "
                                         src="assets/svg/common/ic_phone.svg"
@@ -239,9 +249,11 @@
                             </ng-container>
 
                             <ng-container *ngIf="selectedRepairShop?.email">
-                                <div class="selected-item-info">
+                                <div
+                                    class="d-flex align-items-center selected-item-info"
+                                >
                                     <svg-icon
-                                        [class.hideSvgOnCopy]="
+                                        [class.hide-svg-on-copy]="
                                             hideIconIndex == 2
                                         "
                                         src="assets/svg/common/ic_email.svg"
@@ -259,12 +271,13 @@
                             </ng-container>
 
                             <ng-container *ngIf="selectedRepairShop?.address">
-                                <div class="selected-item-info">
+                                <div
+                                    class="d-flex align-items-center selected-item-info"
+                                >
                                     <svg-icon
-                                        [class.hideSvgOnCopy]="
+                                        [class.hide-svg-on-copy]="
                                             hideIconIndex == 3
                                         "
-                                        [ngStyle]="{ 'padding-bottom': '4px' }"
                                         src="assets/svg/common/ic_address.svg"
                                     ></svg-icon>
 
@@ -289,10 +302,14 @@
                                 mainTooltip="Edit"
                                 ngbTooltip
                                 position="top"
-                                tooltipBackground="#3074d3"
+                                tooltipBackground="#424242"
                             >
                                 <svg-icon
                                     src="assets/svg/ic_spec_input_pen.svg"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
                                 ></svg-icon>
                             </div>
 
@@ -308,20 +325,26 @@
                                 mainTooltip="Clear"
                                 ngbTooltip
                                 position="top"
-                                tooltipBackground="#6c6c6c"
+                                tooltipBackground="#424242"
                             >
-                                <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+                                <svg-icon
+                                    src="assets/svg/ic_x.svg"
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
                             </div>
                         </div>
                     </div>
                 </ng-container>
 
+                <!-- Repair Shop Dropdown -->
+
                 <ng-container *ngIf="!selectedRepairShop">
                     <app-ta-input-dropdown
                         formControlName="repairShopId"
-                        [activeItem]="selectedRepairShop"
-                        [canAddNew]="true"
-                        [canOpenModal]="true"
+                        [template]="'double-text-template'"
                         [inputConfig]="{
                             name: 'Input Dropdown',
                             type: 'text',
@@ -330,6 +353,9 @@
                             isRequired: selectedHeaderTab === 1,
                             dropdownWidthClass: 'w-col-616'
                         }"
+                        [canOpenModal]="true"
+                        [activeItem]="selectedRepairShop"
+                        [canAddNew]="true"
                         [options]="labelsRepairShop"
                         (selectedItem)="onSelectDropDown($event, 'repair-shop')"
                     ></app-ta-input-dropdown>
@@ -337,102 +363,86 @@
             </div>
         </div>
 
-        <!-- Repair items card -->
+        <!-- Items -->
 
-        <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 1 }">
-            <app-ta-custom-card
-                [hasScrollBody]="descriptions?.length > 10"
-                [isCardOpen]="descriptions?.length"
-                [disabledCard]="!descriptions?.length"
-                [hasCounter]="descriptions?.length"
-                [cardName]="'Item'"
-                [disableAnimation]="disableCardAnimation"
-                [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                [hasArrow]="false"
-                (onActionEvent)="addItem($event)"
+        <app-ta-custom-card
+            [hasScrollBody]="descriptions?.length > 10"
+            [isCardOpen]="descriptions?.length"
+            [disabledCard]="!descriptions?.length"
+            [hasCounter]="descriptions?.length"
+            [cardName]="'Item'"
+            [disableAnimation]="isCardanimationDisabled"
+            [hasActionSvg]="true"
+            [hasArrow]="false"
+            (onActionEvent)="addItem($event)"
+        >
+            <app-ta-modal-table
+                [isDescriptionTable]="true"
+                [isNewRowCreated]="isDescriptionRowCreated"
+                [dropdownData]="truckTrailerPmDropdownLists"
+                (modalTableValueEmitter)="handleModalTableValueEmit($event)"
+                (modalTableValidStatusEmitter)="
+                    handleModalTableValidStatusEmit($event)
+                "
+                (total)="totalValue($event)"
             >
-                <app-ta-modal-table
-                    [isDescriptionTable]="true"
-                    [isNewRowCreated]="isDescriptionRowCreated"
-                    (modalTableValueEmitter)="handleModalTableValueEmit($event)"
-                    (modalTableValidStatusEmitter)="
-                        handleModalTableValidStatusEmit($event)
-                    "
-                    (total)="totalValue($event)"
-                >
-                </app-ta-modal-table>
+            </app-ta-modal-table>
 
-                <div *ngIf="selectedHeaderTab === 1" class="row item-total-row">
-                    <div class="item-total d-flex justify-content-between">
-                        <span class="item-total-text ta-font-semi-bold"
-                            >Total Cost</span
-                        >
-                        {{ total | currency }}
-                    </div>
+            <ng-container
+                *ngIf="selectedHeaderTab === 1"
+                class="row item-total-row"
+            >
+                <div class="item-total d-flex justify-content-between">
+                    <span class="item-total-text ta-font-semi-bold"
+                        >Total Cost</span
+                    >
+                    {{ total | currency }}
                 </div>
-            </app-ta-custom-card>
-        </div>
+            </ng-container>
+        </app-ta-custom-card>
+
+        <!-- Services -->
 
         <app-ta-custom-card
             [cardName]="'Service'"
-            [disableAnimation]="disableCardAnimation"
+            [disableAnimation]="isCardanimationDisabled"
             [hasCounter]="services | activeItems"
             [isCardOpen]="true"
         >
-            <div class="row last-row">
-                <div class="col-12">
-                    <app-ta-input-dropdown
-                        formControlName="repairTypeService"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Repair Type',
-                            isDropdown: true,
-                            isDisabled: !selectedRepairShop,
-                            isRequired: false,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: true,
-                                image: false,
-                                url: isSelectedRepairType?.url,
-                                template: 'truck',
-                                class: isSelectedRepairType?.name
-                                    ?.trim()
-                                    .replace(' ', '')
-                                    .toLowerCase()
-                            },
-                            dropdownWidthClass:
-                                'w-col-616 truck-trailer-dropdown',
-                            customClass: 'truck-trailer-dropdown'
-                        }"
-                        [activeItem]="isSelectedRepairType"
-                        [options]="repairTypes"
-                        (selectedItem)="onSelectDropDown($event, 'repair-type')"
-                    ></app-ta-input-dropdown>
-                </div>
-            </div>
+            <app-ta-tab-switch
+                [tabs]="serviceTabs"
+                [type]="'type2-modal-popup'"
+                (switchClicked)="onTabChange($event, null, 'service')"
+            ></app-ta-tab-switch>
 
             <div class="repair-shop-services">
-                <div
+                <ng-container
                     *ngFor="let repair of services; trackBy: identity"
-                    [ngClass]="{
-                        active: repair.userSelected,
-                        'not-exist-in-shop':
-                            repair.notExistInRepairSHop && !repair.active
-                    }"
-                    class="repair-shop-service d-flex align-items-center"
-                    (click)="activeRepairService(repair)"
                 >
-                    <svg-icon [src]="repair?.svg"></svg-icon>
-                    <p class="ta-font-bold">{{ repair?.serviceType }}</p>
-                </div>
+                    <div
+                        class="d-flex align-items-center repair-shop-service"
+                        [ngClass]="{
+                            active: repair.active,
+                            inactive:
+                                repair.notExistInRepairSHop && !repair.active,
+                            disabled: false
+                        }"
+                        (click)="activeRepairService(repair)"
+                    >
+                        <svg-icon [src]="repair?.svg"></svg-icon>
+
+                        <p class="ta-font-bold">{{ repair?.serviceType }}</p>
+                    </div>
+                </ng-container>
             </div>
         </app-ta-custom-card>
+
+        <!-- Documents -->
 
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
                 [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
+                [disableAnimation]="isCardanimationDisabled"
                 [hasCounter]="documents.length ? documents.length : 0"
                 [isCardOpen]="documents.length > 0"
             >
@@ -449,6 +459,7 @@
         </div>
 
         <!-- Note -->
+
         <app-ta-input-note
             formControlName="note"
             [isVisibleNote]="

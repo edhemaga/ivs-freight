@@ -1,17 +1,19 @@
+@import 'src/theme/variables.scss';
+
 @keyframes change {
     from {
-        color: #6c6c6c;
+        color: $ta-black;
     }
     to {
-        color: #3551b7;
+        color: $ta-blue-14;
     }
 }
 @keyframes changeSVG {
     from {
-        fill: #6c6c6c;
+        fill: $ta-black;
     }
     to {
-        fill: #3551b7;
+        fill: $ta-blue-14;
     }
 }
 .icon-text-cont {
@@ -20,6 +22,7 @@
     width: fit-content;
     gap: 6px;
     cursor: pointer;
+
     .copy-value {
         white-space: nowrap;
         &::-moz-selection {
@@ -43,6 +46,7 @@
             overflow: hidden;
         }
     }
+
     .card-icon-copy {
         display: none;
         cursor: pointer;
@@ -59,10 +63,6 @@
     &:hover {
         .card-icon-copy {
             display: flex;
-
-            &.extraPadding {
-                margin-right: 4px;
-            }
         }
     }
 }

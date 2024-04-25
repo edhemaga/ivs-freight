@@ -1,16 +1,35 @@
+// store
 import { createReducer, on } from '@ngrx/store';
-import * as AuthActions from './auth.actions';
-import { SignInResponse } from 'appcoretruckassist';
 
-export interface State {
-    user: SignInResponse;
-}
+// actions
+import * as AuthActions from '@pages/website/state/actions/login/auth.actions';
 
-export const authState: State = {
+//models
+import { AuthState } from '@pages/website/state/models/auth-state.model';
+
+export const authState: AuthState = {
     user: undefined,
+    error: undefined,
+    loading: false,
+    hideSIdebar: false,
 };
 
 export const authReducer = createReducer(
     authState,
-    on(AuthActions.authLogin, (state) => ({ ...state, user: state.user }))
+    on(AuthActions.authLogin, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+    on(AuthActions.authLoginSuccess, (state, user) => ({
+        ...state,
+        user: user,
+        loading: false,
+        hideSIdebar: true,
+    })),
+    on(AuthActions.authLoginError, (state, error) => ({
+        ...state,
+        error: error.error,
+        loading: false,
+    }))
 );

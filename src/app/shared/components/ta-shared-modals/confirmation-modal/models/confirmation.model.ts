@@ -12,7 +12,7 @@ export interface Confirmation {
     id?: number; // id for item
     data?: any;
     array?: any[]; // multiple array of objects
-    subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void' | 'mark'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
+    subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void' | 'mark' | 'truck' | 'trailer'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
     subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
     cdlStatus?: 'New' | 'Renew' | 'Activate';
     image?: boolean; // has image or not

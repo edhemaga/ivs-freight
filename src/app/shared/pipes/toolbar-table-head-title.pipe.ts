@@ -11,7 +11,6 @@ export class ToolbarTableHeadTitlePipe implements PipeTransform {
             (tableData[0]?.gridNameTitle !== 'PM' ||
                 (tableData[0]?.gridNameTitle === 'PM' &&
                     column.tableHeadTitle !== 'REPAIR SHOP')) &&
-            tableData[0]?.gridNameTitle === 'Truck' &&
             ![
                 'Owner Details',
                 'Registration Detail',
