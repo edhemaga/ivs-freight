@@ -24,7 +24,8 @@ export class RepairCardConfigConstants {
 
         {
             title: 'Repair Shop',
-            key: 'repairShop.name',
+            key: 'repairShop',
+            secondKey: 'name'
         },
     ];
 
@@ -32,7 +33,8 @@ export class RepairCardConfigConstants {
     static displayRowsBackTruck: CardRows[] = [
         {
             title: 'Repair Shop',
-            key: 'repairShop.name',
+            key: 'repairShop',
+            secondKey: 'name'
         },
 
         {
@@ -70,7 +72,8 @@ export class RepairCardConfigConstants {
 
         {
             title: 'Repair Shop',
-            key: 'repairShop.name',
+            key: 'repairShop',
+            secondKey: 'name'
         },
     ];
 
@@ -78,7 +81,8 @@ export class RepairCardConfigConstants {
     static displayRowsBackTrailer: CardRows[] = [
         {
             title: 'Repair Shop',
-            key: 'repairShop.name',
+            key: 'repairShop',
+            secondKey: 'name'
         },
 
         {
