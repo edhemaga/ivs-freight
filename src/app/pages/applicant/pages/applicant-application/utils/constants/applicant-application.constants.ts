@@ -1,6 +1,6 @@
 import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model';
 import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
-
+import { WorkExpereience } from '@pages/applicant/pages/applicant-application/models/work-experience.model';
 
 
 export class ApplicantApplicationConstants {
@@ -92,6 +92,51 @@ export class ApplicantApplicationConstants {
         { lineIndex: 13, lineInputs: [false], displayAnnotationButton: false, displayAnnotationTextArea: false },
         { lineIndex: 14, lineInputs: [false], displayAnnotationButton: false, displayAnnotationTextArea: false },
         { lineIndex: 15, lineInputs: [false], displayAnnotationButton: false, displayAnnotationTextArea: false }
+    ];
+    public static workExperienceArray: WorkExpereience[] = [
+        {
+            id: 1,
+            isEditingWorkExperience: false,
+            workExperienceItemReview: null,
+            employer: 'asdas',
+            employerPhone: '(222) 222-2222',
+            employerEmail: 'asd@asd.com',
+            employerFax: '(122) 222-2222',
+            employerAddress: {
+                address: 'Chimney Rock Rd, Houston, TX, US',
+            },
+            employerAddressUnit: '2',
+            jobDescription: 'Asd',
+            fromDate: '01/07/23',
+            toDate: '01/07/23',
+            reasonForLeaving: 'Better opportunity',
+            accountForPeriod: 'asdas',
+    
+            isDrivingPosition: true,
+            classesOfEquipment: [
+                {
+                    vehicleType: 'Semi Truck',
+                    trailerType: 'Reefer',
+                    trailerLength: '20 ft',
+                    cfrPart: true,
+                    fmCSA: true,
+                },
+                {
+                    vehicleType: 'Semi Sleeper',
+                    trailerType: 'Dry Van',
+                    trailerLength: '22 ft',
+                    cfrPart: false,
+                    fmCSA: false,
+                },
+                {
+                    vehicleType: 'Spotter',
+                    trailerType: 'Side Kit',
+                    trailerLength: '24 ft',
+                    cfrPart: true,
+                    fmCSA: false,
+                },
+            ],
+        },
     ];
     
 }

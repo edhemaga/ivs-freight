@@ -19,6 +19,8 @@ import {
     isFormValueNotEqual,
 } from '@pages/applicant/utils/helpers/applicant.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
+
 
 // services
 import { ApplicantService } from '@pages/applicant/services/applicant.service';
@@ -29,6 +31,8 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantApplicationStringEnum } from '@pages/applicant/pages/applicant-application/enums/applicant-application-string.enum';
+
 
 // models
 import {
@@ -42,6 +46,9 @@ import {
     ApplicantModalResponse,
 } from 'appcoretruckassist/model/models';
 import { WorkExpereience } from '@pages/applicant/pages/applicant-application/models/work-experience.model';
+import { WorkExperienceReview } from '@pages/applicant/pages/applicant-application/models/work-experience-review.model';
+
+
 
 @Component({
     selector: 'app-step2',
@@ -60,51 +67,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public formStatus: string = 'INVALID';
     public markFormInvalid: boolean;
 
-    public workExperienceArray: WorkExpereience[] = [
-        {
-            id: 1,
-            isEditingWorkExperience: false,
-            workExperienceItemReview: null,
-            employer: 'asdas',
-            employerPhone: '(222) 222-2222',
-            employerEmail: 'asd@asd.com',
-            employerFax: '(122) 222-2222',
-            employerAddress: {
-                address: 'Chimney Rock Rd, Houston, TX, US',
-            },
-            employerAddressUnit: '2',
-            jobDescription: 'Asd',
-            fromDate: '01/07/23',
-            toDate: '01/07/23',
-            reasonForLeaving: 'Better opportunity',
-            accountForPeriod: 'asdas',
+    public workExperienceArray = ApplicantApplicationConstants.workExperienceArray
 
-            isDrivingPosition: true,
-            classesOfEquipment: [
-                {
-                    vehicleType: 'Semi Truck',
-                    trailerType: 'Reefer',
-                    trailerLength: '20 ft',
-                    cfrPart: true,
-                    fmCSA: true,
-                },
-                {
-                    vehicleType: 'Semi Sleeper',
-                    trailerType: 'Dry Van',
-                    trailerLength: '22 ft',
-                    cfrPart: false,
-                    fmCSA: false,
-                },
-                {
-                    vehicleType: 'Spotter',
-                    trailerType: 'Side Kit',
-                    trailerLength: '24 ft',
-                    cfrPart: true,
-                    fmCSA: false,
-                },
-            ],
-        },
-    ];
 
     public stepValues: any;
     public stepHasValues: boolean = false;
@@ -204,7 +168,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
         const { haveWorkExperience, workExperienceItems } = stepValues;
     
-        this.workExperienceForm.get('noWorkExperience').patchValue(haveWorkExperience);
+        this.workExperienceForm.get(ApplicantApplicationStringEnum.HaveWorkExperience).patchValue(haveWorkExperience);
     
         if (!haveWorkExperience) {
             const filteredWorkExperienceArray = workExperienceItems.map(item => ({
@@ -254,7 +218,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                 workExperienceItemsReview.pop();
     
                 for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                    const firstEmptyObjectInList = this.openAnnotationArray.find(item => Object.keys(item).length === 0);
+                    const firstEmptyObjectInList = this.openAnnotationArray.find(item => !Object.keys(item).length);
                     const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(firstEmptyObjectInList);
     
                     this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
@@ -280,7 +244,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                     };
     
                     const inputFieldsArray = JSON.stringify(this.openAnnotationArray
-                        .filter(item => Object.keys(item).length !== 0)
+                        .filter(item => Object.keys(item).length)
                         .map(item => item.lineInputs));
     
                     this.cardsWithIncorrectFields = inputFieldsArray.includes('true');
@@ -781,7 +745,7 @@ public saveEditedWorkExperience(): void {
     
         this.stepFeedbackValues.forEach((feedbackValue, i) => {
             const filteredWorkExperienceIncorrectValues = Object.keys(feedbackValue)
-                .filter((key) => key !== 'hasIncorrectValue')
+                .filter((key) => key !== ApplicantApplicationStringEnum.HasIncorrectValue)
                 .reduce((obj, key) => {
                     if (!feedbackValue[key]) obj[key] = false;
                     return obj;
@@ -794,15 +758,15 @@ public saveEditedWorkExperience(): void {
                     const fieldName = key.replace('Valid', '').replace('is', '').trim().toLowerCase();
                     const fieldValue = i === this.stepFeedbackValues.length - 1 ? this.lastWorkExperienceCard[fieldName] : this.workExperienceArray[i][fieldName];
     
-                    obj[fieldName] = fieldName === 'from' || fieldName === 'to'
+                    obj[fieldName] = fieldName === ApplicantApplicationStringEnum.From || fieldName === ApplicantApplicationStringEnum.To
                         ? MethodsCalculationsHelper.convertDateFromBackend(fieldValue)
                         : fieldValue;
     
-                    if (fieldName === 'address') {
+                    if (fieldName === ApplicantApplicationStringEnum.Address) {
                         obj[fieldName] = JSON.stringify({ address: fieldValue });
                     }
     
-                    if (fieldName === 'addressunit' || fieldName === 'accountforperiodbetween') {
+                    if (fieldName === ApplicantApplicationStringEnum.AddressUnit || fieldName === ApplicantApplicationStringEnum.AccountForPeriodBetween) {
                         obj[fieldName] = fieldValue;
                     }
     
@@ -1007,7 +971,7 @@ public saveEditedWorkExperience(): void {
             });
     }
     
-    private getReviewValidationFields(review: any, card?: any) {
+    private getReviewValidationFields(review: { [key: string]: any }, card?: { [key: string]: string }) {
         return {
             isEmployerValid: review.isEmployerValid ?? true,
             employerMessage: card?.firstRowReview,
@@ -1027,7 +991,8 @@ public saveEditedWorkExperience(): void {
         };
     }
     
-    private updateApplicantWorkExperience(lastReviewedItem: any, workExperienceArrayReview: any[]) {
+    
+    private updateApplicantWorkExperience(lastReviewedItem: any, workExperienceArrayReview: WorkExperienceReview[]) {
         this.applicantStore.update((store) => {
             const updatedWorkExperienceItems = store.applicant.workExperience.workExperienceItems.map((item, index) => {
                 return index === store.applicant.workExperience.workExperienceItems.length - 1
