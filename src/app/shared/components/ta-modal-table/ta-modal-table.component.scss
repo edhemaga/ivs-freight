@@ -194,8 +194,7 @@
             }
         }
 
-        // Description Table
-
+        // description table
         .description-table-container {
             .table-item {
                 grid-template-columns: 26px 306px 26px 60px 90px 88px;
@@ -217,6 +216,7 @@
             }
         }
 
+        // contact table
         .contact-table-container {
             overflow-x: scroll;
 
@@ -236,11 +236,12 @@
             }
         }
 
+        // pm table
         .pm-table-container {
             grid-template-rows: 26px;
             column-gap: 4px;
             row-gap: 4px;
-            
+
             .pm-item {
                 grid-template-columns: 26px 276px 146px;
                 background: none;
