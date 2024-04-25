@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of } from 'rxjs';
 
 // models
 import {
@@ -232,8 +232,11 @@ export class RepairService {
     }
 
     // Delete Repair List
-    public deleteRepairList(): Observable<any> {
-        return;
+    public deleteRepairList(
+        ids: number[],
+        tabSelected?: string
+    ): Observable<any> {
+        return of();
     }
 
     public autocompleteRepairByDescription(
@@ -484,6 +487,10 @@ export class RepairService {
                 });
             })
         );
+    }
+
+    public deleteRepairShopList(ids: number[]): Observable<any> {
+        return of();
     }
 
     public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {
