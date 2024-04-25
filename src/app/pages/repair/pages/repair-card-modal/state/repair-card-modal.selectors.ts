@@ -55,5 +55,18 @@ export const selectInactiveTabCards = createSelector(
 
 export const selectRepairShopTabCards = createSelector(
     selectRepairCardDataState,
-    (state) => state.repair_shop
+    (state) => {
+        if (state.repair_shop) {
+            const filteredCardRowsFront =
+                state.repair_shop.front_side.filter(Boolean);
+
+            const filteredCardRowsBack =
+                state.repair_shop.back_side.filter(Boolean);
+
+            return {
+                displayRowsFront: filteredCardRowsFront,
+                displayRowsBack: filteredCardRowsBack,
+            };
+        }
+    }
 );

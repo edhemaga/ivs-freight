@@ -3,7 +3,7 @@
     [cardsSecTitle]="
         tabSelected === 'inactive'
             ? 'Repair | Trailer'
-            : tabSelected === 'repair-shop'
+            : tabSelected === 'repair_shop'
             ? 'Repair | Shop'
             : 'Repair | Truck'
     "
@@ -78,10 +78,74 @@
                     </div>
 
                     <div class="d-grid inputs-holder">
-                        <ng-container>
-                            <ng-container formArrayName="front_side"
+                        <ng-container
+                            formArrayName="front_side"
+                            *ngFor="
+                                let frontRow of cardsForm.controls
+                                    | ngForLengthFilter
+                                        : cardsForm.get('numberOfRows').value;
+                                let i = index
+                            "
+                        >
+                            <div
+                                [formGroupName]="i"
+                                class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
+                            >
+                                <ng-cotnainer
+                                    *ngIf="
+                                        front_side_form.at(i).get('inputItem')
+                                            .value.title !== 'empty'
+                                    "
+                                >
+                                    <span
+                                        class="input-title ta-font-semi-bold"
+                                        >{{ i + 1 | numberOrdinal }}</span
+                                    ></ng-cotnainer
+                                >
+
+                                <app-modal-input-form
+                                    [dataCardModal]="cardsAllData"
+                                    [defaultValue]="
+                                        (displayData$ | async).front_side[
+                                            i
+                                        ] || {
+                                            title: i + 1 | numberOrdinal
+                                        }
+                                    "
+                                    [backupValue]="i + 1 | numberOrdinal"
+                                    formControlName="inputItem"
+                                    [titlesInForm]="titlesInForm"
+                                >
+                                </app-modal-input-form>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider card-color"></div>
+
+                <!-- For Back side of cards -->
+                <div
+                    class="back-side-body"
+                    [ngStyle]="{
+                        'margin-bottom': cardsForm.get('checked').value
+                            ? '21px'
+                            : '8px'
+                    }"
+                >
+                    <div class="checkbox-modal">
+                        <app-ta-checkbox
+                            formControlName="checked"
+                            [label]="'Back Side'"
+                        ></app-ta-checkbox>
+                    </div>
+                    <ng-container *ngIf="cardsForm.get('checked').value">
+                        <div class="d-grid inputs-holder">
+                            <ng-container
+                                formArrayName="back_side"
                                 *ngFor="
-                                    let frontRow of cardsForm.controls
+                                    let backRow of cardsForm.controls
                                         | ngForLengthFilter
                                             : cardsForm.get('numberOfRows')
                                                   .value;
@@ -94,423 +158,36 @@
                                 >
                                     <ng-cotnainer
                                         *ngIf="
-                                            front_side_form.at(i).get('inputItem').value.title !==
-                                            'empty'
+                                            back_side_form
+                                                .at(i)
+                                                .get('inputItem').value
+                                                .title !== 'empty'
                                         "
                                     >
                                         <span
                                             class="input-title ta-font-semi-bold"
-                                            >1st</span
+                                            >{{ i + 1 | numberOrdinal }}</span
                                         ></ng-cotnainer
                                     >
 
                                     <app-modal-input-form
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
-                                            (displayData$ | async)
-                                                .front_side[i] || {
-                                                title: '1st'
+                                            (displayData$ | async).back_side[
+                                                i
+                                            ] || {
+                                                title: i + 1 | numberOrdinal
                                             }
                                         "
-                                        [backupValue]="'1st'"
+                                        [backupValue]="i + 1 | numberOrdinal"
                                         formControlName="inputItem"
                                         [titlesInForm]="titlesInForm"
                                     >
                                     </app-modal-input-form>
                                 </div>
                             </ng-container>
-                        </ng-container>
-
-                        <!--<div
-                            class="modal-holder-first first-row modal-holder d-grid align-items-end d-grid align-items-end"
-                        >
-                            <ng-cotnainer
-                                *ngIf="
-                                    (displayData$ | async).front_side[1]
-                                        ?.title !== 'empty'
-                                "
-                            >
-                                <span class="input-title ta-font-semi-bold"
-                                    >2nd</span
-                                >
-                            </ng-cotnainer>
-
-                            <app-modal-input-form
-                                [dataCardModal]="cardsAllData"
-                                [defaultValue]="
-                                    (displayData$ | async).front_side[1] || {
-                                        title: '2nd'
-                                    }
-                                "
-                                [backupValue]="'2nd'"
-                                formControlName="frontSelectedTitle_1"
-                                [titlesInForm]="titlesInForm"
-                            >
-                            </app-modal-input-form>
                         </div>
-
-                        <div
-                            class="modal-holder sec-row d-grid align-items-end"
-                            [ngClass]="{
-                                'last-row':
-                                    (displayData$ | async).numberOfRows === 4 ||
-                                    (displayData$ | async).numberOfRows === 3
-                            }"
-                        >
-                            <ng-cotnainer
-                                *ngIf="
-                                    (displayData$ | async).front_side[2]
-                                        ?.title !== 'empty'
-                                "
-                            >
-                                <span class="input-title ta-font-semi-bold"
-                                    >3rd</span
-                                >
-                            </ng-cotnainer>
-
-                            <app-modal-input-form
-                                [dataCardModal]="cardsAllData"
-                                [defaultValue]="
-                                    (displayData$ | async).front_side[2] || {
-                                        title: '3rd'
-                                    }
-                                "
-                                [backupValue]="'3rd'"
-                                formControlName="frontSelectedTitle_2"
-                                [titlesInForm]="titlesInForm"
-                            >
-                            </app-modal-input-form>
-                        </div>
-
-                        <ng-container
-                            *ngIf="(displayData$ | async).numberOfRows > 3"
-                        >
-                            <div
-                                class="modal-holder sec-row d-grid align-items-end"
-                                [ngClass]="{
-                                    'last-row':
-                                        (displayData$ | async).numberOfRows ===
-                                        4
-                                }"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).front_side[3]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >4th</span
-                                    >
-                                </ng-cotnainer>
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async)
-                                            .front_side[3] || { title: '4th' }
-                                    "
-                                    [backupValue]="'4th'"
-                                    formControlName="frontSelectedTitle_3"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-                        </ng-container>
-
-                        <ng-container
-                            *ngIf="(displayData$ | async).numberOfRows > 4"
-                        >
-                            <div
-                                class="modal-holder sec-row d-grid align-items-end"
-                                [ngClass]="{
-                                    'last-row':
-                                        (displayData$ | async).numberOfRows ===
-                                            5 ||
-                                        (displayData$ | async).numberOfRows ===
-                                            6
-                                }"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).front_side[4]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >5th</span
-                                    >
-                                </ng-cotnainer>
-
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async)
-                                            .front_side[4] || { title: '5th' }
-                                    "
-                                    [backupValue]="'5th'"
-                                    formControlName="frontSelectedTitle_4"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-                        </ng-container>
-
-                        <ng-container
-                            *ngIf="(displayData$ | async).numberOfRows > 5"
-                        >
-                            <div
-                                class="modal-holder sec-row d-grid align-items-end"
-                                [ngClass]="{
-                                    'last-row':
-                                        (displayData$ | async).numberOfRows ===
-                                        6
-                                }"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).front_side[5]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >6th</span
-                                    >
-                                </ng-cotnainer>
-
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async)
-                                            .front_side[5] || { title: '6th' }
-                                    "
-                                    [backupValue]="'6th'"
-                                    formControlName="frontSelectedTitle_5"
-                                    [titlesInForm]="titlesInForm"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-                        </ng-container> -->
-                    </div>
-                </div>
-
-                <!-- Divider -->
-                <div class="divider card-color"></div>
-
-                <!-- For Back side of cards -->
-                <div class="back-side-body">
-                    <div class="checkbox-modal">
-                        <app-ta-checkbox
-                            formControlName="checked"
-                            [label]="'Back Side'"
-                        ></app-ta-checkbox>
-                    </div>
-                    <!--<ng-container *ngIf="cardsForm.get('checked').value">
-                        <div class="d-grid inputs-holder">
-                            <div
-                                class="modal-holder first-row d-grid align-items-end"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).back_side[0]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >1st</span
-                                    >
-                                </ng-cotnainer>
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async).back_side[0] || {
-                                            title: '1st'
-                                        }
-                                    "
-                                    formControlName="backSelectedTitle_0"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-
-                            <div
-                                class="modal-holder first-row d-grid align-items-end"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).back_side[1]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >2nd</span
-                                    >
-                                </ng-cotnainer>
-
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async).back_side[1] || {
-                                            title: '2nd'
-                                        }
-                                    "
-                                    formControlName="backSelectedTitle_1"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-
-                            <div
-                                class="modal-holder sec-row d-grid align-items-end"
-                                [ngClass]="{
-                                    'last-row':
-                                        (displayData$ | async).numberOfRows ===
-                                            4 ||
-                                        (displayData$ | async).numberOfRows ===
-                                            3
-                                }"
-                            >
-                                <ng-cotnainer
-                                    *ngIf="
-                                        (displayData$ | async).back_side[2]
-                                            ?.title !== 'empty'
-                                    "
-                                >
-                                    <span class="input-title ta-font-semi-bold"
-                                        >3rd</span
-                                    >
-                                </ng-cotnainer>
-
-                                <app-modal-input-form
-                                    [dataCardModal]="cardsAllData"
-                                    [defaultValue]="
-                                        (displayData$ | async).back_side[2] || {
-                                            title: '3rd'
-                                        }
-                                    "
-                                    formControlName="backSelectedTitle_2"
-                                    [titlesInForm]="titlesInForm"
-                                >
-                                </app-modal-input-form>
-                            </div>
-
-                            <ng-container
-                                *ngIf="(displayData$ | async).numberOfRows > 3"
-                            >
-                                <div
-                                    class="modal-holder sec-row d-grid align-items-end"
-                                    [ngClass]="{
-                                        'last-row':
-                                            (displayData$ | async)
-                                                .numberOfRows === 4
-                                    }"
-                                >
-                                    <ng-cotnainer
-                                        *ngIf="
-                                            (displayData$ | async).back_side[3]
-                                                ?.title !== 'empty'
-                                        "
-                                    >
-                                        <span
-                                            class="input-title ta-font-semi-bold"
-                                            >4th</span
-                                        >
-                                    </ng-cotnainer>
-
-                                    <app-modal-input-form
-                                        [dataCardModal]="cardsAllData"
-                                        [defaultValue]="
-                                            (displayData$ | async)
-                                                .back_side[3] || {
-                                                title: '4th'
-                                            }
-                                        "
-                                        formControlName="backSelectedTitle_3"
-                                        [titlesInForm]="titlesInForm"
-                                    >
-                                    </app-modal-input-form>
-                                </div>
-                            </ng-container>
-
-                            <ng-container
-                                *ngIf="(displayData$ | async).numberOfRows > 4"
-                            >
-                                <div
-                                    class="modal-holder sec-row d-grid align-items-end"
-                                    [ngClass]="{
-                                        'last-row':
-                                            (displayData$ | async)
-                                                .numberOfRows === 5 ||
-                                            (displayData$ | async)
-                                                .numberOfRows === 6
-                                    }"
-                                >
-                                    <ng-cotnainer
-                                        *ngIf="
-                                            (displayData$ | async).back_side[4]
-                                                ?.title !== 'empty'
-                                        "
-                                    >
-                                        <span
-                                            class="input-title ta-font-semi-bold"
-                                            >5th</span
-                                        >
-                                    </ng-cotnainer>
-
-                                    <app-modal-input-form
-                                        [dataCardModal]="cardsAllData"
-                                        [defaultValue]="
-                                            (displayData$ | async)
-                                                .back_side[4] || {
-                                                title: '5th'
-                                            }
-                                        "
-                                        formControlName="backSelectedTitle_4"
-                                        [titlesInForm]="titlesInForm"
-                                    >
-                                    </app-modal-input-form>
-                                </div>
-                            </ng-container>
-
-                            <ng-container
-                                *ngIf="(displayData$ | async).numberOfRows > 5"
-                            >
-                                <div
-                                    class="modal-holder sec-row d-grid align-items-end"
-                                    [ngClass]="{
-                                        'last-row':
-                                            (displayData$ | async)
-                                                .numberOfRows === 6
-                                    }"
-                                >
-                                    <ng-cotnainer
-                                        *ngIf="
-                                            (displayData$ | async).back_side[5]
-                                                ?.title !== 'empty'
-                                        "
-                                    >
-                                        <span
-                                            class="input-title ta-font-semi-bold"
-                                            >6th</span
-                                        >
-                                    </ng-cotnainer>
-
-                                    <app-modal-input-form
-                                        [dataCardModal]="cardsAllData"
-                                        [defaultValue]="
-                                            (displayData$ | async)
-                                                .back_side[5] || {
-                                                title: '6th'
-                                            }
-                                        "
-                                        formControlName="backSelectedTitle_5"
-                                        [titlesInForm]="titlesInForm"
-                                    >
-                                    </app-modal-input-form>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </ng-container> -->
+                    </ng-container>
                 </div>
             </div>
         </form>

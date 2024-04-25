@@ -1,5 +1,3 @@
-// repair-card-modal.actions.ts
-
 import { createAction, props } from '@ngrx/store';
 import { RepairCardTypes } from '@pages/repair/pages/repair-card-modal/models/repair-card-types.model';
 

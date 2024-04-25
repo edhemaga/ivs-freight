@@ -35,10 +35,6 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 // Models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-import { RepairCardDataState } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.store';
-
-// Store
-import { RepairCardModalQuery } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.query';
 
 // Constants
 import { RepairCardsModalData } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.constants';
@@ -51,6 +47,7 @@ import { selectActiveModalTabs } from '@pages/repair/pages/repair-card-modal/sta
 
 //Pipes
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe.';
+import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
 @Component({
     selector: 'app-repair-card-modal',
@@ -72,6 +69,7 @@ import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe.'
 
         // pipes
         NgForLengthFilterPipe,
+        NumberOrdinalPipe,
     ],
 })
 export class RepairCardModalComponent implements OnInit, OnDestroy {
@@ -95,13 +93,12 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     public tabSelected: string;
 
     public titlesInForm: string[] = [];
-    public displayData$: Observable<RepairCardDataState>;
+    public displayData$: Observable<CardsModalData>;
     private subscription: Subscription = new Subscription();
     private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private repairCardModalQuery: RepairCardModalQuery,
         private cdr: ChangeDetectorRef,
         private modalService: RepairCardsModalService,
         //Store
@@ -173,36 +170,72 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
 
             back_side: this.formBuilder.array([
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
                 this.formBuilder.group({
-                    title: null,
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
                 }),
             ]),
         });
     }
 
-    public createForm(dataState: RepairCardDataState): void {
+    public createForm(dataState: CardsModalData): void {
         this.cardsForm.patchValue({
             numberOfRows: dataState.numberOfRows,
-
             checked: dataState.checked,
         });
+
         dataState.front_side.map((item, index) => {
             this.front_side_form.at(index).patchValue({
-                inputItem: item,
+                inputItem:
+                    !item || item.title == CardsModalEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
+            });
+        });
+
+        dataState.back_side.map((item, index) => {
+            this.back_side_form.at(index).patchValue({
+                inputItem:
+                    !item || item.title == CardsModalEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
             });
         });
         this.cdr.detectChanges();
@@ -241,7 +274,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         return this.cardsForm.get('front_side') as FormArray;
     }
 
-    public get back_side(): FormArray {
+    public get back_side_form(): FormArray {
         return this.cardsForm.get('back_side') as FormArray;
     }
 
