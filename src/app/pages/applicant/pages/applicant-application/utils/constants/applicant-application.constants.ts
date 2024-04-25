@@ -1,5 +1,7 @@
-import { AnnotationItem } from "../../models/annotation-item.model";
-import { ApplicantQuestion } from "../../models/applicant-question.model";
+import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model';
+import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
+
+
 
 export class ApplicantApplicationConstants {
     public static displayRadioRequiredNoteArray: { id: number; displayRadioRequiredNote: boolean; }[] = [

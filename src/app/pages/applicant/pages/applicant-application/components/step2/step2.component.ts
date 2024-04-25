@@ -178,22 +178,15 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
-        this.workExperienceForm = this.formBuilder.group({
-            cardReview1: [null],
-            cardReview2: [null],
-            cardReview3: [null],
-            cardReview4: [null],
-            cardReview5: [null],
-            cardReview6: [null],
-            cardReview7: [null],
-            cardReview8: [null],
-            cardReview9: [null],
-            cardReview10: [null],
-
-            noWorkExperience: [false],
-        });
+        const formControls = {
+            noWorkExperience: [false]
+        };
+        for (let i = 1; i <= 10; i++) {
+            formControls[`cardReview${i}`] = [null];
+        }
+        this.workExperienceForm = this.formBuilder.group(formControls);
     }
-
+    
     public getStepValuesFromStore(): void {
         this.applicantQuery.applicant$
             .pipe(takeUntil(this.destroy$))
@@ -210,283 +203,129 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public patchStepValues(stepValues: WorkExperienceFeedbackResponse): void {
         const { haveWorkExperience, workExperienceItems } = stepValues;
-
-        this.workExperienceForm
-            .get('noWorkExperience')
-            .patchValue(haveWorkExperience);
-
+    
+        this.workExperienceForm.get('noWorkExperience').patchValue(haveWorkExperience);
+    
         if (!haveWorkExperience) {
-            const lastItemInWorkExperienceArray =
-                workExperienceItems[workExperienceItems.length - 1];
-
-            const restOfTheItemsInWorkExperienceArray = [
-                ...workExperienceItems,
-            ];
-
-            const filteredWorkExperienceArray =
-                restOfTheItemsInWorkExperienceArray.map((item) => {
-                    return {
-                        id: item.id,
-                        reviewId: item.workExperienceItemReview?.id,
-                        isEditingWorkExperience: false,
-                        employer: item.employer,
-                        jobDescription: item.jobDescription,
-                        fromDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                item.from
-                            ).replace(/-/g, '/'),
-                        toDate: MethodsCalculationsHelper.convertDateFromBackend(
-                            item.to
-                        ).replace(/-/g, '/'),
-                        employerPhone: item.phone,
-                        employerEmail: item.email,
-                        employerFax: item.fax,
-                        employerAddress: item.address,
-                        employerAddressUnit: item.address.addressUnit,
-                        isDrivingPosition: item.isDrivingPosition,
-                        // cfrPart: item.cfrPart,
-                        // fmCSA: item.fmcsa,
-                        reasonForLeaving: item.reasonForLeaving.name,
-                        accountForPeriod: item.accountForPeriodBetween,
-                        classesOfEquipment: item.classesOfEquipment[0]
-                            ?.vehicleType
-                            ? item.classesOfEquipment.map((_, index) => {
-                                  return {
-                                      isEditingClassOfEquipment: false,
-                                      trailerLength:
-                                          item.classesOfEquipment[index]
-                                              .trailerLength.name,
-                                      trailerType:
-                                          item.classesOfEquipment[index]
-                                              .trailerType.name,
-                                      vehicleType:
-                                          item.classesOfEquipment[index]
-                                              .vehicleType.name,
-                                      trailerTypeImageLocation:
-                                          item.classesOfEquipment[index]
-                                              .trailerType.logoName,
-                                      vehicleTypeImageLocation:
-                                          item.classesOfEquipment[index]
-                                              .vehicleType.logoName,
-                                  };
-                              })
-                            : [],
-                        workExperienceItemReview: item.workExperienceItemReview
-                            ? item.workExperienceItemReview
-                            : null,
-                    };
-                });
-
-            const filteredLastItemInWorkExperienceArray = {
-                id: lastItemInWorkExperienceArray.id,
-                reviewId:
-                    lastItemInWorkExperienceArray.workExperienceItemReview?.id,
+            const filteredWorkExperienceArray = workExperienceItems.map(item => ({
+                id: item.id,
+                reviewId: item.workExperienceItemReview?.id,
                 isEditingWorkExperience: false,
-                employer: lastItemInWorkExperienceArray.employer,
-                jobDescription: lastItemInWorkExperienceArray.jobDescription,
-                fromDate: MethodsCalculationsHelper.convertDateFromBackend(
-                    lastItemInWorkExperienceArray.from
-                ).replace(/-/g, '/'),
-                toDate: MethodsCalculationsHelper.convertDateFromBackend(
-                    lastItemInWorkExperienceArray.to
-                ).replace(/-/g, '/'),
-                employerPhone: lastItemInWorkExperienceArray.phone,
-                employerEmail: lastItemInWorkExperienceArray.email,
-                employerFax: lastItemInWorkExperienceArray.fax,
-                employerAddress: lastItemInWorkExperienceArray.address,
-                employerAddressUnit:
-                    lastItemInWorkExperienceArray.address.addressUnit,
-                isDrivingPosition:
-                    lastItemInWorkExperienceArray.isDrivingPosition,
-                // cfrPart: lastItemInWorkExperienceArray.cfrPart,
-                // fmCSA: lastItemInWorkExperienceArray.fmcsa,
-                reasonForLeaving:
-                    lastItemInWorkExperienceArray.reasonForLeaving.name,
-                accountForPeriod:
-                    lastItemInWorkExperienceArray.accountForPeriodBetween,
-                classesOfEquipment: lastItemInWorkExperienceArray
-                    .classesOfEquipment[0]?.vehicleType
-                    ? lastItemInWorkExperienceArray.classesOfEquipment.map(
-                          (_, index) => {
-                              return {
-                                  isEditingClassOfEquipment: false,
-                                  trailerLength:
-                                      lastItemInWorkExperienceArray
-                                          .classesOfEquipment[index]
-                                          .trailerLength.name,
-                                  trailerType:
-                                      lastItemInWorkExperienceArray
-                                          .classesOfEquipment[index].trailerType
-                                          .name,
-                                  vehicleType:
-                                      lastItemInWorkExperienceArray
-                                          .classesOfEquipment[index].vehicleType
-                                          .name,
-                                  trailerTypeImageLocation:
-                                      lastItemInWorkExperienceArray
-                                          .classesOfEquipment[index].trailerType
-                                          .logoName,
-                                  vehicleTypeImageLocation:
-                                      lastItemInWorkExperienceArray
-                                          .classesOfEquipment[index].vehicleType
-                                          .logoName,
-                              };
-                          }
-                      )
-                    : [],
-                workExperienceItemReview:
-                    lastItemInWorkExperienceArray.workExperienceItemReview
-                        ? lastItemInWorkExperienceArray.workExperienceItemReview
-                        : null,
-            };
-
-            this.lastWorkExperienceCard = {
-                ...filteredLastItemInWorkExperienceArray,
-            };
-
-            this.workExperienceArray = JSON.parse(
-                JSON.stringify(filteredWorkExperienceArray)
-            );
-
-            this.previousFormValuesOnReview =
-                filteredLastItemInWorkExperienceArray;
-
+                employer: item.employer,
+                jobDescription: item.jobDescription,
+                fromDate: MethodsCalculationsHelper.convertDateFromBackend(item.from).replace(/-/g, '/'),
+                toDate: MethodsCalculationsHelper.convertDateFromBackend(item.to).replace(/-/g, '/'),
+                employerPhone: item.phone,
+                employerEmail: item.email,
+                employerFax: item.fax,
+                employerAddress: item.address,
+                employerAddressUnit: item.address.addressUnit,
+                isDrivingPosition: item.isDrivingPosition,
+                reasonForLeaving: item.reasonForLeaving.name,
+                accountForPeriod: item.accountForPeriodBetween,
+                classesOfEquipment: item.classesOfEquipment[0]?.vehicleType ?
+                    item.classesOfEquipment.map((_, index) => ({
+                        isEditingClassOfEquipment: false,
+                        trailerLength: item.classesOfEquipment[index].trailerLength.name,
+                        trailerType: item.classesOfEquipment[index].trailerType.name,
+                        vehicleType: item.classesOfEquipment[index].vehicleType.name,
+                        trailerTypeImageLocation: item.classesOfEquipment[index].trailerType.logoName,
+                        vehicleTypeImageLocation: item.classesOfEquipment[index].vehicleType.logoName,
+                    })) : [],
+                workExperienceItemReview: item.workExperienceItemReview || null,
+            }));
+    
+            const filteredLastItemInWorkExperienceArray = { ...filteredWorkExperienceArray.pop() };
+    
+            this.lastWorkExperienceCard = { ...filteredLastItemInWorkExperienceArray };
+            this.workExperienceArray = JSON.parse(JSON.stringify(filteredWorkExperienceArray));
+            this.previousFormValuesOnReview = { ...filteredLastItemInWorkExperienceArray };
             this.formStatus = 'VALID';
-
             this.displayButtonInsteadOfForm = true;
         } else {
             this.formStatus = 'VALID';
         }
-
+    
         if (this.selectedMode === SelectedMode.REVIEW) {
-            const workExperienceItemsReview = workExperienceItems.map(
-                (item) => item.workExperienceItemReview
-            );
-
+            const workExperienceItemsReview = workExperienceItems.map(item => item.workExperienceItemReview);
+    
             if (workExperienceItemsReview[0]) {
                 this.stepHasReviewValues = true;
-
                 workExperienceItemsReview.pop();
-
+    
                 for (let i = 0; i < workExperienceItemsReview.length; i++) {
-                    const firstEmptyObjectInList =
-                        this.openAnnotationArray.find(
-                            (item) => Object.keys(item).length === 0
-                        );
-
-                    const indexOfFirstEmptyObjectInList =
-                        this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        );
-
+                    const firstEmptyObjectInList = this.openAnnotationArray.find(item => Object.keys(item).length === 0);
+                    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(firstEmptyObjectInList);
+    
                     this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
-                        lineIndex: this.openAnnotationArray.indexOf(
-                            firstEmptyObjectInList
-                        ),
+                        lineIndex: indexOfFirstEmptyObjectInList,
                         lineInputs: [false],
                         displayAnnotationButton: false,
                         displayAnnotationTextArea: false,
                     };
-
-                    const workExperienceItemReview = {
-                        ...workExperienceItemsReview[i],
-                    };
-
+    
+                    const workExperienceItemReview = { ...workExperienceItemsReview[i] };
                     delete workExperienceItemReview.isPrimary;
-
-                    let hasIncorrectValue: boolean;
-
-                    if (workExperienceItemsReview[0]) {
-                        hasIncorrectValue = Object.values(
-                            workExperienceItemReview
-                        ).includes(false);
-                    }
-
-                    const incorrectMessage =
-                        workExperienceItemReview?.commonMessage;
-
-                    if (
-                        hasIncorrectValue === null ||
-                        hasIncorrectValue == undefined
-                    ) {
-                        hasIncorrectValue = false;
-                    }
-
+    
+                    const hasIncorrectValue = workExperienceItemsReview[0] ?
+                        Object.values(workExperienceItemReview).includes(false) : false;
+    
+                    const incorrectMessage = workExperienceItemReview?.commonMessage || null;
+    
                     this.openAnnotationArray[i] = {
                         ...this.openAnnotationArray[i],
                         lineInputs: [hasIncorrectValue],
-                        displayAnnotationButton:
-                            hasIncorrectValue && !incorrectMessage
-                                ? true
-                                : false,
-                        displayAnnotationTextArea: incorrectMessage
-                            ? true
-                            : false,
+                        displayAnnotationButton: hasIncorrectValue && !incorrectMessage,
+                        displayAnnotationTextArea: !!incorrectMessage,
                     };
-
-                    const inputFieldsArray = JSON.stringify(
-                        this.openAnnotationArray
-                            .filter((item) => Object.keys(item).length !== 0)
-                            .map((item) => item.lineInputs)
-                    );
-
-                    if (inputFieldsArray.includes('true')) {
-                        this.cardsWithIncorrectFields = true;
-                    } else {
-                        this.cardsWithIncorrectFields = false;
-                    }
-
-                    this.workExperienceForm
-                        .get(`cardReview${i + 1}`)
-                        .patchValue(incorrectMessage ? incorrectMessage : null);
+    
+                    const inputFieldsArray = JSON.stringify(this.openAnnotationArray
+                        .filter(item => Object.keys(item).length !== 0)
+                        .map(item => item.lineInputs));
+    
+                    this.cardsWithIncorrectFields = inputFieldsArray.includes('true');
+    
+                    this.workExperienceForm.get(`cardReview${i + 1}`).patchValue(incorrectMessage);
                 }
             }
         }
-
+    
         if (this.selectedMode === SelectedMode.FEEDBACK) {
-            const workExperienceItemsReview = workExperienceItems.map(
-                (item) => item.workExperienceItemReview
-            );
-
-            this.stepFeedbackValues = workExperienceItemsReview.map((item) => {
-                return {
-                    isEmployerValid: item.isEmployerValid,
-                    employerMessage: item.employerMessage,
-                    isJobDescriptionValid: item.isJobDescriptionValid,
-                    isFromValid: item.isFromValid,
-                    isToValid: item.isToValid,
-                    jobDescriptionMessage: item.jobDescriptionMessage,
-                    isPhoneValid: item.isPhoneValid,
-                    isEmailValid: item.isEmailValid,
-                    isFaxValid: item.isFaxValid,
-                    contactMessage: item.contactMessage,
-                    isAddressValid: item.isAddressValid,
-                    isAddressUnitValid: item.isAddressUnitValid,
-                    addressMessage: item.addressMessage,
-                    isAccountForPeriodBetweenValid:
-                        item.isAccountForPeriodBetweenValid,
-                    accountForPeriodBetweenMessage:
-                        item.accountForPeriodBetweenMessage,
-                    commonMessage: item.commonMessage,
-                    hasIncorrectValue: isAnyValueInArrayFalse([
-                        item.isEmployerValid,
-                        item.isJobDescriptionValid,
-                        item.isFromValid,
-                        item.isToValid,
-                        item.isPhoneValid,
-                        item.isEmailValid,
-                        item.isFaxValid,
-                        item.isAddressValid,
-                        item.isAddressUnitValid,
-                        item.isAccountForPeriodBetweenValid,
-                    ]),
-                };
-            });
-
+            const workExperienceItemsReview = workExperienceItems.map(item => item.workExperienceItemReview);
+    
+            this.stepFeedbackValues = workExperienceItemsReview.map(item => ({
+                isEmployerValid: item.isEmployerValid,
+                employerMessage: item.employerMessage,
+                isJobDescriptionValid: item.isJobDescriptionValid,
+                isFromValid: item.isFromValid,
+                isToValid: item.isToValid,
+                jobDescriptionMessage: item.jobDescriptionMessage,
+                isPhoneValid: item.isPhoneValid,
+                isEmailValid: item.isEmailValid,
+                isFaxValid: item.isFaxValid,
+                contactMessage: item.contactMessage,
+                isAddressValid: item.isAddressValid,
+                isAddressUnitValid: item.isAddressUnitValid,
+                addressMessage: item.addressMessage,
+                isAccountForPeriodBetweenValid: item.isAccountForPeriodBetweenValid,
+                accountForPeriodBetweenMessage: item.accountForPeriodBetweenMessage,
+                commonMessage: item.commonMessage,
+                hasIncorrectValue: isAnyValueInArrayFalse([
+                    item.isEmployerValid,
+                    item.isJobDescriptionValid,
+                    item.isFromValid,
+                    item.isToValid,
+                    item.isPhoneValid,
+                    item.isEmailValid,
+                    item.isFaxValid,
+                    item.isAddressValid,
+                    item.isAddressUnitValid,
+                    item.isAccountForPeriodBetweenValid,
+                ]),
+            }));
+    
             this.stepValues = stepValues.workExperienceItems;
-
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
+            this.feedbackValuesToPatch = this.stepFeedbackValues[this.stepFeedbackValues?.length - 1];
         }
     }
 
@@ -542,11 +381,12 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
         this.workExperienceArray.splice(index, 1);
     }
 
-    public getWorkExperienceFormValues(event: any): void {
-        this.workExperienceArray = [...this.workExperienceArray, event];
-
+    public getWorkExperienceFormValues(event: WorkExpereience): void {
+        const { id } = this.lastWorkExperienceCard;
+        const newWorkExperience = { ...event, id };
+    
+        this.workExperienceArray = [...this.workExperienceArray, newWorkExperience];
         this.isEditing = true;
-
         this.formValuesToPatch = {
             employer: null,
             employerPhone: null,
@@ -559,113 +399,56 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             toDate: null,
             reasonForLeaving: null,
             accountForPeriod: null,
-
             isDrivingPosition: null,
             classesOfEquipment: null,
         };
-
-        if (this.lastWorkExperienceCard.id) {
-            this.workExperienceArray[this.workExperienceArray.length - 1].id =
-                this.lastWorkExperienceCard.id;
-
-            this.lastWorkExperienceCard.id = null;
-        } else {
-            this.workExperienceArray[this.workExperienceArray.length - 1].id =
-                null;
-        }
+        this.lastWorkExperienceCard.id = null;
     }
+    
 
-    public onEditWorkExperience(index: number): void {
+    public onEditWorkExperience(workExperience: WorkExpereience): void {
+        const index = this.workExperienceArray.findIndex(item => item === workExperience);
+        if (index === -1) {
+            return;
+        }
+    
         this.workExperienceArray
             .filter((item) => item.isEditingWorkExperience)
             .forEach((item) => (item.isEditingWorkExperience = false));
-
+    
         this.selectedWorkExperienceIndex = index;
-
+    
         this.isEditing = true;
-        this.workExperienceArray[
-            this.selectedWorkExperienceIndex
-        ].isEditingWorkExperience = true;
-
+        this.workExperienceArray[this.selectedWorkExperienceIndex].isEditingWorkExperience = true;
+    
         this.hideFormOnEdit = true;
         this.displayButtonInsteadOfForm = false;
-
-        const selectedWorkExperience =
-            this.workExperienceArray[this.selectedWorkExperienceIndex];
-
-        this.formValuesToPatch = selectedWorkExperience;
-
+    
+        const selectedWorkExperience = this.workExperienceArray[this.selectedWorkExperienceIndex];
+        this.formValuesToPatch = { ...selectedWorkExperience };
+    
         if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.selectedWorkExperienceIndex];
+            this.feedbackValuesToPatch = this.stepFeedbackValues[this.selectedWorkExperienceIndex];
         }
     }
+    
 
-    public cancelWorkExperienceEditing(_: any): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        }
-
-        this.isEditing = false;
-
-        this.hideFormOnEdit = false;
-
-        if (this.workExperienceArray.length === 1) {
-            const selectedWorkExperience = this.workExperienceArray[0];
-
-            this.formValuesToPatch = selectedWorkExperience;
-
-            this.workExperienceArray = [];
-        } else {
-            if (this.selectedWorkExperienceIndex >= 0) {
-                this.workExperienceArray[
-                    this.selectedWorkExperienceIndex
-                ].isEditingWorkExperience = false;
-            }
-
-            this.formValuesToPatch = {
-                employer: null,
-                employerPhone: null,
-                employerEmail: null,
-                employerFax: null,
-                employerAddress: null,
-                employerAddressUnit: null,
-                jobDescription: null,
-                fromDate: null,
-                toDate: null,
-                reasonForLeaving: null,
-                accountForPeriod: null,
-
-                isDrivingPosition: null,
-                classesOfEquipment: null,
-            };
-
-            this.displayButtonInsteadOfForm = true;
-        }
-
-        this.selectedWorkExperienceIndex = -1;
+public cancelWorkExperienceEditing(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+        this.feedbackValuesToPatch = this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
     }
 
-    public saveEditedWorkExperience(event: any): void {
-        if (this.selectedMode === SelectedMode.FEEDBACK) {
-            this.feedbackValuesToPatch =
-                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
-        }
+    this.isEditing = false;
+    this.hideFormOnEdit = false;
 
+    if (this.workExperienceArray.length === 1) {
+        const selectedWorkExperience = this.workExperienceArray[0];
+        this.formValuesToPatch = { ...selectedWorkExperience };
+        this.workExperienceArray = [];
+    } else {
         if (this.selectedWorkExperienceIndex >= 0) {
-            this.workExperienceArray[this.selectedWorkExperienceIndex] = {
-                ...this.workExperienceArray[this.selectedWorkExperienceIndex],
-                ...event,
-            };
-        } else {
-            this.workExperienceArray = [...this.workExperienceArray, event];
+            this.workExperienceArray[this.selectedWorkExperienceIndex].isEditingWorkExperience = false;
         }
-
-        this.isEditing = false;
-
-        this.hideFormOnEdit = false;
-        this.displayButtonInsteadOfForm = true;
 
         this.formValuesToPatch = {
             employer: null,
@@ -679,13 +462,54 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             toDate: null,
             reasonForLeaving: null,
             accountForPeriod: null,
-
             isDrivingPosition: null,
             classesOfEquipment: null,
         };
 
-        this.selectedWorkExperienceIndex = -1;
+        this.displayButtonInsteadOfForm = true;
     }
+
+    this.selectedWorkExperienceIndex = -1;
+}
+
+
+public saveEditedWorkExperience(): void {
+    if (this.selectedMode === SelectedMode.FEEDBACK) {
+        this.feedbackValuesToPatch = this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+    }
+
+    if (this.selectedWorkExperienceIndex >= 0) {
+        this.workExperienceArray[this.selectedWorkExperienceIndex] = {
+            ...this.workExperienceArray[this.selectedWorkExperienceIndex],
+            ...this.workExperienceForm.value,
+        };
+    } else {
+        this.workExperienceArray = [...this.workExperienceArray, this.workExperienceForm.value];
+    }
+
+    this.isEditing = false;
+    this.hideFormOnEdit = false;
+    this.displayButtonInsteadOfForm = true;
+
+    this.formValuesToPatch = {
+        employer: null,
+        employerPhone: null,
+        employerEmail: null,
+        employerFax: null,
+        employerAddress: null,
+        employerAddressUnit: null,
+        jobDescription: null,
+        fromDate: null,
+        toDate: null,
+        reasonForLeaving: null,
+        accountForPeriod: null,
+        isDrivingPosition: null,
+        classesOfEquipment: null,
+    };
+
+    this.selectedWorkExperienceIndex = -1;
+}
+
 
     public onGetBtnClickValue(event: any): void {
         if (event.notDisabledClick) {
@@ -875,32 +699,27 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             });
     }
 
-    public incorrectInput(
-        _: any,
-        inputIndex: number,
-        lineIndex: number,
-        type?: string
-    ): void {
+    public incorrectInput(inputIndex: number, lineIndex: number, type?: string): void {
         const selectedInputsLine = this.openAnnotationArray.find(
             (item) => item.lineIndex === lineIndex
         );
-
+    
         if (type === 'card') {
             selectedInputsLine.lineInputs[inputIndex] = false;
-
+    
             if (selectedInputsLine.displayAnnotationButton) {
                 selectedInputsLine.displayAnnotationButton = false;
             }
-
+    
             if (selectedInputsLine.displayAnnotationTextArea) {
                 selectedInputsLine.displayAnnotationButton = false;
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
-
+    
             this.workExperienceForm
                 .get(`cardReview${lineIndex + 1}`)
                 .patchValue(null);
-
+    
             Object.keys(
                 this.workExperienceArray[lineIndex].workExperienceItemReview
             ).forEach((key) => {
@@ -908,20 +727,20 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                     key
                 ] = true;
             });
-
+    
             const inputFieldsArray = JSON.stringify(
                 this.openAnnotationArray
                     .filter((item) => Object.keys(item).length !== 0)
                     .map((item) => item.lineInputs)
             );
-
+    
             if (inputFieldsArray.includes('true')) {
                 this.cardsWithIncorrectFields = true;
             } else {
                 this.cardsWithIncorrectFields = false;
             }
         }
-    }
+    }    
 
     public getAnnotationBtnClickValue(event: any): void {
         if (event.type === 'open') {
@@ -956,188 +775,52 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     }
 
     public startFeedbackValueChangesMonitoring(): void {
-        if (this.stepFeedbackValues) {
-            let incorrectValuesArray = [];
-
-            for (let i = 0; i < this.stepFeedbackValues.length; i++) {
-                const filteredWorkExperienceIncorrectValues = Object.keys(
-                    this.stepFeedbackValues[i]
-                )
-                    .filter((item) => item !== 'hasIncorrectValue')
-                    .reduce((o, key) => {
-                        this.stepFeedbackValues[i][key] === false &&
-                            (o[key] = this.stepFeedbackValues[i][key]);
-
-                        return o;
-                    }, {});
-
-                const hasIncorrectValues = Object.keys(
-                    filteredWorkExperienceIncorrectValues
-                ).length;
-
-                if (hasIncorrectValues) {
-                    const filteredFieldsWithIncorrectValues = Object.keys(
-                        filteredWorkExperienceIncorrectValues
-                    ).reduce((o, key) => {
-                        const keyName = key
-                            .replace('Valid', '')
-                            .replace('is', '')
-                            .trim()
-                            .toLowerCase();
-
-                        const match = Object.keys(this.stepValues[i])
-                            .filter((item) =>
-                                item.toLowerCase().includes(keyName)
-                            )
-                            .pop();
-
-                        o[keyName] = this.stepValues[i][match];
-
-                        if (keyName === 'from') {
-                            o['from'] =
-                                MethodsCalculationsHelper.convertDateFromBackend(
-                                    o['from']
-                                );
-                        }
-
-                        if (keyName === 'to') {
-                            o['to'] =
-                                MethodsCalculationsHelper.convertDateFromBackend(
-                                    o['to']
-                                );
-                        }
-
-                        if (keyName === 'address') {
-                            o['address'] = JSON.stringify({
-                                address: this.stepValues[i].address.address,
-                            });
-                        }
-
-                        if (keyName === 'addressunit') {
-                            o['addressunit'] =
-                                this.stepValues[i].address.addressUnit;
-                        }
-
-                        return o;
-                    }, {});
-
-                    const filteredUpdatedFieldsWithIncorrectValues =
-                        Object.keys(filteredFieldsWithIncorrectValues).reduce(
-                            (o, key) => {
-                                const keyName = key;
-
-                                const match = Object.keys(this.stepValues[i])
-                                    .filter((item) =>
-                                        item.toLowerCase().includes(keyName)
-                                    )
-                                    .pop();
-
-                                o[keyName] =
-                                    i === this.stepFeedbackValues.length - 1
-                                        ? this.lastWorkExperienceCard[match]
-                                        : this.workExperienceArray[i][match];
-
-                                if (keyName === 'from') {
-                                    o['from'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .fromDate
-                                            : this.workExperienceArray[i]
-                                                  .fromDate;
-                                }
-
-                                if (keyName === 'to') {
-                                    o['to'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard.toDate
-                                            : this.workExperienceArray[i]
-                                                  .toDate;
-                                }
-
-                                if (keyName === 'phone') {
-                                    o['phone'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .employerPhone
-                                            : this.workExperienceArray[i]
-                                                  .employerPhone;
-                                }
-
-                                if (keyName === 'fax') {
-                                    o['fax'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .employerFax
-                                            : this.workExperienceArray[i]
-                                                  .employerFax;
-                                }
-
-                                if (keyName === 'email') {
-                                    o['email'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .employerEmail
-                                            : this.workExperienceArray[i]
-                                                  .employerEmail;
-                                }
-
-                                if (keyName === 'address') {
-                                    o['address'] = JSON.stringify({
-                                        address:
-                                            i ===
-                                            this.stepFeedbackValues.length - 1
-                                                ? this.lastWorkExperienceCard
-                                                      .employerAddress?.address
-                                                : this.workExperienceArray[i]
-                                                      .employerAddress?.address,
-                                    });
-                                }
-
-                                if (keyName === 'addressunit') {
-                                    o['addressunit'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .employerAddressUnit
-                                            : this.workExperienceArray[i]
-                                                  .employerAddressUnit;
-                                }
-
-                                if (keyName === 'accountforperiodbetween') {
-                                    o['accountforperiodbetween'] =
-                                        i === this.stepFeedbackValues.length - 1
-                                            ? this.lastWorkExperienceCard
-                                                  .accountForPeriod
-                                            : this.workExperienceArray[i]
-                                                  .accountForPeriod;
-                                }
-
-                                return o;
-                            },
-                            {}
-                        );
-
-                    const isFormNotEqual = isFormValueNotEqual(
-                        filteredFieldsWithIncorrectValues,
-                        filteredUpdatedFieldsWithIncorrectValues
-                    );
-
-                    incorrectValuesArray = [
-                        ...incorrectValuesArray,
-                        isFormNotEqual,
-                    ];
-                }
+        if (!this.stepFeedbackValues) return;
+    
+        const incorrectValuesArray: boolean[] = [];
+    
+        this.stepFeedbackValues.forEach((feedbackValue, i) => {
+            const filteredWorkExperienceIncorrectValues = Object.keys(feedbackValue)
+                .filter((key) => key !== 'hasIncorrectValue')
+                .reduce((obj, key) => {
+                    if (!feedbackValue[key]) obj[key] = false;
+                    return obj;
+                }, {});
+    
+            const hasIncorrectValues = Object.keys(filteredWorkExperienceIncorrectValues).length;
+    
+            if (hasIncorrectValues) {
+                const filteredUpdatedFieldsWithIncorrectValues = Object.keys(filteredWorkExperienceIncorrectValues).reduce((obj, key) => {
+                    const fieldName = key.replace('Valid', '').replace('is', '').trim().toLowerCase();
+                    const fieldValue = i === this.stepFeedbackValues.length - 1 ? this.lastWorkExperienceCard[fieldName] : this.workExperienceArray[i][fieldName];
+    
+                    obj[fieldName] = fieldName === 'from' || fieldName === 'to'
+                        ? MethodsCalculationsHelper.convertDateFromBackend(fieldValue)
+                        : fieldValue;
+    
+                    if (fieldName === 'address') {
+                        obj[fieldName] = JSON.stringify({ address: fieldValue });
+                    }
+    
+                    if (fieldName === 'addressunit' || fieldName === 'accountforperiodbetween') {
+                        obj[fieldName] = fieldValue;
+                    }
+    
+                    return obj;
+                }, {});
+    
+                const isFormNotEqual = isFormValueNotEqual(
+                    filteredWorkExperienceIncorrectValues,
+                    filteredUpdatedFieldsWithIncorrectValues
+                );
+    
+                incorrectValuesArray.push(!isFormNotEqual);
             }
-
-            const isCardsValueUpdated =
-                isEveryValueInArrayTrue(incorrectValuesArray);
-
-            if (isCardsValueUpdated) {
-                this.isFeedbackValueUpdated = true;
-            } else {
-                this.isFeedbackValueUpdated = false;
-            }
-        }
+        });
+    
+        this.isFeedbackValueUpdated = incorrectValuesArray.every(Boolean);
     }
+    
 
     public onStepAction(event: any): void {
         if (event.action === 'next-step') {
@@ -1157,430 +840,214 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public onSubmit(): void {
         this.checkIsRadioUnchecked = true;
-
+    
         if (
             this.formStatus === 'INVALID' ||
             this.isEditing ||
-            (this.selectedMode === SelectedMode.FEEDBACK &&
-                !this.isFeedbackValueUpdated)
+            (this.selectedMode === SelectedMode.FEEDBACK && !this.isFeedbackValueUpdated)
         ) {
             if (this.formStatus === 'INVALID') {
                 this.markFormInvalid = true;
             }
-
             return;
         }
-
-        const filteredWorkExperienceArray = this.workExperienceArray.map(
-            (item) => {
-                return {
-                    ...((this.stepHasValues ||
-                        this.selectedMode === SelectedMode.FEEDBACK) && {
-                        id: item.id ? item.id : null,
-                        workExperienceItemReview: item.workExperienceItemReview
-                            ? {
-                                  ...item.workExperienceItemReview,
-                                  workExperienceItemId: item.id
-                                      ? item.id
-                                      : null,
-                              }
-                            : null,
-                    }),
-                    employer: item.employer,
-                    jobDescription: item.jobDescription,
-                    from: MethodsCalculationsHelper.convertDateToBackend(
-                        item.fromDate
-                    ),
-                    to: MethodsCalculationsHelper.convertDateToBackend(
-                        item.toDate
-                    ),
-                    phone: item.employerPhone,
-                    email: item.employerEmail,
-                    fax: item.employerFax,
-                    address: item.employerAddress,
-                    isDrivingPosition: item.isDrivingPosition,
-                    reasonForLeaving: this.reasonsForLeaving.find(
-                        (reasonItem) =>
-                            reasonItem.name === item.reasonForLeaving
-                    ).id,
-                    accountForPeriodBetween: item.accountForPeriod,
-                    classesOfEquipment: item.classesOfEquipment[0]?.vehicleType
-                        ? item.classesOfEquipment.map((_, index) => {
-                              return {
-                                  vehicleTypeId: this.vehicleType.find(
-                                      (findItem) =>
-                                          findItem.name ===
-                                          item.classesOfEquipment[index]
-                                              .vehicleType
-                                  )?.id,
-                                  trailerTypeId: this.trailerType.find(
-                                      (findItem) =>
-                                          findItem.name ===
-                                          item.classesOfEquipment[index]
-                                              .trailerType
-                                  )?.id,
-                                  trailerLengthId: this.trailerLengthType.find(
-                                      (findItem) =>
-                                          findItem.name ===
-                                          item.classesOfEquipment[index]
-                                              .trailerLength
-                                  )?.id,
-                              };
-                          })
-                        : [],
-                };
-            }
-        );
-
-        const { noWorkExperience } = this.workExperienceForm.value;
-
-        let filteredLastWorkExperienceCard: any;
-
-        const lastWorkExperinceCardAddress = {
-            ...this.lastWorkExperienceCard?.employerAddress,
-            addressUnit: this.lastWorkExperienceCard?.employerAddressUnit,
-        };
-
-        if (!noWorkExperience) {
-            filteredLastWorkExperienceCard = {
-                ...((this.stepHasValues ||
-                    this.selectedMode === SelectedMode.FEEDBACK) && {
-                    id: this.lastWorkExperienceCard.id
-                        ? this.lastWorkExperienceCard.id
-                        : null,
-                    workExperienceItemReview: this.lastWorkExperienceCard
-                        .workExperienceItemReview
-                        ? {
-                              ...this.lastWorkExperienceCard
-                                  .workExperienceItemReview,
-                              workExperienceItemId: this.lastWorkExperienceCard
-                                  .id
-                                  ? this.lastWorkExperienceCard.id
-                                  : null,
-                          }
-                        : null,
-                }),
-                employer: this.lastWorkExperienceCard.employer,
-                jobDescription: this.lastWorkExperienceCard.jobDescription,
-                from: MethodsCalculationsHelper.convertDateToBackend(
-                    this.lastWorkExperienceCard.fromDate
-                ),
-                to: MethodsCalculationsHelper.convertDateToBackend(
-                    this.lastWorkExperienceCard.toDate
-                ),
-                phone: this.lastWorkExperienceCard.employerPhone,
-                email: this.lastWorkExperienceCard.employerEmail,
-                fax: this.lastWorkExperienceCard.employerFax,
-                address: lastWorkExperinceCardAddress,
-                isDrivingPosition:
-                    this.lastWorkExperienceCard.isDrivingPosition,
-                cfrPart: this.lastWorkExperienceCard.cfrPart,
-                fmcsa: this.lastWorkExperienceCard.fmCSA,
-                reasonForLeaving: this.reasonsForLeaving.find(
-                    (item) =>
-                        item.name ===
-                        this.lastWorkExperienceCard.reasonForLeaving
-                ).id,
-                accountForPeriodBetween:
-                    this.lastWorkExperienceCard.accountForPeriod,
-                classesOfEquipment: this.lastWorkExperienceCard
-                    .classesOfEquipment
-                    ? this.lastWorkExperienceCard.classesOfEquipment.map(
-                          (_, index) => {
-                              return {
-                                  vehicleTypeId: this.vehicleType.find(
-                                      (item) =>
-                                          item.name ===
-                                          this.lastWorkExperienceCard
-                                              .classesOfEquipment[index]
-                                              .vehicleType
-                                  )?.id,
-                                  trailerTypeId: this.trailerType.find(
-                                      (item) =>
-                                          item.name ===
-                                          this.lastWorkExperienceCard
-                                              .classesOfEquipment[index]
-                                              .trailerType
-                                  )?.id,
-                                  trailerLengthId: this.trailerLengthType.find(
-                                      (item) =>
-                                          item.name ===
-                                          this.lastWorkExperienceCard
-                                              .classesOfEquipment[index]
-                                              .trailerLength
-                                  )?.id,
-                              };
-                          }
-                      )
-                    : [],
+    
+        const filteredWorkExperienceArray = this.workExperienceArray.map((item) => {
+            const { id, employer, jobDescription, fromDate, toDate, employerPhone, employerEmail, employerFax, employerAddress, isDrivingPosition, reasonForLeaving, accountForPeriod, classesOfEquipment } = item;
+            const formattedFromDate = MethodsCalculationsHelper.convertDateToBackend(fromDate);
+            const formattedToDate = MethodsCalculationsHelper.convertDateToBackend(toDate);
+            const reasonForLeavingId = this.reasonsForLeaving.find((reasonItem) => reasonItem.name === reasonForLeaving)?.id || null;
+    
+            const formattedClassesOfEquipment = classesOfEquipment[0]?.vehicleType
+                ? classesOfEquipment.map((classItem) => ({
+                    vehicleTypeId: this.vehicleType.find((vehicleItem) => vehicleItem.name === classItem.vehicleType)?.id || null,
+                    trailerTypeId: this.trailerType.find((trailerItem) => trailerItem.name === classItem.trailerType)?.id || null,
+                    trailerLengthId: this.trailerLengthType.find((trailerLengthItem) => trailerLengthItem.name === classItem.trailerLength)?.id || null,
+                }))
+                : [];
+    
+            return {
+                id: id || null,
+                workExperienceItemReview: (this.stepHasValues || this.selectedMode === SelectedMode.FEEDBACK) ? { workExperienceItemId: id || null } : null,
+                employer,
+                jobDescription,
+                from: formattedFromDate,
+                to: formattedToDate,
+                phone: employerPhone,
+                email: employerEmail,
+                fax: employerFax,
+                address: employerAddress,
+                isDrivingPosition,
+                reasonForLeaving: reasonForLeavingId,
+                accountForPeriodBetween: accountForPeriod,
+                classesOfEquipment: formattedClassesOfEquipment,
             };
-        }
-
+        });
+    
+        const { noWorkExperience } = this.workExperienceForm.value;
+    
+        const filteredLastWorkExperienceCard = noWorkExperience ? null : {
+            id: this.lastWorkExperienceCard.id || null,
+            workExperienceItemReview: (this.stepHasValues || this.selectedMode === SelectedMode.FEEDBACK) ? { workExperienceItemId: this.lastWorkExperienceCard.id || null } : null,
+            employer: this.lastWorkExperienceCard.employer,
+            jobDescription: this.lastWorkExperienceCard.jobDescription,
+            from: MethodsCalculationsHelper.convertDateToBackend(this.lastWorkExperienceCard.fromDate),
+            to: MethodsCalculationsHelper.convertDateToBackend(this.lastWorkExperienceCard.toDate),
+            phone: this.lastWorkExperienceCard.employerPhone,
+            email: this.lastWorkExperienceCard.employerEmail,
+            fax: this.lastWorkExperienceCard.employerFax,
+            address: { ...this.lastWorkExperienceCard?.employerAddress, addressUnit: this.lastWorkExperienceCard?.employerAddressUnit },
+            isDrivingPosition: this.lastWorkExperienceCard.isDrivingPosition,
+            cfrPart: this.lastWorkExperienceCard.cfrPart,
+            fmcsa: this.lastWorkExperienceCard.fmCSA,
+            reasonForLeaving: this.reasonsForLeaving.find((item) => item.name === this.lastWorkExperienceCard.reasonForLeaving)?.id || null,
+            accountForPeriodBetween: this.lastWorkExperienceCard.accountForPeriod,
+            classesOfEquipment: this.lastWorkExperienceCard.classesOfEquipment ? this.lastWorkExperienceCard.classesOfEquipment.map((_, index) => ({
+                vehicleTypeId: this.vehicleType.find((item) => item.name === this.lastWorkExperienceCard.classesOfEquipment[index].vehicleType)?.id || null,
+                trailerTypeId: this.trailerType.find((item) => item.name === this.lastWorkExperienceCard.classesOfEquipment[index].trailerType)?.id || null,
+                trailerLengthId: this.trailerLengthType.find((item) => item.name === this.lastWorkExperienceCard.classesOfEquipment[index].trailerLength)?.id || null,
+            })) : [],
+        };
+    
         const saveData: any = {
             applicantId: this.applicantId,
             haveWorkExperience: noWorkExperience,
-            workExperienceItems: noWorkExperience
-                ? []
-                : [
-                      ...filteredWorkExperienceArray,
-                      filteredLastWorkExperienceCard,
-                  ],
+            workExperienceItems: noWorkExperience ? [] : [...filteredWorkExperienceArray, filteredLastWorkExperienceCard],
         };
-
-        const storeWorkExperienceItems = saveData.workExperienceItems.map(
-            (item) => {
-                return {
-                    id: item.id,
-                    workExperienceItemReview: item.workExperienceItemReview,
-                    employer: item.employer,
-                    jobDescription: item.jobDescription,
-                    from: item.from,
-                    to: item.to,
-                    phone: item.phone,
-                    email: item.email,
-                    fax: item.fax,
-                    address: item.address,
-                    isDrivingPosition: item.isDrivingPosition,
-                    cfrPart: item.cfrPart,
-                    fmcsa: item.fmcsa,
-                    reasonForLeaving: this.reasonsForLeaving.find(
-                        (reasonItem) => reasonItem.id === item.reasonForLeaving
-                    ),
-                    accountForPeriodBetween: item.accountForPeriodBetween,
-                    classesOfEquipment: item.classesOfEquipment.map(
-                        (classItem) => {
-                            return {
-                                vehicleType: this.vehicleType.find(
-                                    (vehicleItem) =>
-                                        vehicleItem.id ===
-                                        classItem.vehicleTypeId
-                                ),
-                                trailerType: this.trailerType.find(
-                                    (trailerItem) =>
-                                        trailerItem.id ===
-                                        classItem.trailerTypeId
-                                ),
-                                trailerLength: this.trailerLengthType.find(
-                                    (trailerLengthItem) =>
-                                        trailerLengthItem.id ===
-                                        classItem.trailerLengthId
-                                ),
-                            };
-                        }
-                    ),
-                };
-            }
-        );
-
+    
         const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT &&
-                !this.stepHasValues
-            ) {
-                return this.applicantActionsService.createWorkExperience(
-                    saveData
-                );
+            if (this.selectedMode === SelectedMode.APPLICANT && !this.stepHasValues) {
+                return this.applicantActionsService.createWorkExperience(saveData);
             }
-
-            if (
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    this.stepHasValues) ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                return this.applicantActionsService.updateWorkExperience(
-                    saveData
-                );
+    
+            if ((this.selectedMode === SelectedMode.APPLICANT && this.stepHasValues) || this.selectedMode === SelectedMode.FEEDBACK) {
+                return this.applicantActionsService.updateWorkExperience(saveData);
             }
         };
-
+    
         selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/3`,
-                    ]);
-
-                    this.applicantStore.update((store) => {
-                        const noWorkExperience = saveData.haveWorkExperience;
-
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                workExperience: {
-                                    ...store.applicant.workExperience,
-                                    haveWorkExperience: noWorkExperience,
-                                    workExperienceItems: noWorkExperience
-                                        ? null
-                                        : storeWorkExperienceItems,
-                                },
+                    this.router.navigate([`/application/${this.applicantId}/3`]);
+                    this.applicantStore.update((store) => ({
+                        ...store,
+                        applicant: {
+                            ...store.applicant,
+                            workExperience: {
+                                ...store.applicant.workExperience,
+                                haveWorkExperience: noWorkExperience,
+                                workExperienceItems: noWorkExperience ? null : saveData.workExperienceItems.map((item) => ({
+                                    ...item,
+                                    reasonForLeaving: this.reasonsForLeaving.find((reasonItem) => reasonItem.id === item.reasonForLeaving),
+                                    classesOfEquipment: item.classesOfEquipment.map((classItem) => ({
+                                        vehicleType: this.vehicleType.find((vehicleItem) => vehicleItem.id === classItem.vehicleTypeId),
+                                        trailerType: this.trailerType.find((trailerItem) => trailerItem.id === classItem.trailerTypeId),
+                                        trailerLength: this.trailerLengthType.find((trailerLengthItem) => trailerLengthItem.id === classItem.trailerLengthId),
+                                    })),
+                                })),
                             },
-                        };
-                    });
+                        },
+                    }));
                 },
                 error: (err) => {
                     console.log(err);
                 },
             });
     }
+    
 
     public onSubmitReview(): void {
-        const workExperienceArrayReview = this.workExperienceArray.map(
-            (item, index) => {
-                const itemReview = item.workExperienceItemReview;
-
-                return {
-                    /*  ...(this.stepHasReviewValues && {
-                        id: item.reviewId,
-                    }), */
-                    workExperienceItemId: item.id,
-                    isPrimary: false,
-                    commonMessage: this.workExperienceForm.get(
-                        `cardReview${index + 1}`
-                    ).value,
-                    isEmployerValid: itemReview
-                        ? itemReview.isEmployerValid
-                        : true,
-                    employerMessage: null,
-                    isJobDescriptionValid: itemReview
-                        ? itemReview.isJobDescriptionValid
-                        : true,
-                    isFromValid: itemReview ? itemReview.isFromValid : true,
-                    isToValid: itemReview ? itemReview.isToValid : true,
-                    jobDescriptionMessage: null,
-                    isPhoneValid: itemReview ? itemReview.isPhoneValid : true,
-                    isFaxValid: itemReview ? itemReview.isFaxValid : true,
-                    isEmailValid: itemReview ? itemReview.isEmailValid : true,
-                    contactMessage: null,
-                    isAddressValid: itemReview
-                        ? itemReview.isAddressValid
-                        : true,
-                    isAddressUnitValid: itemReview
-                        ? itemReview.isAddressUnitValid
-                        : true,
-                    addressMessage: null,
-                    isAccountForPeriodBetweenValid: itemReview
-                        ? itemReview.isAccountForPeriodBetweenValid
-                        : true,
-                    accountForPeriodBetweenMessage: null,
-                };
-            }
-        );
-
-        const lastItemReview =
-            this.previousFormValuesOnReview.workExperienceItemReview;
-
+        const workExperienceArrayReview = this.workExperienceArray.map((item, index) => {
+            const itemReview = item.workExperienceItemReview || {};
+    
+            return {
+                workExperienceItemId: item.id,
+                isPrimary: false,
+                commonMessage: this.workExperienceForm.get(`cardReview${index + 1}`).value,
+                ...this.getReviewValidationFields(itemReview),
+            };
+        });
+    
+        const lastItemReview = this.previousFormValuesOnReview.workExperienceItemReview || {};
         const lastItemReviewId = this.previousFormValuesOnReview.reviewId;
         const lastItemId = this.previousFormValuesOnReview.id;
-
         const lastReviewedItemInWorkExperienceArray = {
-            ...(this.stepHasReviewValues && {
-                id: lastItemReviewId,
-            }),
+            id: this.stepHasReviewValues ? lastItemReviewId : null,
             workExperienceItemId: lastItemId,
             isPrimary: true,
-            commonMessage: null,
-            isEmployerValid: lastItemReview.isEmployerValid ?? true,
-            employerMessage: this.lastWorkExperienceCard.firstRowReview,
-            isJobDescriptionValid: lastItemReview.isJobDescriptionValid ?? true,
-            isFromValid: lastItemReview.isFromValid ?? true,
-            isToValid: lastItemReview.isToValid ?? true,
-            jobDescriptionMessage: this.lastWorkExperienceCard.secondRowReview,
-            isPhoneValid: lastItemReview.isPhoneValid ?? true,
-            isFaxValid: lastItemReview.isFaxValid ?? true,
-            isEmailValid: lastItemReview.isEmailValid ?? true,
-            contactMessage: this.lastWorkExperienceCard.thirdRowReview,
-            isAddressValid: lastItemReview.isAddressValid ?? true,
-            isAddressUnitValid: lastItemReview.isAddressUnitValid ?? true,
-            addressMessage: this.lastWorkExperienceCard.fourthRowReview,
-            isAccountForPeriodBetweenValid:
-                lastItemReview.isAccountForPeriodBetweenValid ?? true,
-            accountForPeriodBetweenMessage:
-                this.lastWorkExperienceCard.seventhRowReview,
+            ...this.getReviewValidationFields(lastItemReview, this.lastWorkExperienceCard),
         };
-
+    
         const saveData: CreateWorkExperienceReviewCommand = {
             applicantId: this.applicantId,
-            workExperienceItemReviews: [
-                ...workExperienceArrayReview,
-                lastReviewedItemInWorkExperienceArray,
-            ],
+            workExperienceItemReviews: [...workExperienceArrayReview, lastReviewedItemInWorkExperienceArray],
         };
-
+    
         const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.REVIEW &&
-                !this.stepHasReviewValues
-            ) {
-                return this.applicantActionsService.createWorkExperienceReview(
-                    saveData
-                );
+            if (this.selectedMode === SelectedMode.REVIEW && !this.stepHasReviewValues) {
+                return this.applicantActionsService.createWorkExperienceReview(saveData);
             }
-
-            if (
-                this.selectedMode === SelectedMode.REVIEW &&
-                this.stepHasReviewValues
-            ) {
-                return this.applicantActionsService.updateWorkExperienceReview(
-                    saveData
-                );
+    
+            if (this.selectedMode === SelectedMode.REVIEW && this.stepHasReviewValues) {
+                return this.applicantActionsService.updateWorkExperienceReview(saveData);
             }
         };
-
+    
         selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.router.navigate([
-                        `/application/${this.applicantId}/3`,
-                    ]);
-
-                    this.applicantStore.update((store) => {
-                        return {
-                            ...store,
-                            applicant: {
-                                ...store.applicant,
-                                workExperience: {
-                                    ...store.applicant.workExperience,
-                                    workExperienceItems:
-                                        store.applicant.workExperience.workExperienceItems.map(
-                                            (item, index) => {
-                                                if (
-                                                    index ===
-                                                    store.applicant
-                                                        .workExperience
-                                                        .workExperienceItems
-                                                        .length -
-                                                        1
-                                                ) {
-                                                    return {
-                                                        ...item,
-                                                        workExperienceItemReview:
-                                                            lastReviewedItemInWorkExperienceArray,
-                                                    };
-                                                }
-
-                                                return {
-                                                    ...item,
-                                                    workExperienceItemReview:
-                                                        workExperienceArrayReview[
-                                                            index
-                                                        ],
-                                                };
-                                            }
-                                        ),
-                                },
-                            },
-                        };
-                    });
+                    this.router.navigate([`/application/${this.applicantId}/3`]);
+                    this.updateApplicantWorkExperience(lastReviewedItemInWorkExperienceArray, workExperienceArrayReview);
                 },
                 error: (err) => {
                     console.log(err);
                 },
             });
     }
-
+    
+    private getReviewValidationFields(review: any, card?: any) {
+        return {
+            isEmployerValid: review.isEmployerValid ?? true,
+            employerMessage: card?.firstRowReview,
+            isJobDescriptionValid: review.isJobDescriptionValid ?? true,
+            isFromValid: review.isFromValid ?? true,
+            isToValid: review.isToValid ?? true,
+            jobDescriptionMessage: card?.secondRowReview,
+            isPhoneValid: review.isPhoneValid ?? true,
+            isFaxValid: review.isFaxValid ?? true,
+            isEmailValid: review.isEmailValid ?? true,
+            contactMessage: card?.thirdRowReview,
+            isAddressValid: review.isAddressValid ?? true,
+            isAddressUnitValid: review.isAddressUnitValid ?? true,
+            addressMessage: card?.fourthRowReview,
+            isAccountForPeriodBetweenValid: review.isAccountForPeriodBetweenValid ?? true,
+            accountForPeriodBetweenMessage: card?.seventhRowReview,
+        };
+    }
+    
+    private updateApplicantWorkExperience(lastReviewedItem: any, workExperienceArrayReview: any[]) {
+        this.applicantStore.update((store) => {
+            const updatedWorkExperienceItems = store.applicant.workExperience.workExperienceItems.map((item, index) => {
+                return index === store.applicant.workExperience.workExperienceItems.length - 1
+                    ? { ...item, workExperienceItemReview: lastReviewedItem }
+                    : { ...item, workExperienceItemReview: workExperienceArrayReview[index] };
+            });
+    
+            return {
+                ...store,
+                applicant: {
+                    ...store.applicant,
+                    workExperience: {
+                        ...store.applicant.workExperience,
+                        workExperienceItems: updatedWorkExperienceItems,
+                    },
+                },
+            };
+        });
+    }
+    
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
