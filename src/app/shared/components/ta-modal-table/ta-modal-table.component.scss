@@ -46,6 +46,10 @@
             }
         }
 
+        &.repair-order-table-header {
+            grid-template-columns: 26px 492px 26px 60px;
+        }
+
         &.contact-table-header {
             grid-template-columns: 26px 170px 120px 140px 80px 200px;
 
@@ -207,6 +211,15 @@
 
             .table-item {
                 grid-template-columns: 26px 306px 26px 60px 90px 88px;
+            }
+
+            .pm-dropdown-container {
+                &.hidden-pm-dropdown {
+                    cursor: pointer;
+                    pointer-events: none;
+                    opacity: 0;
+                    visibility: 0;
+                }
             }
 
             .subtotal {

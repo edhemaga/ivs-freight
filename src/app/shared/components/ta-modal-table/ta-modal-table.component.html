@@ -369,48 +369,60 @@
                                 (mouseleave)="handleInputHover(false, i, 0)"
                             ></app-ta-input>
 
-                            <app-ta-input-dropdown
-                                formControlName="pm"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="{
-                                    name: 'pm',
-                                    type: 'text',
-                                    label: '',
-                                    placeholderInsteadOfLabel: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true,
-                                    hideClear: true,
-                                    isDropdown: true,
-                                    isDisabled:
+                            <div
+                                class="pm-dropdown-container"
+                                [ngClass]="{
+                                    'hidden-pm-dropdown':
                                         !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                                        !truckTrailerRepairPmOptions?.trailerPmDropdownList,
-                                    isIconInput:
-                                        selectedTruckTrailerRepairPm[i],
-                                    isValidIcon: repairBillItemRow.valid,
-                                    inputIcon:
-                                        selectedTruckTrailerRepairPm[i]
-                                            ?.logoName,
-                                    dropdownWidthClass: 'w-col-200',
-                                    blackInput:
-                                        getFormArray().at(i).get('pm').value &&
-                                        !isInputHoverRows[i][1]
+                                        !truckTrailerRepairPmOptions?.trailerPmDropdownList
                                 }"
-                                [canAddNew]="true"
-                                [activeItem]="selectedTruckTrailerRepairPm[i]"
-                                [options]="
-                                    truckTrailerRepairPmOptions?.truckPmDropdownList ||
-                                    truckTrailerRepairPmOptions?.trailerPmDropdownList
-                                "
-                                (selectedItem)="
-                                    onSelectDropdown(
-                                        $event,
-                                        'pm-truck-trailer-repair-type',
-                                        i
-                                    )
-                                "
-                                (mouseenter)="handleInputHover(true, i, 1)"
-                                (mouseleave)="handleInputHover(false, i, 1)"
-                            ></app-ta-input-dropdown>
+                            >
+                                <app-ta-input-dropdown
+                                    formControlName="pm"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'pm',
+                                        type: 'text',
+                                        label: '',
+                                        placeholderInsteadOfLabel: true,
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        hideClear: true,
+                                        isDropdown: true,
+                                        isIconInput:
+                                            selectedTruckTrailerRepairPm[i],
+                                        isValidIcon: repairBillItemRow.valid,
+                                        inputIcon:
+                                            selectedTruckTrailerRepairPm[i]
+                                                ?.logoName,
+                                        dropdownWidthClass: 'w-col-200',
+                                        blackInput:
+                                            getFormArray().at(i).get('pm')
+                                                .value &&
+                                            !isInputHoverRows[i][1]
+                                    }"
+                                    [canAddNew]="
+                                        truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                        truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                    "
+                                    [activeItem]="
+                                        selectedTruckTrailerRepairPm[i]
+                                    "
+                                    [options]="
+                                        truckTrailerRepairPmOptions?.truckPmDropdownList ||
+                                        truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                    "
+                                    (selectedItem)="
+                                        onSelectDropdown(
+                                            $event,
+                                            'pm-truck-trailer-repair-type',
+                                            i
+                                        )
+                                    "
+                                    (mouseenter)="handleInputHover(true, i, 1)"
+                                    (mouseleave)="handleInputHover(false, i, 1)"
+                                ></app-ta-input-dropdown>
+                            </div>
 
                             <app-ta-input
                                 formControlName="qty"

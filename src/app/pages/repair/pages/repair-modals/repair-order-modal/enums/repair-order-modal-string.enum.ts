@@ -1,6 +1,18 @@
 export enum RepairOrderModalStringEnum {
     SERVICE = 'service',
     SHOP_SERVICE_TYPE = 'shopServiceType',
+    UNIT = 'unit',
+    UNIT_TYPE = 'unitType',
+    INVOICE = 'invoice',
+    DATE = 'date',
+    REPAIR_SHOP_ID = 'repairShopId',
+    ORDER_NO = 'orderNo',
+
+    ORDER = 'Order',
+    BILL = 'Bill',
+
+    TRUCK = 'Truck',
+    TRAILER = 'Trailer',
 
     WIRE_TRANSFER = 'Wire Transfer',
     WIRE_TRANSFER_2 = 'WireTransfer',

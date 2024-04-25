@@ -3,7 +3,9 @@
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [editData]="editData"
     [editName]="editData?.data?.textUnit"
-    [isModalValid]="true"
+    [isModalValid]="
+        repairOrderForm.valid && isFormDirty && isEachDescriptionRowValid
+    "
     [modalTitle]="
         !editData?.type?.includes('edit')
             ? 'Add Repair'
@@ -21,7 +23,7 @@
     "
     (action)="onModalAction($event)"
     (onTabHeaderChange)="onModalHeaderTabChange($event)"
-    ><!--  repairOrderForm.valid && isFormDirty && isEachDescriptionRowValid -->
+>
     <form
         [formGroup]="repairOrderForm"
         class="form-container form-container-without-mb"
@@ -101,14 +103,14 @@
                         name: 'Order No.',
                         type: 'text',
                         label: 'Order No.',
-                        isRequired: false,
+                        isRequired: true,
                         minLength: 1,
                         maxLength: 9
                     }"
                 ></app-ta-input>
 
                 <app-ta-input
-                    formControlName="dateOrder"
+                    formControlName="date"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',

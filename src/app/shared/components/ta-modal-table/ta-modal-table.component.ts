@@ -11,6 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import {
     AbstractControl,
+    FormGroup,
     ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormBuilder,
@@ -35,7 +36,7 @@ import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 
 // constants
-import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/modal-table.constants';
+import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';
 
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
@@ -166,7 +167,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         this.checkForInputChanges();
 
-        this.calculateSubtotal();
+        this.calculateRepairBillSubtotal();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -188,6 +189,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         ) {
             this.getDropdownLists(changes.dropdownData.currentValue);
         }
+
+        if (changes.isRepairOrderTable) {
+            this.getConstantData();
+
+            this.resetIsRepairBillTableForm();
+        }
     }
 
     public trackByIdentity = (_: number, item: string): string => item;
@@ -197,6 +204,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             phoneTableItems: this.formBuilder.array([]),
             emailTableItems: this.formBuilder.array([]),
             repairBillTableItems: this.formBuilder.array([]),
+            repairOrderTableItems: this.formBuilder.array([]),
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
         });
@@ -268,121 +276,158 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     private getDropdownLists(
         dropdownData?: TruckTrailerPmDropdownLists[]
     ): void {
-        if (this.isPhoneTable || this.isEmailTable) {
-            this.contactService
-                .getCompanyContactModal()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.contactPhoneTypeOptions = res.contactPhoneType;
-                    this.contactEmailTypeOptions = res.contactEmailType;
-                });
-        } else if (this.isRepairBillTable) {
-            this.truckTrailerRepairPmOptions = dropdownData;
-        } else if (this.isContactTable) {
-            this.repairService
-                .getRepairShopModalDropdowns()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    this.repairDepartmentOptions = res.departments;
-                });
-        } else if (this.isPMTruckTable) {
-            this.pmService
-                .getPMTruckDropdown()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res) => {
-                        const pmDropdownList: ModalTableDropdownOption[] = [
-                            {
-                                id: 7655,
-                                name: TableStringEnum.ADD_NEW_3,
-                                logoName: null,
-                                folder: TableStringEnum.COMMON,
-                                subFolder: TableStringEnum.REPAIR_PM,
-                                mileage: TableStringEnum.PM_DEFAULT_MILEAGE,
-                            },
-                        ];
+        switch (true) {
+            case this.isPhoneTable || this.isEmailTable:
+                this.contactService
+                    .getCompanyContactModal()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((res) => {
+                        this.contactPhoneTypeOptions = res.contactPhoneType;
+                        this.contactEmailTypeOptions = res.contactEmailType;
+                    });
 
-                        res.map((pmTruck, index) => {
-                            pmDropdownList.push({
-                                id: index + 1,
-                                name: pmTruck.title,
-                                logoName: pmTruck.logoName,
-                                folder: TableStringEnum.COMMON,
-                                subFolder: TableStringEnum.REPAIR_PM,
-                                mileage:
-                                    MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        pmTruck.mileage
-                                    ),
+                break;
+            case this.isRepairBillTable || this.isRepairOrderTable:
+                this.truckTrailerRepairPmOptions = dropdownData;
+
+                break;
+            case this.isContactTable:
+                this.repairService
+                    .getRepairShopModalDropdowns()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe((res) => {
+                        this.repairDepartmentOptions = res.departments;
+                    });
+
+                break;
+            case this.isPMTruckTable:
+                this.pmService
+                    .getPMTruckDropdown()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (res) => {
+                            const pmDropdownList: ModalTableDropdownOption[] = [
+                                {
+                                    id: 7655,
+                                    name: TableStringEnum.ADD_NEW_3,
+                                    logoName: null,
+                                    folder: TableStringEnum.COMMON,
+                                    subFolder: TableStringEnum.REPAIR_PM,
+                                    mileage: TableStringEnum.PM_DEFAULT_MILEAGE,
+                                },
+                            ];
+
+                            res.map((pmTruck, index) => {
+                                pmDropdownList.push({
+                                    id: index + 1,
+                                    name: pmTruck.title,
+                                    logoName: pmTruck.logoName,
+                                    folder: TableStringEnum.COMMON,
+                                    subFolder: TableStringEnum.REPAIR_PM,
+                                    mileage:
+                                        MethodsCalculationsHelper.convertNumberInThousandSep(
+                                            pmTruck.mileage
+                                        ),
+                                });
                             });
-                        });
 
-                        this.pmTruckOptions = pmDropdownList;
-                    },
-                });
-        } else if (this.isPMTrailerTable) {
-            this.pmService
-                .getPMTrailerDropdown()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res) => {
-                        const pmDropdownList: ModalTableDropdownOption[] = [
-                            {
-                                id: 7655,
-                                name: TableStringEnum.ADD_NEW_3,
-                                logoName: null,
-                                folder: TableStringEnum.COMMON,
-                                subFolder: TableStringEnum.REPAIR_PM,
-                                mileage: '6',
-                            },
-                        ];
+                            this.pmTruckOptions = pmDropdownList;
+                        },
+                    });
 
-                        res.map((pmTrailer, index) => {
-                            pmDropdownList.push({
-                                id: index + 1,
-                                name: pmTrailer.title,
-                                logoName: pmTrailer.logoName,
-                                folder: TableStringEnum.COMMON,
-                                subFolder: TableStringEnum.REPAIR_PM,
-                                mileage: pmTrailer.months.toString(),
+                break;
+            case this.isPMTrailerTable:
+                this.pmService
+                    .getPMTrailerDropdown()
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: (res) => {
+                            const pmDropdownList: ModalTableDropdownOption[] = [
+                                {
+                                    id: 7655,
+                                    name: TableStringEnum.ADD_NEW_3,
+                                    logoName: null,
+                                    folder: TableStringEnum.COMMON,
+                                    subFolder: TableStringEnum.REPAIR_PM,
+                                    mileage: '6',
+                                },
+                            ];
+
+                            res.map((pmTrailer, index) => {
+                                pmDropdownList.push({
+                                    id: index + 1,
+                                    name: pmTrailer.title,
+                                    logoName: pmTrailer.logoName,
+                                    folder: TableStringEnum.COMMON,
+                                    subFolder: TableStringEnum.REPAIR_PM,
+                                    mileage: pmTrailer.months.toString(),
+                                });
                             });
-                        });
 
-                        this.pmTrailerOptions = pmDropdownList;
-                    },
-                });
+                            this.pmTrailerOptions = pmDropdownList;
+                        },
+                    });
+
+                break;
+            default:
+                break;
         }
     }
 
     private getConstantData(): void {
-        if (this.isPhoneTable)
-            this.modalTableHeaders =
-                ModalTableConstants.PHONE_TABLE_HEADER_ITEMS;
-        else if (this.isEmailTable)
-            this.modalTableHeaders =
-                ModalTableConstants.EMAIL_TABLE_HEADER_ITEMS;
-        else if (this.isRepairBillTable)
-            this.modalTableHeaders =
-                ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS;
-        else if (this.isContactTable)
-            this.modalTableHeaders =
-                ModalTableConstants.CONTACT_TABLE_HEADER_ITEMS;
-        else if (this.isPMTruckTable)
-            this.modalTableHeaders =
-                ModalTableConstants.PM_TRUCK_TABLE_HEADER_ITEMS;
-        else if (this.isPMTrailerTable)
-            this.modalTableHeaders =
-                ModalTableConstants.PM_TRAILER_TABLE_HEADER_ITEMS;
+        switch (true) {
+            case this.isPhoneTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.PHONE_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isEmailTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.EMAIL_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isRepairBillTable && !this.isRepairOrderTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isRepairOrderTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.REPAIR_ORDER_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isContactTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.CONTACT_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isPMTruckTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.PM_TRUCK_TABLE_HEADER_ITEMS;
+
+                break;
+            case this.isPMTrailerTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.PM_TRAILER_TABLE_HEADER_ITEMS;
+
+                break;
+            default:
+                break;
+        }
     }
 
     private getModalTableDataValue(): void {
         let modalTableValue = this.getFormArray().value;
 
-        if (this.isRepairBillTable) {
+        if (this.isRepairBillTable || this.isRepairOrderTable) {
             modalTableValue = modalTableValue.map(
                 (itemRow: AbstractControl, index: number) => {
                     return {
                         ...itemRow,
-                        subtotal: this.subTotals[index]?.subtotal,
+                        ...(this.isRepairBillTable &&
+                            !this.isRepairOrderTable && {
+                                subtotal: this.subTotals[index]?.subtotal,
+                            }),
                         pmTruckId:
                             this.selectedTruckTrailerRepairPm[index]?.truckId &&
                             this.selectedTruckTrailerRepairPm[index]?.id,
@@ -399,26 +444,33 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public getFormArray(): UntypedFormArray {
-        if (this.isPhoneTable)
-            return this.modalTableForm.get(
-                TaModalTableStringEnum.PHONE_TABLE_ITEMS
-            ) as UntypedFormArray;
-        else if (this.isEmailTable) {
-            return this.modalTableForm.get(
-                TaModalTableStringEnum.EMAIL_TABLE_ITEMS
-            ) as UntypedFormArray;
-        } else if (this.isRepairBillTable) {
-            return this.modalTableForm.get(
-                TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS
-            ) as UntypedFormArray;
-        } else if (this.isContactTable) {
-            return this.modalTableForm.get(
-                TaModalTableStringEnum.CONTACT_TABLE_ITEMS
-            ) as UntypedFormArray;
-        } else if (this.isPMTruckTable || this.isPMTrailerTable) {
-            return this.modalTableForm.get(
-                TaModalTableStringEnum.PM_TABLE_ITEMS
-            ) as UntypedFormArray;
+        switch (true) {
+            case this.isPhoneTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.PHONE_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isEmailTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.EMAIL_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isRepairBillTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isRepairOrderTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.REPAIR_ORDER_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isContactTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.CONTACT_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isPMTruckTable || this.isPMTrailerTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.PM_TABLE_ITEMS
+                ) as UntypedFormArray;
+            default:
+                break;
         }
     }
 
@@ -427,65 +479,92 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         let newFormArrayRow: UntypedFormGroup;
 
-        if (this.isPhoneTable) {
-            newFormArrayRow = this.formBuilder.group({
-                phone: [null, [Validators.required, phoneFaxRegex]],
-                phoneExt: [null, phoneExtension],
-                contactPhoneType: [null],
-            });
+        switch (true) {
+            case this.isPhoneTable:
+                newFormArrayRow = this.formBuilder.group({
+                    phone: [null, [Validators.required, phoneFaxRegex]],
+                    phoneExt: [null, phoneExtension],
+                    contactPhoneType: [null],
+                });
 
-            this.isContactPhoneExtExist = [
-                ...this.isContactPhoneExtExist,
-                false,
-            ];
-        } else if (this.isEmailTable) {
-            newFormArrayRow = this.formBuilder.group({
-                email: [null, [Validators.required]],
-                contactEmailType: [null],
-            });
+                this.isContactPhoneExtExist = [
+                    ...this.isContactPhoneExtExist,
+                    false,
+                ];
 
-            this.inputService.customInputValidator(
-                newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
-                TaModalTableStringEnum.EMAIL,
-                this.destroy$
-            );
-        } else if (this.isRepairBillTable) {
-            newFormArrayRow = this.formBuilder.group({
-                description: [null, [Validators.required]],
-                pm: [null],
-                qty: [null, [Validators.required]],
-                price: [null, [Validators.required]],
-            });
-        } else if (this.isContactTable) {
-            newFormArrayRow = this.formBuilder.group({
-                fullName: [null, [Validators.required]],
-                departmant: [null, [Validators.required]],
-                phone: [null, [Validators.required, phoneFaxRegex]],
-                ext: [null, phoneExtension],
-                email: [null, [Validators.required]],
-            });
+                break;
+            case this.isEmailTable:
+                newFormArrayRow = this.formBuilder.group({
+                    email: [null, [Validators.required]],
+                    contactEmailType: [null],
+                });
 
-            this.isContactPhoneExtExist = [
-                ...this.isContactPhoneExtExist,
-                false,
-            ];
+                this.inputService.customInputValidator(
+                    newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
+                    TaModalTableStringEnum.EMAIL,
+                    this.destroy$
+                );
 
-            this.inputService.customInputValidator(
-                newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
-                TaModalTableStringEnum.EMAIL,
-                this.destroy$
-            );
-        } else if (this.isPMTruckTable || this.isPMTrailerTable) {
-            newFormArrayRow = this.formBuilder.group({
-                id: [null],
-                isChecked: [true, [Validators.required]],
-                svg: [TableStringEnum.PM_DEFAULT_SVG, [Validators.required]],
-                title: [null, [Validators.required, ...descriptionValidation]],
-                mileage: [null, [Validators.required]],
-                defaultMileage: [null, [Validators.required]],
-                status: [null],
-                value: [null],
-            });
+                break;
+            case this.isRepairBillTable && !this.isRepairOrderTable:
+                newFormArrayRow = this.formBuilder.group({
+                    description: [null, [Validators.required]],
+                    pm: [null],
+                    qty: [null, [Validators.required]],
+                    price: [null, [Validators.required]],
+                });
+
+                break;
+            case this.isRepairOrderTable:
+                newFormArrayRow = this.formBuilder.group({
+                    description: [null, [Validators.required]],
+                    pm: [null],
+                    qty: [null, [Validators.required]],
+                });
+
+                break;
+            case this.isContactTable:
+                newFormArrayRow = this.formBuilder.group({
+                    fullName: [null, [Validators.required]],
+                    departmant: [null, [Validators.required]],
+                    phone: [null, [Validators.required, phoneFaxRegex]],
+                    ext: [null, phoneExtension],
+                    email: [null, [Validators.required]],
+                });
+
+                this.isContactPhoneExtExist = [
+                    ...this.isContactPhoneExtExist,
+                    false,
+                ];
+
+                this.inputService.customInputValidator(
+                    newFormArrayRow.get(TaModalTableStringEnum.EMAIL),
+                    TaModalTableStringEnum.EMAIL,
+                    this.destroy$
+                );
+
+                break;
+            case this.isPMTruckTable || this.isPMTrailerTable:
+                newFormArrayRow = this.formBuilder.group({
+                    id: [null],
+                    isChecked: [true, [Validators.required]],
+                    svg: [
+                        TableStringEnum.PM_DEFAULT_SVG,
+                        [Validators.required],
+                    ],
+                    title: [
+                        null,
+                        [Validators.required, ...descriptionValidation],
+                    ],
+                    mileage: [null, [Validators.required]],
+                    defaultMileage: [null, [Validators.required]],
+                    status: [null],
+                    value: [null],
+                });
+
+                break;
+            default:
+                break;
         }
 
         this.isInputHoverRows = [...this.isInputHoverRows, newIsInputHoverRow];
@@ -493,59 +572,22 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.getFormArray().push(newFormArrayRow);
     }
 
-    public calculateSubtotal(): void {
-        this.modalTableForm
-            .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
-            .valueChanges.pipe(
-                takeUntil(this.destroy$),
-                distinctUntilChanged(),
-                throttleTime(2)
-            )
-            .subscribe((items: RepairDescriptionResponse[]) => {
-                if (items.length) this.subTotals = [];
-
-                items.forEach((item, index) => {
-                    const calculateSubtotal =
-                        parseInt(String(item.qty)) * parseInt(item.price);
-
-                    const existingItemIndex = this.subTotals.findIndex(
-                        (item) => item.index === index
-                    );
-
-                    if (calculateSubtotal) {
-                        if (existingItemIndex !== -1) {
-                            this.subTotals[existingItemIndex].subtotal =
-                                calculateSubtotal;
-                        } else {
-                            this.subTotals.push({
-                                subtotal: calculateSubtotal,
-                                index: index,
-                            });
-                        }
-                    } else {
-                        if (existingItemIndex !== -1) {
-                            this.subTotals[existingItemIndex].subtotal = 0;
-                        } else {
-                            this.subTotals.push({
-                                subtotal: 0,
-                                index: index,
-                            });
-                        }
-                    }
-
-                    this.totalCostValueEmitter.emit(this.subTotals);
-                });
-            });
-    }
-
     public deleteFormArrayRow(index: number): void {
         this.getFormArray().removeAt(index);
 
-        if (this.isPhoneTable) {
-            this.isContactPhoneExtExist.splice(index, 1);
-            this.selectedContactPhoneType.splice(index, 1);
-        } else if (this.isEmailTable)
-            this.selectedContactEmailType.splice(index, 1);
+        switch (true) {
+            case this.isPhoneTable:
+                this.isContactPhoneExtExist.splice(index, 1);
+                this.selectedContactPhoneType.splice(index, 1);
+
+                break;
+            case this.isEmailTable:
+                this.selectedContactEmailType.splice(index, 1);
+
+                break;
+            default:
+                break;
+        }
 
         this.getModalTableDataValue();
     }
@@ -574,58 +616,88 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         for (let i = 0; i < modalTableData.length; i++) {
             this.createFormArrayRow();
 
-            if (this.isPhoneTable) {
-                const data = modalTableData[i] as ContactPhoneResponse;
+            switch (true) {
+                case this.isPhoneTable:
+                    const phoneData = modalTableData[i] as ContactPhoneResponse;
 
-                this.getFormArray().at(i).patchValue({
-                    phone: data.phone,
-                    phoneExt: data.phoneExt,
-                    contactPhoneType: data.contactPhoneType.name,
-                });
+                    this.getFormArray().at(i).patchValue({
+                        phone: phoneData.phone,
+                        phoneExt: phoneData.phoneExt,
+                        contactPhoneType: phoneData.contactPhoneType.name,
+                    });
 
-                if (data.phoneExt) this.isContactPhoneExtExist[i] = true;
+                    if (phoneData.phoneExt)
+                        this.isContactPhoneExtExist[i] = true;
 
-                if (data.contactPhoneType.name)
-                    this.selectedContactPhoneType[i] = data.contactPhoneType;
-            } else if (this.isEmailTable) {
-                const data = modalTableData[i] as ContactEmailResponse;
+                    if (phoneData.contactPhoneType.name)
+                        this.selectedContactPhoneType[i] =
+                            phoneData.contactPhoneType;
 
-                this.getFormArray().at(i).patchValue({
-                    email: data.email,
-                    contactEmailType: data.contactEmailType.name,
-                });
+                    break;
+                case this.isEmailTable:
+                    const emailData = modalTableData[i] as ContactEmailResponse;
 
-                this.inputService.customInputValidator(
-                    this.getFormArray().at(i).get(TaModalTableStringEnum.EMAIL),
-                    TaModalTableStringEnum.EMAIL,
-                    this.destroy$
-                );
+                    this.getFormArray().at(i).patchValue({
+                        email: emailData.email,
+                        contactEmailType: emailData.contactEmailType.name,
+                    });
 
-                if (data.contactEmailType.name)
-                    this.selectedContactEmailType[i] = data.contactEmailType;
-            } else if (this.isRepairBillTable) {
-                const data = modalTableData[i] as RepairDescriptionResponse;
+                    this.inputService.customInputValidator(
+                        this.getFormArray()
+                            .at(i)
+                            .get(TaModalTableStringEnum.EMAIL),
+                        TaModalTableStringEnum.EMAIL,
+                        this.destroy$
+                    );
 
-                this.getFormArray().at(i).patchValue({
-                    description: data.description,
-                    pm: data.pm,
-                    qty: data.qty,
-                    price: data.price,
-                    subtotal: data.subtotal,
-                });
-            } else if (this.isPMTruckTable || this.isPMTrailerTable) {
-                const data = modalTableData[i] as PMTableData;
+                    if (emailData.contactEmailType.name)
+                        this.selectedContactEmailType[i] =
+                            emailData.contactEmailType;
 
-                this.getFormArray().at(i).patchValue({
-                    id: data.id,
-                    isChecked: data.isChecked,
-                    svg: data.svg,
-                    title: data.title,
-                    mileage: data.mileage,
-                    defaultMileage: data.defaultMileage,
-                    status: data.status,
-                    value: data.title,
-                });
+                    break;
+                case this.isRepairBillTable:
+                    const repairBillData = modalTableData[
+                        i
+                    ] as RepairDescriptionResponse;
+
+                    this.getFormArray().at(i).patchValue({
+                        description: repairBillData.description,
+                        pm: repairBillData.pm,
+                        qty: repairBillData.qty,
+                        price: repairBillData.price,
+                        subtotal: repairBillData.subtotal,
+                    });
+
+                    break;
+                case this.isRepairOrderTable:
+                    const repairOrderData = modalTableData[
+                        i
+                    ] as RepairDescriptionResponse;
+
+                    this.getFormArray().at(i).patchValue({
+                        description: repairOrderData.description,
+                        pm: repairOrderData.pm,
+                        qty: repairOrderData.qty,
+                    });
+
+                    break;
+                case this.isPMTruckTable || this.isPMTrailerTable:
+                    const pmData = modalTableData[i] as PMTableData;
+
+                    this.getFormArray().at(i).patchValue({
+                        id: pmData.id,
+                        isChecked: pmData.isChecked,
+                        svg: pmData.svg,
+                        title: pmData.title,
+                        mileage: pmData.mileage,
+                        defaultMileage: pmData.defaultMileage,
+                        status: pmData.status,
+                        value: pmData.title,
+                    });
+
+                    break;
+                default:
+                    break;
             }
 
             if (i === modalTableData.length - 1) {
@@ -657,6 +729,84 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     }
                 }
             });
+    }
+
+    public calculateRepairBillSubtotal(): void {
+        if (this.isRepairBillTable && !this.isRepairOrderTable)
+            this.modalTableForm
+                .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
+                .valueChanges.pipe(
+                    takeUntil(this.destroy$),
+                    distinctUntilChanged(),
+                    throttleTime(2)
+                )
+                .subscribe((items: RepairDescriptionResponse[]) => {
+                    if (items.length) this.subTotals = [];
+
+                    items.forEach((item, index) => {
+                        const calculateSubtotal =
+                            parseInt(String(item.qty)) * parseInt(item.price);
+
+                        const existingItemIndex = this.subTotals.findIndex(
+                            (item) => item.index === index
+                        );
+
+                        if (calculateSubtotal) {
+                            if (existingItemIndex !== -1) {
+                                this.subTotals[existingItemIndex].subtotal =
+                                    calculateSubtotal;
+                            } else {
+                                this.subTotals.push({
+                                    subtotal: calculateSubtotal,
+                                    index: index,
+                                });
+                            }
+                        } else {
+                            if (existingItemIndex !== -1) {
+                                this.subTotals[existingItemIndex].subtotal = 0;
+                            } else {
+                                this.subTotals.push({
+                                    subtotal: 0,
+                                    index: index,
+                                });
+                            }
+                        }
+
+                        this.totalCostValueEmitter.emit(this.subTotals);
+                    });
+                });
+    }
+
+    private resetIsRepairBillTableForm(): void {
+        if (!this.isRepairOrderTable) {
+            const formArray = this.getFormArray();
+
+            if (formArray) {
+                formArray.controls.forEach((control) => {
+                    if (control instanceof FormGroup) {
+                        control.addControl(
+                            TaModalTableStringEnum.PRICE,
+                            this.formBuilder.control(null, Validators.required)
+                        );
+                    }
+                });
+            }
+        }
+
+        if (this.isRepairOrderTable) {
+            const formArray = this.getFormArray();
+
+            if (formArray) {
+                formArray.controls.forEach((control) => {
+                    if (control instanceof FormGroup) {
+                        this.inputService.changeValidators(
+                            control.get(TaModalTableStringEnum.PRICE),
+                            false
+                        );
+                    }
+                });
+            }
+        }
     }
 
     ngOnDestroy(): void {

@@ -15,6 +15,13 @@ export class ModalTableConstants {
         'SUBTOTAL',
     ];
 
+    static REPAIR_ORDER_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'DESCRIPTION',
+        'PM',
+        'QTY',
+    ];
+
     static CONTACT_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'FULL NAME',
