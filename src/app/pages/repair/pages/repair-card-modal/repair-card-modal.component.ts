@@ -95,6 +95,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     public titlesInForm: string[] = [];
     public displayData$: Observable<CardsModalData>;
     private subscription: Subscription = new Subscription();
+    public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
     constructor(
@@ -279,8 +280,6 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     }
 
     private updateStore(): void {
-        console.log(this.cardsForm.value, 'dataToSavedataToSave');
-
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
@@ -318,7 +317,6 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         this.cardsForm.valueChanges
             .pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                console.log(value, 'value change');
                 const valuesInform = Object.values(value);
 
                 this.filterTitlesFromForm(valuesInform);
@@ -372,7 +370,6 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         this.subscription.add(
             this.displayData$.pipe(first()).subscribe((data) => {
                 this.createForm(data);
-                console.log('Data received:', data);
             })
         );
         this.cardsAllData =

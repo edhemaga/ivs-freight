@@ -44,6 +44,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { RepairService } from '@shared/services/repair.service';
+import { RepairData } from '@pages/repair/models/repair-data.model';
 
 @Component({
     selector: 'app-repair-card',
@@ -104,7 +105,7 @@ export class RepairCardComponent
         private repairService: RepairService,
 
         //Helpers
-        private cardHelper: CardHelper,
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -153,7 +154,7 @@ export class RepairCardComponent
                 this.isAllCardsFlipp = res;
 
                 this.isCardFlippedCheckInCards = [];
-                this.cardHelper.isCardFlippedArrayComparasion = []; 
+                this.cardHelper.isCardFlippedArrayComparasion = [];
             });
     }
 
@@ -245,7 +246,7 @@ export class RepairCardComponent
         return item;
     }
 
-    public onCardActions(event: any): void {
+    public onCardActions(event: RepairData): void {
         switch (event.type) {
             case TableStringEnum.VIEW_DETAILS:
                 if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
@@ -314,13 +315,7 @@ export class RepairCardComponent
                             { size: TableStringEnum.SMALL },
                             {
                                 ...event,
-                                openedTab:
-                                    event.type === TableStringEnum.ADD_CONTRACT
-                                        ? TableStringEnum.CONTRACT
-                                        : event.type ===
-                                          TableStringEnum.WRITE_REVIEW
-                                        ? TableStringEnum.REVIEW
-                                        : TableStringEnum.DETAILS,
+                                openedTab: this.selectedTab,
                             }
                         );
                         break;

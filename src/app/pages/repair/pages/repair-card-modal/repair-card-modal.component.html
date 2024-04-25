@@ -22,45 +22,19 @@
                     No. of Rows
                 </div>
                 <div class="form-radio-btns d-flex">
-                    <label class="d-flex align-items-center radio-label">
-                        <input
-                            type="radio"
-                            formControlName="numberOfRows"
-                            [value]="3"
-                            class="radio-input"
-                        />
-                        <span class="ta-font-semi-bold radio-span"> 3 </span>
-                    </label>
-
-                    <label class="d-flex align-items-center radio-label">
-                        <input
-                            type="radio"
-                            formControlName="numberOfRows"
-                            [value]="4"
-                            class="radio-input"
-                        />
-                        <span class="ta-font-semi-bold radio-span"> 4 </span>
-                    </label>
-
-                    <label class="d-flex align-items-center radio-label">
-                        <input
-                            type="radio"
-                            formControlName="numberOfRows"
-                            [value]="5"
-                            class="radio-input"
-                        />
-                        <span class="ta-font-semi-bold radio-span"> 5 </span>
-                    </label>
-
-                    <label class="d-flex align-items-center radio-label">
-                        <input
-                            type="radio"
-                            formControlName="numberOfRows"
-                            [value]="6"
-                            class="radio-input"
-                        />
-                        <span class="ta-font-semi-bold radio-span"> 6 </span>
-                    </label>
+                    <ng-container *ngFor="let item of rowValues">
+                        <label class="d-flex align-items-center radio-label">
+                            <input
+                                type="radio"
+                                formControlName="numberOfRows"
+                                [value]="item"
+                                class="radio-input"
+                            />
+                            <span class="ta-font-semi-bold radio-span">
+                                {{ item }}
+                            </span>
+                        </label>
+                    </ng-container>
                 </div>
             </div>
 
@@ -91,7 +65,7 @@
                                 [formGroupName]="i"
                                 class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                             >
-                                <ng-cotnainer
+                                <ng-container
                                     *ngIf="
                                         front_side_form.at(i).get('inputItem')
                                             .value.title !== 'empty'
@@ -100,7 +74,7 @@
                                     <span
                                         class="input-title ta-font-semi-bold"
                                         >{{ i + 1 | numberOrdinal }}</span
-                                    ></ng-cotnainer
+                                    ></ng-container
                                 >
 
                                 <app-modal-input-form
@@ -156,7 +130,7 @@
                                     [formGroupName]="i"
                                     class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                                 >
-                                    <ng-cotnainer
+                                    <ng-container
                                         *ngIf="
                                             back_side_form
                                                 .at(i)
@@ -167,7 +141,7 @@
                                         <span
                                             class="input-title ta-font-semi-bold"
                                             >{{ i + 1 | numberOrdinal }}</span
-                                        ></ng-cotnainer
+                                        ></ng-container
                                     >
 
                                     <app-modal-input-form
