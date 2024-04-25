@@ -272,6 +272,7 @@ export enum TableStringEnum {
     FAVORITE = 'favorite',
     FINISH_ORDER = 'finish-order',
     DELETE_REPAIR = 'delete-repair',
+    DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair-shop',
@@ -291,6 +292,7 @@ export enum TableStringEnum {
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
     REPAIR_MODAL = 'repair-modal',
+    REPAIR_DETAIL = 'repair-detail',
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -318,6 +320,8 @@ export enum TableStringEnum {
     REPAIR_2 = 'repair',
     TRUCK_REPAIR = 'truck repair',
     TRAILER_REPAIR = 'trailer repair',
+    REPAIR_ORDER = 'repair order',
+    REPAIR_REVIEW = 'repair-review',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',

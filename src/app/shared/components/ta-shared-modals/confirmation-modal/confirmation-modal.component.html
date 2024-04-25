@@ -1,6 +1,8 @@
 <app-ta-modal
     [modalTitle]="
-        editData.cdlStatus
+        editData?.modalHeaderTitle
+            ? editData.modalHeaderTitle
+            : editData.cdlStatus
             ? editData.cdlStatus.concat(' ', 'CDL')
             : editData?.type === 'info'
             ? editData?.subType === 'archive'
@@ -511,10 +513,24 @@
                                     <ng-container
                                         *ngIf="editData?.data?.tableCost"
                                         >-
-                                        {{
-                                            editData.data.tableCost
-                                        }}</ng-container
+                                        {{ editData.data.tableCost }}
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="
+                                            editData?.data?.repairType?.name ===
+                                            'Order'
+                                        "
                                     >
+                                        - Order
+                                        <span>
+                                            <svg-icon
+                                                class="order-icon"
+                                                [src]="
+                                                    'assets/svg/common/ic_note_order.svg'
+                                                "
+                                            ></svg-icon>
+                                        </span>
+                                    </ng-container>
                                 </p>
                                 <p class="m-0 text-2">
                                     {{ editData?.data?.tableShopName }}
@@ -526,11 +542,127 @@
 
                         <ng-container *ngSwitchCase="'repair-shop'">
                             <div class="confirmation-body-content">
-                                <p class="m-0 text-1 ta-font-bold">
-                                    {{ editData?.data?.name }}
-                                </p>
+                                <div class="d-flex align-items-center">
+                                    <p
+                                        class="m-0 text-1 ta-font-bold"
+                                        [class.shorter-text]="
+                                            !editData?.data?.status
+                                        "
+                                    >
+                                        {{ editData?.data?.name }}
+                                    </p>
+
+                                    <ng-container
+                                        *ngIf="!editData?.data?.status"
+                                    >
+                                        <svg-icon
+                                            class="d-flex ms-1"
+                                            src="assets/svg/common/ic_closed_broker.svg"
+                                        ></svg-icon
+                                    ></ng-container>
+                                </div>
+
                                 <p class="m-0 text-2">
-                                    {{ editData?.data?.address }}
+                                    {{ editData?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Repair and Order Detail -->
+
+                        <ng-container *ngSwitchCase="'repair-detail'">
+                            <div class="confirmation-body-content">
+                                <div class="d-flex">
+                                    <p class="m-0 text-1 ta-font-bold">
+                                        Unit
+                                        {{
+                                            editData?.data?.truck
+                                                ? editData?.data?.truck
+                                                      .truckNumber
+                                                : editData?.data?.trailer
+                                                      ?.trailerNumber
+                                        }}
+                                    </p>
+                                    <p class="ms-1 text-1 ta-font-bold">
+                                        <ng-container
+                                            *ngIf="
+                                                editData?.data?.repairType
+                                                    ?.name === 'Bill'
+                                            "
+                                        >
+                                            - ${{
+                                                editData.data.total
+                                                    | thousandSeparator
+                                            }}
+                                        </ng-container>
+
+                                        <ng-container
+                                            *ngIf="
+                                                editData?.data?.repairType
+                                                    ?.name === 'Order'
+                                            "
+                                        >
+                                            - Order
+                                            <span>
+                                                <svg-icon
+                                                    class="order-icon"
+                                                    [src]="
+                                                        'assets/svg/common/ic_note_order.svg'
+                                                    "
+                                                ></svg-icon>
+                                            </span>
+                                        </ng-container>
+                                    </p>
+                                </div>
+
+                                <p class="m-0 text-2">
+                                    {{
+                                        editData?.data?.invoice
+                                            ? editData.data.invoice
+                                            : editData?.data?.date
+                                            ? (editData.data.date | formatDateP)
+                                            : (editData?.data?.createdAt
+                                              | formatDateP)
+                                    }}
+                                </p>
+
+                                <div
+                                    class="item-card mt-2 d-flex align-items-center justify-content-center"
+                                >
+                                    <p class="uppercase ta-font-bold">
+                                        {{ editData?.data?.repairShop?.name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- Repair Shop Review -->
+
+                        <ng-container *ngSwitchCase="'repair-review'">
+                            <div class="confirmation-body-content">
+                                <div class="d-flex align-items-center">
+                                    <p class="m-0 text-1 ta-font-bold">
+                                        {{ editData?.data?.comment }}
+                                    </p>
+
+                                    <span>
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/ic_review_like.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+                                    </span>
+                                </div>
+
+                                <p class="m-0 text-2">
+                                    {{
+                                        editData?.data?.updatedAt
+                                            | formatDateP : 'date-time'
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -697,7 +829,7 @@
                         </ng-container>
 
                         <!-- Account/User -->
-                        
+
                         <ng-container *ngSwitchCase="'user'">
                             <div class="confirmation-info">
                                 <p class="m-0 confirmation-text-1 large-text-1">
@@ -787,8 +919,24 @@
                                     Unit {{ item?.data?.tableUnit }}
                                     <ng-container *ngIf="item?.data?.tableCost"
                                         >-
-                                        {{ item.data.tableCost }}</ng-container
+                                        {{ item.data.tableCost }}
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="
+                                            item?.data?.repairType?.name ===
+                                            'Order'
+                                        "
                                     >
+                                        - Order
+                                        <span>
+                                            <svg-icon
+                                                class="order-icon"
+                                                [src]="
+                                                    'assets/svg/common/ic_note_order.svg'
+                                                "
+                                            ></svg-icon>
+                                        </span>
+                                    </ng-container>
                                 </p>
                                 <p class="m-0 text-2">
                                     {{ item?.data?.tableShopName }}
@@ -805,11 +953,26 @@
                                     'mb-2': i !== editData.array.length - 1
                                 }"
                             >
-                                <p class="m-0 text-1 ta-font-bold">
-                                    {{ item?.data?.name }}
-                                </p>
+                                <div class="d-flex align-items-center">
+                                    <p
+                                        class="m-0 text-1 ta-font-bold"
+                                        [class.shorter-text]="
+                                            !item?.data?.status
+                                        "
+                                    >
+                                        {{ item?.data?.name }}
+                                    </p>
+
+                                    <ng-container *ngIf="!item?.data?.status">
+                                        <svg-icon
+                                            class="d-flex ms-1"
+                                            src="assets/svg/common/ic_closed_broker.svg"
+                                        ></svg-icon
+                                    ></ng-container>
+                                </div>
+
                                 <p class="m-0 text-2">
-                                    {{ item?.data?.address }}
+                                    {{ item?.data?.address?.address }}
                                 </p>
                             </div>
                         </ng-container>

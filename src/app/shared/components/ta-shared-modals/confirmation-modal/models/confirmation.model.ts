@@ -19,4 +19,5 @@ export interface Confirmation {
     svg?: boolean; // has svg or not
     rating?: boolean; // has rating or not
     modalHeader?: boolean;
+    modalHeaderTitle?: string;
 }

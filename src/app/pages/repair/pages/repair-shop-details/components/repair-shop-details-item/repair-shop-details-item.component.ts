@@ -268,8 +268,8 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                 {
                     title: 'Delete',
                     name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
+                    type: 'repair-detail',
+                    text: 'Are you sure you want to delete repair(s)?',
                     svg: 'assets/svg/common/ic_trash.svg',
                     danger: true,
                     show: true,
