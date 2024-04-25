@@ -315,6 +315,9 @@ export enum TableStringEnum {
     PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     PM_DEFAULT_MILEAGE = '10,000',
     PM_DEFAULT_MONTHS = '6',
+    REPAIR_2 = 'repair',
+    TRUCK_REPAIR = 'truck repair',
+    TRAILER_REPAIR = 'trailer repair',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -465,6 +468,7 @@ export enum TableStringEnum {
     WEB_IMAGE = 'assets/svg/common/ic_web.svg',
     PASSWORD_IMAGE = 'assets/svg/common/ic_password.svg',
     DELETE_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
+    ACCOUNT = 'Account',
 
     // Actions
     SAVE = 'save',

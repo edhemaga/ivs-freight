@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // modules
 import { AccountRoutingModule } from '@pages/account/account-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // directives
 import { TextToggleDirective } from '@pages/account/pages/account-card/directives/show-hide-pass.directive';
@@ -22,6 +23,9 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 
+// pipes
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+
 @NgModule({
     declarations: [AccountCardComponent, AccountTableComponent],
     imports: [
@@ -32,6 +36,7 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
         NgbModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
 
         // directives
         TextToggleDirective,
@@ -44,6 +49,9 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
         TaInputDropdownLabelComponent,
         TaTableCardDropdownActionsComponent,
         TaNoteComponent,
+
+        // pipes
+        FlipCardsPipe,
     ],
 })
 export class AccountModule {}

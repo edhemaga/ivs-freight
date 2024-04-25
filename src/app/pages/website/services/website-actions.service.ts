@@ -46,6 +46,7 @@ export class WebsiteActionsService {
         return this.sidebarContentWidthSubject.asObservable();
     }
 
+
     get getOpenSidebarSubject$() {
         return this.openSidebarSubject.asObservable();
     }

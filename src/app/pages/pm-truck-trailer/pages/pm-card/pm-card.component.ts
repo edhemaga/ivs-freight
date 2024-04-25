@@ -1,10 +1,8 @@
 import {
     Component,
     Input,
-    OnChanges,
     OnDestroy,
     OnInit,
-    SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -18,6 +16,13 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Components
+import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 @Component({
     selector: 'app-pm-card',
@@ -25,9 +30,11 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
     styleUrls: ['./pm-card.component.scss'],
     providers: [CardHelper],
 })
-export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
+export class PmCardComponent implements OnInit, OnDestroy {
     // All data
-    @Input() viewData: CardDetails[];
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
 
     // Page
     @Input() selectedTab: string;
@@ -40,6 +47,7 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     @Input() cardTitleLink: string;
 
     public cardData: CardDetails;
+    public _viewData: CardDetails[];
 
     public isCardFlippedCheckInCards: number[] = [];
 
@@ -49,9 +57,15 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
+    public valueByStringPathInstance = new CardHelper();
+
 
     constructor(
+        // Services
         private tableService: TruckassistTableService,
+        private modalService: ModalService,
+
+        // Helpers
         private cardHelper: CardHelper
     ) {}
 
@@ -59,55 +73,20 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
         this.flipAllCards();
     }
 
-    ngOnChanges(cardChanges: SimpleChanges) {
-        if (
-            cardChanges.displayRowsBack.currentValue ||
-            cardChanges.displayRowsFront.currentValue
-        )
-            this.getTransformedCardsData();
-    }
-
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
-
-        const cardTitles = this.cardHelper.renderCards(
-            this.viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        const backOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsBack
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
-    }
-
     public flipAllCards(): void {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.isAllCardsFlipp = res;
+
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = [];
             });
     }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
@@ -117,6 +96,41 @@ export class PmCardComponent implements OnInit, OnChanges, OnDestroy {
     // Flip card based on card index
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
+    }
+
+    public onCardActions(event): void {
+        switch (event.type) {
+            case TableStringEnum.CONFIGURE:
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRUCK_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.truck.id,
+                            data: event.data,
+                        }
+                    );
+                } else {
+                    this.modalService.openModal(
+                        PmModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            type: TableStringEnum.EDIT,
+                            header: TableStringEnum.EDIT_TRAILER_PM_HEADER,
+                            action: TableStringEnum.UNIT_PM,
+                            id: event.data.trailer.id,
+                            data: event.data,
+                        }
+                    );
+                }
+
+            default: {
+                break;
+            }
+        }
     }
 
     public trackCard(item: number): number {

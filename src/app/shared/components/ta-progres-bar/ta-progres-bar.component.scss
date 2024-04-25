@@ -76,7 +76,49 @@
         }
     }
 
+    &.disable-hover:hover {
+        background-color: unset;
+        cursor: default;
+    }
+
     &:hover {
         background-color: $dark-2;
     }
+}
+
+// Progress Container
+.bg-sliver-container {
+    background: $dark-2;
+}
+
+.bg-expired-container {
+    background: $ta-red;
+}
+
+.bg-inactive-container {
+    background: $ta-light-grey;
+}
+
+.bg-orange-container {
+    background: $ta-yellow-7;
+}
+
+.bg-danger-container {
+    background: $ta-red-16;
+}
+
+// Progress Bar
+.bg-progress-sliver {
+    background: $muted;
+    width: 80%;
+}
+
+.bg-progress-orange {
+    background: $ta-yellow-1;
+    width: 50%;
+}
+
+.bg-progress-danger {
+    background: $ta-red-10;
+    width: 20%;
 }

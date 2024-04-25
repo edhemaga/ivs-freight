@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -56,20 +56,9 @@
                                 <span
                                     class="title-tooltip"
                                     type="button"
-                                    ngbTooltip
-                                    mainTooltip="View Detail"
-                                    tooltipBackground="#424242"
-                                    position="bottom"
                                     customClass="mt-1"
                                 >
-                                    <ng-container
-                                        *ngFor="
-                                            let title of titleArray;
-                                            trackBy: trackCard
-                                        "
-                                    >
-                                        {{ title[i] }}
-                                    </ng-container>
+                                    {{ card.textUnit }}
                                 </span>
                             </span>
                         </div>
@@ -77,34 +66,27 @@
 
                     <!-- Card body front-->
 
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
-                        }"
-                    >
+                    <div class="card-body-content flipped">
                         <!-- Card body item -->
 
                         <ng-container
                             *ngFor="
-                                let rowsFront of cardsFront;
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsFront[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
+                                    </div>
 
+                                    <ng-container *ngIf="cardRow.field">
                                         <div
                                             class="bottom-item-body d-flex align-items-center"
                                         >
@@ -118,12 +100,24 @@
                                                     mainTooltip="View PM"
                                                     tooltipBackground="#424242"
                                                     position="bottom"
+                                                    [disableTooltip]="
+                                                        (card
+                                                            | valueByStringPath
+                                                                : cardRow.key) ===
+                                                        '/'
+                                                    "
                                                 >
                                                     <app-ta-progres-bar
                                                         [percents]="
-                                                            row.secondKey
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.secondKey
                                                         "
-                                                        [text]="row.key"
+                                                        [text]="
+                                                            card
+                                                                | valueByStringPath
+                                                                    : cardRow.key
+                                                        "
                                                         [hasPopover]="true"
                                                         [type]="
                                                             selectedTab ===
@@ -133,54 +127,26 @@
                                                         "
                                                         [data]="card"
                                                         [columnField]="
-                                                            row.field
+                                                            cardRow.field
                                                         "
                                                     ></app-ta-progres-bar>
                                                 </span>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div>
-
-                    <!-- Card body back -->
-
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
-                        }"
-                    >
-                        <ng-container
-                            *ngFor="
-                                let rowsBack of cardsBack;
-                                trackBy: trackCard
-                            "
-                        >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsBack[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
-
+                                    </ng-container>
+                                    <ng-container *ngIf="!cardRow.field">
                                         <div
                                             class="bottom-item-body d-flex align-items-center gap"
                                         >
-                                            {{ row.key }}
+                                            {{
+                                                card
+                                                    | valueByStringPath
+                                                        : cardRow.key
+                                            }}
                                         </div>
-                                    </div>
+                                    </ng-container>
                                 </div>
-                            </ng-container>
+                            </div>
                         </ng-container>
                     </div>
                 </div>
@@ -193,6 +159,7 @@
 
                         <app-ta-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->

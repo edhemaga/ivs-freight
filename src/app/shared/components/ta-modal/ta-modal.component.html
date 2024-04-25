@@ -64,6 +64,16 @@
                             {{ cardsSecTitle }}
                         </h5>
                     </ng-container>
+
+                    <ng-container
+                        *ngIf="showCounter && confirmationData?.array?.length"
+                    >
+                        <div
+                            class="modal-header-counter d-flex align-items-center justify-content-center ta-font-extra-bold"
+                        >
+                            {{ confirmationData.array.length }}
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
@@ -608,7 +618,11 @@
                                     'contact',
                                     'reset modal',
                                     'user',
-                                    'owner'
+                                    'truck',
+                                    'owner',
+                                    'repair',
+                                    'repair-shop',
+                                    'info'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -773,6 +787,12 @@
                         <button
                             (click)="onAction('business')"
                             class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                            [ngClass]="{
+                                'modal-blue-btn':
+                                    confirmationData?.type === 'open',
+                                'modal-gray-btn':
+                                    confirmationData?.type !== 'open'
+                            }"
                             type="button"
                         >
                             Yes

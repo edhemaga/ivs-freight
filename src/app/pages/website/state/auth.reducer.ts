@@ -1,17 +1,35 @@
+// store
 import { createReducer, on } from '@ngrx/store';
-import * as AuthActions from './auth.actions';
 
-export interface State {
-    home: number;
-    away: number;
-}
+// actions
+import * as AuthActions from '@pages/website/state/actions/login/auth.actions';
 
-export const authState: State = {
-    home: 0,
-    away: 0,
+//models
+import { AuthState } from '@pages/website/state/models/auth-state.model';
+
+export const authState: AuthState = {
+    user: undefined,
+    error: undefined,
+    loading: false,
+    hideSIdebar: false,
 };
 
 export const authReducer = createReducer(
     authState,
-    on(AuthActions.authLogin, (state) => ({ ...state, home: state.home + 1 }))
+    on(AuthActions.authLogin, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+    on(AuthActions.authLoginSuccess, (state, user) => ({
+        ...state,
+        user: user,
+        loading: false,
+        hideSIdebar: true,
+    })),
+    on(AuthActions.authLoginError, (state, error) => ({
+        ...state,
+        error: error.error,
+        loading: false,
+    }))
 );

@@ -1,11 +1,13 @@
 import { AfterViewInit, Component, OnInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 // Helpers
 import {
     getTruckPMColumnDefinition,
     getTrailerPMColumnDefinition,
 } from '@shared/utils/settings/table-settings/pm-columns';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // Components
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
@@ -25,27 +27,34 @@ import {
     PMTrailerUnitResponse,
     PMTruckUnitResponse,
 } from 'appcoretruckassist';
+import { PMTruckFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-truck-filter.model';
+import { PMTrailerFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-trailer-filter.model';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
+import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal/service/pm-cards-modal.service';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
+import { PMTruckFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-truck-filter.constants';
+import { PMTrailerFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-trailer-filter.constants';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // Store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
 import { PmTrailerQuery } from '@pages/pm-truck-trailer/state/pm-trailer-state/pm-trailer.query';
 import { PmListTruckQuery } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.query';
 import { PmListTrailerQuery } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.query';
+import { PMCardModalQuery } from '@pages/pm-truck-trailer/pages/pm-card-modal/state/pm-card-modal.query';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -88,25 +97,38 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public customColumnsTruck: PmTableColumns[] = [];
     public customColumnsTrailer: PmTableColumns[] = [];
 
+    // Filter
+    public pmTruckBackFilterQuery: PMTruckFilter = {
+        ...PMTruckFilterConstants.pmTruckFilterQuery,
+    };
+    public pmTrailerBackFilterQuery: PMTrailerFilter = {
+        ...PMTrailerFilterConstants.pmTrailerFilterQuery,
+    };
+
     constructor(
         // Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private pmService: PmService,
+        private pmCardsModalService: PMCardsModalService,
 
         // Store
         private pmTruckQuery: PmTruckQuery,
         private pmTrailerQuery: PmTrailerQuery,
         private pmListTruckQuery: PmListTruckQuery,
         private pmListTrailerQuery: PmListTrailerQuery,
+        private pmCardModalQuery: PMCardModalQuery,
 
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
-        private thousandToShortFormatPipe: ThousandToShortFormatPipe
+        private thousandToShortFormatPipe: ThousandToShortFormatPipe,
+        public datePipe: DatePipe
     ) {}
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
+        this.updateCardView();
+
         this.setCustomPmColumns();
 
         this.sendPMData();
@@ -119,7 +141,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.pmListSubscribe();
 
-        console.log('pm-table');
+        this.pmCurrentSearchTableData();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -157,6 +179,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 showGeneralPmBtn: true,
                 hideOpenModalButton: true,
+                hideDeleteButton: true,
+                hideActivationButton: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -270,6 +294,8 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.setPmData(activeTableData);
+
+        this.updateCardView();
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -336,6 +362,26 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             default: {
                 break;
             }
+        }
+    }
+
+    public onTableHeadActions(event): void {
+        if (event.action === TableActionsStringEnum.SORT) {
+            if (event.direction) {
+                if (this.selectedTab === TableStringEnum.ACTIVE) {
+                    this.pmTruckBackFilterQuery.sort = event.direction;
+
+                    this.pmTruckBackFilterQuery.pageIndex = 1;
+
+                    this.pmTruckBackFilter(this.pmTruckBackFilterQuery);
+                } else {
+                    this.pmTrailerBackFilterQuery.sort = event.direction;
+
+                    this.pmTrailerBackFilterQuery.pageIndex = 1;
+
+                    this.pmTrailerBackFilter(this.pmTrailerBackFilterQuery);
+                }
+            } else this.sendPMData();
         }
     }
 
@@ -471,7 +517,7 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapPmTruckData(truckUnit: PMTruckUnitResponse): PmTruck {
-        const truck = {
+        const truck: PmTruck = {
             truckTypeClass: truckUnit.truck.truckType.logoName.replace(
                 TableStringEnum.SVG,
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER
@@ -484,14 +530,22 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ),
             textUnit: truckUnit.truck.truckNumber,
             textOdometer: truckUnit.odometer
-                ? truckUnit.odometer.toString()
+                ? this.thousandSeparator.transform(truckUnit.odometer)
                 : null,
             textInv: truckUnit.invoice,
             textLastShop: truckUnit.lastShop,
-            lastService: truckUnit.lastService ?? null,
-            ruMake: 'Carrier',
-            repairShop: truckUnit.lastShop,
-            additionalData: { note: '' },
+            lastService: truckUnit.lastService
+                ? this.datePipe.transform(
+                      truckUnit.lastService,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            textMake: truckUnit.truck?.truckMake?.name,
+            textModel: truckUnit.truck?.model,
+            textYear: truckUnit.truck?.year,
+            textRepairShop: truckUnit.lastShop?.name,
+            textRepairShopAddress: truckUnit.lastShop?.address?.address,
+            note: null,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -523,9 +577,9 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     pm.status?.name !== PMStatus.Inactive
                 ) {
                     truck[pmColumn.field] = {
-                        expirationMiles: pm.diffMileage,
+                        expirationMiles: Math.abs(pm.diffMileage),
                         expirationMilesText: this.thousandSeparator.transform(
-                            pm.diffMileage
+                            Math.abs(pm.diffMileage).toString()
                         ),
                         totalValueText:
                             this.thousandToShortFormatPipe.transform(
@@ -556,12 +610,20 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ),
             textUnit: trailerUnit.trailer.trailerNumber,
             textOdometer: trailerUnit.odometer
-                ? trailerUnit.odometer.toString()
+                ? this.thousandSeparator.transform(trailerUnit.odometer)
                 : null,
-            lastService: trailerUnit.lastService ?? null,
-            repairShop: trailerUnit.lastShop,
-            ruMake: 'Carrier',
-            additionalData: { note: '' },
+            lastService: trailerUnit.lastService
+                ? this.datePipe.transform(
+                      trailerUnit.lastService,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : null,
+            textRepairShop: trailerUnit.lastShop?.name,
+            textRepairShopAddress: trailerUnit.lastShop?.address?.address,
+            textMake: trailerUnit.trailer?.trailerMake?.name,
+            textModel: trailerUnit.trailer?.model,
+            textYear: trailerUnit.trailer?.year,
+            note: '',
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getPMDropdownContent(),
@@ -733,6 +795,154 @@ export class PmTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return [...trailerColumns, ...this.customColumnsTrailer];
         }
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.truckTabCardsConfig();
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.trailerTabCardsConfig();
+                break;
+
+            default:
+                break;
+        }
+
+        this.pmCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private truckTabCardsConfig(): void {
+        this.pmCardModalQuery.truck$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private trailerTabCardsConfig(): void {
+        this.pmCardModalQuery.trailer$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const filteredCardRowsFront =
+                        res.front_side.filter(Boolean);
+
+                    const filteredCardRowsBack = res.back_side.filter(Boolean);
+
+                    this.sendDataToCardsFront = filteredCardRowsFront;
+
+                    this.sendDataToCardsBack = filteredCardRowsBack;
+                }
+            });
+    }
+
+    private pmTruckBackFilter(filter: PMTruckFilter): void {
+        this.pmService
+            .getPMTruckUnitList(
+                filter.truckId,
+                filter.hideInactivePMs,
+                filter.truckTypeId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const newData = [];
+
+                res.pagination.data.map((data) => {
+                    newData.push(this.mapPmTruckData(data));
+                });
+
+                this.viewData = [...newData];
+            });
+    }
+
+    private pmTrailerBackFilter(filter: PMTrailerFilter): void {
+        this.pmService
+            .getPMTrailerUnitList(
+                filter.trailerId,
+                filter.hideInactivePMs,
+                filter.trailerTypeId,
+                filter.pageIndex,
+                filter.pageSize,
+                filter.companyId,
+                filter.sort,
+                filter.searchOne,
+                filter.searchTwo,
+                filter.searchThree
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const newData = [];
+
+                res.pagination.data.map((data) => {
+                    newData.push(this.mapPmTrailerData(data));
+                });
+
+                this.viewData = [...newData];
+            });
+    }
+
+    // Search
+    private pmCurrentSearchTableData(): void {
+        this.tableService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
+                        this.pmTruckBackFilterQuery.pageIndex = 1;
+
+                        const searchEvent = MethodsGlobalHelper.tableSearch(
+                            res,
+                            this.pmTruckBackFilterQuery
+                        );
+
+                        if (searchEvent) {
+                            if (searchEvent.action === TableStringEnum.API) {
+                                this.pmTruckBackFilter(searchEvent.query);
+                            } else if (
+                                searchEvent.action === TableStringEnum.STORE
+                            ) {
+                                this.sendPMData();
+                            }
+                        }
+                    } else {
+                        this.pmTrailerBackFilterQuery.pageIndex = 1;
+
+                        const searchEvent = MethodsGlobalHelper.tableSearch(
+                            res,
+                            this.pmTrailerBackFilterQuery
+                        );
+
+                        if (searchEvent) {
+                            if (searchEvent.action === TableStringEnum.API) {
+                                this.pmTrailerBackFilter(searchEvent.query);
+                            } else if (
+                                searchEvent.action === TableStringEnum.STORE
+                            ) {
+                                this.sendPMData();
+                            }
+                        }
+                    }
+                }
+            });
     }
 
     ngOnDestroy(): void {

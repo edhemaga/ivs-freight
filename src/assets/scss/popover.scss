@@ -189,6 +189,21 @@
                         border-radius: 1px;
                     }
                 }
+
+                // Disabled
+                .table-list-dropdown-content-dropdown-disabled {
+                    pointer-events: none !important;
+
+                    .table-list-dropdown-content-text {
+                        color: $bw6-2 !important;
+                    }
+
+                    svg {
+                        path {
+                            fill: $bw6-2 !important;
+                        }
+                    }
+                }
             }
 
             // Inner Dropdown Active
