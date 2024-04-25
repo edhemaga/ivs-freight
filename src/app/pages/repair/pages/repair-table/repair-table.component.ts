@@ -199,7 +199,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.deleteSelectedRows();
     }
-    
+
     // TODO - Add to store logic
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
@@ -773,20 +773,49 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Map Truck And Trailer Data
-    private mapTruckAndTrailerData(data: RepairResponse): MappedTruckTrailer {
+    private mapTruckAndTrailerData(data: any): MappedTruckTrailer {
         return {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.truck?.truckNumber
+            tableUnit: data?.invoice,
+            tableNumber: data?.truck?.truckNumber
                 ? data.truck.truckNumber
                 : data?.trailer?.trailerNumber
                 ? data.trailer.trailerNumber
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: TableStringEnum.NA,
-            tableMake: TableStringEnum.NA,
-            tableModel: TableStringEnum.NA,
-            tableYear: TableStringEnum.NA,
+            invoice: data?.datePaid
+                ? this.datePipe.transform(
+                      data.datePaid,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            payType: data.payType?.name,
+            driver: data.driverFirstName
+                ? data.driverFirstName + data.driverLastName
+                    ? data.driverLastName
+                    : ''
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableType: data?.truck?.truckType?.logoName
+                ? data.truck.truckType.logoName
+                : data?.trailer?.trailerType?.logoName
+                ? data.trailer.trailerType?.logoName
+                : TableStringEnum.NA,
+            tableMake: data?.truck?.truckMakeName
+                ? data.truck.truckMakeName
+                : data?.trailer?.trailerMakeName
+                ? data.trailer.trailerMakeName
+                : TableStringEnum.NA,
+            tableModel: data?.truck?.truckType?.name
+                ? data.truck.truckType?.name
+                : data?.trailer?.trailerType?.name
+                ? data.trailer.trailerType?.name
+                : TableStringEnum.NA,
+            tableYear: data?.truck?.year
+                ? data.truck.year + ''
+                : data?.trailer?.year
+                ? data.trailer.year + ''
+                : TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -804,13 +833,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableServices: data?.serviceTypes ? data?.serviceTypes : null,
 
-            tableDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
-                      )
-                : null,
+            tableDescription: data?.items ? data.items : null,
             descriptionItems: data?.items
                 ? data.items.map((item) => {
                       return {
@@ -932,7 +955,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private getRepairDropdownContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
-    
+
     // Get Repair Dropdown Content
 
     // TODO - Add to store logic
@@ -1425,7 +1448,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
-    
+
     // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows

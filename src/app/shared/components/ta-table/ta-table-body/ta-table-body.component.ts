@@ -63,6 +63,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
 import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
+import { TableDescriptionTextPipe } from './pipes/table-description-text.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -105,6 +106,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
+        TableDescriptionTextPipe,
         TaProgresBarComponent,
         ContactPhoneEmailIconPipe,
     ],
@@ -173,6 +175,7 @@ export class TaTableBodyComponent
     horizontalScrollPosition: number = 0;
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
+    widthPopover: number = 0;
 
     public companyUser: SignInResponse;
 
@@ -369,10 +372,8 @@ export class TaTableBodyComponent
         //         });
         //     }
         // }, 10);
-
         this.getNotPinedMaxWidth();
     }
-
     // Render Row One By One
     renderOneByOne() {
         clearInterval(this.renderInterval);
@@ -687,16 +688,16 @@ export class TaTableBodyComponent
 
                 this.dropdownActions = [...actions];
 
-                // remove this line when we enable those options
-                this.dropdownActions = this.dropdownActions.filter(
-                    (data) =>
-                        ![
-                            'share',
-                            'print',
-                            'send-sms',
-                            'view-details',
-                        ].includes(data.name)
-                );
+                // // remove this line when we enable those options
+                // this.dropdownActions = this.dropdownActions.filter(
+                //     (data) =>
+                //         ![
+                //             'share',
+                //             'print',
+                //             'send-sms',
+                //             'view-details',
+                //         ].includes(data.name)
+                // );
 
                 const dropdownData = {
                     companyUserId: row.companyUserId,
@@ -767,10 +768,10 @@ export class TaTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
+    onShowDescriptionDropdown(popup: any, row: any, width: number) {
         if (row.descriptionItems.length > 1) {
             this.descriptionTooltip = popup;
-
+            this.widthPopover = width;
             if (popup.isOpen()) {
                 popup.close();
             } else {

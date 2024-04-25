@@ -44,16 +44,16 @@
     // DESCRIPTION
     .description-container {
         .description-dot-container {
-            min-width: 18px;
-            width: 18px;
+            min-width: 10px;
+            width: 10px;
             height: 18px;
             display: flex;
             justify-content: center;
             align-items: center;
 
             .description-dot {
-                width: 6px;
-                height: 6px;
+                width: 2px;
+                height: 2px;
                 border-radius: 50px;
                 background: #6c6c6c;
             }
