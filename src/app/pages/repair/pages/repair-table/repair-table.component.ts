@@ -170,7 +170,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.resetColumns();
 
-        this.switchSelected();
+        this.switchSelected(); 
 
         this.resize();
 

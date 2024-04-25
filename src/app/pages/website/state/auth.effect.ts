@@ -25,9 +25,7 @@ export class AuthEffect {
         // services
         private websiteActionsService: WebsiteActionsService,
         public authService: AuthService
-    ) {}
-
-    
+    ) { }
 
     login$ = createEffect(() =>
         this.actions$.pipe(
