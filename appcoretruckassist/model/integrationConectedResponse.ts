@@ -14,5 +14,6 @@ import { EnumValue } from './enumValue';
 
 export interface IntegrationConectedResponse { 
     integrationConnectedStatus?: EnumValue;
+    message?: string | null;
 }
 

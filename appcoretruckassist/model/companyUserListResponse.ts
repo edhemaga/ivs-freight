@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServiceType } from './serviceType';
+import { CompanyUserListItemResponsePagination } from './companyUserListItemResponsePagination';
 
 
-export interface RepairShopServiceTypeCommand { 
-    serviceType?: ServiceType;
-    active?: boolean;
-    isSelected?: boolean;
+export interface CompanyUserListResponse { 
+    pagination?: CompanyUserListItemResponsePagination;
+    activeCount?: number;
+    inactiveCount?: number;
 }
 
