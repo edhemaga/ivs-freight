@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 // Models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -33,11 +34,14 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Helpers
 import { CardArrayHelper } from '@shared/utils/helpers/card-array-helper';
 import { CardHelper } from '@shared/utils/helpers/card-helper';
-import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
-import { RepairShopModalComponent } from '../repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { ModalService } from '@shared/services/modal.service';
-import { Router } from '@angular/router';
+
+//Components
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+
+//Services
+import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { RepairService } from '@shared/services/repair.service';
 
@@ -89,14 +93,18 @@ export class RepairCardComponent
     public itemsForRepair: string[] = [];
 
     constructor(
-        private tableService: TruckassistTableService,
         private ngZone: NgZone,
         private renderer: Renderer2,
-        private cardHelper: CardHelper,
-        private modalService: ModalService,
         public router: Router,
+
+        //Services
+        private tableService: TruckassistTableService,
+        private modalService: ModalService,
         private confiramtionService: ConfirmationService,
-        private repairService: RepairService
+        private repairService: RepairService,
+
+        //Helpers
+        private cardHelper: CardHelper,
     ) {}
 
     ngOnInit() {

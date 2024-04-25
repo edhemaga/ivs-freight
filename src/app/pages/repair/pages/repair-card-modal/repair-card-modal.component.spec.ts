@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RepairCardModalComponent } from './repair-card-modal.component';
+import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/repair-card-modal.component';
 
 describe('RepairCardModalComponent', () => {
   let component: RepairCardModalComponent;
