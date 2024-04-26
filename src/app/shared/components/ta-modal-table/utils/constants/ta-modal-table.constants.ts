@@ -6,13 +6,20 @@ export class ModalTableConstants {
         'TYPE',
     ];
 
-    static DESCRIPTION_TABLE_HEADER_ITEMS: string[] = [
+    static REPAIR_BILL_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'DESCRIPTION',
         'PM',
         'QTY',
         'PRICE',
         'SUBTOTAL',
+    ];
+
+    static REPAIR_ORDER_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'DESCRIPTION',
+        'PM',
+        'QTY',
     ];
 
     static CONTACT_TABLE_HEADER_ITEMS: string[] = [

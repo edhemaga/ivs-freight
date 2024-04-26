@@ -12,6 +12,7 @@ import { UserQuery } from '@pages/user/state/user.query';
 // models
 import {
     AccountService,
+    CompanyUserListResponse,
     CompanyUserModalResponse,
     CompanyUserResponse,
     CompanyUserService,
@@ -21,7 +22,6 @@ import {
     // GetCompanyUserListResponse,
     ResendSignUpCompanyOrUserCommand,
     UpdateCompanyUserCommand,
-    CompanyUserListResponse,
 } from 'appcoretruckassist';
 
 @Injectable({

@@ -179,7 +179,7 @@ export class FuelService {
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return this.fuelService.apiFuelFuelstopListGet(
+        return; /* this.fuelService.apiFuelFuelstopListGet(
             truckIds,
             categoryIds,
             dateFrom,
@@ -200,7 +200,7 @@ export class FuelService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {
