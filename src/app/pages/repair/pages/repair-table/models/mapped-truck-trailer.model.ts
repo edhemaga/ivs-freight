@@ -23,7 +23,7 @@ export interface MappedTruckTrailer {
     tableShopName: string;
     tableShopAdress: string;
     tableServices: RepairServiceTypeResponse[];
-    tableDescription: any;
+    tableDescription: RepairItemResponse[];
     tabelDescriptionDropTotal: string;
     tableCost: string;
     tableAdded: string;

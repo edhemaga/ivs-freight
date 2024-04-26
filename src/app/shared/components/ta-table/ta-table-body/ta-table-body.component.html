@@ -1293,7 +1293,7 @@
                                         ></span>
 
                                         <div
-                                            class="finish-order-action"
+                                            class="finish-order-action d-flex justify-content-center"
                                             (click)="onFinishOrder(row)"
                                             *ngIf="row.isRepairOrder"
                                         >
@@ -4931,10 +4931,12 @@
         }"
     >
         <div class="description-titles">
-            <div class="number-title">#</div>
-            <div class="item-title">DESCRIPTION</div>
-            <div class="price-title">Qty</div>
-            <div class="qty-title">Price</div>
+            <div
+                *ngFor="let popoverDescriptionItem of popoverDescriptionItems"
+                [ngClass]="popoverDescriptionItem.className"
+            >
+                {{ popoverDescriptionItem.title }}
+            </div>
             <div class="price-total-title">
                 {{ data.tabelDescriptionDropTotal }}
             </div>

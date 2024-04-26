@@ -93,11 +93,8 @@ table {
                 .has-selected {
                     width: 18px !important;
                     height: 18px !important;
-                    background: #3b73ed !important;
-                    color: #ffffff;
-                    display: flex;
-                    align-items: center !important;
-                    justify-content: center;
+                    background: $ta-blue-14 !important;
+                    color: $white;
                     padding: 2px 6px;
                     font-size: 11px !important;
                     font-weight: bold;
@@ -105,7 +102,7 @@ table {
                         height 0.1s ease-in-out, font-size 0.05s ease-in-out;
 
                     &:hover {
-                        background: #536bc2 !important;
+                        background: $ta-blue !important;
                         transition: 0.25s;
                     }
                 }

@@ -1,17 +1,18 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import type { RepairItemResponse } from 'appcoretruckassist';
 
 @Pipe({
     standalone: true,
     name: 'tableDescriptionTextPipe',
 })
 export class TableDescriptionTextPipe implements PipeTransform {
-    transform(descriptionItems: any[], width: number): string {
+    transform(descriptionItems: RepairItemResponse[], width: number): string {
         let itemsToShow = '';
         let numberOfItemsInList = 0;
-        let k = '';
+        let checkItemsWidth = '';
         for (let descriptionItem of descriptionItems) {
-            k += descriptionItem.description;
-            if (k.length * 8 < width) {
+            checkItemsWidth += descriptionItem.description;
+            if (checkItemsWidth.length * 8 < width) {
                 if (numberOfItemsInList > 0) {
                     itemsToShow += ' • ';
                 }
