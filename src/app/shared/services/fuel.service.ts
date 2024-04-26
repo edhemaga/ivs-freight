@@ -160,9 +160,9 @@ export class FuelService {
     public getFuelStopsList(
         truckIds?: Array<number>,
         categoryIds?: Array<number>,
-        dateFrom?: string,
+        dateFrom?: any,
         dateTo?: string,
-        _long?: number,
+        _long?: any,
         lat?: number,
         distance?: number,
         lastFrom?: number,
@@ -172,14 +172,14 @@ export class FuelService {
         ppgFrom?: number,
         ppgTo?: number,
         pageIndex?: number,
-        pageSize?: number,
+        pageSize?: any,
         companyId?: number,
-        sort?: string,
-        search?: string,
+        sort?: any,
+        search?: any,
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return this.fuelService.apiFuelFuelstopListGet(
+        return; /* this.fuelService.apiFuelFuelstopListGet(
             truckIds,
             categoryIds,
             dateFrom,
@@ -200,7 +200,7 @@ export class FuelService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {

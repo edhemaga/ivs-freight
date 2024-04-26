@@ -207,7 +207,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.deleteSelectedRows();
     }
-    
+
     // TODO - Add to store logic
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
@@ -786,15 +786,39 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.truck?.truckNumber
-                ? data.truck.truckNumber
-                : data?.trailer?.trailerNumber
-                ? data.trailer.trailerNumber
+            tableUnit: data?.invoice,
+            tableNumber:
+                data?.truck?.truckNumber ||
+                data?.trailer?.trailerNumber ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.datePaid
+                ? this.datePipe.transform(
+                      data.datePaid,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: TableStringEnum.NA,
-            tableMake: TableStringEnum.NA,
-            tableModel: TableStringEnum.NA,
-            tableYear: TableStringEnum.NA,
+            payType: data.payType?.name,
+            driver: data.driverFirstName
+                ? data.driverFirstName + data.driverLastName
+                    ? data.driverLastName
+                    : ''
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableType:
+                data?.truck?.truckType?.logoName ||
+                data?.trailer?.trailerType?.logoName ||
+                TableStringEnum.NA,
+            tableMake:
+                data?.truck?.truckMakeName ||
+                data?.trailer?.trailerMakeName ||
+                TableStringEnum.NA,
+            tableModel:
+                data?.truck?.truckType?.name ||
+                data?.trailer?.trailerType?.name ||
+                TableStringEnum.NA,
+            tableYear:
+                data?.truck?.year + '' ||
+                data?.trailer?.year + '' ||
+                TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -804,21 +828,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopAdress: data?.repairShop?.address?.address
-                ? data.repairShop.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
-
-            tableDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
-                      )
-                : null,
+            tableShopName:
+                data?.repairShop?.name ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableShopAdress:
+                data?.repairShop?.address?.address ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableServices: data?.serviceTypes ?? null,
+            tableDescription: data?.items ?? null,
             descriptionItems: data?.items
                 ? data.items.map((item) => {
                       return {
@@ -859,7 +876,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ? data.files : [],
+            tableAttachments: data?.files ?? [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
@@ -940,7 +957,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private getRepairDropdownContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
-    
+
     // Get Repair Dropdown Content
 
     // TODO - Add to store logic
@@ -953,9 +970,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             let newDropItem = { ...dropItem };
 
             if (dropItem.name === TableStringEnum.CLOSE_BUSINESS) {
-                newDropItem.title = !shopData.isClosed
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS;
+                newDropItem.title = !shopData.status
+                    ? TableStringEnum.OPEN_BUSINESS
+                    : TableStringEnum.CLOSE_BUSINESS_2;
             }
 
             newDropdownContent.push(newDropItem);
@@ -1289,9 +1306,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
-                type: event.data.isClosed
-                    ? TableStringEnum.OPEN
-                    : TableStringEnum.CLOSE,
+                type: event.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
             };
 
             this.modalService.openModal(
@@ -1433,7 +1450,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
-    
+
     // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows

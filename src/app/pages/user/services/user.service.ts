@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -12,13 +12,14 @@ import { UserQuery } from '@pages/user/state/user.query';
 // models
 import {
     AccountService,
+    CompanyUserListResponse,
     CompanyUserModalResponse,
     CompanyUserResponse,
     CompanyUserService,
     CreateCompanyUserCommand,
     CreateResponse,
     ForgotPasswordCommand,
-    GetCompanyUserListResponse,
+    // GetCompanyUserListResponse,
     ResendSignUpCompanyOrUserCommand,
     UpdateCompanyUserCommand,
 } from 'appcoretruckassist';
@@ -45,8 +46,8 @@ export class UserService {
         search?: string,
         search1?: string,
         search2?: string
-    ): Observable<GetCompanyUserListResponse> {
-        return this.userService.apiCompanyuserListGet(
+    ): Observable<CompanyUserListResponse> {
+        return of(null); /* this.userService.apiCompanyuserListGet(
             active,
             pageIndex,
             pageSize,
@@ -55,7 +56,7 @@ export class UserService {
             search,
             search1,
             search2
-        );
+        );*/
     }
 
     public addUser(data: CreateCompanyUserCommand): Observable<CreateResponse> {

@@ -63,7 +63,10 @@
                                 : 'selected-options-popover'
                         }}"
                         triggers="manual"
-                        [ngClass]="{ 'has-selected': mySelection.length }"
+                        [ngClass]="{
+                            'has-selected d-flex align-items-center justify-content-center
+                        ': mySelection.length
+                        }"
                     >
                         {{ mySelection.length ? mySelection.length : '' }}
                     </div>

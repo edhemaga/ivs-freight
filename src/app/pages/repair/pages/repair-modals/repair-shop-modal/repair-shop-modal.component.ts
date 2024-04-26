@@ -1010,10 +1010,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             latitude: this.latitude,
         };
 
-        // for (let index = 0; index < contacts.length; index++) {
-        //     contacts[index].departmentId =
-        //         this.selectedContractDepartmentFormArray[index].id;
-        // }
+        /*  for (let index = 0; index < contacts.length; index++) {
+            contacts[index].departmentId =
+                this.selectedContractDepartmentFormArray[index].id;
+        } */
 
         newData = {
             ...newData,
@@ -1022,91 +1022,95 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (newData.shopServiceType === 'Fixed & Mobile')
             newData.shopServiceType = 'Combined';
-        // this.shopService
-        //     .addRepairShop(newData)
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe({
-        //         next: () => {
-        //             if (this.editData?.canOpenModal) {
-        //                 switch (this.editData?.key) {
-        //                     case 'repair-modal': {
-        //                         this.modalService.setProjectionModal({
-        //                             action: 'close',
-        //                             payload: {
-        //                                 key: this.editData?.key,
-        //                                 value: null,
-        //                             },
-        //                             component: RepairOrderModalComponent,
-        //                             size: 'large',
-        //                             type: this.editData?.type,
-        //                             closing: 'slowlest',
-        //                         });
-        //                         break;
-        //                     }
-        //                     default: {
-        //                         break;
-        //                     }
-        //                 }
-        //             }
+        this.shopService
+            .addRepairShop(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    if (this.editData?.canOpenModal) {
+                        switch (this.editData?.key) {
+                            case 'repair-modal': {
+                                this.modalService.setProjectionModal({
+                                    action: 'close',
+                                    payload: {
+                                        key: this.editData?.key,
+                                        value: null,
+                                    },
+                                    component: RepairOrderModalComponent,
+                                    size: 'large',
+                                    type: this.editData?.type,
+                                    closing: 'slowlest',
+                                });
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        }
+                    }
 
-        //             if (this.addNewAfterSave) {
-        //                 this.formService.resetForm(this.repairShopForm);
-        //                 this.modalService.setModalSpinner({
-        //                     action: 'save and add new',
-        //                     status: false,
-        //                     close: false,
-        //                 });
+                    if (this.addNewAfterSave) {
+                        this.formService.resetForm(this.repairShopForm);
+                        this.modalService.setModalSpinner({
+                            action: 'save and add new',
+                            status: false,
+                            close: false,
+                        });
 
-        //                 this.services = this.services.map((item) => {
-        //                     return {
-        //                         ...item,
-        //                         active: false,
-        //                     };
-        //                 });
-        //                 if (!this.editData || this.editData?.canOpenModal) {
-        //                     for (
-        //                         let i = 0;
-        //                         i < this.openHoursDays.length;
-        //                         i++
-        //                     ) {
-        //                         this.addOpenHours(
-        //                             this.openHoursDays[i],
-        //                             i !== this.openHoursDays.length - 1 &&
-        //                                 i !== this.openHoursDays.length - 2,
-        //                             i - 1,
-        //                             i !== this.openHoursDays.length - 1 ||
-        //                                 i !== this.openHoursDays.length - 2
-        //                                 ? MethodsCalculationsHelper.convertTimeFromBackend('8:00:00 AM')
-        //                                 : null,
-        //                             i !== this.openHoursDays.length - 1 ||
-        //                                 i !== this.openHoursDays.length - 2
-        //                                 ? MethodsCalculationsHelper.convertTimeFromBackend('5:00:00 PM')
-        //                                 : null
-        //                         );
-        //                     }
-        //                 }
-        //                 this.isRepairShopFavourite = false;
-        //                 this.favouriteRepairShop = null;
-        //                 this.isPhoneExtExist = false;
-        //                 this.documents = [];
+                        this.services = this.services.map((item) => {
+                            return {
+                                ...item,
+                                active: false,
+                            };
+                        });
+                        if (!this.editData || this.editData?.canOpenModal) {
+                            for (
+                                let i = 0;
+                                i < this.openHoursDays.length;
+                                i++
+                            ) {
+                                this.addOpenHours(
+                                    this.openHoursDays[i],
+                                    i !== this.openHoursDays.length - 1 &&
+                                        i !== this.openHoursDays.length - 2,
+                                    i - 1,
+                                    i !== this.openHoursDays.length - 1 ||
+                                        i !== this.openHoursDays.length - 2
+                                        ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                              '8:00:00 AM'
+                                          )
+                                        : null,
+                                    i !== this.openHoursDays.length - 1 ||
+                                        i !== this.openHoursDays.length - 2
+                                        ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                              '5:00:00 PM'
+                                          )
+                                        : null
+                                );
+                            }
+                        }
+                        this.isRepairShopFavourite = false;
+                        this.favouriteRepairShop = null;
+                        this.isPhoneExtExist = false;
+                        this.documents = [];
 
-        //                 this.addNewAfterSave = false;
-        //             } else {
-        //                 this.modalService.setModalSpinner({
-        //                     action: null,
-        //                     status: true,
-        //                     close: true,
-        //                 });
-        //             }
-        //         },
-        //         error: () => {
-        //             this.modalService.setModalSpinner({
-        //                 action: null,
-        //                 status: false,
-        //                 close: false,
-        //             });
-        //         },
-        //     });
+                        this.addNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    }
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
     }
 
     private updateRepairShop(id: number) {
@@ -1359,15 +1363,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: RepairShopResponse) => {
                             if (res.ratingReviews?.length) {
-                                this.reviews = res.ratingReviews.map((item: any) => ({
-                                    ...item,
-                                    companyUser: {
-                                        ...item.companyUser,
-                                        avatar: item.companyUser.avatar,
-                                    },
-                                    commentContent: item.comment,
-                                    rating: item.ratingFromTheReviewer,
-                                }));
+                                this.reviews = res.ratingReviews.map(
+                                    (item: any) => ({
+                                        ...item,
+                                        companyUser: {
+                                            ...item.companyUser,
+                                            avatar: item.companyUser.avatar,
+                                        },
+                                        commentContent: item.comment,
+                                        rating: item.ratingFromTheReviewer,
+                                    })
+                                );
 
                                 const reviewIndex = this.reviews.findIndex(
                                     (item) =>

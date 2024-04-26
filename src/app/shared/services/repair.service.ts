@@ -58,6 +58,7 @@ export class RepairService {
     // <----------------------- Repair Truck And Trailer -------------------->
     public addRepair(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.repairService.apiRepairPost().pipe(
             tap((res: any) => {
                 this.getRepairById(res.id).subscribe({
@@ -65,13 +66,17 @@ export class RepairService {
                         const repairCount = JSON.parse(
                             localStorage.getItem('repairTruckTrailerTableCount')
                         );
+
                         if (repair.truckId) {
                             this.repairTruckStore.add(repair);
+
                             repairCount.repairTrucks++;
                         } else if (repair.trailerId) {
                             this.repairTrailerStore.add(repair);
+
                             repairCount.repairTrailers++;
                         }
+
                         localStorage.setItem(
                             'repairTruckTrailerTableCount',
                             JSON.stringify({
@@ -86,6 +91,7 @@ export class RepairService {
                                     : 'NA',
                             })
                         );
+
                         this.tableService.sendActionAnimation({
                             animation: 'add',
                             tab: repair?.truckId ? 'active' : 'inactive',
@@ -250,6 +256,7 @@ export class RepairService {
     // <----------------------- Repair Shop -------------------->
     public addRepairShop(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.shopServices.apiRepairshopPost(data).pipe(
             tap((res: any) => {
                 this.getRepairShopById(res.id).subscribe({

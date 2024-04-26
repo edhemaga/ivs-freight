@@ -54,7 +54,11 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopoverModule,
+    type NgbPopover,
+} from '@ng-bootstrap/ng-bootstrap';
 
 // sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
@@ -63,6 +67,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
 import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
+import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -75,6 +80,7 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
+import { RepairDescriptionPopoverConstant } from './utils/repair-description-popover.constant';
 
 @Titles()
 @Component({
@@ -101,11 +107,12 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
         TaNoteComponent,
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
+        TaProgresBarComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
-        TaProgresBarComponent,
+        TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
     ],
     providers: [
@@ -173,9 +180,11 @@ export class TaTableBodyComponent
     horizontalScrollPosition: number = 0;
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
+    public widthPopover: number = 0;
 
     public companyUser: SignInResponse;
-
+    public popoverDescriptionItems: { title: string; className: string }[] =
+        RepairDescriptionPopoverConstant.descriptionItems;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -369,10 +378,8 @@ export class TaTableBodyComponent
         //         });
         //     }
         // }, 10);
-
         this.getNotPinedMaxWidth();
     }
-
     // Render Row One By One
     renderOneByOne() {
         clearInterval(this.renderInterval);
@@ -687,16 +694,16 @@ export class TaTableBodyComponent
 
                 this.dropdownActions = [...actions];
 
-                // remove this line when we enable those options
-                this.dropdownActions = this.dropdownActions.filter(
-                    (data) =>
-                        ![
-                            'share',
-                            'print',
-                            'send-sms',
-                            'view-details',
-                        ].includes(data.name)
-                );
+                // // remove this line when we enable those options
+                // this.dropdownActions = this.dropdownActions.filter(
+                //     (data) =>
+                //         ![
+                //             'share',
+                //             'print',
+                //             'send-sms',
+                //             'view-details',
+                //         ].includes(data.name)
+                // );
 
                 const dropdownData = {
                     companyUserId: row.companyUserId,
@@ -767,10 +774,14 @@ export class TaTableBodyComponent
     }
 
     // Show Description Dropdown
-    onShowDescriptionDropdown(popup: any, row: any) {
+    public onShowDescriptionDropdown(
+        popup: NgbPopover,
+        row: any,
+        width: number
+    ): void {
         if (row.descriptionItems.length > 1) {
             this.descriptionTooltip = popup;
-
+            this.widthPopover = width;
             if (popup.isOpen()) {
                 popup.close();
             } else {

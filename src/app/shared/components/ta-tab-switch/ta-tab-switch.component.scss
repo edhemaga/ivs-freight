@@ -19,6 +19,18 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         height: 38px;
     }
 
+    &.disabled {
+        background: $ta-light-grey-5 !important;
+
+        .tab-switch-items-holder {
+            pointer-events: none !important;
+
+            .tab-switch-text {
+                color: $ta-light-grey-6 !important;
+            }
+        }
+    }
+
     .tab-switch-items-holder {
         .tab-switch-text {
             pointer-events: none;
@@ -98,12 +110,11 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
         }
 
         &.disabled {
+            cursor: auto !important;
             pointer-events: none !important;
 
             .tab-switch-text {
-                .tab-switch-name {
-                    color: #aaaaaa33;
-                }
+                color: $ta-light-grey-6 !important;
             }
         }
     }

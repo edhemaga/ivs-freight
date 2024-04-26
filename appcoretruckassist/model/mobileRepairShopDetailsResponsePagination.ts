@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileRepairShopDetailsResponse } from './mobileRepairShopDetailsResponse';
 
 
-export interface TrailerOwnerResponse { 
-    id?: number;
-    trailerNumber?: string | null;
-    trailerTypeId?: number;
+export interface MobileRepairShopDetailsResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MobileRepairShopDetailsResponse> | null;
 }
 

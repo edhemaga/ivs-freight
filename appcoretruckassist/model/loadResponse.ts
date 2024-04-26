@@ -64,14 +64,17 @@ export interface LoadResponse {
     totalPaid?: number | null;
     totalDue?: number;
     loadedMiles?: number;
+    emptyMiles?: number;
     totalMiles?: number;
     totalTimeDays?: number;
     totalTimeHours?: number;
     paidDate?: string | null;
     invoicedDate?: string | null;
     shortPaid?: number | null;
-    age?: number | null;
+    ageUnpaid?: number | null;
+    agePaid?: number | null;
     daysToPay?: number | null;
+    rpm?: number;
     totalLoadTime?: { [key: string]: number; } | null;
     firstPickupTime?: { [key: string]: number; } | null;
     lastDeliveryTime?: { [key: string]: number; } | null;

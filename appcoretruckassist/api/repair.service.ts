@@ -65,8 +65,6 @@ import { RepairType } from '../model/repairType';
 // @ts-ignore
 import { RepairUnitType } from '../model/repairUnitType';
 // @ts-ignore
-import { ShopServiceType } from '../model/shopServiceType';
-// @ts-ignore
 import { UpdatePMTrailerListDefaultCommand } from '../model/updatePMTrailerListDefaultCommand';
 // @ts-ignore
 import { UpdatePMTrailerUnitListCommand } from '../model/updatePMTrailerUnitListCommand';
@@ -2404,13 +2402,15 @@ export class RepairService {
      * @param files 
      * @param tags 
      * @param shopServiceType 
+     * @param payType 
+     * @param datePaid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2515,6 +2515,12 @@ export class RepairService {
         if (shopServiceType !== undefined) {
             localVarFormParams = localVarFormParams.append('ShopServiceType', <any>shopServiceType) as any || localVarFormParams;
         }
+        if (payType !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayType', <any>payType) as any || localVarFormParams;
+        }
+        if (datePaid !== undefined) {
+            localVarFormParams = localVarFormParams.append('DatePaid', <any>datePaid) as any || localVarFormParams;
+        }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
@@ -2559,10 +2565,10 @@ export class RepairService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
