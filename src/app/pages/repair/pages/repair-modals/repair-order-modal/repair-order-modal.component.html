@@ -16,7 +16,8 @@
     [saveAndAddNew]="editData?.type !== 'edit'"
     [tabChangePosition]="'right'"
     [tabChange]="
-        (editData?.type?.includes('edit') && selectedRepairType === 'Bill') ||
+        (editData?.type?.includes('edit') &&
+            selectedRepairTypeTab === 'Bill') ||
         editData?.type?.includes('edit-fo')
             ? null
             : headerTabs
@@ -72,7 +73,7 @@
                         dropdownWidthClass: 'w-col-145'
                     }"
                     [canOpenModal]="true"
-                    [options]="paid"
+                    [options]="payTypeDropdownList"
                     [activeItem]="selectedPayType"
                     (selectedItem)="onSelectDropDown($event, 'paid-type')"
                 ></app-ta-input-dropdown>
@@ -85,7 +86,7 @@
                         isDropdown: true,
                         label: 'Date Paid',
                         placeholderIcon: 'date',
-                        isDisabled: payTypeSelected,
+                        isDisabled: !this.repairOrderForm.get('payType').value,
                         isRequired: true,
                         customClass: 'datetimeclass'
                     }"
@@ -127,7 +128,7 @@
 
             <app-ta-tab-switch
                 (switchClicked)="onTabChange($event)"
-                [tabs]="typeOfRepair"
+                [tabs]="typeOfRepairTabs"
                 [type]="'type2-modal-popup'"
             ></app-ta-tab-switch>
 
@@ -145,7 +146,7 @@
                     dropdownWidthClass: 'w-col-145 truck-trailer-dropdown',
                     customClass: 'truck-trailer-dropdown'
                 }"
-                [options]="labelsUnit"
+                [options]="unitDropdownList"
                 [activeItem]="selectedUnit"
                 (selectedItem)="onSelectDropDown($event, 'repair-unit')"
             ></app-ta-input-dropdown>
@@ -168,7 +169,7 @@
                         hideClear: true
                     }"
                     [activeItem]="selectedDriver"
-                    [options]="drivers"
+                    [options]="driversDropdownList"
                     (selectedItem)="onSelectDropDown($event, 'driver')"
                 ></app-ta-input-dropdown>
             </ng-container>
@@ -183,6 +184,8 @@
                         type: 'text',
                         label: 'Odometer',
                         isDisabled: selectedHeaderTab !== 1,
+                        isRequired:
+                            repairOrderForm.get('odometer')?.errors?.required,
                         thousandSeparator: true,
                         minLength: 1,
                         maxLength: 9
@@ -356,7 +359,7 @@
                         [canOpenModal]="true"
                         [activeItem]="selectedRepairShop"
                         [canAddNew]="true"
-                        [options]="labelsRepairShop"
+                        [options]="repairShopDropdownList"
                         (selectedItem)="onSelectDropDown($event, 'repair-shop')"
                     ></app-ta-input-dropdown>
                 </ng-container>
@@ -366,10 +369,10 @@
         <!-- Items -->
 
         <app-ta-custom-card
-            [hasScrollBody]="descriptions?.length > 10"
-            [isCardOpen]="descriptions?.length"
-            [disabledCard]="!descriptions?.length"
-            [hasCounter]="descriptions?.length"
+            [hasScrollBody]="repairItems?.length > 10"
+            [isCardOpen]="repairItems?.length"
+            [disabledCard]="!repairItems?.length"
+            [hasCounter]="repairItems?.length"
             [cardName]="'Item'"
             [disableAnimation]="isCardanimationDisabled"
             [hasActionSvg]="true"
@@ -379,7 +382,10 @@
             <app-ta-modal-table
                 [isRepairBillTable]="true"
                 [isRepairOrderTable]="selectedHeaderTab === 2"
-                [isNewRowCreated]="isDescriptionRowCreated"
+                [isNewRowCreated]="
+                    (selectedHeaderTab === 1 && isRepairBillRowCreated) ||
+                    (selectedHeaderTab === 2 && isRepairOrderRowCreated)
+                "
                 [dropdownData]="truckTrailerPmDropdownLists"
                 (modalTableValueEmitter)="handleModalTableValueEmit($event)"
                 (modalTableValidStatusEmitter)="
@@ -424,9 +430,8 @@
                     <div
                         class="d-flex align-items-center repair-shop-service"
                         [ngClass]="{
-                            active: repair.active,
-                            inactive:
-                                repair.notExistInRepairSHop && repair.active,
+                            active: repair.active && repair.isSelected,
+                            inactive: repair.active && !repair.isSelected,
                             disabled: !repair.active || !this.selectedRepairShop
                         }"
                         (click)="activeRepairService(repair)"

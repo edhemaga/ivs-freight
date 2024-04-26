@@ -585,6 +585,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedContactEmailType.splice(index, 1);
 
                 break;
+            case this.isRepairBillTable || this.isRepairOrderTable:
+                this.selectedTruckTrailerRepairPm.splice(index, 1);
+
+                break;
             default:
                 break;
         }

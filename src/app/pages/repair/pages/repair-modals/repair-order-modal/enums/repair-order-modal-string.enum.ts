@@ -7,12 +7,20 @@ export enum RepairOrderModalStringEnum {
     DATE = 'date',
     REPAIR_SHOP_ID = 'repairShopId',
     ORDER_NO = 'orderNo',
+    ODOMETER = 'odometer',
+    REPAIR_ITEMS = 'repairItems',
 
     ORDER = 'Order',
     BILL = 'Bill',
 
     TRUCK = 'Truck',
     TRAILER = 'Trailer',
+
+    CLOSE = 'close',
+    SAVE = 'save',
+    SVE_AND_ADD_NEW = 'save and add new',
+    DELETE = 'delete',
+    EDIT = 'edit',
 
     WIRE_TRANSFER = 'Wire Transfer',
     WIRE_TRANSFER_2 = 'WireTransfer',
@@ -30,5 +38,6 @@ export enum RepairOrderModalStringEnum {
     PAYPAL = 'Q. pay (PayPal)',
     PAYPAL_2 = 'PayPal',
 
-    IN_STORE = 'IN STORE',
+    LARGE = 'large',
+    NEW_TRUCK = 'new-truck',
 }
