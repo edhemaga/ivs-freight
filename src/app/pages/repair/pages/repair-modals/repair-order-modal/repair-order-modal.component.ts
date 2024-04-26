@@ -1053,8 +1053,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             };
         }
 
-        console.log('newData', newData);
-
         this.repairService
             .addRepair(newData)
             .pipe(takeUntil(this.destroy$))
