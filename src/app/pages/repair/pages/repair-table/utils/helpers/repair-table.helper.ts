@@ -1,7 +1,7 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 //models
-import { RepairDropdownTableModel } from '../../models/repair-dropdown-table-model';
+import { RepairDropdownTableModel } from '@pages/repair/pages/repair-table/models/repair-dropdown-table-model';
 
 export class RepairTableHelper {
     static dropdownTableContent(
@@ -91,7 +91,7 @@ export class RepairTableHelper {
         ];
 
         const orderDropdownContent: RepairDropdownTableModel = {
-            title: TableStringEnum.FINISH_ORDER_2,
+            title: TableStringEnum.FINISH_ORDER_3,
             name: TableStringEnum.FINISH_ORDER,
             svgUrl: 'assets/svg/common/ic_note_order.svg',
             svgStyle: {

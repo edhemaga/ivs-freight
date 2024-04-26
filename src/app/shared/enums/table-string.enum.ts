@@ -298,7 +298,6 @@ export enum TableStringEnum {
     ALL_BILS_2 = 'all-bills',
     ALL_ORDERS = 'All Orders',
     ALL_ORDERS_2 = 'all-orders',
-    FINISH_ORDER_2 = 'Finish Order',
     UNIT = 'Unit ',
     SHOP_DETAIL = 'Shop Detail ',
     ITEM_DETAIL = 'Item Detail ',
