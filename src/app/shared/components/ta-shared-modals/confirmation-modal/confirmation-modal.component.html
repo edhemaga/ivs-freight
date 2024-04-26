@@ -510,17 +510,18 @@
                             <div class="confirmation-body-content">
                                 <p class="m-0 text-1 ta-font-bold">
                                     Unit {{ editData?.data?.tableUnit }}
-                                    <ng-container
-                                        *ngIf="editData?.data?.tableCost"
-                                        >-
-                                        {{ editData.data.tableCost }}
-                                    </ng-container>
+
                                     <ng-container
                                         *ngIf="
                                             editData?.data?.repairType?.name ===
-                                            'Order'
+                                                'Bill';
+                                            else repairOrder
                                         "
-                                    >
+                                        >-
+                                        {{ editData.data.tableCost }}
+                                    </ng-container>
+
+                                    <ng-template #repairOrder>
                                         - Order
                                         <span>
                                             <svg-icon
@@ -530,7 +531,7 @@
                                                 "
                                             ></svg-icon>
                                         </span>
-                                    </ng-container>
+                                    </ng-template>
                                 </p>
                                 <p class="m-0 text-2">
                                     {{ editData?.data?.tableShopName }}
@@ -587,7 +588,8 @@
                                         <ng-container
                                             *ngIf="
                                                 editData?.data?.repairType
-                                                    ?.name === 'Bill'
+                                                    ?.name === 'Bill';
+                                                else repairTypeOrder
                                             "
                                         >
                                             - ${{
@@ -596,12 +598,7 @@
                                             }}
                                         </ng-container>
 
-                                        <ng-container
-                                            *ngIf="
-                                                editData?.data?.repairType
-                                                    ?.name === 'Order'
-                                            "
-                                        >
+                                        <ng-template #repairTypeOrder>
                                             - Order
                                             <span>
                                                 <svg-icon
@@ -611,7 +608,7 @@
                                                     "
                                                 ></svg-icon>
                                             </span>
-                                        </ng-container>
+                                        </ng-template>
                                     </p>
                                 </div>
 
@@ -641,7 +638,9 @@
                         <ng-container *ngSwitchCase="'repair-review'">
                             <div class="confirmation-body-content">
                                 <div class="d-flex align-items-center">
-                                    <p class="m-0 text-1 ta-font-bold limit-text">
+                                    <p
+                                        class="m-0 text-1 ta-font-bold limit-text"
+                                    >
                                         {{ editData?.data?.comment }}
                                     </p>
 

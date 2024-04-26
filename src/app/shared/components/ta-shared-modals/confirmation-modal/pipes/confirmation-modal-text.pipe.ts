@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '../enums/confirmation-modal-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Pipe({
     name: 'confirmationModalText',

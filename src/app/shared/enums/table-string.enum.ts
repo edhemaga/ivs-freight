@@ -271,6 +271,8 @@ export enum TableStringEnum {
     SHOP = 'Shop',
     FAVORITE = 'favorite',
     FINISH_ORDER = 'finish-order',
+    FINISH_ORDER_2 = 'finish order',
+    FINISH_ORDER_3 = 'Finish Order',
     DELETE_REPAIR = 'delete-repair',
     DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
@@ -293,6 +295,9 @@ export enum TableStringEnum {
     REPAIR_TYPE = 'repairType',
     REPAIR_MODAL = 'repair-modal',
     REPAIR_DETAIL = 'repair-detail',
+    ALL_BILLS = 'all bills',
+    ALL_BILLS_2 = 'All Bills',
+
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -317,7 +322,7 @@ export enum TableStringEnum {
     PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     PM_DEFAULT_MILEAGE = '10,000',
     PM_DEFAULT_MONTHS = '6',
-    INVOICE = "invoice",
+    INVOICE = 'invoice',
     REPAIR_2 = 'repair',
     TRUCK_REPAIR = 'truck repair',
     TRAILER_REPAIR = 'trailer repair',
@@ -484,4 +489,7 @@ export enum TableStringEnum {
 
     CUSTOM_FIELD = 'customField',
     COMMON = 'common',
+
+    // Border
+    BORDER = 'border',
 }
