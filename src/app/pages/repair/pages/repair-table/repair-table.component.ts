@@ -209,7 +209,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('confirmationData res', res);
                 if (res) {
                     if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
