@@ -18,5 +18,8 @@ export interface TrailerMinimalResponse {
     status?: number;
     owner?: string | null;
     trailerType?: TrailerTypeResponse;
+    trailerMakeName?: string | null;
+    model?: string | null;
+    year?: number;
 }
 

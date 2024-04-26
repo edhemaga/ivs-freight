@@ -778,15 +778,39 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.truck?.truckNumber
-                ? data.truck.truckNumber
-                : data?.trailer?.trailerNumber
-                ? data.trailer.trailerNumber
+            tableUnit: data?.invoice,
+            tableNumber:
+                data?.truck?.truckNumber ||
+                data?.trailer?.trailerNumber ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.datePaid
+                ? this.datePipe.transform(
+                      data.datePaid,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: TableStringEnum.NA,
-            tableMake: TableStringEnum.NA,
-            tableModel: TableStringEnum.NA,
-            tableYear: TableStringEnum.NA,
+            payType: data.payType?.name,
+            driver: data.driverFirstName
+                ? data.driverFirstName + data.driverLastName
+                    ? data.driverLastName
+                    : ''
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableType:
+                data?.truck?.truckType?.logoName ||
+                data?.trailer?.trailerType?.logoName ||
+                TableStringEnum.NA,
+            tableMake:
+                data?.truck?.truckMakeName ||
+                data?.trailer?.trailerMakeName ||
+                TableStringEnum.NA,
+            tableModel:
+                data?.truck?.truckType?.name ||
+                data?.trailer?.trailerType?.name ||
+                TableStringEnum.NA,
+            tableYear:
+                data?.truck?.year + '' ||
+                data?.trailer?.year + '' ||
+                TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -796,21 +820,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopAdress: data?.repairShop?.address?.address
-                ? data.repairShop.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
-
-            tableDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
-                      )
-                : null,
+            tableShopName:
+                data?.repairShop?.name ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableShopAdress:
+                data?.repairShop?.address?.address ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableServices: data?.serviceTypes ?? null,
+            tableDescription: data?.items ?? null,
             descriptionItems: data?.items
                 ? data.items.map((item) => {
                       return {
@@ -851,7 +868,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ? data.files : [],
+            tableAttachments: data?.files ?? [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,

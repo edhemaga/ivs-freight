@@ -13,7 +13,6 @@ import { DayOfWeek } from './dayOfWeek';
 import { RepairShopOpenHoursCommand } from './repairShopOpenHoursCommand';
 import { RepairShopServiceTypeCommand } from './repairShopServiceTypeCommand';
 import { PayPeriod } from './payPeriod';
-import { ShopServiceType } from './shopServiceType';
 import { RepairShopContactCommand } from './repairShopContactCommand';
 
 
@@ -54,6 +53,6 @@ export interface ApiRepairshopPostRequest {
     Contacts?: Array<RepairShopContactCommand>;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;
-    ShopServiceType?: ShopServiceType;
+    ShopServiceType?: number;
 }
 
