@@ -48,6 +48,7 @@ import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/tru
 import { PMCardModalComponent } from '@pages/pm-truck-trailer/pages/pm-card-modal/pm-card-modal.component';
 import { AccountCardModalComponent } from '@pages/account/pages/account-card-modal/account-card-modal.component';
 import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
+import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/repair-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -193,6 +194,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.OWNER) {
             this.modalService.openModal(OwnerCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.REPAIR) {
+            this.modalService.openModal(RepairCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {

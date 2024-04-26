@@ -9,6 +9,7 @@ export enum TaModalTableStringEnum {
     CONTACT_EMAIL_TYPE = 'contact-email-type',
     PM_TRUCK_TYPE = 'pm-truck-type',
     PM_TRAILER_TYPE = 'pm-trailer-type',
+    PM_TRUCK_TRAILER_REPAIR_TYPE = 'pm-truck-trailer-repair-type',
 
     EMAIL = 'email',
 

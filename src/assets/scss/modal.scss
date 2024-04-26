@@ -99,6 +99,16 @@ ngb-modal-window[aria-hidden='true'] {
                         flex: 1;
                         gap: 6px;
                     }
+
+                    .modal-header-counter {
+                        width: 22px;
+                        height: 22px;
+                        background-color: $bw6-2;
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: $white;
+                        border-radius: 50%;
+                    }
                 }
 
                 .modal-header-tab-change-reorder {
@@ -639,6 +649,15 @@ ngb-modal-window[aria-hidden='true'] {
 
                     &:hover {
                         background: $ta-black;
+                    }
+                }
+                
+                .modal-blue-btn {
+                    background: $ta-blue-13;
+                    color: $white;
+
+                    &:hover {
+                        background: $ta-blue-14;
                     }
                 }
 
