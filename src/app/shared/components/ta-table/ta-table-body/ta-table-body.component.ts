@@ -80,7 +80,9 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { RepairDescriptionPopoverConstant } from './utils/repair-description-popover.constant';
+
+//
+import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constant';
 
 @Titles()
 @Component({
@@ -408,6 +410,13 @@ export class TaTableBodyComponent
     // Track By For Not Pined Columns
     trackTableNotPinedColumns(item: any) {
         return item.columnId;
+    }
+
+    public trackByDescriptionIdentity(item: {
+        title: string;
+        className: string;
+    }): string {
+        return item.title; // Using title as the unique identifier
     }
 
     // Track By For Actions Columns

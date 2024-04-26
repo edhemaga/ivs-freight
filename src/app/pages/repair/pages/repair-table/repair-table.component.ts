@@ -78,6 +78,9 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
+// helpers
+import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
+
 @Component({
     selector: 'app-repair-table',
     templateUrl: './repair-table.component.html',
@@ -605,7 +608,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
-                showLocationFilter: true,
+                hideActivationButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 viewModeOptions: this.getViewModeOptions(),
@@ -964,7 +970,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairDropdownContent(),
+                content: this.getRepairDropdownContent(data?.repairType?.name),
             },
         };
     }
@@ -1038,8 +1044,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Get Repair Dropdown Content
-    private getRepairDropdownContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return RepairTableHelper.dropdownTableContent(
+            this.selectedTab,
+            repairType
+        );
     }
 
     // Get Repair Dropdown Content

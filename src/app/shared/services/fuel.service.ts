@@ -1,4 +1,4 @@
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 // models
@@ -179,7 +179,7 @@ export class FuelService {
         search1?: string,
         search2?: string
     ): Observable<FuelStopListResponse> {
-        return; /* this.fuelService.apiFuelFuelstopListGet(
+        return of(null); /* this.fuelService.apiFuelFuelstopListGet(
             truckIds,
             categoryIds,
             dateFrom,
@@ -200,7 +200,7 @@ export class FuelService {
             search,
             search1,
             search2
-        ); */
+        );*/
     }
 
     public getFuelStopById(fuelId: number): Observable<FuelStopResponse> {
