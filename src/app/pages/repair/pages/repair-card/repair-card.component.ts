@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 // Models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -33,6 +34,16 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Helpers
 import { CardArrayHelper } from '@shared/utils/helpers/card-array-helper';
 import { CardHelper } from '@shared/utils/helpers/card-helper';
+
+//Components
+import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
+import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+
+//Services
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { RepairService } from '@shared/services/repair.service';
 
 @Component({
     selector: 'app-repair-card',
@@ -52,7 +63,9 @@ export class RepairCardComponent
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     // All data
-    @Input() viewData: CardDetails[];
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
 
     // Card body endpoints
     @Input() cardTitle: string;
@@ -60,9 +73,10 @@ export class RepairCardComponent
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
     @Input() cardTitleLink: string;
+    @Input() selectedTab: string;
 
     public isCardFlippedCheckInCards: number[] = [];
-
+    public _viewData: CardDetails[];
     public descriptionTooltip: NgbPopover;
     public descriptionIsOpened: number;
     public activeDescriptionDropdown: number = -1;
@@ -79,10 +93,18 @@ export class RepairCardComponent
     public itemsForRepair: string[] = [];
 
     constructor(
-        private tableService: TruckassistTableService,
         private ngZone: NgZone,
         private renderer: Renderer2,
-        private cardHelper: CardHelper
+        public router: Router,
+
+        //Services
+        private tableService: TruckassistTableService,
+        private modalService: ModalService,
+        private confiramtionService: ConfirmationService,
+        private repairService: RepairService,
+
+        //Helpers
+        private cardHelper: CardHelper,
     ) {}
 
     ngOnInit() {
@@ -101,10 +123,8 @@ export class RepairCardComponent
 
         if (
             cardChanges?.displayRowsBack?.currentValue ||
-            cardChanges?.displayRowsFront?.currentValue ||
-            cardChanges?.viewData?.currentValue
+            cardChanges?.displayRowsFront?.currentValue
         ) {
-            this.getTransformedCardsData();
             this.objectsWithDropDown();
         }
     }
@@ -115,40 +135,10 @@ export class RepairCardComponent
         this.windownResizeUpdateCountNumberInCards();
     }
 
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
-
-        const cardTitles = this.cardHelper.renderCards(
-            this.viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        const backOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsBack
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
-    }
-
     public objectsWithDropDown(): void {
         this.itemsForRepair = [];
 
-        this.viewData.forEach((row) => {
+        this._viewData.forEach((row) => {
             this.itemsForRepair = [
                 ...this.itemsForRepair,
                 CardArrayHelper.objectsWithDropDown(row, 'items'),
@@ -161,12 +151,15 @@ export class RepairCardComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.isAllCardsFlipp = res;
+
+                this.isCardFlippedCheckInCards = [];
+                this.cardHelper.isCardFlippedArrayComparasion = []; 
             });
     }
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
@@ -250,6 +243,92 @@ export class RepairCardComponent
 
     public trackCard(item: number): number {
         return item;
+    }
+
+    public onCardActions(event: any): void {
+        switch (event.type) {
+            case TableStringEnum.VIEW_DETAILS:
+                if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
+                    this.router.navigate([
+                        `/list/repair/${event.id}/shop-details`,
+                    ]);
+                break;
+            case TableStringEnum.DELETE_REPAIR || TableStringEnum.DELETE:
+                switch (this.selectedTab) {
+                    case TableStringEnum.REPAIR_SHOP:
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.DELETE },
+                            {
+                                type: TableStringEnum.DELETE,
+                            }
+                        );
+                        this.confiramtionService.confirmationData$.subscribe(
+                            (response) => {
+                                if (response.type === TableStringEnum.DELETE)
+                                    this.repairService
+                                        .deleteRepairShopById(event.id)
+                                        .pipe(takeUntil(this.destroy$))
+                                        .subscribe();
+                            }
+                        );
+
+                        break;
+
+                    default:
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.DELETE },
+                            {
+                                type: TableStringEnum.DELETE,
+                            }
+                        );
+                        break;
+                }
+                break;
+            case TableStringEnum.EDIT:
+                switch (this.selectedTab) {
+                    case TableStringEnum.ACTIVE:
+                        this.modalService.openModal(
+                            RepairOrderModalComponent,
+                            { size: TableStringEnum.LARGE },
+                            {
+                                ...event,
+                                type: TableStringEnum.EDIT_TRUCK,
+                            }
+                        );
+                        break;
+                    case TableStringEnum.INACTIVE:
+                        this.modalService.openModal(
+                            RepairOrderModalComponent,
+                            { size: TableStringEnum.LARGE },
+                            {
+                                ...event,
+                                type: TableStringEnum.EDIT_TRAILER,
+                            }
+                        );
+                        break;
+                    default:
+                        this.modalService.openModal(
+                            RepairShopModalComponent,
+                            { size: TableStringEnum.SMALL },
+                            {
+                                ...event,
+                                openedTab:
+                                    event.type === TableStringEnum.ADD_CONTRACT
+                                        ? TableStringEnum.CONTRACT
+                                        : event.type ===
+                                          TableStringEnum.WRITE_REVIEW
+                                        ? TableStringEnum.REVIEW
+                                        : TableStringEnum.DETAILS,
+                            }
+                        );
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     ngOnDestroy() {
