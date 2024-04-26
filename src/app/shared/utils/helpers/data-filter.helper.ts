@@ -10,6 +10,8 @@ export class DataFilterHelper {
             ? event == TableStringEnum.STATUS
                 ? data?.filter((dataItem) => dataItem[event] == 0)
                 : data?.filter((dataItem) => dataItem[event])
+            : event === TableStringEnum.IS_CLOSED
+            ? data?.filter((dataItem) => dataItem[event])
             : data?.filter(
                   (dataItem) => dataItem[typeName].name.toLowerCase() == event
               );

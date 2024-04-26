@@ -28,6 +28,10 @@ export class FormatDatePipe implements PipeTransform {
                     return diff + (diff == 1 ? ' day' : ' days');
                 }
             }
+            case 'date-time':
+                return moment(date).format(
+                    'MM/DD/YY hh:mm A'
+                ); 
             default: {
                 return moment(date).format('MM/DD/YY');
             }

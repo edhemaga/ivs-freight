@@ -1171,15 +1171,15 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                descriptionPopoverOpen !==
-                                                row.id
-                                                    ? row[column.field]
-                                                    : null
+                                                row[column.field]
+                                                    | tableDescriptionTextPipe
+                                                        : column.width
                                             "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
-                                                    row
+                                                    row,
+                                                    column.width
                                                 )
                                             "
                                             [ngbPopover]="descriptionPopover"
@@ -1293,7 +1293,7 @@
                                         ></span>
 
                                         <div
-                                            class="finish-order-action"
+                                            class="finish-order-action d-flex justify-content-center"
                                             (click)="onFinishOrder(row)"
                                             *ngIf="row.isRepairOrder"
                                         >
@@ -2945,15 +2945,15 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                descriptionPopoverOpen !==
-                                                row.id
-                                                    ? row[column.field]
-                                                    : null
+                                                row[column.field]
+                                                    | tableDescriptionTextPipe
+                                                        : column.width
                                             "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
-                                                    row
+                                                    row,
+                                                    column.width
                                                 )
                                             "
                                             [ngbPopover]="descriptionPopover"
@@ -4874,7 +4874,7 @@
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
                     'table-list-dropdown-content-dropdown-active':
                         action?.isInnerDropActive,
-                        'table-list-dropdown-content-dropdown-disabled':
+                    'table-list-dropdown-content-dropdown-disabled':
                         action.title === 'Delete' &&
                         tableData[0].title === 'Contacts' &&
                         companyUser.companyUserId !== data.companyUserId
@@ -4924,17 +4924,29 @@
 
 <!-- DESCRIPTION -->
 <ng-template #descriptionPopover let-data="data">
-    <div class="description-dropdown-container">
+    <div
+        class="description-dropdown-container"
+        [ngStyle]="{
+            width: widthPopover + 100 + 'px'
+        }"
+    >
         <div class="description-titles">
-            <div class="number-title">#</div>
-            <div class="item-title">Item</div>
-            <div class="qty-title">Qty</div>
-            <div class="price-title">Price</div>
+            <div
+                *ngFor="let popoverDescriptionItem of popoverDescriptionItems"
+                [ngClass]="popoverDescriptionItem.className"
+            >
+                {{ popoverDescriptionItem.title }}
+            </div>
             <div class="price-total-title">
                 {{ data.tabelDescriptionDropTotal }}
             </div>
         </div>
-        <div class="description-items">
+        <div
+            class="description-items"
+            [ngStyle]="{
+                width: widthPopover + 100 + 'px'
+            }"
+        >
             <div
                 class="description-item"
                 [ngClass]="{ 'description-item-margin': i !== 0 }"
@@ -4953,24 +4965,20 @@
                 <div
                     class="item-title"
                     [ngClass]="{ 'pm-style': item.pmDescription }"
-                    [ngStyle]="{
-                        'min-width.px': item.pmDescription ? 229 : 253,
-                        'width.px': item.pmDescription ? 229 : 253
-                    }"
                 >
                     {{ item.description }}
-                </div>
-                <div
-                    class="item-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionPrice }}
                 </div>
                 <div
                     class="number-of-items"
                     [ngClass]="{ 'pm-style': item.pmDescription }"
                 >
                     {{ item.quantity }}
+                </div>
+                <div
+                    class="item-cost"
+                    [ngClass]="{ 'pm-style': item.pmDescription }"
+                >
+                    {{ item.descriptionPrice }}
                 </div>
                 <div
                     class="item-total-cost"

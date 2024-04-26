@@ -19,7 +19,7 @@ import {
     CreateCompanyUserCommand,
     CreateResponse,
     ForgotPasswordCommand,
-    /*  GetCompanyUserListResponse, */
+    // GetCompanyUserListResponse,
     ResendSignUpCompanyOrUserCommand,
     UpdateCompanyUserCommand,
 } from 'appcoretruckassist';
@@ -47,7 +47,7 @@ export class UserService {
         search1?: string,
         search2?: string
     ): Observable<CompanyUserListResponse> {
-        return of(null); /*  this.userService.apiCompanyuserListGet(
+        return of(null); /* this.userService.apiCompanyuserListGet(
             active,
             pageIndex,
             pageSize,
@@ -56,7 +56,7 @@ export class UserService {
             search,
             search1,
             search2
-        ); */
+        );*/
     }
 
     public addUser(data: CreateCompanyUserCommand): Observable<CreateResponse> {

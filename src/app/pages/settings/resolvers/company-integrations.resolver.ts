@@ -19,20 +19,18 @@ export class CompanyIntegrationsResolver implements Resolve<any> {
     ) {}
 
     resolve(): Observable<any> {
-        return this.integrationService
-            .apiIntegrationListGet(/* 1, 1, 25 */)
-            .pipe(
-                tap((integrationPagination) => {
-                    localStorage.setItem(
-                        'integrationTableCount',
-                        JSON.stringify({
-                            active: integrationPagination.pagination.count,
-                        })
-                    );
-                    this.integrationStore.set(
-                        integrationPagination.pagination?.data
-                    );
-                })
-            );
+        return this.integrationService.apiIntegrationListGet(/*1, 1, 25*/).pipe(
+            tap((integrationPagination) => {
+                localStorage.setItem(
+                    'integrationTableCount',
+                    JSON.stringify({
+                        active: integrationPagination.pagination.count,
+                    })
+                );
+                this.integrationStore.set(
+                    integrationPagination.pagination?.data
+                );
+            })
+        );
     }
 }
