@@ -11,7 +11,12 @@ export class NumberOrdinalPipe implements PipeTransform {
         }
 
         const suffixes = ['th', 'st', 'nd', 'rd'];
-        const v = value % 100;
-        return value + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+        const calculating_value = value % 100;
+        return (
+            value +
+            (suffixes[(calculating_value - 20) % 10] ||
+                suffixes[calculating_value] ||
+                suffixes[0])
+        );
     }
 }

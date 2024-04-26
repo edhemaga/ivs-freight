@@ -153,7 +153,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
-    truck$: Observable<any>;
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         // Router
@@ -1607,16 +1607,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.truck$ = this.store.pipe(select(selectActiveTabCards));
+                this.displayRows$ = this.store.pipe(select(selectActiveTabCards));
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.truck$ = this.store.pipe(select(selectInactiveTabCards));
+                this.displayRows$ = this.store.pipe(select(selectInactiveTabCards));
                 break;
             case TableStringEnum.REPAIR_SHOP:
                 this.cardTitle = TableStringEnum.NAME;
-                this.truck$ = this.store.pipe(select(selectRepairShopTabCards));
+                this.displayRows$ = this.store.pipe(select(selectRepairShopTabCards));
                 break;
             default:
                 break;

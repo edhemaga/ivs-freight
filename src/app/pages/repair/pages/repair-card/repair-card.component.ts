@@ -24,6 +24,7 @@ import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { RepairData } from '@pages/repair/models/repair-data.model';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -44,7 +45,6 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { RepairService } from '@shared/services/repair.service';
-import { RepairData } from '@pages/repair/models/repair-data.model';
 
 @Component({
     selector: 'app-repair-card',

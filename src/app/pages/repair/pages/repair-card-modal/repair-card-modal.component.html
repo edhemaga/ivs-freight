@@ -22,7 +22,7 @@
                     No. of Rows
                 </div>
                 <div class="form-radio-btns d-flex">
-                    <ng-container *ngFor="let item of rowValues">
+                    <ng-container *ngFor="let item of rowValues; trackBy: identity">
                         <label class="d-flex align-items-center radio-label">
                             <input
                                 type="radio"
@@ -58,7 +58,8 @@
                                 let frontRow of cardsForm.controls
                                     | ngForLengthFilter
                                         : cardsForm.get('numberOfRows').value;
-                                let i = index
+                                let i = index;
+                                trackBy: identity
                             "
                         >
                             <div
@@ -123,7 +124,8 @@
                                         | ngForLengthFilter
                                             : cardsForm.get('numberOfRows')
                                                   .value;
-                                    let i = index
+                                    let i = index;
+                                    trackBy: identity
                                 "
                             >
                                 <div

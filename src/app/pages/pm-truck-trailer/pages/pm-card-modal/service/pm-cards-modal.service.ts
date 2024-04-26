@@ -11,7 +11,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
 // Enums
-import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +20,7 @@ export class PMCardsModalService {
     constructor(private pmStore: PMCardDataStore) {}
 
     private tabSubject: BehaviorSubject<string> = new BehaviorSubject<string>(
-        CardsModalEnum.ACTIVE
+        CardsModalStringEnum.ACTIVE
     );
 
     public tabObservable$: Observable<string> = this.tabSubject.asObservable();
@@ -31,11 +31,11 @@ export class PMCardsModalService {
     public updateStore(data: CardsModalData, tab: string): void {
         const front_side = CompareObjectsModal.filterOutOBjects(
             data,
-            CardsModalEnum.FRONT_SELECTED
+            CardsModalStringEnum.FRONT_SELECTED
         );
         const back_side = CompareObjectsModal.filterOutOBjects(
             data,
-            CardsModalEnum.BACK_SELECTED
+            CardsModalStringEnum.BACK_SELECTED
         );
 
         const sendToStore = {
@@ -46,7 +46,7 @@ export class PMCardsModalService {
         };
 
         switch (tab) {
-            case CardsModalEnum.ACTIVE:
+            case CardsModalStringEnum.ACTIVE:
                 this.pmStore.update((store) => {
                     return {
                         ...store,
@@ -58,7 +58,7 @@ export class PMCardsModalService {
                 });
                 break;
 
-            case CardsModalEnum.INACTIVE:
+            case CardsModalStringEnum.INACTIVE:
                 this.pmStore.update((store) => {
                     return {
                         ...store,
