@@ -16,5 +16,6 @@ export interface RepairShopServiceTypeResponse {
     serviceType?: EnumValue;
     active?: boolean;
     logoName?: string | null;
+    isSelected?: boolean;
 }
 

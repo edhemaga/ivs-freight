@@ -33,6 +33,10 @@ import { MapMarkerListResponse } from '../model/mapMarkerListResponse';
 // @ts-ignore
 import { MobileRepairShopDetailsResponse } from '../model/mobileRepairShopDetailsResponse';
 // @ts-ignore
+import { MobileRepairShopExpensesResponse } from '../model/mobileRepairShopExpensesResponse';
+// @ts-ignore
+import { MobileRepairShopListResponse } from '../model/mobileRepairShopListResponse';
+// @ts-ignore
 import { PayPeriod } from '../model/payPeriod';
 // @ts-ignore
 import { ProblemDetails } from '../model/problemDetails';
@@ -56,8 +60,6 @@ import { RepairShopResponse } from '../model/repairShopResponse';
 import { RepairShopServiceTypeCommand } from '../model/repairShopServiceTypeCommand';
 // @ts-ignore
 import { RepairedVehicleListResponse } from '../model/repairedVehicleListResponse';
-// @ts-ignore
-import { ShopServiceType } from '../model/shopServiceType';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -1531,6 +1533,238 @@ export class RepairShopService {
     }
 
     /**
+     * @param id 
+     * @param chartTimeDetailPages 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairshopMobileExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MobileRepairShopExpensesResponse>;
+    public apiRepairshopMobileExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MobileRepairShopExpensesResponse>>;
+    public apiRepairshopMobileExpensesGet(id?: number, chartTimeDetailPages?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MobileRepairShopExpensesResponse>>;
+    public apiRepairshopMobileExpensesGet(id?: number, chartTimeDetailPages?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (id !== undefined && id !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
+        }
+        if (chartTimeDetailPages !== undefined && chartTimeDetailPages !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>chartTimeDetailPages, 'ChartTimeDetailPages');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repairshop/mobile/expenses`;
+        return this.httpClient.request<MobileRepairShopExpensesResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param active 
+     * @param pinned 
+     * @param companyOwned 
+     * @param categoryIds 
+     * @param _long 
+     * @param lat 
+     * @param distance 
+     * @param costFrom 
+     * @param costTo 
+     * @param visitedByMe 
+     * @param driverId 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairshopMobileListGet(active?: number, pinned?: boolean, companyOwned?: boolean, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, visitedByMe?: boolean, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MobileRepairShopListResponse>;
+    public apiRepairshopMobileListGet(active?: number, pinned?: boolean, companyOwned?: boolean, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, visitedByMe?: boolean, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MobileRepairShopListResponse>>;
+    public apiRepairshopMobileListGet(active?: number, pinned?: boolean, companyOwned?: boolean, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, visitedByMe?: boolean, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MobileRepairShopListResponse>>;
+    public apiRepairshopMobileListGet(active?: number, pinned?: boolean, companyOwned?: boolean, categoryIds?: Array<number>, _long?: number, lat?: number, distance?: number, costFrom?: number, costTo?: number, visitedByMe?: boolean, driverId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (active !== undefined && active !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>active, 'Active');
+        }
+        if (pinned !== undefined && pinned !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pinned, 'Pinned');
+        }
+        if (companyOwned !== undefined && companyOwned !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyOwned, 'CompanyOwned');
+        }
+        if (categoryIds) {
+            categoryIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'CategoryIds');
+            })
+        }
+        if (_long !== undefined && _long !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>distance, 'Distance');
+        }
+        if (costFrom !== undefined && costFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>costFrom, 'CostFrom');
+        }
+        if (costTo !== undefined && costTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>costTo, 'CostTo');
+        }
+        if (visitedByMe !== undefined && visitedByMe !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>visitedByMe, 'VisitedByMe');
+        }
+        if (driverId !== undefined && driverId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>driverId, 'DriverId');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repairshop/mobile/list`;
+        return this.httpClient.request<MobileRepairShopListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -1697,10 +1931,10 @@ export class RepairShopService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPost(name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, longitude?: number, latitude?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, shopServiceType?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1929,10 +2163,10 @@ export class RepairShopService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairshopPut(id?: number, name?: string, phone?: string, phoneExt?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, pinned?: boolean, note?: string, companyOwned?: boolean, bankId?: number, account?: string, routing?: string, rent?: number, longitude?: number, latitude?: number, payPeriod?: PayPeriod, weeklyDay?: DayOfWeek, monthlyDay?: number, openHoursSameAllDays?: boolean, openAlways?: boolean, startTimeAllDays?: string, endTimeAllDays?: string, serviceTypes?: Array<RepairShopServiceTypeCommand>, openHours?: Array<RepairShopOpenHoursCommand>, contacts?: Array<RepairShopContactCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, shopServiceType?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 

@@ -14,6 +14,7 @@ import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { EnumValue } from './enumValue';
 import { RepairShopContactListResponse } from './repairShopContactListResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface RepairShopListDto { 
@@ -23,7 +24,7 @@ export interface RepairShopListDto {
     phone?: string | null;
     phoneExt?: string | null;
     email?: string | null;
-    address?: string | null;
+    address?: AddressEntity;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     openHoursSameAllDays?: boolean | null;
@@ -55,7 +56,7 @@ export interface RepairShopListDto {
     longitude?: number | null;
     distance?: number | null;
     timesVisitedByCompany?: number;
-    isClosed?: boolean;
+    status?: number;
     fileCount?: number | null;
     contactCount?: number | null;
     shopServiceType?: EnumValue;

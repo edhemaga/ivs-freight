@@ -72,6 +72,7 @@ export interface TruckShortResponse {
     registrationExpirationDays?: number | null;
     registrationExpirationHours?: number | null;
     fileCount?: number | null;
+    fhwaInspection?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }
