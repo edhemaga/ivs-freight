@@ -15,7 +15,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 
 // Enums
-import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -132,11 +132,11 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
             .subscribe((res) => {
                 this.tabSelected = res;
                 switch (res) {
-                    case CardsModalEnum.ACTIVE:
+                    case CardsModalStringEnum.ACTIVE:
                         this.closedTabModalConfig();
                         break;
 
-                    case CardsModalEnum.INACTIVE:
+                    case CardsModalStringEnum.INACTIVE:
                         this.inactiveTabModal();
                         break;
 
@@ -183,10 +183,10 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
 
     public onActionModal(event): void {
         switch (event.action) {
-            case CardsModalEnum.CARDS_MODAL:
+            case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
-            case CardsModalEnum.RESET_TO_DEFAULT:
+            case CardsModalStringEnum.RESET_TO_DEFAULT:
                 this.setTodefaultCards();
                 break;
             default:
@@ -196,91 +196,91 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
 
     private updateStore(): void {
         this.cardsForm.patchValue({
-            checked: this.cardsForm.get(CardsModalEnum.CHECKED).value,
+            checked: this.cardsForm.get(CardsModalStringEnum.CHECKED).value,
 
-            numberOfRows: this.cardsForm.get(CardsModalEnum.NUMBER_OF_ROWS)
+            numberOfRows: this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS)
                 .value,
 
             frontSelectedTitle_0: this.cardsForm.get(
-                CardsModalEnum.FRONT_SELECTED_0
+                CardsModalStringEnum.FRONT_SELECTED_0
             ).value
-                ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_0).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_0).value
                 : this.dataFront[0],
 
             frontSelectedTitle_1: this.cardsForm.get(
-                CardsModalEnum.FRONT_SELECTED_1
+                CardsModalStringEnum.FRONT_SELECTED_1
             ).value
-                ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_1).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_1).value
                 : this.dataFront[1],
 
             frontSelectedTitle_2: this.cardsForm.get(
-                CardsModalEnum.FRONT_SELECTED_2
+                CardsModalStringEnum.FRONT_SELECTED_2
             ).value
-                ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_2).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_2).value
                 : this.dataFront[2],
 
             frontSelectedTitle_3:
-                this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_3).value &&
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value &&
                 this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_3).value
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataFront[3],
 
             frontSelectedTitle_4:
-                this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_4).value &&
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value &&
                 this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_4).value
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataFront[4],
 
             frontSelectedTitle_5:
-                this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_5).value &&
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value &&
                 this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalEnum.FRONT_SELECTED_5).value
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value
                     : this.defaultCardsValues.numberOfRows < 6
                     ? null
                     : this.dataFront[5],
 
             backSelectedTitle_0: this.cardsForm.get(
-                CardsModalEnum.BACK_SELECTED_0
+                CardsModalStringEnum.BACK_SELECTED_0
             ).value
-                ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_0).value
+                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_0).value
                 : this.dataBack[0],
 
             backSelectedTitle_1: this.cardsForm.get(
-                CardsModalEnum.BACK_SELECTED_1
+                CardsModalStringEnum.BACK_SELECTED_1
             ).value
-                ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_1).value
+                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_1).value
                 : this.dataBack[1],
 
             backSelectedTitle_2: this.cardsForm.get(
-                CardsModalEnum.BACK_SELECTED_2
+                CardsModalStringEnum.BACK_SELECTED_2
             ).value
-                ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_2).value
+                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_2).value
                 : this.dataBack[2],
 
             backSelectedTitle_3:
-                this.cardsForm.get(CardsModalEnum.BACK_SELECTED_3).value &&
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value &&
                 this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_3).value
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataBack[3],
 
             backSelectedTitle_4:
-                this.cardsForm.get(CardsModalEnum.BACK_SELECTED_4).value &&
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value &&
                 this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_4).value
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataBack[4],
 
             backSelectedTitle_5:
-                this.cardsForm.get(CardsModalEnum.BACK_SELECTED_5).value &&
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value &&
                 this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalEnum.BACK_SELECTED_5).value
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value
                     : this.defaultCardsValues.numberOfRows < 6
                     ? null
                     : this.dataBack[5],
@@ -339,7 +339,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
     private filterTitlesFromForm(valuesInform: CardRows[]): void {
         this.titlesInForm = valuesInform
             .map((item) => {
-                if (item && typeof item.title === CardsModalEnum.STRING) {
+                if (item && typeof item.title === CardsModalStringEnum.STRING) {
                     return item.title;
                 }
                 return;

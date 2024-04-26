@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponse } from './companyUserListItemResponse';
 
 
-export interface TimeOnly { 
-    hour?: number;
-    minute?: number;
-    second?: number;
-    millisecond?: number;
-    ticks?: number;
+export interface CompanyUserListItemResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyUserListItemResponse> | null;
 }
 

@@ -1,5 +1,4 @@
 import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
-import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
 import { Tabs } from '@shared/models/tabs.model';
 
 export class RepairOrderConstants {
@@ -21,7 +20,7 @@ export class RepairOrderConstants {
         },
     ];
 
-    static HEADER_TABS: RepairData[] = [
+    static HEADER_TABS: Tabs[] = [
         {
             id: 1,
             name: 'Bill',
@@ -34,14 +33,14 @@ export class RepairOrderConstants {
         },
     ];
 
-    static TYPE_OF_REPAIR: RepairData[] = [
+    static TYPE_OF_REPAIR_TABS: Tabs[] = [
         {
-            id: 3,
+            id: 1,
             name: 'Truck',
             checked: true,
         },
         {
-            id: 4,
+            id: 2,
             name: 'Trailer',
             checked: false,
         },
@@ -49,54 +48,19 @@ export class RepairOrderConstants {
 
     static SERVICE_TABS: Tabs[] = [
         {
-            id: 5,
+            id: 1,
             name: 'IN STORE',
             checked: false,
         },
         {
-            id: 6,
+            id: 2,
             name: 'AT LOCATION',
             checked: false,
         },
         {
-            id: 7,
+            id: 3,
             name: 'COMBINED',
             checked: false,
-        },
-    ];
-
-    static PAID: { id: number; name: string }[] = [
-        {
-            id: 0,
-            name: 'Wire Transfer',
-        },
-        {
-            id: 1,
-            name: 'Cash',
-        },
-        {
-            id: 2,
-            name: 'Check',
-        },
-        {
-            id: 3,
-            name: 'Money Code',
-        },
-        {
-            id: 4,
-            name: 'Q. pay (Zelle)',
-        },
-        {
-            id: 5,
-            name: 'Q. pay (Venmo)',
-        },
-        {
-            id: 6,
-            name: 'Q. pay (Cashapp',
-        },
-        {
-            id: 7,
-            name: 'Q. pay (PayPal)',
         },
     ];
 }

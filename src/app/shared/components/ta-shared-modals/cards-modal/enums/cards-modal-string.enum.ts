@@ -1,4 +1,4 @@
-export enum CardsModalEnum {
+export enum CardsModalStringEnum {
     EMPTY = 'empty',
 
     STRING = 'string',
@@ -17,6 +17,9 @@ export enum CardsModalEnum {
 
     CHECKED = 'checked',
     NUMBER_OF_ROWS = 'numberOfRows',
+
+    FRONT_SIDE = 'front_side',
+    BACK_SIDE = 'back_side',
 
     FRONT_SELECTED = 'frontSelectedTitle_',
     FRONT_SELECTED_0 = 'frontSelectedTitle_0',

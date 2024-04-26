@@ -39,7 +39,7 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
                 1,
                 25
             ),
-            this.tableService.getTableConfig(10),
+            this.tableService.getTableConfig(11),
         ]).pipe(
             tap(([repairTruckPagination, tableConfig]) => {
                 localStorage.setItem(

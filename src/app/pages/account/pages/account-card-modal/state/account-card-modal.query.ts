@@ -8,12 +8,12 @@ import {
 } from '@pages/account/pages/account-card-modal/state/account-card-modal.store';
 
 // Enum
-import { CardsModalEnum } from 'src/app/shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
 @Injectable({ providedIn: 'root' })
 export class accountCardModalQuery extends QueryEntity<AccountCardDataState> {
-    public active$ = this.select(CardsModalEnum.ACTIVE);
-    public inactive$ = this.select(CardsModalEnum.INACTIVE);
+    public active$ = this.select(CardsModalStringEnum.ACTIVE);
+    public inactive$ = this.select(CardsModalStringEnum.INACTIVE);
 
     constructor(protected accountCardDataStore: AccountCardDataStore) {
         super(accountCardDataStore);

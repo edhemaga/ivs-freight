@@ -16,7 +16,7 @@ import {
 import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
 
 // Enums
-import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Services
@@ -46,7 +46,7 @@ import { Store } from '@ngrx/store';
 import { selectActiveModalTabs } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.selectors';
 
 //Pipes
-import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe.';
+import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
 @Component({
@@ -225,7 +225,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         dataState.front_side.map((item, index) => {
             this.front_side_form.at(index).patchValue({
                 inputItem:
-                    !item || item.title == CardsModalEnum.EMPTY
+                    !item || item.title == CardsModalStringEnum.EMPTY
                         ? { title: null, key: null }
                         : item,
             });
@@ -234,7 +234,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         dataState.back_side.map((item, index) => {
             this.back_side_form.at(index).patchValue({
                 inputItem:
-                    !item || item.title == CardsModalEnum.EMPTY
+                    !item || item.title == CardsModalStringEnum.EMPTY
                         ? { title: null, key: null }
                         : item,
             });
@@ -260,10 +260,10 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
 
     public onActionModal(event): void {
         switch (event.action) {
-            case CardsModalEnum.CARDS_MODAL:
+            case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
-            case CardsModalEnum.RESET_TO_DEFAULT:
+            case CardsModalStringEnum.RESET_TO_DEFAULT:
                 this.setTodefaultCards();
                 break;
             default:
@@ -272,11 +272,11 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     }
 
     public get front_side_form(): FormArray {
-        return this.cardsForm.get('front_side') as FormArray;
+        return this.cardsForm.get(CardsModalStringEnum.FRONT_SIDE) as FormArray;
     }
 
     public get back_side_form(): FormArray {
-        return this.cardsForm.get('back_side') as FormArray;
+        return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
     }
 
     private updateStore(): void {
@@ -329,7 +329,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     private filterTitlesFromForm(valuesInform: CardRows[]): void {
         this.titlesInForm = valuesInform
             .map((item) => {
-                if (item && typeof item.title === CardsModalEnum.STRING) {
+                if (item && typeof item.title === CardsModalStringEnum.STRING) {
                     return item.title;
                 }
                 return;
@@ -351,8 +351,8 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
         if (
             isFrontSidesEqual &&
             areBackSidesEqual &&
-            this.cardsForm.get(CardsModalEnum.CHECKED).value &&
-            this.cardsForm.get(CardsModalEnum.NUMBER_OF_ROWS).value === 4
+            this.cardsForm.get(CardsModalStringEnum.CHECKED).value &&
+            this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS).value === 4
         ) {
             this.resetForm = false;
         } else {
@@ -368,9 +368,11 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     ): void {
         this.displayData$ = this.store.select(selectActiveModalTabs(type));
         this.subscription.add(
-            this.displayData$.pipe(first()).subscribe((data) => {
-                this.createForm(data);
-            })
+            this.displayData$
+                .pipe(takeUntil(this.destroy$), first())
+                .subscribe((data) => {
+                    this.createForm(data);
+                })
         );
         this.cardsAllData =
             type !== TableStringEnum.REPAIR_SHOP
@@ -384,6 +386,10 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             type !== TableStringEnum.REPAIR_SHOP
                 ? RepairCardsModalData.BackDataLoad
                 : RepairShopCardsModalData.BackDataLoad;
+    }
+
+    public identity(item: CardRows): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

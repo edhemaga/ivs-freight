@@ -83,6 +83,9 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
+// helpers
+import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
+
 @Component({
     selector: 'app-repair-table',
     templateUrl: './repair-table.component.html',
@@ -153,7 +156,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
-    truck$: Observable<any>;
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         // Router
@@ -207,7 +210,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.deleteSelectedRows();
     }
-    
+
     // TODO - Add to store logic
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
@@ -521,7 +524,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
-                showLocationFilter: true,
+                hideActivationButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 viewModeOptions: this.getViewModeOptions(),
@@ -786,15 +792,39 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.truck?.truckNumber
-                ? data.truck.truckNumber
-                : data?.trailer?.trailerNumber
-                ? data.trailer.trailerNumber
+            tableUnit: data?.invoice,
+            tableNumber:
+                data?.truck?.truckNumber ||
+                data?.trailer?.trailerNumber ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.datePaid
+                ? this.datePipe.transform(
+                      data.datePaid,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: TableStringEnum.NA,
-            tableMake: TableStringEnum.NA,
-            tableModel: TableStringEnum.NA,
-            tableYear: TableStringEnum.NA,
+            payType: data.payType?.name,
+            driver: data.driverFirstName
+                ? data.driverFirstName + data.driverLastName
+                    ? data.driverLastName
+                    : ''
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableType:
+                data?.truck?.truckType?.logoName ||
+                data?.trailer?.trailerType?.logoName ||
+                TableStringEnum.NA,
+            tableMake:
+                data?.truck?.truckMakeName ||
+                data?.trailer?.trailerMakeName ||
+                TableStringEnum.NA,
+            tableModel:
+                data?.truck?.truckType?.name ||
+                data?.trailer?.trailerType?.name ||
+                TableStringEnum.NA,
+            tableYear:
+                data?.truck?.year + '' ||
+                data?.trailer?.year + '' ||
+                TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -804,21 +834,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopAdress: data?.repairShop?.address?.address
-                ? data.repairShop.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
-
-            tableDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
-                      )
-                : null,
+            tableShopName:
+                data?.repairShop?.name ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableShopAdress:
+                data?.repairShop?.address?.address ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableServices: data?.serviceTypes ?? null,
+            tableDescription: data?.items ?? null,
             descriptionItems: data?.items
                 ? data.items.map((item) => {
                       return {
@@ -859,11 +882,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ? data.files : [],
+            tableAttachments: data?.files ?? [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairDropdownContent(),
+                content: this.getRepairDropdownContent(data?.repairType?.name),
             },
         };
     }
@@ -937,10 +960,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Get Repair Dropdown Content
-    private getRepairDropdownContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return RepairTableHelper.dropdownTableContent(
+            this.selectedTab,
+            repairType
+        );
     }
-    
+
     // Get Repair Dropdown Content
 
     // TODO - Add to store logic
@@ -953,9 +979,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             let newDropItem = { ...dropItem };
 
             if (dropItem.name === TableStringEnum.CLOSE_BUSINESS) {
-                newDropItem.title = !shopData.isClosed
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS;
+                newDropItem.title = !shopData.status
+                    ? TableStringEnum.OPEN_BUSINESS
+                    : TableStringEnum.CLOSE_BUSINESS_2;
             }
 
             newDropdownContent.push(newDropItem);
@@ -1289,9 +1315,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
-                type: event.data.isClosed
-                    ? TableStringEnum.OPEN
-                    : TableStringEnum.CLOSE,
+                type: event.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
             };
 
             this.modalService.openModal(
@@ -1433,7 +1459,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
-    
+
     // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
@@ -1590,16 +1616,16 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.truck$ = this.store.pipe(select(selectActiveTabCards));
+                this.displayRows$ = this.store.pipe(select(selectActiveTabCards));
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.truck$ = this.store.pipe(select(selectInactiveTabCards));
+                this.displayRows$ = this.store.pipe(select(selectInactiveTabCards));
                 break;
             case TableStringEnum.REPAIR_SHOP:
                 this.cardTitle = TableStringEnum.NAME;
-                this.truck$ = this.store.pipe(select(selectRepairShopTabCards));
+                this.displayRows$ = this.store.pipe(select(selectRepairShopTabCards));
                 break;
             default:
                 break;

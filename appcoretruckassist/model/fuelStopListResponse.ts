@@ -17,5 +17,6 @@ export interface FuelStopListResponse {
     fuelTransactionCount?: number;
     fuelStopCount?: number;
     fuelCardCount?: number;
+    fuelStopClosedCount?: number;
 }
 

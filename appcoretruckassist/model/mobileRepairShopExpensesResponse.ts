@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileRepairShopExpensesChartResponse } from './mobileRepairShopExpensesChartResponse';
 
 
-export interface UpdatePayrollOwnerLastLoadCommand { 
-    id?: number;
-    lastLoadId?: number;
+export interface MobileRepairShopExpensesResponse { 
+    cost?: number | null;
+    repair?: number | null;
+    repairShopExpensesChartResponse?: Array<MobileRepairShopExpensesChartResponse> | null;
 }
 

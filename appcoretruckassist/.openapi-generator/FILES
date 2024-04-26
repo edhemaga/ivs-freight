@@ -130,8 +130,6 @@ model/apiInspectionPostRequest.ts
 model/apiInspectionPostRequest1.ts
 model/apiLoadPostRequest.ts
 model/apiLoadPostRequest1.ts
-model/apiLoadTemplatePostRequest.ts
-model/apiLoadTemplatePostRequest1.ts
 model/apiMedicalPostRequest.ts
 model/apiMedicalPostRequest1.ts
 model/apiMvrPostRequest.ts
@@ -275,9 +273,11 @@ model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
+model/companyUserListItemResponse.ts
+model/companyUserListItemResponsePagination.ts
+model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
-model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
@@ -326,6 +326,7 @@ model/createFuelItemCommand.ts
 model/createHosCommand.ts
 model/createHosRulesReviewCommand.ts
 model/createInsurancePolicyAddonCommand.ts
+model/createLoadTemplateCommand.ts
 model/createMapCommand.ts
 model/createMedicalCertificateReviewCommand.ts
 model/createMobileAccountCommand.ts
@@ -419,7 +420,6 @@ model/editTagCommand.ts
 model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
-model/efsIntegrationConnectDisconnectCommand.ts
 model/emergencyContactResponse.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
@@ -476,7 +476,6 @@ model/getCompanyAccountLabelListResponse.ts
 model/getCompanyAccountListResponse.ts
 model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
-model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
@@ -510,6 +509,7 @@ model/insurancePolicyShortResponse.ts
 model/insuranceTypeCommand.ts
 model/insuranceTypeResponse.ts
 model/integrationConectedResponse.ts
+model/integrationConnectDisconnectCommand.ts
 model/integrationListResponse.ts
 model/integrationModalResponse.ts
 model/integrationProviderResponse.ts
@@ -545,6 +545,7 @@ model/loadMobileResponse.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
+model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadResponsePagination.ts
@@ -593,6 +594,10 @@ model/mobileFuelTransactionResponse.ts
 model/mobileFuelTransactionResponsePagination.ts
 model/mobileGpsDataCommand.ts
 model/mobileRepairShopDetailsResponse.ts
+model/mobileRepairShopDetailsResponsePagination.ts
+model/mobileRepairShopExpensesChartResponse.ts
+model/mobileRepairShopExpensesResponse.ts
+model/mobileRepairShopListResponse.ts
 model/mobileTransactionListResponse.ts
 model/models.ts
 model/moveMultipleToApplicantsCommand.ts
@@ -810,7 +815,6 @@ model/shipperModalResponse.ts
 model/shipperResponse.ts
 model/shipperResponsePagination.ts
 model/shipperShortResponse.ts
-model/shopServiceType.ts
 model/signInCommand.ts
 model/signInResponse.ts
 model/signUpCompanyCommand.ts
@@ -972,6 +976,7 @@ model/updateHosCommand.ts
 model/updateHosRulesCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
 model/updateLoadStatusCommand.ts
+model/updateLoadTemplateCommand.ts
 model/updateMapCommand.ts
 model/updateMedicalCertificateReviewCommand.ts
 model/updateMvrAuthReviewCommand.ts

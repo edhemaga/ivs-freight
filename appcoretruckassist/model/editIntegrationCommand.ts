@@ -16,6 +16,7 @@ export interface EditIntegrationCommand {
     userId?: string | null;
     carrierId?: string | null;
     password?: string | null;
+    twoFactorAuthSecret?: string | null;
     integrationProviderId?: number;
 }
 

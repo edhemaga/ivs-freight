@@ -11,6 +11,11 @@ export class ToolbarTableHeadTitlePipe implements PipeTransform {
             (tableData[0]?.gridNameTitle !== 'PM' ||
                 (tableData[0]?.gridNameTitle === 'PM' &&
                     column.tableHeadTitle !== 'REPAIR SHOP')) &&
+            (tableData[0]?.gridNameTitle !== 'Repair' ||
+                (tableData[0]?.gridNameTitle === 'Repair' &&
+                    !['Unit', 'Item Detail', 'Shop Detail'].includes(
+                        column?.groupName?.trim()
+                    ))) &&
             ![
                 'Owner Details',
                 'Registration Detail',

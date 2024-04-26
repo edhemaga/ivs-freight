@@ -1,10 +1,15 @@
+//Store
 import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
     setInactiveTabCards,
     setRepairShopTabCards,
 } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.actions';
+
+//Constants
 import { RepairCardsModalConfig } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.config';
+
+//Models
 import { RepairCardData } from '@pages/repair/pages/repair-card-modal/models/repair-card-data.model';
 
 export const repairState: RepairCardData = {

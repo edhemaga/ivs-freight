@@ -34,8 +34,8 @@
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
-                [displayRowsFront]="(truck$ | async).displayRowsFront"
-                [displayRowsBack]="(truck$ | async).displayRowsBack"
+                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
+                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 [page]="page"
                 [selectedTab]="selectedTab"
             >

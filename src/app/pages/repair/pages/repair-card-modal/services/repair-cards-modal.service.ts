@@ -14,7 +14,7 @@ import {
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -39,14 +39,14 @@ export class RepairCardsModalService {
                 return item.inputItem.title && data.numberOfRows >= index + 1
                     ? item.inputItem
                     : !item.inputItem.title && data.numberOfRows >= index + 1
-                    ? { title: CardsModalEnum.EMPTY, key: '' }
+                    ? { title: CardsModalStringEnum.EMPTY, key: '' }
                     : null;
             }),
             back_side: data.back_side.map((item, index) => {
                 return item.inputItem.title && data.numberOfRows >= index + 1
                     ? item.inputItem
                     : !item.inputItem.title && data.numberOfRows >= index + 1
-                    ? { title: CardsModalEnum.EMPTY, key: '' }
+                    ? { title: CardsModalStringEnum.EMPTY, key: '' }
                     : null;
             }),
         };

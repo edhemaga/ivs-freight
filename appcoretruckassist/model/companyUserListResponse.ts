@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponsePagination } from './companyUserListItemResponsePagination';
 
 
-export interface UpdatePayrollDriverMileageLastStopCommand { 
-    id?: number;
-    lastMilesStopId?: number;
+export interface CompanyUserListResponse { 
+    pagination?: CompanyUserListItemResponsePagination;
+    activeCount?: number;
+    inactiveCount?: number;
 }
 
