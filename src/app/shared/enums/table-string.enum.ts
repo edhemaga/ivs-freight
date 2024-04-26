@@ -277,7 +277,7 @@ export enum TableStringEnum {
     DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
-    REPAIR_SHOP = 'repair-shop',
+    REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',

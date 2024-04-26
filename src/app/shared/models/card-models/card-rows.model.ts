@@ -1,4 +1,7 @@
+import { CardRowsItem } from '@shared/models/card-models/card-rows-item.model';
+
 export interface CardRows {
+    inputItem?: CardRowsItem;
     title?: string;
     endpoint?: string;
     secondEndpoint?: string;
