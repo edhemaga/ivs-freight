@@ -1,8 +1,14 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
+//models
+import { RepairDropdownTableModel } from '../../models/repair-dropdown-table-model';
+
 export class RepairTableHelper {
-    static dropdownTableContent(tabSelected: string, repairType): any {
-        const commonDropdownContent = [
+    static dropdownTableContent(
+        tabSelected: string,
+        repairType
+    ): RepairDropdownTableModel[] {
+        const commonDropdownContent: RepairDropdownTableModel[] = [
             {
                 title: TableStringEnum.EDIT_2,
                 name: TableStringEnum.EDIT,
@@ -84,7 +90,7 @@ export class RepairTableHelper {
             },
         ];
 
-        const orderDropdownContent = {
+        const orderDropdownContent: RepairDropdownTableModel = {
             title: TableStringEnum.FINISH_ORDER_2,
             name: TableStringEnum.FINISH_ORDER,
             svgUrl: 'assets/svg/common/ic_note_order.svg',

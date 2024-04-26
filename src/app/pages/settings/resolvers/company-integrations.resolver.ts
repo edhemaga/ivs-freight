@@ -19,7 +19,7 @@ export class CompanyIntegrationsResolver implements Resolve<any> {
     ) {}
 
     resolve(): Observable<any> {
-        return this.integrationService.apiIntegrationListGet(1, 1, 25).pipe(
+        return this.integrationService.apiIntegrationListGet(/*1, 1, 25*/).pipe(
             tap((integrationPagination) => {
                 localStorage.setItem(
                     'integrationTableCount',

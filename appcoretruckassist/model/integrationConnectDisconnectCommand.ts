@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ServiceType } from './serviceType';
 
 
-export interface RepairShopServiceTypeCommand { 
-    serviceType?: ServiceType;
-    active?: boolean;
-    isSelected?: boolean;
+export interface IntegrationConnectDisconnectCommand { 
+    id?: number;
+    isConnected?: boolean | null;
+    integrationProvider?: number;
 }
 

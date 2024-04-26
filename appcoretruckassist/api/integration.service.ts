@@ -27,11 +27,11 @@ import { CompanyIntegrationResponse } from '../model/companyIntegrationResponse'
 // @ts-ignore
 import { EditIntegrationCommand } from '../model/editIntegrationCommand';
 // @ts-ignore
-import { EfsIntegrationConnectDisconnectCommand } from '../model/efsIntegrationConnectDisconnectCommand';
-// @ts-ignore
 import { EnumValue } from '../model/enumValue';
 // @ts-ignore
 import { IntegrationConectedResponse } from '../model/integrationConectedResponse';
+// @ts-ignore
+import { IntegrationConnectDisconnectCommand } from '../model/integrationConnectDisconnectCommand';
 // @ts-ignore
 import { IntegrationListResponse } from '../model/integrationListResponse';
 // @ts-ignore
@@ -110,14 +110,14 @@ export class IntegrationService {
     }
 
     /**
-     * @param efsIntegrationConnectDisconnectCommand 
+     * @param integrationConnectDisconnectCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -170,11 +170,11 @@ export class IntegrationService {
             }
         }
 
-        let localVarPath = `/api/integration/efs/connect/disconnect`;
+        let localVarPath = `/api/integration/connect/disconnect`;
         return this.httpClient.request<IntegrationConectedResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: efsIntegrationConnectDisconnectCommand,
+                body: integrationConnectDisconnectCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

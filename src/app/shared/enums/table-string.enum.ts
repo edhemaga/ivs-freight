@@ -296,6 +296,10 @@ export enum TableStringEnum {
     ALL_ORDERS = 'All Orders',
     ALL_ORDERS_2 = 'all-orders',
     FINISH_ORDER_2 = 'Finish Order',
+    UNIT = 'Unit ',
+    SHOP_DETAIL = 'Shop Detail ',
+    ITEM_DETAIL = 'Item Detail ',
+
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',

@@ -273,9 +273,11 @@ model/companyPayrollResponse.ts
 model/companyResponse.ts
 model/companySettingsDocumentsResponse.ts
 model/companyShortResponse.ts
+model/companyUserListItemResponse.ts
+model/companyUserListItemResponsePagination.ts
+model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
-model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
@@ -418,7 +420,6 @@ model/editTagCommand.ts
 model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
-model/efsIntegrationConnectDisconnectCommand.ts
 model/emergencyContactResponse.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
@@ -475,7 +476,6 @@ model/getCompanyAccountLabelListResponse.ts
 model/getCompanyAccountListResponse.ts
 model/getCompanyContactLabelListResponse.ts
 model/getCompanyContactListResponse.ts
-model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
@@ -509,6 +509,7 @@ model/insurancePolicyShortResponse.ts
 model/insuranceTypeCommand.ts
 model/insuranceTypeResponse.ts
 model/integrationConectedResponse.ts
+model/integrationConnectDisconnectCommand.ts
 model/integrationListResponse.ts
 model/integrationModalResponse.ts
 model/integrationProviderResponse.ts

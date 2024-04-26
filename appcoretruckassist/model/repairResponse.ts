@@ -44,5 +44,6 @@ export interface RepairResponse {
     driverLastName?: string | null;
     payType?: EnumValue;
     datePaid?: string | null;
+    shopServiceType?: EnumValue;
 }
 
