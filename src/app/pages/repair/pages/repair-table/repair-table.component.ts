@@ -199,7 +199,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.deleteSelectedRows();
     }
-    
+
     // TODO - Add to store logic
     private confiramtionSubscribe(): void {
         this.confiramtionService.confirmationData$
@@ -932,7 +932,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private getRepairDropdownContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_REPAIR;
     }
-    
+
     // Get Repair Dropdown Content
 
     // TODO - Add to store logic
@@ -945,9 +945,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             let newDropItem = { ...dropItem };
 
             if (dropItem.name === TableStringEnum.CLOSE_BUSINESS) {
-                newDropItem.title = !shopData.isClosed
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS;
+                newDropItem.title = !shopData.status
+                    ? TableStringEnum.OPEN_BUSINESS
+                    : TableStringEnum.CLOSE_BUSINESS_2;
             }
 
             newDropdownContent.push(newDropItem);
@@ -1281,9 +1281,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
-                type: event.data.isClosed
-                    ? TableStringEnum.OPEN
-                    : TableStringEnum.CLOSE,
+                type: event.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
             };
 
             this.modalService.openModal(
@@ -1425,7 +1425,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
-    
+
     // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
