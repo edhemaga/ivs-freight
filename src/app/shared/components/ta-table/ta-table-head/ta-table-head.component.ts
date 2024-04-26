@@ -28,6 +28,9 @@ import { ResizeColumnDirective } from '@shared/components/ta-table/ta-table-head
 // pipe
 import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 const rotate: { [key: string]: any } = {
     asc: '',
     desc: 'asc',
@@ -77,6 +80,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
     tableConfigurationType: string = '';
     selectableRow: any[] = [];
     showBorder: boolean = false;
+
+    public isRepairUnitStringBoolean: boolean = false;
+    public isRepairShopDetailsStringBoolean: boolean = false;
+    public isRepairItemDetailsStringBoolean: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -213,6 +220,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.pinedWidth = 0;
         this.actionsWidth = 0;
 
+        this.isRepairItemDetailsStringBoolean = false;
+        this.isRepairShopDetailsStringBoolean = false;
+        this.isRepairUnitStringBoolean = false;
+
         this.columns.map((column, index) => {
             if (!column.hasOwnProperty('isPined')) {
                 column.isPined = false;
@@ -227,33 +238,42 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             }
         });
 
-        this.visibleColumns.map((v) => {
+        this.visibleColumns.map((visibleColumn) => {
             /* Pined Columns */
-            if (v.isPined && !v.isAction) {
-                this.pinedColumns.push(v);
+            if (visibleColumn.isPined && !visibleColumn.isAction) {
+                this.pinedColumns.push(visibleColumn);
 
-                this.pinedWidth += v.minWidth > v.width ? v.minWidth : v.width;
+                this.pinedWidth +=
+                    visibleColumn.minWidth > visibleColumn.width
+                        ? visibleColumn.minWidth
+                        : visibleColumn.width;
 
                 if (
-                    v.ngTemplate !== '' &&
-                    v.ngTemplate !== 'checkbox' &&
-                    v.ngTemplate !== 'user-checkbox'
+                    visibleColumn.ngTemplate !== '' &&
+                    visibleColumn.ngTemplate !== 'checkbox' &&
+                    visibleColumn.ngTemplate !== 'user-checkbox'
                 ) {
                     this.pinedWidth += 6;
                 }
             }
 
+            if (this.tableData[0]?.gridNameTitle === 'Repair') {
+                this.setVisibleTableHead(visibleColumn);
+            }
+
             /* Not Pined Columns */
-            if (!v.isPined && !v.isAction) {
-                this.notPinedColumns.push(v);
+            if (!visibleColumn.isPined && !visibleColumn.isAction) {
+                this.notPinedColumns.push(visibleColumn);
             }
 
             /* Action  Columns */
-            if (v.isAction) {
-                this.actionColumns.push(v);
+            if (visibleColumn.isAction) {
+                this.actionColumns.push(visibleColumn);
 
                 this.actionsWidth +=
-                    v.minWidth > v.width ? v.minWidth : v.width;
+                    visibleColumn.minWidth > visibleColumn.width
+                        ? visibleColumn.minWidth
+                        : visibleColumn.width;
             }
         });
 
@@ -431,6 +451,30 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
     }
 
+    public setVisibleTableHead(data): void {
+        data.showRepairTitle = false;
+        if (
+            !this.isRepairUnitStringBoolean &&
+            data.groupName === TableStringEnum.UNIT
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairUnitStringBoolean = true;
+        }
+        if (
+            !this.isRepairShopDetailsStringBoolean &&
+            data.groupName === TableStringEnum.SHOP_DETAIL
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairShopDetailsStringBoolean = true;
+        }
+        if (
+            !this.isRepairItemDetailsStringBoolean &&
+            data.groupName === TableStringEnum.ITEM_DETAIL
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairItemDetailsStringBoolean = true;
+        }
+    }
     // Pin Column
     onPinColumn(column: any) {
         column.isPined = !column.isPined;

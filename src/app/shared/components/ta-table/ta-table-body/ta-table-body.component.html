@@ -4932,7 +4932,10 @@
     >
         <div class="description-titles">
             <div
-                *ngFor="let popoverDescriptionItem of popoverDescriptionItems"
+                *ngFor="
+                    let popoverDescriptionItem of popoverDescriptionItems;
+                    trackBy: trackByDescriptionIdentity
+                "
                 [ngClass]="popoverDescriptionItem.className"
             >
                 {{ popoverDescriptionItem.title }}
