@@ -46,6 +46,7 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
     @Input() subPeriodDropdownList?: DropdownListItem[] = [];
     @Input() selectedSubPeriod?: DropdownListItem;
     @Input() clearCustomPeriodRangeValue?: boolean = false;
+    @Input() isDisabled?: boolean = false;
 
     @Output() switchClicked = new EventEmitter<any>();
     @Output() customPeriodRangeEmitter = new EventEmitter<CustomPeriodRange>();

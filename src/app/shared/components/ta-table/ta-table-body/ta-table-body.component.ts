@@ -412,6 +412,13 @@ export class TaTableBodyComponent
         return item.columnId;
     }
 
+    public trackByDescriptionIdentity(item: {
+        title: string;
+        className: string;
+    }): string {
+        return item.title; // Using title as the unique identifier
+    }
+
     // Track By For Actions Columns
     trackTableActionsColumns(item: any) {
         return item.columnId;
