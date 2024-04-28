@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-    AbstractControl,
     FormGroup,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -19,7 +18,7 @@ import {
     Validators,
 } from '@angular/forms';
 
-import { Subject, distinctUntilChanged, takeUntil, throttleTime } from 'rxjs';
+import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -65,7 +64,7 @@ import {
     EnumValue,
     RepairItemCommand,
 } from 'appcoretruckassist';
-import { RepairDescriptionResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-description-response.model';
+import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
@@ -106,7 +105,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() modalTableData:
         | ContactPhoneResponse[]
         | ContactEmailResponse[]
-        | RepairDescriptionResponse[]
+        | RepairItemResponse[]
         | PMTableData[] = [];
     @Input() dropdownData: TruckTrailerPmDropdownLists;
 
@@ -224,6 +223,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedContactEmailType[index] = event;
 
                 break;
+            case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
+                if (event) this.selectedTruckTrailerRepairPm[index] = event;
+
+                this.getModalTableDataValue();
+
+                break;
             case TaModalTableStringEnum.PM_TRUCK_TYPE:
                 if (event) {
                     this.activePmDropdownItem[index] = event;
@@ -262,10 +267,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             value: event.title,
                         });
                 }
-
-                break;
-            case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
-                if (event) this.selectedTruckTrailerRepairPm[index] = event;
 
                 break;
             default:
@@ -417,30 +418,32 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getModalTableDataValue(): void {
-        let modalTableValue = this.getFormArray().value;
+        let modalTableDataValue = this.getFormArray().value;
 
         if (this.isRepairBillTable || this.isRepairOrderTable) {
-            modalTableValue = modalTableValue.map(
-                (itemRow: AbstractControl, index: number) => {
+            modalTableDataValue = modalTableDataValue.map(
+                (itemRow: RepairItemCommand, index: number) => {
                     return {
                         ...itemRow,
                         ...(this.isRepairBillTable &&
                             !this.isRepairOrderTable && {
                                 subtotal: this.subTotals[index]?.subtotal,
                             }),
-                        pmTruckId:
+                        pmTruck:
                             this.selectedTruckTrailerRepairPm[index]?.truckId &&
-                            this.selectedTruckTrailerRepairPm[index]?.id,
-                        pmTrailerId:
+                            this.selectedTruckTrailerRepairPm[index],
+                        pmTrailer:
                             this.selectedTruckTrailerRepairPm[index]
                                 ?.trailerId &&
-                            this.selectedTruckTrailerRepairPm[index]?.id,
+                            this.selectedTruckTrailerRepairPm[index],
+                        quantity: +itemRow.quantity,
+                        price: +itemRow.price,
                     };
                 }
             );
         }
 
-        this.modalTableValueEmitter.emit(modalTableValue);
+        this.modalTableValueEmitter.emit(modalTableDataValue);
     }
 
     public getFormArray(): UntypedFormArray {
@@ -510,7 +513,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 newFormArrayRow = this.formBuilder.group({
                     description: [null, [Validators.required]],
                     pm: [null],
-                    qty: [null, [Validators.required]],
+                    quantity: [null, [Validators.required]],
                     price: [null, [Validators.required]],
                 });
 
@@ -519,7 +522,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 newFormArrayRow = this.formBuilder.group({
                     description: [null, [Validators.required]],
                     pm: [null],
-                    qty: [null, [Validators.required]],
+                    quantity: [null, [Validators.required]],
                 });
 
                 break;
@@ -615,7 +618,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private updateModalTableData(
-        modalTableData: (ContactPhoneResponse | ContactEmailResponse)[]
+        modalTableData: (
+            | ContactPhoneResponse
+            | ContactEmailResponse
+            | RepairItemResponse
+            | PMTableData
+        )[]
     ): void {
         for (let i = 0; i < modalTableData.length; i++) {
             this.createFormArrayRow();
@@ -625,25 +633,25 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     const phoneData = modalTableData[i] as ContactPhoneResponse;
 
                     this.getFormArray().at(i).patchValue({
-                        phone: phoneData.phone,
-                        phoneExt: phoneData.phoneExt,
-                        contactPhoneType: phoneData.contactPhoneType.name,
+                        phone: phoneData?.phone,
+                        phoneExt: phoneData?.phoneExt,
+                        contactPhoneType: phoneData?.contactPhoneType.name,
                     });
 
-                    if (phoneData.phoneExt)
+                    if (phoneData?.phoneExt)
                         this.isContactPhoneExtExist[i] = true;
 
-                    if (phoneData.contactPhoneType.name)
+                    if (phoneData?.contactPhoneType.name)
                         this.selectedContactPhoneType[i] =
-                            phoneData.contactPhoneType;
+                            phoneData?.contactPhoneType;
 
                     break;
                 case this.isEmailTable:
                     const emailData = modalTableData[i] as ContactEmailResponse;
 
                     this.getFormArray().at(i).patchValue({
-                        email: emailData.email,
-                        contactEmailType: emailData.contactEmailType.name,
+                        email: emailData?.email,
+                        contactEmailType: emailData?.contactEmailType.name,
                     });
 
                     this.inputService.customInputValidator(
@@ -654,49 +662,73 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         this.destroy$
                     );
 
-                    if (emailData.contactEmailType.name)
+                    if (emailData?.contactEmailType.name)
                         this.selectedContactEmailType[i] =
-                            emailData.contactEmailType;
+                            emailData?.contactEmailType;
 
                     break;
-                case this.isRepairBillTable:
+                case this.isRepairBillTable && !this.isRepairOrderTable:
                     const repairBillData = modalTableData[
                         i
-                    ] as RepairDescriptionResponse;
+                    ] as RepairItemResponse;
 
-                    this.getFormArray().at(i).patchValue({
-                        description: repairBillData.description,
-                        pm: repairBillData.pm,
-                        qty: repairBillData.qty,
-                        price: repairBillData.price,
-                        subtotal: repairBillData.subtotal,
-                    });
+                    this.getFormArray()
+                        .at(i)
+                        .patchValue({
+                            description: repairBillData?.description,
+                            pm:
+                                repairBillData?.pmTruck?.title ||
+                                repairBillData?.pmTrailer?.title,
+                            quantity: repairBillData?.quantity,
+                            price: repairBillData?.price,
+                            subtotal: repairBillData?.subtotal,
+                        });
+
+                    this.subTotals[i] = {
+                        subtotal: repairBillData?.subtotal,
+                        index: i,
+                    };
+
+                    this.selectedTruckTrailerRepairPm[i] =
+                        repairBillData?.pmTruck || repairBillData?.pmTrailer;
 
                     break;
                 case this.isRepairOrderTable:
                     const repairOrderData = modalTableData[
                         i
-                    ] as RepairDescriptionResponse;
+                    ] as RepairItemResponse;
 
-                    this.getFormArray().at(i).patchValue({
-                        description: repairOrderData.description,
-                        pm: repairOrderData.pm,
-                        qty: repairOrderData.qty,
-                    });
+                    this.getFormArray()
+                        .at(i)
+                        .patchValue({
+                            description: repairOrderData?.description,
+                            pm:
+                                repairOrderData?.pmTruck?.title ||
+                                repairBillData?.pmTrailer?.title,
+                            quantity: repairOrderData?.quantity,
+                        });
+
+                    this.subTotals[i] = {
+                        subtotal: repairBillData.subtotal,
+                        index: i,
+                    };
+
+                    this.selectedTruckTrailerRepairPm[i] =
+                        repairBillData?.pmTruck || repairBillData?.pmTrailer;
 
                     break;
                 case this.isPMTruckTable || this.isPMTrailerTable:
                     const pmData = modalTableData[i] as PMTableData;
 
                     this.getFormArray().at(i).patchValue({
-                        id: pmData.id,
-                        isChecked: pmData.isChecked,
-                        svg: pmData.svg,
-                        title: pmData.title,
-                        mileage: pmData.mileage,
-                        defaultMileage: pmData.defaultMileage,
-                        status: pmData.status,
-                        value: pmData.title,
+                        id: pmData?.id,
+                        isChecked: pmData?.isChecked,
+                        svg: pmData?.svg,
+                        title: pmData?.title,
+                        mileage: pmData?.mileage,
+                        defaultMileage: pmData?.defaultMileage,
+                        status: pmData?.status,
+                        value: pmData?.title,
                     });
 
                     break;
@@ -714,6 +746,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         }
+
+        if (this.isRepairBillTable)
+            setTimeout(() => {
+                this.calculateRepairBillSubtotal();
+            }, 300);
     }
 
     private checkForInputChanges(): void {
@@ -739,17 +776,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isRepairBillTable && !this.isRepairOrderTable)
             this.modalTableForm
                 .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
-                .valueChanges.pipe(
-                    takeUntil(this.destroy$),
-                    distinctUntilChanged(),
-                    throttleTime(2)
-                )
-                .subscribe((items: RepairDescriptionResponse[]) => {
-                    if (items.length) this.subTotals = [];
+                .valueChanges.pipe(takeUntil(this.destroy$))
+                .subscribe((items: RepairItemResponse[]) => {
+                    if (items?.length) this.subTotals = [];
 
-                    items.forEach((item, index) => {
-                        const calculateSubtotal =
-                            parseInt(String(item.qty)) * parseInt(item.price);
+                    items?.forEach((item, index) => {
+                        const calculateSubtotal = item.quantity * item.price;
 
                         const existingItemIndex = this.subTotals.findIndex(
                             (item) => item.index === index

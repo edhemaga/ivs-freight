@@ -372,9 +372,9 @@
                             <div
                                 class="pm-dropdown-container"
                                 [ngClass]="{
-                                    'hidden-pm-dropdown':
-                                        !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                                        !truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                    'hidden-pm-dropdown': !getFormArray()
+                                        .at(i)
+                                        .get('pm').value
                                 }"
                             >
                                 <app-ta-input-dropdown
@@ -391,7 +391,7 @@
                                         isDropdown: true,
                                         isIconInput:
                                             selectedTruckTrailerRepairPm[i],
-                                        isValidIcon: repairBillItemRow.valid,
+                                        isValidIcon: repairBillItemRow?.valid,
                                         inputIcon:
                                             selectedTruckTrailerRepairPm[i]
                                                 ?.logoName,
@@ -425,7 +425,7 @@
                             </div>
 
                             <app-ta-input
-                                formControlName="qty"
+                                formControlName="quantity"
                                 [inputConfig]="{
                                     name: 'qty',
                                     type: 'text',
@@ -438,8 +438,8 @@
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
                                     blackInput:
-                                        getFormArray().at(i).get('qty').value &&
-                                        !isInputHoverRows[i][2]
+                                        getFormArray().at(i).get('quantity')
+                                            .value && !isInputHoverRows[i][2]
                                 }"
                                 (mouseenter)="handleInputHover(true, i, 2)"
                                 (mouseleave)="handleInputHover(false, i, 2)"
@@ -475,7 +475,7 @@
                                 >
                                     <p class="m-0 ta-font-semi-bold">
                                         {{
-                                            subTotals[i].subtotal ?? 0
+                                            subTotals[i]?.subtotal ?? 0
                                                 | currency
                                         }}
                                     </p>

@@ -654,14 +654,12 @@
                                 )
                             "
                             class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
-                            [ngClass]="{
-                                'not-clickable': disableDelete
-                            }"
                             type="button"
                             [ngClass]="{
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
-                                )
+                                ),
+                                'not-clickable': disableDelete
                             }"
                         >
                             Yes

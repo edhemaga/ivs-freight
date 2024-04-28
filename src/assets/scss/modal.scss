@@ -453,8 +453,8 @@ ngb-modal-window[aria-hidden='true'] {
                     text-align: center;
                     font-size: 14px;
                     font-weight: 700;
-                    color: $white;
-                    background: $ta-red-11;
+                    color: $ta-red-11;
+                    background: $bw2;
                     outline: none;
                     border: none;
                     margin: 0;
@@ -465,9 +465,11 @@ ngb-modal-window[aria-hidden='true'] {
                     -ms-user-select: none;
                     user-select: none;
                     line-height: 18px;
-                    transition: background 0.3s ease-in-out;
+                    transition: color 0.3s ease-in-out,
+                        background 0.3s ease-in-out;
 
                     &:hover {
+                        color: $white;
                         background: $ta-red-14;
                     }
                 }
@@ -651,7 +653,7 @@ ngb-modal-window[aria-hidden='true'] {
                         background: $ta-black;
                     }
                 }
-                
+
                 .modal-blue-btn {
                     background: $ta-blue-13;
                     color: $white;
