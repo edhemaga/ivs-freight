@@ -11,9 +11,8 @@
  */
 
 
-export interface RepairDriverResponse { 
+export interface DepartmentShortResponse { 
     id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
+    name?: string | null;
 }
 

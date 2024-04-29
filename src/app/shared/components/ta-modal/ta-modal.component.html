@@ -369,6 +369,16 @@
                                     Convert to Template
                                 </button>
                             </ng-container>
+
+                            <ng-container *ngIf="editData.finishOrderBtn">
+                                <button
+                                    (click)="onAction('finish-order')"
+                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
+                                    type="button"
+                                >
+                                    Finish Order
+                                </button>
+                            </ng-container>
                         </div>
                     </ng-container>
 
@@ -654,14 +664,12 @@
                                 )
                             "
                             class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
-                            [ngClass]="{
-                                'not-clickable': disableDelete
-                            }"
                             type="button"
                             [ngClass]="{
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
-                                )
+                                ),
+                                'not-clickable': disableDelete
                             }"
                         >
                             Yes
