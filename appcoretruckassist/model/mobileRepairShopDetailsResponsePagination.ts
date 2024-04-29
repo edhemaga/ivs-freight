@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { MobileRepairShopDetailsResponse } from './mobileRepairShopDetailsResponse';
 
 
-export interface TimeOnly { 
-    hour?: number;
-    minute?: number;
-    second?: number;
-    millisecond?: number;
-    ticks?: number;
+export interface MobileRepairShopDetailsResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MobileRepairShopDetailsResponse> | null;
 }
 

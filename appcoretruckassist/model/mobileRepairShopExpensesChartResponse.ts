@@ -11,8 +11,11 @@
  */
 
 
-export interface UpdatePayrollDriverMileageLastStopCommand { 
-    id?: number;
-    lastMilesStopId?: number;
+export interface MobileRepairShopExpensesChartResponse { 
+    repair?: number | null;
+    repairCost?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

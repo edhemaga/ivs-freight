@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -33,7 +33,13 @@ import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
-import { RepairCardModalQuery } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.query';
+
+import { Store, select } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+    selectRepairShopTabCards,
+} from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.selectors';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -41,6 +47,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -76,6 +83,9 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+
+// helpers
+import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 
 @Component({
     selector: 'app-repair-table',
@@ -147,6 +157,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
         // Router
         public router: Router,
@@ -166,7 +178,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private repairTruckQuery: RepairTruckQuery,
         private repairTrailerQuery: RepairTrailerQuery,
         private repairTrailerStore: RepairTrailerStore,
-        private repairCardModalQuery: RepairCardModalQuery,
+        private store: Store,
 
         // Pipes
         public datePipe: DatePipe,
@@ -195,47 +207,134 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.getSelectedTabTableData();
 
-        this.confiramtionSubscribe();
+        this.confirmationSubscribe();
 
         this.deleteSelectedRows();
     }
-    
+
     // TODO - Add to store logic
-    private confiramtionSubscribe(): void {
+    private confirmationSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    console.log('res', res);
                     if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.repairService
                                 .deleteRepairShopList(res.array)
                                 .pipe(takeUntil(this.destroy$))
-                                .subscribe();
+                                .subscribe({
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
+                                    },
+                                    error: () => {},
+                                });
                         } else {
                             this.repairService
                                 .deleteRepairList(res.array, this.selectedTab)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
-                                        // this.updateDataCount();
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
                                     },
                                     error: () => {},
                                 });
                         }
                     } else if (res.type === TableStringEnum.DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                            const repairShopId = res.array?.[0]?.id ?? res.id;
+
                             this.repairService
-                                .deleteRepairShopById(res.id)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe();
-                        } else {
-                            this.repairService
-                                .deleteRepairById(res.id, this.selectedTab)
+                                .deleteRepairShopById(repairShopId)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
+                                    next: () => {
                                         this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
+                                    },
+                                    error: () => {},
+                                });
+                        } else {
+                            const repairId = res.array?.[0]?.id ?? res.id;
+
+                            this.repairService
+                                .deleteRepairById(repairId, this.selectedTab)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: () => {
+                                        this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
                                     },
                                     error: () => {},
                                 });
@@ -513,7 +612,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
-                showLocationFilter: true,
+                hideActivationButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 viewModeOptions: this.getViewModeOptions(),
@@ -778,15 +880,39 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ...data,
             isSelected: false,
             isRepairOrder: data?.repairType?.name === TableStringEnum.ORDER,
-            tableUnit: data?.truck?.truckNumber
-                ? data.truck.truckNumber
-                : data?.trailer?.trailerNumber
-                ? data.trailer.trailerNumber
+            tableUnit: data?.invoice,
+            tableNumber:
+                data?.truck?.truckNumber ||
+                data?.trailer?.trailerNumber ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.datePaid
+                ? this.datePipe.transform(
+                      data.datePaid,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableType: TableStringEnum.NA,
-            tableMake: TableStringEnum.NA,
-            tableModel: TableStringEnum.NA,
-            tableYear: TableStringEnum.NA,
+            payType: data.payType?.name,
+            driver: null /* data.driverFirstName
+                ? data.driverFirstName + data.driverLastName
+                    ? data.driverLastName
+                    : ''
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER */,
+            tableType:
+                data?.truck?.truckType?.logoName ||
+                data?.trailer?.trailerType?.logoName ||
+                TableStringEnum.NA,
+            tableMake:
+                data?.truck?.truckMakeName ||
+                data?.trailer?.trailerMakeName ||
+                TableStringEnum.NA,
+            tableModel:
+                data?.truck?.truckType?.name ||
+                data?.trailer?.trailerType?.name ||
+                TableStringEnum.NA,
+            tableYear:
+                data?.truck?.year + '' ||
+                data?.trailer?.year + '' ||
+                TableStringEnum.NA,
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -796,21 +922,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopName: data?.repairShop?.name
-                ? data.repairShop.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableShopAdress: data?.repairShop?.address?.address
-                ? data.repairShop.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableServices: data?.serviceTypes ? data?.serviceTypes : null,
-
-            tableDescription: data?.items
-                ? data.items
-                      .map((item) => item.description?.trim())
-                      .join(
-                          TableStringEnum.DIV_ELEMENT_DESCRIPTION_DOT_CONTAINER
-                      )
-                : null,
+            tableShopName:
+                data?.repairShop?.name ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableShopAdress:
+                data?.repairShop?.address?.address ||
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableServices: data?.serviceTypes ?? null,
+            tableDescription: data?.items ?? null,
             descriptionItems: data?.items
                 ? data.items.map((item) => {
                       return {
@@ -851,11 +970,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ? data.files : [],
+            tableAttachments: data?.files ?? [],
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairDropdownContent(),
+                content: this.getRepairDropdownContent(data?.repairType?.name),
             },
         };
     }
@@ -929,10 +1048,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Get Repair Dropdown Content
-    private getRepairDropdownContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return RepairTableHelper.dropdownTableContent(
+            this.selectedTab,
+            repairType
+        );
     }
-    
+
     // Get Repair Dropdown Content
 
     // TODO - Add to store logic
@@ -945,9 +1067,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             let newDropItem = { ...dropItem };
 
             if (dropItem.name === TableStringEnum.CLOSE_BUSINESS) {
-                newDropItem.title = !shopData.isClosed
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS;
+                newDropItem.title = !shopData.status
+                    ? TableStringEnum.OPEN_BUSINESS
+                    : TableStringEnum.CLOSE_BUSINESS_2;
             }
 
             newDropdownContent.push(newDropItem);
@@ -1199,29 +1321,38 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             event.type === TableStringEnum.WRITE_REVIEW
         ) {
             switch (this.selectedTab) {
-                case TableStringEnum.ACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event,
-                            type: TableStringEnum.EDIT_TRUCK,
-                        }
-                    );
+                case TableStringEnum.ACTIVE:
+                case TableStringEnum.INACTIVE:
+                    this.repairService
+                        .getRepairById(event.id)
+                        .pipe(
+                            takeUntil(this.destroy$),
+                            tap((repair) => {
+                                const editData = {
+                                    data: {
+                                        ...repair,
+                                    },
+                                    type:
+                                        this.selectedTab ===
+                                        TableStringEnum.ACTIVE
+                                            ? TableStringEnum.EDIT_TRUCK
+                                            : TableStringEnum.EDIT_TRAILER,
+                                    finishOrderBtn: true,
+                                };
+
+                                this.modalService.openModal(
+                                    RepairOrderModalComponent,
+                                    { size: TableStringEnum.LARGE },
+                                    {
+                                        ...editData,
+                                    }
+                                );
+                            })
+                        )
+                        .subscribe();
+
                     break;
-                }
-                case TableStringEnum.INACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event,
-                            type: TableStringEnum.EDIT_TRAILER,
-                        }
-                    );
-                    break;
-                }
-                default: {
+                default:
                     this.modalService.openModal(
                         RepairShopModalComponent,
                         { size: TableStringEnum.SMALL },
@@ -1236,8 +1367,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     : TableStringEnum.DETAILS,
                         }
                     );
+
                     break;
-                }
             }
         } else if (event.type === TableStringEnum.VIEW_DETAILS) {
             if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
@@ -1281,9 +1412,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
             const mappedEvent = {
                 ...event,
-                type: event.data.isClosed
-                    ? TableStringEnum.OPEN
-                    : TableStringEnum.CLOSE,
+                type: event.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
             };
 
             this.modalService.openModal(
@@ -1425,7 +1556,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Delete Selected Rows
-    
+
     // TODO - Add to store logic
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
@@ -1581,75 +1712,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.activeTabCardsConfig();
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.inactiveTabCardsConfig();
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
             case TableStringEnum.REPAIR_SHOP:
-                this.shopTabCardsConfig();
+                this.cardTitle = TableStringEnum.NAME;
+                this.displayRows$ = this.store.pipe(
+                    select(selectRepairShopTabCards)
+                );
                 break;
             default:
                 break;
         }
         this.repairCardsModalService.updateTab(this.selectedTab);
-    }
-
-    private activeTabCardsConfig(): void {
-        this.repairCardModalQuery.truck$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.INVOICE;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private inactiveTabCardsConfig(): void {
-        this.repairCardModalQuery.trailer$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.INVOICE;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private shopTabCardsConfig(): void {
-        this.repairCardModalQuery.repairShop$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
     }
 }

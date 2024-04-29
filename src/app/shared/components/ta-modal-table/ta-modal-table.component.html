@@ -6,7 +6,8 @@
         [ngClass]="{
             'phone-table-header': isPhoneTable,
             'email-table-header': isEmailTable,
-            'description-table-header': isDescriptionTable,
+            'repair-bill-table-header': isRepairBillTable,
+            'repair-order-table-header': isRepairOrderTable,
             'contact-table-header': isContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable
         }"
@@ -22,7 +23,7 @@
                 class="d-flex align-items-center table-header-box"
                 [ngClass]="{
                     'justify-content-center': i === 0,
-                    'description-header': isDescriptionTable && i !== 0,
+                    'repair-bill-header': isRepairBillTable && i !== 0,
                     'justify-content-end subtotal': i === 5,
                     'first-item': i === 0 && isContactTable
                 }"
@@ -61,7 +62,7 @@
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
-                                : isDescriptionTable
+                                : isRepairBillTable
                                 : isContactTable
                                 : isPMTruckTable
                                 : isPMTrailerTable
@@ -78,7 +79,7 @@
     <form [formGroup]="modalTableForm" class="table-body">
         <!-- Phone Table -->
 
-        <ng-container *ngIf="isPhoneTable">
+        <ng-container *ngIf="isPhoneTable; else emailTable">
             <div class="d-flex flex-column phone-table-container">
                 <ng-container
                     formArrayName="phoneTableItems"
@@ -216,437 +217,28 @@
 
         <!-- Email Table -->
 
-        <ng-container *ngIf="isEmailTable">
-            <div class="d-flex flex-column email-table-container">
-                <ng-container
-                    formArrayName="emailTableItems"
-                    *ngFor="
-                        let emailItemsRow of getFormArray().controls;
-                        let i = index;
-                        trackBy: trackByIdentity
-                    "
-                >
-                    <div
-                        class="align-items-center table-item"
-                        [formGroupName]="i"
-                    >
-                        <!-- Number & Delete -->
-
-                        <div
-                            class="d-flex justify-content-center align-items-center table-item-number"
-                        >
-                            <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
-
-                            <svg-icon
-                                class="delete-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="deleteFormArrayRow(i)"
-                            ></svg-icon>
-                        </div>
-
-                        <!-- Email -->
-
-                        <app-ta-input
-                            formControlName="email"
-                            [inputConfig]="{
-                                name: 'Email',
-                                type: 'text',
-                                placeholderIcon: 'email',
-                                label: 'Email',
-                                placeholderInsteadOfLabel: true,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('email').value &&
-                                    !isInputHoverRows[i][0]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 0)"
-                            (mouseleave)="handleInputHover(false, i, 0)"
-                        ></app-ta-input>
-
-                        <!-- Email Type -->
-
-                        <app-ta-input-dropdown
-                            formControlName="contactEmailType"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Type',
-                                placeholderInsteadOfLabel: true,
-                                textTransform: 'capitalize',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-110',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('contactEmailType')
-                                        .value && !isInputHoverRows[i][1]
-                            }"
-                            [activeItem]="selectedContactEmailType[i]"
-                            [options]="contactEmailTypeOptions"
-                            (selectedItem)="
-                                onSelectDropdown(
-                                    $event,
-                                    'contact-email-type',
-                                    i
-                                )
-                            "
-                            (mouseenter)="handleInputHover(true, i, 1)"
-                            (mouseleave)="handleInputHover(false, i, 1)"
-                        ></app-ta-input-dropdown>
-                    </div>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <!-- Description Table -->
-
-        <ng-container *ngIf="isDescriptionTable">
-            <div class="d-flex flex-column description-table-container">
-                <ng-container
-                    formArrayName="descriptionTableItems"
-                    *ngFor="
-                        let descriptionItemRow of getFormArray().controls;
-                        let i = index;
-                        trackBy: trackByIdentity
-                    "
-                >
-                    <div
-                        class="align-items-center table-item description-item"
-                        [formGroupName]="i"
-                    >
-                        <div
-                            class="d-flex justify-content-center align-items-center table-item-number"
-                        >
-                            <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
-
-                            <svg-icon
-                                class="delete-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="deleteFormArrayRow(i)"
-                            ></svg-icon>
-                        </div>
-
-                        <app-ta-input
-                            formControlName="description"
-                            [inputConfig]="{
-                                name: 'description',
-                                type: 'text',
-                                label: 'Description',
-                                placeholderInsteadOfLabel: true,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('description')
-                                        .value && !isInputHoverRows[i][0]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 0)"
-                            (mouseleave)="handleInputHover(false, i, 0)"
-                        ></app-ta-input>
-
-                        <app-ta-input-dropdown
-                            formControlName="pm"
-                            [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'pm',
-                                type: 'text',
-                                label: '',
-                                placeholderInsteadOfLabel: true,
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                hideClear: true,
-                                isDropdown: true,
-                                isDisabled:
-                                    !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                                    !truckTrailerRepairPmOptions?.trailerPmDropdownList,
-                                isIconInput: selectedTruckTrailerRepairPm[i],
-                                isValidIcon: descriptionItemRow.valid,
-                                inputIcon:
-                                    selectedTruckTrailerRepairPm[i]?.logoName,
-                                dropdownWidthClass: 'w-col-200',
-                                blackInput:
-                                    getFormArray().at(i).get('pm').value &&
-                                    !isInputHoverRows[i][1]
-                            }"
-                            [canAddNew]="true"
-                            [activeItem]="selectedTruckTrailerRepairPm[i]"
-                            [options]="
-                                truckTrailerRepairPmOptions?.truckPmDropdownList ||
-                                truckTrailerRepairPmOptions?.trailerPmDropdownList
-                            "
-                            (selectedItem)="
-                                onSelectDropdown(
-                                    $event,
-                                    'pm-truck-trailer-repair-type',
-                                    i
-                                )
-                            "
-                            (mouseenter)="handleInputHover(true, i, 1)"
-                            (mouseleave)="handleInputHover(false, i, 1)"
-                        ></app-ta-input-dropdown>
-
-                        <app-ta-input
-                            formControlName="qty"
-                            [inputConfig]="{
-                                name: 'qty',
-                                type: 'text',
-                                label: 'Qty',
-                                placeholderInsteadOfLabel: true,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('qty').value &&
-                                    !isInputHoverRows[i][2]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 2)"
-                            (mouseleave)="handleInputHover(false, i, 2)"
-                        ></app-ta-input>
-
-                        <app-ta-input
-                            formControlName="price"
-                            [inputConfig]="{
-                                name: 'price',
-                                type: 'text',
-                                label: 'Price',
-                                placeholderInsteadOfLabel: true,
-                                priceSeparator: true,
-                                priceSeparatorLimitation: 6,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('price').value &&
-                                    !isInputHoverRows[i][3]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 3)"
-                            (mouseleave)="handleInputHover(false, i, 3)"
-                        ></app-ta-input>
-
-                        <ng-container
-                            *ngFor="
-                                let subtotal of subtotals;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <ng-container *ngIf="subtotal.index === i">
-                                <div
-                                    class="subtotal ta-font-semi-bold d-flex justify-content-end"
-                                >
-                                    <ng-container *ngIf="subtotal.subtotal">
-                                        {{ subtotal.subtotal | currency }}
-                                    </ng-container>
-
-                                    <ng-container
-                                        *ngIf="
-                                            subtotal.index === i &&
-                                            !subtotal.subtotal
-                                        "
-                                    >
-                                        {{ 0 | currency }}
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <!-- Contact Table -->
-
-        <ng-container *ngIf="isContactTable">
-            <div class="d-flex flex-column contact-table-container scrollable">
-                <ng-container
-                    formArrayName="contactTableItems"
-                    *ngFor="
-                        let contactItemRow of getFormArray().controls;
-                        let i = index;
-                        trackBy: trackByIdentity
-                    "
-                >
-                    <div
-                        class="align-items-center table-item contact-item"
-                        [formGroupName]="i"
-                    >
-                        <div
-                            class="d-flex justify-content-center align-items-center table-item-number"
-                        >
-                            <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
-
-                            <svg-icon
-                                class="delete-icon"
-                                src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18
-                                }"
-                                (click)="deleteFormArrayRow(i)"
-                            ></svg-icon>
-                        </div>
-
-                        <div class="gradient-border-container">
-                            <app-ta-input
-                                formControlName="fullName"
-                                [inputConfig]="{
-                                    name: 'fullName',
-                                    type: 'text',
-                                    label: 'Full Name',
-                                    placeholderInsteadOfLabel: true,
-                                    minLength: 5,
-                                    maxLength: 64,
-                                    textTransform: 'uppercase',
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true,
-                                    blackInput:
-                                        getFormArray().at(i).get('fullName')
-                                            .value && !isInputHoverRows[i][0]
-                                }"
-                                (mouseenter)="handleInputHover(true, i, 0)"
-                                (mouseleave)="handleInputHover(false, i, 0)"
-                            ></app-ta-input>
-                        </div>
-
-                        <app-ta-input-dropdown
-                            formControlName="departmant"
-                            [inputConfig]="{
-                                name: 'pm',
-                                type: 'text',
-                                label: 'Departmant',
-                                placeholderInsteadOfLabel: true,
-                                textTransform: 'uppercase',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-120',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('departmant')
-                                        .value && !isInputHoverRows[i][1]
-                            }"
-                            [activeItem]="null"
-                            [options]="repairDepartmentOptions"
-                            (selectedItem)="
-                                onSelectDropdown(
-                                    $event,
-                                    'contact-email-type',
-                                    i
-                                )
-                            "
-                            (mouseenter)="handleInputHover(true, i, 1)"
-                            (mouseleave)="handleInputHover(false, i, 1)"
-                        ></app-ta-input-dropdown>
-
-                        <app-ta-input
-                            formControlName="phone"
-                            [inputConfig]="{
-                                name: 'Phone',
-                                type: 'text',
-                                label: 'Phone',
-                                mask: '(000) 000-0000',
-                                maxLength: 14,
-                                hideRequiredCheck: true,
-                                hideErrorMessage: true,
-                                blackInput:
-                                    getFormArray().at(i).get('phone').value &&
-                                    !isInputHoverRows[i][0]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 2)"
-                            (mouseleave)="handleInputHover(false, i, 2)"
-                        ></app-ta-input>
-
-                        <app-ta-input
-                            formControlName="ext"
-                            [inputConfig]="{
-                                name: 'ext',
-                                type: 'text',
-                                label: 'ext',
-                                placeholderInsteadOfLabel: true,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'uppercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('ext').value &&
-                                    !isInputHoverRows[i][0]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 3)"
-                            (mouseleave)="handleInputHover(false, i, 3)"
-                        ></app-ta-input>
-
-                        <app-ta-input
-                            formControlName="email"
-                            [inputConfig]="{
-                                name: 'email',
-                                type: 'text',
-                                label: 'email',
-                                placeholderInsteadOfLabel: true,
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase',
-                                hideErrorMessage: true,
-                                hideRequiredCheck: true,
-                                blackInput:
-                                    getFormArray().at(i).get('email').value &&
-                                    !isInputHoverRows[i][0]
-                            }"
-                            (mouseenter)="handleInputHover(true, i, 0)"
-                            (mouseleave)="handleInputHover(false, i, 0)"
-                        ></app-ta-input>
-                    </div>
-                </ng-container>
-            </div>
-        </ng-container>
-
-        <!-- PM Table -->
-
-        <ng-container *ngIf="isPMTruckTable || isPMTrailerTable">
-            <div class="d-flex flex-column pm-table-container scrollable">
-                <ng-container
-                    formArrayName="pmTableItems"
-                    *ngFor="
-                        let pmItemRow of getFormArray().controls;
-                        let i = index;
-                        trackBy: trackByIdentity
-                    "
-                >
-                    <div
-                        class="align-items-center table-item pm-item"
-                        [class.hide-delete-icon]="
-                            isEdit || pmItemRow.value.status?.name === 'Default'
+        <ng-template #emailTable>
+            <ng-container *ngIf="isEmailTable; else repairBillTable">
+                <div class="d-flex flex-column email-table-container">
+                    <ng-container
+                        formArrayName="emailTableItems"
+                        *ngFor="
+                            let emailItemsRow of getFormArray().controls;
+                            let i = index;
+                            trackBy: trackByIdentity
                         "
-                        [class.pm-item-new]="!pmItemRow.value.id"
-                        [formGroupName]="i"
                     >
                         <div
-                            class="d-flex justify-content-center align-items-center table-item-number"
+                            class="align-items-center table-item"
+                            [formGroupName]="i"
                         >
-                            <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+                            <!-- Number & Delete -->
 
-                            <ng-container
-                                *ngIf="
-                                    !isEdit &&
-                                    pmItemRow.value.status?.name !== 'Default'
-                                "
+                            <div
+                                class="d-flex justify-content-center align-items-center table-item-number"
                             >
+                                <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
                                 <svg-icon
                                     class="delete-icon"
                                     src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
@@ -656,114 +248,556 @@
                                     }"
                                     (click)="deleteFormArrayRow(i)"
                                 ></svg-icon>
-                            </ng-container>
-                        </div>
+                            </div>
 
-                        <app-ta-checkbox
-                            formControlName="isChecked"
-                            [name]="i + 'new'"
-                            [customClass]="
-                                (isPMTruckTable && i < 4) ||
-                                (isPMTrailerTable && i < 1)
-                                    ? 'disabled-valid'
-                                    : 'regular'
-                            "
-                            [svg]="
-                                !pmItemRow.value.id ? null : pmItemRow.value.svg
-                            "
-                            [label]="
-                                !pmItemRow.value.id
-                                    ? null
-                                    : pmItemRow.value.title
-                            "
-                            [disabled]="isPMTruckTable ? i < 4 : i < 1"
-                            [moveIconDown]="!!pmItemRow.value.id"
-                        >
-                        </app-ta-checkbox>
+                            <!-- Email -->
 
-                        <ng-container *ngIf="!pmItemRow.value.id">
+                            <app-ta-input
+                                formControlName="email"
+                                [inputConfig]="{
+                                    name: 'Email',
+                                    type: 'text',
+                                    placeholderIcon: 'email',
+                                    label: 'Email',
+                                    placeholderInsteadOfLabel: true,
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('email')
+                                            .value && !isInputHoverRows[i][0]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 0)"
+                                (mouseleave)="handleInputHover(false, i, 0)"
+                            ></app-ta-input>
+
+                            <!-- Email Type -->
+
                             <app-ta-input-dropdown
-                                formControlName="title"
-                                [template]="'svgtext-template'"
+                                formControlName="contactEmailType"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
-                                    label: 'Title',
-                                    isDropdown: true,
+                                    label: 'Type',
                                     placeholderInsteadOfLabel: true,
-                                    placeholderIcon: !activePmDropdownItem[i]
-                                        ?.logoName
-                                        ? 'repair-pm/ic_custom_pm.svg'
-                                        : '',
-                                    dropdownImageInput: {
-                                        withText: true,
-                                        svg: true,
-                                        image: false,
-                                        url: activePmDropdownItem[i]?.logoName
-                                            ? 'assets/svg/common/repair-pm/' +
-                                              activePmDropdownItem[i]?.logoName
-                                            : '',
-                                        nameInitialsInsteadUrl: false,
-                                        template: 'pm'
-                                    },
-                                    blackInput: true,
-                                    isRequired: true,
                                     textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-260',
-                                    customClass: 'w-col-218',
-                                    autocomplete: 'off'
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-110',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray()
+                                            .at(i)
+                                            .get('contactEmailType').value &&
+                                        !isInputHoverRows[i][1]
                                 }"
-                                [options]="
-                                    isPMTruckTable
-                                        ? pmTruckOptions
-                                        : pmTrailerOptions
-                                "
-                                [activeItem]="activePmDropdownItem[i]"
+                                [activeItem]="selectedContactEmailType[i]"
+                                [options]="contactEmailTypeOptions"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,
-                                        isPMTruckTable
-                                            ? 'pm-truck-type'
-                                            : 'pm-trailer-type',
+                                        'contact-email-type',
                                         i
                                     )
                                 "
+                                (mouseenter)="handleInputHover(true, i, 1)"
+                                (mouseleave)="handleInputHover(false, i, 1)"
                             ></app-ta-input-dropdown>
-                        </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
 
-                        <app-ta-input
-                            formControlName="mileage"
-                            [inputConfig]="{
-                                name: isPMTruckTable ? 'MILEAGE' : 'MONTHS',
-                                type: 'text',
-                                commands: {
-                                    active: true,
-                                    type: 'pm-increment-decrement',
-                                    blueCommands: true,
-                                    firstCommand: {
-                                        name: 'decrement',
-                                        svg: 'assets/svg/common/ic_pm_decrement.svg'
+        <!-- Repair Bill & Order Table -->
+
+        <ng-template #repairBillTable>
+            <ng-container *ngIf="isRepairBillTable; else contactTable">
+                <div
+                    class="d-flex flex-column repair-bill-table-container"
+                    [ngClass]="{
+                        'repair-order-table-container': isRepairOrderTable
+                    }"
+                >
+                    <ng-container
+                        formArrayName="repairBillTableItems"
+                        *ngFor="
+                            let repairBillItemRow of getFormArray().controls;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div
+                            class="align-items-center table-item"
+                            [formGroupName]="i"
+                        >
+                            <div
+                                class="d-flex justify-content-center align-items-center table-item-number"
+                            >
+                                <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                                <svg-icon
+                                    class="delete-icon"
+                                    src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="deleteFormArrayRow(i)"
+                                ></svg-icon>
+                            </div>
+
+                            <app-ta-input
+                                formControlName="description"
+                                [inputConfig]="{
+                                    name: 'description',
+                                    type: 'text',
+                                    label: 'Description',
+                                    placeholderInsteadOfLabel: true,
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('description')
+                                            .value && !isInputHoverRows[i][0]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 0)"
+                                (mouseleave)="handleInputHover(false, i, 0)"
+                            ></app-ta-input>
+
+                            <div
+                                class="pm-dropdown-container"
+                                [ngClass]="{
+                                    'hidden-pm-dropdown':
+                                        (!modalTableData.length &&
+                                            !truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                            !truckTrailerRepairPmOptions?.trailerPmDropdownList) ||
+                                        (modalTableData.length &&
+                                            !getFormArray().at(i).get('pm')
+                                                .value)
+                                }"
+                            >
+                                <app-ta-input-dropdown
+                                    formControlName="pm"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'pm',
+                                        type: 'text',
+                                        label: '',
+                                        placeholderInsteadOfLabel: true,
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        hideClear: true,
+                                        isDropdown: true,
+                                        isIconInput:
+                                            selectedTruckTrailerRepairPm[i],
+                                        isValidIcon: repairBillItemRow?.valid,
+                                        inputIcon:
+                                            selectedTruckTrailerRepairPm[i]
+                                                ?.logoName,
+                                        dropdownWidthClass: 'w-col-200',
+                                        blackInput:
+                                            getFormArray().at(i).get('pm')
+                                                .value &&
+                                            !isInputHoverRows[i][1]
+                                    }"
+                                    [canAddNew]="
+                                        truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                        truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                    "
+                                    [activeItem]="
+                                        selectedTruckTrailerRepairPm[i]
+                                    "
+                                    [options]="
+                                        truckTrailerRepairPmOptions?.truckPmDropdownList ||
+                                        truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                    "
+                                    (selectedItem)="
+                                        onSelectDropdown(
+                                            $event,
+                                            'pm-truck-trailer-repair-type',
+                                            i
+                                        )
+                                    "
+                                    (mouseenter)="handleInputHover(true, i, 1)"
+                                    (mouseleave)="handleInputHover(false, i, 1)"
+                                ></app-ta-input-dropdown>
+                            </div>
+
+                            <app-ta-input
+                                formControlName="quantity"
+                                [inputConfig]="{
+                                    name: 'qty',
+                                    type: 'text',
+                                    label: 'Qty',
+                                    placeholderInsteadOfLabel: true,
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase',
+                                    isRequired: true,
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('quantity')
+                                            .value && !isInputHoverRows[i][2]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 2)"
+                                (mouseleave)="handleInputHover(false, i, 2)"
+                            ></app-ta-input>
+
+                            <ng-container *ngIf="!isRepairOrderTable">
+                                <app-ta-input
+                                    formControlName="price"
+                                    [inputConfig]="{
+                                        name: 'price',
+                                        type: 'text',
+                                        label: 'Price',
+                                        placeholderInsteadOfLabel: true,
+                                        priceSeparator: true,
+                                        priceSeparatorLimitation: 6,
+                                        minLength: 5,
+                                        maxLength: 64,
+                                        isRequired: true,
+                                        textTransform: 'lowercase',
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        blackInput:
+                                            getFormArray().at(i).get('price')
+                                                .value &&
+                                            !isInputHoverRows[i][3]
+                                    }"
+                                    (mouseenter)="handleInputHover(true, i, 3)"
+                                    (mouseleave)="handleInputHover(false, i, 3)"
+                                ></app-ta-input>
+
+                                <div
+                                    class="subtotal d-flex justify-content-end"
+                                >
+                                    <p class="m-0 ta-font-semi-bold">
+                                        {{
+                                            subTotals[i]?.subtotal ?? 0
+                                                | currency
+                                        }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
+
+        <!-- Contact Table -->
+
+        <ng-template #contactTable>
+            <ng-container *ngIf="isContactTable; else pmTable">
+                <div
+                    class="d-flex flex-column contact-table-container scrollable"
+                >
+                    <ng-container
+                        formArrayName="contactTableItems"
+                        *ngFor="
+                            let contactItemRow of getFormArray().controls;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div
+                            class="align-items-center table-item contact-item"
+                            [formGroupName]="i"
+                        >
+                            <div
+                                class="d-flex justify-content-center align-items-center table-item-number"
+                            >
+                                <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                                <svg-icon
+                                    class="delete-icon"
+                                    src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    (click)="deleteFormArrayRow(i)"
+                                ></svg-icon>
+                            </div>
+
+                            <div class="gradient-border-container">
+                                <app-ta-input
+                                    formControlName="fullName"
+                                    [inputConfig]="{
+                                        name: 'fullName',
+                                        type: 'text',
+                                        label: 'Full Name',
+                                        placeholderInsteadOfLabel: true,
+                                        minLength: 5,
+                                        maxLength: 64,
+                                        textTransform: 'uppercase',
+                                        hideErrorMessage: true,
+                                        hideRequiredCheck: true,
+                                        blackInput:
+                                            getFormArray().at(i).get('fullName')
+                                                .value &&
+                                            !isInputHoverRows[i][0]
+                                    }"
+                                    (mouseenter)="handleInputHover(true, i, 0)"
+                                    (mouseleave)="handleInputHover(false, i, 0)"
+                                ></app-ta-input>
+                            </div>
+
+                            <app-ta-input-dropdown
+                                formControlName="departmant"
+                                [inputConfig]="{
+                                    name: 'pm',
+                                    type: 'text',
+                                    label: 'Departmant',
+                                    placeholderInsteadOfLabel: true,
+                                    textTransform: 'uppercase',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-120',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('departmant')
+                                            .value && !isInputHoverRows[i][1]
+                                }"
+                                [activeItem]="null"
+                                [options]="repairDepartmentOptions"
+                                (selectedItem)="
+                                    onSelectDropdown(
+                                        $event,
+                                        'contact-email-type',
+                                        i
+                                    )
+                                "
+                                (mouseenter)="handleInputHover(true, i, 1)"
+                                (mouseleave)="handleInputHover(false, i, 1)"
+                            ></app-ta-input-dropdown>
+
+                            <app-ta-input
+                                formControlName="phone"
+                                [inputConfig]="{
+                                    name: 'Phone',
+                                    type: 'text',
+                                    label: 'Phone',
+                                    mask: '(000) 000-0000',
+                                    maxLength: 14,
+                                    hideRequiredCheck: true,
+                                    hideErrorMessage: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('phone')
+                                            .value && !isInputHoverRows[i][0]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 2)"
+                                (mouseleave)="handleInputHover(false, i, 2)"
+                            ></app-ta-input>
+
+                            <app-ta-input
+                                formControlName="ext"
+                                [inputConfig]="{
+                                    name: 'ext',
+                                    type: 'text',
+                                    label: 'ext',
+                                    placeholderInsteadOfLabel: true,
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'uppercase',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('ext').value &&
+                                        !isInputHoverRows[i][0]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 3)"
+                                (mouseleave)="handleInputHover(false, i, 3)"
+                            ></app-ta-input>
+
+                            <app-ta-input
+                                formControlName="email"
+                                [inputConfig]="{
+                                    name: 'email',
+                                    type: 'text',
+                                    label: 'email',
+                                    placeholderInsteadOfLabel: true,
+                                    minLength: 5,
+                                    maxLength: 64,
+                                    textTransform: 'lowercase',
+                                    hideErrorMessage: true,
+                                    hideRequiredCheck: true,
+                                    blackInput:
+                                        getFormArray().at(i).get('email')
+                                            .value && !isInputHoverRows[i][0]
+                                }"
+                                (mouseenter)="handleInputHover(true, i, 0)"
+                                (mouseleave)="handleInputHover(false, i, 0)"
+                            ></app-ta-input>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
+
+        <!-- PM Table -->
+
+        <ng-template #pmTable>
+            <ng-container *ngIf="isPMTruckTable || isPMTrailerTable">
+                <div class="d-flex flex-column pm-table-container scrollable">
+                    <ng-container
+                        formArrayName="pmTableItems"
+                        *ngFor="
+                            let pmItemRow of getFormArray().controls;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <div
+                            class="align-items-center table-item pm-item"
+                            [class.hide-delete-icon]="
+                                isEdit ||
+                                pmItemRow.value.status?.name === 'Default'
+                            "
+                            [class.pm-item-new]="!pmItemRow.value.id"
+                            [formGroupName]="i"
+                        >
+                            <div
+                                class="d-flex justify-content-center align-items-center table-item-number"
+                            >
+                                <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                                <ng-container
+                                    *ngIf="
+                                        !isEdit &&
+                                        pmItemRow.value.status?.name !==
+                                            'Default'
+                                    "
+                                >
+                                    <svg-icon
+                                        class="delete-icon"
+                                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                                        [svgStyle]="{
+                                            'width.px': 18,
+                                            'height.px': 18
+                                        }"
+                                        (click)="deleteFormArrayRow(i)"
+                                    ></svg-icon>
+                                </ng-container>
+                            </div>
+
+                            <app-ta-checkbox
+                                formControlName="isChecked"
+                                [name]="i + 'new'"
+                                [customClass]="
+                                    (isPMTruckTable && i < 4) ||
+                                    (isPMTrailerTable && i < 1)
+                                        ? 'disabled-valid'
+                                        : 'regular'
+                                "
+                                [svg]="
+                                    !pmItemRow.value.id
+                                        ? null
+                                        : pmItemRow.value.svg
+                                "
+                                [label]="
+                                    !pmItemRow.value.id
+                                        ? null
+                                        : pmItemRow.value.title
+                                "
+                                [disabled]="isPMTruckTable ? i < 4 : i < 1"
+                                [moveIconDown]="!!pmItemRow.value.id"
+                            >
+                            </app-ta-checkbox>
+
+                            <ng-container *ngIf="!pmItemRow.value.id">
+                                <app-ta-input-dropdown
+                                    formControlName="title"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Title',
+                                        isDropdown: true,
+                                        placeholderInsteadOfLabel: true,
+                                        placeholderIcon: !activePmDropdownItem[
+                                            i
+                                        ]?.logoName
+                                            ? 'repair-pm/ic_custom_pm.svg'
+                                            : '',
+                                        dropdownImageInput: {
+                                            withText: true,
+                                            svg: true,
+                                            image: false,
+                                            url: activePmDropdownItem[i]
+                                                ?.logoName
+                                                ? 'assets/svg/common/repair-pm/' +
+                                                  activePmDropdownItem[i]
+                                                      ?.logoName
+                                                : '',
+                                            nameInitialsInsteadUrl: false,
+                                            template: 'pm'
+                                        },
+                                        blackInput: true,
+                                        isRequired: true,
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-260',
+                                        customClass: 'w-col-218',
+                                        autocomplete: 'off'
+                                    }"
+                                    [options]="
+                                        isPMTruckTable
+                                            ? pmTruckOptions
+                                            : pmTrailerOptions
+                                    "
+                                    [activeItem]="activePmDropdownItem[i]"
+                                    (selectedItem)="
+                                        onSelectDropdown(
+                                            $event,
+                                            isPMTruckTable
+                                                ? 'pm-truck-type'
+                                                : 'pm-trailer-type',
+                                            i
+                                        )
+                                    "
+                                ></app-ta-input-dropdown>
+                            </ng-container>
+
+                            <app-ta-input
+                                formControlName="mileage"
+                                [inputConfig]="{
+                                    name: isPMTruckTable ? 'MILEAGE' : 'MONTHS',
+                                    type: 'text',
+                                    commands: {
+                                        active: true,
+                                        type: 'pm-increment-decrement',
+                                        blueCommands: true,
+                                        firstCommand: {
+                                            name: 'decrement',
+                                            svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                        },
+                                        secondCommand: {
+                                            name: 'increment',
+                                            svg: 'assets/svg/common/ic_pm_increment.svg'
+                                        },
+                                        thirdCommand: {
+                                            name: 'reset',
+                                            svg: 'assets/svg/common/ic_input_reset.svg'
+                                        }
                                     },
-                                    secondCommand: {
-                                        name: 'increment',
-                                        svg: 'assets/svg/common/ic_pm_increment.svg'
-                                    },
-                                    thirdCommand: {
-                                        name: 'reset',
-                                        svg: 'assets/svg/common/ic_input_reset.svg'
-                                    }
-                                },
-                                thousandSeparator: true,
-                                hideErrorMessage: true,
-                                blueInput: true,
-                                hideRequiredCheck: true,
-                                maxLength: isPMTruckTable ? 999999999 : 2,
-                                defaultValue: pmItemRow.value.defaultMileage
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </ng-container>
-            </div>
-        </ng-container>
+                                    thousandSeparator: true,
+                                    hideErrorMessage: true,
+                                    blueInput: true,
+                                    hideRequiredCheck: true,
+                                    maxLength: isPMTruckTable ? 999999999 : 2,
+                                    defaultValue: pmItemRow.value.defaultMileage
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
     </form>
 </div>

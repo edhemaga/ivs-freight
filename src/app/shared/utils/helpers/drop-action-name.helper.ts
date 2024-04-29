@@ -81,6 +81,10 @@ export class DropActionNameHelper {
                     dropAction = 'delete-repair';
                     break;
                 }
+                case 'repair-detail': {
+                    dropAction = 'delete-repair-detail';
+                    break;
+                }
             }
         }
 

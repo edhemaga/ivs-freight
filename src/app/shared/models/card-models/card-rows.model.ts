@@ -1,4 +1,8 @@
+import { CardRowsItem } from '@shared/models/card-models/card-rows-item.model';
+import { CardRowsItemValue } from '@shared/models/card-models/card-rows-item-value.model';
+
 export interface CardRows {
+    inputItem?: CardRowsItem;
     title?: string;
     endpoint?: string;
     secondEndpoint?: string;
@@ -12,4 +16,6 @@ export interface CardRows {
     hasDislike?: string;
     selected?: boolean;
     field?: string;
+    isDropdown?: boolean;
+    values?: CardRowsItemValue[];
 }

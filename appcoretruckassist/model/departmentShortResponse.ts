@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverShortResponse } from './driverShortResponse';
 
 
-export interface DriverShortResponsePagination { 
-    pageIndex?: number;
-    pageSize?: number;
-    count?: number;
-    data?: Array<DriverShortResponse> | null;
+export interface DepartmentShortResponse { 
+    id?: number;
+    name?: string | null;
 }
 

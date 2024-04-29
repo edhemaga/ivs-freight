@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponse } from './companyUserListItemResponse';
 
 
-export interface UpdatePayrollOwnerLastLoadCommand { 
-    id?: number;
-    lastLoadId?: number;
+export interface CompanyUserListItemResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<CompanyUserListItemResponse> | null;
 }
 

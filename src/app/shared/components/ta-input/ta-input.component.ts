@@ -2790,9 +2790,9 @@ export class TaInputComponent
         this.dateTimeMainTimer = setTimeout(() => {
             if (this._inputConfig.name === 'datepicker') {
                 if (
-                    !isNaN(this.span1.nativeElement.innerHTML) &&
-                    !isNaN(this.span2.nativeElement.innerHTML) &&
-                    !isNaN(this.span3.nativeElement.innerHTML)
+                    !isNaN(this.span1?.nativeElement.innerHTML) &&
+                    !isNaN(this.span2?.nativeElement.innerHTML) &&
+                    !isNaN(this.span3?.nativeElement.innerHTML)
                 ) {
                     if (
                         this._inputConfig.expiredDateInvalid &&

@@ -24,6 +24,7 @@ import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { RepairData } from '@pages/repair/models/repair-data.model';
 
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -104,7 +105,7 @@ export class RepairCardComponent
         private repairService: RepairService,
 
         //Helpers
-        private cardHelper: CardHelper,
+        private cardHelper: CardHelper
     ) {}
 
     ngOnInit() {
@@ -153,7 +154,7 @@ export class RepairCardComponent
                 this.isAllCardsFlipp = res;
 
                 this.isCardFlippedCheckInCards = [];
-                this.cardHelper.isCardFlippedArrayComparasion = []; 
+                this.cardHelper.isCardFlippedArrayComparasion = [];
             });
     }
 
@@ -245,7 +246,7 @@ export class RepairCardComponent
         return item;
     }
 
-    public onCardActions(event: any): void {
+    public onCardActions(event: RepairData): void {
         switch (event.type) {
             case TableStringEnum.VIEW_DETAILS:
                 if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
@@ -253,23 +254,17 @@ export class RepairCardComponent
                         `/list/repair/${event.id}/shop-details`,
                     ]);
                 break;
-            case TableStringEnum.DELETE_REPAIR || TableStringEnum.DELETE:
+            case TableStringEnum.DELETE_REPAIR:
+            case TableStringEnum.DELETE:
                 switch (this.selectedTab) {
                     case TableStringEnum.REPAIR_SHOP:
                         this.modalService.openModal(
                             ConfirmationModalComponent,
-                            { size: TableStringEnum.DELETE },
+                            { size: TableStringEnum.SMALL },
                             {
+                                ...event,
+                                template: TableStringEnum.REPAIR_SHOP,
                                 type: TableStringEnum.DELETE,
-                            }
-                        );
-                        this.confiramtionService.confirmationData$.subscribe(
-                            (response) => {
-                                if (response.type === TableStringEnum.DELETE)
-                                    this.repairService
-                                        .deleteRepairShopById(event.id)
-                                        .pipe(takeUntil(this.destroy$))
-                                        .subscribe();
                             }
                         );
 
@@ -278,9 +273,15 @@ export class RepairCardComponent
                     default:
                         this.modalService.openModal(
                             ConfirmationModalComponent,
-                            { size: TableStringEnum.DELETE },
+                            { size: TableStringEnum.SMALL },
                             {
+                                ...event,
+                                template: TableStringEnum.REPAIR_2,
                                 type: TableStringEnum.DELETE,
+                                subType:
+                                    this.selectedTab === TableStringEnum.ACTIVE
+                                        ? TableStringEnum.TRUCK
+                                        : TableStringEnum.TRAILER_2,
                             }
                         );
                         break;
@@ -314,13 +315,7 @@ export class RepairCardComponent
                             { size: TableStringEnum.SMALL },
                             {
                                 ...event,
-                                openedTab:
-                                    event.type === TableStringEnum.ADD_CONTRACT
-                                        ? TableStringEnum.CONTRACT
-                                        : event.type ===
-                                          TableStringEnum.WRITE_REVIEW
-                                        ? TableStringEnum.REVIEW
-                                        : TableStringEnum.DETAILS,
+                                openedTab: this.selectedTab,
                             }
                         );
                         break;

@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CompanyUserListItemResponsePagination } from './companyUserListItemResponsePagination';
 
 
-export interface TrailerOwnerResponse { 
-    id?: number;
-    trailerNumber?: string | null;
-    trailerTypeId?: number;
+export interface CompanyUserListResponse { 
+    pagination?: CompanyUserListItemResponsePagination;
+    activeCount?: number;
+    inactiveCount?: number;
 }
 

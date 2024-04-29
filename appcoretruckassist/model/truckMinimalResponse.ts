@@ -20,5 +20,8 @@ export interface TruckMinimalResponse {
     owner?: string | null;
     color?: ColorResponse;
     truckType?: TruckTypeResponse;
+    truckMakeName?: string | null;
+    model?: string | null;
+    year?: number;
 }
 

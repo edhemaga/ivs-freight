@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { RepairType } from './repairType';
-import { ShopServiceType } from './shopServiceType';
 import { RepairItemCommand } from './repairItemCommand';
 import { RepairServiceTypeCommand } from './repairServiceTypeCommand';
 import { CreateTagCommand } from './createTagCommand';
@@ -22,6 +21,7 @@ export interface ApiRepairPostRequest {
     Odometer?: number;
     Date?: string;
     Invoice?: string;
+    OrderNumber?: string;
     RepairShopId?: number;
     Total?: number;
     ServiceTypes?: Array<RepairServiceTypeCommand>;
@@ -30,6 +30,7 @@ export interface ApiRepairPostRequest {
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
     FilesForDeleteIds?: Array<number>;
-    ShopServiceType?: ShopServiceType;
+    ShopServiceType?: number;
+    FinishOrder?: boolean;
 }
 

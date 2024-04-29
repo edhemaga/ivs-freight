@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap, of } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // models
 import {
@@ -17,7 +17,6 @@ import {
     RepairShopMinimalListResponse,
     RepairShopResponse,
     RepairShopService,
-    // RepairDriverResponse,
 } from 'appcoretruckassist';
 
 // store
@@ -41,13 +40,13 @@ export class RepairService {
     public repairShopId: number;
 
     constructor(
-        // Services
+        // services
         private repairService: RepairMainService,
         private shopServices: RepairShopService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
 
-        // Store
+        // store
         private repairTruckStore: RepairTruckStore,
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,
@@ -58,6 +57,7 @@ export class RepairService {
     // <----------------------- Repair Truck And Trailer -------------------->
     public addRepair(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.repairService.apiRepairPost().pipe(
             tap((res: any) => {
                 this.getRepairById(res.id).subscribe({
@@ -65,13 +65,17 @@ export class RepairService {
                         const repairCount = JSON.parse(
                             localStorage.getItem('repairTruckTrailerTableCount')
                         );
+
                         if (repair.truckId) {
                             this.repairTruckStore.add(repair);
+
                             repairCount.repairTrucks++;
                         } else if (repair.trailerId) {
                             this.repairTrailerStore.add(repair);
+
                             repairCount.repairTrailers++;
                         }
+
                         localStorage.setItem(
                             'repairTruckTrailerTableCount',
                             JSON.stringify({
@@ -86,6 +90,7 @@ export class RepairService {
                                     : 'NA',
                             })
                         );
+
                         this.tableService.sendActionAnimation({
                             animation: 'add',
                             tab: repair?.truckId ? 'active' : 'inactive',
@@ -233,10 +238,43 @@ export class RepairService {
 
     // Delete Repair List
     public deleteRepairList(
-        ids: number[],
+        repairIds: number[],
         tabSelected?: string
     ): Observable<any> {
-        return of();
+        return this.repairService.apiRepairListDelete(repairIds).pipe(
+            tap(() => {
+                const repairCount = JSON.parse(
+                    localStorage.getItem('repairTruckTrailerTableCount')
+                );
+
+                repairIds.forEach((repairId) => {
+                    if (tabSelected === 'active') {
+                        this.repairTruckStore.remove(
+                            ({ id }) => id === repairId
+                        );
+
+                        repairCount.repairTrucks--;
+                    } else if (tabSelected === 'inactive') {
+                        this.repairTrailerStore.remove(
+                            ({ id }) => id === repairId
+                        );
+
+                        repairCount.repairTrailers--;
+                    }
+
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairCount.repairTrucks,
+                            repairTrailers: repairCount.repairTrailers,
+                            truckMoneyTotal: repairCount.truckMoneyTotal,
+                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                            repairShops: repairCount.repairShops,
+                        })
+                    );
+                });
+            })
+        );
     }
 
     public autocompleteRepairByDescription(
@@ -250,6 +288,7 @@ export class RepairService {
     // <----------------------- Repair Shop -------------------->
     public addRepairShop(data: any): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.shopServices.apiRepairshopPost(data).pipe(
             tap((res: any) => {
                 this.getRepairShopById(res.id).subscribe({
@@ -489,8 +528,33 @@ export class RepairService {
         );
     }
 
-    public deleteRepairShopList(ids: number[]): Observable<any> {
-        return of();
+    public deleteRepairShopList(repairShopIds: number[]): Observable<any> {
+        return this.shopServices.apiRepairshopListDelete(repairShopIds).pipe(
+            tap(() => {
+                const repairCount = JSON.parse(
+                    localStorage.getItem('repairTruckTrailerTableCount')
+                );
+
+                repairShopIds.forEach((repairShopId) => {
+                    this.repairShopStore.remove(
+                        ({ id }) => id === repairShopId
+                    );
+
+                    repairCount.repairShops--;
+
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairCount.repairTrucks,
+                            repairTrailers: repairCount.repairTrailers,
+                            truckMoneyTotal: repairCount.truckMoneyTotal,
+                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                            repairShops: repairCount.repairShops,
+                        })
+                    );
+                });
+            })
+        );
     }
 
     public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {

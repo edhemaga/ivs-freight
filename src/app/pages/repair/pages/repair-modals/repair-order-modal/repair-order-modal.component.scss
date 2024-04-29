@@ -1,31 +1,31 @@
 @import 'src/theme/variables.scss';
 
-.item-total-row {
-    margin: 0 !important;
-    text-align: right;
-    .item-total {
-        align-self: end;
-        font-size: 14px;
-        font-weight: 800;
-        color: $ta-black;
-        margin: 4px 0 0 0;
-        height: 18px;
-        padding-left: 6px !important;
-        padding-right: 4px !important;
+.item-total {
+    margin-top: 8px;
+    padding: 0 4px 0 6px;
 
-        &-text {
-            font-size: 14px;
-            color: $muted;
-        }
+    &-title,
+    &-cost {
+        font-size: 14px;
+        line-height: 18px;
 
         &::-moz-selection {
             color: $ta-black;
             background: rgb(66, 66, 66, 0.2);
         }
+
         &::selection {
             color: $ta-black;
             background: rgb(66, 66, 66, 0.2);
         }
+    }
+
+    &-title {
+        color: $bw5;
+    }
+
+    &-cost {
+        color: $ta-black;
     }
 }
 
@@ -41,8 +41,4 @@
     margin-top: 12px;
     grid-template-columns: 120px repeat(4, 120px);
     grid-template-rows: repeat(2, 26px);
-
-    .repair-shop-service {
-        flex-direction: row;
-    }
 }
