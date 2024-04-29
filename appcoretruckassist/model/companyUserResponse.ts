@@ -12,8 +12,8 @@
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
+import { DepartmentShortResponse } from './departmentShortResponse';
 import { CompanyOfficeShortResponse } from './companyOfficeShortResponse';
-import { DepartmentResponse } from './departmentResponse';
 
 
 export interface CompanyUserResponse { 
@@ -24,7 +24,7 @@ export interface CompanyUserResponse {
     address?: AddressEntity;
     personalPhone?: string | null;
     personalEmail?: string | null;
-    department?: DepartmentResponse;
+    department?: DepartmentShortResponse;
     companyOffice?: CompanyOfficeShortResponse;
     isAdmin?: boolean;
     isUser?: boolean;
@@ -40,6 +40,7 @@ export interface CompanyUserResponse {
     accountNumber?: string | null;
     paymentType?: EnumValue;
     status?: number | null;
+    userStatus?: string | null;
     avatar?: string | null;
     base?: number | null;
     commission?: number | null;
@@ -49,5 +50,7 @@ export interface CompanyUserResponse {
     createdAt?: string;
     updatedAt?: string;
     deactivatedAt?: string | null;
+    lastResendInvitation?: string | null;
+    lastResetPassword?: string | null;
 }
 

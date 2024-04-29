@@ -300,6 +300,7 @@ export * from './deleteMultipleApplicationsCommand';
 export * from './departmentContactResponse';
 export * from './departmentFilterResponse';
 export * from './departmentResponse';
+export * from './departmentShortResponse';
 export * from './disclosureReleaseFeedbackResponse';
 export * from './dispatchBoardListResponse';
 export * from './dispatchBoardResponse';

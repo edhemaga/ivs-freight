@@ -29,6 +29,7 @@ export interface CompanyUserListItemResponse {
     address?: AddressEntity;
     userType?: EnumValue;
     status?: number | null;
+    userStatus?: string | null;
     lastLogin?: string | null;
     bank?: BankResponse;
     routingNumber?: string | null;
