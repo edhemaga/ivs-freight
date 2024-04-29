@@ -296,9 +296,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         }
                     } else if (res.type === TableStringEnum.DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
-                            const repairShopId = res.array?.length
-                                ? res.array[0].id
-                                : res.id;
+                            const repairShopId = res.array?.[0]?.id ?? res.id;
 
                             this.repairService
                                 .deleteRepairShopById(repairShopId)
@@ -319,9 +317,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     error: () => {},
                                 });
                         } else {
-                            const repairId = res.array?.length
-                                ? res.array[0].id
-                                : res.id;
+                            const repairId = res.array?.[0]?.id ?? res.id;
 
                             this.repairService
                                 .deleteRepairById(repairId, this.selectedTab)
@@ -1707,16 +1703,22 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.displayRows$ = this.store.pipe(select(selectActiveTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.displayRows$ = this.store.pipe(select(selectInactiveTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
             case TableStringEnum.REPAIR_SHOP:
                 this.cardTitle = TableStringEnum.NAME;
-                this.displayRows$ = this.store.pipe(select(selectRepairShopTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectRepairShopTabCards)
+                );
                 break;
             default:
                 break;
