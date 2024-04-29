@@ -316,6 +316,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                 this.addRepair();
 
+                this.modalService.setModalSpinner({
+                    action: RepairOrderModalStringEnum.SVE_AND_ADD_NEW,
+                    status: true,
+                    close: false,
+                });
+
                 this.isAddNewAfterSave = true;
 
                 break;
@@ -333,6 +339,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 } else {
                     this.addRepair();
                 }
+
+                this.modalService.setModalSpinner({
+                    action: null,
+                    status: true,
+                    close: false,
+                });
 
                 break;
             case RepairOrderModalStringEnum.DELETE:
@@ -699,7 +711,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public addItem(_?: { check: boolean; action: string }): void {
+    public addItem(): void {
         if (!this.isEachRepairRowValid) return;
 
         this.isRepairBillRowCreated = true;
@@ -1130,6 +1142,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     if (this.isAddNewAfterSave) {
+                        this.modalService.setModalSpinner({
+                            action: RepairOrderModalStringEnum.SVE_AND_ADD_NEW,
+                            status: false,
+                            close: false,
+                        });
+
                         this.ngbActiveModal.close();
 
                         this.modalService.openModal(
@@ -1143,6 +1161,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         );
 
                         this.isAddNewAfterSave = false;
+                    } else {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
                     }
                 },
                 error: () => {
