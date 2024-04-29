@@ -31,10 +31,13 @@ import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-
 // helpers
 import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 
+// components
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+
 @Component({
     selector: 'app-modal-input-form',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, NgbModule],
+    imports: [CommonModule, AngularSvgIconModule, NgbModule, TaCustomCardComponent],
     templateUrl: './modal-input-form.component.html',
     styleUrls: ['./modal-input-form.component.scss'],
 })

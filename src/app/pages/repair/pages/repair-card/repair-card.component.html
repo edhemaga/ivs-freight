@@ -273,12 +273,29 @@
                                 [note]="card.note"
                                 [mainData]="card"
                                 [entityId]="card.id"
-                                [entityType]="'RepairShop'"
+                                [entityType]="'Repair'"
                                 [openedAll]="false"
                                 [parking]="false"
                             >
                             </app-ta-note>
                         </div>
+
+                        <ng-container *ngIf="card.fileCount">
+                            <div
+                                class="card-attachments-icon-container d-flex flex-column align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="
+                                        '/assets/svg/truckassist-table/attachment-icon.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+                                <div class="file_count">{{card.fileCount}}</div>
+                            </div>
+                        </ng-container>
 
                         <!-- Expand element -->
 

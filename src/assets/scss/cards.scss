@@ -32,6 +32,18 @@
         margin: 4px;
         height: calc(100% - 8px);
 
+        .card-attachments-icon-container {
+            .file_count {
+                font-weight: 700;
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+                text-align: center;
+
+                user-select: none;
+            }
+        }
+
         .description-container {
             overflow: hidden;
             width: 100%;
