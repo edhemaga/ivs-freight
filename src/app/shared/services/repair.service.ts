@@ -17,7 +17,6 @@ import {
     RepairShopMinimalListResponse,
     RepairShopResponse,
     RepairShopService,
-    // RepairDriverResponse,
 } from 'appcoretruckassist';
 
 // store
@@ -41,13 +40,13 @@ export class RepairService {
     public repairShopId: number;
 
     constructor(
-        // Services
+        // services
         private repairService: RepairMainService,
         private shopServices: RepairShopService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
 
-        // Store
+        // store
         private repairTruckStore: RepairTruckStore,
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,

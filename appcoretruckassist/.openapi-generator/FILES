@@ -370,6 +370,7 @@ model/deleteMultipleApplicationsCommand.ts
 model/departmentContactResponse.ts
 model/departmentFilterResponse.ts
 model/departmentResponse.ts
+model/departmentShortResponse.ts
 model/disclosureReleaseFeedbackResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts

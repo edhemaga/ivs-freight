@@ -1016,7 +1016,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         );
                     })
                 )
-
                 .subscribe();
         }
     }

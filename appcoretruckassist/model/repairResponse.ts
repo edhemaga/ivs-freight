@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { RepairDriverResponse } from './repairDriverResponse';
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
@@ -30,6 +31,7 @@ export interface RepairResponse {
     odometer?: number | null;
     date?: string | null;
     invoice?: string | null;
+    orderNumber?: string | null;
     repairShop?: RepairShopShortResponse;
     total?: number | null;
     serviceTypes?: Array<RepairServiceTypeResponse> | null;
@@ -39,9 +41,7 @@ export interface RepairResponse {
     items?: Array<RepairItemResponse> | null;
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
-    driverId?: number | null;
-    driverFirstName?: string | null;
-    driverLastName?: string | null;
+    driver?: RepairDriverResponse;
     payType?: EnumValue;
     datePaid?: string | null;
     shopServiceType?: EnumValue;

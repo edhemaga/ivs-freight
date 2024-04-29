@@ -21,6 +21,7 @@ export interface ApiRepairPostRequest {
     Odometer?: number;
     Date?: string;
     Invoice?: string;
+    OrderNumber?: string;
     RepairShopId?: number;
     Total?: number;
     ServiceTypes?: Array<RepairServiceTypeCommand>;
@@ -30,5 +31,6 @@ export interface ApiRepairPostRequest {
     Tags?: Array<CreateTagCommand>;
     FilesForDeleteIds?: Array<number>;
     ShopServiceType?: number;
+    FinishOrder?: boolean;
 }
 
