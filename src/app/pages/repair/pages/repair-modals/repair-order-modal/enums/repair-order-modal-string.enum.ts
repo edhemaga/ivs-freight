@@ -9,7 +9,7 @@ export enum RepairOrderModalStringEnum {
     ORDER_NO = 'orderNo',
     ODOMETER = 'odometer',
     REPAIR_ITEMS = 'repairItems',
-    PAID_TYPE = 'paid-type',
+    PAY_TYPE = 'pay-type',
     DATE_PAID = 'datePaid',
     SERVICES_HELPER = 'servicesHelper',
 

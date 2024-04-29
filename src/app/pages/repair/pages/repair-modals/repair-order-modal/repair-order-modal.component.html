@@ -73,7 +73,7 @@
                     [canOpenModal]="true"
                     [options]="payTypeDropdownList"
                     [activeItem]="selectedPayType"
-                    (selectedItem)="onSelectDropDown($event, 'paid-type')"
+                    (selectedItem)="onSelectDropDown($event, 'pay-type')"
                 ></app-ta-input-dropdown>
 
                 <app-ta-input
@@ -84,8 +84,8 @@
                         isDropdown: true,
                         label: 'Date Paid',
                         placeholderIcon: 'date',
-                        isDisabled: !this.repairOrderForm.get('payType').value,
-                        isRequired: true,
+                        isDisabled: !selectedPayType,
+                        isRequired: selectedPayType,
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
