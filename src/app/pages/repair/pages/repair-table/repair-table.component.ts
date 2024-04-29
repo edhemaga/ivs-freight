@@ -1250,7 +1250,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                         TableStringEnum.ACTIVE
                                             ? TableStringEnum.EDIT_TRUCK
                                             : TableStringEnum.EDIT_TRAILER,
-                                    finishOrderBtn: true,
+                                    finishOrderBtn:
+                                        repair?.repairType?.id === 2,
                                 };
 
                                 this.modalService.openModal(

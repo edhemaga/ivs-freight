@@ -45,7 +45,6 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { RepairService } from '@shared/services/repair.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validators
 import {
@@ -73,6 +72,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // models
 import {
@@ -89,7 +89,6 @@ import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-m
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { Subtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/subtotal.model';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -134,6 +133,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
 
     public isAddNewAfterSave: boolean = false;
+    public isFinishOrder: boolean = false;
 
     public hideIconIndex: number = 0;
 
@@ -205,13 +205,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private detailsDataService: DetailsDataService,
         private tagsService: EditTagsService,
-        private confirmationService: ConfirmationService,
 
         // pipes
         private priceArrayPipe: PriceCalculationArrayPipe
     ) {}
 
     ngOnInit() {
+        console.log('editData', this.editData);
         this.createForm();
 
         this.getConstantData();
@@ -295,6 +295,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
+        console.log('data', data);
         switch (data.action) {
             case RepairOrderModalStringEnum.CLOSE:
                 break;
@@ -341,6 +342,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             case RepairOrderModalStringEnum.DELETE:
                 if (this.editData.data)
                     this.deleteRepairById(this.editData.data.id);
+
+                break;
+            case RepairOrderModalStringEnum.FINISH_ORDER:
+                this.isFinishOrder = true;
 
                 break;
             default:
