@@ -12,7 +12,7 @@
 
 
 export interface RepairDriverResponse { 
-    driverId?: number;
+    id?: number;
     firstName?: string | null;
     lastName?: string | null;
 }
