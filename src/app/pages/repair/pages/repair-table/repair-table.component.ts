@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { forkJoin, Subject, takeUntil, tap } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -33,7 +33,13 @@ import {
     RepairTrailerState,
     RepairTrailerStore,
 } from '@pages/repair/state/repair-trailer-state/repair-trailer.store';
-import { RepairCardModalQuery } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.query';
+
+import { Store, select } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+    selectRepairShopTabCards,
+} from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.selectors';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -76,6 +82,9 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+
+// helpers
+import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 
 @Component({
     selector: 'app-repair-table',
@@ -147,6 +156,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
         // Router
         public router: Router,
@@ -166,7 +177,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         private repairTruckQuery: RepairTruckQuery,
         private repairTrailerQuery: RepairTrailerQuery,
         private repairTrailerStore: RepairTrailerStore,
-        private repairCardModalQuery: RepairCardModalQuery,
+        private store: Store,
 
         // Pipes
         public datePipe: DatePipe,
@@ -514,7 +525,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showCategoryRepairFilter: true,
                 showMoneyFilter: true,
                 hideMoneySubType: true,
-                showLocationFilter: true,
+                hideActivationButton: true,
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
+                    this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
                 viewModeOptions: this.getViewModeOptions(),
@@ -873,7 +887,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             fileCount: data?.fileCount,
             tableDropdownContent: {
                 hasContent: true,
-                content: this.getRepairDropdownContent(),
+                content: this.getRepairDropdownContent(data?.repairType?.name),
             },
         };
     }
@@ -947,8 +961,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     // Get Repair Dropdown Content
-    private getRepairDropdownContent(): DropdownItem[] {
-        return TableDropdownComponentConstants.DROPDOWN_REPAIR;
+    private getRepairDropdownContent(repairType: string): DropdownItem[] {
+        return RepairTableHelper.dropdownTableContent(
+            this.selectedTab,
+            repairType
+        );
     }
 
     // Get Repair Dropdown Content
@@ -1608,75 +1625,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.activeTabCardsConfig();
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.inactiveTabCardsConfig();
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
             case TableStringEnum.REPAIR_SHOP:
-                this.shopTabCardsConfig();
+                this.cardTitle = TableStringEnum.NAME;
+                this.displayRows$ = this.store.pipe(
+                    select(selectRepairShopTabCards)
+                );
                 break;
             default:
                 break;
         }
         this.repairCardsModalService.updateTab(this.selectedTab);
-    }
-
-    private activeTabCardsConfig(): void {
-        this.repairCardModalQuery.truck$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.INVOICE;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private inactiveTabCardsConfig(): void {
-        this.repairCardModalQuery.trailer$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.INVOICE;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
-    }
-
-    private shopTabCardsConfig(): void {
-        this.repairCardModalQuery.repairShop$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res) {
-                    const filteredCardRowsFront =
-                        res.front_side.filter(Boolean);
-
-                    const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
-
-                    this.displayRowsFront = filteredCardRowsFront;
-
-                    this.displayRowsBack = filteredCardRowsBack;
-                }
-            });
     }
 }

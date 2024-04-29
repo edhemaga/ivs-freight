@@ -237,7 +237,7 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                 },
                 {
                     title: TableStringEnum.FINISH_ORDER_3,
-                    name: TableStringEnum.FINISH_ORDER_2,
+                    name: TableStringEnum.FINISH_ORDER,
                     iconName: TableStringEnum.FINISH_ORDER,
                     blueIcon: true,
                 },

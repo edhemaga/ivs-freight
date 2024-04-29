@@ -7,7 +7,7 @@
     <!-- VIEW MODE SELECT -->
 
     <!-- TOTAL MONEY COUNT -->
-    <ng-container *ngIf="options.toolbarActions.showMoneyFilter">
+    <ng-container *ngIf="activeTableData.moneyCountSelected">
         <div
             class="money-count-container d-flex justify-content-center align-items-center"
             [ngClass]="{
@@ -17,7 +17,7 @@
             <div
                 class="container-money ta-font-bold d-flex justify-content-center align-items-center"
             >
-                {{ '123450' | moneyFilter }}
+                {{ activeTableData.moneyCount | moneyFilter }}
             </div>
         </div>
     </ng-container>
@@ -25,7 +25,7 @@
     <ng-container
         *ngIf="
             options?.toolbarActions?.viewModeOptions?.length &&
-            options.toolbarActions.showMoneyFilter
+            activeTableData.moneyCountSelected
         "
     >
         <div
