@@ -170,7 +170,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.modalTableData?.currentValue) {
+        if (
+            !changes.modalTableData?.firstChange &&
+            changes.modalTableData?.currentValue
+        ) {
             this.updateModalTableData(changes.modalTableData.currentValue);
         }
 
@@ -746,6 +749,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         }
+
+        console.log('this.getFormArray()', this.getFormArray());
 
         if (this.isRepairBillTable)
             setTimeout(() => {

@@ -372,9 +372,13 @@
                             <div
                                 class="pm-dropdown-container"
                                 [ngClass]="{
-                                    'hidden-pm-dropdown': !getFormArray()
-                                        .at(i)
-                                        .get('pm').value
+                                    'hidden-pm-dropdown':
+                                        (!modalTableData.length &&
+                                            !truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                            !truckTrailerRepairPmOptions?.trailerPmDropdownList) ||
+                                        (modalTableData.length &&
+                                            !getFormArray().at(i).get('pm')
+                                                .value)
                                 }"
                             >
                                 <app-ta-input-dropdown
