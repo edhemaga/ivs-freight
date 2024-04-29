@@ -791,11 +791,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             payType: data.payType?.name,
-            driver: data.driverFirstName
+            driver: null /* data.driverFirstName
                 ? data.driverFirstName + data.driverLastName
                     ? data.driverLastName
                     : ''
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER */,
             tableType:
                 data?.truck?.truckType?.logoName ||
                 data?.trailer?.trailerType?.logoName ||
@@ -1233,6 +1233,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                         TableStringEnum.ACTIVE
                                             ? TableStringEnum.EDIT_TRUCK
                                             : TableStringEnum.EDIT_TRAILER,
+                                    finishOrderBtn: true,
                                 };
 
                                 this.modalService.openModal(

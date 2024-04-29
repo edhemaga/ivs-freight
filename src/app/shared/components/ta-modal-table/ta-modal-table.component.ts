@@ -182,6 +182,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             changes.isNewRowCreated?.currentValue
         ) {
             this.createFormArrayRow();
+
             this.getModalTableDataValue();
         }
 
@@ -707,17 +708,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             description: repairOrderData?.description,
                             pm:
                                 repairOrderData?.pmTruck?.title ||
-                                repairBillData?.pmTrailer?.title,
+                                repairOrderData?.pmTrailer?.title,
                             quantity: repairOrderData?.quantity,
                         });
 
-                    this.subTotals[i] = {
-                        subtotal: repairBillData.subtotal,
-                        index: i,
-                    };
-
                     this.selectedTruckTrailerRepairPm[i] =
-                        repairBillData?.pmTruck || repairBillData?.pmTrailer;
+                        repairOrderData?.pmTruck || repairOrderData?.pmTrailer;
 
                     break;
                 case this.isPMTruckTable || this.isPMTrailerTable:
@@ -749,8 +745,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         }
-
-        console.log('this.getFormArray()', this.getFormArray());
 
         if (this.isRepairBillTable)
             setTimeout(() => {

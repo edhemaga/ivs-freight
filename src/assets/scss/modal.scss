@@ -713,6 +713,30 @@ ngb-modal-window[aria-hidden='true'] {
                         }
                     }
                 }
+
+                .modal-finish-order-btn {
+                    width: 150px;
+                    height: 32px;
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $ta-black;
+                    background: $bw2;
+                    outline: none;
+                    border: none;
+                    border-radius: 2px;
+                    transition: color 0.3s ease-in-out,
+                        background 0.3s ease-in-out;
+
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+
+                    &:hover {
+                        color: $white;
+                        background: $ta-black;
+                    }
+                }
             }
 
             .modal-footer-cards {

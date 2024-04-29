@@ -2,7 +2,7 @@
     [customClass]="'modal-container-M'"
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [editData]="editData"
-    [editName]="editData?.data?.invoice"
+    [editName]="editData?.data?.invoice || editData?.data?.orderNumber"
     [isModalValid]="
         repairOrderForm.valid && isFormDirty && isEachRepairRowValid
     "
@@ -97,7 +97,7 @@
 
             <ng-container *ngIf="selectedHeaderTab === 2">
                 <app-ta-input
-                    formControlName="orderNo"
+                    formControlName="orderNumber"
                     [inputConfig]="{
                         name: 'Order No.',
                         type: 'text',

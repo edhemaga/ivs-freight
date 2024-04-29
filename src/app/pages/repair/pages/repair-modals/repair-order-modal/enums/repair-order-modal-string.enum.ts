@@ -6,7 +6,7 @@ export enum RepairOrderModalStringEnum {
     INVOICE = 'invoice',
     DATE = 'date',
     REPAIR_SHOP_ID = 'repairShopId',
-    ORDER_NO = 'orderNo',
+    ORDER_NUMBER = 'orderNumber',
     ODOMETER = 'odometer',
     REPAIR_ITEMS = 'repairItems',
     PAY_TYPE = 'pay-type',
@@ -73,6 +73,7 @@ export enum RepairOrderModalStringEnum {
     EDIT_FO = 'edit-fo',
 
     DOLLAR_SIGN = '$',
+    EMPTY_SPACE_STRING = ' ',
 
     SPECIFIC_REPAIR_SHOP = 'specific-repair-shop',
 }

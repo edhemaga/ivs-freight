@@ -415,6 +415,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
+            case 'finish-order': {
+                this.action.emit({ action: action, bool: false });
+
+                break;
+            }
             default: {
                 break;
             }
