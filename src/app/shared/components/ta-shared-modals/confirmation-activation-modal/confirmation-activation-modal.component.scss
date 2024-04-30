@@ -20,8 +20,6 @@
     &-body {
         &-title,
         &-middle {
-            width: 70%;
-
             p, div {
                 font-size: 18px;
                 line-height: 22px;
@@ -35,6 +33,17 @@
                 &::selection {
                     color: $ta-black;
                     background: rgb(66, 66, 66, 0.2);
+                }
+
+                &.limit-text {
+                    max-width: 73%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 66%;
+                    }
                 }
             }
 
