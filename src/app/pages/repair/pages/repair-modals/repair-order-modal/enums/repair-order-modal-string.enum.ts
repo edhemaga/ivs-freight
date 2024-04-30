@@ -34,6 +34,7 @@ export enum RepairOrderModalStringEnum {
     EDIT = 'edit',
     INACTIVE = 'inactive',
     ACTIVE = 'active',
+    FINISH_ORDER = 'finish-order',
 
     WIRE_TRANSFER = 'Wire Transfer',
     WIRE_TRANSFER_2 = 'WireTransfer',

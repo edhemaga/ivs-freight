@@ -1294,7 +1294,7 @@
 
                                         <div
                                             class="finish-order-action d-flex justify-content-center"
-                                            (click)="onFinishOrder(row)"
+                                            (click)="onFinishOrder(row.id)"
                                             *ngIf="row.isRepairOrder"
                                         >
                                             Finish Order
@@ -3217,7 +3217,7 @@
 
                                         <div
                                             class="finish-order-action"
-                                            (click)="onFinishOrder(row)"
+                                            (click)="onFinishOrder(row.id)"
                                             *ngIf="row.isRepairOrder"
                                         >
                                             Finish Order

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 // Store
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
@@ -41,6 +41,10 @@ export class RepairDetailsService {
         pmTruckTitles?: Array<string>,
         pmTrailerTitles?: Array<string>,
         isOrder?: boolean,
+        truckNumbers?: Array<string>,
+        trailerNumbers?: Array<string>,
+        costFrom?: number,
+        costTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -59,6 +63,10 @@ export class RepairDetailsService {
             pmTruckTitles,
             pmTrailerTitles,
             isOrder,
+            truckNumbers,
+            trailerNumbers,
+            costFrom,
+            costTo,
             pageIndex,
             pageSize,
             companyId,
@@ -68,7 +76,6 @@ export class RepairDetailsService {
             search2
         );
     }
-
     // Get Repair Minimal List
     public getRepairShopMinimalList(
         pageIndex?: number,

@@ -48,6 +48,8 @@ export class ModalTableConstants {
     static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
 
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];
-
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
+    static IS_INPUT_HOVER_ROW_REPAIR_ORDER: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_CONTACT: boolean[] = [false, false, false, false];
 }
