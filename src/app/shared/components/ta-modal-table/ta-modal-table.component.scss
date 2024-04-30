@@ -96,6 +96,26 @@
                 }
             }
 
+            &.valid {
+                background: $white;
+
+                .subtotal {
+                    p {
+                        color: $ta-black;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
+                }
+            }
+
             &-number {
                 p {
                     font-size: 14px;

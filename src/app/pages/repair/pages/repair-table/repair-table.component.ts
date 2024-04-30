@@ -1236,34 +1236,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             switch (this.selectedTab) {
                 case TableStringEnum.ACTIVE:
                 case TableStringEnum.INACTIVE:
-                    this.repairService
-                        .getRepairById(event.id)
-                        .pipe(
-                            takeUntil(this.destroy$),
-                            tap((repair) => {
-                                const editData = {
-                                    data: {
-                                        ...repair,
-                                    },
-                                    type:
-                                        this.selectedTab ===
-                                        TableStringEnum.ACTIVE
-                                            ? TableStringEnum.EDIT_TRUCK
-                                            : TableStringEnum.EDIT_TRAILER,
-                                    finishOrderBtn:
-                                        repair?.repairType?.id === 2,
-                                };
-
-                                this.modalService.openModal(
-                                    RepairOrderModalComponent,
-                                    { size: TableStringEnum.LARGE },
-                                    {
-                                        ...editData,
-                                    }
-                                );
-                            })
-                        )
-                        .subscribe();
+                    this.getRepairById(event.id);
 
                     break;
                 default:
@@ -1351,35 +1324,17 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         // Finish Order
         else if (event.type === TableStringEnum.FINISH_ORDER) {
             switch (this.selectedTab) {
-                case TableStringEnum.ACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event.data,
-                            type: TableStringEnum.EDIT_FO_TRUCK,
-                        }
-                    );
+                case TableStringEnum.ACTIVE:
+                case TableStringEnum.INACTIVE:
+                    this.getRepairById(event.id, true);
+
                     break;
-                }
-                case TableStringEnum.INACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event.data,
-                            type: TableStringEnum.EDIT_FO_TRAILER,
-                        }
-                    );
+                default:
                     break;
-                }
-                default: {
-                    break;
-                }
             }
         }
 
-        // Raiting
+        // Rating
         else if (event.type === TableStringEnum.RATING) {
             const raitingData = {
                 entityTypeRatingId: 2,
@@ -1458,6 +1413,36 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     }, 1000);
                 });
         }
+    }
+
+    private getRepairById(id: number, isFinishOrder: boolean = false): void {
+        this.repairService
+            .getRepairById(id)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap((repair) => {
+                    const editData = {
+                        data: {
+                            ...repair,
+                        },
+                        type:
+                            this.selectedTab === TableStringEnum.ACTIVE
+                                ? TableStringEnum.EDIT_TRUCK
+                                : TableStringEnum.EDIT_TRAILER,
+                        finishOrderBtn: repair?.repairType?.id === 2,
+                        isFinishOrder,
+                    };
+
+                    this.modalService.openModal(
+                        RepairOrderModalComponent,
+                        { size: TableStringEnum.LARGE },
+                        {
+                            ...editData,
+                        }
+                    );
+                })
+            )
+            .subscribe();
     }
 
     // Get Tab Table Data For Selected Tab

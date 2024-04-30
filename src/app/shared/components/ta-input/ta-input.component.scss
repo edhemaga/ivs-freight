@@ -144,8 +144,8 @@
 
         .input-control {
             background: transparent;
-            color: $default-removed-background-text;
-            font-weight: 700;
+            color: $valid-content;
+            font-weight: 400;
 
             &.focus,
             &.focus:hover {
