@@ -42,7 +42,6 @@ export interface ITaInput {
     textAlign?: string | 'center';
     blackInput?: boolean; // has only black background && input clear, no validations
     blueInput?: boolean;
-    textBlueColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
     incorrectInput?: boolean;
     dangerMark?: boolean;
     autoFocus?: boolean;
