@@ -11,8 +11,8 @@
  */
 
 
-export interface StatusSetMultipleCompanyUserCommand { 
-    ids?: Array<number> | null;
+export interface StatusSetCompanyUserCommand { 
+    id?: number;
     activate?: boolean;
 }
 

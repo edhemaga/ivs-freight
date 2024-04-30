@@ -11,8 +11,8 @@
  */
 
 
-export interface StatusSetMultipleCompanyUserCommand { 
-    ids?: Array<number> | null;
-    activate?: boolean;
+export interface RepairTrailerFilterResponse { 
+    trailerNumber?: string | null;
+    count?: number;
 }
 
