@@ -797,12 +797,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data?.truck?.truckNumber ||
                 data?.trailer?.trailerNumber ||
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            invoice: data?.datePaid
-                ? this.datePipe.transform(
-                      data.datePaid,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.invoice,
             payType: data.payType?.name,
             driver: data.driverFirstName
                 ? data.driverFirstName + data.driverLastName
