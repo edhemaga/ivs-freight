@@ -825,7 +825,7 @@ export class TaInputComponent
             // 5. If user doesn't set dot
             else {
                 this.hasDecimalIndex = -1;
-                /* 
+
                 if (this.getSuperControl.value.indexOf('.') === -1) {
                     // Transform value with thousand separator
                     this.getSuperControl.patchValue(
@@ -852,7 +852,7 @@ export class TaInputComponent
                             this.getSuperControl.value
                         )
                     );
-                } */
+                }
             }
 
             this.timeoutCleaner = setTimeout(() => {
