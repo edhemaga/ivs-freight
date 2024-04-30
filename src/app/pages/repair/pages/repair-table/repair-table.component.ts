@@ -47,6 +47,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -222,31 +223,117 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                             this.repairService
                                 .deleteRepairShopList(res.array)
                                 .pipe(takeUntil(this.destroy$))
-                                .subscribe();
+                                .subscribe({
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
+                                    },
+                                    error: () => {},
+                                });
                         } else {
                             this.repairService
                                 .deleteRepairList(res.array, this.selectedTab)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
-                                        // this.updateDataCount();
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
                                     },
                                     error: () => {},
                                 });
                         }
                     } else if (res.type === TableStringEnum.DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                            const repairShopId = res.array?.[0]?.id ?? res.id;
+
                             this.repairService
-                                .deleteRepairShopById(res.id)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe();
-                        } else {
-                            this.repairService
-                                .deleteRepairById(res.id, this.selectedTab)
+                                .deleteRepairShopById(repairShopId)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
+                                    next: () => {
                                         this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
+                                    },
+                                    error: () => {},
+                                });
+                        } else {
+                            const repairId = res.array?.[0]?.id ?? res.id;
+
+                            this.repairService
+                                .deleteRepairById(repairId, this.selectedTab)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: () => {
+                                        this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
                                     },
                                     error: () => {},
                                 });
@@ -797,12 +884,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data?.truck?.truckNumber ||
                 data?.trailer?.trailerNumber ||
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            invoice: data?.datePaid
-                ? this.datePipe.transform(
-                      data.datePaid,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            invoice: data?.invoice,
             payType: data.payType?.name,
             driver: null /* data.driverFirstName
                 ? data.driverFirstName + data.driverLastName

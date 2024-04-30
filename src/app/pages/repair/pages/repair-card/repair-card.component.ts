@@ -254,23 +254,17 @@ export class RepairCardComponent
                         `/list/repair/${event.id}/shop-details`,
                     ]);
                 break;
-            case TableStringEnum.DELETE_REPAIR || TableStringEnum.DELETE:
+            case TableStringEnum.DELETE_REPAIR:
+            case TableStringEnum.DELETE:
                 switch (this.selectedTab) {
                     case TableStringEnum.REPAIR_SHOP:
                         this.modalService.openModal(
                             ConfirmationModalComponent,
-                            { size: TableStringEnum.DELETE },
+                            { size: TableStringEnum.SMALL },
                             {
+                                ...event,
+                                template: TableStringEnum.REPAIR_SHOP,
                                 type: TableStringEnum.DELETE,
-                            }
-                        );
-                        this.confiramtionService.confirmationData$.subscribe(
-                            (response) => {
-                                if (response.type === TableStringEnum.DELETE)
-                                    this.repairService
-                                        .deleteRepairShopById(event.id)
-                                        .pipe(takeUntil(this.destroy$))
-                                        .subscribe();
                             }
                         );
 
@@ -279,9 +273,15 @@ export class RepairCardComponent
                     default:
                         this.modalService.openModal(
                             ConfirmationModalComponent,
-                            { size: TableStringEnum.DELETE },
+                            { size: TableStringEnum.SMALL },
                             {
+                                ...event,
+                                template: TableStringEnum.REPAIR_2,
                                 type: TableStringEnum.DELETE,
+                                subType:
+                                    this.selectedTab === TableStringEnum.ACTIVE
+                                        ? TableStringEnum.TRUCK
+                                        : TableStringEnum.TRAILER_2,
                             }
                         );
                         break;

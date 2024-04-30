@@ -21,6 +21,13 @@
                         ? backupValue
                         : defaultValue?.title
                 "
+                [value]="
+                    getSuperControl?.title
+                        ? getSuperControl.title
+                        : defaultValue?.title === 'empty'
+                        ? backupValue
+                        : defaultValue?.title
+                "
                 (keyup)="filterArrayCardsModalDropdown($event)"
                 class="input-search cards-modal"
                 [ngClass]="{
@@ -77,53 +84,131 @@
                     trackBy: trackByIdentity
                 "
             >
-                <div
-                    class="title-holder d-flex align-items-center hoverable"
-                    [ngClass]="{
-                        'not-clickable':
-                            titlesInForm.includes(title?.title) ||
-                            selectedValueInInput === title?.title
-                    }"
-                    (click)="cardTitleSelected(title, cardsModal)"
-                >
-                    <span
-                        class="text-white"
+                <ng-container *ngIf="!title.isDropdown; else is_dropdown">
+                    <div
+                        class="title-holder d-flex align-items-center hoverable"
                         [ngClass]="{
-                            'selected-input ta-font-bold':
-                                selectedValueInInput === title?.title,
-                            'selected-in-other-input':
+                            'not-clickable-action':
+                                titlesInForm.includes(title?.title) ||
+                                selectedValueInInput === title?.title
+                        }"
+                        (click)="cardTitleSelected(title, cardsModal)"
+                    >
+                        <span
+                            class="text-white"
+                            [ngClass]="{
+                                'selected-input ta-font-bold':
+                                    selectedValueInInput === title?.title,
+                                'selected-in-other-input':
+                                    titlesInForm.includes(title?.title) &&
+                                    selectedValueInInput !== title?.title
+                            }"
+                            [innerHTML]="
+                                higlitsPartOfCommentSearchValue(title.title)
+                            "
+                        >
+                        </span>
+
+                        <ng-container
+                            *ngIf="
                                 titlesInForm.includes(title?.title) &&
                                 selectedValueInInput !== title?.title
-                        }"
-                        [innerHTML]="
-                            higlitsPartOfCommentSearchValue(title.title)
-                        "
-                    >
-                    </span>
+                            "
+                        >
+                            <svg-icon
+                                class="disabled svg-icons"
+                                [src]="'assets/svg/common/ic_disable.svg'"
+                                [style.width.px]="13"
+                                [style.height.px]="13"
+                            ></svg-icon>
+                        </ng-container>
 
-                    <ng-container
-                        *ngIf="
-                            titlesInForm.includes(title?.title) &&
-                            selectedValueInInput !== title?.title
-                        "
+                        <ng-container
+                            *ngIf="selectedValueInInput === title?.title"
+                        >
+                            <svg-icon
+                                class="checked svg-icons"
+                                [src]="
+                                    'assets/svg/truckassist-table/check-new.svg'
+                                "
+                                [style.width.px]="14"
+                                [style.height.px]="14"
+                            ></svg-icon>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <ng-template #is_dropdown>
+                    <app-ta-custom-card
+                        [cardName]="title.title"
+                        [isCardOpen]="false"
+                        [isDropdownCard]="true"
+                        [isDropdownModalCard]="true"
+                        [hasDivider]="false"
                     >
-                        <svg-icon
-                            class="disabled svg-icons"
-                            [src]="'assets/svg/common/ic_disable.svg'"
-                            [style.width.px]="13"
-                            [style.height.px]="13"
-                        ></svg-icon>
-                    </ng-container>
+                        <ng-container
+                            *ngFor="let item of title.values; let i = index"
+                        >
+                            <div
+                                class="title-holder innit d-flex align-items-center hoverable"
+                                [ngClass]="{
+                                    'not-clickable-action':
+                                        titlesInForm.includes(item?.title) ||
+                                        selectedValueInInput === item?.title
+                                }"
+                                (click)="cardTitleSelected(item, cardsModal)"
+                            >
+                                <span
+                                    class="text-white"
+                                    [ngClass]="{
+                                        'selected-input ta-font-bold':
+                                            selectedValueInInput ===
+                                            item?.title,
+                                        'selected-in-other-input':
+                                            titlesInForm.includes(
+                                                item?.title
+                                            ) &&
+                                            selectedValueInInput !== item?.title
+                                    }"
+                                    [innerHTML]="
+                                        higlitsPartOfCommentSearchValue(
+                                            item.secondTitle
+                                        )
+                                    "
+                                >
+                                </span>
 
-                    <ng-container *ngIf="selectedValueInInput === title?.title">
-                        <svg-icon
-                            class="checked svg-icons"
-                            [src]="'assets/svg/truckassist-table/check-new.svg'"
-                            [style.width.px]="14"
-                            [style.height.px]="14"
-                        ></svg-icon>
-                    </ng-container>
-                </div>
+                                <ng-container
+                                    *ngIf="
+                                        titlesInForm.includes(item?.title) &&
+                                        selectedValueInInput !== item?.title
+                                    "
+                                >
+                                    <svg-icon
+                                        class="disabled svg-icons"
+                                        [src]="
+                                            'assets/svg/common/ic_disable.svg'
+                                        "
+                                        [style.width.px]="13"
+                                        [style.height.px]="13"
+                                    ></svg-icon>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="selectedValueInInput === item?.title"
+                                >
+                                    <svg-icon
+                                        class="checked svg-icons"
+                                        [src]="
+                                            'assets/svg/truckassist-table/check-new.svg'
+                                        "
+                                        [style.width.px]="14"
+                                        [style.height.px]="14"
+                                    ></svg-icon>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </app-ta-custom-card>
+                </ng-template>
             </ng-container>
         </div>
     </div>

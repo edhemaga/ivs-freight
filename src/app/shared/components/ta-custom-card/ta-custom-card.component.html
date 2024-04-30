@@ -1,4 +1,7 @@
-<div class="ta-custom-card">
+<div
+    class="ta-custom-card"
+    [class.dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
+>
     <div class="invisible-mainual-trigger" style="display: none">
         {{ _isCardOpen }}
     </div>
@@ -15,7 +18,9 @@
         [class.active]="
             hasPayrollStatus && _isCardOpen && _isCardOpen != 'null'
         "
-        [class.dropdown-card]="isDropdownCard"
+        [class.dropdown-card]="isDropdownCard && !isDropdownModalCard"
+        [class.dropdown-modal-card]="isDropdownModalCard"
+        [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -41,7 +46,9 @@
 
             <span
                 class="header-text"
-                [ngClass]="{ 'dropdown-card': isDropdownCard }"
+                [ngClass]="{
+                    'dropdown-card': isDropdownCard && !isDropdownModalCard
+                }"
                 [ngStyle]="{
                     color: _isCardOpen ? '#424242' : '#6C6C6C'
                 }"

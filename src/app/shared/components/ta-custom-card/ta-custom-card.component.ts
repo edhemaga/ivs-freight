@@ -80,6 +80,7 @@ export class TaCustomCardComponent {
     @Input() customClass: string;
     @Input() hasFormatTextActionButtons: boolean = false;
     @Input() isDropdownCard: boolean = false;
+    @Input() isDropdownModalCard: boolean = false;
 
     @Input() controlName: UntypedFormControl;
 
@@ -112,6 +113,14 @@ export class TaCustomCardComponent {
     public _isCardOpen: string | boolean = 'null';
 
     constructor(private uploadFileService: TaUploadFileService) {}
+
+    ngOnInit(): void {
+        if (this.isDropdownModalCard)
+            this.animationMarginParams = {
+                marginTop: '4px',
+                marginBottom: '4px',
+            };
+    }
 
     public isCardOpenEvent(event: any) {
         if (!this.disabledCard) {
