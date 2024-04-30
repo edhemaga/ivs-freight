@@ -25,6 +25,7 @@ export interface ApiRepairPostRequest1 {
     Odometer?: number;
     Date?: string;
     Invoice?: string;
+    OrderNumber?: string;
     RepairShopId?: number;
     Total?: number;
     ServiceTypes?: Array<RepairServiceTypeCommand>;

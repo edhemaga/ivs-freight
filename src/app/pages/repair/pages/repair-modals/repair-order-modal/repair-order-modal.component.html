@@ -2,23 +2,21 @@
     [customClass]="'modal-container-M'"
     [disableDelete]="editData?.type?.includes('edit-fo')"
     [editData]="editData"
-    [editName]="editData?.data?.textUnit"
+    [editName]="editData?.data?.invoice || editData?.data?.orderNumber"
     [isModalValid]="
-        repairOrderForm.valid && isFormDirty && isEachDescriptionRowValid
+        repairOrderForm.valid && isFormDirty && isEachRepairRowValid
     "
     [modalTitle]="
         !editData?.type?.includes('edit')
             ? 'Add Repair'
             : editData?.type?.includes('fo')
             ? 'Finish Order'
-            : 'Edit Repair'
+            : 'Edit Repair ' + editData?.data?.repairType?.name
     "
-    [saveAndAddNew]="editData?.type !== 'edit'"
+    [saveAndAddNew]="!editData?.data"
     [tabChangePosition]="'right'"
     [tabChange]="
-        (editData?.type?.includes('edit') &&
-            selectedRepairTypeTab === 'Bill') ||
-        editData?.type?.includes('edit-fo')
+        editData?.type?.includes('edit') || editData?.type?.includes('edit-fo')
             ? null
             : headerTabs
     "
@@ -75,7 +73,7 @@
                     [canOpenModal]="true"
                     [options]="payTypeDropdownList"
                     [activeItem]="selectedPayType"
-                    (selectedItem)="onSelectDropDown($event, 'paid-type')"
+                    (selectedItem)="onSelectDropDown($event, 'pay-type')"
                 ></app-ta-input-dropdown>
 
                 <app-ta-input
@@ -86,8 +84,8 @@
                         isDropdown: true,
                         label: 'Date Paid',
                         placeholderIcon: 'date',
-                        isDisabled: !this.repairOrderForm.get('payType').value,
-                        isRequired: true,
+                        isDisabled: !selectedPayType,
+                        isRequired: selectedPayType,
                         customClass: 'datetimeclass'
                     }"
                 ></app-ta-input>
@@ -99,7 +97,7 @@
 
             <ng-container *ngIf="selectedHeaderTab === 2">
                 <app-ta-input
-                    formControlName="orderNo"
+                    formControlName="orderNumber"
                     [inputConfig]="{
                         name: 'Order No.',
                         type: 'text',
@@ -128,7 +126,7 @@
 
             <app-ta-tab-switch
                 (switchClicked)="onTabChange($event)"
-                [tabs]="typeOfRepairTabs"
+                [tabs]="unitTabs"
                 [type]="'type2-modal-popup'"
             ></app-ta-tab-switch>
 
@@ -184,8 +182,7 @@
                         type: 'text',
                         label: 'Odometer',
                         isDisabled: selectedHeaderTab !== 1,
-                        isRequired:
-                            repairOrderForm.get('odometer')?.errors?.required,
+                        isRequired: isAnyRepairItemHasPmSelected,
                         thousandSeparator: true,
                         minLength: 1,
                         maxLength: 9
@@ -200,7 +197,9 @@
             <div class="col-12 repair-shop-input">
                 <!-- Repair Shop Card -->
 
-                <ng-container *ngIf="selectedRepairShop">
+                <ng-container
+                    *ngIf="selectedRepairShop; else notSelectedRepairShop"
+                >
                     <div class="d-flex flex-column selected-item-container">
                         <div class="selected-item-label">
                             Repair Shop
@@ -322,7 +321,7 @@
                                     repairOrderForm
                                         .get('repairShopId')
                                         .patchValue(null);
-                                    rapairShopRemovedClearServiceTypes()
+                                    resetActiveServices()
                                 "
                                 class="clear-x"
                                 mainTooltip="Clear"
@@ -344,25 +343,29 @@
 
                 <!-- Repair Shop Dropdown -->
 
-                <ng-container *ngIf="!selectedRepairShop">
-                    <app-ta-input-dropdown
-                        formControlName="repairShopId"
-                        [template]="'double-text-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Repair Shop',
-                            isDropdown: true,
-                            isRequired: selectedHeaderTab === 1,
-                            dropdownWidthClass: 'w-col-616'
-                        }"
-                        [canOpenModal]="true"
-                        [activeItem]="selectedRepairShop"
-                        [canAddNew]="true"
-                        [options]="repairShopDropdownList"
-                        (selectedItem)="onSelectDropDown($event, 'repair-shop')"
-                    ></app-ta-input-dropdown>
-                </ng-container>
+                <ng-template #notSelectedRepairShop>
+                    <ng-container *ngIf="!selectedRepairShop">
+                        <app-ta-input-dropdown
+                            formControlName="repairShopId"
+                            [template]="'double-text-template'"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'Repair Shop',
+                                isDropdown: true,
+                                isRequired: selectedHeaderTab === 1,
+                                dropdownWidthClass: 'w-col-616'
+                            }"
+                            [canOpenModal]="true"
+                            [activeItem]="selectedRepairShop"
+                            [canAddNew]="true"
+                            [options]="repairShopDropdownList"
+                            (selectedItem)="
+                                onSelectDropDown($event, 'repair-shop')
+                            "
+                        ></app-ta-input-dropdown>
+                    </ng-container>
+                </ng-template>
             </div>
         </div>
 
@@ -377,7 +380,7 @@
             [disableAnimation]="isCardanimationDisabled"
             [hasActionSvg]="true"
             [hasArrow]="false"
-            (onActionEvent)="addItem($event)"
+            (onActionEvent)="addItem()"
         >
             <app-ta-modal-table
                 [isRepairBillTable]="true"
@@ -387,6 +390,7 @@
                     (selectedHeaderTab === 2 && isRepairOrderRowCreated)
                 "
                 [dropdownData]="truckTrailerPmDropdownLists"
+                [modalTableData]="updateRepairItems"
                 (modalTableValueEmitter)="handleModalTableValueEmit($event)"
                 (modalTableValidStatusEmitter)="
                     handleModalTableValidStatusEmit($event)
@@ -424,9 +428,7 @@
             ></app-ta-tab-switch>
 
             <div class="repair-shop-services">
-                <ng-container
-                    *ngFor="let repair of services; trackBy: identity"
-                >
+                <ng-container *ngFor="let repair of services">
                     <div
                         class="d-flex align-items-center repair-shop-service"
                         [ngClass]="{
@@ -434,7 +436,7 @@
                             inactive: repair.active && !repair.isSelected,
                             disabled: !repair.active || !this.selectedRepairShop
                         }"
-                        (click)="activeRepairService(repair)"
+                        (click)="handleServiceActiveClick(repair)"
                     >
                         <svg-icon [src]="repair?.svg"></svg-icon>
 

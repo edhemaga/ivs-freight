@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap, of } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // models
 import {
@@ -17,7 +17,6 @@ import {
     RepairShopMinimalListResponse,
     RepairShopResponse,
     RepairShopService,
-    // RepairDriverResponse,
 } from 'appcoretruckassist';
 
 // store
@@ -41,13 +40,13 @@ export class RepairService {
     public repairShopId: number;
 
     constructor(
-        // Services
+        // services
         private repairService: RepairMainService,
         private shopServices: RepairShopService,
         private tableService: TruckassistTableService,
         private formDataService: FormDataService,
 
-        // Store
+        // store
         private repairTruckStore: RepairTruckStore,
         private repairTrailerStore: RepairTrailerStore,
         private repairShopStore: RepairShopStore,
@@ -239,10 +238,43 @@ export class RepairService {
 
     // Delete Repair List
     public deleteRepairList(
-        ids: number[],
+        repairIds: number[],
         tabSelected?: string
     ): Observable<any> {
-        return of();
+        return this.repairService.apiRepairListDelete(repairIds).pipe(
+            tap(() => {
+                const repairCount = JSON.parse(
+                    localStorage.getItem('repairTruckTrailerTableCount')
+                );
+
+                repairIds.forEach((repairId) => {
+                    if (tabSelected === 'active') {
+                        this.repairTruckStore.remove(
+                            ({ id }) => id === repairId
+                        );
+
+                        repairCount.repairTrucks--;
+                    } else if (tabSelected === 'inactive') {
+                        this.repairTrailerStore.remove(
+                            ({ id }) => id === repairId
+                        );
+
+                        repairCount.repairTrailers--;
+                    }
+
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairCount.repairTrucks,
+                            repairTrailers: repairCount.repairTrailers,
+                            truckMoneyTotal: repairCount.truckMoneyTotal,
+                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                            repairShops: repairCount.repairShops,
+                        })
+                    );
+                });
+            })
+        );
     }
 
     public autocompleteRepairByDescription(
@@ -496,8 +528,33 @@ export class RepairService {
         );
     }
 
-    public deleteRepairShopList(ids: number[]): Observable<any> {
-        return of();
+    public deleteRepairShopList(repairShopIds: number[]): Observable<any> {
+        return this.shopServices.apiRepairshopListDelete(repairShopIds).pipe(
+            tap(() => {
+                const repairCount = JSON.parse(
+                    localStorage.getItem('repairTruckTrailerTableCount')
+                );
+
+                repairShopIds.forEach((repairShopId) => {
+                    this.repairShopStore.remove(
+                        ({ id }) => id === repairShopId
+                    );
+
+                    repairCount.repairShops--;
+
+                    localStorage.setItem(
+                        'repairTruckTrailerTableCount',
+                        JSON.stringify({
+                            repairTrucks: repairCount.repairTrucks,
+                            repairTrailers: repairCount.repairTrailers,
+                            truckMoneyTotal: repairCount.truckMoneyTotal,
+                            trailerMoneyTotal: repairCount.trailerMoneyTotal,
+                            repairShops: repairCount.repairShops,
+                        })
+                    );
+                });
+            })
+        );
     }
 
     public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {

@@ -33,7 +33,7 @@ export class RepairOrderConstants {
         },
     ];
 
-    static TYPE_OF_REPAIR_TABS: Tabs[] = [
+    static UNIT_TABS: Tabs[] = [
         {
             id: 1,
             name: 'Truck',

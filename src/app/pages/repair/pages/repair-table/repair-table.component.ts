@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { forkJoin, Observable, Subject, takeUntil } from 'rxjs';
+import { forkJoin, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 
@@ -47,6 +47,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -206,47 +207,134 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.getSelectedTabTableData();
 
-        this.confiramtionSubscribe();
+        this.confirmationSubscribe();
 
         this.deleteSelectedRows();
     }
 
     // TODO - Add to store logic
-    private confiramtionSubscribe(): void {
+    private confirmationSubscribe(): void {
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    console.log('res', res);
                     if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.repairService
                                 .deleteRepairShopList(res.array)
                                 .pipe(takeUntil(this.destroy$))
-                                .subscribe();
+                                .subscribe({
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
+                                    },
+                                    error: () => {},
+                                });
                         } else {
                             this.repairService
                                 .deleteRepairList(res.array, this.selectedTab)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
-                                        // this.updateDataCount();
+                                    next: () => {
+                                        this.viewData = this.viewData.map(
+                                            (repair) => {
+                                                res.array.map((id) => {
+                                                    if (repair.id === id)
+                                                        repair.actionAnimation =
+                                                            TableActionsStringEnum.DELETE_MULTIPLE;
+                                                });
+
+                                                return repair;
+                                            }
+                                        );
+
+                                        this.updateDataCount();
+
+                                        const interval = setInterval(() => {
+                                            this.viewData =
+                                                MethodsGlobalHelper.closeAnimationAction(
+                                                    true,
+                                                    this.viewData
+                                                );
+
+                                            clearInterval(interval);
+                                        }, 900);
+
+                                        this.tableService.sendRowsSelected([]);
+                                        this.tableService.sendResetSelectedColumns(
+                                            true
+                                        );
                                     },
                                     error: () => {},
                                 });
                         }
                     } else if (res.type === TableStringEnum.DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
+                            const repairShopId = res.array?.[0]?.id ?? res.id;
+
                             this.repairService
-                                .deleteRepairShopById(res.id)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe();
-                        } else {
-                            this.repairService
-                                .deleteRepairById(res.id, this.selectedTab)
+                                .deleteRepairShopById(repairShopId)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
-                                    next: (res) => {
+                                    next: () => {
                                         this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
+                                    },
+                                    error: () => {},
+                                });
+                        } else {
+                            const repairId = res.array?.[0]?.id ?? res.id;
+
+                            this.repairService
+                                .deleteRepairById(repairId, this.selectedTab)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe({
+                                    next: () => {
+                                        this.updateDataCount();
+
+                                        if (res.array?.length) {
+                                            this.tableService.sendRowsSelected(
+                                                []
+                                            );
+                                            this.tableService.sendResetSelectedColumns(
+                                                true
+                                            );
+                                        }
                                     },
                                     error: () => {},
                                 });
@@ -799,11 +887,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             invoice: data?.invoice,
             payType: data.payType?.name,
-            driver: data.driverFirstName
+            driver: null /* data.driverFirstName
                 ? data.driverFirstName + data.driverLastName
                     ? data.driverLastName
                     : ''
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER */,
             tableType:
                 data?.truck?.truckType?.logoName ||
                 data?.trailer?.trailerType?.logoName ||
@@ -1228,29 +1316,38 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             event.type === TableStringEnum.WRITE_REVIEW
         ) {
             switch (this.selectedTab) {
-                case TableStringEnum.ACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event,
-                            type: TableStringEnum.EDIT_TRUCK,
-                        }
-                    );
+                case TableStringEnum.ACTIVE:
+                case TableStringEnum.INACTIVE:
+                    this.repairService
+                        .getRepairById(event.id)
+                        .pipe(
+                            takeUntil(this.destroy$),
+                            tap((repair) => {
+                                const editData = {
+                                    data: {
+                                        ...repair,
+                                    },
+                                    type:
+                                        this.selectedTab ===
+                                        TableStringEnum.ACTIVE
+                                            ? TableStringEnum.EDIT_TRUCK
+                                            : TableStringEnum.EDIT_TRAILER,
+                                    finishOrderBtn: true,
+                                };
+
+                                this.modalService.openModal(
+                                    RepairOrderModalComponent,
+                                    { size: TableStringEnum.LARGE },
+                                    {
+                                        ...editData,
+                                    }
+                                );
+                            })
+                        )
+                        .subscribe();
+
                     break;
-                }
-                case TableStringEnum.INACTIVE: {
-                    this.modalService.openModal(
-                        RepairOrderModalComponent,
-                        { size: TableStringEnum.LARGE },
-                        {
-                            ...event,
-                            type: TableStringEnum.EDIT_TRAILER,
-                        }
-                    );
-                    break;
-                }
-                default: {
+                default:
                     this.modalService.openModal(
                         RepairShopModalComponent,
                         { size: TableStringEnum.SMALL },
@@ -1265,8 +1362,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                     : TableStringEnum.DETAILS,
                         }
                     );
+
                     break;
-                }
             }
         } else if (event.type === TableStringEnum.VIEW_DETAILS) {
             if (this.selectedTab === TableStringEnum.REPAIR_SHOP)
@@ -1611,16 +1708,22 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.displayRows$ = this.store.pipe(select(selectActiveTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
                 break;
 
             case TableStringEnum.INACTIVE:
                 this.cardTitle = TableStringEnum.INVOICE;
-                this.displayRows$ = this.store.pipe(select(selectInactiveTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
                 break;
             case TableStringEnum.REPAIR_SHOP:
                 this.cardTitle = TableStringEnum.NAME;
-                this.displayRows$ = this.store.pipe(select(selectRepairShopTabCards));
+                this.displayRows$ = this.store.pipe(
+                    select(selectRepairShopTabCards)
+                );
                 break;
             default:
                 break;
