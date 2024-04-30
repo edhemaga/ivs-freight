@@ -8,9 +8,12 @@ export interface RepairBackFilter {
     pmTruckTitles: Array<string>;
     pmTrailerTitles: Array<string>;
     isOrder: boolean;
-    truckId: number;
+    truckNumbers: Array<string>;
     pageIndex: number;
     pageSize: number;
+    costTo: number;
+    costFrom: number;
+    trailerNumbers: Array<string>;
     companyId: number;
     sort: string;
     searchOne: string | undefined;

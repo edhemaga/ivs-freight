@@ -1007,7 +1007,10 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 filter.pmTruckTitles,
                 filter.pmTrailerTitles,
                 filter.isOrder,
-                filter.truckId,
+                filter.truckNumbers,
+                filter.trailerNumbers,
+                filter.costFrom,
+                filter.costTo,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -1128,8 +1131,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                         undefined,
                         undefined,
                         undefined,
+                        undefined,
+                        undefined,
+                        undefined,
                         1,
-                        25
+                        25,
+                        undefined,
+                        undefined,
+                        undefined,
+                        undefined
                     ),
                     this.tableService.getTableConfig(11),
                 ])
