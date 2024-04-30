@@ -9,10 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RepairTrailerFilterResponse } from './repairTrailerFilterResponse';
 
 
-export interface StatusSetMultipleCompanyUserCommand { 
-    ids?: Array<number> | null;
-    activate?: boolean;
+export interface RepairTrailerFilterListResponse { 
+    trailers?: Array<RepairTrailerFilterResponse> | null;
 }
 
