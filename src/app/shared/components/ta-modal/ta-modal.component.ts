@@ -117,6 +117,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isModalValid: boolean;
     @Input() disableFooter: boolean;
     @Input() disableDelete: boolean;
+    @Input() isFinishOrder?: boolean = false;
     @Input() isDeactivated: boolean;
     @Input() isDNU: boolean;
     @Input() isBFB: boolean;

@@ -175,7 +175,9 @@ export class UserService {
     }
 
     public updateUserStatus(id: number): Observable<any> {
-        return this.userService.apiCompanyuserStatusIdPut(id).pipe(
+        return of(
+            null
+        ); /*  this.userService.apiCompanyuserStatusIdPut(id).pipe(
             tap(() => {
                 const subUser = this.getUserByid(id).subscribe({
                     next: (user: any) => {
@@ -189,7 +191,7 @@ export class UserService {
                     },
                 });
             })
-        );
+        ); */
     }
 
     public userResendIvitation(

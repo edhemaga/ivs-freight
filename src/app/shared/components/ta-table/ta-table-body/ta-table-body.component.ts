@@ -923,10 +923,10 @@ export class TaTableBodyComponent
     onSaveInspectinDescription() {}
 
     // Finish Order
-    onFinishOrder(row: any) {
+    onFinishOrder(id: number) {
         this.bodyActions.emit({
-            data: row,
             type: 'finish-order',
+            id,
         });
     }
 

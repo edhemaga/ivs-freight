@@ -41,6 +41,7 @@
     [bottomDivider]="true"
     [showCounter]="true"
     [disableDelete]="
+        (editData?.template === 'void' || editData?.template === 'cdl') &&
         editData?.array?.length
             ? editData?.array?.length && !selectedCdl?.id
                 ? true
