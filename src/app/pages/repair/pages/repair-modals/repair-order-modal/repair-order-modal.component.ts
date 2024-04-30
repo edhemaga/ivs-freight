@@ -211,7 +211,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log('editData', this.editData);
         this.createForm();
 
         this.getConstantData();

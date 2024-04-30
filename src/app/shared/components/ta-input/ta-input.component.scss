@@ -142,6 +142,10 @@
             }
         }
 
+        &.input-blue-text {
+            color: red;
+        }
+
         .input-control {
             background: transparent;
             color: $valid-content;
@@ -164,6 +168,12 @@
                     fill: $default-removed-background-arrow !important;
                 }
             }
+        }
+    }
+
+    &.input-blue-text {
+        .input-control {
+            color: $default-focus-commands-rect-hover-blue-commands;
         }
     }
 

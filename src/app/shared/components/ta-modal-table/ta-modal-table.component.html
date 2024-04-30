@@ -126,7 +126,7 @@
                                 maxLength: 14,
                                 hideRequiredCheck: true,
                                 hideErrorMessage: true,
-                                removeInputBackground:
+                                isInputBackgroundRemoved:
                                     phoneItemsRow.valid &&
                                     !isInputHoverRows[i][0],
                                 blackInput:
@@ -175,7 +175,7 @@
                                     placeholderIcon: 'phone-extension',
                                     hideRequiredCheck: true,
                                     hideErrorMessage: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         phoneItemsRow.valid &&
                                         !isInputHoverRows[i][1],
                                     blackInput:
@@ -201,7 +201,7 @@
                                 dropdownWidthClass: 'w-col-110',
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
-                                removeInputBackground:
+                                isInputBackgroundRemoved:
                                     phoneItemsRow.valid &&
                                     !isInputHoverRows[i][2],
                                 blackInput:
@@ -276,7 +276,7 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         emailItemsRow.valid &&
                                         !isInputHoverRows[i][0],
 
@@ -302,7 +302,7 @@
                                     dropdownWidthClass: 'w-col-110',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         emailItemsRow.valid &&
                                         !isInputHoverRows[i][1],
 
@@ -381,9 +381,13 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         repairBillItemRow.valid &&
                                         !isInputHoverRows[i][0],
+                                    isBlueText:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][0] &&
+                                        selectedTruckTrailerRepairPm[i],
                                     blackInput:
                                         getFormArray().at(i).get('description')
                                             .value && !isInputHoverRows[i][0]
@@ -454,9 +458,13 @@
                                     isRequired: true,
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         repairBillItemRow.valid &&
                                         !isInputHoverRows[i][1],
+                                    isBlueText:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][1] &&
+                                        selectedTruckTrailerRepairPm[i],
                                     blackInput:
                                         getFormArray().at(i).get('quantity')
                                             .value && !isInputHoverRows[i][1]
@@ -479,9 +487,13 @@
                                         isRequired: true,
                                         hideErrorMessage: true,
                                         hideRequiredCheck: true,
-                                        removeInputBackground:
+                                        isInputBackgroundRemoved:
                                             repairBillItemRow.valid &&
                                             !isInputHoverRows[i][2],
+                                        isBlueText:
+                                            repairBillItemRow.valid &&
+                                            !isInputHoverRows[i][2] &&
+                                            selectedTruckTrailerRepairPm[i],
                                         blackInput:
                                             getFormArray().at(i).get('price')
                                                 .value &&
@@ -493,6 +505,9 @@
 
                                 <div
                                     class="subtotal d-flex justify-content-end"
+                                    [ngClass]="{
+                                        valid: selectedTruckTrailerRepairPm[i]
+                                    }"
                                 >
                                     <p class="m-0 ta-font-semi-bold">
                                         {{
@@ -557,7 +572,7 @@
                                         textTransform: 'uppercase',
                                         hideErrorMessage: true,
                                         hideRequiredCheck: true,
-                                        removeInputBackground:
+                                        isInputBackgroundRemoved:
                                             contactItemRow.valid &&
                                             !isInputHoverRows[i][0],
                                         blackInput:
@@ -582,7 +597,7 @@
                                     dropdownWidthClass: 'w-col-120',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         contactItemRow.valid &&
                                         !isInputHoverRows[i][1],
                                     blackInput:
@@ -612,7 +627,7 @@
                                     maxLength: 14,
                                     hideRequiredCheck: true,
                                     hideErrorMessage: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         contactItemRow.valid &&
                                         !isInputHoverRows[i][2],
                                     blackInput:
@@ -635,7 +650,7 @@
                                     textTransform: 'uppercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         contactItemRow.valid &&
                                         !isInputHoverRows[i][3],
                                     blackInput:
@@ -658,7 +673,7 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
-                                    removeInputBackground:
+                                    isInputBackgroundRemoved:
                                         contactItemRow.valid &&
                                         !isInputHoverRows[i][4],
                                     blackInput:

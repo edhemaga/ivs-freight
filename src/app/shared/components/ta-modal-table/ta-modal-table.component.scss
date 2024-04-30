@@ -113,6 +113,22 @@
                             background: rgb(66, 66, 66, 0.2);
                         }
                     }
+
+                    &.valid {
+                        p {
+                            color: $ta-blue-13;
+
+                            &::-moz-selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+                        }
+                    }
                 }
             }
 

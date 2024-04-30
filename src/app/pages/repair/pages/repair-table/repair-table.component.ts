@@ -217,7 +217,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    console.log('res', res);
                     if (res.type === TableStringEnum.MULTIPLE_DELETE) {
                         if (this.selectedTab === TableStringEnum.REPAIR_SHOP) {
                             this.repairService
