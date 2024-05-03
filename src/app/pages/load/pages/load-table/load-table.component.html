@@ -29,7 +29,7 @@
 
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
-            <app-load-card
+            <app-load-cards-container
                 [viewData]="viewData"
                 [rows]="rows"
                 [cardTitle]="cardTitle"
@@ -37,7 +37,7 @@
                 [displayRowsFront]="sendDataToCardsFront"
                 [displayRowsBack]="sendDataToCardsBack"
                 [selectedTab]="selectedTab"
-            ></app-load-card>
+            ></app-load-cards-container>
 
             <!-- Show More -->
 

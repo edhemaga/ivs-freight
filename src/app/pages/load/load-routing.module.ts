@@ -7,7 +7,7 @@ import { LoadDetailsMinimalResolver } from '@pages/load/resolvers/laod-details-m
 
 // components
 import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
-import { LoadCardComponent } from '@pages/load/pages/load-card/load-card.component';
+import { LoadCardsContainerComponent } from '@pages/load/pages/load-cards-container/load-cards-container.component';
 
 const routes: Routes = [
     {
@@ -29,7 +29,7 @@ const routes: Routes = [
     },
     {
         path: 'card',
-        component: LoadCardComponent,
+        component: LoadCardsContainerComponent,
         data: { title: 'Load detail' },
     },
 ];

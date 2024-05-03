@@ -7,8 +7,9 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
-import { LoadCardComponent } from '@pages/load/pages/load-card/load-card.component';
+import { LoadCardsContainerComponent } from './pages/load-cards-container/load-cards-container.component';
 import { LoadDetailsModule } from '@pages/load/pages/load-details/load-details.module';
+import { LoadCardComponent } from '@pages/load/pages/load-cards-container/components/load-card/load-card.component';
 
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
@@ -23,9 +24,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 //pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 @NgModule({
-    declarations: [LoadTableComponent, LoadCardComponent],
+    declarations: [LoadTableComponent, LoadCardsContainerComponent],
     imports: [
         //modules
         CommonModule,
@@ -42,9 +44,11 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         TaNoteComponent,
         TaTableCardDropdownActionsComponent,
         TaAppTooltipV2Component,
+        LoadCardComponent,
 
         //pipes
         FormatDatePipe,
+        TrackByPropertyPipe,
     ],
 })
 export class LoadModule {}

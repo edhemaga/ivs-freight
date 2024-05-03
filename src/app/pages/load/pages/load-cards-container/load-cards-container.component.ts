@@ -29,12 +29,12 @@ import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
 @Component({
-    selector: 'app-load-card',
-    templateUrl: './load-card.component.html',
-    styleUrls: ['./load-card.component.scss'],
+    selector: 'app-load-cards-container',
+    templateUrl: './load-cards-container.component.html',
+    styleUrls: ['./load-cards-container.component.scss'],
     providers: [FormatMilesPipe, FormatCurrencyPipe, CardHelper],
 })
-export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
+export class LoadCardsContainerComponent implements OnInit, OnDestroy, OnChanges {
     // All data
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
@@ -133,7 +133,9 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     // When checkbox is selected
-    public onCheckboxSelect(index: number, card: CardDetails): void {
+    public onCheckboxSelect(event: { index: number; card: CardDetails }): void {
+        let { index, card } = event;
+
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
@@ -155,14 +157,12 @@ export class LoadCardComponent implements OnInit, OnDestroy, OnChanges {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
-    public goToDetailsPage(card: CardDetails, link: string): void {
+    public goToDetailsPage(event: { card: CardDetails; link: string }): void {
+        let { card, link } = event;
+
         this.detailsDataService.setNewData(card);
 
         this.router.navigate([link]);
-    }
-
-    public trackCard(item: number): number {
-        return item;
     }
 
     ngOnDestroy() {
