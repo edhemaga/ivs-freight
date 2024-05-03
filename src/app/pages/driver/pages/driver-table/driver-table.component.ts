@@ -53,7 +53,7 @@ import { DriverTableConfiguration } from '@pages/driver/pages/driver-table/utils
 
 // settings
 import { getLoadModalColumnDefinition } from '@shared/utils/settings/modal-settings/load-modal-columns';
-import { getApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/applicant-columns';
+import { getDriverApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/driver-applicant-columns';
 import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
 
 // helpers
@@ -80,8 +80,10 @@ import {
     providers: [NameInitialsPipe, ThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    public driverTableData: any[] = [];
     private destroy$ = new Subject<void>();
+
+    public driverTableData: any[] = [];
+
     public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
@@ -128,6 +130,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public sendDataToCardsBack: CardRows[];
 
     constructor(
+        private router: Router,
+
+        // services
         private addressService: AddressService,
         private applicantService: ApplicantService,
         private modalService: ModalService,
@@ -135,18 +140,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private driverService: DriverService,
         private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService,
+
+        // store
         private driversActiveQuery: DriversActiveQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
-        public datePipe: DatePipe,
-        private nameInitialsPipe: NameInitialsPipe,
-        private thousandSeparator: ThousandSeparatorPipe,
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore,
-        private router: Router
+
+        // pipes
+        private datePipe: DatePipe,
+        private nameInitialsPipe: NameInitialsPipe,
+        private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
-    // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
         this.modalTestInitialization();
 
@@ -173,14 +180,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadingPage = false;
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observeTableContainer();
         }, 10);
     }
 
-    // Confirmation Subscribe
     private confiramtionSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -252,6 +257,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                                         address.longLat
                                                             .longitude
                                                     );
+
                                                 return { repairData, distance };
                                             })
                                         )
@@ -531,6 +537,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab !== TableStringEnum.APPLICANTS,
                 showArhiveFilter:
                     this.selectedTab === TableStringEnum.APPLICANTS,
+                showHireApplicantButton:
+                    this.selectedTab === TableStringEnum.APPLICANTS,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -628,7 +636,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
         ];
 
-        const td = this.tableData.find((t) => t.field === this.selectedTab);
+        const td = this.tableData.find(
+            (tableData) => tableData.field === this.selectedTab
+        );
 
         this.setDriverData(td);
     }
@@ -660,22 +670,21 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        if (activeTab === TableStringEnum.APPLICANTS) {
+        if (activeTab === TableStringEnum.APPLICANTS)
             return tableColumnsConfig
                 ? tableColumnsConfig
-                : getApplicantColumnsDefinition();
-        } else {
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getDriverColumnsDefinition();
-        }
+                : getDriverApplicantColumnsDefinition();
+
+        return tableColumnsConfig
+            ? tableColumnsConfig
+            : getDriverColumnsDefinition();
     }
 
-    private setDriverData(tdata: CardTableData): void {
-        this.columns = tdata.gridColumns;
+    private setDriverData(tableData: CardTableData): void {
+        this.columns = tableData.gridColumns;
 
-        if (tdata.data.length) {
-            this.viewData = tdata.data;
+        if (tableData.data.length) {
+            this.viewData = tableData.data;
 
             this.viewData = this.viewData.map((data: any) => {
                 return this.selectedTab === TableStringEnum.APPLICANTS

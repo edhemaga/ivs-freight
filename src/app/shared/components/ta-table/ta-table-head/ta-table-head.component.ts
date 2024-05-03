@@ -1,4 +1,3 @@
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -13,20 +12,28 @@ import {
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// icon
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-//services
+// components
+import { TableHeadBorderComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-border/table-head-border.component';
+
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // directives
 import { ResizeColumnDirective } from '@shared/components/ta-table/ta-table-head/directives/resize-column.directive';
 
-// pipe
-import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
+// pipes
+import { TableDoubleHeadingPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-heading.pipe';
+import { TableDoubleHeadingTextPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-heading-text.pipe';
+import { TableDoubleHeadingHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-heading-height.pipe';
+import { TableHeadingConditionsPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-heading-conditions.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -43,15 +50,26 @@ const rotate: { [key: string]: any } = {
     styleUrls: ['./ta-table-head.component.scss'],
     standalone: true,
     imports: [
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbModule,
-        ResizeColumnDirective,
         DragDropModule,
         NgbPopoverModule,
-        ToolbarTableHeadTitlePipe,
+
+        // directives
+        ResizeColumnDirective,
+
+        // pipes
+        TableDoubleHeadingPipe,
+        TableDoubleHeadingTextPipe,
+        TableDoubleHeadingHeightPipe,
+        TableHeadingConditionsPipe,
+
+        // components
+        TableHeadBorderComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -65,7 +83,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
     mySelection: any[] = [];
     locked: boolean = true;
     reordering: boolean = false;
-    rezaizeing: boolean = false;
+    resizing: boolean = false;
     optionsPopup: any;
     visibleColumns: any[] = [];
     pinedColumns: any[] = [];
@@ -373,9 +391,9 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
 
     // Rezaize
     onResize(event: any) {
-        this.rezaizeing = event.isResizeing;
+        this.resizing = event.isResizeing;
 
-        if (this.rezaizeing && !event.beyondTheLimits) {
+        if (this.resizing && !event.beyondTheLimits) {
             this.tableService.sendColumnWidth({
                 event: event,
                 columns:
