@@ -1,5 +1,5 @@
 // APPLICANT TABLE COLUMNS DEFINITION
-export function getApplicantColumnsDefinition() {
+export function getDriverApplicantColumnsDefinition() {
     return [
         {
             ngTemplate: 'checkbox',
