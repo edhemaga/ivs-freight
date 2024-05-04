@@ -7,7 +7,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 //components
 import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';
-import { LoadCardsContainerComponent } from './pages/load-cards-container/load-cards-container.component';
+import { LoadCardsContainerComponent } from '@pages/load/pages/load-cards-container/load-cards-container.component';
 import { LoadDetailsModule } from '@pages/load/pages/load-details/load-details.module';
 import { LoadCardComponent } from '@pages/load/pages/load-cards-container/components/load-card/load-card.component';
 
