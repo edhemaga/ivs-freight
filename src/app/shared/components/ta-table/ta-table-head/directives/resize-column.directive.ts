@@ -58,7 +58,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
 
     addResizer() {
         this.resizer = this.renderer.createElement('div');
-        this.renderer.addClass(this.resizer, 'resise-btn');
+        this.renderer.addClass(this.resizer, 'resize-btn');
         this.renderer.appendChild(this.column, this.resizer);
 
         this.listenerMouseDown = this.renderer.listen(
@@ -69,7 +69,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     removeResizer() {
-        this.renderer.removeClass(this.resizer, 'resise-btn');
+        this.renderer.removeClass(this.resizer, 'resize-btn');
         this.renderer.removeChild(this.column, this.resizer);
         this.listenerMouseDown();
     }

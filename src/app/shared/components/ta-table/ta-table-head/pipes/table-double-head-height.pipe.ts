@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'tableDoubleHeadingHeight', standalone: true })
-export class TableDoubleHeadingHeightPipe implements PipeTransform {
+@Pipe({ name: 'tableDoubleHeadHeight', standalone: true })
+export class TableDoubleHeadHeightPipe implements PipeTransform {
     transform(gridNameTitle: string): boolean {
         return (
             gridNameTitle === 'Contact' ||

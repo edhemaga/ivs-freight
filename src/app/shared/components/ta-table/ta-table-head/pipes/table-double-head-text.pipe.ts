@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'tableDoubleHeadingText', standalone: true })
-export class TableDoubleHeadingTextPipe implements PipeTransform {
+@Pipe({ name: 'tableDoubleHeadText', standalone: true })
+export class TableDoubleHeadTextPipe implements PipeTransform {
     transform(tableHeadTitle: string): string {
         return tableHeadTitle === 'PRIMARY '
             ? 'PHONE'
