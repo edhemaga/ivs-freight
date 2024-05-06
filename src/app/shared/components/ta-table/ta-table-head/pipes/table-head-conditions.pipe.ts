@@ -1,29 +1,35 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { TableHeadingConditionData } from '@shared/components/ta-table/ta-table-head/models/table-heading-condition-data.model';
+import { TableHeadConditionData } from '@shared/components/ta-table/ta-table-head/models/table-head-condition-data.model';
 
-@Pipe({ name: 'tableHeadingConditions', standalone: true })
-export class TableHeadingConditionsPipe implements PipeTransform {
+@Pipe({ name: 'tableHeadConditions', standalone: true })
+export class TableHeadConditionsPipe implements PipeTransform {
     transform(
         ngTemplate: string,
-        conditionData: TableHeadingConditionData
+        conditionData: TableHeadConditionData
     ): boolean {
         switch (conditionData?.conditionType) {
+            case 'selected-row-count':
+                return (
+                    ngTemplate === 'checkbox' || ngTemplate === 'user-checkbox'
+                );
             case 'double-heading':
                 return (
-                    ngTemplate !== 'checkbox' &&
-                    ngTemplate !== 'applicant-progress' &&
-                    ngTemplate !== 'sw-tw-total' &&
-                    ngTemplate !== 'citation' &&
-                    ngTemplate !== 'accident-citation' &&
+                    ![
+                        'checkbox',
+                        'applicant-progress',
+                        'sw-tw-total',
+                        'citation',
+                        'accident-citation',
+                    ].includes(ngTemplate) &&
                     conditionData?.name !== '' &&
                     conditionData?.title !== 'ft'
                 );
             case 'heading-icon':
                 return (
-                    ngTemplate !== 'applicant-progress' &&
-                    conditionData?.headIconStyle &&
+                    !['applicant-progress'].includes(ngTemplate) &&
+                    !!conditionData?.headIconStyle &&
                     conditionData?.title === 'ft'
                 );
             case 'heading':
@@ -38,20 +44,20 @@ export class TableHeadingConditionsPipe implements PipeTransform {
                 return ngTemplate === 'accident-citation';
             case 'icons':
                 return (
-                    ngTemplate !== 'applicant-progress' &&
-                    conditionData?.headIconStyle &&
+                    !['applicant-progress'].includes(ngTemplate) &&
+                    !!conditionData?.headIconStyle &&
                     conditionData?.title !== 'ft'
                 );
             case 'sort':
                 return (
-                    conditionData?.sortable &&
+                    !!conditionData?.sortDirection &&
                     conditionData?.sortDirection !== '' &&
-                    conditionData?.sortDirection &&
+                    conditionData?.sortable &&
                     conditionData?.locked &&
                     conditionData?.viewDataLength > 1
                 );
             default:
-                break;
+                return false;
         }
     }
 }

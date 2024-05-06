@@ -130,7 +130,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        console.log('options', this.options);
         this.getSelectedViewMode();
 
         this.getSelectedTabTableData();
@@ -490,7 +489,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public hireSelectedRows(): void {
-        console.log('this.tableRowsSelected', this.tableRowsSelected);
         this.tableService.sendHireSelectedRows(this.tableRowsSelected);
     }
 

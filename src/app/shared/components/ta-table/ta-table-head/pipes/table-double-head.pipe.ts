@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'tableDoubleHeading', standalone: true })
-export class TableDoubleHeadingPipe implements PipeTransform {
+@Pipe({ name: 'tableDoubleHead', standalone: true })
+export class TableDoubleHeadPipe implements PipeTransform {
     transform(column: any, tableData: any, isOuterCondition: boolean): boolean {
         const { gridNameTitle } = tableData;
         const { tableHeadTitle, groupName } = column;

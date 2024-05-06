@@ -1,4 +1,4 @@
-export interface TableHeadingConditionData {
+export interface TableHeadConditionData {
     conditionType?: string;
     name?: string;
     title?: string;

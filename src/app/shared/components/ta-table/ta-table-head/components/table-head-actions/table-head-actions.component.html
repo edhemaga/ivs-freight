@@ -1,0 +1,39 @@
+<tr
+    class="d-flex align-items-end tr actions-columns-container"
+    [ngClass]="{
+        'tr-height-2':
+            tableHeadActionsData?.tableData[0].gridNameTitle
+            | tableDoubleHeadHeight
+    }"
+>
+    <ng-container
+        *ngFor="
+            let column of tableHeadActionsData?.actionColumns;
+            let i = index
+        "
+    >
+        <th
+            class="d-flex align-items-center justify-content-center"
+            [ngStyle]="{
+                width: column.isAction ? column.width + 'px' : '0px',
+                'min-width.px': column?.minWidth ?? 'unset',
+                display: column.isAction ? 'flex' : 'none'
+            }"
+            [ngClass]="{
+                'column-unlocked': !tableHeadActionsData?.locked
+            }"
+        >
+            <ng-container *ngIf="column.isAction && column?.headIconStyle">
+                <div class="icons">
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': column.headIconStyle.width,
+                            'height.px': column.headIconStyle.height
+                        }"
+                        [src]="column.headIconStyle.imgPath ?? ''"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+        </th>
+    </ng-container>
+</tr>
