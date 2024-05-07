@@ -7,7 +7,10 @@ export interface ArrayStatus {
     isSelected?: boolean;
     currentSet?: boolean;
     icon?: string;
+    truckNumber?: string;
+    trailerNumber?: string;
     activeIcon?: string;
     image?: string;
     short?: string;
+    count?: number;
 }

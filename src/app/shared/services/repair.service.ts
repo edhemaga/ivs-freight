@@ -156,11 +156,14 @@ export class RepairService {
         pmTruckTitles?: Array<string>,
         pmTrailerTitles?: Array<string>,
         isOrder?: boolean,
-        truckId?: number,
+        truckNumbers?: Array<string>,
+        trailerNumbers?: Array<string>,
+        costFrom?: number,
+        costTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
-        sort?: string,
+        sort?: any,
         search?: string,
         search1?: string,
         search2?: string
@@ -175,7 +178,10 @@ export class RepairService {
             pmTruckTitles,
             pmTrailerTitles,
             isOrder,
-            truckId,
+            truckNumbers,
+            trailerNumbers,
+            costFrom,
+            costTo,
             pageIndex,
             pageSize,
             companyId,
@@ -185,7 +191,6 @@ export class RepairService {
             search2
         );
     }
-
     public getRepairById(id: number): Observable<RepairResponse> {
         return this.repairService.apiRepairIdGet(id);
     }

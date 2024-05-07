@@ -235,6 +235,38 @@ export class FilterStateService implements OnDestroy {
                 },
             });
     }
+    public getRepairTruckData() {
+        const truckList = this.repairService
+            .apiRepairTruckFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    this.tableService.sendActionAnimation({
+                        animation: 'truck-list-update',
+                        data: data.trucks,
+                        id: null,
+                    });
+                    truckList.unsubscribe();
+                },
+            });
+    }
+
+    public getRepairTrailerData() {
+        const trailerList = this.repairService
+            .apiRepairTrailerFilterListGet()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (data: any) => {
+                    console.log(data);
+                    this.tableService.sendActionAnimation({
+                        animation: 'trailer-list-update',
+                        data: data.trailers,
+                        id: null,
+                    });
+                    trailerList.unsubscribe();
+                },
+            });
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

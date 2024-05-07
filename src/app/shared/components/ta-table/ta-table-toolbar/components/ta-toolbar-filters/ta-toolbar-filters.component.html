@@ -188,25 +188,35 @@
 
     <!-- TRUCK FILTER -->
     <app-ta-filter
-        *ngIf="options.toolbarActions.showTruckFilter"
+        *ngIf="
+            options.toolbarActions.showTruckFilter ||
+            options.toolbarActions.showTruckPmFilter
+        "
         [type]="'truckFilter'"
         [icon]="'truck'"
         [filterTitle]="'Truck Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [repairFilter]="options.toolbarActions.showTruckPmFilter ? true : false"
     >
     </app-ta-filter>
 
     <!-- TRAILER FILTER -->
     <app-ta-filter
-        *ngIf="options.toolbarActions.showTrailerFilter"
+        *ngIf="
+            options.toolbarActions.showTrailerFilter ||
+            options.toolbarActions.showTrailerPmFilter
+        "
         [type]="'trailerFilter'"
         [icon]="'trailer'"
         [filterTitle]="'Trailer Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
+        [repairFilter]="
+            options.toolbarActions.showTrailerPmFilter ? true : false
+        "
     >
     </app-ta-filter>
 
@@ -226,7 +236,9 @@
         *ngIf="options.toolbarActions.showPMFilter"
         [type]="'pmFilter'"
         [icon]="'default_pm'"
-        [pmSubtype]="'truck'"
+        [pmSubtype]="
+            options.toolbarActions.showTrailerPmFilter ? 'trailer' : 'truck'
+        "
         [filterTitle]="'PM Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="false"
@@ -240,7 +252,7 @@
         *ngIf="options.toolbarActions.showCategoryRepairFilter"
         [type]="'categoryRepairFilter'"
         [icon]="'ic_key-repair'"
-        [filterTitle]="'Category Repair Filter'"
+        [filterTitle]="'Service Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="false"
         [leftSideIcon]="true"
@@ -321,6 +333,12 @@
         [moneyFilter]="true"
         [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
         (setFilter)="onFilter($event)"
+        [repairFilter]="
+            options.toolbarActions.showTrailerPmFilter ||
+            options.toolbarActions.showTruckPmFilter
+                ? true
+                : false
+        "
     >
     </app-ta-filter>
 

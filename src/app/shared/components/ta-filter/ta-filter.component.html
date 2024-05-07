@@ -152,11 +152,41 @@
         >
             <div class="filter-header filter-text-part">
                 <div class="user-title-text counter-padd-title">
-                    {{ filterTitle }}
+                    {{ filterTitle | uppercase }}
                 </div>
+
                 <ng-container *ngIf="type != 'stateFilter'">
                     <div class="user-filter-box">
                         {{ selectedUser.length }}
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="type == 'categoryRepairFilter' || type == 'pmFilter'"
+                >
+                    <div
+                        (click)="sortItems()"
+                        class="user-title-text sort-text"
+                    >
+                        Sort Text
+                        <svg-icon
+                            src="/assets/svg/common/sortArrow_filter.svg"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        (type == 'truckFilter' || type == 'trailerFilter') &&
+                        repairFilter
+                    "
+                >
+                    <div
+                        (click)="sortItems()"
+                        class="user-title-text sort-text"
+                    >
+                        Count
+                        <svg-icon
+                            src="/assets/svg/common/sortArrow_filter.svg"
+                        ></svg-icon>
                     </div>
                 </ng-container>
                 <ng-container *ngIf="type == 'stateFilter'">
@@ -175,39 +205,62 @@
                     </div>
                 </ng-container>
             </div>
-            <div
-                class="filter-header search-input-header"
-                [class.hidenClass]="!expandSearch"
-                [formGroup]="searchForm"
+            <ng-container
+                *ngIf="
+                    (type == 'truckFilter' || type == 'trailerFilter') &&
+                    repairFilter
+                "
             >
-                <app-ta-input
-                    class="input-form-holder"
-                    formControlName="search"
-                    [inputConfig]="{
-                        name: 'search',
-                        type: 'text',
-                        label: 'Search ' + filterTitle.split(' ')[0] + ' ',
-                        placeholderIcon: 'ic_search',
-                        customClass: 'filter-search-input',
-                        placeholderInsteadOfLabel: true,
-                        blackInput: true
-                    }"
-                ></app-ta-input>
-                <ng-container *ngIf="searchInputValue.length == 0">
-                    <div
-                        ngbTooltip
-                        mainTooltip="Close"
-                        position="top"
-                        tooltipBackground="#6C6C6C"
-                        (click)="showSearch('hide')"
-                        class="close-input-search"
+                <div
+                    class="search-input-header"
+                    [class.hidenClass]="
+                        !expandSearch &&
+                        !(
+                            (type == 'truckFilter' ||
+                                type == 'trailerFilter') &&
+                            repairFilter
+                        )
+                    "
+                    [formGroup]="searchForm"
+                >
+                    <app-ta-input
+                        class="input-form-holder"
+                        formControlName="search"
+                        [inputConfig]="{
+                            name: 'search',
+                            type: 'text',
+                            label: 'Search ' + filterTitle.split(' ')[0] + ' ',
+                            placeholderIcon: 'ic_search',
+                            customClass: 'filter-search-input',
+                            placeholderInsteadOfLabel: true,
+                            blackInput: true
+                        }"
+                    ></app-ta-input>
+                    <ng-container
+                        *ngIf="
+                            searchInputValue.length == 0 &&
+                            !(
+                                type == 'truckFilter' || type == 'trailerFilter'
+                            ) &&
+                            !repairFilter
+                        "
                     >
-                        <svg-icon
-                            src="assets/svg/truckassist-table/x.svg"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
-            </div>
+                        <div
+                            ngbTooltip
+                            mainTooltip="Close"
+                            position="top"
+                            tooltipBackground="#6C6C6C"
+                            (click)="showSearch('hide')"
+                            class="close-input-search"
+                        >
+                            <svg-icon
+                                src="assets/svg/truckassist-table/x.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+
             <div class="border-filter"></div>
             <div class="selected-user-holder" *ngIf="type != 'stateFilter'">
                 <div
@@ -312,16 +365,26 @@
                         <div class="selected-name-text">
                             <span> {{ item.name }}</span>
                         </div>
-                        <ng-containe *ngIf="!item.counter">
-                            <div class="selected-icon">
-                                <svg-icon
-                                    src="assets/svg/common/ic_confirm.svg"
-                                ></svg-icon>
-                            </div>
-                        </ng-containe>
-                        <ng-containe *ngIf="item.counter">
-                            <div class="counter-holder activeCounter">2</div>
-                        </ng-containe>
+                        <ng-container *ngIf="item?.count">
+                            <span class="count-holder activeCount">
+                                {{ item.count }}
+                            </span>
+                        </ng-container>
+
+                        <ng-container *ngIf="!item?.count">
+                            <ng-containe *ngIf="!item.counter">
+                                <div class="selected-icon">
+                                    <svg-icon
+                                        src="assets/svg/common/ic_confirm.svg"
+                                    ></svg-icon>
+                                </div>
+                            </ng-containe>
+                            <ng-containe *ngIf="item.counter">
+                                <div class="counter-holder activeCounter">
+                                    2
+                                </div>
+                            </ng-containe>
+                        </ng-container>
                         <div
                             (click)="removeFromSelectedUser(item, indx)"
                             class="icon-delete"
@@ -621,7 +684,10 @@
                     </div>
                 </div>
             </div>
-            <div class="user-holder" *ngIf="type == 'pmFilter'">
+            <div
+                class="user-holder"
+                *ngIf="type == 'pmFilter' && pmFilterArray?.length"
+            >
                 <div
                     *ngFor="let item of pmFilterArray; let indx = index"
                     class="user-frame-holder"
@@ -640,6 +706,7 @@
                             <div class="selected-name-text">
                                 <span> {{ item.name }} </span>
                             </div>
+                            <span class="count-holder"> {{ item.count }} </span>
                         </div>
                     </div>
                 </div>
@@ -703,6 +770,11 @@
                             <div class="selected-name-text">
                                 <span> {{ item.name }} </span>
                             </div>
+                            <ng-container *ngIf="repairFilter">
+                                <span class="count-holder">
+                                    {{ item.count }}
+                                </span>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -723,6 +795,11 @@
                             <div class="selected-name-text">
                                 <span> {{ item.name }} </span>
                             </div>
+                            <ng-container *ngIf="repairFilter">
+                                <span class="count-holder">
+                                    {{ item.count }}
+                                </span>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -920,7 +997,7 @@
             <div
                 class="border-filter"
                 *ngIf="
-                    !legendView && pmFilterArray.length > selectedUser.length
+                    !legendView && pmFilterArray?.length > selectedUser.length
                 "
             ></div>
             <div class="buttons-holder" *ngIf="!legendView">
@@ -952,7 +1029,7 @@
             </div>
         </div>
         <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
-            <div class="time-header">Time Filter</div>
+            <div class="time-header">TIME FILTER</div>
             <div class="border-filter"></div>
             <div class="time-items-holder">
                 <div
@@ -1281,13 +1358,13 @@
             </div>
         </div>
         <div
-            *ngIf="moneyFilter"
+            *ngIf="moneyFilter && !repairFilter"
             class="filter-holder money-filter"
             [class.multiMoneyForm]="subType == 'all'"
             [formGroup]="moneyForm"
         >
             <div class="filter-header">
-                <div class="user-title-text">Money Filter</div>
+                <div class="user-title-text">MONEY FILTER</div>
             </div>
             <div class="border-filter money-top-border-magin"></div>
             <div class="single-form-holder" *ngIf="subType != 'all'">
@@ -1300,9 +1377,8 @@
                             formControlName="singleFrom"
                             [inputConfig]="{
                                 name: 'singleFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar'
+                                type: 'string',
+                                label: 'From'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1314,9 +1390,8 @@
                             formControlName="singleTo"
                             [inputConfig]="{
                                 name: 'singleTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar'
+                                type: 'string',
+                                label: 'To'
                             }"
                         ></app-ta-input>
                     </div>
@@ -1589,7 +1664,7 @@
             [formGroup]="sliderForm"
         >
             <div class="filter-header">
-                <div class="user-title-text">{{ filterTitle }}</div>
+                <div class="user-title-text">{{ filterTitle | uppercase }}</div>
             </div>
             <div class="border-filter top-border-margin"></div>
             <div
@@ -1625,10 +1700,13 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="locationDefType" class="filter-holder location-filter">
+        <div
+            *ngIf="locationDefType || (repairFilter && moneyFilter)"
+            class="filter-holder location-filter"
+        >
             <div class="filter-header">
                 <div class="user-title-text" *ngIf="!areaFilter">
-                    {{ filterTitle }}
+                    {{ filterTitle | uppercase }}
                 </div>
                 <div class="user-title-text" *ngIf="areaFilter">
                     Area Filter
@@ -1753,7 +1831,11 @@
             </div>
             <div
                 class="mainMilesHolder"
-                *ngIf="type == 'payFilter' || type == 'milesFilter'"
+                *ngIf="
+                    type == 'payFilter' ||
+                    type == 'milesFilter' ||
+                    (repairFilter && moneyFilter)
+                "
                 [formGroup]="rangeForm"
             >
                 <div class="money-main-holder payPadding">
@@ -1765,7 +1847,10 @@
                                 type: 'text',
                                 label: 'From',
                                 placeholderIcon:
-                                    type == 'payFilter' ? 'dollar' : 'mileage',
+                                    type == 'payFilter' ||
+                                    (repairFilter && moneyFilter)
+                                        ? 'dollar'
+                                        : 'mileage',
                                 customClass: ''.concat(
                                     '' +
                                         this.rangeForm.get('rangeFrom').value ==
@@ -1773,7 +1858,6 @@
                                         ? ' discolor-placeholder'
                                         : '' + ''
                                 ),
-                                thousandSeparator: true,
                                 blackInput: true
                             }"
                         ></app-ta-input>
@@ -1789,14 +1873,16 @@
                                 type: 'text',
                                 label: 'To',
                                 placeholderIcon:
-                                    type == 'payFilter' ? 'dollar' : 'mileage',
+                                    type == 'payFilter' ||
+                                    (repairFilter && moneyFilter)
+                                        ? 'dollar'
+                                        : 'mileage',
                                 customClass: ''.concat(
                                     '' + this.rangeForm.get('rangeTo').value ==
                                         maxValueRange
                                         ? ' discolor-placeholder'
                                         : '' + ''
                                 ),
-                                thousandSeparator: true,
                                 blackInput: true
                             }"
                         ></app-ta-input>
@@ -1812,12 +1898,16 @@
                 >
                     <app-ta-ngx-slider
                         [sliderOptions]="
-                            type == 'payFilter'
+                            type == 'payFilter' || (repairFilter && moneyFilter)
                                 ? paySliderData
                                 : milesSliderData
                         "
                         [startedValue]="rangeValue"
-                        [customClass]="'custom-slider-filter'"
+                        [customClass]="
+                            repairFilter && moneyFilter
+                                ? 'money-slider-filter'
+                                : 'custom-slider-filter'
+                        "
                         (onUserValueChange)="setMinValueRange($event)"
                         (onUserHighValueChange)="setMaxValueRange($event)"
                         [sliderTemplate]="'range-slider'"

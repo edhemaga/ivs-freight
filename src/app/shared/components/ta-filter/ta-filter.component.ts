@@ -58,6 +58,7 @@ import { stateHeader } from '@shared/components/ta-filter/animations/state-heade
 
 // models
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
+
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -117,6 +118,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() swipeFilter: boolean = false;
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
+    @Input() repairFilter: boolean = false;
     @Input() toDoSubType: string = '';
     @Input() dataArray: any;
     @Input() areaFilter: boolean = false;
@@ -138,13 +140,21 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         DirectiveConstants.ACTIVE_STATUS_ARRAY;
     public closedStatusArray: ArrayStatus[] =
         DirectiveConstants.CLOSED_STATUS_ARRAY;
-    public pmFilterArray: ArrayStatus[] = DirectiveConstants.PM_FILTER_ARRAY;
-    public categoryFuelArray: ArrayStatus[] =
-        DirectiveConstants.CATEGORY_FUEL_ARRAY;
-    public categoryRepairArray: ArrayStatus[] =
-        DirectiveConstants.CATEGORY_REPAIR_ARRAY;
-    public truckArray: ArrayStatus[] = DirectiveConstants.TRUCK_ARRAY;
-    public trailerArray: ArrayStatus[] = DirectiveConstants.TRAILER_ARRAY;
+    public pmFilterArray: ArrayStatus[];
+    public categoryFuelArray: ArrayStatus[] = JSON.parse(
+        JSON.stringify(DirectiveConstants.CATEGORY_FUEL_ARRAY)
+    );
+
+    public categoryRepairArray: ArrayStatus[] = JSON.parse(
+        JSON.stringify(DirectiveConstants.CATEGORY_REPAIR_ARRAY)
+    );
+    public truckArray: ArrayStatus[] = JSON.parse(
+        JSON.stringify(DirectiveConstants.TRAILER_ARRAY)
+    );
+    public trailerArray: ArrayStatus[] = JSON.parse(
+        JSON.stringify(DirectiveConstants.TRAILER_ARRAY)
+    );
+
     public fuelStopArray: ArrayStatus[] = DirectiveConstants.FUEL_STOP_ARRAY;
     public brokerArray: ArrayStatus[] = DirectiveConstants.BROKER_ARRAY;
     public driverArray: ArrayStatus[] = DirectiveConstants.DRIVER_ARRAY;
@@ -168,6 +178,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public sliderForm!: UntypedFormGroup;
     public rangeForm!: UntypedFormGroup;
     public areaForm!: UntypedFormGroup;
+    public searchTerm: string = '';
 
     public rangeValue: number = 0;
     public usaSelectedStates: any[] = [];
@@ -258,7 +269,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             name: 'Route',
         },
     ];
-
+    ascendingOrderCategoryRepair: boolean = true;
+    ascendingOrderPm: boolean = true;
+    ascendingOrderTrailer: boolean = true;
+    ascendingOrderTruck: boolean = true;
     public resizeObserver: ResizeObserver;
 
     public isAnimated: any = false;
@@ -293,7 +307,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     private createForm(): void {
         this.rangeForm = this.formBuilder.group({
             rangeFrom: '0',
-            rangeTo: this.type === 'payFilter' ? '20,000' : '5,000',
+            rangeTo:
+                this.type === 'payFilter' ||
+                (this.type === 'moneyFilter' && this.repairFilter)
+                    ? '20,000'
+                    : '5,000',
         });
 
         this.searchForm = this.formBuilder.group({
@@ -358,7 +376,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             this.last2Years = past2Year;
         }
 
-        if (this.type === 'payFilter') {
+        if (
+            this.type === 'payFilter' ||
+            (this.type === 'moneyFilter' && this.repairFilter)
+        ) {
             this.maxValueRange = '20,000';
             this.maxValueSet = '20,000';
         }
@@ -840,32 +861,44 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.pmSubtype === 'truck'
                 ) {
                     if (res?.animation === 'pm-truck-data-update') {
-                        const newData = res.data.pagination.data.map(
-                            (type: any) => {
-                                type['icon'] =
-                                    'assets/svg/common/repair-pm/' +
-                                    type.logoName;
-                                return type;
-                            }
-                        );
+                        if (res.data.pmTrucks?.length) {
+                            const newData = res.data.pmTrucks.map(
+                                (type: any) => {
+                                    type['icon'] =
+                                        'assets/svg/common/repair-pm/' +
+                                        type.logoName;
+                                    type['name'] = type.title;
 
-                        this.pmFilterArray = newData;
+                                    return type;
+                                }
+                            );
+
+                            this.pmFilterArray = newData;
+                        } else {
+                            this.pmFilterArray = [];
+                        }
                     }
                 } else if (
                     this.type === 'pmFilter' &&
                     this.pmSubtype === 'trailer'
                 ) {
                     if (res?.animation === 'pm-trailer-data-update') {
-                        const newData = res.data.pagination.data.map(
-                            (type: any) => {
-                                type['icon'] =
-                                    'assets/svg/common/repair-pm/' +
-                                    type.logoName;
-                                return type;
-                            }
-                        );
+                        if (res.data.pmTrailer?.length) {
+                            const newData = res.data.pmTrailer.map(
+                                (type: any) => {
+                                    type['icon'] =
+                                        'assets/svg/common/repair-pm/' +
+                                        type.logoName;
+                                    type['name'] = type.title;
 
-                        this.pmFilterArray = newData;
+                                    return type;
+                                }
+                            );
+
+                            this.pmFilterArray = newData;
+                        } else {
+                            this.pmFilterArray = [];
+                        }
                     }
                 } else if (this.type === 'userFilter') {
                     if (res?.animation === 'dispatch-data-update') {
@@ -880,22 +913,38 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 } else if (this.type === 'truckFilter') {
                     if (res?.animation === 'truck-list-update') {
-                        const newData = res.data.pagination.data.map(
-                            (type: any) => {
+                        let newData;
+                        if (this.repairFilter) {
+                            newData = res.data.map((type: any) => {
                                 type['name'] = type.truckNumber;
                                 return type;
-                            }
-                        );
+                            });
+                        } else {
+                            newData = res.data?.pagination?.data.map(
+                                (type: any) => {
+                                    type['name'] = type.truckNumber;
+                                    return type;
+                                }
+                            );
+                        }
                         this.truckArray = newData;
                     }
                 } else if (this.type === 'trailerFilter') {
-                    if (res?.data) {
-                        const newData = res.data?.pagination?.data.map(
-                            (type: any) => {
+                    if (res?.animation === 'trailer-list-update') {
+                        let newData;
+                        if (this.repairFilter) {
+                            newData = res.data.map((type: any) => {
                                 type['name'] = type.trailerNumber;
                                 return type;
-                            }
-                        );
+                            });
+                        } else {
+                            newData = res.data?.pagination?.data.map(
+                                (type: any) => {
+                                    type['name'] = type.trailerNumber;
+                                    return type;
+                                }
+                            );
+                        }
                         this.trailerArray = newData;
                     }
                 }
@@ -1062,17 +1111,33 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
             });
         } else if (this.type === 'truckFilter') {
-            this.truckArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
+            if (this.repairFilter) {
+                this.truckArray.map((truck) => {
+                    if (truck.truckNumber === item.truckNumber) {
+                        truck.isSelected = false;
+                    }
+                });
+            } else {
+                this.truckArray.map((item) => {
+                    if (item.id === id) {
+                        item.isSelected = false;
+                    }
+                });
+            }
         } else if (this.type === 'trailerFilter') {
-            this.trailerArray.map((item) => {
-                if (item.id === id) {
-                    item.isSelected = false;
-                }
-            });
+            if (this.repairFilter) {
+                this.trailerArray.map((trailer) => {
+                    if (trailer.trailerNumber === item.trailerNumber) {
+                        trailer.isSelected = false;
+                    }
+                });
+            } else {
+                this.trailerArray.map((item) => {
+                    if (item.id === id) {
+                        item.isSelected = false;
+                    }
+                });
+            }
         } else if (this.type === 'fuelStopFilter') {
             this.fuelStopArray.map((item) => {
                 if (item.id === id) {
@@ -1273,15 +1338,27 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.locationRangeSet = this.locationRange;
                     break;
                 case 'moneyFilter':
-                    if (this.subType != 'all') {
-                        this.clearForm('singleForm');
+                    if (!this.repairFilter) {
+                        if (this.subType != 'all') {
+                            this.clearForm('singleForm');
+                        } else {
+                            this.clearForm('clearAll');
+                        }
                     } else {
-                        this.clearForm('clearAll');
+                        const maxNum = this.thousandSeparator.transform(
+                            this.maxValueRange
+                        );
+                        this.rangeForm.get('rangeFrom')?.setValue(0);
+                        this.rangeForm.get('rangeTo')?.setValue(maxNum);
+
+                        this.maxValueSet = maxNum;
+                        this.minValueSet = this.minValueRange;
                     }
                     this.activeFormNum = 0;
                     break;
                 case 'milesFilter':
-                case 'payFilter':
+                case 'payFilter' ||
+                    (this.type === 'moneyFilter' && this.repairFilter):
                     const maxNum = this.thousandSeparator.transform(
                         this.maxValueRange
                     );
@@ -1486,7 +1563,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
                 };
-            } else if (this.type === 'moneyFilter') {
+            } else if (this.type === 'moneyFilter' && !this.repairFilter) {
                 if (this.subType === 'all') {
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
@@ -1576,10 +1653,21 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
             } else if (
                 this.type === 'milesFilter' ||
-                this.type === 'payFilter'
+                this.type === 'payFilter' ||
+                (this.type === 'moneyFilter' && this.repairFilter)
             ) {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
+
+                this.singleFormActive = true;
+                queryParams = {
+                    singleTo: parseInt(
+                        this.rangeForm.get('rangeTo')?.value.replace(',', '')
+                    ),
+                    singleFrom: parseInt(
+                        this.rangeForm.get('rangeFrom')?.value.replace(',', '')
+                    ),
+                };
             } else if (this.type === 'locationFilter') {
                 if (this.areaFilterSelected != 'Location') {
                     queryParams = {
@@ -1656,7 +1744,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this.type === 'pmFilter') {
+                if (this.type === 'pmFilter' || this.repairFilter) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
                     });
@@ -1944,7 +2032,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             });
         } else if (this.type === 'timeFilter') {
             this.selectedTimeValue = this.filterActiveTime;
-        } else if (this.type === 'moneyFilter') {
+        } else if (this.type === 'moneyFilter' && !this.repairFilter) {
             if (this.subType != 'all') {
                 const setFromValue =
                     this.singleFromActive != 'null' && this.singleFromActive
@@ -2070,17 +2158,94 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'truckFilter': {
-                this.filterService.getTruckData();
+                if (this.repairFilter) {
+                    this.filterService.getRepairTruckData();
+                    this.filterService.getPmData('truck');
+                } else {
+                    this.filterService.getTruckData();
+                }
                 break;
             }
             case 'trailerFilter': {
-                this.filterService.getTrailerData();
+                if (this.repairFilter) {
+                    this.filterService.getRepairTrailerData();
+                    this.filterService.getPmData('trailer');
+                } else {
+                    this.filterService.getTrailerData();
+                }
                 break;
             }
             case 'pmFilter': {
                 this.filterService.getPmData(subType);
                 break;
             }
+        }
+    }
+    sortItems() {
+        switch (this.type) {
+            case 'categoryRepairFilter': {
+                this.categoryRepairArray.sort((a, b) => {
+                    if (this.ascendingOrderCategoryRepair) {
+                        return a.name.localeCompare(b.name);
+                    } else {
+                        return b.name.localeCompare(a.name);
+                    }
+                });
+                this.ascendingOrderCategoryRepair =
+                    !this.ascendingOrderCategoryRepair;
+                break;
+            }
+            case 'truckFilter': {
+                this.truckArray.sort((a, b) =>
+                    this.sortComparison(
+                        a.count,
+                        b.count,
+                        this.ascendingOrderTruck
+                    )
+                );
+                this.ascendingOrderTruck = !this.ascendingOrderTruck;
+                break;
+            }
+            case 'trailerFilter': {
+                this.trailerArray.sort((a, b) =>
+                    this.sortComparison(
+                        a.count,
+                        b.count,
+                        this.ascendingOrderTrailer
+                    )
+                );
+                this.ascendingOrderTrailer = !this.ascendingOrderTrailer;
+                break;
+            }
+            case 'pmFilter': {
+                this.pmFilterArray.sort((a, b) => {
+                    if (this.ascendingOrderPm) {
+                        return a.name.localeCompare(b.name);
+                    } else {
+                        return b.name.localeCompare(a.name);
+                    }
+                });
+                this.ascendingOrderPm = !this.ascendingOrderPm;
+                break;
+            }
+        }
+        return this.getSortOrder();
+    }
+    sortComparison(a: number, b: number, ascending: boolean): number {
+        return ascending ? a - b : b - a;
+    }
+    getSortOrder(): boolean {
+        switch (this.type) {
+            case 'categoryRepairFilter':
+                return this.ascendingOrderCategoryRepair;
+            case 'truckFilter':
+                return this.ascendingOrderTruck;
+            case 'trailerFilter':
+                return this.ascendingOrderTrailer;
+            case 'pmFilter':
+                return this.ascendingOrderPm;
+            default:
+                return false;
         }
     }
 
