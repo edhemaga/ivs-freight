@@ -425,8 +425,8 @@
 
         .search-input-header {
             width: 100% !important;
-            background: #424242 !important;
-            color: #aaaaaa !important;
+            background: $ta-black !important;
+            color: $ta-light-grey-2 !important;
 
             transition: 0.3s all;
             .input-form-holder {
@@ -460,31 +460,6 @@
                 animation-duration: 0.2s;
                 animation-iteration-count: 1;
                 animation-fill-mode: forwards;
-            }
-
-            @keyframes showAnimationClass {
-                from {
-                    margin-left: 95%;
-                    width: 0px;
-                    overflow: hidden;
-                }
-                to {
-                    margin-left: 0%;
-                    width: 248px;
-                }
-            }
-
-            @keyframes hideAnimation {
-                from {
-                    margin-left: 0%;
-                    width: 248px;
-                }
-                to {
-                    margin-left: 95%;
-                    width: 0px;
-                    overflow: hidden;
-                    display: none;
-                }
             }
 
             &:hover {
@@ -801,14 +776,13 @@
         user-select: none;
         transition: all 0.2s linear;
         .search-container {
-            display: flex;
             width: 100%;
             margin-bottom: 10px;
-            background: #424242;
+            background: $ta-black;
             input {
                 width: 100%;
-                background: #424242;
-                color: #aaaaaa;
+                background: $ta-black;
+                color: $ta-light-grey-2;
             }
         }
 
@@ -1736,18 +1710,18 @@
                     height: 18px;
                 }
                 .ngx-slider-pointer-min {
-                    background-color: #3b73ed !important;
+                    background-color: $ta-blue-18 !important;
                     border-radius: 2px !important;
                     box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
                 }
 
                 .ngx-slider-pointer-max {
-                    background-color: #3b73ed !important;
+                    background-color: $ta-blue-18 !important;
                     border-radius: 2px !important;
                     box-shadow: 0px 0px 4px rgb(0 0 0 / 15%) !important;
                 }
                 .ngx-slider-selection {
-                    background: #424242 !important;
+                    background: $ta-black !important;
                 }
             }
         }
@@ -2486,8 +2460,8 @@
 
 .search-input-header {
     width: 100% !important;
-    background: #424242 !important;
-    color: #aaaaaa !important;
+    background: $ta-black !important;
+    color: $ta-light-grey-2 !important;
 
     transition: 0.3s all;
     .input-form-holder {
@@ -2600,9 +2574,6 @@
     }
 }
 .count-holder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     padding: 2px 5px 2px 5px;
     width: 18px;
     height: 18px;
@@ -2610,7 +2581,6 @@
     font-size: 11px;
     line-height: 13px;
     color: $ta-light-grey-6;
-
     background-color: $ta-light-grey-9;
     border-radius: 100%;
 
@@ -2621,4 +2591,29 @@
 }
 .counterMargin {
     margin-left: 8px;
+}
+
+@keyframes showAnimationClass {
+    from {
+        margin-left: 95%;
+        width: 0px;
+        overflow: hidden;
+    }
+    to {
+        margin-left: 0%;
+        width: 248px;
+    }
+}
+
+@keyframes hideAnimation {
+    from {
+        margin-left: 0%;
+        width: 248px;
+    }
+    to {
+        margin-left: 95%;
+        width: 0px;
+        overflow: hidden;
+        display: none;
+    }
 }

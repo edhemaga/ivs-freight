@@ -1,22 +1,8 @@
 import moment from 'moment';
-import { RepairTableEnum } from '../../enums/repair-table-enum';
 
-enum Period {
-    Today,
-    Yesterday,
-    ThisWeek,
-    LastWeek,
-    OneWeek,
-    ThisMonth,
-    LastMonth,
-    OneMonth,
-    ThreeMonths,
-    ThisQuarter,
-    LastQuarter,
-    ThisYear,
-    OneYear,
-    Custom,
-}
+//Enums
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums/repair-table-string.enum';
+
 export class RepairTableDateFormaterHelper {
     static getDateRange(
         period: string,
@@ -24,76 +10,91 @@ export class RepairTableDateFormaterHelper {
     ): { fromDate: string; toDate: string } {
         let today: moment.Moment;
         if (year) {
-            today = moment().year(year).startOf(RepairTableEnum.DAY);
+            today = moment().year(year).startOf(RepairTableStringEnum.DAY);
         } else {
-            today = moment().startOf(RepairTableEnum.DAY);
+            today = moment().startOf(RepairTableStringEnum.DAY);
         }
 
         let fromDate: moment.Moment, toDate: moment.Moment;
 
         switch (period.toLowerCase()) {
-            case RepairTableEnum.TODAY:
+            case RepairTableStringEnum.TODAY:
                 fromDate = moment(today);
                 toDate = moment(today);
                 break;
-            case RepairTableEnum.YESTERDAY:
-                fromDate = moment(today).subtract(1, RepairTableEnum.DAYS);
-                toDate = moment(today).subtract(1, RepairTableEnum.DAYS);
+            case RepairTableStringEnum.YESTERDAY:
+                fromDate = moment(today).subtract(
+                    1,
+                    RepairTableStringEnum.DAYS
+                );
+                toDate = moment(today).subtract(1, RepairTableStringEnum.DAYS);
                 break;
-            case RepairTableEnum.THIS_WEEK:
-                fromDate = moment(today).startOf(RepairTableEnum.WEEK);
-                toDate = moment(today).endOf(RepairTableEnum.WEEK);
+            case RepairTableStringEnum.THIS_WEEK:
+                fromDate = moment(today).startOf(RepairTableStringEnum.WEEK);
+                toDate = moment(today).endOf(RepairTableStringEnum.WEEK);
                 break;
-            case RepairTableEnum.LAST_WEEK:
+            case RepairTableStringEnum.LAST_WEEK:
                 fromDate = moment(today)
-                    .subtract(1, RepairTableEnum.WEEKS)
-                    .startOf(RepairTableEnum.WEEK);
+                    .subtract(1, RepairTableStringEnum.WEEKS)
+                    .startOf(RepairTableStringEnum.WEEK);
                 toDate = moment(today)
-                    .subtract(1, RepairTableEnum.WEEKS)
-                    .endOf(RepairTableEnum.WEEK);
+                    .subtract(1, RepairTableStringEnum.WEEKS)
+                    .endOf(RepairTableStringEnum.WEEK);
                 break;
-            case RepairTableEnum.ONE_WEEK:
-                fromDate = moment(today).subtract(1, RepairTableEnum.WEEKS);
+            case RepairTableStringEnum.ONE_WEEK:
+                fromDate = moment(today).subtract(
+                    1,
+                    RepairTableStringEnum.WEEKS
+                );
                 toDate = moment(today);
                 break;
-            case RepairTableEnum.THIS_MONTH:
-                fromDate = moment(today).startOf(RepairTableEnum.MONTH);
-                toDate = moment(today).endOf(RepairTableEnum.MONTH);
+            case RepairTableStringEnum.THIS_MONTH:
+                fromDate = moment(today).startOf(RepairTableStringEnum.MONTH);
+                toDate = moment(today).endOf(RepairTableStringEnum.MONTH);
                 break;
-            case RepairTableEnum.LAST_MONTH:
+            case RepairTableStringEnum.LAST_MONTH:
                 fromDate = moment(today)
-                    .subtract(1, RepairTableEnum.MONTHS)
-                    .startOf(RepairTableEnum.MONTH);
+                    .subtract(1, RepairTableStringEnum.MONTHS)
+                    .startOf(RepairTableStringEnum.MONTH);
                 toDate = moment(today)
-                    .subtract(1, RepairTableEnum.MONTHS)
-                    .endOf(RepairTableEnum.MONTH);
+                    .subtract(1, RepairTableStringEnum.MONTHS)
+                    .endOf(RepairTableStringEnum.MONTH);
                 break;
-            case RepairTableEnum.ONE_MONTH:
-                fromDate = moment(today).subtract(1, RepairTableEnum.MONTHS);
+            case RepairTableStringEnum.ONE_MONTH:
+                fromDate = moment(today).subtract(
+                    1,
+                    RepairTableStringEnum.MONTHS
+                );
                 toDate = moment(today);
                 break;
-            case RepairTableEnum.THREE_MONTHS:
-                fromDate = moment(today).subtract(3, RepairTableEnum.MONTHS);
+            case RepairTableStringEnum.THREE_MONTHS:
+                fromDate = moment(today).subtract(
+                    3,
+                    RepairTableStringEnum.MONTHS
+                );
                 toDate = moment(today);
                 break;
-            case RepairTableEnum.THIS_QUARTER:
-                fromDate = moment(today).startOf(RepairTableEnum.QUARTER);
-                toDate = moment(today).endOf(RepairTableEnum.QUARTER);
+            case RepairTableStringEnum.THIS_QUARTER:
+                fromDate = moment(today).startOf(RepairTableStringEnum.QUARTER);
+                toDate = moment(today).endOf(RepairTableStringEnum.QUARTER);
                 break;
-            case RepairTableEnum.LAST_QUARTER:
+            case RepairTableStringEnum.LAST_QUARTER:
                 fromDate = moment(today)
-                    .subtract(1, RepairTableEnum.QUARTERS)
-                    .startOf(RepairTableEnum.QUARTER);
+                    .subtract(1, RepairTableStringEnum.QUARTERS)
+                    .startOf(RepairTableStringEnum.QUARTER);
                 toDate = moment(today)
-                    .subtract(1, RepairTableEnum.QUARTERS)
-                    .endOf(RepairTableEnum.QUARTER);
+                    .subtract(1, RepairTableStringEnum.QUARTERS)
+                    .endOf(RepairTableStringEnum.QUARTER);
                 break;
-            case RepairTableEnum.THIS_YEAR:
-                fromDate = moment(today).startOf(RepairTableEnum.YEAR);
-                toDate = moment(today).endOf(RepairTableEnum.YEAR);
+            case RepairTableStringEnum.THIS_YEAR:
+                fromDate = moment(today).startOf(RepairTableStringEnum.YEAR);
+                toDate = moment(today).endOf(RepairTableStringEnum.YEAR);
                 break;
-            case RepairTableEnum.ONE_YEAR:
-                fromDate = moment(today).subtract(1, RepairTableEnum.YEARS);
+            case RepairTableStringEnum.ONE_YEAR:
+                fromDate = moment(today).subtract(
+                    1,
+                    RepairTableStringEnum.YEARS
+                );
                 toDate = moment(today);
                 break;
             default:

@@ -17,6 +17,11 @@ import {
     LoadService,
     TruckService,
     TrailerService,
+    RepairTrailerFilterListResponse,
+    RepairTruckFilterListResponse,
+    PMTrailerListResponse,
+    PMTruckListResponse,
+    DispatcherFilterListResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -69,8 +74,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-
-                    truckType.unsubscribe();
                 },
             });
     }
@@ -85,8 +88,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-
-                    trailerType.unsubscribe();
                 },
             });
     }
@@ -102,8 +103,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-
-                    repairCategory.unsubscribe();
                 },
             });
     }
@@ -119,7 +118,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-                    fuelCategory.unsubscribe();
                 },
             });
     }
@@ -135,7 +133,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-                    stateData.unsubscribe();
                 },
             });
     }
@@ -151,7 +148,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-                    departmentData.unsubscribe();
                 },
             });
     }
@@ -161,13 +157,12 @@ export class FilterStateService implements OnDestroy {
             .apiLoadDispatcherFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data: any) => {
+                next: (data: DispatcherFilterListResponse) => {
                     this.tableService.sendActionAnimation({
                         animation: 'dispatch-data-update',
                         data: data,
                         id: null,
                     });
-                    dispatcherData.unsubscribe();
                 },
             });
     }
@@ -178,13 +173,12 @@ export class FilterStateService implements OnDestroy {
                 .apiRepairPmTruckFilterListGet()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: (data: any) => {
+                    next: (data: PMTruckListResponse) => {
                         this.tableService.sendActionAnimation({
                             animation: 'pm-truck-data-update',
                             data: data,
                             id: null,
                         });
-                        pmTruckData.unsubscribe();
                     },
                 });
         } else {
@@ -192,13 +186,12 @@ export class FilterStateService implements OnDestroy {
                 .apiRepairPmTrailerFilterListGet()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
-                    next: (data: any) => {
+                    next: (data: PMTrailerListResponse) => {
                         this.tableService.sendActionAnimation({
                             animation: 'pm-trailer-data-update',
                             data: data,
                             id: null,
                         });
-                        pmTrailerkData.unsubscribe();
                     },
                 });
         }
@@ -215,7 +208,6 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-                    truckList.unsubscribe();
                 },
             });
     }
@@ -231,39 +223,35 @@ export class FilterStateService implements OnDestroy {
                         data: data,
                         id: null,
                     });
-                    trailerList.unsubscribe();
                 },
             });
     }
-    public getRepairTruckData() {
+    public getRepairTruckData(): void {
         const truckList = this.repairService
             .apiRepairTruckFilterListGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data: any) => {
+                next: (data: RepairTruckFilterListResponse) => {
                     this.tableService.sendActionAnimation({
                         animation: 'truck-list-update',
                         data: data.trucks,
                         id: null,
                     });
-                    truckList.unsubscribe();
                 },
             });
     }
 
-    public getRepairTrailerData() {
+    public getRepairTrailerData(): void {
         const trailerList = this.repairService
             .apiRepairTrailerFilterListGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data: any) => {
-                    console.log(data);
+                next: (data: RepairTrailerFilterListResponse) => {
                     this.tableService.sendActionAnimation({
                         animation: 'trailer-list-update',
                         data: data.trailers,
                         id: null,
                     });
-                    trailerList.unsubscribe();
                 },
             });
     }

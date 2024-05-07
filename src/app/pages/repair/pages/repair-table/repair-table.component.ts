@@ -47,7 +47,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { RepairTableEnum } from '@pages/repair/pages/repair-table/enums/repair-table-enum';
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums/repair-table-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
@@ -88,6 +88,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 // helpers
 import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { RepairTableBackFilterDataHelper } from './utils/helpers/repair-table-back-filter-data.helper';
 
 @Component({
     selector: 'app-repair-table',
@@ -116,7 +117,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public inactiveTabClicked: boolean = false;
     public repairShopTabClicked: boolean = false;
     public activeTableData: string;
-    public backFilterQuery: RepairBackFilter = this.backRepairFilterData();
+    public backFilterQuery: RepairBackFilter =
+        RepairTableBackFilterDataHelper.backRepairFilterData();
 
     public shopFilterQuery: ShopBackFilterQuery =
         TableDropdownComponentConstants.SHOP_FILTER_QUERY;
@@ -378,57 +380,62 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    if (
-                        res.filterType ===
-                            RepairTableEnum.CATEGORY_REPAIR_FILTER &&
-                        res.queryParams?.length
-                    ) {
-                        this.backFilterQuery.categoryIds = res.queryParams;
-                        this.repairBackFilter(this.backFilterQuery);
-                    } else this.sendRepairData();
-                    if (
-                        res.filterType === RepairTableEnum.PM_FILTER &&
-                        res.queryParams?.length
-                    ) {
-                        this.backFilterQuery.pmTruckTitles = res.queryParams;
-                        this.repairBackFilter(this.backFilterQuery);
-                    } else this.sendRepairData();
-                    if (
-                        res.filterType === RepairTableEnum.TRAILER_FILTER &&
-                        res.queryParams?.length
-                    ) {
-                        this.backFilterQuery.trailerNumbers = res.queryParams;
-                        this.repairBackFilter(this.backFilterQuery);
-                    } else this.sendRepairData();
-                    if (
-                        res.filterType === RepairTableEnum.TRUCK_FILTER &&
-                        res.queryParams?.length
-                    ) {
-                        this.backFilterQuery.truckNumbers = res.queryParams;
-                        this.repairBackFilter(this.backFilterQuery);
-                    } else this.sendRepairData();
-                    if (
-                        res.filterType === RepairTableEnum.TIME_FILTER &&
-                        res.queryParams?.timeSelected
-                    ) {
-                        const { fromDate, toDate } =
-                            RepairTableDateFormaterHelper.getDateRange(
-                                res.queryParams?.timeSelected
-                            );
-                        this.backFilterQuery.dateTo = toDate;
-                        this.backFilterQuery.dateFrom = fromDate;
+                    if (res.queryParams?.length) {
+                        switch (res.filterType) {
+                            case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                                if (res.queryParams?.length) {
+                                    this.backFilterQuery.categoryIds =
+                                        res.queryParams;
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            case RepairTableStringEnum.PM_FILTER:
+                                if (res.queryParams?.length) {
+                                    this.backFilterQuery.pmTruckTitles =
+                                        res.queryParams;
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            case RepairTableStringEnum.TRAILER_FILTER:
+                                if (res.queryParams?.length) {
+                                    this.backFilterQuery.trailerNumbers =
+                                        res.queryParams;
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            case RepairTableStringEnum.TRUCK_FILTER:
+                                if (res.queryParams?.length) {
+                                    this.backFilterQuery.truckNumbers =
+                                        res.queryParams;
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            case RepairTableStringEnum.TIME_FILTER:
+                                if (res.queryParams?.length) {
+                                    const { fromDate, toDate } =
+                                        RepairTableDateFormaterHelper.getDateRange(
+                                            res.queryParams?.timeSelected
+                                        );
+                                    this.backFilterQuery.dateTo = toDate;
+                                    this.backFilterQuery.dateFrom = fromDate;
 
-                        this.repairBackFilter(this.backFilterQuery);
-                    } else this.sendRepairData();
-                    if (
-                        res.filterType === RepairTableEnum.MONEY_FILTER &&
-                        res.queryParams?.singleFrom
-                    ) {
-                        this.backFilterQuery.costFrom =
-                            res.queryParams?.singleFrom;
-                        this.backFilterQuery.costTo = res.queryParams?.singleTo;
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            case RepairTableStringEnum.MONEY_FILTER:
+                                if (res.queryParams?.length) {
+                                    this.backFilterQuery.costFrom =
+                                        res.queryParams?.singleFrom;
+                                    this.backFilterQuery.costTo =
+                                        res.queryParams?.singleTo;
 
-                        this.repairBackFilter(this.backFilterQuery);
+                                    this.repairBackFilter(this.backFilterQuery);
+                                }
+                                break;
+                            default:
+                                this.sendRepairData();
+                                break;
+                        }
                     } else this.sendRepairData();
 
                     if (res?.filteredArray) {
@@ -481,30 +488,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             });
     }
 
-    private backRepairFilterData(): RepairBackFilter {
-        return {
-            repairShopId: null,
-            unitType: 1,
-            dateFrom: null,
-            dateTo: null,
-            isPM: null,
-            categoryIds: null,
-            pmTruckTitles: null,
-            pmTrailerTitles: null,
-            isOrder: null,
-            truckNumbers: null,
-            costFrom: null,
-            costTo: null,
-            trailerNumbers: null,
-            pageIndex: 1,
-            pageSize: 25,
-            companyId: null,
-            sort: null,
-            searchOne: null,
-            searchTwo: null,
-            searchThree: null,
-        };
-    }
     // Toggle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
@@ -968,9 +951,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             invoice: data?.invoice,
             payType: data.payType?.name,
             driver: data.driver?.firstName
-                ? data.driver?.firstName + ' ' + data.driver?.lastName
-                    ? data.driver?.lastName
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                ? `${data.driver.firstName} ${data.driver.lastName || ''}`
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableType:
                 data?.truck?.truckType?.logoName ||
@@ -984,11 +965,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data?.truck?.truckType?.name ||
                 data?.trailer?.trailerType?.name ||
                 TableStringEnum.NA,
-            tableYear: data?.truck?.year
-                ? data.truck.year + ''
-                : data?.trailer?.year
-                ? data.trailer.year + ''
-                : TableStringEnum.NA,
+            tableYear:
+                (data.truck?.year || data.trailer?.year || TableStringEnum.NA) +
+                '',
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1199,7 +1178,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     this.viewData = [...newData];
                 }
-                this.backFilterQuery = this.backRepairFilterData();
+                this.backFilterQuery =
+                    RepairTableBackFilterDataHelper.backRepairFilterData();
             });
     }
 

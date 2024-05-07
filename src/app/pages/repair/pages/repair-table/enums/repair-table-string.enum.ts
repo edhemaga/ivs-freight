@@ -1,4 +1,4 @@
-export enum RepairTableEnum {
+export enum RepairTableStringEnum {
     CATEGORY_REPAIR_FILTER = 'categoryRepairFilter',
     PM_FILTER = 'pmFilter',
     TRAILER_FILTER = 'trailerFilter',

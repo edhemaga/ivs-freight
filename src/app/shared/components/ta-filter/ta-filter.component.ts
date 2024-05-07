@@ -118,7 +118,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() swipeFilter: boolean = false;
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
-    @Input() repairFilter: boolean = false;
+    @Input() isRepairFilter: boolean = false;
     @Input() toDoSubType: string = '';
     @Input() dataArray: any;
     @Input() areaFilter: boolean = false;
@@ -269,10 +269,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             name: 'Route',
         },
     ];
-    ascendingOrderCategoryRepair: boolean = true;
-    ascendingOrderPm: boolean = true;
-    ascendingOrderTrailer: boolean = true;
-    ascendingOrderTruck: boolean = true;
+    public isAscendingOrderCategoryRepair: boolean = true;
+    public isAscendingOrderPm: boolean = true;
+    public isAscendingOrderTrailer: boolean = true;
+    public isAscendingOrderTruck: boolean = true;
     public resizeObserver: ResizeObserver;
 
     public isAnimated: any = false;
@@ -313,7 +313,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             rangeFrom: '0',
             rangeTo:
                 this.type === 'payFilter' ||
-                (this.type === 'moneyFilter' && this.repairFilter)
+                (this.type === 'moneyFilter' && this.isRepairFilter)
                     ? '20,000'
                     : '5,000',
         });
@@ -382,7 +382,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         if (
             this.type === 'payFilter' ||
-            (this.type === 'moneyFilter' && this.repairFilter)
+            (this.type === 'moneyFilter' && this.isRepairFilter)
         ) {
             this.maxValueRange = '20,000';
             this.maxValueSet = '20,000';
@@ -918,7 +918,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 } else if (this.type === 'truckFilter') {
                     if (res?.animation === 'truck-list-update') {
                         let newData;
-                        if (this.repairFilter) {
+                        if (this.isRepairFilter) {
                             newData = res.data.map((type: any) => {
                                 type['name'] = type.truckNumber;
                                 return type;
@@ -936,7 +936,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 } else if (this.type === 'trailerFilter') {
                     if (res?.animation === 'trailer-list-update') {
                         let newData;
-                        if (this.repairFilter) {
+                        if (this.isRepairFilter) {
                             newData = res.data.map((type: any) => {
                                 type['name'] = type.trailerNumber;
                                 return type;
@@ -1115,7 +1115,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
             });
         } else if (this.type === 'truckFilter') {
-            if (this.repairFilter) {
+            if (this.isRepairFilter) {
                 this.truckArray.map((truck) => {
                     if (truck.truckNumber === item.truckNumber) {
                         truck.isSelected = false;
@@ -1129,7 +1129,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 });
             }
         } else if (this.type === 'trailerFilter') {
-            if (this.repairFilter) {
+            if (this.isRepairFilter) {
                 this.trailerArray.map((trailer) => {
                     if (trailer.trailerNumber === item.trailerNumber) {
                         trailer.isSelected = false;
@@ -1342,7 +1342,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.locationRangeSet = this.locationRange;
                     break;
                 case 'moneyFilter':
-                    if (!this.repairFilter) {
+                    if (!this.isRepairFilter) {
                         if (this.subType != 'all') {
                             this.clearForm('singleForm');
                         } else {
@@ -1362,7 +1362,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     break;
                 case 'milesFilter':
                 case 'payFilter' ||
-                    (this.type === 'moneyFilter' && this.repairFilter):
+                    (this.type === 'moneyFilter' && this.isRepairFilter):
                     const maxNum = this.thousandSeparator.transform(
                         this.maxValueRange
                     );
@@ -1567,7 +1567,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
                 };
-            } else if (this.type === 'moneyFilter' && !this.repairFilter) {
+            } else if (this.type === 'moneyFilter' && !this.isRepairFilter) {
                 if (this.subType === 'all') {
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
@@ -1658,7 +1658,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             } else if (
                 this.type === 'milesFilter' ||
                 this.type === 'payFilter' ||
-                (this.type === 'moneyFilter' && this.repairFilter)
+                (this.type === 'moneyFilter' && this.isRepairFilter)
             ) {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
@@ -1748,7 +1748,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this.type === 'pmFilter' || this.repairFilter) {
+                if (this.type === 'pmFilter' || this.isRepairFilter) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
                     });
@@ -2036,7 +2036,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             });
         } else if (this.type === 'timeFilter') {
             this.selectedTimeValue = this.filterActiveTime;
-        } else if (this.type === 'moneyFilter' && !this.repairFilter) {
+        } else if (this.type === 'moneyFilter' && !this.isRepairFilter) {
             if (this.subType != 'all') {
                 const setFromValue =
                     this.singleFromActive != 'null' && this.singleFromActive
@@ -2162,7 +2162,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'truckFilter': {
-                if (this.repairFilter) {
+                if (this.isRepairFilter) {
                     this.filterService.getRepairTruckData();
                     this.filterService.getPmData('truck');
                 } else {
@@ -2171,7 +2171,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'trailerFilter': {
-                if (this.repairFilter) {
+                if (this.isRepairFilter) {
                     this.filterService.getRepairTrailerData();
                     this.filterService.getPmData('trailer');
                 } else {
@@ -2185,18 +2185,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             }
         }
     }
-    sortItems() {
+    private sortItems(): boolean {
         switch (this.type) {
             case 'categoryRepairFilter': {
                 this.categoryRepairArray.sort((a, b) => {
-                    if (this.ascendingOrderCategoryRepair) {
+                    if (this.isAscendingOrderCategoryRepair) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-                this.ascendingOrderCategoryRepair =
-                    !this.ascendingOrderCategoryRepair;
+                this.isAscendingOrderCategoryRepair =
+                    !this.isAscendingOrderCategoryRepair;
                 break;
             }
             case 'truckFilter': {
@@ -2204,10 +2204,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.sortComparison(
                         a.count,
                         b.count,
-                        this.ascendingOrderTruck
+                        this.isAscendingOrderTruck
                     )
                 );
-                this.ascendingOrderTruck = !this.ascendingOrderTruck;
+                this.isAscendingOrderTruck = !this.isAscendingOrderTruck;
                 break;
             }
             case 'trailerFilter': {
@@ -2215,39 +2215,39 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     this.sortComparison(
                         a.count,
                         b.count,
-                        this.ascendingOrderTrailer
+                        this.isAscendingOrderTrailer
                     )
                 );
-                this.ascendingOrderTrailer = !this.ascendingOrderTrailer;
+                this.isAscendingOrderTrailer = !this.isAscendingOrderTrailer;
                 break;
             }
             case 'pmFilter': {
                 this.pmFilterArray.sort((a, b) => {
-                    if (this.ascendingOrderPm) {
+                    if (this.isAscendingOrderPm) {
                         return a.name.localeCompare(b.name);
                     } else {
                         return b.name.localeCompare(a.name);
                     }
                 });
-                this.ascendingOrderPm = !this.ascendingOrderPm;
+                this.isAscendingOrderPm = !this.isAscendingOrderPm;
                 break;
             }
         }
         return this.getSortOrder();
     }
-    sortComparison(a: number, b: number, ascending: boolean): number {
+    private sortComparison(a: number, b: number, ascending: boolean): number {
         return ascending ? a - b : b - a;
     }
-    getSortOrder(): boolean {
+    private getSortOrder(): boolean {
         switch (this.type) {
             case 'categoryRepairFilter':
-                return this.ascendingOrderCategoryRepair;
+                return this.isAscendingOrderCategoryRepair;
             case 'truckFilter':
-                return this.ascendingOrderTruck;
+                return this.isAscendingOrderTruck;
             case 'trailerFilter':
-                return this.ascendingOrderTrailer;
+                return this.isAscendingOrderTrailer;
             case 'pmFilter':
-                return this.ascendingOrderPm;
+                return this.isAscendingOrderPm;
             default:
                 return false;
         }

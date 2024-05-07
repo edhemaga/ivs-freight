@@ -428,26 +428,6 @@ export class TableDropdownComponentConstants {
         searchThree: null,
     };
 
-    // static REPAIR_BACK_FILTER_QUERY: RepairBackFilter = {
-    //     repairShopId: null,
-    //     unitType: 1,
-    //     dateFrom: null,
-    //     dateTo: null,
-    //     isPM: null,
-    //     categoryIds: null,
-    //     pmTruckTitles: null,
-    //     pmTrailerTitles: null,
-    //     isOrder: null,
-    //     truckId: null,
-    //     pageIndex: 1,
-    //     pageSize: 25,
-    //     companyId: null,
-    //     sort: null,
-    //     searchOne: null,
-    //     searchTwo: null,
-    //     searchThree: null,
-    // };
-
     static SHOP_FILTER_QUERY: ShopBackFilterQuery = {
         active: 1,
         pinned: null,

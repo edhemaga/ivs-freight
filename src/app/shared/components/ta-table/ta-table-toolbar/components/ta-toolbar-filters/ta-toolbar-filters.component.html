@@ -198,7 +198,7 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
-        [repairFilter]="options.toolbarActions.showTruckPmFilter ? true : false"
+        [isRepairFilter]="options.toolbarActions.showTruckPmFilter"
     >
     </app-ta-filter>
 
@@ -214,9 +214,7 @@
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
-        [repairFilter]="
-            options.toolbarActions.showTrailerPmFilter ? true : false
-        "
+        [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
     >
     </app-ta-filter>
 
@@ -331,13 +329,11 @@
         [filterTitle]="'Money Filter'"
         [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
         [moneyFilter]="true"
-        [fuelType]="options.toolbarActions.fuelMoneyFilter ? true : false"
+        [fuelType]="options.toolbarActions.fuelMoneyFilter"
         (setFilter)="onFilter($event)"
-        [repairFilter]="
+        [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||
             options.toolbarActions.showTruckPmFilter
-                ? true
-                : false
         "
     >
     </app-ta-filter>

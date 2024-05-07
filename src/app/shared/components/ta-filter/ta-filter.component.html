@@ -161,7 +161,10 @@
                     </div>
                 </ng-container>
                 <ng-container
-                    *ngIf="type == 'categoryRepairFilter' || type == 'pmFilter'"
+                    *ngIf="
+                        type == 'categoryRepairFilter' || type == 'pmFilter';
+                        else truckFilter
+                    "
                 >
                     <div
                         (click)="sortItems()"
@@ -173,42 +176,52 @@
                         ></svg-icon>
                     </div>
                 </ng-container>
-                <ng-container
-                    *ngIf="
-                        (type == 'truckFilter' || type == 'trailerFilter') &&
-                        repairFilter
-                    "
-                >
-                    <div
-                        (click)="sortItems()"
-                        class="user-title-text sort-text"
+                <ng-template #truckFilter>
+                    <ng-container
+                        *ngIf="
+                            (type == 'truckFilter' ||
+                                type == 'trailerFilter') &&
+                                isRepairFilter;
+                            else stateFilter
+                        "
                     >
-                        Count
-                        <svg-icon
-                            src="/assets/svg/common/sortArrow_filter.svg"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="type == 'stateFilter'">
-                    <div class="user-filter-box">
-                        {{
-                            canadaSelectedStates.length +
-                                usaSelectedStates.length
-                        }}
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="searchState">
-                    <div class="search-icon-holder" (click)="showSearch()">
-                        <svg-icon
-                            src="assets/svg/common/ic_search.svg"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
+                        <div
+                            (click)="sortItems()"
+                            class="user-title-text sort-text"
+                        >
+                            Count
+                            <svg-icon
+                                src="/assets/svg/common/sortArrow_filter.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </ng-template>
+                <ng-template #stateFilter>
+                    <ng-container
+                        *ngIf="type == 'stateFilter'; else searchState"
+                    >
+                        <div class="user-filter-box">
+                            {{
+                                canadaSelectedStates.length +
+                                    usaSelectedStates.length
+                            }}
+                        </div>
+                    </ng-container>
+                </ng-template>
+                <ng-template #searchState>
+                    <ng-container *ngIf="searchState">
+                        <div class="search-icon-holder" (click)="showSearch()">
+                            <svg-icon
+                                src="assets/svg/common/ic_search.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+                </ng-template>
             </div>
             <ng-container
                 *ngIf="
                     (type == 'truckFilter' || type == 'trailerFilter') &&
-                    repairFilter
+                    isRepairFilter
                 "
             >
                 <div
@@ -218,7 +231,7 @@
                         !(
                             (type == 'truckFilter' ||
                                 type == 'trailerFilter') &&
-                            repairFilter
+                            isRepairFilter
                         )
                     "
                     [formGroup]="searchForm"
@@ -238,11 +251,12 @@
                     ></app-ta-input>
                     <ng-container
                         *ngIf="
-                            searchInputValue.length == 0 &&
+                            !searchInputValue.length &&
                             !(
-                                type == 'truckFilter' || type == 'trailerFilter'
+                                type == 'truckFilter' ||
+                                type === 'trailerFilter'
                             ) &&
-                            !repairFilter
+                            !isRepairFilter
                         "
                     >
                         <div
@@ -365,26 +379,28 @@
                         <div class="selected-name-text">
                             <span> {{ item.name }}</span>
                         </div>
-                        <ng-container *ngIf="item?.count">
-                            <span class="count-holder activeCount">
+                        <ng-container *ngIf="item?.count; else noCount">
+                            <span
+                                class="count-holder align-items-center justify-content-center d-flex activeCount"
+                            >
                                 {{ item.count }}
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="!item?.count">
-                            <ng-containe *ngIf="!item.counter">
+                        <ng-template #noCount>
+                            <ng-container *ngIf="!item.counter; else noCounter">
                                 <div class="selected-icon">
                                     <svg-icon
                                         src="assets/svg/common/ic_confirm.svg"
                                     ></svg-icon>
                                 </div>
-                            </ng-containe>
-                            <ng-containe *ngIf="item.counter">
+                            </ng-container>
+                            <ng-template #noCounter>
                                 <div class="counter-holder activeCounter">
                                     2
                                 </div>
-                            </ng-containe>
-                        </ng-container>
+                            </ng-template>
+                        </ng-template>
                         <div
                             (click)="removeFromSelectedUser(item, indx)"
                             class="icon-delete"
@@ -684,101 +700,116 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="user-holder"
-                *ngIf="type == 'pmFilter' && pmFilterArray?.length"
-            >
-                <div
-                    *ngFor="let item of pmFilterArray; let indx = index"
-                    class="user-frame-holder"
-                >
+            <ng-container *ngIf="type == 'pmFilter' && pmFilterArray?.length">
+                <div class="user-holder">
                     <div
-                        [@inOutAnimation]="'in'"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
+                        *ngFor="let item of pmFilterArray; let indx = index"
+                        class="user-frame-holder"
                     >
-                        <div class="user-profile-img">
-                            <svg-icon src="{{ item.icon }}"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
+                        <div
+                            [@inOutAnimation]="'in'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                            *ngIf="!item.hidden && !item.isSelected"
+                            (click)="addToSelectedUser(item, indx)"
+                            class="user-main-holder"
+                        >
+                            <div class="user-profile-img">
+                                <svg-icon src="{{ item.icon }}"></svg-icon>
                             </div>
-                            <span class="count-holder"> {{ item.count }} </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'categoryFuelFilter'">
-                <div
-                    *ngFor="let item of categoryFuelArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'categoryRepairFilter'">
-                <div
-                    *ngFor="let item of categoryRepairArray; let indx = index"
-                    class="user-frame-holder"
-                    [@showAnimation]="activeFilter ? 'true' : 'false'"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <svg-icon [src]="item?.icon"></svg-icon>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item?.name }} </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="user-holder" *ngIf="type == 'truckFilter'">
-                <div
-                    *ngFor="let item of truckArray; let indx = index"
-                    class="user-frame-holder"
-                >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
-                            <ng-container *ngIf="repairFilter">
-                                <span class="count-holder">
+                            <div class="user-frame">
+                                <div class="selected-name-text">
+                                    <span> {{ item.name }} </span>
+                                </div>
+                                <span
+                                    class="count-holder align-items-center justify-content-center d-flex"
+                                >
                                     {{ item.count }}
                                 </span>
-                            </ng-container>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+            <ng-container *ngIf="type == 'categoryFuelFilter'">
+                <div class="user-holder">
+                    <div
+                        *ngFor="let item of categoryFuelArray; let indx = index"
+                        class="user-frame-holder"
+                    >
+                        <div
+                            [@inOutAnimation]="'in'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                            *ngIf="!item.hidden && !item.isSelected"
+                            (click)="addToSelectedUser(item, indx)"
+                            class="user-main-holder"
+                        >
+                            <div class="user-frame">
+                                <div class="selected-name-text">
+                                    <span> {{ item.name }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="type == 'categoryRepairFilter'">
+                <div class="user-holder" *ngIf="type == 'categoryRepairFilter'">
+                    <div
+                        *ngFor="
+                            let item of categoryRepairArray;
+                            let indx = index
+                        "
+                        class="user-frame-holder"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                        <div
+                            [@inOutAnimation]="'in'"
+                            *ngIf="!item.hidden && !item.isSelected"
+                            (click)="addToSelectedUser(item, indx)"
+                            class="user-main-holder"
+                        >
+                            <div class="user-profile-img">
+                                <svg-icon [src]="item?.icon"></svg-icon>
+                            </div>
+                            <div class="user-frame">
+                                <div class="selected-name-text">
+                                    <span> {{ item?.name }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="type == 'truckFilter'">
+                <div class="user-holder" *ngIf="type == 'truckFilter'">
+                    <div
+                        *ngFor="let item of truckArray; let indx = index"
+                        class="user-frame-holder"
+                    >
+                        <div
+                            [@inOutAnimation]="'in'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                            *ngIf="!item.hidden && !item.isSelected"
+                            (click)="addToSelectedUser(item, indx)"
+                            class="user-main-holder"
+                        >
+                            <div class="user-frame">
+                                <div class="selected-name-text">
+                                    <span> {{ item.name }} </span>
+                                </div>
+                                <ng-container *ngIf="isRepairFilter">
+                                    <span
+                                        class="count-holder align-items-center justify-content-center d-flex"
+                                    >
+                                        {{ item.count }}
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
             <div class="user-holder" *ngIf="type == 'trailerFilter'">
                 <div
                     *ngFor="let item of trailerArray; let indx = index"
@@ -795,8 +826,10 @@
                             <div class="selected-name-text">
                                 <span> {{ item.name }} </span>
                             </div>
-                            <ng-container *ngIf="repairFilter">
-                                <span class="count-holder">
+                            <ng-container *ngIf="isRepairFilter">
+                                <span
+                                    class="count-holder align-items-center justify-content-center d-flex"
+                                >
                                     {{ item.count }}
                                 </span>
                             </ng-container>
@@ -1357,307 +1390,348 @@
                 </div>
             </div>
         </div>
-        <div
-            *ngIf="moneyFilter && !repairFilter"
-            class="filter-holder money-filter"
-            [class.multiMoneyForm]="subType == 'all'"
-            [formGroup]="moneyForm"
-        >
-            <div class="filter-header">
-                <div class="user-title-text">MONEY FILTER</div>
-            </div>
-            <div class="border-filter money-top-border-magin"></div>
-            <div class="single-form-holder" *ngIf="subType != 'all'">
-                <div
-                    class="money-main-holder single-money-main"
-                    [@showAnimation]="activeFilter ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="singleFrom"
-                            [inputConfig]="{
-                                name: 'singleFrom',
-                                type: 'string',
-                                label: 'From'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="singleFormError"
-                    >
-                        <app-ta-input
-                            formControlName="singleTo"
-                            [inputConfig]="{
-                                name: 'singleTo',
-                                type: 'string',
-                                label: 'To'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-            </div>
-            <div class="multi-form-holder" *ngIf="subType == 'all'">
-                <div class="form-header" [class.hiddenFormTitle]="!showPart1">
-                    <div
-                        class="form-name"
-                        *ngIf="!fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Invoice Ageing
-                    </div>
-                    <div
-                        class="form-name"
-                        *ngIf="fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Last Price
-                    </div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFromFirstFrom &&
-                            moneyForm.value.multiFromFirstTo
-                        "
-                        (click)="clearForm('multiFromFirst')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart1,
-                            rotate_back: showPart1
-                        }"
-                        (click)="hideFormPart('part1')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart1 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFromFirstFrom"
-                            [inputConfig]="{
-                                name: 'multiFromFirstFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormFirstError"
-                    >
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFromFirstTo"
-                            [inputConfig]="{
-                                name: 'multiFromFirstTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-                <div
-                    class="border-filter money-bottom-border-magin form-border"
-                    [class.hiddenFormBorder]="!showPart1"
-                ></div>
-                <div class="form-header" [class.hiddenFormTitle]="!showPart2">
-                    <div
-                        class="form-name"
-                        *ngIf="!fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Available Credit
-                    </div>
-                    <div
-                        class="form-name"
-                        *ngIf="fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Price Per Gallon
-                    </div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFormSecondFrom &&
-                            moneyForm.value.multiFormSecondTo
-                        "
-                        (click)="clearForm('multiFormSecond')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart2,
-                            rotate_back: showPart2
-                        }"
-                        (click)="hideFormPart('part2')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart2 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFormSecondFrom"
-                            [inputConfig]="{
-                                name: 'multiFormSecondFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormSecondError"
-                    >
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFormSecondTo"
-                            [inputConfig]="{
-                                name: 'multiFormSecondTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-                <div
-                    class="border-filter money-bottom-border-magin form-border"
-                    [class.hiddenFormBorder]="!showPart2"
-                ></div>
-                <div class="form-header" [class.hiddenFormTitle]="!showPart3">
-                    <div
-                        class="form-name"
-                        *ngIf="!fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Revenue
-                    </div>
-                    <div
-                        class="form-name"
-                        *ngIf="fuelType"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        Total Cost
-                    </div>
-                    <div
-                        class="clear-money-form"
-                        *ngIf="
-                            moneyForm.value.multiFormThirdFrom &&
-                            moneyForm.value.multiFormThirdTo
-                        "
-                        (click)="clearForm('multiFormThird')"
-                    >
-                        CLEAR
-                    </div>
-                    <div
-                        class="hide-money-form"
-                        [ngClass]="{
-                            svg_rotate: !showPart3,
-                            rotate_back: showPart3
-                        }"
-                        (click)="hideFormPart('part3')"
-                    >
-                        <svg-icon
-                            src="assets/svg/common/calendar/arrow-left.svg"
-                        ></svg-icon>
-                    </div>
-                </div>
-                <div
-                    class="money-main-holder"
-                    [@closeForm]="showPart3 ? 'true' : 'false'"
-                >
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFormThirdFrom"
-                            [inputConfig]="{
-                                name: 'multiFormThirdFrom',
-                                type: 'number',
-                                label: 'From',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="multiFormThirdError"
-                    >
-                        <app-ta-input
-                            [@showAnimation]="activeFilter ? 'true' : 'false'"
-                            formControlName="multiFormThirdTo"
-                            [inputConfig]="{
-                                name: 'multiFormThirdTo',
-                                type: 'number',
-                                label: 'To',
-                                placeholderIcon: 'dollar'
-                            }"
-                        ></app-ta-input>
-                    </div>
-                </div>
-            </div>
+        <ng-container *ngIf="moneyFilter && !isRepairFilter">
             <div
-                class="border-filter money-bottom-border-magin form-border"
-                [class.hiddenFormBorder]="!showPart3"
-            ></div>
-            <div class="buttons-holder" *ngIf="subType == 'all'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="moneyFilterStatus"
-                >
-                    Clear All
+                class="filter-holder money-filter"
+                [class.multiMoneyForm]="subType == 'all'"
+                [formGroup]="moneyForm"
+            >
+                <div class="filter-header">
+                    <div class="user-title-text">MONEY FILTER</div>
                 </div>
+                <div class="border-filter money-top-border-magin"></div>
                 <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="moneyFilterStatus && setButtonAvailable"
+                    class="single-form-holder"
+                    *ngIf="subType !== 'all'; else showAll"
                 >
-                    Set
+                    <div
+                        class="money-main-holder single-money-main"
+                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    >
+                        <div class="money-value-holder">
+                            <app-ta-input
+                                formControlName="singleFrom"
+                                [inputConfig]="{
+                                    name: 'singleFrom',
+                                    type: 'string',
+                                    label: 'From'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                        <div
+                            class="money-value-holder"
+                            [class.errorForm]="singleFormError"
+                        >
+                            <app-ta-input
+                                formControlName="singleTo"
+                                [inputConfig]="{
+                                    name: 'singleTo',
+                                    type: 'string',
+                                    label: 'To'
+                                }"
+                            ></app-ta-input>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #showAll>
+                    <div class="multi-form-holder">
+                        <div
+                            class="form-header"
+                            [class.hiddenFormTitle]="!showPart1"
+                        >
+                            <div
+                                class="form-name"
+                                *ngIf="!fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Invoice Ageing
+                            </div>
+                            <div
+                                class="form-name"
+                                *ngIf="fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Last Price
+                            </div>
+                            <div
+                                class="clear-money-form"
+                                *ngIf="
+                                    moneyForm.value.multiFromFirstFrom &&
+                                    moneyForm.value.multiFromFirstTo
+                                "
+                                (click)="clearForm('multiFromFirst')"
+                            >
+                                CLEAR
+                            </div>
+                            <div
+                                class="hide-money-form"
+                                [ngClass]="{
+                                    svg_rotate: !showPart1,
+                                    rotate_back: showPart1
+                                }"
+                                (click)="hideFormPart('part1')"
+                            >
+                                <svg-icon
+                                    src="assets/svg/common/calendar/arrow-left.svg"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                        <div
+                            class="money-main-holder"
+                            [@closeForm]="showPart1 ? 'true' : 'false'"
+                        >
+                            <div class="money-value-holder">
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFromFirstFrom"
+                                    [inputConfig]="{
+                                        name: 'multiFromFirstFrom',
+                                        type: 'number',
+                                        label: 'From',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                class="money-value-holder"
+                                [class.errorForm]="multiFormFirstError"
+                            >
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFromFirstTo"
+                                    [inputConfig]="{
+                                        name: 'multiFromFirstTo',
+                                        type: 'number',
+                                        label: 'To',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                        </div>
+                        <div
+                            class="border-filter money-bottom-border-magin form-border"
+                            [class.hiddenFormBorder]="!showPart1"
+                        ></div>
+                        <div
+                            class="form-header"
+                            [class.hiddenFormTitle]="!showPart2"
+                        >
+                            <div
+                                class="form-name"
+                                *ngIf="!fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Available Credit
+                            </div>
+                            <div
+                                class="form-name"
+                                *ngIf="fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Price Per Gallon
+                            </div>
+                            <div
+                                class="clear-money-form"
+                                *ngIf="
+                                    moneyForm.value.multiFormSecondFrom &&
+                                    moneyForm.value.multiFormSecondTo
+                                "
+                                (click)="clearForm('multiFormSecond')"
+                            >
+                                CLEAR
+                            </div>
+                            <div
+                                class="hide-money-form"
+                                [ngClass]="{
+                                    svg_rotate: !showPart2,
+                                    rotate_back: showPart2
+                                }"
+                                (click)="hideFormPart('part2')"
+                            >
+                                <svg-icon
+                                    src="assets/svg/common/calendar/arrow-left.svg"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                        <div
+                            class="money-main-holder"
+                            [@closeForm]="showPart2 ? 'true' : 'false'"
+                        >
+                            <div class="money-value-holder">
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFormSecondFrom"
+                                    [inputConfig]="{
+                                        name: 'multiFormSecondFrom',
+                                        type: 'number',
+                                        label: 'From',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                class="money-value-holder"
+                                [class.errorForm]="multiFormSecondError"
+                            >
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFormSecondTo"
+                                    [inputConfig]="{
+                                        name: 'multiFormSecondTo',
+                                        type: 'number',
+                                        label: 'To',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                        </div>
+                        <div
+                            class="border-filter money-bottom-border-magin form-border"
+                            [class.hiddenFormBorder]="!showPart2"
+                        ></div>
+                        <div
+                            class="form-header"
+                            [class.hiddenFormTitle]="!showPart3"
+                        >
+                            <div
+                                class="form-name"
+                                *ngIf="!fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Revenue
+                            </div>
+                            <div
+                                class="form-name"
+                                *ngIf="fuelType"
+                                [@showAnimation]="
+                                    activeFilter ? 'true' : 'false'
+                                "
+                            >
+                                Total Cost
+                            </div>
+                            <div
+                                class="clear-money-form"
+                                *ngIf="
+                                    moneyForm.value.multiFormThirdFrom &&
+                                    moneyForm.value.multiFormThirdTo
+                                "
+                                (click)="clearForm('multiFormThird')"
+                            >
+                                CLEAR
+                            </div>
+                            <div
+                                class="hide-money-form"
+                                [ngClass]="{
+                                    svg_rotate: !showPart3,
+                                    rotate_back: showPart3
+                                }"
+                                (click)="hideFormPart('part3')"
+                            >
+                                <svg-icon
+                                    src="assets/svg/common/calendar/arrow-left.svg"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                        <div
+                            class="money-main-holder"
+                            [@closeForm]="showPart3 ? 'true' : 'false'"
+                        >
+                            <div class="money-value-holder">
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFormThirdFrom"
+                                    [inputConfig]="{
+                                        name: 'multiFormThirdFrom',
+                                        type: 'number',
+                                        label: 'From',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                class="money-value-holder"
+                                [class.errorForm]="multiFormThirdError"
+                            >
+                                <app-ta-input
+                                    [@showAnimation]="
+                                        activeFilter ? 'true' : 'false'
+                                    "
+                                    formControlName="multiFormThirdTo"
+                                    [inputConfig]="{
+                                        name: 'multiFormThirdTo',
+                                        type: 'number',
+                                        label: 'To',
+                                        placeholderIcon: 'dollar'
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <div
+                    class="border-filter money-bottom-border-magin form-border"
+                    [class.hiddenFormBorder]="!showPart3"
+                ></div>
+                <div class="buttons-holder" *ngIf="subType == 'all'">
+                    <div
+                        (click)="clearAll($event)"
+                        class="button-clear"
+                        [class.active]="moneyFilterStatus"
+                    >
+                        Clear All
+                    </div>
+                    <div
+                        (click)="setFilterValue($event)"
+                        class="button-set"
+                        [class.active]="moneyFilterStatus && setButtonAvailable"
+                    >
+                        Set
+                    </div>
+                </div>
+                <div class="buttons-holder" *ngIf="subType != 'all'">
+                    <div
+                        (click)="clearAll($event)"
+                        class="button-clear"
+                        [class.active]="moneyFilterStatus"
+                    >
+                        Clear All
+                    </div>
+                    <div
+                        (click)="setFilterValue($event)"
+                        class="button-set"
+                        [class.active]="
+                            moneyFilterStatus &&
+                            setButtonAvailable &&
+                            !singleFormError
+                        "
+                    >
+                        Set
+                    </div>
                 </div>
             </div>
-            <div class="buttons-holder" *ngIf="subType != 'all'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="moneyFilterStatus"
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        moneyFilterStatus &&
-                        setButtonAvailable &&
-                        !singleFormError
-                    "
-                >
-                    Set
-                </div>
-            </div>
-        </div>
+        </ng-container>
+
         <div
             *ngIf="swipeFilter"
             class="filter-holder swipe-filter"
@@ -1700,51 +1774,108 @@
                 </div>
             </div>
         </div>
-        <div
-            *ngIf="locationDefType || (repairFilter && moneyFilter)"
-            class="filter-holder location-filter"
+        <ng-container
+            *ngIf="locationDefType || (isRepairFilter && moneyFilter)"
         >
-            <div class="filter-header">
-                <div class="user-title-text" *ngIf="!areaFilter">
-                    {{ filterTitle | uppercase }}
+            <div class="filter-holder location-filter">
+                <div class="filter-header">
+                    <div class="user-title-text" *ngIf="!areaFilter">
+                        {{ filterTitle | uppercase }}
+                    </div>
+                    <div class="user-title-text" *ngIf="areaFilter">
+                        Area Filter
+                    </div>
                 </div>
-                <div class="user-title-text" *ngIf="areaFilter">
-                    Area Filter
-                </div>
-            </div>
-            <div class="border-filter top-border-margin"></div>
-            <div
-                class="areaFilterHolder"
-                *ngIf="areaFilter"
-                [@showAnimation]="activeFilter ? 'true' : 'false'"
-            >
-                <app-ta-tab-switch
-                    [tabs]="areBoxTab"
-                    (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
-                    [type]="'type2-modal-popup'"
-                >
-                </app-ta-tab-switch>
-            </div>
-            <div class="area-all-holder">
+                <div class="border-filter top-border-margin"></div>
                 <div
-                    class="main-part-holder"
-                    *ngIf="areaFilter && areaFilterSelected != 'Location'"
-                    [@areaRightSideAnimation]="'in'"
+                    class="areaFilterHolder"
+                    *ngIf="areaFilter"
+                    [@showAnimation]="activeFilter ? 'true' : 'false'"
                 >
-                    <div
-                        class="area-forms-holder"
-                        [formGroup]="areaForm"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
+                    <app-ta-tab-switch
+                        [tabs]="areBoxTab"
+                        (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
+                        [type]="'type2-modal-popup'"
                     >
-                        <div class="area-single-form-holder">
+                    </app-ta-tab-switch>
+                </div>
+                <div class="area-all-holder">
+                    <div
+                        class="main-part-holder"
+                        *ngIf="areaFilter && areaFilterSelected != 'Location'"
+                        [@areaRightSideAnimation]="'in'"
+                    >
+                        <div
+                            class="area-forms-holder"
+                            [formGroup]="areaForm"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        >
+                            <div class="area-single-form-holder">
+                                <app-ta-input-address-dropdown
+                                    formControlName="origin"
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Origin',
+                                        placeholderIcon: 'address',
+                                        placeholder: 'Origin',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-288',
+                                        minLength: 6,
+                                        maxLength: 256,
+                                        placeholderInsteadOfLabel: true
+                                    }"
+                                    [placeholderType]="'shortAddress'"
+                                    (selectedAddress)="
+                                        handleOriginSelect($event)
+                                    "
+                                ></app-ta-input-address-dropdown>
+                            </div>
+                            <div class="area-single-form-holder">
+                                <app-ta-input-address-dropdown
+                                    formControlName="destination"
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Destination',
+                                        placeholderIcon: 'address',
+                                        placeholder: 'Destination',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-288',
+                                        minLength: 6,
+                                        maxLength: 256,
+                                        placeholderInsteadOfLabel: true
+                                    }"
+                                    [placeholderType]="'shortAddress'"
+                                    (selectedAddress)="
+                                        handleDestinationSelect($event)
+                                    "
+                                ></app-ta-input-address-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="main-part-holder"
+                        *ngIf="
+                            type == 'locationFilter' &&
+                            areaFilterSelected == 'Location'
+                        "
+                        [@areaLeftSideAnimation]="'in'"
+                    >
+                        <div
+                            class="filter-middle-holder location-middle-padding"
+                            [formGroup]="locationForm"
+                            *ngIf="type == 'locationFilter'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        >
                             <app-ta-input-address-dropdown
-                                formControlName="origin"
+                                formControlName="address"
                                 [inputConfig]="{
                                     name: 'Address',
                                     type: 'text',
-                                    label: 'Origin',
+                                    label: 'Location',
                                     placeholderIcon: 'address',
-                                    placeholder: 'Origin',
+                                    placeholder: 'Location',
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-288',
                                     minLength: 6,
@@ -1752,254 +1883,219 @@
                                     placeholderInsteadOfLabel: true
                                 }"
                                 [placeholderType]="'shortAddress'"
-                                (selectedAddress)="handleOriginSelect($event)"
+                                (selectedAddress)="handleInputSelect($event)"
                             ></app-ta-input-address-dropdown>
                         </div>
-                        <div class="area-single-form-holder">
-                            <app-ta-input-address-dropdown
-                                formControlName="destination"
-                                [inputConfig]="{
-                                    name: 'Address',
-                                    type: 'text',
-                                    label: 'Destination',
-                                    placeholderIcon: 'address',
-                                    placeholder: 'Destination',
-                                    textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-288',
-                                    minLength: 6,
-                                    maxLength: 256,
-                                    placeholderInsteadOfLabel: true
-                                }"
-                                [placeholderType]="'shortAddress'"
-                                (selectedAddress)="
-                                    handleDestinationSelect($event)
-                                "
-                            ></app-ta-input-address-dropdown>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="main-part-holder"
-                    *ngIf="
-                        type == 'locationFilter' &&
-                        areaFilterSelected == 'Location'
-                    "
-                    [@areaLeftSideAnimation]="'in'"
-                >
-                    <div
-                        class="filter-middle-holder location-middle-padding"
-                        [formGroup]="locationForm"
-                        *ngIf="type == 'locationFilter'"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        <app-ta-input-address-dropdown
-                            formControlName="address"
-                            [inputConfig]="{
-                                name: 'Address',
-                                type: 'text',
-                                label: 'Location',
-                                placeholderIcon: 'address',
-                                placeholder: 'Location',
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-288',
-                                minLength: 6,
-                                maxLength: 256,
-                                placeholderInsteadOfLabel: true
-                            }"
-                            [placeholderType]="'shortAddress'"
-                            (selectedAddress)="handleInputSelect($event)"
-                        ></app-ta-input-address-dropdown>
-                    </div>
-                    <div
-                        class="filter-middle-holder location-slider-middle-padding"
-                        *ngIf="type == 'locationFilter'"
-                        [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    >
-                        <div class="range-new-value-holder">
-                            <div class="range-text">Range</div>
-                            <div class="range-flex-holder">
-                                <app-ta-ngx-slider
-                                    [sliderOptions]="locationSliderData"
-                                    [startedValue]="locationRange"
-                                    [customClass]="'custom-slider-filter'"
-                                    (onUserValueChange)="setRangeValue($event)"
-                                ></app-ta-ngx-slider>
+                        <div
+                            class="filter-middle-holder location-slider-middle-padding"
+                            *ngIf="type == 'locationFilter'"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                        >
+                            <div class="range-new-value-holder">
+                                <div class="range-text">Range</div>
+                                <div class="range-flex-holder">
+                                    <app-ta-ngx-slider
+                                        [sliderOptions]="locationSliderData"
+                                        [startedValue]="locationRange"
+                                        [customClass]="'custom-slider-filter'"
+                                        (onUserValueChange)="
+                                            setRangeValue($event)
+                                        "
+                                    ></app-ta-ngx-slider>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
-                class="mainMilesHolder"
-                *ngIf="
-                    type == 'payFilter' ||
-                    type == 'milesFilter' ||
-                    (repairFilter && moneyFilter)
-                "
-                [formGroup]="rangeForm"
-            >
-                <div class="money-main-holder payPadding">
-                    <div class="money-value-holder">
-                        <app-ta-input
-                            formControlName="rangeFrom"
-                            [inputConfig]="{
-                                name: 'rangeFrom',
-                                type: 'text',
-                                label: 'From',
-                                placeholderIcon:
-                                    type == 'payFilter' ||
-                                    (repairFilter && moneyFilter)
-                                        ? 'dollar'
-                                        : 'mileage',
-                                customClass: ''.concat(
-                                    '' +
-                                        this.rangeForm.get('rangeFrom').value ==
-                                        minValueRange
-                                        ? ' discolor-placeholder'
-                                        : '' + ''
-                                ),
-                                blackInput: true
-                            }"
-                        ></app-ta-input>
+                <ng-container
+                    *ngIf="
+                        type === 'payFilter' ||
+                        type === 'milesFilter' ||
+                        (isRepairFilter && moneyFilter)
+                    "
+                >
+                    <div class="mainMilesHolder" [formGroup]="rangeForm">
+                        <div class="money-main-holder payPadding">
+                            <div class="money-value-holder">
+                                <app-ta-input
+                                    formControlName="rangeFrom"
+                                    [inputConfig]="{
+                                        name: 'rangeFrom',
+                                        type: 'text',
+                                        label: 'From',
+                                        placeholderIcon:
+                                            type === 'payFilter' ||
+                                            (isRepairFilter && moneyFilter)
+                                                ? 'dollar'
+                                                : 'mileage',
+                                        customClass: ''.concat(
+                                            '' +
+                                                this.rangeForm.get('rangeFrom')
+                                                    .value ===
+                                                minValueRange
+                                                ? ' discolor-placeholder'
+                                                : '' + ''
+                                        ),
+                                        blackInput: true
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                            <div
+                                class="money-value-holder"
+                                [class.errorForm]="singleFormError"
+                            >
+                                <app-ta-input
+                                    formControlName="rangeTo"
+                                    [inputConfig]="{
+                                        name: 'rangeTo',
+                                        type: 'text',
+                                        label: 'To',
+                                        placeholderIcon:
+                                            type === 'payFilter' ||
+                                            (isRepairFilter && moneyFilter)
+                                                ? 'dollar'
+                                                : 'mileage',
+                                        customClass: ''.concat(
+                                            '' +
+                                                this.rangeForm.get('rangeTo')
+                                                    .value ==
+                                                maxValueRange
+                                                ? ' discolor-placeholder'
+                                                : '' + ''
+                                        ),
+                                        blackInput: true
+                                    }"
+                                ></app-ta-input>
+                            </div>
+                        </div>
+                        <div
+                            class="filter-middle-holder slider-two-holder"
+                            [@showAnimation]="activeFilter ? 'true' : 'false'"
+                            [class.closePointers]="
+                                (rangeDiffNum < 670 && type != 'payFilter') ||
+                                (rangeDiffNum < 2600 && type == 'payFilter')
+                            "
+                        >
+                            <app-ta-ngx-slider
+                                [sliderOptions]="
+                                    type === 'payFilter' ||
+                                    (isRepairFilter && moneyFilter)
+                                        ? paySliderData
+                                        : milesSliderData
+                                "
+                                [startedValue]="rangeValue"
+                                [customClass]="
+                                    isRepairFilter && moneyFilter
+                                        ? 'money-slider-filter'
+                                        : 'custom-slider-filter'
+                                "
+                                (onUserValueChange)="setMinValueRange($event)"
+                                (onUserHighValueChange)="
+                                    setMaxValueRange($event)
+                                "
+                                [sliderTemplate]="'range-slider'"
+                                [minValue]="minValueDragged"
+                                [maxValue]="maxValueDragged"
+                            ></app-ta-ngx-slider>
+                        </div>
                     </div>
-                    <div
-                        class="money-value-holder"
-                        [class.errorForm]="singleFormError"
-                    >
-                        <app-ta-input
-                            formControlName="rangeTo"
-                            [inputConfig]="{
-                                name: 'rangeTo',
-                                type: 'text',
-                                label: 'To',
-                                placeholderIcon:
-                                    type == 'payFilter' ||
-                                    (repairFilter && moneyFilter)
-                                        ? 'dollar'
-                                        : 'mileage',
-                                customClass: ''.concat(
-                                    '' + this.rangeForm.get('rangeTo').value ==
-                                        maxValueRange
-                                        ? ' discolor-placeholder'
-                                        : '' + ''
-                                ),
-                                blackInput: true
-                            }"
-                        ></app-ta-input>
+                </ng-container>
+                <div class="border-filter bottom-border-margin"></div>
+                <ng-container *ngIf="type !== 'locationFilter'">
+                    <div class="buttons-holder">
+                        <div
+                            (click)="clearAll($event)"
+                            class="button-clear"
+                            [class.active]="
+                                rangeForm.get('rangeTo').value !=
+                                    maxValueRange ||
+                                rangeForm.get('rangeFrom').value !=
+                                    minValueRange
+                            "
+                        >
+                            Clear All
+                        </div>
+                        <div
+                            (click)="setFilterValue($event)"
+                            class="button-set"
+                            [class.active]="
+                                rangeForm.get('rangeTo').value != maxValueSet ||
+                                (rangeForm.get('rangeFrom').value &&
+                                    rangeForm.get('rangeFrom').value !=
+                                        minValueSet)
+                            "
+                        >
+                            Set
+                        </div>
                     </div>
-                </div>
-                <div
-                    class="filter-middle-holder slider-two-holder"
-                    [@showAnimation]="activeFilter ? 'true' : 'false'"
-                    [class.closePointers]="
-                        (rangeDiffNum < 670 && type != 'payFilter') ||
-                        (rangeDiffNum < 2600 && type == 'payFilter')
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        type === 'locationFilter' &&
+                        areaFilterSelected == 'Location'
                     "
                 >
-                    <app-ta-ngx-slider
-                        [sliderOptions]="
-                            type == 'payFilter' || (repairFilter && moneyFilter)
-                                ? paySliderData
-                                : milesSliderData
-                        "
-                        [startedValue]="rangeValue"
-                        [customClass]="
-                            repairFilter && moneyFilter
-                                ? 'money-slider-filter'
-                                : 'custom-slider-filter'
-                        "
-                        (onUserValueChange)="setMinValueRange($event)"
-                        (onUserHighValueChange)="setMaxValueRange($event)"
-                        [sliderTemplate]="'range-slider'"
-                        [minValue]="minValueDragged"
-                        [maxValue]="maxValueDragged"
-                    ></app-ta-ngx-slider>
-                </div>
+                    <div class="buttons-holder">
+                        <div
+                            (click)="clearAll($event)"
+                            class="button-clear"
+                            [class.active]="
+                                longVal != 0 ||
+                                latVal != 0 ||
+                                locationRange != 25
+                            "
+                        >
+                            Clear All
+                        </div>
+                        <div
+                            (click)="setFilterValue($event)"
+                            class="button-set"
+                            [class.active]="
+                                longValueSet != longVal ||
+                                latValSet != latVal ||
+                                (locationRange != locationRangeSet &&
+                                    longVal != 0 &&
+                                    latVal != 0)
+                            "
+                        >
+                            Set
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container
+                    *ngIf="
+                        type === 'locationFilter' &&
+                        areaFilterSelected != 'Location'
+                    "
+                >
+                    <div class="buttons-holder">
+                        <div
+                            (click)="clearAll($event)"
+                            class="button-clear"
+                            [class.active]="
+                                originLatVal != 0 ||
+                                originLongVal != 0 ||
+                                destLongVal != 0 ||
+                                destLatVal != 0
+                            "
+                        >
+                            Clear All
+                        </div>
+                        <div
+                            (click)="setFilterValue($event)"
+                            class="button-set"
+                            [class.active]="
+                                (originLatValSet != originLatVal ||
+                                    originLongValSet != originLongVal) &&
+                                (destLongValSet != destLongVal ||
+                                    destLatValSet != destLatVal)
+                            "
+                        >
+                            Set
+                        </div>
+                    </div>
+                </ng-container>
             </div>
-            <div class="border-filter bottom-border-margin"></div>
-            <div class="buttons-holder" *ngIf="type != 'locationFilter'">
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        rangeForm.get('rangeTo').value != maxValueRange ||
-                        rangeForm.get('rangeFrom').value != minValueRange
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        rangeForm.get('rangeTo').value != maxValueSet ||
-                        (rangeForm.get('rangeFrom').value &&
-                            rangeForm.get('rangeFrom').value != minValueSet)
-                    "
-                >
-                    Set
-                </div>
-            </div>
-            <div
-                class="buttons-holder"
-                *ngIf="
-                    type == 'locationFilter' && areaFilterSelected == 'Location'
-                "
-            >
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        longVal != 0 || latVal != 0 || locationRange != 25
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        longValueSet != longVal ||
-                        latValSet != latVal ||
-                        (locationRange != locationRangeSet &&
-                            longVal != 0 &&
-                            latVal != 0)
-                    "
-                >
-                    Set
-                </div>
-            </div>
-            <div
-                class="buttons-holder"
-                *ngIf="
-                    type == 'locationFilter' && areaFilterSelected != 'Location'
-                "
-            >
-                <div
-                    (click)="clearAll($event)"
-                    class="button-clear"
-                    [class.active]="
-                        originLatVal != 0 ||
-                        originLongVal != 0 ||
-                        destLongVal != 0 ||
-                        destLatVal != 0
-                    "
-                >
-                    Clear All
-                </div>
-                <div
-                    (click)="setFilterValue($event)"
-                    class="button-set"
-                    [class.active]="
-                        (originLatValSet != originLatVal ||
-                            originLongValSet != originLongVal) &&
-                        (destLongValSet != destLongVal ||
-                            destLatValSet != destLatVal)
-                    "
-                >
-                    Set
-                </div>
-            </div>
-        </div>
+        </ng-container>
     </div>
 </div>
