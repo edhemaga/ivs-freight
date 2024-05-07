@@ -17,7 +17,8 @@
         *ngFor="
             let column of tableHeadRowsData?.pinedColumns ??
                 tableHeadRowsData?.notPinedColumns;
-            let i = index
+            let i = index;
+            trackBy: trackByIdentity
         "
     >
         <th
@@ -731,7 +732,12 @@
                         }"
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
-                        <ng-container *ngFor="let title of column.headTitle">
+                        <ng-container
+                            *ngFor="
+                                let title of column.headTitle;
+                                trackBy: trackByIdentity
+                            "
+                        >
                             <div
                                 class="ta-font-bold title"
                                 [ngStyle]="{

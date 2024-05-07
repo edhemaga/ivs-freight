@@ -181,7 +181,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.isRepairUnitStringBoolean = false;
 
         this.columns.map((column, index) => {
-            if (!column.hasOwnProperty('isPined')) {
+            if (!column.hasOwnProperty(TableHeadStringEnum.IS_PINED)) {
                 column.isPined = false;
             }
 
@@ -205,15 +205,19 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                         : visibleColumn.width;
 
                 if (
-                    visibleColumn.ngTemplate !== '' &&
-                    visibleColumn.ngTemplate !== 'checkbox' &&
-                    visibleColumn.ngTemplate !== 'user-checkbox'
+                    visibleColumn.ngTemplate !==
+                        TableHeadStringEnum.EMPTY_STRING &&
+                    visibleColumn.ngTemplate !== TableHeadStringEnum.CHECKBOX &&
+                    visibleColumn.ngTemplate !==
+                        TableHeadStringEnum.USER_CHECKBOX
                 ) {
                     this.pinedWidth += 6;
                 }
             }
 
-            if (this.tableData[0]?.gridNameTitle === 'Repair') {
+            if (
+                this.tableData[0]?.gridNameTitle === TableHeadStringEnum.REPAIR
+            ) {
                 this.setVisibleTableHead(visibleColumn);
             }
 
@@ -288,7 +292,9 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
 
     private getNotPinedMaxWidth(): void {
         if (this.viewData.length) {
-            const tableContainer = document.querySelector('.table-container');
+            const tableContainer = document.querySelector(
+                TableHeadStringEnum.TABLE_CONTAINER_CLASS
+            );
 
             this.notPinedMaxWidth =
                 tableContainer.clientWidth -
@@ -312,7 +318,9 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: number) => {
                 if (this.viewData.length) {
-                    let scroll = document.getElementById('scroll');
+                    let scroll = document.getElementById(
+                        TableHeadStringEnum.SCROLL
+                    );
                     scroll.scrollLeft = response;
                 }
             });
@@ -357,7 +365,9 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isScrollReset: boolean) => {
                 if (isScrollReset) {
-                    let scroll = document.getElementById('scroll');
+                    let scroll = document.getElementById(
+                        TableHeadStringEnum.SCROLL
+                    );
                     scroll.scrollLeft = 0;
                 }
             });
@@ -410,7 +420,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             this.tableService.sendColumnWidth({
                 event: event,
                 columns:
-                    event.section === 'not-pined'
+                    event.section === TableHeadStringEnum.NOT_PINED
                         ? this.notPinedColumns
                         : this.pinedColumns,
             });
@@ -448,8 +458,8 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             this.columns
                 .filter((a) => a.sortDirection && a.field !== column.field)
                 .forEach((c) => {
-                    c.sortDirection = '';
-                    this.sortDirection = 'desc';
+                    c.sortDirection = TableHeadStringEnum.EMPTY_STRING;
+                    this.sortDirection = TableHeadStringEnum.DESC;
                 });
 
             column.sortDirection = this.sortDirection;
@@ -462,7 +472,10 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                       column.sortDirection?.substr(1).toLowerCase())
                 : '';
 
-            this.headActions.emit({ action: 'sort', direction: directionSort });
+            this.headActions.emit({
+                action: TableHeadStringEnum.SORT,
+                direction: directionSort,
+            });
 
             this.changeDetectorRef.detectChanges();
         } else if (!column.sortable) {

@@ -1,4 +1,4 @@
 export interface TableHeadRowsPopoverData {
-    mySelection: any;
-    selectableRow: any;
+    mySelection: any[];
+    selectableRow: any[];
 }

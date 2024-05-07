@@ -57,6 +57,10 @@ export class TableHeadRowsComponent {
 
     constructor() {}
 
+    public trackByIdentity(_: number, item: any): string {
+        return item.name || item.title;
+    }
+
     public handleTableHeadRowsActionClick(event: any, action: string): void {
         const eventEmit: TableHeadRowsActionEmit = {
             event,
