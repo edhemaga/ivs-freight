@@ -34,6 +34,7 @@ export enum RepairOrderModalStringEnum {
     EDIT = 'edit',
     INACTIVE = 'inactive',
     ACTIVE = 'active',
+    FINISH_ORDER = 'finish-order',
 
     WIRE_TRANSFER = 'Wire Transfer',
     WIRE_TRANSFER_2 = 'WireTransfer',
@@ -74,6 +75,4 @@ export enum RepairOrderModalStringEnum {
 
     DOLLAR_SIGN = '$',
     EMPTY_SPACE_STRING = ' ',
-
-    SPECIFIC_REPAIR_SHOP = 'specific-repair-shop',
 }

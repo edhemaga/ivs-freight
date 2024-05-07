@@ -91,6 +91,7 @@
                 >
                     <div
                         class="align-items-center table-item"
+                        [ngClass]="{ valid: phoneItemsRow.valid }"
                         [formGroupName]="i"
                     >
                         <!-- Number & Delete -->
@@ -125,6 +126,9 @@
                                 maxLength: 14,
                                 hideRequiredCheck: true,
                                 hideErrorMessage: true,
+                                isInputBackgroundRemoved:
+                                    phoneItemsRow.valid &&
+                                    !isInputHoverRows[i][0],
                                 blackInput:
                                     getFormArray().at(i).get('phone').value &&
                                     !isInputHoverRows[i][0]
@@ -171,6 +175,9 @@
                                     placeholderIcon: 'phone-extension',
                                     hideRequiredCheck: true,
                                     hideErrorMessage: true,
+                                    isInputBackgroundRemoved:
+                                        phoneItemsRow.valid &&
+                                        !isInputHoverRows[i][1],
                                     blackInput:
                                         getFormArray().at(i).get('phoneExt')
                                             .value && !isInputHoverRows[i][1]
@@ -194,6 +201,9 @@
                                 dropdownWidthClass: 'w-col-110',
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
+                                isInputBackgroundRemoved:
+                                    phoneItemsRow.valid &&
+                                    !isInputHoverRows[i][2],
                                 blackInput:
                                     getFormArray().at(i).get('contactPhoneType')
                                         .value && !isInputHoverRows[i][2]
@@ -230,6 +240,7 @@
                     >
                         <div
                             class="align-items-center table-item"
+                            [ngClass]="{ valid: emailItemsRow.valid }"
                             [formGroupName]="i"
                         >
                             <!-- Number & Delete -->
@@ -265,6 +276,10 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        emailItemsRow.valid &&
+                                        !isInputHoverRows[i][0],
+
                                     blackInput:
                                         getFormArray().at(i).get('email')
                                             .value && !isInputHoverRows[i][0]
@@ -287,6 +302,10 @@
                                     dropdownWidthClass: 'w-col-110',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        emailItemsRow.valid &&
+                                        !isInputHoverRows[i][1],
+
                                     blackInput:
                                         getFormArray()
                                             .at(i)
@@ -331,6 +350,7 @@
                     >
                         <div
                             class="align-items-center table-item"
+                            [ngClass]="{ valid: repairBillItemRow.valid }"
                             [formGroupName]="i"
                         >
                             <div
@@ -361,6 +381,13 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][0],
+                                    isBlueText:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][0] &&
+                                        selectedTruckTrailerRepairPm[i],
                                     blackInput:
                                         getFormArray().at(i).get('description')
                                             .value && !isInputHoverRows[i][0]
@@ -373,12 +400,8 @@
                                 class="pm-dropdown-container"
                                 [ngClass]="{
                                     'hidden-pm-dropdown':
-                                        (!modalTableData.length &&
-                                            !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                                            !truckTrailerRepairPmOptions?.trailerPmDropdownList) ||
-                                        (modalTableData.length &&
-                                            !getFormArray().at(i).get('pm')
-                                                .value)
+                                        !truckTrailerRepairPmOptions?.truckPmDropdownList &&
+                                        !truckTrailerRepairPmOptions?.trailerPmDropdownList
                                 }"
                             >
                                 <app-ta-input-dropdown
@@ -393,17 +416,14 @@
                                         hideRequiredCheck: true,
                                         hideClear: true,
                                         isDropdown: true,
-                                        isIconInput:
+                                        isIconInput: true,
+                                        isValidIcon:
                                             selectedTruckTrailerRepairPm[i],
-                                        isValidIcon: repairBillItemRow?.valid,
                                         inputIcon:
                                             selectedTruckTrailerRepairPm[i]
-                                                ?.logoName,
-                                        dropdownWidthClass: 'w-col-200',
-                                        blackInput:
-                                            getFormArray().at(i).get('pm')
-                                                .value &&
-                                            !isInputHoverRows[i][1]
+                                                ?.logoName ||
+                                            'ic_custom_pm.svg',
+                                        dropdownWidthClass: 'w-col-200'
                                     }"
                                     [canAddNew]="
                                         truckTrailerRepairPmOptions?.truckPmDropdownList &&
@@ -423,8 +443,6 @@
                                             i
                                         )
                                     "
-                                    (mouseenter)="handleInputHover(true, i, 1)"
-                                    (mouseleave)="handleInputHover(false, i, 1)"
                                 ></app-ta-input-dropdown>
                             </div>
 
@@ -437,16 +455,22 @@
                                     placeholderInsteadOfLabel: true,
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase',
                                     isRequired: true,
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][1],
+                                    isBlueText:
+                                        repairBillItemRow.valid &&
+                                        !isInputHoverRows[i][1] &&
+                                        selectedTruckTrailerRepairPm[i],
                                     blackInput:
                                         getFormArray().at(i).get('quantity')
-                                            .value && !isInputHoverRows[i][2]
+                                            .value && !isInputHoverRows[i][1]
                                 }"
-                                (mouseenter)="handleInputHover(true, i, 2)"
-                                (mouseleave)="handleInputHover(false, i, 2)"
+                                (mouseenter)="handleInputHover(true, i, 1)"
+                                (mouseleave)="handleInputHover(false, i, 1)"
                             ></app-ta-input>
 
                             <ng-container *ngIf="!isRepairOrderTable">
@@ -457,25 +481,35 @@
                                         type: 'text',
                                         label: 'Price',
                                         placeholderInsteadOfLabel: true,
-                                        priceSeparator: true,
                                         priceSeparatorLimitation: 6,
                                         minLength: 5,
                                         maxLength: 64,
                                         isRequired: true,
-                                        textTransform: 'lowercase',
                                         hideErrorMessage: true,
                                         hideRequiredCheck: true,
+                                        priceSeparator: true,
+                                        priceSeparatorLimitation: 6,
+                                        isInputBackgroundRemoved:
+                                            repairBillItemRow.valid &&
+                                            !isInputHoverRows[i][2],
+                                        isBlueText:
+                                            repairBillItemRow.valid &&
+                                            !isInputHoverRows[i][2] &&
+                                            selectedTruckTrailerRepairPm[i],
                                         blackInput:
                                             getFormArray().at(i).get('price')
                                                 .value &&
-                                            !isInputHoverRows[i][3]
+                                            !isInputHoverRows[i][2]
                                     }"
-                                    (mouseenter)="handleInputHover(true, i, 3)"
-                                    (mouseleave)="handleInputHover(false, i, 3)"
+                                    (mouseenter)="handleInputHover(true, i, 2)"
+                                    (mouseleave)="handleInputHover(false, i, 2)"
                                 ></app-ta-input>
 
                                 <div
                                     class="subtotal d-flex justify-content-end"
+                                    [ngClass]="{
+                                        valid: selectedTruckTrailerRepairPm[i]
+                                    }"
                                 >
                                     <p class="m-0 ta-font-semi-bold">
                                         {{
@@ -508,6 +542,7 @@
                     >
                         <div
                             class="align-items-center table-item contact-item"
+                            [ngClass]="{ valid: contactItemRow.valid }"
                             [formGroupName]="i"
                         >
                             <div
@@ -539,6 +574,9 @@
                                         textTransform: 'uppercase',
                                         hideErrorMessage: true,
                                         hideRequiredCheck: true,
+                                        isInputBackgroundRemoved:
+                                            contactItemRow.valid &&
+                                            !isInputHoverRows[i][0],
                                         blackInput:
                                             getFormArray().at(i).get('fullName')
                                                 .value &&
@@ -561,6 +599,9 @@
                                     dropdownWidthClass: 'w-col-120',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        contactItemRow.valid &&
+                                        !isInputHoverRows[i][1],
                                     blackInput:
                                         getFormArray().at(i).get('departmant')
                                             .value && !isInputHoverRows[i][1]
@@ -588,9 +629,12 @@
                                     maxLength: 14,
                                     hideRequiredCheck: true,
                                     hideErrorMessage: true,
+                                    isInputBackgroundRemoved:
+                                        contactItemRow.valid &&
+                                        !isInputHoverRows[i][2],
                                     blackInput:
                                         getFormArray().at(i).get('phone')
-                                            .value && !isInputHoverRows[i][0]
+                                            .value && !isInputHoverRows[i][2]
                                 }"
                                 (mouseenter)="handleInputHover(true, i, 2)"
                                 (mouseleave)="handleInputHover(false, i, 2)"
@@ -608,9 +652,12 @@
                                     textTransform: 'uppercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        contactItemRow.valid &&
+                                        !isInputHoverRows[i][3],
                                     blackInput:
                                         getFormArray().at(i).get('ext').value &&
-                                        !isInputHoverRows[i][0]
+                                        !isInputHoverRows[i][3]
                                 }"
                                 (mouseenter)="handleInputHover(true, i, 3)"
                                 (mouseleave)="handleInputHover(false, i, 3)"
@@ -628,12 +675,15 @@
                                     textTransform: 'lowercase',
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true,
+                                    isInputBackgroundRemoved:
+                                        contactItemRow.valid &&
+                                        !isInputHoverRows[i][4],
                                     blackInput:
                                         getFormArray().at(i).get('email')
-                                            .value && !isInputHoverRows[i][0]
+                                            .value && !isInputHoverRows[i][4]
                                 }"
-                                (mouseenter)="handleInputHover(true, i, 0)"
-                                (mouseleave)="handleInputHover(false, i, 0)"
+                                (mouseenter)="handleInputHover(true, i, 4)"
+                                (mouseleave)="handleInputHover(false, i, 4)"
                             ></app-ta-input>
                         </div>
                     </ng-container>

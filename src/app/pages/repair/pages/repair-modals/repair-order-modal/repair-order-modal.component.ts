@@ -34,7 +34,6 @@ import moment from 'moment';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // pipes
-import { PriceCalculationArrayPipe } from '@pages/repair/pages/repair-modals/repair-order-modal/pipes/price-calculation-array.pipe';
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
@@ -45,7 +44,6 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { RepairService } from '@shared/services/repair.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // validators
 import {
@@ -73,6 +71,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // models
 import {
@@ -84,18 +83,23 @@ import {
     EnumValue,
     RepairShopShortResponse,
     RepairItemResponse,
+    TagResponse,
 } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { Subtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/subtotal.model';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { EditData } from '@shared/models/edit-data.model';
+import { ExtendedTruckMinimalResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-truck-minimal-response.model';
+import { ExtendedTrailerMinimalResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-trailer-minimal-response.model';
+import { ExtendedServiceTypeResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-service-type-response.model';
+import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-repair-shop-response.model';
 
 @Component({
     selector: 'app-repair-order-modal',
     templateUrl: './repair-order-modal.component.html',
     styleUrls: ['./repair-order-modal.component.scss'],
-    providers: [PriceCalculationArrayPipe, ModalService, FormService],
+    providers: [ModalService, FormService],
     standalone: true,
     imports: [
         // modules
@@ -120,13 +124,12 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         // Pipe
         ActiveItemsPipe,
         FormatPhonePipe,
-        PriceCalculationArrayPipe,
     ],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
     @ViewChild('t2') public popoverRef: NgbPopover;
 
-    @Input() editData: any;
+    @Input() editData: EditData;
 
     private destroy$ = new Subject<void>();
 
@@ -134,6 +137,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean = false;
 
     public isAddNewAfterSave: boolean = false;
+    public isFinishOrder: boolean = false;
 
     public hideIconIndex: number = 0;
 
@@ -160,10 +164,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public unitTrucks: TruckMinimalResponse[] = [];
     public unitTrailers: TrailerMinimalResponse[] = [];
 
-    public selectedUnit: any = null;
+    public selectedUnit:
+        | ExtendedTruckMinimalResponse
+        | ExtendedTrailerMinimalResponse;
     public selectedPayType: EnumValue;
     public selectedDriver: RepairDriverResponse;
-    public selectedRepairShop: any = null;
+    public selectedRepairShop: ExtendedRepairShopResponse;
 
     public isDriverSelected: boolean = false;
 
@@ -173,21 +179,22 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public isEachRepairRowValid: boolean = true;
     public isAnyRepairItemHasPmSelected: boolean = true;
+    public isResetSelectedPm: boolean = false;
 
     public repairItems: RepairItemResponse[] = [];
-    public updateRepairItems: RepairItemResponse[] = [];
+    public updatedRepairItems: RepairItemResponse[] = [];
     public subtotal: Subtotal[] = [];
     public total: number = 0;
 
     // services
-    public services: any[] = [];
+    public services: ExtendedServiceTypeResponse[] = [];
 
     // documents
     public documents: any[] = [];
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
 
-    public tags: any[] = [];
+    public tags: TagResponse[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -204,11 +211,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
-        private tagsService: EditTagsService,
-        private confirmationService: ConfirmationService,
-
-        // pipes
-        private priceArrayPipe: PriceCalculationArrayPipe
+        private tagsService: EditTagsService
     ) {}
 
     ngOnInit() {
@@ -218,16 +221,18 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         this.monitorDateInput();
 
-        this.checkIfTruckOrTrailerInit();
+        this.checkIsTruckOrTrailerInit();
 
-        if (!this.editData.data)
-            setTimeout(() => {
-                this.addItem();
-            }, 500);
+        this.addRepairItemOnInit();
+
+        this.checkIsFinishOrder();
     }
 
-    public trackByIdentity(_: number, item: any): string {
-        return item.value;
+    public trackByIdentity(
+        _: number,
+        item: ExtendedServiceTypeResponse
+    ): string {
+        return item.serviceType;
     }
 
     private createForm(): void {
@@ -276,7 +281,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    private checkIfTruckOrTrailerInit(): void {
+    private checkIsTruckOrTrailerInit(): void {
         const isTrailer = this.editData?.type
             ?.toLowerCase()
             ?.includes(RepairOrderModalStringEnum.TRAILER_2);
@@ -292,6 +297,25 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 : RepairOrderModalStringEnum.TRUCKS,
             false
         );
+    }
+
+    private checkIsFinishOrder(): void {
+        if (this.editData?.isFinishOrder) this.setIsFinishOrderData();
+    }
+
+    private setIsFinishOrderData(): void {
+        this.isFinishOrder = true;
+
+        let selectedHeaderTab = this.headerTabs?.find(
+            (headerTab) => !headerTab.checked
+        );
+
+        if (this.editData?.isFinishOrder)
+            selectedHeaderTab = this.headerTabs[0];
+
+        this.onModalHeaderTabChange(selectedHeaderTab);
+
+        this.getDrivers();
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -326,7 +350,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 if (
                     this.editData.type.includes(RepairOrderModalStringEnum.EDIT)
                 ) {
-                    this.updateRepair(this.editData.data.id);
+                    this.updateRepairById(this.editData.data.id);
                 } else {
                     this.addRepair();
                 }
@@ -341,6 +365,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             case RepairOrderModalStringEnum.DELETE:
                 if (this.editData.data)
                     this.deleteRepairById(this.editData.data.id);
+
+                break;
+            case RepairOrderModalStringEnum.FINISH_ORDER:
+                this.setIsFinishOrderData();
 
                 break;
             default:
@@ -427,6 +455,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         } else {
             this.truckOrTrailer = event.name;
 
+            if (!this.editData.data) this.isResetSelectedPm = true;
+
             setTimeout(() => {
                 this.unitTabs = this.unitTabs.map((item) => {
                     if (item.id === event.id) {
@@ -467,6 +497,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 this.selectedUnit = null;
                 this.selectedDriver = null;
                 this.driversDropdownList = [];
+
+                if (!this.editData.data) this.isResetSelectedPm = false;
             }, 100);
         }
     }
@@ -512,7 +544,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                 this.selectedUnit = event;
 
-                this.unitTabs.find((item) => item.checked).name ===
+                this.isResetSelectedPm = true;
+
+                this.unitTabs?.find((item) => item.checked).name ===
                 RepairOrderModalStringEnum.TRUCK
                     ? this.getRepairDropdowns(
                           this.selectedUnit?.id,
@@ -552,6 +586,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         false
                     );
                 }
+
+                setTimeout(() => {
+                    this.isResetSelectedPm = false;
+                }, 300);
 
                 break;
             case RepairOrderModalStringEnum.DRIVER:
@@ -705,7 +743,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public addItem(): void {
+    public addRepairItem(): void {
         if (!this.isEachRepairRowValid) return;
 
         this.isRepairBillRowCreated = true;
@@ -717,6 +755,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }, 400);
 
         this.changeDetector.detectChanges();
+    }
+
+    public addRepairItemOnInit(): void {
+        if (!this.editData.data)
+            setTimeout(() => {
+                this.addRepairItem();
+            }, 500);
     }
 
     public handleModalTableValueEmit(
@@ -765,7 +810,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.total = total;
     }
 
-    public handleServiceActiveClick(service: any): void {
+    public handleServiceActiveClick(
+        service: ExtendedServiceTypeResponse
+    ): void {
         service.isSelected = !service.isSelected;
 
         this.repairOrderForm
@@ -819,39 +866,40 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         let trailerId: number;
 
         if (this.truckOrTrailer === RepairOrderModalStringEnum.TRUCK) {
-            truckId = this.selectedUnit.id;
+            truckId = this.selectedUnit?.id;
         } else {
-            trailerId = this.selectedUnit.id;
+            trailerId = this.selectedUnit?.id;
         }
 
-        this.repairService
-            .getDriver(truckId, trailerId, formatedDate)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((driversList) => {
-                if (driversList.length) {
-                    this.driversDropdownList = driversList.map((item) => {
-                        return {
-                            ...item,
-                            name: item.firstName + ' ' + item.lastName,
-                        };
-                    });
+        if (truckId || trailerId)
+            this.repairService
+                .getDriver(truckId, trailerId, formatedDate)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((driversList) => {
+                    if (driversList.length) {
+                        this.driversDropdownList = driversList.map((item) => {
+                            return {
+                                ...item,
+                                name: item.firstName + ' ' + item.lastName,
+                            };
+                        });
 
-                    this.selectedDriver =
-                        this.driversDropdownList[
-                            this.driversDropdownList.length - 1
-                        ];
+                        this.selectedDriver =
+                            this.driversDropdownList[
+                                this.driversDropdownList.length - 1
+                            ];
 
-                    this.isDriverSelected = true;
-                } else {
-                    this.repairOrderForm
-                        .get(RepairOrderModalStringEnum.DRIVER)
-                        .reset();
+                        this.isDriverSelected = true;
+                    } else {
+                        this.repairOrderForm
+                            .get(RepairOrderModalStringEnum.DRIVER)
+                            .reset();
 
-                    this.selectedDriver = null;
+                        this.selectedDriver = null;
 
-                    this.isDriverSelected = true;
-                }
-            });
+                        this.isDriverSelected = true;
+                    }
+                });
     }
 
     private getRepairDropdowns(
@@ -957,20 +1005,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     this.editRepairById(this.editData.data);
                 } else {
                     this.startFormChanges();
-                }
-
-                // repair modal opened from repair shop details
-                if (
-                    this.editData?.type ===
-                    RepairOrderModalStringEnum.SPECIFIC_REPAIR_SHOP
-                ) {
-                    this.selectedRepairShop = this.repairShopDropdownList.find(
-                        (item) => item.id === this.editData.shopId
-                    );
-                    this.selectedRepairShop = {
-                        ...this.selectedRepairShop,
-                        address: this.selectedRepairShop?.address?.address,
-                    };
                 }
             });
     }
@@ -1198,15 +1232,17 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             name: repairType?.name,
             checked: true,
         };
-        const selectedTypeOfRepairTab = this.unitTabs.find(
+        const selectedTypeOfRepairTab = this.unitTabs?.find(
             (item) => item.name === unitType?.name
         );
-        const selectedServiceTab = this.serviceTabs.find(
+        const selectedServiceTab = this.serviceTabs?.find(
             (serviceTab) => serviceTab.id === shopServiceType?.id
         );
 
         // header tab
-        this.onModalHeaderTabChange(selectedHeaderTab);
+        if (!this.editData?.isFinishOrder) {
+            this.onModalHeaderTabChange(selectedHeaderTab);
+        }
 
         if (this.selectedHeaderTab === 1) {
             // pay type
@@ -1225,7 +1261,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // unit
         this.selectedUnit =
             unitType?.name === RepairOrderModalStringEnum.TRUCK
-                ? { ...truck, name: truck?.truckNumber }
+                ? {
+                      ...truck,
+                      name: truck?.truckNumber,
+                  }
                 : {
                       ...trailer,
                       name: trailer?.trailerNumber,
@@ -1243,7 +1282,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }
 
         // items
-        this.updateRepairItems = items.map((repairItem) => {
+        this.updatedRepairItems = items.map((repairItem) => {
             return {
                 ...repairItem,
                 pmTruck: repairItem?.pmTruck && {
@@ -1294,14 +1333,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             datePaid:
                 datePaid &&
                 MethodsCalculationsHelper.convertDateFromBackend(datePaid),
-            driver:
-                driver?.firstName +
-                RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
-                driver?.lastName,
+            driver: driver
+                ? driver?.firstName +
+                  RepairOrderModalStringEnum.EMPTY_SPACE_STRING +
+                  driver?.lastName
+                : null,
             odometer:
                 odometer &&
                 MethodsCalculationsHelper.convertNumberInThousandSep(odometer),
-            repairItems: JSON.stringify(this.updateRepairItems),
+            repairItems: JSON.stringify(this.updatedRepairItems),
             repairShopId: repairShop?.id ?? null,
             servicesHelper: JSON.stringify(this.services),
             note: editData.note,
@@ -1314,7 +1354,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         }, 1000);
     }
 
-    private updateRepair(id: number): void {
+    private updateRepairById(id: number): void {
         const {
             date,
             odometer,
@@ -1410,6 +1450,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             newData = {
                 ...form,
                 id,
+                finishOrder: this.isFinishOrder,
                 repairType: RepairOrderModalStringEnum.BILL,
                 truckId,
                 trailerId,
@@ -1483,7 +1524,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 ).value,
                 tableCost: RepairOrderModalStringEnum.DOLLAR_SIGN + this.total,
                 tableShopName: this.selectedRepairShop?.name,
-                repairType: this.headerTabs.find(
+                repairType: this.headerTabs?.find(
                     (headerTab) => headerTab.checked
                 ),
             },

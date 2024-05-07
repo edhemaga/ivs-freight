@@ -1,4 +1,3 @@
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -12,30 +11,31 @@ import {
     ChangeDetectorRef,
     ChangeDetectionStrategy,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// icon
-import { AngularSvgIconModule } from 'angular-svg-icon';
+// modules
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
-//services
+// components
+import { TableHeadBorderComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-border/table-head-border.component';
+import { TableHeadRowsComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-rows/table-head-rows.component';
+import { TableHeadActionsComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-actions/table-head-actions.component';
+
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-
-// directives
-import { ResizeColumnDirective } from '@shared/components/ta-table/ta-table-head/directives/resize-column.directive';
-
-// pipe
-import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableHeadStringEnum } from '@shared/components/ta-table/ta-table-head/enums/table-head-string.enum';
 
-const rotate: { [key: string]: any } = {
-    asc: '',
-    desc: 'asc',
-    '': 'desc',
-};
+// models
+import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-head/models/table-head-rows-action-emit.model';
 
 @Component({
     selector: 'app-ta-table-head',
@@ -43,126 +43,91 @@ const rotate: { [key: string]: any } = {
     styleUrls: ['./ta-table-head.component.scss'],
     standalone: true,
     imports: [
+        // modules
         CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AngularSvgIconModule,
         NgbModule,
-        ResizeColumnDirective,
         DragDropModule,
         NgbPopoverModule,
-        ToolbarTableHeadTitlePipe,
+
+        // components
+        TableHeadBorderComponent,
+        TableHeadRowsComponent,
+        TableHeadActionsComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() columns: any[];
     @Input() options: any;
     @Input() tableData: any[];
     @Input() viewData: any[];
+
     @Output() headActions: EventEmitter<any> = new EventEmitter();
-    mySelection: any[] = [];
-    locked: boolean = true;
-    reordering: boolean = false;
-    rezaizeing: boolean = false;
-    optionsPopup: any;
-    visibleColumns: any[] = [];
-    pinedColumns: any[] = [];
-    pinedWidth: number = 0;
-    notPinedColumns: any[] = [];
-    actionsWidth: number = 0;
-    actionColumns: any[] = [];
-    resizeHitLimit: number = -1;
-    resizeIsPined: boolean;
-    notPinedMaxWidth: number = 0;
-    sortDirection: string = '';
-    tableConfigurationType: string = '';
-    selectableRow: any[] = [];
-    showBorder: boolean = false;
+
+    private destroy$ = new Subject<void>();
+
+    private rotate: { [key: string]: any } = {
+        asc: '',
+        desc: 'asc',
+        '': 'desc',
+    };
+
+    public mySelection: any[] = [];
+
+    public locked: boolean = true;
+    public reordering: boolean = false;
+    public resizing: boolean = false;
+    public showBorder: boolean = false;
+    public resizeIsPined: boolean;
 
     public isRepairUnitStringBoolean: boolean = false;
     public isRepairShopDetailsStringBoolean: boolean = false;
     public isRepairItemDetailsStringBoolean: boolean = false;
+
+    public visibleColumns: any[] = [];
+    public pinedColumns: any[] = [];
+    public pinedWidth: number = 0;
+    public notPinedColumns: any[] = [];
+    public actionsWidth: number = 0;
+    public actionColumns: any[] = [];
+    public resizeHitLimit: number = -1;
+    public notPinedMaxWidth: number = 0;
+    public sortDirection: string = '';
+    public tableConfigurationType: string = '';
+    public selectableRow: any[] = [];
 
     constructor(
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef
     ) {}
 
-    // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
         this.setColumnNameUpperCase();
+
         this.setVisibleColumns();
+
         this.getActiveTableData();
+
         this.getSelectableRows();
 
-        // Get Table Width
-        this.tableService.currentSetTableWidth
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                this.getNotPinedMaxWidth();
-            });
+        this.getTableWidth();
 
-        // Scroll
-        this.tableService.currentScroll
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: number) => {
-                if (this.viewData.length) {
-                    let scroll = document.getElementById('scroll');
-                    scroll.scrollLeft = response;
-                }
-            });
+        this.getTableScroll();
 
-        // Rows Selected
-        this.tableService.currentRowsSelected
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any[]) => {
-                this.mySelection = response;
+        this.getRowsSelected();
 
-                this.changeDetectorRef.detectChanges();
-            });
+        this.getUnlockTable();
 
-        // Unlock Table
-        this.tableService.currentUnlockTable
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response: any) => {
-                if (response.toaggleUnlockTable) {
-                    this.locked = !this.locked;
+        this.getIsScrollShowing();
 
-                    this.changeDetectorRef.detectChanges();
-                }
-            });
-
-        // Is Scroll Showing
-        this.tableService.isScrollShownig
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isScrollShownig: boolean) => {
-                if (this.showBorder !== isScrollShownig) {
-                    this.showBorder = isScrollShownig;
-
-                    this.changeDetectorRef.detectChanges();
-                }
-            });
-
-        this.tableService.isScrollReseting
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isScrollReset: boolean) => {
-                if (isScrollReset) {
-                    let scroll = document.getElementById('scroll');
-                    scroll.scrollLeft = 0;
-
-                    // this.changeDetectorRef.detectChanges();
-                }
-            });
+        this.getIsScrollReseting();
 
         setTimeout(() => {
             this.getNotPinedMaxWidth();
         }, 10);
     }
 
-    // --------------------------------NgOnChanges---------------------------------
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges): void {
         if (changes?.columns && !changes?.columns?.firstChange) {
             this.columns = changes.columns.currentValue;
 
@@ -191,10 +156,9 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Set Column Name To Upper Case
-    setColumnNameUpperCase() {
+    private setColumnNameUpperCase(): void {
         this.columns = this.columns.map((column) => {
-            let headTitle = column.groupName
+            const headTitle = column.groupName
                 ? column.title.replace(column.groupName, '')
                 : column.title;
 
@@ -204,15 +168,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    // Get Active Table Data
-    getActiveTableData() {
-        const td = this.tableData.find((t) => t.isActive);
-
-        this.tableConfigurationType = td.tableConfiguration;
-    }
-
-    // Set Visible Column
-    setVisibleColumns(getNotPinedMaxWidth?: boolean) {
+    private setVisibleColumns(getNotPinedMaxWidth?: boolean): void {
         this.visibleColumns = [];
         this.pinedColumns = [];
         this.notPinedColumns = [];
@@ -286,8 +242,51 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Get Not Pined Section Of Table Max Width
-    getNotPinedMaxWidth() {
+    private setVisibleTableHead(data): void {
+        data.showRepairTitle = false;
+
+        if (
+            !this.isRepairUnitStringBoolean &&
+            data.groupName === TableStringEnum.UNIT
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairUnitStringBoolean = true;
+        }
+        if (
+            !this.isRepairShopDetailsStringBoolean &&
+            data.groupName === TableStringEnum.SHOP_DETAIL
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairShopDetailsStringBoolean = true;
+        }
+        if (
+            !this.isRepairItemDetailsStringBoolean &&
+            data.groupName === TableStringEnum.ITEM_DETAIL
+        ) {
+            data.showRepairTitle = true;
+            this.isRepairItemDetailsStringBoolean = true;
+        }
+    }
+
+    private getActiveTableData(): void {
+        const tableData = this.tableData.find(
+            (tableData) => tableData.isActive
+        );
+
+        this.tableConfigurationType = tableData.tableConfiguration;
+    }
+
+    private getSelectableRows(): void {
+        const selectable = [];
+
+        this.viewData.map((data: any, index: number) => {
+            if (!data?.tableCantSelect) selectable.push(index);
+        });
+
+        this.selectableRow = [...selectable];
+    }
+
+    private getNotPinedMaxWidth(): void {
         if (this.viewData.length) {
             const tableContainer = document.querySelector('.table-container');
 
@@ -300,8 +299,143 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Sort
-    sortHeaderClick(column: any): void {
+    private getTableWidth(): void {
+        this.tableService.currentSetTableWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.getNotPinedMaxWidth();
+            });
+    }
+
+    private getTableScroll(): void {
+        this.tableService.currentScroll
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: number) => {
+                if (this.viewData.length) {
+                    let scroll = document.getElementById('scroll');
+                    scroll.scrollLeft = response;
+                }
+            });
+    }
+
+    private getRowsSelected(): void {
+        this.tableService.currentRowsSelected
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any[]) => {
+                this.mySelection = response;
+
+                this.changeDetectorRef.detectChanges();
+            });
+    }
+
+    private getUnlockTable(): void {
+        this.tableService.currentUnlockTable
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response: any) => {
+                if (response.toaggleUnlockTable) {
+                    this.locked = !this.locked;
+
+                    this.changeDetectorRef.detectChanges();
+                }
+            });
+    }
+
+    private getIsScrollShowing(): void {
+        this.tableService.isScrollShownig
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollShownig: boolean) => {
+                if (this.showBorder !== isScrollShownig) {
+                    this.showBorder = isScrollShownig;
+
+                    this.changeDetectorRef.detectChanges();
+                }
+            });
+    }
+
+    private getIsScrollReseting(): void {
+        this.tableService.isScrollReseting
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isScrollReset: boolean) => {
+                if (isScrollReset) {
+                    let scroll = document.getElementById('scroll');
+                    scroll.scrollLeft = 0;
+                }
+            });
+    }
+
+    private onSelect(action: string): void {
+        this.tableService.sendSelectOrDeselect(action);
+    }
+
+    private onSelectedOptions(selectedPopover: NgbPopover): void {
+        if (selectedPopover.isOpen()) {
+            selectedPopover.close();
+        } else {
+            selectedPopover.open({});
+        }
+    }
+
+    private onReorder(event: CdkDragDrop<any>): void {
+        let previousIndex: number = null,
+            currentIndex: number = null;
+
+        this.columns.map((c, i) => {
+            if (this.notPinedColumns[event.previousIndex].field === c.field) {
+                previousIndex = i;
+            }
+
+            if (this.notPinedColumns[event.currentIndex].field === c.field) {
+                currentIndex = i;
+            }
+        });
+
+        let column: any[] = this.columns.splice(previousIndex, 1);
+
+        this.columns.splice(currentIndex, 0, column[0]);
+
+        localStorage.setItem(
+            `table-${this.tableConfigurationType}-Configuration`,
+            JSON.stringify(this.columns)
+        );
+
+        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
+
+        this.setVisibleColumns();
+    }
+
+    private onResize(event: any): void {
+        this.resizing = event.isResizeing;
+
+        if (this.resizing && !event.beyondTheLimits) {
+            this.tableService.sendColumnWidth({
+                event: event,
+                columns:
+                    event.section === 'not-pined'
+                        ? this.notPinedColumns
+                        : this.pinedColumns,
+            });
+
+            this.getNotPinedMaxWidth();
+        }
+
+        if (event.beyondTheLimits) {
+            this.resizeHitLimit = event.index;
+            this.resizeIsPined = event.isPined;
+
+            setTimeout(() => {
+                this.resizeHitLimit = -1;
+            }, 1000);
+        }
+
+        if (!event.isResizeing) {
+            localStorage.setItem(
+                `table-${this.tableConfigurationType}-Configuration`,
+                JSON.stringify(this.columns)
+            );
+        }
+    }
+
+    private sortHeaderClick(column: any): void {
         if (
             column.field &&
             column.sortable &&
@@ -309,7 +443,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             this.viewData.length > 1 &&
             column.sortName
         ) {
-            this.sortDirection = rotate[this.sortDirection];
+            this.sortDirection = this.rotate[this.sortDirection];
 
             this.columns
                 .filter((a) => a.sortDirection && a.field !== column.field)
@@ -342,99 +476,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    // Reorder
-    onReorder(event: CdkDragDrop<any>) {
-        let previousIndex: number = null,
-            currentIndex: number = null;
-
-        this.columns.map((c, i) => {
-            if (this.notPinedColumns[event.previousIndex].field === c.field) {
-                previousIndex = i;
-            }
-
-            if (this.notPinedColumns[event.currentIndex].field === c.field) {
-                currentIndex = i;
-            }
-        });
-
-        let column: any[] = this.columns.splice(previousIndex, 1);
-
-        this.columns.splice(currentIndex, 0, column[0]);
-
-        localStorage.setItem(
-            `table-${this.tableConfigurationType}-Configuration`,
-            JSON.stringify(this.columns)
-        );
-
-        this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
-
-        this.setVisibleColumns();
-    }
-
-    // Rezaize
-    onResize(event: any) {
-        this.rezaizeing = event.isResizeing;
-
-        if (this.rezaizeing && !event.beyondTheLimits) {
-            this.tableService.sendColumnWidth({
-                event: event,
-                columns:
-                    event.section === 'not-pined'
-                        ? this.notPinedColumns
-                        : this.pinedColumns,
-            });
-
-            this.getNotPinedMaxWidth();
-        }
-
-        if (event.beyondTheLimits) {
-            this.resizeHitLimit = event.index;
-            this.resizeIsPined = event.isPined;
-
-            setTimeout(() => {
-                this.resizeHitLimit = -1;
-            }, 1000);
-        }
-
-        if (!event.isResizeing) {
-            localStorage.setItem(
-                `table-${this.tableConfigurationType}-Configuration`,
-                JSON.stringify(this.columns)
-            );
-        }
-    }
-
-    // Open Row Select Popup
-    onSelectedOptions(selectedPopover: any) {
-        this.optionsPopup = selectedPopover;
-
-        if (selectedPopover.isOpen()) {
-            selectedPopover.close();
-        } else {
-            selectedPopover.open({});
-        }
-    }
-
-    // Get Selectable Row
-    getSelectableRows() {
-        let selectable = [];
-
-        this.viewData.map((data: any, index: number) => {
-            if (!data?.tableCantSelect) {
-                selectable.push(index);
-            }
-        });
-
-        this.selectableRow = [...selectable];
-    }
-
-    // On Select Option From Select Popup
-    onSelect(action: string) {
-        this.tableService.sendSelectOrDeselect(action);
-    }
-
-    // Remove Column
-    onRemoveColumn(column: any) {
+    private onRemoveColumn(column: any): void {
         this.columns.map((c) => {
             if (c.field === column.field) {
                 c.hidden = true;
@@ -451,32 +493,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
     }
 
-    public setVisibleTableHead(data): void {
-        data.showRepairTitle = false;
-        if (
-            !this.isRepairUnitStringBoolean &&
-            data.groupName === TableStringEnum.UNIT
-        ) {
-            data.showRepairTitle = true;
-            this.isRepairUnitStringBoolean = true;
-        }
-        if (
-            !this.isRepairShopDetailsStringBoolean &&
-            data.groupName === TableStringEnum.SHOP_DETAIL
-        ) {
-            data.showRepairTitle = true;
-            this.isRepairShopDetailsStringBoolean = true;
-        }
-        if (
-            !this.isRepairItemDetailsStringBoolean &&
-            data.groupName === TableStringEnum.ITEM_DETAIL
-        ) {
-            data.showRepairTitle = true;
-            this.isRepairItemDetailsStringBoolean = true;
-        }
-    }
-    // Pin Column
-    onPinColumn(column: any) {
+    private onPinColumn(column: any): void {
         column.isPined = !column.isPined;
 
         localStorage.setItem(
@@ -491,7 +508,41 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.changeDetectorRef.detectChanges();
     }
 
-    // --------------------------------ON DESTROY---------------------------------
+    public tableHeadRowsActionEmit(event: TableHeadRowsActionEmit): void {
+        switch (event.action) {
+            case TableHeadStringEnum.SELECTION:
+                this.onSelect(event.event);
+
+                break;
+            case TableHeadStringEnum.SELECTED_OPTIONS:
+                this.onSelectedOptions(event.event);
+
+                break;
+            case TableHeadStringEnum.REORDER:
+                this.onReorder(event.event);
+
+                break;
+            case TableHeadStringEnum.RESIZE:
+                this.onResize(event.event);
+
+                break;
+            case TableHeadStringEnum.SORT:
+                this.sortHeaderClick(event.event);
+
+                break;
+            case TableHeadStringEnum.REMOVE_COLUMN:
+                this.onRemoveColumn(event.event);
+
+                break;
+            case TableHeadStringEnum.PIN_COLUMN:
+                this.onPinColumn(event.event);
+
+                break;
+            default:
+                break;
+        }
+    }
+
     ngOnDestroy(): void {
         this.tableService.sendColumnsOrder({});
         this.tableService.sendColumnWidth({});

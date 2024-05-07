@@ -80,7 +80,7 @@ export class RepairTableHelper {
             },
             {
                 title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
+                name: TableStringEnum.DELETE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                 svgStyle: {
                     width: 18,

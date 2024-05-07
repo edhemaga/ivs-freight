@@ -76,7 +76,6 @@ export class RepairDetailsService {
             search2
         );
     }
-
     // Get Repair Minimal List
     public getRepairShopMinimalList(
         pageIndex?: number,

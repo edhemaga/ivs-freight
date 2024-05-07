@@ -239,7 +239,8 @@
                                     !resendEmail &&
                                     !loadModalTemplate &&
                                     !mapSettingsModal &&
-                                    !mapRouteModal
+                                    !mapRouteModal &&
+                                    !isFinishOrder
                                 "
                             >
                                 <button
@@ -370,7 +371,11 @@
                                 </button>
                             </ng-container>
 
-                            <ng-container *ngIf="editData.finishOrderBtn">
+                            <ng-container
+                                *ngIf="
+                                    editData.finishOrderBtn && !isFinishOrder
+                                "
+                            >
                                 <button
                                     (click)="onAction('finish-order')"
                                     class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
@@ -546,8 +551,8 @@
                                         ? 'Saving'
                                         : editData?.type?.includes('edit') ||
                                           editData?.type?.includes('payroll')
-                                        ? editData?.type?.includes('fo')
-                                            ? 'Save'
+                                        ? isFinishOrder
+                                            ? 'Finish'
                                             : 'Save Changes'
                                         : 'Save'
                                 }}
@@ -631,7 +636,7 @@
                                     'truck',
                                     'owner',
                                     'repair',
-                                    'repair-shop',
+                                    'repair_shop',
                                     'info',
                                     'repair-detail',
                                     'repair-review'

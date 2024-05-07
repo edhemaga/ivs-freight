@@ -833,6 +833,7 @@ model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
 model/ssnFeedbackResponse.ts
 model/stateResponse.ts
+model/statusSetCompanyUserCommand.ts
 model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
 model/statusSetMultipleDriverCommand.ts

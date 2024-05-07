@@ -642,12 +642,13 @@
                         .not-allowed-action {
                             width: 14px !important;
                             margin-right: 6px !important;
-                            display: flex;
-                            justify-content: center;
-                            align-self: center;
 
                             svg-icon {
                                 display: flex;
+
+                                path {
+                                    fill: $ta-blue-13;
+                                }
                             }
                         }
 

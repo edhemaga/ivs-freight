@@ -762,6 +762,7 @@ export * from './sphPreviousEmployerProspectResponse';
 export * from './splitLoadResponse';
 export * from './ssnFeedbackResponse';
 export * from './stateResponse';
+export * from './statusSetCompanyUserCommand';
 export * from './statusSetMultipleBrokerCommand';
 export * from './statusSetMultipleCompanyUserCommand';
 export * from './statusSetMultipleDriverCommand';
