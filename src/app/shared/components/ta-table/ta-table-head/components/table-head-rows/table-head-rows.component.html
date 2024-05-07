@@ -628,7 +628,11 @@
                                     column.sortDirection,
                                 'th-title-locked-cursor':
                                     tableHeadRowsData?.locked,
-                                'set-center-th-title': column.setCenter
+                                'set-center-th-title': column.setCenter,
+                                'border-left':
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle
+                                    | tableHeadBorder : column.tableHeadTitle
                             }"
                         >
                             {{ column.tableHeadTitle }}
