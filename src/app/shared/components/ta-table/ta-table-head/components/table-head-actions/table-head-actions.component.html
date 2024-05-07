@@ -9,7 +9,8 @@
     <ng-container
         *ngFor="
             let column of tableHeadActionsData?.actionColumns;
-            let i = index
+            let i = index;
+            trackBy: trackByIdentity
         "
     >
         <th

@@ -28,4 +28,8 @@ export class TableHeadActionsComponent {
     @Input() tableHeadActionsData: TableHeadActionsData;
 
     constructor() {}
+
+    public trackByIdentity(_: number, item: any): string {
+        return item.title;
+    }
 }

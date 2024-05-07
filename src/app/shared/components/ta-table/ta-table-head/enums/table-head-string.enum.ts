@@ -6,4 +6,16 @@ export enum TableHeadStringEnum {
     PIN_COLUMN = 'pin-column',
     SELECTION = 'selection',
     SELECTED_OPTIONS = 'selected-options',
+
+    IS_PINED = 'isPined',
+    NOT_PINED = 'not-pined',
+    EMPTY_STRING = '',
+    CHECKBOX = 'checkbox',
+    USER_CHECKBOX = 'user-checkbox',
+    REPAIR = 'Repair',
+
+    TABLE_CONTAINER_CLASS = '.table-container',
+    SCROLL = 'scroll',
+
+    DESC = 'desc',
 }
