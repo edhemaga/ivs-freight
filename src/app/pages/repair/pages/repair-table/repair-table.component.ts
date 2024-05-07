@@ -383,54 +383,48 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     if (res.queryParams?.length) {
                         switch (res.filterType) {
                             case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                                if (res.queryParams?.length) {
-                                    this.backFilterQuery.categoryIds =
-                                        res.queryParams;
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.backFilterQuery.categoryIds =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             case RepairTableStringEnum.PM_FILTER:
-                                if (res.queryParams?.length) {
-                                    this.backFilterQuery.pmTruckTitles =
-                                        res.queryParams;
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.backFilterQuery.pmTruckTitles =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             case RepairTableStringEnum.TRAILER_FILTER:
-                                if (res.queryParams?.length) {
-                                    this.backFilterQuery.trailerNumbers =
-                                        res.queryParams;
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.backFilterQuery.trailerNumbers =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             case RepairTableStringEnum.TRUCK_FILTER:
-                                if (res.queryParams?.length) {
-                                    this.backFilterQuery.truckNumbers =
-                                        res.queryParams;
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.backFilterQuery.truckNumbers =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             case RepairTableStringEnum.TIME_FILTER:
-                                if (res.queryParams?.length) {
-                                    const { fromDate, toDate } =
-                                        RepairTableDateFormaterHelper.getDateRange(
-                                            res.queryParams?.timeSelected
-                                        );
-                                    this.backFilterQuery.dateTo = toDate;
-                                    this.backFilterQuery.dateFrom = fromDate;
+                                const { fromDate, toDate } =
+                                    RepairTableDateFormaterHelper.getDateRange(
+                                        res.queryParams?.timeSelected
+                                    );
+                                this.backFilterQuery.dateTo = toDate;
+                                this.backFilterQuery.dateFrom = fromDate;
 
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             case RepairTableStringEnum.MONEY_FILTER:
-                                if (res.queryParams?.length) {
-                                    this.backFilterQuery.costFrom =
-                                        res.queryParams?.singleFrom;
-                                    this.backFilterQuery.costTo =
-                                        res.queryParams?.singleTo;
+                                this.backFilterQuery.costFrom =
+                                    res.queryParams?.singleFrom;
+                                this.backFilterQuery.costTo =
+                                    res.queryParams?.singleTo;
 
-                                    this.repairBackFilter(this.backFilterQuery);
-                                }
+                                this.repairBackFilter(this.backFilterQuery);
+
                                 break;
                             default:
                                 this.sendRepairData();
