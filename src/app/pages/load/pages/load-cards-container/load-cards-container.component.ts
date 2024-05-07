@@ -134,7 +134,7 @@ export class LoadCardsContainerComponent implements OnInit, OnDestroy, OnChanges
 
     // When checkbox is selected
     public onCheckboxSelect(event: { index: number; card: CardDetails }): void {
-        let { index, card } = event;
+        const { index, card } = event;
 
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -158,7 +158,7 @@ export class LoadCardsContainerComponent implements OnInit, OnDestroy, OnChanges
     }
 
     public goToDetailsPage(event: { card: CardDetails; link: string }): void {
-        let { card, link } = event;
+        const { card, link } = event;
 
         this.detailsDataService.setNewData(card);
 

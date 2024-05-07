@@ -10,7 +10,7 @@ import { Pipe, PipeTransform, TrackByFunction } from '@angular/core';
     standalone: true,
 })
 export class TrackByPropertyPipe implements PipeTransform {
-    transform<T>(parameter: string): TrackByFunction<any> {
+    transform<T>(parameter: string): TrackByFunction<T> {
         return (index: number, item: T) => {
             if (parameter) {
                 return item[parameter];
