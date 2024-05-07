@@ -679,7 +679,7 @@
                                       conditionType: 'heading',
                                       title: column.title
                                   };
-                        else specialHeading
+                        else swTwHeading
                     "
                 >
                     <div
@@ -703,54 +703,6 @@
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         {{ column.title }}
-                    </div>
-                </ng-container>
-            </ng-template>
-
-            <!-- Special Heading -->
-
-            <ng-template #specialHeading>
-                <ng-container
-                    *ngIf="
-                        column.ngTemplate
-                            | tableHeadConditions
-                                : {
-                                      conditionType: 'special-heading'
-                                  };
-                        else swTwHeading
-                    "
-                >
-                    <div
-                        class="d-flex special-title"
-                        [ngStyle]="{
-                            'min-width.px':
-                                column.resizable && !tableHeadRowsData?.locked
-                                    ? column.width - 100
-                                    : column.width
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': tableHeadRowsData?.locked
-                        }"
-                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
-                    >
-                        <ng-container
-                            *ngFor="
-                                let title of column.headTitle;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div
-                                class="ta-font-bold title"
-                                [ngStyle]="{
-                                    'width.px': title.width
-                                }"
-                            >
-                                {{ title.title }}
-                            </div>
-                        </ng-container>
                     </div>
                 </ng-container>
             </ng-template>
