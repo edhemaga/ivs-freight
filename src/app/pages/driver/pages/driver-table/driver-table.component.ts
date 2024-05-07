@@ -15,10 +15,10 @@ import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/
 import { ModalService } from '@shared/services/modal.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ApplicantService } from '@shared/services/applicant.service';
 import { AddressService } from '@shared/services/address.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // store
 import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
@@ -36,13 +36,11 @@ import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
-// Globals
+// helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
-import { GridColumn } from '@shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -56,22 +54,21 @@ import { getLoadModalColumnDefinition } from '@shared/utils/settings/modal-setti
 import { getDriverApplicantColumnsDefinition } from '@shared/utils/settings/table-settings/driver-applicant-columns';
 import { getDriverColumnsDefinition } from '@shared/utils/settings/table-settings/driver-columns';
 
-// helpers
-import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
-
 // models
-import { MappedApplicantData } from '@pages/driver/pages/driver-table/models/mapped-applicant-data.model';
-import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
-import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
-import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
-import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
-import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import {
     ApplicantShortResponse,
     DriverListResponse,
     DriverResponse,
 } from 'appcoretruckassist';
+import { FilterOptionApplicant } from '@pages/driver/pages/driver-table/models/filter-option-applicant.model';
+import { TableHeadActions } from '@pages/driver/pages/driver-table/models/table-head-actions.model';
+import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
+import { FilterOptionDriver } from '@pages/driver/pages/driver-table/models/filter-option-driver.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { GridColumn } from '@shared/models/table-models/grid-column.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 
 @Component({
     selector: 'app-driver-table',
@@ -93,7 +90,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public driversActive: DriversActiveState[] = [];
     public driversInactive: DriversInactiveState[] = [];
     public applicantData: ApplicantShortResponse[] = [];
-    public loadingPage: boolean = true;
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
     public activeTableData: CardTableData;
@@ -138,8 +134,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private tableService: TruckassistTableService,
         private driverService: DriverService,
-        private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService,
+        private imageBase64Service: ImageBase64Service,
 
         // store
         private driversActiveQuery: DriversActiveQuery,
@@ -150,8 +146,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // pipes
         private datePipe: DatePipe,
-        private nameInitialsPipe: NameInitialsPipe,
-        private thousandSeparator: ThousandSeparatorPipe
+        private thousandSeparator: ThousandSeparatorPipe,
+        private nameInitialsPipe: NameInitialsPipe
     ) {}
 
     ngOnInit(): void {
@@ -176,8 +172,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.deleteSelectedRow();
 
         this.driverActions();
-
-        this.loadingPage = false;
     }
 
     ngAfterViewInit(): void {
@@ -282,7 +276,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
-                if (response && !this.loadingPage) {
+                if (response) {
                     this.sendDriverData();
                 }
             });
@@ -371,7 +365,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
-                if (response.length && !this.loadingPage) {
+                if (response.length) {
                     let mappedRes = response.map((item) => {
                         return {
                             id: item.id,
@@ -682,15 +676,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private setDriverData(tableData: CardTableData): void {
         this.columns = tableData.gridColumns;
-
+        console.log('tableData.data', tableData.data);
         if (tableData.data.length) {
-            this.viewData = tableData.data;
-
-            this.viewData = this.viewData.map((data: any) => {
+            this.viewData = tableData.data.map((data: any) => {
                 return this.selectedTab === TableStringEnum.APPLICANTS
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
+
+            console.log('MAPPED this.viewData', this.viewData);
 
             // Set data for cards based on selected tab
             this.sendDataToCardsOnTabSwitch();
@@ -700,6 +694,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
             this.viewData = [];
         }
+
         this.driverTableData = this.viewData;
     }
 
@@ -724,158 +719,126 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // TODO find model for this data
-    private mapDriverData(data): DriverResponse {
-        if (!data?.avatar) this.mapingIndex++;
+    private mapDriverData(data: any): any {
+        const {
+            avatar,
+            fullName,
+            dateOfBirth,
+            ssn,
+            phone,
+            email,
+            address,
+            owner,
+            payType,
+            bankName,
+            routing,
+            emergencyContactPhone,
+            twicExpirationDays,
+            fuelCardNumber,
+            cdlNumber,
+            cdls,
+            cdlExpirationDays,
+            cdlPercentage,
+            medicalExpirationDays,
+            medicalPercentage,
+            mvrExpirationDays,
+            mvrPercentage,
+            general,
+            payroll,
+            hired,
+            fileCount,
+        } = data;
+
+        if (!avatar) this.mapingIndex++;
 
         return {
-            ...data,
             isSelected: false,
-            isOwner: data?.owner ? data.owner : false,
-            textShortName: this.nameInitialsPipe.transform(data.fullName),
-            avatarColor: this.getAvatarColors(),
-            avatarImg: data?.avatar
-                ? this.imageBase64Service.sanitizer(data.avatar)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAddress: data.address.address
-                ? data.address.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDOB: data.dateOfBirth
-                ? this.datePipe.transform(
-                      data.dateOfBirth,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAssignedUnitTruck: TableStringEnum.NA,
-            tableAssignedUnitTruckType: TableStringEnum.NA,
-            tableAssignedUnitTrailer: TableStringEnum.NA,
-            tableAssignedUnitTrailerType: TableStringEnum.NA,
-            tablePayrollDetailType: data?.payType?.name
-                ? data.payType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableBankDetailBankName: data?.bank?.name
-                ? data.bank.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableBankDetailRouting: data.routing
-                ? data.routing
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOwnerDetailsType: data?.owner?.ownerType?.name
-                ? data.owner.ownerType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOwnerDetailsBusinesName: data?.owner?.name
-                ? data.owner.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOwnerDetailsEin: data?.owner?.ssnEin
-                ? data.owner.ssnEin
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOffDutyLocation: TableStringEnum.NA,
-            tableEmergContact: data?.emergencyContactPhone
-                ? data.emergencyContactPhone
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTwicExp: TableStringEnum.NA,
-            tableFuelCardDetailNumber: data?.fuelCard
-                ? data.fuelCard
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableFuelCardDetailType: TableStringEnum.NA,
-            tableFuelCardDetailAccount: TableStringEnum.NA,
-            tableCdlDetailNumber: data?.cdlNumber
-                ? data.cdlNumber
-                : data?.cdls?.length
-                ? data.cdls[0].cdlNumber
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailState: data.address.stateShortName
-                ? data.address.stateShortName
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableCdlDetailEndorsment: data.cdls
-                ? data.cdls[0]?.cdlEndorsements.map(
-                      (endorsement) => endorsement.code
-                  )
+            isOwner: owner ?? false,
+            textShortName: this.nameInitialsPipe.transform(fullName),
+            avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
+            avatarImg: avatar
+                ? this.imageBase64Service.sanitizer(avatar)
                 : null,
-            tableCdlDetailRestriction: data.cdls
-                ? data.cdls[0]?.cdlRestrictions.map(
-                      (restriction) => restriction.code
-                  )
+            fullName,
+            tableDOB: dateOfBirth
+                ? MethodsCalculationsHelper.convertDateFromBackend(dateOfBirth)
                 : null,
+            ssn,
+            phone,
+            email,
+            tableAddress: address?.address,
+            tableOwnerDetailsType: owner?.ownerType?.name,
+            tableOwnerDetailsBusinesName: owner?.name,
+            tableOwnerDetailsEin: owner?.ssnEin,
+            tablePayrollDetailType: payType?.name,
+            tableBankDetailBankName: bankName,
+            tableBankDetailRouting: routing,
+            tableEmergContact: emergencyContactPhone,
+            tableTwicExp: twicExpirationDays,
+            tableFuelCardDetailNumber: fuelCardNumber,
+            tableCdlDetailNumber:
+                cdlNumber || (cdls?.length && cdls[0].cdlNumber) || null,
+            tableCdlDetailState: address?.stateShortName,
+            tableCdlDetailEndorsment:
+                cdls?.[0]?.cdlEndorsements?.map(
+                    (endorsement) => endorsement.code
+                ) ?? null,
+            tableCdlDetailRestriction:
+                cdls?.[0]?.cdlRestrictions?.map(
+                    (restriction) => restriction.code
+                ) ?? null,
             tableCdlDetailExpiration: {
-                expirationDays:
-                    data?.cdlExpirationDays || data?.cdlExpirationDays === 0
-                        ? data.cdlExpirationDays
-                        : null,
-                expirationDaysText: data?.cdlExpirationDays
-                    ? this.thousandSeparator.transform(data.cdlExpirationDays)
+                expirationDays: cdlExpirationDays ?? null,
+                expirationDaysText: cdlExpirationDays
+                    ? this.thousandSeparator.transform(cdlExpirationDays)
                     : null,
-                percentage:
-                    data?.cdlPercentage || data?.cdlPercentage === 0
-                        ? 100 - data.cdlPercentage
-                        : null,
+                percentage: cdlPercentage ? 100 - cdlPercentage : null,
             },
-            tableTestDetailsType: TableStringEnum.NA,
-            tableTestDetailsReason: TableStringEnum.NA,
-            tableTestDetailsIssued: TableStringEnum.NA,
-            tableTestDetailsResult: TableStringEnum.NA,
             tableMedicalData: {
-                expirationDays: data?.medicalExpirationDays
-                    ? data.medicalExpirationDays
+                expirationDays: medicalExpirationDays ?? null,
+                expirationDaysText: medicalExpirationDays
+                    ? this.thousandSeparator.transform(medicalExpirationDays)
                     : null,
-                expirationDaysText: data?.medicalExpirationDays
-                    ? this.thousandSeparator.transform(
-                          data.medicalExpirationDays
-                      )
-                    : null,
-                percentage:
-                    data?.medicalPercentage || data?.medicalPercentage === 0
-                        ? 100 - data.medicalPercentage
-                        : null,
+                percentage: medicalPercentage ? 100 - medicalPercentage : null,
             },
             tableMvrDetailsExpiration: {
-                expirationDays: data?.mvrExpirationDays
-                    ? data.mvrExpirationDays
+                expirationDays: mvrExpirationDays ?? null,
+                expirationDaysText: mvrExpirationDays
+                    ? this.thousandSeparator.transform(mvrExpirationDays)
                     : null,
-                expirationDaysText: data?.mvrExpirationDays
-                    ? this.thousandSeparator.transform(data.mvrExpirationDays)
-                    : null,
-                percentage:
-                    data?.mvrPercentage || data?.mvrPercentage === 0
-                        ? 100 - data.mvrPercentage
-                        : null,
+                percentage: mvrPercentage ? 100 - mvrPercentage : null,
             },
-
             tabelNotificationGeneral: `${
-                data?.general?.mailNotification
+                general.mailNotification
                     ? TableStringEnum.EMAIL
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
-                data?.general?.pushNotification
+                general.pushNotification
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
-                data?.general?.smsNotification
+                general.smsNotification
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }`,
             tabelNotificationPayroll: `${
-                data?.payroll?.mailNotification
+                payroll.mailNotification
                     ? TableStringEnum.EMAIL
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
-                data?.payroll?.pushNotification
+                payroll.pushNotification
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }${
-                data?.payroll?.smsNotification
+                payroll.smsNotification
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
             }`,
-            tabelHired: data.hired
-                ? this.datePipe.transform(
-                      data.hired,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTerminated: TableStringEnum.NA,
-            tableAdded: TableStringEnum.NA,
-            tableEdited: TableStringEnum.NA,
+            tabelHired: hired
+                ? MethodsCalculationsHelper.convertDateFromBackend(hired)
+                : null,
             tableAttachments: data?.files ? data.files : [],
-            fileCount: data?.fileCount,
+            fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownDriverContent(),
@@ -883,25 +846,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         };
     }
 
-    private mapApplicantsData(data: MappedApplicantData): MappedApplicantData {
+    private mapApplicantsData(data: any): any {
+        const { name, doB, ssn, phone, email } = data;
+
         return {
-            ...data,
             isSelected: false,
-            tableInvited: data?.invitedDate
-                ? this.datePipe.transform(
-                      data.invitedDate,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAccepted: data?.acceptedDate
-                ? this.datePipe.transform(
-                      data.acceptedDate,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDOB: data?.doB
-                ? data.doB
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            name,
+            tableDOB: doB
+                ? MethodsCalculationsHelper.convertDateFromBackend(doB)
+                : null,
+            ssn,
+            phone,
+            email,
             tableApplicantProgress: [
                 {
                     title: TableStringEnum.APP,
@@ -946,6 +902,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     percentage: 34,
                 },
             ],
+            tableInvited: data?.invitedDate
+                ? this.datePipe.transform(
+                      data.invitedDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAccepted: data?.acceptedDate
+                ? this.datePipe.transform(
+                      data.acceptedDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+
             tableMedical: {
                 class: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 hideProgres: false,
@@ -1140,22 +1109,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private getDropdownApplicantContent(): DropdownItem[] {
         return TableDropdownComponentConstants.DROPDOWN_APPLICANT;
-    }
-
-    // Get Avatar Color
-    private getAvatarColors(): AvatarColors {
-        const textColors: string[] =
-            TableDropdownComponentConstants.TEXT_COLORS;
-
-        const backgroundColors: string[] =
-            TableDropdownComponentConstants.BACKGROUND_COLORS;
-
-        this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
-
-        return {
-            background: backgroundColors[this.mapingIndex],
-            color: textColors[this.mapingIndex],
-        };
     }
 
     private updateDataCount(): void {

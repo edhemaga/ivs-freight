@@ -4,7 +4,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class TableHeadBorderPipe implements PipeTransform {
     transform(gridNameTitle: string, tableHeadTitle: string): boolean {
         const driverTableColumnsCondition =
-            gridNameTitle === 'Driver' && tableHeadTitle === 'DRIVER TYPE';
+            gridNameTitle === 'Driver' &&
+            (tableHeadTitle === 'DRIVER TYPE' ||
+                tableHeadTitle === 'OFF DUTY LOCATION' ||
+                tableHeadTitle === 'TWIC EXPIRATION' ||
+                tableHeadTitle === 'MEDICAL EXP' ||
+                tableHeadTitle === 'HIRED' ||
+                tableHeadTitle === 'INVITED');
 
         return driverTableColumnsCondition;
     }

@@ -224,8 +224,8 @@ export enum TableStringEnum {
     HOS = 'Hos',
     SSN = 'Ssn',
 
-    EMAIL = 'Email•',
-    PUSH = 'Push•',
+    EMAIL = 'Email • ',
+    PUSH = 'Push • ',
     SMS = 'SMS',
 
     // Truck

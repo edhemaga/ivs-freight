@@ -66,7 +66,7 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    private rotate: { [key: string]: any } = {
+    private rotate: { [key: string]: string } = {
         asc: '',
         desc: 'asc',
         '': 'desc',
