@@ -1,5 +1,9 @@
 @import '/src/theme/variables.scss';
 
+:host {
+    display: contents;
+}
+
 .load-span {
     width: 18px;
     height: 18px;
