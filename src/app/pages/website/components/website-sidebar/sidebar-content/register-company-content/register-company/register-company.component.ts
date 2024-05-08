@@ -7,12 +7,10 @@ import {
     Validators,
 } from '@angular/forms';
 
-import { Subject, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
-import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
-import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 
 // validations
 import {
@@ -28,6 +26,7 @@ import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import { SignUpCompanyCommand } from 'appcoretruckassist';
+import { AuthFacade } from '@pages/website/state/auth.service';
 
 @Component({
     selector: 'app-register-company',
@@ -36,6 +35,7 @@ import { SignUpCompanyCommand } from 'appcoretruckassist';
 })
 export class RegisterCompanyComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+    public displaySpinner$: Observable<boolean>;
 
     public registerCompanyForm: UntypedFormGroup;
 
@@ -43,15 +43,28 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        //Services
         private inputService: TaInputService,
-        private websiteAuthService: WebsiteAuthService,
-        private websiteActionsService: WebsiteActionsService
+        private authFacade: AuthFacade
     ) {}
 
     ngOnInit(): void {
+        this.subscribeToStoreSelectors();
         this.createForm();
 
         this.passwordsNotSame();
+    }
+
+    private subscribeToStoreSelectors(): void {
+        this.authFacade.loginError$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((error) => {
+                if (!error) return;
+                this.registerCompanyForm.get(error.type).setErrors(error.error);
+            });
+
+        this.displaySpinner$ = this.authFacade.showSpinner$;
     }
 
     private createForm(): void {
@@ -145,58 +158,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             ...registerCompanyForm,
         };
 
-        this.websiteAuthService
-            .registerCompany(saveData)
-            .pipe(
-                takeUntil(this.destroy$),
-                tap({
-                    next: () => {
-                        this.websiteActionsService.setSidebarContentType(
-                            WebsiteStringEnum.START_TRIAL_CONFIRMATION
-                        );
-
-                        localStorage.setItem(
-                            WebsiteStringEnum.CONFIRMATION_EMAIL,
-                            JSON.stringify(
-                                this.registerCompanyForm.get(
-                                    WebsiteStringEnum.EMAIL_ADDRESS
-                                ).value
-                            )
-                        );
-
-                        this.displaySpinner = false;
-                    },
-                    error: (error: any) => {
-                        this.displaySpinner = false;
-
-                        const errorMessage = error.error.error;
-
-                        if (
-                            errorMessage === WebsiteStringEnum.EIN_ALREADY_EXIST
-                        )
-                            this.registerCompanyForm
-                                .get(WebsiteStringEnum.EIN)
-                                .setErrors({ einAlreadyExist: true });
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.PHONE_ALREADY_EXIST
-                        )
-                            this.registerCompanyForm
-                                .get(WebsiteStringEnum.PHONE)
-                                .setErrors({ phoneAlreadyExist: true });
-
-                        if (
-                            errorMessage ===
-                            WebsiteStringEnum.EMAIL_ALREADY_EXIST
-                        )
-                            this.registerCompanyForm
-                                .get(WebsiteStringEnum.EMAIL_ADDRESS)
-                                .setErrors({ emailAlreadyExist: true });
-                    },
-                })
-            )
-            .subscribe();
+        this.authFacade.register(saveData);
     }
 
     ngOnDestroy(): void {

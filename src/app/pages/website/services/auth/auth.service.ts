@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 
 // models
 import { LoginProps } from '@pages/website/state/models/auth-login.model';
-import { SignInResponse } from 'appcoretruckassist';
+import { SignInResponse, SignUpCompanyCommand } from 'appcoretruckassist';
 
 // environment
 import { environment } from 'src/environments/environment';
@@ -21,6 +21,15 @@ export class AuthService {
         return this.http.post<SignInResponse>(
             `${environment.API_ENDPOINT}/api/account/login`,
             loginData
+        );
+    }
+
+    public authRegister(
+        registerData: SignUpCompanyCommand
+    ): Observable<object> {
+        return this.http.post(
+            `${environment.API_ENDPOINT}/api/account/signupcompany`,
+            registerData
         );
     }
 }

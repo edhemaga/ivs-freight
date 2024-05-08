@@ -9,6 +9,7 @@ import {
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
+import { AuthFacade } from '@pages/website/state/auth.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 
 // validations
@@ -16,18 +17,6 @@ import { passwordValidation } from '@shared/components/ta-input/validators/ta-in
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
-
-// store
-import { Store, select } from '@ngrx/store';
-
-// actions
-import { authLogin } from '@pages/website/state/actions/login/auth.actions';
-
-// selectors
-import {
-    selectAuthLoginError,
-    selectAuthLoginLoading,
-} from '@pages/website/state/selectors/auth-login.selector';
 
 @Component({
     selector: 'app-login',
@@ -47,8 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         // services
         private inputService: TaInputService,
-        // store
-        private store: Store
+        private authFacade: AuthFacade
     ) {}
 
     ngOnInit(): void {
@@ -57,18 +45,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToStoreSelectors(): void {
-        this.store
-            .select(selectAuthLoginError)
+        this.authFacade.loginError$
             .pipe(takeUntil(this.destroy$))
             .subscribe((error) => {
                 if (!error) return;
                 this.loginForm.get(error.type).setErrors(error.error);
             });
 
-        this.displaySpinner$ = this.store.pipe(select(selectAuthLoginLoading));
+        this.displaySpinner$ = this.authFacade.showSpinner$;
     }
 
-    private createForm(): void {
+    private createForm(): void { 
         this.loginForm = this.formBuilder.group({
             email: [null, [Validators.required]],
             password: [null, [Validators.required, ...passwordValidation]],
@@ -97,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.store.dispatch(authLogin(this.loginForm.value));
+        this.authFacade.logIn(this.loginForm.value);
     }
 
     ngOnDestroy(): void {

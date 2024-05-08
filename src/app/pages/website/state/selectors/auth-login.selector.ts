@@ -28,7 +28,21 @@ export const selectAuthLoginError = createSelector(
                 type: WebsiteStringEnum.PASSWORD,
                 error: { wrongPassword: true },
             };
-        }
+        } else if (errorMessage === WebsiteStringEnum.EIN_ALREADY_EXIST)
+            return {
+                type: WebsiteStringEnum.EIN,
+                error: { einAlreadyExist: true },
+            };
+        else if (errorMessage === WebsiteStringEnum.PHONE_ALREADY_EXIST)
+            return {
+                type: WebsiteStringEnum.PHONE,
+                error: { phoneAlreadyExist: true },
+            };
+        else if (errorMessage === WebsiteStringEnum.EMAIL_ALREADY_EXIST)
+            return {
+                type: WebsiteStringEnum.EMAIL_ADDRESS,
+                error: { emailAlreadyExist: true },
+            };
     }
 );
 
@@ -37,7 +51,7 @@ export const selectLoggedUser = createSelector(
     (state): SignInResponse => state.user
 );
 
-export const selectAuthLoginLoading = createSelector(
+export const selectAuthLoading = createSelector(
     selectAuthState,
     (state): boolean => state.loading
 );
