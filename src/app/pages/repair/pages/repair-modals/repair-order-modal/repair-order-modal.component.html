@@ -464,8 +464,8 @@
             <app-ta-custom-card
                 [cardName]="'Document'"
                 [disableAnimation]="isCardanimationDisabled"
-                [hasCounter]="documents.length ? documents.length : 0"
-                [isCardOpen]="documents.length > 0"
+                [hasCounter]="documents?.length"
+                [isCardOpen]="documents?.length"
             >
                 <app-ta-upload-files
                     [customClassName]="'modals'"
