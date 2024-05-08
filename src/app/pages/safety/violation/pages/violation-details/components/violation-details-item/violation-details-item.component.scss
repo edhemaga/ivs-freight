@@ -65,27 +65,6 @@
 .card-details-progress-container {
     padding: 0 16px;
     padding-top: 16px;
-    .table-progress-cotnainer {
-        display: flex !important;
-        flex-direction: column !important;
-
-        .table-progress {
-            order: 1 !important;
-            width: 100% !important;
-            height: 8px !important;
-        }
-
-        .table-progress-panel {
-            order: -1 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            color: #6c6c6c !important;
-
-            .progress-text {
-                margin: 2px 0px !important;
-            }
-        }
-    }
 }
 .mark-as-paid-button {
     width: 303px;
@@ -124,7 +103,8 @@
             background: rgb(108, 108, 108, 0.2);
         }
 
-        span, div {
+        span,
+        div {
             &::-moz-selection {
                 color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
