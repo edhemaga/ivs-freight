@@ -18,7 +18,6 @@ export class TableHeadConditionsPipe implements PipeTransform {
                 return (
                     ![
                         'checkbox',
-                        'applicant-progress',
                         'sw-tw-total',
                         'citation',
                         'accident-citation',

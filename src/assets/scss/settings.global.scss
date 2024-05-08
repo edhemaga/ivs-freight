@@ -62,27 +62,6 @@ p {
     padding: 0px 4px;
     padding-bottom: 16px;
     padding-top: 7px;
-    .table-progress-cotnainer {
-        display: flex !important;
-        flex-direction: column !important;
-
-        .table-progress {
-            order: 1 !important;
-            width: 100% !important;
-            height: 8px !important;
-        }
-
-        .table-progress-panel {
-            order: -1 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            color: #6c6c6c !important;
-
-            .progress-text {
-                margin: 2px 0px !important;
-            }
-        }
-    }
 }
 
 // Settings Header global
@@ -93,8 +72,6 @@ p {
     align-items: center;
     justify-content: space-between;
     background-color: #ffffff;
-
-    
 
     .no-factoring-data {
         justify-content: flex-end !important;
@@ -196,19 +173,19 @@ p {
         }
     }
 
-    &.divisionHeader{
+    &.divisionHeader {
         background-color: transparent;
-        
-        .settings-header-buttons{
+
+        .settings-header-buttons {
             background-color: transparent;
             width: 105px;
         }
 
-        .settings-header-button{
+        .settings-header-button {
             border-radius: 3px;
         }
 
-        .current-active-item-company{
+        .current-active-item-company {
             background-color: #fff;
             max-width: 479px;
         }
@@ -217,7 +194,7 @@ p {
 
 // Settings header new design
 
-.toolbar-general-cmp{
+.toolbar-general-cmp {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -264,10 +241,9 @@ p {
             border-radius: 0 3px 3px 0;
             position: relative;
 
-            &.less-width-button{
-                width: 28px; 
+            &.less-width-button {
+                width: 28px;
             }
-
 
             .settings-edit-button {
                 display: flex;
@@ -285,7 +261,7 @@ p {
                     }
                 }
             }
-    
+
             .settings-plus-button {
                 display: flex;
                 justify-content: center;
@@ -302,7 +278,7 @@ p {
                 &:hover {
                     transform: $settings-transition;
                     background-color: #6d82c7;
-                    
+
                     border-radius: 2px;
                     cursor: pointer;
                     svg {
@@ -312,7 +288,7 @@ p {
                     }
                 }
             }
-    
+
             .settings-trash-button {
                 //position: absolute;
                 //top: 48%;
@@ -339,30 +315,28 @@ p {
     }
 }
 
-
 .container {
     display: flex;
     justify-content: space-between;
-  }
-  
-  .div1 {
+}
+
+.div1 {
     width: 30%;
     height: 100px;
     background-color: lightblue;
-  }
-  
-  .div2 {
+}
+
+.div2 {
     width: 30%;
     height: 100px;
     background-color: lightgreen;
-  }
-  
-  .div3 {
+}
+
+.div3 {
     width: 30%;
     height: 100px;
     background-color: lightcoral;
-  }
-
+}
 
 // Settings Body
 
@@ -374,7 +348,7 @@ p {
         font-weight: 600 !important;
         text-transform: uppercase;
 
-        .open-name{
+        .open-name {
             color: #424242 !important;
         }
     }
@@ -383,15 +357,11 @@ p {
         left: 4px;
         top: 5px;
     }
-    .ta-card-header {
-        //padding-right: 4px !important;
-    }
+
     .settings-body-items {
         display: flex;
         flex-direction: column;
-        //padding-top: 0px;
-        //padding-bottom: 4px;
-        //padding-left: 6px;
+
         .single-item {
             display: flex;
             align-items: center;
@@ -422,10 +392,9 @@ p {
             }
         }
 
-        &.factoring-body-padding{
-            padding: 0px 4px
+        &.factoring-body-padding {
+            padding: 0px 4px;
         }
-
     }
     .settings-line {
         margin: 0;
@@ -435,14 +404,14 @@ p {
         background-color: $settings-white-light-2;
     }
 
-    .basic-mid-holder{
+    .basic-mid-holder {
         padding-bottom: 10px;
         padding: 0px 8px 10px 8px;
     }
-    
+
     //settings new select
 
-    .company-select-holder{
+    .company-select-holder {
         display: grid;
         grid-template-columns: 510px 53px;
         padding: 8px 12px 0px 12px;
@@ -451,17 +420,16 @@ p {
             display: flex;
             align-items: center;
         }
-        
+
         .dropInput {
             width: 100%;
         }
 
-
-        .select-right-side-holders{
+        .select-right-side-holders {
             display: flex;
         }
 
-        .division-card-holder{
+        .division-card-holder {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -474,29 +442,27 @@ p {
                 font-weight: 700;
                 color: #424242;
             }
-            
         }
 
-        .arrow-company-icon-holder{
+        .arrow-company-icon-holder {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-left: 7.5px;
 
-            .arrow-down{
+            .arrow-down {
                 display: flex;
                 align-items: center;
                 width: 100%;
                 justify-content: flex-end;
                 rotate: 270deg;
 
-                svg{
+                svg {
                     width: 14px;
                     height: 14px;
                     line-height: 18px;
                 }
             }
-
         }
 
         .current-active-item {
@@ -510,7 +476,7 @@ p {
             border-radius: 2px;
             padding: 4px 0px;
             cursor: pointer;
-        
+
             .current-active-name {
                 font-size: 20px;
                 font-weight: 700;
@@ -530,11 +496,11 @@ p {
                     background: rgb(183, 183, 183, 0.2);
                 }
             }
-        
+
             &:hover {
                 background-color: #f3f3f3;
                 transition: all 0.3s ease-in-out;
-        
+
                 .current-active-name {
                     color: #3c3c3c;
                 }
@@ -576,46 +542,40 @@ p {
             }
         }
 
-        .disabedPreviousArrow{
+        .disabedPreviousArrow {
             &.arrows {
                 .previousArrow {
-                        opacity: 0.5;
-                        cursor: default !important ;
-        
-                        svg-icon{
-                            cursor: default !important;
-                        }
-        
-                    &:hover{
-                        background-color: transparent !important;
-                    }  
-                }
-        
-                
-            }
-        }
-        
-        .disableNextArrow{
-            &.arrows {
-                .nextArrow {
-                        opacity: 0.5;
-                        cursor: default !important ;
-        
-                        svg-icon{
-                            cursor: default !important;
-                        }  
-                    
-                    &:hover{
+                    opacity: 0.5;
+                    cursor: default !important ;
+
+                    svg-icon {
+                        cursor: default !important;
+                    }
+
+                    &:hover {
                         background-color: transparent !important;
                     }
                 }
-        
-                
-                
+            }
+        }
+
+        .disableNextArrow {
+            &.arrows {
+                .nextArrow {
+                    opacity: 0.5;
+                    cursor: default !important ;
+
+                    svg-icon {
+                        cursor: default !important;
+                    }
+
+                    &:hover {
+                        background-color: transparent !important;
+                    }
+                }
             }
         }
     }
-
 }
 .border-left {
     border: none;
@@ -714,7 +674,7 @@ p {
         grid-column: 1 / -1;
     }
 }
-.payroll-template-data { 
+.payroll-template-data {
     display: grid;
     column-gap: 20px;
     row-gap: 12px;

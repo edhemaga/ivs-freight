@@ -279,15 +279,8 @@ p {
         }
     }
 }
-.item-cards {
-    .ta-card-header {
-        //padding-top: 6px !important;
-        //padding-bottom: 6px !important;
-        //padding-right: 4px !important;
-    }
-}
+
 .card-container {
-    //padding: 0 6px;
     .card-body-cdl {
         display: grid;
         padding: 0px 4px;
@@ -450,30 +443,6 @@ p {
         height: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
-}
-// Progress bar details
-.card-details-progress-container {
-    .table-progress-cotnainer {
-        display: flex !important;
-        flex-direction: column !important;
-
-        .table-progress {
-            order: 1 !important;
-            width: 100% !important;
-            height: 8px !important;
-        }
-
-        .table-progress-panel {
-            order: -1 !important;
-            display: flex !important;
-            justify-content: space-between !important;
-            color: #2f2f2f !important;
-
-            .progress-text {
-                margin: 2px 0px !important;
-            }
-        }
     }
 }
 
@@ -1098,14 +1067,6 @@ p {
 
     .note-container {
         .note-header {
-            .note-label {
-                //color: #919191 !important;
-
-                &:hover {
-                    //color: #6c6c6c !important;
-                }
-            }
-
             &.active {
                 .note-label {
                     color: #6c6c6c !important;
@@ -1197,10 +1158,6 @@ p {
 
     .counter-text {
         padding: 0px 0px 0px 8px !important;
-    }
-
-    .card-row-progress {
-        //width: 95%;
     }
 
     .reason-span {
@@ -2276,58 +2233,4 @@ p {
     .card-width {
         width: 237px;
     }
-    /*
-    .card-row-endor {
-        grid-template-columns: 100px 100px !important;
-    } */
-
-    .restriction-item-value {
-    }
 }
-
-/*
-@media (min-width: 1300px) {  
-    .details-container-items {
-        display: grid;
-        grid-template-columns: 440px repeat(4, 237px);
-    }
-    
-    .card-width {
-        width: 237px;
-    }
-
-    .counter-text{
-        padding: 0px 7px !important;
-    }
-
-    .request-header-container{
-        display: none !important;
-        width: 26px;
-
-        &.icon-request-holder{
-            display: flex !important;
-            width: 26px !important;
-            height: 26px !important;
-            
-            background-color: #ffffff !important;
-
-            svg {
-                path{
-                    fill: #3074D3;
-                }
-            }
-
-            &:hover {
-
-                background-color: #3074D3 !important;
-
-            svg {
-                path{
-                    fill: #ffffff;
-                }
-            }
-
-            }
-        }
-    }
-} */

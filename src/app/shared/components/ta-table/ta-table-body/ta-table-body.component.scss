@@ -472,6 +472,30 @@ table.truckassist-table-body-style {
                             }
                         }
 
+                        // APPLICANT PROGRESS COLUMN
+                        .applicant-progress-container {
+                            margin-right: 8px;
+
+                            p {
+                                font-size: 11px;
+                                line-height: 14px;
+                                color: $ta-light-grey-6;
+
+                                -webkit-user-select: none !important;
+                                -moz-user-select: none !important;
+                                -ms-user-select: none !important;
+                                user-select: none !important;
+
+                                &.valid {
+                                    color: $bw6-2;
+                                }
+
+                                &.invalid {
+                                    color: $ta-red-11;
+                                }
+                            }
+                        }
+
                         // WORK HOUR COLUMN
                         .work-hour-container {
                             width: fit-content;
@@ -2032,32 +2056,7 @@ table.truckassist-table-body-style {
                             }
                         }
 
-                        // PROGRESS COLUMN
-                        .applicant-status-container {
-                            width: fit-content;
-                            height: fit-content;
-
-                            .status-icon {
-                                width: 16px;
-                                height: 16px;
-                                background-repeat: no-repeat;
-                                background-position: center;
-                            }
-
-                            .done-icon {
-                                background-image: url('/assets/svg/truckassist-table/applicant-done-icon.svg');
-                            }
-
-                            .wrong-icon {
-                                background-image: url('/assets/svg/truckassist-table/applicant-wrong-icon.svg');
-                            }
-
-                            .complete-icon {
-                                background-image: url('/assets/svg/truckassist-table/applicant-complete-icon.svg');
-                            }
-                        }
-
-                        .table-progress-cotnainer {
+                        .table-progress-container {
                             display: flex;
                             align-items: center;
                             padding-left: 1px;
@@ -2106,15 +2105,6 @@ table.truckassist-table-body-style {
                                     color: white !important;
                                 }
                             }
-                        }
-
-                        // APPLICANT PROGRESS COLUMN
-                        .applicant-progress-container {
-                            height: 100%;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            margin-right: 20px;
                         }
 
                         // APPLICANT REVIEW COLUMN
@@ -2472,7 +2462,7 @@ table.truckassist-table-body-style {
                             .due-date {
                                 width: 172px;
 
-                                .table-progress-cotnainer {
+                                .table-progress-container {
                                     display: flex;
                                     align-items: center;
 
@@ -2954,21 +2944,6 @@ table.truckassist-table-body-style {
 
                     &:hover {
                         background-image: url('/assets/svg/truckassist-table/favorite-icon-hover.svg') !important;
-                    }
-                }
-
-                // PROGRESS
-                .applicant-status-container {
-                    .done-icon {
-                        background-image: url('/assets/svg/truckassist-table/applicant-done-icon-select-row.svg') !important;
-                    }
-
-                    .wrong-icon {
-                        background-image: url('/assets/svg/truckassist-table/applicant-wrong-icon.svg') !important;
-                    }
-
-                    .complete-icon {
-                        background-image: url('/assets/svg/truckassist-table/applicant-complete-icon-select-row.svg') !important;
                     }
                 }
             }
