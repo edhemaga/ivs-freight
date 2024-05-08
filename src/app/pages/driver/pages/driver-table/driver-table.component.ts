@@ -32,7 +32,6 @@ import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driv
 import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
 
 // pipes
-import { DatePipe } from '@angular/common';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
@@ -145,7 +144,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private applicantStore: ApplicantTableStore,
 
         // pipes
-        private datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
     ) {}
@@ -847,7 +845,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapApplicantsData(data: any): any {
-        const { name, doB, ssn, phone, email } = data;
+        const {
+            name,
+            doB,
+            ssn,
+            phone,
+            email,
+            applicationStatus,
+            mvrStatus,
+            pspStatus,
+            sphStatus,
+            hosStatus,
+            medicalDaysLeft,
+            medicalPercentage,
+            invitedDate,
+            acceptedDate,
+            archivedDate,
+        } = data;
 
         return {
             isSelected: false,
@@ -861,80 +875,53 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableApplicantProgress: [
                 {
                     title: TableStringEnum.APP,
-                    status: data.applicationStatus,
-                    width: 34,
-                    class: TableStringEnum.COMPLETE_ICON,
-                    percentage: 34,
+                    status: applicationStatus,
+                },
+                {
+                    title: TableStringEnum.OWN,
+                    status: null,
+                },
+                {
+                    title: TableStringEnum.MED,
+                    status: null,
                 },
                 {
                     title: TableStringEnum.MVR,
-                    status: data.mvrStatus,
-                    width: 34,
-                    class: TableStringEnum.COMPLETE_ICON,
-                    percentage: 34,
+                    status: mvrStatus,
                 },
                 {
                     title: TableStringEnum.PSP,
-                    status: data.pspStatus,
-                    width: 29,
-                    class: TableStringEnum.COMPLETE_ICON,
-                    percentage: 34,
+                    status: pspStatus,
                 },
                 {
                     title: TableStringEnum.SPH,
-                    status: data.sphStatus,
-                    width: 30,
-                    class: TableStringEnum.COMPLETE_ICON,
-                    percentage: 34,
+                    status: sphStatus,
                 },
                 {
                     title: TableStringEnum.HOS,
-                    status: data.hosStatus,
-                    width: 32,
-                    class: TableStringEnum.DONE_ICON,
-                    percentage: 34,
+                    status: hosStatus,
                 },
                 {
-                    title: TableStringEnum.SSN,
-                    status: data.ssnStatus,
-                    width: 29,
-                    class: TableStringEnum.WRONG_ICON,
-                    percentage: 34,
+                    title: TableStringEnum.TEST,
+                    status: null,
                 },
             ],
-            tableInvited: data?.invitedDate
-                ? this.datePipe.transform(
-                      data.invitedDate,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAccepted: data?.acceptedDate
-                ? this.datePipe.transform(
-                      data.acceptedDate,
-                      TableStringEnum.DATE_FORMAT
-                  )
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-
-            tableMedical: {
-                class: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                hideProgres: false,
-                isApplicant: true,
-                expirationDays: data?.medicalDaysLeft
-                    ? this.thousandSeparator.transform(data.medicalDaysLeft)
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                percentage: data?.medicalPercentage
-                    ? data.medicalPercentage
+            tableMedicalData: {
+                expirationDays: medicalDaysLeft ?? null,
+                expirationDaysText: medicalDaysLeft
+                    ? this.thousandSeparator.transform(medicalDaysLeft)
                     : null,
+                percentage: medicalPercentage ? 100 - medicalPercentage : null,
             },
-            tableCdl: {
-                class: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                hideProgres: false,
-                isApplicant: true,
-                expirationDays: data?.cdlDaysLeft
-                    ? this.thousandSeparator.transform(data.cdlDaysLeft)
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                percentage: data?.cdlPercentage ? data.cdlPercentage : null,
-            },
+            tableInvited: invitedDate
+                ? MethodsCalculationsHelper.convertDateFromBackend(invitedDate)
+                : null,
+            tableAccepted: acceptedDate
+                ? MethodsCalculationsHelper.convertDateFromBackend(acceptedDate)
+                : null,
+            tableArchived: archivedDate
+                ? MethodsCalculationsHelper.convertDateFromBackend(archivedDate)
+                : null,
             tableRev: {
                 title: TableStringEnum.INCOMPLETE,
                 iconLink:
@@ -1045,7 +1032,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         name: TableStringEnum.TEST_DRUG,
                     },
                     {
-                        title: TableStringEnum.MVR_2,
+                        title: TableStringEnum.MVR,
                         name: TableStringEnum.TEST_MVR,
                     },
                 ],

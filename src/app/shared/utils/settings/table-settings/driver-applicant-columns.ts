@@ -199,7 +199,7 @@ export function getDriverApplicantColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'applicant-progress',
             title: 'Application Progress ',
             field: 'tableApplicantProgress',
             name: 'Application Progress',
