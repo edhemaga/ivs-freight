@@ -214,7 +214,9 @@
                                         "
                                     >
                                         {{
-                                            cardRow.thirdKey
+                                            !card[cardRow.key]
+                                                ? '/'
+                                                : cardRow.thirdKey
                                                 ? card[cardRow.key][
                                                       cardRow.secondKey
                                                   ][cardRow.thirdKey]
@@ -293,7 +295,9 @@
                                         'height.px': '18'
                                     }"
                                 ></svg-icon>
-                                <div class="file_count">{{card.fileCount}}</div>
+                                <div class="file_count">
+                                    {{ card.fileCount }}
+                                </div>
                             </div>
                         </ng-container>
 
