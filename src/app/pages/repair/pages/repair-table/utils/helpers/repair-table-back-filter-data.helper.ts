@@ -1,4 +1,4 @@
-import type { RepairBackFilter } from '../../models/repair-back-filter.model';
+import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
 
 export class RepairTableBackFilterDataHelper {
     static backRepairFilterData(): RepairBackFilter {

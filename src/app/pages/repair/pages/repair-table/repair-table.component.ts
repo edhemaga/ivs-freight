@@ -88,7 +88,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 // helpers
 import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import { RepairTableBackFilterDataHelper } from './utils/helpers/repair-table-back-filter-data.helper';
+import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-back-filter-data.helper';
 
 @Component({
     selector: 'app-repair-table',

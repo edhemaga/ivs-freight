@@ -360,6 +360,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             });
     }
 
+    public trackByIdentity(id: number): number {
+        return id;
+    }
+
     private watchAreaFormValueChanges(): void {
         this.areaForm.valueChanges
             .pipe(takeUntil(this.destroy$))
