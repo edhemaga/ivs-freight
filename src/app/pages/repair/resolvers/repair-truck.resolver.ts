@@ -36,6 +36,9 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
+                undefined,
+                undefined,
                 1,
                 25
             ),

@@ -138,6 +138,24 @@
                 </div>
             </ng-container>
 
+            <!-- Hire Applicant -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    options.toolbarActions.showHireApplicantButton
+                "
+            >
+                <div
+                    (click)="hireSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center"
+                >
+                    <svg-icon
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_hire-applicant.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
             <!-- Delete -->
             <ng-container
                 *ngIf="
@@ -169,7 +187,7 @@
                 </div>
             </ng-container>
 
-            <!-- BORDER -->
+            <!-- Border -->
             <ng-container *ngIf="tableRowsSelected.length">
                 <div
                     class="border-container d-flex justify-content-center align-items-center"
@@ -226,7 +244,8 @@
                     "
                 ></svg-icon>
             </div>
-            <!-- BORDER -->
+
+            <!-- Border -->
             <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
                 <div
                     class="border-container d-flex justify-content-center align-items-center"
@@ -234,6 +253,7 @@
                     <div class="border"></div>
                 </div>
             </ng-container>
+
             <ng-container *ngIf="options.toolbarActions.showDispatchSettings">
                 <div class="settings-dispatch">
                     <svg-icon
@@ -241,6 +261,7 @@
                     ></svg-icon>
                 </div>
             </ng-container>
+
             <ng-container *ngIf="options.toolbarActions.showDispatchAdd">
                 <div class="new-load">
                     <svg-icon
@@ -248,6 +269,7 @@
                     ></svg-icon>
                 </div>
             </ng-container>
+
             <ng-container *ngIf="!options.toolbarActions.hideOpenModalButton">
                 <div
                     class="modal2 d-flex justify-content-center align-items-center"
@@ -412,7 +434,9 @@
                                 </div>
 
                                 <ng-container *ngIf="column.isPined">
-                                    <div class="not-allowed-action">
+                                    <div
+                                        class="d-flex justify-content-center align-items-center not-allowed-action"
+                                    >
                                         <svg-icon
                                             [svgStyle]="{
                                                 'width.px': 14,
@@ -530,7 +554,9 @@
                                             <ng-container
                                                 *ngIf="columnGroup.isPined"
                                             >
-                                                <div class="not-allowed-action">
+                                                <div
+                                                    class="d-flex justify-content-center align-items-center not-allowed-action"
+                                                >
                                                     <svg-icon
                                                         [svgStyle]="{
                                                             'width.px': 14,

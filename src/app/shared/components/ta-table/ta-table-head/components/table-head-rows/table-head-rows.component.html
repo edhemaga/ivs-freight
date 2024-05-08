@@ -1,0 +1,1062 @@
+<tr
+    class="d-flex tr"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    [id]="tableHeadRowsData?.notPinedColumns ? 'scroll' : null"
+    [ngClass]="{
+        'pined-columns-container': tableHeadRowsData?.pinedColumns,
+        'not-pined-columns-container': tableHeadRowsData?.notPinedColumns,
+        'tr-height-2':
+            tableHeadRowsData?.tableData[0]?.gridNameTitle
+            | tableDoubleHeadHeight
+    }"
+    [ngStyle]="{ 'max-width.px': tableHeadRowsData?.notPinedMaxWidth }"
+    (cdkDropListDropped)="handleTableHeadRowsActionClick($event, 'reorder')"
+>
+    <ng-container
+        *ngFor="
+            let column of tableHeadRowsData?.pinedColumns ??
+                tableHeadRowsData?.notPinedColumns;
+            let i = index;
+            trackBy: trackByIdentity
+        "
+    >
+        <th
+            class="d-flex"
+            cdkDrag
+            cdkDragBoundary="tr"
+            [cdkDragPreviewClass]="'cdk-drag-preview'"
+            [cdkDragDisabled]="
+                tableHeadRowsData?.notPinedColumns &&
+                (tableHeadRowsData?.locked ||
+                    tableHeadRowsData?.resizing ||
+                    column.isAction)
+            "
+            [resizeColumn]="column.resizable && !tableHeadRowsData?.locked"
+            [index]="i"
+            [tableColumn]="column"
+            [tableSection]="
+                tableHeadRowsData?.pinedColumns ? 'pined' : 'not-pined'
+            "
+            [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ?? 'unset',
+                'margin-left': column.moveRight ? 'auto' : 'unset'
+            }"
+            [ngClass]="{
+                'justify-content-center':
+                    column.ngTemplate === 'checkbox' || column.thSetCenter,
+                'column-unlocked': !tableHeadRowsData?.locked,
+                'column-locked':
+                    tableHeadRowsData?.pinedColumns &&
+                    tableHeadRowsData?.locked,
+                'resize-hit-limit':
+                    tableHeadRowsData?.resizeHitLimit === i &&
+                    tableHeadRowsData?.resizeIsPined,
+                'remove-head-title':
+                    column.width < 68 &&
+                    !tableHeadRowsData?.locked &&
+                    !tableHeadRowsData?.resizing,
+                'align-items-end':
+                    tableHeadRowsData?.tableData[0]?.gridNameTitle
+                    | tableDoubleHeadHeight,
+                'pined-columns-margin':
+                    column.ngTemplate !== '' &&
+                    column.ngTemplate !== 'checkbox' &&
+                    column.ngTemplate !== 'user-checkbox',
+                'space-left': tableHeadRowsData?.notPinedColumns && i === 0
+            }"
+            (cdkDragStarted)="
+                tableHeadRowsData?.notPinedColumns &&
+                    (tableHeadRowsData.reordering = true)
+            "
+            (cdkDragEnded)="
+                tableHeadRowsData?.notPinedColumns &&
+                    (tableHeadRowsData.reordering = false)
+            "
+            (resizing)="handleTableHeadRowsActionClick($event, 'resize')"
+        >
+            <!-- Selected Row Count -->
+
+            <ng-container
+                *ngIf="
+                    column.ngTemplate
+                        | tableHeadConditions
+                            : {
+                                  conditionType: 'selected-row-count'
+                              };
+                    else doubleHeading
+                "
+            >
+                <div
+                    #op="ngbPopover"
+                    class="selected-rows-count"
+                    [autoClose]="true"
+                    [ngbPopover]="optionsPopover"
+                    [placement]="'right-top'"
+                    popoverClass="{{
+                        tableHeadRowsData?.mySelection?.length
+                            ? 'has-selected-options-popover'
+                            : 'selected-options-popover'
+                    }}"
+                    triggers="manual"
+                    [ngClass]="{
+                        'has-selected ta-font-bold d-flex align-items-center justify-content-center':
+                            tableHeadRowsData?.mySelection?.length
+                    }"
+                    (click)="
+                        handleTableHeadRowsActionClick(op, 'selected-options')
+                    "
+                >
+                    {{ tableHeadRowsData?.mySelection?.length ?? '' }}
+                </div>
+            </ng-container>
+
+            <!-- Double Heading -->
+
+            <ng-template #doubleHeading>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'double-heading',
+                                      name: column.name,
+                                      title: column.title
+                                  };
+                        else headingIcon
+                    "
+                >
+                    <ng-container
+                        *ngIf="
+                            column
+                                | tableDoubleHead
+                                    : tableHeadRowsData?.tableData[0]
+                                    : true
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <p
+                                class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                            >
+                                {{
+                                    column.tableHeadTitle | tableDoubleHeadText
+                                }}
+                            </p>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+
+                                <span
+                                    class="th-title-double-subtitle-additional"
+                                >
+                                    {{
+                                        column.tableHeadTitle === 'TERM'
+                                            ? 'mo.'
+                                            : ''
+                                    }}
+                                </span>
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <!-- ///////////////////////////////////// -->
+
+                    <!-- TRUCK -->
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Owner Details'
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === ' NAME'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    OWNER
+                                </p>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === ' NAME';
+                                    else showCommition
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </ng-container>
+
+                            <ng-template #showCommition>
+                                <p class="m-0 ta-font-bold th-title">COMM</p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'FHWA Inspection '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'TERM'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FHWA
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Registration Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'PLATE NUMBER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    LICENCE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Title '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'NUMBER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    TITLE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Purchase Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'PRICE'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    PURCHASE
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Assigned To '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'DRIVER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    ASSIGNED
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Fuel Detail'
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'FUEL TYPE'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FUEL
+                                </p>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === 'FUEL TYPE';
+                                    else showSecond
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[1] }}
+                                </p>
+                            </ng-container>
+
+                            <ng-template #showSecond>
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Assigned To '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'DRIVER'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    ASSIGNED
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Toll Device '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle === 'TOLL TRANSPONDER'
+                                "
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    TOLL DEVICE
+                                </p>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    column.tableHeadTitle ===
+                                        'TOLL TRANSPONDER';
+                                    else showCommition
+                                "
+                            >
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[1] }}
+                                </p>
+                            </ng-container>
+
+                            <ng-template #showCommition>
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle.split(' ')[0] }}
+                                </p>
+                            </ng-template>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]
+                                ?.tableConfiguration === 'TRUCK' &&
+                            column.groupName === 'Wheel Detail '
+                        "
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center th-title-double"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                        >
+                            <ng-container
+                                *ngIf="column.tableHeadTitle === 'FRONT WHEELS'"
+                            >
+                                <p
+                                    class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                >
+                                    FUEL
+                                </p>
+                            </ng-container>
+
+                            <p class="m-0 ta-font-bold th-title">
+                                {{ column.tableHeadTitle.split(' ')[0] }}
+                            </p>
+                        </div>
+                    </ng-container>
+
+                    <!-- REPAIR -->
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.tableData[0]?.gridNameTitle ===
+                                'Repair' && column.groupName
+                        "
+                    >
+                        <ng-container
+                            *ngIf="column.groupName === 'Unit '; else showShop"
+                        >
+                            <div
+                                class="d-flex flex-column border-test justify-content-center th-title"
+                                (click)="
+                                    handleTableHeadRowsActionClick(
+                                        column,
+                                        'sort'
+                                    )
+                                "
+                            >
+                                <ng-container *ngIf="column.showRepairTitle">
+                                    <p
+                                        class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                    >
+                                        UNIT
+                                    </p>
+                                </ng-container>
+
+                                <p class="m-0 ta-font-bold th-title">
+                                    {{ column.tableHeadTitle }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #showShop>
+                            <ng-container
+                                *ngIf="
+                                    column.groupName === 'Shop Detail ';
+                                    else showItem
+                                "
+                            >
+                                <div
+                                    class="d-flex flex-column border-test justify-content-center th-title"
+                                    (click)="
+                                        handleTableHeadRowsActionClick(
+                                            column,
+                                            'sort'
+                                        )
+                                    "
+                                >
+                                    <ng-container
+                                        *ngIf="column.showRepairTitle"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                        >
+                                            REPAIR SHOP
+                                        </p>
+                                    </ng-container>
+
+                                    <p class="m-0 ta-font-bold th-title">
+                                        {{ column.tableHeadTitle }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+
+                        <ng-template #showItem>
+                            <ng-container
+                                *ngIf="column.groupName === 'Item Detail '"
+                            >
+                                <div
+                                    class="d-flex flex-column border-test justify-content-center th-title"
+                                    (click)="
+                                        handleTableHeadRowsActionClick(
+                                            column,
+                                            'sort'
+                                        )
+                                    "
+                                >
+                                    <ng-container
+                                        *ngIf="column.showRepairTitle"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-extra-bold th-title-double-subtitle"
+                                        >
+                                            ITEM
+                                        </p>
+                                    </ng-container>
+
+                                    <p class="m-0 ta-font-bold th-title">
+                                        {{ column.tableHeadTitle }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+
+                    <!-- Heading -->
+
+                    <ng-container
+                        *ngIf="
+                            column
+                                | tableDoubleHead
+                                    : tableHeadRowsData?.tableData[0]
+                                    : false
+                        "
+                    >
+                        <div
+                            class="th-title"
+                            (click)="
+                                handleTableHeadRowsActionClick(column, 'sort')
+                            "
+                            [ngStyle]="{
+                                'width.px':
+                                    column.resizable &&
+                                    !tableHeadRowsData?.locked
+                                        ? column.width - 55
+                                        : column.width - 20,
+                                'min-width.px': tableHeadRowsData?.resizing
+                                    ? column.width
+                                    : 'unset'
+                            }"
+                            [ngClass]="{
+                                'sort-active':
+                                    column.sortDirection !== '' &&
+                                    column.sortDirection,
+                                'th-title-locked-cursor':
+                                    tableHeadRowsData?.locked,
+                                'set-center-th-title': column.setCenter,
+                                'border-left':
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle
+                                    | tableHeadBorder : column.tableHeadTitle
+                            }"
+                        >
+                            {{ column.tableHeadTitle }}
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-template>
+
+            <!-- Heading Icon -->
+
+            <ng-template #headingIcon>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'heading-icon',
+                                      headIconStyle: column.headIconStyle,
+                                      title: column.title
+                                  };
+                        else heading
+                    "
+                >
+                    <div class="icons">
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': column.headIconStyle.width,
+                                'height.px': column.headIconStyle.height
+                            }"
+                            [src]="column.headIconStyle.imgPath ?? ''"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Heading -->
+
+            <ng-template #heading>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'heading',
+                                      title: column.title
+                                  };
+                        else swTwHeading
+                    "
+                >
+                    <div
+                        class="ta-font-semi-bold th-title-small"
+                        [ngStyle]="{
+                            'width.px':
+                                column.resizable && !tableHeadRowsData?.locked
+                                    ? column.width - 55
+                                    : column.width - 20,
+                            'min-width.px': tableHeadRowsData?.resizing
+                                ? column.width
+                                : 'unset'
+                        }"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': tableHeadRowsData?.locked,
+                            'set-center-th-title': column.setCenter
+                        }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
+                    >
+                        {{ column.title }}
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Sw Tw Heading -->
+
+            <ng-template #swTwHeading>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'sw-tw-heading'
+                                  };
+                        else citation
+                    "
+                >
+                    <div
+                        class="d-flex sw-tw-title-container"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                        }"
+                        ž
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
+                    >
+                        <div
+                            class="d-flex align-items-center jutify-content-center ta-font-bold sw-tw-title"
+                        >
+                            SW
+                        </div>
+                        <div
+                            class="d-flex align-items-center jutify-content-center ta-font-bold sw-tw-title"
+                        >
+                            TW
+                        </div>
+                        <div
+                            class="d-flex align-items-center jutify-content-center ta-font-bold sw-tw-title"
+                        >
+                            TOTAL
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Citation -->
+
+            <ng-template #citation>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'citation'
+                                  };
+                        else accidentCitationIcons
+                    "
+                >
+                    <!-- Citation Icons -->
+
+                    <div
+                        class="d-flex justify-content-center citation-container"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                        }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
+                    >
+                        <div
+                            class="d-flex justify-content-between citation-wrapper"
+                        >
+                            <div class="icon-container">
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/cop-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/oss-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container"
+                            >
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/money-head-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Accident Citation Icons -->
+
+            <ng-template #accidentCitationIcons>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'citation-icons'
+                                  };
+                        else icons
+                    "
+                >
+                    <div
+                        class="d-flex justify-content-center align-items-center accident-citation-container"
+                        [ngClass]="{
+                            'sort-active':
+                                column.sortDirection !== '' &&
+                                column.sortDirection,
+                            'th-title-locked-cursor': tableHeadRowsData?.locked
+                        }"
+                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
+                    >
+                        <div class="d-flex accident-citation-wrapper">
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container has-margin"
+                            >
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/accident-crash-vehicles-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container has-margin"
+                            >
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/accident-injured-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container has-margin"
+                            >
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/accident-rip-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container has-margin"
+                            >
+                                <svg-icon
+                                    class="d-flex justify-content-center align-items-center"
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/accident-hook-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+
+                            <div
+                                class="d-flex justify-content-center align-items-center icon-container"
+                            >
+                                <svg-icon
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                    [src]="
+                                        'assets/svg/truckassist-table/accident-hazmat-icon.svg'
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Icons -->
+
+            <ng-template #icons>
+                <ng-container
+                    *ngIf="
+                        column.ngTemplate
+                            | tableHeadConditions
+                                : {
+                                      conditionType: 'icons',
+                                      headIconStyle: column.headIconStyle,
+                                      title: column.title
+                                  }
+                    "
+                >
+                    <div
+                        class="icons"
+                        [ngClass]="{
+                            'icon-hover': column.ngTemplate !== 'hire'
+                        }"
+                    >
+                        <svg-icon
+                            [svgStyle]="{
+                                'width.px': column.headIconStyle.width,
+                                'height.px': column.headIconStyle.height
+                            }"
+                            [src]="column.headIconStyle.imgPath ?? ''"
+                        ></svg-icon>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+            <!-- Sort -->
+
+            <ng-container
+                *ngIf="
+                    ''
+                        | tableHeadConditions
+                            : {
+                                  conditionType: 'sort',
+                                  sortable: column.sortable,
+                                  sortDirection: column.sortDirection,
+                                  locked: tableHeadRowsData?.locked,
+                                  viewDataLength:
+                                      tableHeadRowsData?.viewDataLength
+                              }
+                "
+            >
+                <div
+                    class="d-flex justify-content-center align-items-center sort-indicator-container"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 12,
+                            'height.px': 12
+                        }"
+                        [src]="
+                            column.sortDirection === 'asc'
+                                ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                                : 'assets/svg/truckassist-table/descending-sort.svg'
+                        "
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Pin -->
+
+            <ng-container
+                *ngIf="
+                    !tableHeadRowsData?.locked &&
+                    !tableHeadRowsData?.resizing &&
+                    column.ngTemplate !== 'checkbox' &&
+                    i !== 1
+                "
+            >
+                <div class="d-flex align-items-center pin-remove-container">
+                    <!-- Remove -->
+
+                    <ng-container
+                        *ngIf="
+                            tableHeadRowsData?.notPinedColumns &&
+                            !tableHeadRowsData?.reordering
+                        "
+                    >
+                        <svg-icon
+                            class="x-icon"
+                            [svgStyle]="{
+                                'width.px': 10,
+                                'height.px': 10
+                            }"
+                            [src]="'assets/svg/truckassist-table/x.svg'"
+                            (click)="
+                                handleTableHeadRowsActionClick(
+                                    column,
+                                    'remove-column'
+                                )
+                            "
+                        ></svg-icon>
+                    </ng-container>
+
+                    <svg-icon
+                        class="pin-icon"
+                        [ngClass]="{
+                            pined: column.isPined,
+                            hide:
+                                !column.isPined && tableHeadRowsData?.reordering
+                        }"
+                        [svgStyle]="{
+                            'width.px': 9,
+                            'height.px': 12
+                        }"
+                        [src]="'assets/svg/truckassist-table/pin.svg'"
+                        (click)="
+                            handleTableHeadRowsActionClick(column, 'pin-column')
+                        "
+                    ></svg-icon>
+                </div>
+            </ng-container>
+        </th>
+    </ng-container>
+</tr>
+
+<!-- Select Rows Popover -->
+
+<ng-template #optionsPopover let-data="data" data-toggle="popover">
+    <app-table-head-rows-popover
+        [tableHeadRowsPopoverData]="{
+            mySelection: tableHeadRowsData?.mySelection,
+            selectableRow: tableHeadRowsData?.selectableRow
+        }"
+        (tableHeadRowsPopoverActionsEmitter)="
+            handleTableHeadRowsActionClick($event, 'selection')
+        "
+    >
+    </app-table-head-rows-popover>
+</ng-template>

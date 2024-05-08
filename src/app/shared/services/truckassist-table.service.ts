@@ -63,6 +63,9 @@ export class TruckassistTableService {
     private flipCards = new BehaviorSubject<boolean>(false);
     public isFlipedAllCards = this.flipCards.asObservable();
 
+    // hire selected rows
+    private hireSelectedRows = new BehaviorSubject<DriverResponse[]>([]);
+
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
         | ShipperResponse[]
@@ -173,6 +176,11 @@ export class TruckassistTableService {
     /* Delete Selected Rows */
     public sendActionAnimation(actionAnimation: any) {
         this.actionAnimation.next(actionAnimation);
+    }
+
+    /* Hire Selected Rows */
+    public sendHireSelectedRows(hireSelectedRows: DriverResponse[]) {
+        this.hireSelectedRows.next(hireSelectedRows);
     }
 
     /* Delete Selected Rows */

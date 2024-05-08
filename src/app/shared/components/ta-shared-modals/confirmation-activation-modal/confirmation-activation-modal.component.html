@@ -31,8 +31,13 @@
             <div
                 class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-3"
             >
-                <div class="m-0 ta-font-bold d-flex align-items-center">
-                    {{ editData.modalTitle }}
+                <div class="d-flex align-items-center">
+                    <div
+                        class="m-0 ta-font-bold limit-text"
+                        [class.shorter-text]="editData?.type === 'open'"
+                    >
+                        {{ editData.modalTitle }}
+                    </div>
 
                     <ng-container *ngIf="editData?.type === 'open'">
                         <svg-icon
@@ -41,12 +46,6 @@
                         ></svg-icon
                     ></ng-container>
                 </div>
-
-                <ng-container *ngIf="editData?.modalSecondTitle"
-                    ><span class="m-0 ta-font-medium">{{
-                        editData.modalSecondTitle
-                    }}</span></ng-container
-                >
             </div>
 
             <!-- Subtitle -->

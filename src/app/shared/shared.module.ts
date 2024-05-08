@@ -30,7 +30,6 @@ import { ObserversModule } from '@angular/cdk/observers';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 
 @NgModule({
-    declarations: [],
     imports: [
         CommonModule,
         FormsModule,

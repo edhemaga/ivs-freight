@@ -142,10 +142,14 @@
             }
         }
 
+        &.input-blue-text {
+            color: red;
+        }
+
         .input-control {
             background: transparent;
-            color: $default-removed-background-text;
-            font-weight: 700;
+            color: $valid-content;
+            font-weight: 400;
 
             &.focus,
             &.focus:hover {
@@ -164,6 +168,12 @@
                     fill: $default-removed-background-arrow !important;
                 }
             }
+        }
+    }
+
+    &.input-blue-text {
+        .input-control {
+            color: $default-focus-commands-rect-hover-blue-commands;
         }
     }
 

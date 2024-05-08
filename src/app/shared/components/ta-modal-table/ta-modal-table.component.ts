@@ -100,14 +100,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isPMTrailerTable?: boolean = false;
 
     @Input() isNewRowCreated: boolean = false;
-    @Input() isEdit: boolean = false;
+    @Input() isEdit?: boolean = false;
+    @Input() isResetSelected?: boolean = false;
 
-    @Input() modalTableData:
+    @Input() modalTableData?:
         | ContactPhoneResponse[]
         | ContactEmailResponse[]
         | RepairItemResponse[]
         | PMTableData[] = [];
-    @Input() dropdownData: TruckTrailerPmDropdownLists;
+    @Input() dropdownData?: TruckTrailerPmDropdownLists;
 
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
@@ -198,6 +199,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
             this.resetIsRepairBillTableForm();
         }
+
+        if (
+            !changes.isResetSelected?.firstChange &&
+            changes.isResetSelected?.currentValue
+        ) {
+            this.resetSelected();
+        }
     }
 
     public trackByIdentity = (_: number, item: string): string => item;
@@ -211,6 +219,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
         });
+    }
+
+    private resetSelected(): void {
+        if (this.isRepairBillTable || this.isRepairOrderTable)
+            this.selectedTruckTrailerRepairPm = [];
     }
 
     public onSelectDropdown(
@@ -228,7 +241,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
-                if (event) this.selectedTruckTrailerRepairPm[index] = event;
+                this.selectedTruckTrailerRepairPm[index] = event;
 
                 this.getModalTableDataValue();
 
@@ -608,7 +621,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             JSON.stringify(
                 this.isPhoneTable
                     ? ModalTableConstants.IS_INPUT_HOVER_ROW_PHONE
-                    : ModalTableConstants.IS_INPUT_HOVER_ROW_EMAIL
+                    : this.isEmailTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_EMAIL
+                    : this.isRepairBillTable && !this.isRepairOrderTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_BILL
+                    : this.isRepairOrderTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_ORDER
+                    : this.isContactTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
+                    : this.isContactTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
+                    : null
             )
         );
     }

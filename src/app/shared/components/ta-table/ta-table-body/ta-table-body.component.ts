@@ -199,6 +199,7 @@ export class TaTableBodyComponent
 
     // --------------------------------NgOnInit---------------------------------
     ngOnInit(): void {
+        console.log('viewData', this.viewData);
         // Get Selected Tab Data
         this.getSelectedTabTableData();
         this.viewDataEmpty = this.viewData.length ? false : true;
@@ -923,10 +924,10 @@ export class TaTableBodyComponent
     onSaveInspectinDescription() {}
 
     // Finish Order
-    onFinishOrder(row: any) {
+    onFinishOrder(id: number) {
         this.bodyActions.emit({
-            data: row,
             type: 'finish-order',
+            id,
         });
     }
 

@@ -265,7 +265,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // pipes
         private thousandSeparator: ThousandSeparatorPipe,
+
+        // services
         private filterService: FilterStateService,
         private tableService: TruckassistTableService
     ) {}

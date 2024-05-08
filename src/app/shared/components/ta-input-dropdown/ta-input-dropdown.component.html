@@ -117,11 +117,13 @@
     ></app-ta-input>
 
     <!-- Dropdown icon instead of input -->
-    <ng-container *ngIf="inputConfig.isIconInput">
+    <ng-container *ngIf="inputConfig?.isIconInput">
         <div
             class="d-flex justify-content-center align-items-center input-icon-container"
             [ngClass]="{
-                valid: inputConfig?.isValidIcon,
+                valid:
+                    inputConfig?.isValidIcon &&
+                    !inputConfig?.inputIcon.includes('custom'),
                 active: popoverRef?.isOpen()
             }"
         >

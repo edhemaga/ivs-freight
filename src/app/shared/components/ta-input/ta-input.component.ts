@@ -231,7 +231,6 @@ export class TaInputComponent
     public hasDecimalIndex: number = -1;
     public originPriceSeparatorLimit: number;
     public isDotDeleted: boolean = false;
-
     // DatePicker
     public wholeInputSelection: any;
 
@@ -614,7 +613,9 @@ export class TaInputComponent
         }
 
         if (this._inputConfig.priceSeparator) {
-            this.isDotDeleted = this.getSuperControl?.value?.includes('.');
+            const valueToString = String(this.getSuperControl?.value);
+
+            this.isDotDeleted = valueToString?.includes('.');
         }
 
         // Disable for phone field first character to be 0
@@ -636,9 +637,10 @@ export class TaInputComponent
         if (event) {
             this.capsLockOn = event?.getModifierState?.('CapsLock');
         }
-
         // Reset function property for disabling multiple dots
-        if (this.isDotDeleted && !this.getSuperControl?.value?.includes('.')) {
+        const valueToString = String(this.getSuperControl?.value);
+
+        if (this.isDotDeleted && !valueToString?.includes('.')) {
             this.numberOfPoints = 0;
         }
         if (
@@ -992,8 +994,9 @@ export class TaInputComponent
                 this.disableMultiplePoints(event);
 
                 // Find index of dot
-                this.hasDecimalIndex =
-                    this.getSuperControl?.value?.indexOf('.');
+                const valueToString = String(this.getSuperControl.value);
+
+                this.hasDecimalIndex = valueToString?.indexOf('.');
 
                 if (this.hasDecimalIndex >= 0) {
                     // 1. Divide number on decimal and integer part
@@ -1024,7 +1027,7 @@ export class TaInputComponent
 
                     // 4. Set formatted number
                     this.getSuperControl.patchValue(
-                        integerPart + '.' + decimalPart
+                        /*  integerPart + '.' + decimalPart */ 'asd'
                     );
 
                     this.timeoutCleaner = setTimeout(() => {
@@ -2845,7 +2848,6 @@ export class TaInputComponent
                     this.span2.nativeElement.innerHTML = 'MM';
                     this.setTimePickerTime();
                     this.showDateInput = false;
-                    //this.resetForms(); // PITANJE STO SE OVO SKLANJA I UOPSTE STO JE TREBALO
                 }
             }
 
@@ -2909,6 +2911,7 @@ export class TaInputComponent
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         clearTimeout(this.timeoutCleaner);
         clearTimeout(this.wholeInputSelection);
         clearTimeout(this.dateTimeMainTimer);

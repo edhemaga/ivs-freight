@@ -48,7 +48,8 @@
         'inactive-empty': _inputConfig.isDisabled && !getSuperControl.value,
         'inactive-filled': _inputConfig.isDisabled && getSuperControl.value,
         'input-remove-trash-can': _inputConfig.removeInput,
-        'input-remove-background': _inputConfig.removeInputBackground
+        'input-remove-background': _inputConfig.isInputBackgroundRemoved,
+        'input-blue-text': _inputConfig.isBlueText
     }"
 >
     <!-- Input Clear -->
@@ -1222,11 +1223,6 @@
             'multiSelect-dropdown-active':
                 _inputConfig.multiSelectDropdownActive &&
                 focusInput &&
-                !_inputConfig.isDisabled,
-            'input-blue-content':
-                _inputConfig.textBlueColor &&
-                !focusInput &&
-                getSuperControl.value &&
                 !_inputConfig.isDisabled,
             'dropdown-label-active':
                 _inputConfig.dropdownLabel &&

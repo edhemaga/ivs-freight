@@ -73,7 +73,7 @@
                         isDisabled: currentActiveTab.name === 'Custom',
                         hideClear: true,
                         hideColorValidations: true,
-                        removeInputBackground: true,
+                        isInputBackgroundRemoved: true,
                         dropdownWidthClass: 'w-col-157'
                     }"
                     [options]="subPeriodDropdownList"
@@ -505,7 +505,9 @@
                             #lineChart
                             [chartConfig]="lineChartConfig"
                             [axesProperties]="lineChartAxes"
-                            [multipleVerticalLeftAxes]="multipleVerticalLeftAxes"
+                            [multipleVerticalLeftAxes]="
+                                multipleVerticalLeftAxes
+                            "
                             [legendAttributes]="{}"
                         >
                         </app-ta-chart>

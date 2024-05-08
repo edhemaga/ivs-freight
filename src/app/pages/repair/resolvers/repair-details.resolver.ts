@@ -34,6 +34,7 @@ export class RepairDetailsResolver implements Resolve<RepairDetailsState> {
             this.repairDetailsService.getRepairShopMinimalList(1, 25);
         const repairedVehicleList$ =
             this.repairDetailsService.getRepairedVehicle(repairShopId, 1, 25);
+
         return forkJoin({
             repairShop: repairShop$,
             repairList: repairList$,
