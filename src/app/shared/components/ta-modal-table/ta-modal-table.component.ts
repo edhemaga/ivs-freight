@@ -101,6 +101,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() isNewRowCreated: boolean = false;
     @Input() isEdit?: boolean = false;
+    @Input() isResetSelected?: boolean = false;
 
     @Input() modalTableData?:
         | ContactPhoneResponse[]
@@ -198,6 +199,13 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
             this.resetIsRepairBillTableForm();
         }
+
+        if (
+            !changes.isResetSelected?.firstChange &&
+            changes.isResetSelected?.currentValue
+        ) {
+            this.resetSelected();
+        }
     }
 
     public trackByIdentity = (_: number, item: string): string => item;
@@ -211,6 +219,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
         });
+    }
+
+    private resetSelected(): void {
+        if (this.isRepairBillTable || this.isRepairOrderTable)
+            this.selectedTruckTrailerRepairPm = [];
     }
 
     public onSelectDropdown(
@@ -228,7 +241,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
-                if (event) this.selectedTruckTrailerRepairPm[index] = event;
+                this.selectedTruckTrailerRepairPm[index] = event;
 
                 this.getModalTableDataValue();
 

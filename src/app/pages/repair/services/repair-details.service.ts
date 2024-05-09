@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // Store
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
@@ -37,12 +37,12 @@ export class RepairDetailsService {
         dateFrom?: string,
         dateTo?: string,
         isPM?: number,
-        categoryIds?: Array<number>,
-        pmTruckTitles?: Array<string>,
-        pmTrailerTitles?: Array<string>,
+        categoryIds?: number[],
+        pmTruckTitles?: string[],
+        pmTrailerTitles?: string[],
         isOrder?: boolean,
-        truckNumbers?: Array<string>,
-        trailerNumbers?: Array<string>,
+        truckNumbers?: string[],
+        trailerNumbers?: string[],
         costFrom?: number,
         costTo?: number,
         pageIndex?: number,

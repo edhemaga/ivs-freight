@@ -1,5 +1,5 @@
 <div
-    class="table-progress-cotnainer"
+    class="table-progress-container"
     [ngClass]="{
         'big-progress-bar': bigProgressBar,
         'todo-progress': expiresSettings === 'todo-list'
@@ -18,10 +18,7 @@
         ></div>
     </div>
 
-    <div 
-        class="table-progress-panel"
-        [class.dark-text]="darkText"
-        >
+    <div class="table-progress-panel" [class.dark-text]="darkText">
         <!-- EXPIRES IN -->
         <span
             *ngIf="
@@ -100,8 +97,8 @@
                 }"
                 *ngIf="progresDay > 0"
             >
-                Completed {{ progresDay }} {{ progresDay > 1 ? 'days' : 'day' }} past
-                deadline
+                Completed {{ progresDay }}
+                {{ progresDay > 1 ? 'days' : 'day' }} past deadline
             </span>
             <span
                 class="color_done_red"
@@ -155,7 +152,8 @@
                         'progress-days-bold': expiresSettings !== 'todo-list'
                     }"
                     *ngIf="daysDiff !== 0"
-                    >Completed {{ daysDiff }} {{ daysDiff > 1 ? 'days' : 'day' }}</span
+                    >Completed {{ daysDiff }}
+                    {{ daysDiff > 1 ? 'days' : 'day' }}</span
                 >
                 <span
                     [ngClass]="{

@@ -47,6 +47,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums/repair-table-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 
 // constants
@@ -86,6 +87,8 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 
 // helpers
 import { RepairTableHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table.helper';
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { RepairTableBackFilterDataHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-back-filter-data.helper';
 
 @Component({
     selector: 'app-repair-table',
@@ -115,7 +118,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     public repairShopTabClicked: boolean = false;
     public activeTableData: string;
     public backFilterQuery: RepairBackFilter =
-        TableDropdownComponentConstants.REPAIR_BACK_FILTER_QUERY;
+        RepairTableBackFilterDataHelper.backRepairFilterData();
 
     public shopFilterQuery: ShopBackFilterQuery =
         TableDropdownComponentConstants.SHOP_FILTER_QUERY;
@@ -376,18 +379,72 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res?.filteredArray) {
-                    if (res.selectedFilter) {
-                        this.viewData = this.reapirTableData?.filter(
-                            (repairData) =>
-                                res.filteredArray.some(
-                                    (filterData) =>
-                                        filterData.id === repairData.id
-                                )
-                        );
-                    }
+                if (res) {
+                    if (res.queryParams?.length) {
+                        switch (res.filterType) {
+                            case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
+                                this.backFilterQuery.categoryIds =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
 
-                    if (!res.selectedFilter) this.sendRepairData();
+                                break;
+                            case RepairTableStringEnum.PM_FILTER:
+                                this.backFilterQuery.pmTruckTitles =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
+                                break;
+                            case RepairTableStringEnum.TRAILER_FILTER:
+                                this.backFilterQuery.trailerNumbers =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
+                                break;
+                            case RepairTableStringEnum.TRUCK_FILTER:
+                                this.backFilterQuery.truckNumbers =
+                                    res.queryParams;
+                                this.repairBackFilter(this.backFilterQuery);
+
+                                break;
+                            case RepairTableStringEnum.TIME_FILTER:
+                                const { fromDate, toDate } =
+                                    RepairTableDateFormaterHelper.getDateRange(
+                                        res.queryParams?.timeSelected
+                                    );
+                                this.backFilterQuery.dateTo = toDate;
+                                this.backFilterQuery.dateFrom = fromDate;
+
+                                this.repairBackFilter(this.backFilterQuery);
+
+                                break;
+                            case RepairTableStringEnum.MONEY_FILTER:
+                                this.backFilterQuery.costFrom =
+                                    res.queryParams?.singleFrom;
+                                this.backFilterQuery.costTo =
+                                    res.queryParams?.singleTo;
+
+                                this.repairBackFilter(this.backFilterQuery);
+
+                                break;
+                            default:
+                                this.sendRepairData();
+                                break;
+                        }
+                    } else this.sendRepairData();
+
+                    if (res?.filteredArray) {
+                        if (res.selectedFilter) {
+                            this.viewData = this.reapirTableData?.filter(
+                                (repairData) =>
+                                    res.filteredArray.some(
+                                        (filterData) =>
+                                            filterData.id === repairData.id
+                                    )
+                            );
+                        }
+
+                        if (!res.selectedFilter) this.sendRepairData();
+                    }
                 }
             });
     }
@@ -612,8 +669,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 showMoneyFilter: true,
                 hideMoneySubType: true,
                 hideActivationButton: true,
-                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
-                showTrailerFilter:
+                showTruckPmFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerPmFilter:
                     this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
@@ -674,6 +731,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
             )
         );
+        this.backFilterQuery.unitType =
+            this.selectedTab === TableStringEnum.INACTIVE ? 2 : 1;
 
         const repairTruckData =
             this.selectedTab === TableStringEnum.ACTIVE
@@ -869,7 +928,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
             this.viewData = [];
         }
-
         this.reapirTableData = this.viewData;
     }
 
@@ -886,11 +944,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             invoice: data?.invoice,
             payType: data.payType?.name,
-            driver: null /* data.driverFirstName
-                ? data.driverFirstName + data.driverLastName
-                    ? data.driverLastName
-                    : ''
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER */,
+            driver: data.driver?.firstName
+                ? `${data.driver.firstName} ${data.driver.lastName || ''}`
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableType:
                 data?.truck?.truckType?.logoName ||
                 data?.trailer?.trailerType?.logoName ||
@@ -904,9 +960,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 data?.trailer?.trailerType?.name ||
                 TableStringEnum.NA,
             tableYear:
-                data?.truck?.year + '' ||
-                data?.trailer?.year + '' ||
-                TableStringEnum.NA,
+                (data.truck?.year || data.trailer?.year || TableStringEnum.NA) +
+                '',
             tableOdometer: data.odometer
                 ? this.thousandSeparator.transform(data.odometer)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1117,6 +1172,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     this.viewData = [...newData];
                 }
+                this.backFilterQuery =
+                    RepairTableBackFilterDataHelper.backRepairFilterData();
             });
     }
 
@@ -1202,25 +1259,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             ) {
                 forkJoin([
                     this.repairService.getRepairList(
-                        undefined,
+                        null,
                         2,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
                         1,
                         25,
-                        undefined,
-                        undefined,
-                        undefined,
-                        undefined
+                        null,
+                        null,
+                        null,
+                        null
                     ),
                     this.tableService.getTableConfig(11),
                 ])

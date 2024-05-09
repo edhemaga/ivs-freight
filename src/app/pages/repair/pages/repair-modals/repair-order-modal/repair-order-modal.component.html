@@ -399,6 +399,7 @@
                     (selectedHeaderTab === 2 && isRepairOrderRowCreated)
                 "
                 [dropdownData]="truckTrailerPmDropdownLists"
+                [isResetSelected]="isResetSelectedPm"
                 [modalTableData]="updatedRepairItems"
                 (modalTableValueEmitter)="handleModalTableValueEmit($event)"
                 (modalTableValidStatusEmitter)="
@@ -437,7 +438,9 @@
             ></app-ta-tab-switch>
 
             <div class="repair-shop-services">
-                <ng-container *ngFor="let repair of services">
+                <ng-container
+                    *ngFor="let repair of services; trackBy: trackByIdentity"
+                >
                     <div
                         class="d-flex align-items-center repair-shop-service"
                         [ngClass]="{
@@ -461,8 +464,8 @@
             <app-ta-custom-card
                 [cardName]="'Document'"
                 [disableAnimation]="isCardanimationDisabled"
-                [hasCounter]="documents.length ? documents.length : 0"
-                [isCardOpen]="documents.length > 0"
+                [hasCounter]="documents?.length"
+                [isCardOpen]="documents?.length"
             >
                 <app-ta-upload-files
                     [customClassName]="'modals'"
