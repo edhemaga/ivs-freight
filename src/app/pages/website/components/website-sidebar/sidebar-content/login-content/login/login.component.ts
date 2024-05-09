@@ -9,7 +9,7 @@ import {
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
-import { AuthFacade } from '@pages/website/state/auth.service';
+import { AuthFacadeService } from '@pages/website/state/services/auth.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 
 // validations
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         // services
         private inputService: TaInputService,
-        private authFacade: AuthFacade
+        private authFacadeService: AuthFacadeService
     ) {}
 
     ngOnInit(): void {
@@ -45,17 +45,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToStoreSelectors(): void {
-        this.authFacade.loginError$
+        this.authFacadeService.loginError$
             .pipe(takeUntil(this.destroy$))
             .subscribe((error) => {
                 if (!error) return;
                 this.loginForm.get(error.type).setErrors(error.error);
             });
 
-        this.displaySpinner$ = this.authFacade.showSpinner$;
+        this.displaySpinner$ = this.authFacadeService.showSpinner$;
     }
 
-    private createForm(): void { 
+    private createForm(): void {
         this.loginForm = this.formBuilder.group({
             email: [null, [Validators.required]],
             password: [null, [Validators.required, ...passwordValidation]],
@@ -84,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.authFacade.logIn(this.loginForm.value);
+        this.authFacadeService.logIn(this.loginForm.value);
     }
 
     ngOnDestroy(): void {

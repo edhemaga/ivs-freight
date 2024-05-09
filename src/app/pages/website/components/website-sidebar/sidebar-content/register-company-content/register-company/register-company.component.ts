@@ -11,6 +11,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
+import { AuthFacadeService } from '@pages/website/state/services/auth.service';
 
 // validations
 import {
@@ -26,7 +27,6 @@ import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 
 // models
 import { SignUpCompanyCommand } from 'appcoretruckassist';
-import { AuthFacade } from '@pages/website/state/auth.service';
 
 @Component({
     selector: 'app-register-company',
@@ -46,7 +46,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
 
         //Services
         private inputService: TaInputService,
-        private authFacade: AuthFacade
+        private authFacadeService: AuthFacadeService
     ) {}
 
     ngOnInit(): void {
@@ -57,14 +57,14 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToStoreSelectors(): void {
-        this.authFacade.loginError$
+        this.authFacadeService.loginError$
             .pipe(takeUntil(this.destroy$))
             .subscribe((error) => {
                 if (!error) return;
                 this.registerCompanyForm.get(error.type).setErrors(error.error);
             });
 
-        this.displaySpinner$ = this.authFacade.showSpinner$;
+        this.displaySpinner$ = this.authFacadeService.showSpinner$;
     }
 
     private createForm(): void {
@@ -158,7 +158,7 @@ export class RegisterCompanyComponent implements OnInit, OnDestroy {
             ...registerCompanyForm,
         };
 
-        this.authFacade.register(saveData);
+        this.authFacadeService.register(saveData);
     }
 
     ngOnDestroy(): void {

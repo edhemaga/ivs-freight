@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthRegisterEnum } from '../../enums/register.enums';
 import { HttpErrorResponse } from '@angular/common/http';
+
+// enums
+import { AuthRegisterEnum } from '@pages/website/state/enums/register.enum';
+
+// models
 import { SignUpCompanyCommand } from 'appcoretruckassist';
 
 export const authRegister = createAction(
@@ -10,7 +14,7 @@ export const authRegister = createAction(
 
 export const authRegisterSuccess = createAction(
     AuthRegisterEnum.REGISTER_SUCCESS,
-    props<{success: boolean}>()
+    props<{ success: boolean }>()
 );
 
 export const authRegisterError = createAction(
