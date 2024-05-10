@@ -8,10 +8,6 @@
         grid-gap: 4px;
 
         &-box {
-            &:not(:first-child):not(:last-child) {
-                padding-left: 32px;
-            }
-
             p,
             span {
                 font-size: 11px;
@@ -67,6 +63,14 @@
 
             .table-header-box {
                 padding-left: 0px;
+            }
+        }
+
+        &.off-duty-location-table-header {
+            grid-template-columns: 26px 170px 412px;
+
+            .table-header-box {
+                padding-left: 6px;
             }
         }
     }
@@ -319,6 +323,14 @@
                 &:hover {
                     background: $bw2;
                 }
+            }
+        }
+
+        /* Off Duty Location Table */
+
+        .off-duty-location-table-container {
+            .table-item {
+                grid-template-columns: 26px 170px 412px;
             }
         }
     }

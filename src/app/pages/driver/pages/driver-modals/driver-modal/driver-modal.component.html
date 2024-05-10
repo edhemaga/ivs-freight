@@ -705,132 +705,41 @@
                         <!-- Off Duty Location -->
 
                         <app-ta-custom-card
-                            [hasCounter]="
-                                offDutyLocations.length
-                                    ? offDutyLocations.length
-                                    : 0
-                            "
+                            [hasCounter]="offDutyLocationItems?.length"
                             [cardName]="'Off duty Location'"
                             [headerSvgEnabled]="true"
-                            [hasHeaderSvg]="'assets/svg/common/ic_info.svg'"
-                            [tooltipName]="
-                                'Location where driver can go off duty and disable GPS tracking. Company parking will be off duty location automatically.'
+                            [hasActionSvg]="true"
+                            [subText]="
+                                offDutyLocationItems?.length &&
+                                'Driver can disable GPS tracking. Parking location included.'
                             "
-                            [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                            [isCardOpen]="offDutyLocations.length > 0"
-                            [hasBodyData]="offDutyLocations.length > 0"
-                            [disabledCard]="!offDutyLocations.length"
-                            [disableAnimation]="disableCardAnimation"
+                            [isCardOpen]="offDutyLocationItems?.length > 0"
+                            [disabledCard]="!offDutyLocationItems?.length"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '10px',
                                 marginBottom: '12px'
                             }"
                             (onActionEvent)="addOffDutyLocation($event)"
                         >
-                            <div
-                                formArrayName="offDutyLocations"
-                                class="common-fake-table-modal common-fake-table-modal-off-duty-locations"
-                                *ngIf="offDutyLocations.length"
-                            >
-                                <div class="common-fake-table-label">
-                                    <p>NICKNAME</p>
-                                    <p>ADDRESS, CITY, STATE ZIP</p>
-                                </div>
-                                <div class="common-fake-table-body">
-                                    <div
-                                        *ngFor="
-                                            let dutyLocation of offDutyLocations.controls;
-                                            let ind = index
-                                        "
-                                    >
-                                        <div
-                                            [formGroupName]="ind"
-                                            class="common-fake-table-card"
-                                        >
-                                            <app-ta-input
-                                                formControlName="nickname"
-                                                [inputConfig]="{
-                                                    id: 'NICKNAME' + ind,
-                                                    name: 'NICKNAME',
-                                                    type: 'text',
-                                                    minLength: 2,
-                                                    maxLength: 128,
-                                                    hideRequiredCheck: true,
-                                                    hideErrorMessage: true
-                                                }"
-                                            ></app-ta-input>
-                                            <app-ta-input-address-dropdown
-                                                formControlName="address"
-                                                [inputConfig]="{
-                                                    id: 'NICKNAME' + ind,
-                                                    name: 'Address',
-                                                    type: 'text',
-                                                    textTransform: 'capitalize',
-                                                    dropdownWidthClass:
-                                                        'w-col-455',
-                                                    minLength: 6,
-                                                    maxLength: 256,
-                                                    hideRequiredCheck: true,
-                                                    hideErrorMessage: true
-                                                }"
-                                                [placeholderType]="
-                                                    'longAddress'
-                                                "
-                                                [activeAddress]="
-                                                    selectedAddress
-                                                "
-                                                (selectedAddress)="
-                                                    onHandleAddressFormArray(
-                                                        $event,
-                                                        ind
-                                                    )
-                                                "
-                                            ></app-ta-input-address-dropdown>
-                                            <div
-                                                ngbTooltip
-                                                mainTooltip="Delete"
-                                                position="top"
-                                                tooltipBackground="#EF5350"
-                                                class="common-fake-table-delete"
-                                                (click)="
-                                                    removeOffDutyLocation(ind)
-                                                "
-                                            >
-                                                <svg-icon
-                                                    src="assets/svg/common/ic_trash.svg"
-                                                ></svg-icon>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </app-ta-custom-card>
-                        <!-- Documents -->
-                        <div class="ta-card-body-overflow-none">
-                            <app-ta-custom-card
-                                [hasCounter]="
-                                    documents?.length ? documents.length : 0
+                            <app-ta-modal-table
+                                [isOffDutyLocationTable]="true"
+                                [isNewRowCreated]="isOffDutyLocationRowCreated"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
                                 "
-                                [cardName]="'Document'"
-                                [disableAnimation]="disableCardAnimation"
-                                [isCardOpen]="documents?.length > 0"
-                            >
-                                <app-ta-upload-files
-                                    [files]="documents"
-                                    [size]="'medium'"
-                                    [showDropzone]="true"
-                                    (onFileEvent)="onFilesEvent($event)"
-                                    [customClassName]="'modals'"
-                                    [hasTagsDropdown]="true"
-                                    [tags]="tags"
-                                ></app-ta-upload-files>
-                            </app-ta-custom-card>
-                        </div>
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            ></app-ta-modal-table>
+                        </app-ta-custom-card>
+
                         <!-- Emergency Contact -->
+
                         <app-ta-custom-card
                             [cardName]="'Emergency Contact'"
                             [isCardOpen]="true"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -843,23 +752,23 @@
                                         name: 'Emergency Name',
                                         type: 'text',
                                         label: 'Name',
-                                        isRequired: true,
                                         minLength: 2,
                                         maxLength: 24
                                     }"
                                 ></app-ta-input>
+
                                 <app-ta-input
                                     formControlName="emergencyContactPhone"
                                     [inputConfig]="{
                                         name: 'Phone',
                                         type: 'text',
                                         label: 'Phone',
-                                        isRequired: true,
                                         placeholderIcon: 'phone',
                                         mask: '(000) 000-0000',
                                         maxLength: 14
                                     }"
                                 ></app-ta-input>
+
                                 <app-ta-input
                                     formControlName="emergencyContactRelationship"
                                     [inputConfig]="{
@@ -872,7 +781,30 @@
                                 ></app-ta-input>
                             </div>
                         </app-ta-custom-card>
+
+                        <!-- Documents -->
+
+                        <div class="ta-card-body-overflow-none">
+                            <app-ta-custom-card
+                                [hasCounter]="documents?.length"
+                                [cardName]="'Document'"
+                                [disableAnimation]="isCardAnimationDisabled"
+                                [isCardOpen]="documents?.length"
+                            >
+                                <app-ta-upload-files
+                                    [files]="documents"
+                                    [size]="'medium'"
+                                    [showDropzone]="true"
+                                    [customClassName]="'modals'"
+                                    [hasTagsDropdown]="true"
+                                    [tags]="tags"
+                                    (onFileEvent)="onFilesEvent($event)"
+                                ></app-ta-upload-files>
+                            </app-ta-custom-card>
+                        </div>
+
                         <!-- Note -->
+
                         <app-ta-input-note
                             formControlName="note"
                             [isVisibleNote]="
@@ -891,22 +823,13 @@
                     </div>
                 </ng-container>
 
-                <!--  <app-ta-logo-change
-                            [croppieOptions]="croppieOptions"
-                            [croppieShape]="'rectangle'"
-                            [customClass]="'modal-container-M'"
-                            [imageUrl]="this.companyForm.get('logo').value"
-                            [displayUploadZone]="displayUploadZone"
-                            (validationEvent)="onImageValidation($event)"
-                            (base64ImageEvent)="onUploadImage($event)"
-                            (saveLogoEvent)="onSaveLogoAction($event)"
-                        ></app-ta-logo-change> -->
-                <!-------------------------------- Additional Tab -------------------------------->
+                <!-- Additional Tab -->
+
                 <div class="m-tab" *ngIf="selectedTab === 2">
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
                         [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                     >
                         <app-ta-logo-change
                             [croppieOptions]="croppieOptions"
@@ -923,7 +846,7 @@
                         <app-ta-custom-card
                             [cardName]="'Cards & MVR Exp.'"
                             [isCardOpen]="true"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
                                 marginTop: '18px',
                                 marginBottom: '22px'
@@ -996,7 +919,7 @@
                     <app-ta-custom-card
                         [cardName]="'Notification'"
                         [isCardOpen]="true"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                     >
                         <div class="driver-notification">
                             <p>GENERAL</p>

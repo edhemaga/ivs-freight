@@ -1,13 +1,19 @@
 import {
     FormsModule,
     ReactiveFormsModule,
-    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
 import { ChangeContext, Options } from '@angular-slider/ngx-slider';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpResponseBase } from '@angular/common/http';
 
@@ -16,6 +22,7 @@ import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 // modules
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { CroppieOptions } from 'croppie';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -43,7 +50,6 @@ import {
     fuelCardValidation,
     lastNameValidation,
     name2_24Validation,
-    nicknameValidation,
     perStopValidation,
     phoneFaxRegex,
     routingBankValidation,
@@ -65,9 +71,11 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
 
 // constants
 import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
@@ -113,12 +121,20 @@ import { Tabs } from '@shared/models/tabs.model';
         TaCheckboxCardComponent,
         TaInputDropdownComponent,
         TaLogoChangeComponent,
+        TaModalTableComponent,
     ],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: any;
+
+    private destroy$ = new Subject<void>();
+
+    public driverForm: UntypedFormGroup;
+
+    public isFormDirty: boolean;
+    public isAddNewAfterSave: boolean = false;
 
     // tabs
     public mainTabs: Tabs[] = [];
@@ -135,36 +151,42 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public selectedPayType: EnumValue;
     public selectedBank: BankResponse;
 
+    public selectedAddress: AddressEntity = null;
+
     // slider
     public soloSliderOptions: Options;
     public teamSliderOptions: Options;
     public driverSliderOptions: Options;
 
-    // Logo Actions
-    public croppieOptions: Croppie.CroppieOptions = {
-        enableExif: true,
-        viewport: {
-            width: 616,
-            height: 194,
-            type: 'square',
-        },
-        boundary: {
-            width: 616,
-            height: 194,
-        },
-        enforceBoundary: false,
+    // items
+    public isOffDutyLocationRowCreated: boolean = false;
+    public isEachOffDutyLocationRowValid: boolean = true;
+
+    public offDutyLocationItems = [];
+    public updateOffDutyLocationItems = [];
+
+    // documents
+    public dropZoneConfig: DropZoneConfig;
+    public documents: any[] = [];
+    public filesForDelete: any[] = [];
+    public tags: any[] = [];
+
+    public isFileModified: boolean = false;
+
+    // animation
+    public animationObject = {
+        value: this.selectedTab,
+        params: { height: '0px' },
     };
+
+    // logo
+    public croppieOptions: CroppieOptions;
 
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
 
-    public driverForm: UntypedFormGroup;
-
     public isOwner: boolean = false;
     public isBankSelected: boolean = false;
-
-    public selectedAddress: AddressEntity = null;
-    public selectedOffDutyAddressArray: AddressEntity[] = [];
 
     public driverFullName: string = null;
 
@@ -172,32 +194,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public driverStatus: boolean = true;
 
-    public documents: any[] = [];
-    public fileModified: boolean = false;
-    public filesForDelete: any[] = [];
-    public tags: any[] = [];
-
     // Delete when back coming
     public hasMilesSameRate: boolean = false;
     public fleetType: string = 'Solo';
     public payrollCompany: any;
     public loadingOwnerEin: boolean = false;
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
-    public dropZoneConfig: DropZoneConfig;
     public longitude: number;
     public latitude: number;
-
-    public isFormDirty: boolean;
-
-    public addNewAfterSave: boolean = false;
-
-    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -212,7 +217,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private tagsService: EditTagsService,
 
         // bootstrap
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+
+        // change detector
+        private changeDetector: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
@@ -239,6 +247,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ssn: [null, [Validators.required, ssnNumberRegex]],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
+
+            isOwner: [false],
+            ownerId: [null],
+            ownerType: ['Sole Proprietor'],
+            ein: [null, einNumberRegex],
+            bussinesName: [null],
 
             useTruckAssistAch: [false],
             payType: [null, [Validators.required]],
@@ -268,21 +282,19 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             shareOpenPayroll: [false],
 
+            offDutyLocationItems: [null],
+
+            emergencyContactName: [null, [...name2_24Validation]],
+            emergencyContactPhone: [null, [phoneFaxRegex]],
+            emergencyContactRelationship: [null, name2_24Validation],
+
+            files: [null],
+            tags: [null],
+
+            note: [null],
+
             mvrExpiration: [null, Validators.required],
 
-            isOwner: [false],
-            ownerId: [null],
-            ownerType: ['Sole Proprietor'],
-            ein: [null, einNumberRegex],
-            bussinesName: [null],
-            offDutyLocations: this.formBuilder.array([]),
-            emergencyContactName: [
-                null,
-                [Validators.required, ...name2_24Validation],
-            ],
-            emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
-            emergencyContactRelationship: [null, name2_24Validation],
-            note: [null],
             avatar: [null],
             twic: [false],
             twicExpDate: [null],
@@ -293,8 +305,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             mailNotificationPayroll: [true],
             pushNotificationPayroll: [false],
             smsNotificationPayroll: [false],
-            files: [null],
-            tags: [null],
         });
 
         this.inputService.customInputValidator(
@@ -325,9 +335,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
         );
 
-        this.driverSliderOptions = JSON.parse(
-            JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
-        );
+        this.croppieOptions = DriverModalConstants.CROPPIE_OPTIONS;
     }
 
     public handleSliderValueChange(
@@ -335,10 +343,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         type: string
     ) {
         this.driverForm.get(type).patchValue(event);
-    }
-
-    public get offDutyLocations(): UntypedFormArray {
-        return this.driverForm.get('offDutyLocations') as UntypedFormArray;
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -378,7 +382,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 status: true,
                 close: false,
             });
-            this.addNewAfterSave = true;
+            this.isAddNewAfterSave = true;
         }
         // Save or Update and Close
         else if (data.action === 'save') {
@@ -428,15 +432,32 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public addOffDutyLocation(event: { check: boolean; action: string }) {
-        if (event.check) {
-            this.offDutyLocations.push(this.createOffDutyLocation());
-        }
+    public addOffDutyLocation(): void {
+        if (!this.isEachOffDutyLocationRowValid) return;
+
+        this.isOffDutyLocationRowCreated = true;
+
+        setTimeout(() => {
+            this.isOffDutyLocationRowCreated = false;
+        }, 400);
+
+        this.changeDetector.detectChanges();
     }
 
-    public removeOffDutyLocation(id: number) {
-        this.offDutyLocations.removeAt(id);
-        this.selectedOffDutyAddressArray.slice(id, 1);
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        this.offDutyLocationItems = modalTableDataValue;
+
+        this.driverForm
+            .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
+            .patchValue(JSON.stringify(this.offDutyLocationItems));
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachOffDutyLocationRowValid: boolean
+    ): void {
+        this.isEachOffDutyLocationRowValid = isEachOffDutyLocationRowValid;
     }
 
     public onSaveNewBank(bank: { data: any; action: string }) {
@@ -524,52 +545,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     }
                 });
         }
-    }
-
-    public onHandleAddressFormArray(
-        event: { address: AddressEntity | any; valid: boolean },
-        index: number
-    ) {
-        this.selectedOffDutyAddressArray[index] = event.address;
-
-        if (!event.valid) {
-            this.offDutyLocations.at(index).setErrors({ invalid: true });
-        } else {
-            this.offDutyLocations.at(index).patchValue({
-                address: this.selectedOffDutyAddressArray[index].address,
-                city: this.selectedOffDutyAddressArray[index].city,
-                state: this.selectedOffDutyAddressArray[index].state,
-                stateShortName:
-                    this.selectedOffDutyAddressArray[index].stateShortName,
-                country: this.selectedOffDutyAddressArray[index].country,
-                zipCode: this.selectedOffDutyAddressArray[index].zipCode,
-                addressUnit: this.offDutyLocations.at(index).get('addressUnit')
-                    .value,
-                street: this.selectedOffDutyAddressArray[index].street,
-                streetNumber:
-                    this.selectedOffDutyAddressArray[index].streetNumber,
-            });
-        }
-    }
-
-    public premmapedOffDutyLocation() {
-        return this.offDutyLocations.controls.map((item) => {
-            return {
-                id: item.get('id').value ? item.get('id').value : 0,
-                nickname: item.get('nickname').value,
-                address: {
-                    address: item.get('address').value,
-                    city: item.get('city').value,
-                    state: item.get('state').value,
-                    stateShortName: item.get('stateShortName').value,
-                    country: item.get('country').value,
-                    zipCode: item.get('zipCode').value,
-                    addressUnit: item.get('addressUnit').value,
-                    street: item.get('street').value,
-                    streetNumber: item.get('streetNumber').value,
-                },
-            };
-        });
     }
 
     public onTabChange(event: Tabs): void {
@@ -793,7 +768,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.filesForDelete.push(event.deleteId);
                 }
 
-                this.fileModified = true;
+                this.isFileModified = true;
                 break;
             }
             case 'tag': {
@@ -887,43 +862,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     }
                 });
         }
-    }
-
-    private createOffDutyLocation(data?: {
-        id: number;
-        nickname: string;
-        address: string;
-        city: string;
-        state: string;
-        stateShortName: string;
-        country: string;
-        zipCode: string;
-        addressUnit: string;
-        street: string;
-        streetNumber: string;
-    }): UntypedFormGroup {
-        return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
-            nickname: [
-                data?.nickname ? data.nickname : null,
-                nicknameValidation,
-            ],
-            address: [
-                data?.address ? data.address : null,
-                [...addressValidation],
-            ],
-            city: [data?.city ? data.city : null],
-            state: [data?.state ? data.state : null],
-            stateShortName: [data?.stateShortName ? data.stateShortName : null],
-            country: [data?.country ? data.country : null],
-            zipCode: [data?.zipCode ? data.zipCode : null],
-            addressUnit: [
-                data?.addressUnit ? data.addressUnit : null,
-                [...addressUnitValidation],
-            ],
-            street: [data?.street ? data.street : null],
-            streetNumber: [data?.streetNumber ? data.streetNumber : null],
-        });
     }
 
     private onIncludePayroll(): void {
@@ -1204,7 +1142,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.handlingPayrollFleetType(this.fleetType, true);
 
                     if (this.editData) {
-                        this.disableCardAnimation = true;
+                        this.isCardAnimationDisabled = true;
                         this.getDriverById(this.editData.id);
                     } else {
                         this.startFormChanges();
@@ -1485,7 +1423,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       this.driverForm.get('twicExpDate').value
                   )
                 : null,
-            offDutyLocations: this.premmapedOffDutyLocation(),
             fleetType: this.fleetType,
             soloDriver: !this.driverForm.get('isOwner').value
                 ? this.fleetType === 'Combined'
@@ -1509,7 +1446,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     // If clicked Save and Add New, reset form and fields
-                    if (this.addNewAfterSave) {
+                    if (this.isAddNewAfterSave) {
                         this.formService.resetForm(this.driverForm);
                         this.modalService.setModalSpinner({
                             action: 'save and add new',
@@ -1602,15 +1539,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         }
 
                         this.documents = [];
-                        this.fileModified = false;
+                        this.isFileModified = false;
                         this.filesForDelete = [];
                         this.tags = [];
 
-                        this.offDutyLocations.clear();
-                        this.addNewAfterSave = false;
+                        this.isAddNewAfterSave = false;
                         this.selectedPayType = null;
                         this.selectedBank = null;
-                        this.selectedOffDutyAddressArray = [];
                         this.selectedAddress = null;
                     } else {
                         this.modalService.setModalSpinner({
@@ -1622,7 +1557,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: this.addNewAfterSave
+                        action: this.isAddNewAfterSave
                             ? 'save and add new'
                             : null,
                         status: false,
@@ -1911,7 +1846,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       this.driverForm.get('twicExpDate').value
                   )
                 : null,
-            offDutyLocations: this.premmapedOffDutyLocation(),
             fleetType: this.fleetType,
             soloDriver: !this.driverForm.get('isOwner').value
                 ? this.fleetType === 'Combined'
@@ -2183,50 +2117,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    if (res.offDutyLocations.length) {
-                        for (
-                            let index = 0;
-                            index < res.offDutyLocations.length;
-                            index++
-                        ) {
-                            this.offDutyLocations.push(
-                                this.createOffDutyLocation({
-                                    id: res.offDutyLocations[index].id,
-                                    nickname:
-                                        res.offDutyLocations[index].nickname,
-                                    address:
-                                        res.offDutyLocations[index].address
-                                            .address,
-                                    city: res.offDutyLocations[index].address
-                                        .city,
-                                    state: res.offDutyLocations[index].address
-                                        .state,
-                                    stateShortName:
-                                        res.offDutyLocations[index].address
-                                            .stateShortName,
-                                    country:
-                                        res.offDutyLocations[index].address
-                                            .country,
-                                    zipCode:
-                                        res.offDutyLocations[index].address
-                                            .zipCode,
-                                    addressUnit:
-                                        res.offDutyLocations[index].address
-                                            .addressUnit,
-                                    street: res.offDutyLocations[index].address
-                                        .street,
-                                    streetNumber:
-                                        res.offDutyLocations[index].address
-                                            .streetNumber,
-                                })
-                            );
-                            this.selectedOffDutyAddressArray[index] =
-                                res.address;
-                        }
-                    }
                     this.startFormChanges();
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},

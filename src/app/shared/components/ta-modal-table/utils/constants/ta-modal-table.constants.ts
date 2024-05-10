@@ -6,6 +6,8 @@ export class ModalTableConstants {
         'TYPE',
     ];
 
+    static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
+
     static REPAIR_BILL_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'DESCRIPTION',
@@ -45,11 +47,16 @@ export class ModalTableConstants {
         'MONTHS',
     ];
 
-    static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
+    static OFF_DUTY_LOCATION_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'NICKNAME',
+        'ADDRESS, CITY, STATE ZIP',
+    ];
 
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_ORDER: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_CONTACT: boolean[] = [false, false, false, false];
+    static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
 }

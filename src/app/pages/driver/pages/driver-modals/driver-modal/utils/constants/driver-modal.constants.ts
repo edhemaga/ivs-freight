@@ -1,5 +1,6 @@
 import { Tabs } from '@shared/models/tabs.model';
 import { Options } from '@angular-slider/ngx-slider';
+import { CroppieOptions } from 'croppie';
 
 export class DriverModalConstants {
     static MAIN_TABS: Tabs[] = [
@@ -46,5 +47,19 @@ export class DriverModalConstants {
         step: 1,
         showSelectionBar: true,
         hideLimitLabels: true,
+    };
+
+    static CROPPIE_OPTIONS: CroppieOptions = {
+        enableExif: true,
+        viewport: {
+            width: 616,
+            height: 194,
+            type: 'square',
+        },
+        boundary: {
+            width: 616,
+            height: 194,
+        },
+        enforceBoundary: false,
     };
 }
