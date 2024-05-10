@@ -674,15 +674,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private setDriverData(tableData: CardTableData): void {
         this.columns = tableData.gridColumns;
-        console.log('tableData.data', tableData.data);
+
         if (tableData.data.length) {
             this.viewData = tableData.data.map((data: any) => {
                 return this.selectedTab === TableStringEnum.APPLICANTS
                     ? this.mapApplicantsData(data)
                     : this.mapDriverData(data);
             });
-
-            console.log('MAPPED this.viewData', this.viewData);
 
             // Set data for cards based on selected tab
             this.sendDataToCardsOnTabSwitch();
@@ -948,6 +946,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 hasBorder: true,
                 svgClass: TableStringEnum.REGULAR,
+                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
             },
 
             {
@@ -966,7 +965,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             {
                 title: TableStringEnum.SEND_MESSAGE_2,
                 name: TableStringEnum.SEND_MESSAGE,
-                svgUrl: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Send Message.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -975,6 +974,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     'margin-bottom.px': 4,
                 },
                 svgClass: TableStringEnum.REGULAR,
+                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: TableStringEnum.ADD_NEW_2,
@@ -991,22 +991,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 isDropdown: true,
                 insideDropdownContent: [
                     {
-                        title: TableStringEnum.ADD_CDL,
+                        title: TableStringEnum.CDL,
                         name: TableStringEnum.NEW_LICENCE,
                     },
                     {
-                        title: TableStringEnum.ADD_MVR,
-                        name: TableStringEnum.NEW_MVR,
+                        title: TableStringEnum.TEST_DRUG_ALCOHOL,
+                        name: TableStringEnum.NEW_DRUG,
                     },
                     {
                         title: TableStringEnum.MEDICAL_EXAM_3,
                         name: TableStringEnum.NEW_MEDICAL,
                     },
                     {
-                        title: TableStringEnum.TEST_DRUG_ALCOHOL,
-                        name: TableStringEnum.NEW_DRUG,
+                        title: TableStringEnum.MVR,
+                        name: TableStringEnum.NEW_MVR,
                     },
                 ],
+                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: TableStringEnum.REQUEST,
@@ -1024,12 +1025,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         name: TableStringEnum.BACKGROUND_CHECK,
                     },
                     {
-                        title: TableStringEnum.MEDICAL_EXAM_2,
-                        name: TableStringEnum.MEDICAL_EXAM,
-                    },
-                    {
                         title: TableStringEnum.TEST_DRUG_ALCOHOL,
                         name: TableStringEnum.TEST_DRUG,
+                    },
+                    {
+                        title: TableStringEnum.MEDICAL_EXAM_2,
+                        name: TableStringEnum.MEDICAL_EXAM,
                     },
                     {
                         title: TableStringEnum.MVR,
@@ -1037,6 +1038,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                 ],
                 hasBorder: true,
+                mutedStyle: this.selectedTab === TableStringEnum.INACTIVE,
             },
             {
                 title: TableStringEnum.SHARE_2,

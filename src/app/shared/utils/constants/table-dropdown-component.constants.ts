@@ -279,7 +279,6 @@ export class TableDropdownComponentConstants {
             hasBorder: true,
             svgClass: 'regular',
         },
-
         {
             title: 'View Details',
             name: 'view-details',
@@ -288,17 +287,16 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
+            svgClass: 'regular',
         },
-
         {
             title: 'Hire Applicant',
             name: 'hire-applicant',
             mutedStyle: true,
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_hire-applicant.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -306,14 +304,13 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'regular',
+            svgClass: 'hire-applicant',
         },
-
         {
             title: 'Review',
             name: 'review',
             mutedStyle: true,
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_pen.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -323,25 +320,23 @@ export class TableDropdownComponentConstants {
             },
             svgClass: 'regular',
         },
-
         {
-            title: 'Move to Favourites',
+            title: 'Mark as Favourite',
             name: 'add-to-favourites',
+            svgUrl: 'assets/svg/common/ic_star.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgUrl: '',
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
+            svgClass: 'favourite',
         },
-
         {
             title: 'Resend Invitation',
             name: 'resend-invitation',
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_resend-invitation.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -349,10 +344,9 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'regular',
             hasBorder: true,
+            svgClass: 'regular',
         },
-
         {
             title: 'Share',
             name: 'share',
@@ -361,12 +355,12 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-        },
 
+            svgClass: 'regular',
+        },
         {
             title: 'Print',
             name: 'print',
@@ -375,15 +369,13 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-
-            svgClass: 'regular',
             hasBorder: true,
+            svgClass: 'regular',
         },
-
         {
             title: 'Move to Archive',
             name: 'move-to-archive',
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_driver_arhive.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -391,9 +383,8 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'delete',
+            svgClass: 'regular',
         },
-
         {
             title: 'Delete',
             name: 'delete-applicant',

@@ -71,8 +71,4 @@ export class TableHeadRowsComponent {
 
         this.tableHeadRowsActionEmitter.emit(eventEmit);
     }
-
-    ngOnInit() {
-        console.log('tableHeadRowsData', this.tableHeadRowsData);
-    }
 }

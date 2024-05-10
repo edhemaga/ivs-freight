@@ -6,6 +6,25 @@
     display: flex;
     flex-direction: column;
 
+    &.disabled {
+        .custom-slider-text {
+            color: $bw5 !important;
+
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        .ngx-slider {
+            pointer-events: none;
+
+            .ngx-slider-span {
+                color: $bw5 !important;
+            }
+        }
+    }
+
     .custom-slider-text {
         font-size: 11px;
         font-weight: 600;
@@ -82,19 +101,35 @@
 
     //-------------- Driver Modal --------------
     &.custom-driver-modal {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        -moz-column-gap: 12px;
-        column-gap: 12px;
-        align-items: center;
-        margin-top: 1px;
+        margin-top: -6px !important;
 
         .custom-slider-text {
-            font-size: 14px;
+            font-size: 11px;
+            line-height: 14px;
             font-weight: 600;
-            position: relative;
-            top: 1px;
-            margin: 0 !important;
+
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        &-single {
+            display: grid;
+            grid-template-columns: 18% 1fr;
+            align-items: center;
+            grid-gap: 12px;
+
+            .custom-slider-text {
+                margin-bottom: 0 !important;
+            }
         }
     }
     //-------------- Truck Modal, User Modal --------------

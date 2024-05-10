@@ -135,7 +135,7 @@ export enum TableStringEnum {
     NEW_LICENCE = 'new-licence',
     NEW_MEDICAL = 'new-medical',
     NEW_MVR = 'new-mvr',
-    ADD_CDL = 'Add CDL',
+    CDL = 'CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
@@ -208,7 +208,6 @@ export enum TableStringEnum {
     HOS = 'HOS',
     TEST = 'TEST',
 
-    ADD_MVR = 'Add MVR',
     TEST_MVR = 'test-mvr',
 
     TEST_DRUG_ALCOHOL = 'Test (Drug, Alcohol)',

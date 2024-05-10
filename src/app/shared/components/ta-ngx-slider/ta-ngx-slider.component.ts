@@ -28,7 +28,7 @@ import { SliderTemplateEnum } from '@shared/components/ta-ngx-slider/enums/slide
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -44,6 +44,7 @@ export class TaNgxSliderComponent implements AfterViewInit {
     @Input() customClass: string = null;
     @Input() minValue: number = 0;
     @Input() maxValue: number = 5000;
+    @Input() isDisabled: boolean = false;
 
     @Output() onUserValueChange: EventEmitter<ChangeContext | number> =
         new EventEmitter<ChangeContext | number>();
