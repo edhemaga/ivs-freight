@@ -35,6 +35,8 @@ export class TaCheckboxComponent implements ControlValueAccessor {
     @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name
     @Input() customClass: string;
     @Input() moveIconDown: boolean = false;
+    @Input() isUseCarrieraACHCheckBox: boolean = false;
+    @Input() isDisabledBlue: boolean = false;
 
     @Output() formArrayAction: EventEmitter<boolean> =
         new EventEmitter<boolean>();

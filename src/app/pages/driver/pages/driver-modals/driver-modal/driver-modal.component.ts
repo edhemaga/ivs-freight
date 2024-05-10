@@ -6,25 +6,21 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { ChangeContext, Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-//Models
-import { Options } from '@angular-slider/ngx-slider';
-import {
-    AddressEntity,
-    CheckOwnerSsnEinResponse,
-    CreateResponse,
-    GetDriverModalResponse,
-} from 'appcoretruckassist';
 import { HttpResponseBase } from '@angular/common/http';
-import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
-//Animations
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+
+// modules
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-//Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
@@ -33,7 +29,10 @@ import { EditTagsService } from '@shared/services/edit-tags.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 
-//Helpers
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// validators
 import {
     accountBankValidation,
     addressUnitValidation,
@@ -50,9 +49,8 @@ import {
     routingBankValidation,
     ssnNumberRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-//Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -60,7 +58,6 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -69,12 +66,23 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 
-//Modules
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-//Enums
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// constants
+import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
+
+// models
+import {
+    AddressEntity,
+    BankResponse,
+    CheckOwnerSsnEinResponse,
+    CreateResponse,
+    EnumValue,
+    GetDriverModalResponse,
+} from 'appcoretruckassist';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { Tabs } from '@shared/models/tabs.model';
 
 @Component({
     selector: 'app-driver-modal',
@@ -84,14 +92,14 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     providers: [ModalService, FormService, BankVerificationService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbModule,
 
-        // Component
+        // components
         TaAppTooltipV2Component,
         TaModalComponent,
         TaTabSwitchComponent,
@@ -111,6 +119,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: any;
+
+    // tabs
+    public mainTabs: Tabs[] = [];
+    public ownerTabs: Tabs[] = [];
+    public payrollTabs: Tabs[] = [];
+
+    public selectedTab: number = 1;
+    public selectedOwnerTab: any = null;
+
+    // dropdowns
+    public payTypeDropdownList: EnumValue[] = [];
+    public banksDropdownList: BankResponse[] = [];
+
+    public selectedPayType: EnumValue;
+    public selectedBank: BankResponse;
+
+    // slider
+    public soloSliderOptions: Options;
+    public teamSliderOptions: Options;
+    public driverSliderOptions: Options;
 
     // Logo Actions
     public croppieOptions: Croppie.CroppieOptions = {
@@ -132,23 +160,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public driverForm: UntypedFormGroup;
 
-    public labelsBank: any[] = [];
-    public labelsPayType: any[] = [];
-
     public isOwner: boolean = false;
     public isBankSelected: boolean = false;
 
-    public selectedOwnerTab: any = null;
     public selectedAddress: AddressEntity = null;
     public selectedOffDutyAddressArray: AddressEntity[] = [];
-    public selectedBank: any = null;
-    public selectedPayType: any = null;
 
     public driverFullName: string = null;
 
     public owner: CheckOwnerSsnEinResponse = null;
 
-    public disablePayType: boolean = false;
     public driverStatus: boolean = true;
 
     public documents: any[] = [];
@@ -163,60 +184,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public loadingOwnerEin: boolean = false;
     public disableCardAnimation: boolean = false;
 
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-    public ownerTabs: any[] = [
-        {
-            id: 'sole',
-            name: 'Sole Proprietor',
-            checked: true,
-        },
-        {
-            id: 'company',
-            name: 'Company',
-            checked: false,
-        },
-    ];
-    public soloSliderOptions: Options = {
-        floor: 10,
-        ceil: 50,
-        step: 1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
-    public teamSliderOptions: Options = {
-        floor: 10,
-        ceil: 50,
-        step: 1,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
-
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
 
-    public dropZoneConfig: DropZoneConfig = {
-        dropZoneType: 'files',
-        dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
-        dropZoneAvailableFiles:
-            'application/pdf, image/png, image/jpeg, image/jpg',
-        multiple: true,
-        globalDropZone: true,
-    };
-
+    public dropZoneConfig: DropZoneConfig;
     public longitude: number;
     public latitude: number;
 
@@ -228,6 +201,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private inputService: TaInputService,
         private driverService: DriverService,
         private modalService: ModalService,
@@ -235,26 +210,139 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private tagsService: EditTagsService,
+
+        // bootstrap
         private ngbActiveModal: NgbActiveModal
     ) {}
 
-    public get offDutyLocations(): UntypedFormArray {
-        return this.driverForm.get('offDutyLocations') as UntypedFormArray;
-    }
-
     ngOnInit(): void {
         this.createForm();
+
+        this.getConstantData();
+
         this.getDriverDropdowns();
+
         this.onIncludePayroll();
+
         this.onTwicTypeSelected();
 
         this.isCheckedOwner();
     }
 
+    private createForm(): void {
+        this.driverForm = this.formBuilder.group({
+            firstName: [null, [Validators.required, ...firstNameValidation]],
+            lastName: [null, [Validators.required, ...lastNameValidation]],
+            dateOfBirth: [null, Validators.required],
+            phone: [null, [Validators.required, phoneFaxRegex]],
+            email: [null, [Validators.required]],
+            ssn: [null, [Validators.required, ssnNumberRegex]],
+            address: [null, [Validators.required, ...addressValidation]],
+            addressUnit: [null, [...addressUnitValidation]],
+
+            useTruckAssistAch: [false],
+            payType: [null, [Validators.required]],
+            soloDriver: [true],
+            teamDriver: [true],
+
+            soloEmptyMile: [null],
+            soloLoadedMile: [null],
+            soloPerStop: [null, perStopValidation],
+            perMileSolo: [null], // if has same rate loaded and empty
+
+            teamEmptyMile: [null],
+            teamLoadedMile: [null],
+            teamPerStop: [null, perStopValidation],
+            perMileTeam: [null], // if has same rate loaded and empty
+
+            soloFlatRate: [null, perStopValidation],
+            teamFlatRate: [null, perStopValidation],
+
+            commissionSolo: [25],
+            commissionTeam: [25],
+            driverCommission: [25],
+
+            bankId: [null, [...bankValidation]],
+            account: [null, accountBankValidation],
+            routing: [null, routingBankValidation],
+
+            shareOpenPayroll: [false],
+
+            mvrExpiration: [null, Validators.required],
+
+            isOwner: [false],
+            ownerId: [null],
+            ownerType: ['Sole Proprietor'],
+            ein: [null, einNumberRegex],
+            bussinesName: [null],
+            offDutyLocations: this.formBuilder.array([]),
+            emergencyContactName: [
+                null,
+                [Validators.required, ...name2_24Validation],
+            ],
+            emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
+            emergencyContactRelationship: [null, name2_24Validation],
+            note: [null],
+            avatar: [null],
+            twic: [false],
+            twicExpDate: [null],
+            fuelCard: [null, [...fuelCardValidation]],
+            mailNotificationGeneral: [true],
+            pushNotificationGeneral: [false],
+            smsNotificationGeneral: [false],
+            mailNotificationPayroll: [true],
+            pushNotificationPayroll: [false],
+            smsNotificationPayroll: [false],
+            files: [null],
+            tags: [null],
+        });
+
+        this.inputService.customInputValidator(
+            this.driverForm.get('email'),
+            'email',
+            this.destroy$
+        );
+    }
+
+    private getConstantData(): void {
+        this.mainTabs = JSON.parse(
+            JSON.stringify(DriverModalConstants.MAIN_TABS)
+        );
+
+        this.ownerTabs = JSON.parse(
+            JSON.stringify(DriverModalConstants.OWNER_TABS)
+        );
+
+        this.payrollTabs = JSON.parse(
+            JSON.stringify(DriverModalConstants.PAYROLL_TABS)
+        );
+
+        this.soloSliderOptions = JSON.parse(
+            JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
+        );
+
+        this.teamSliderOptions = JSON.parse(
+            JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
+        );
+
+        this.driverSliderOptions = JSON.parse(
+            JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
+        );
+    }
+
+    public handleSliderValueChange(
+        event: ChangeContext | number,
+        type: string
+    ) {
+        this.driverForm.get(type).patchValue(event);
+    }
+
+    public get offDutyLocations(): UntypedFormArray {
+        return this.driverForm.get('offDutyLocations') as UntypedFormArray;
+    }
+
     public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === 'close') {
-            return;
-        }
+        if (data.action === 'close') return;
 
         if (data.action === TableStringEnum.DEACTIVATE && this.editData) {
             const mappedEvent = {
@@ -363,7 +451,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         id: res.id,
                         name: bank.data.name,
                     };
-                    this.labelsBank = [...this.labelsBank, this.selectedBank];
+                    this.banksDropdownList = [
+                        ...this.banksDropdownList,
+                        this.selectedBank,
+                    ];
                 },
                 error: () => {},
             });
@@ -481,10 +572,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public tabChange(event: any): void {
+    public onTabChange(event: Tabs): void {
         this.selectedTab = event.id;
 
-        this.tabs = this.tabs.map((item) => {
+        this.mainTabs = this.mainTabs.map((item) => {
             return {
                 ...item,
                 checked: item.id === event.id,
@@ -512,16 +603,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         } else {
             this.dropZoneConfig = {
                 dropZoneType: 'image',
+                dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
                 dropZoneAvailableFiles:
                     'image/gif, image/jpeg, image/jpg, image/png',
-                dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
                 multiple: false,
                 globalDropZone: true,
             };
         }
     }
 
-    public tabOwnerChange(event: any): void {
+    public onOwnerTabChange(event: Tabs): void {
         if (event) {
             this.selectedOwnerTab = event;
             this.driverForm
@@ -553,67 +644,43 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onPayrolltTabChange(event: Tabs): void {
+        if (event) {
+        }
+    }
+
     public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'bank': {
+            case 'bank':
                 this.selectedBank = event;
-                if (!event) {
-                    this.driverForm.get('bankId').patchValue(null);
-                }
+                if (!event) this.driverForm.get('bankId').patchValue(null);
+
                 this.onBankSelected();
+
                 break;
-            }
-            case 'paytype': {
+            case 'paytype':
+                const requiredFields = [
+                    'soloEmptyMile',
+                    'soloLoadedMile',
+                    'perMileSolo',
+                    'teamEmptyMile',
+                    'teamLoadedMile',
+                    'perMileTeam',
+                    'soloFlatRate',
+                    'teamFlatRate',
+                ];
+
                 this.selectedPayType = event;
-                // First delete all requred
-                this.inputService.changeValidators(
-                    this.driverForm.get('perMileSolo'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('soloEmptyMile'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('soloLoadedMile'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('perMileTeam'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('teamEmptyMile'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('teamLoadedMile'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('soloFlatRate'),
-                    false,
-                    [],
-                    false
-                );
-                this.inputService.changeValidators(
-                    this.driverForm.get('teamFlatRate'),
-                    false,
-                    [],
-                    false
-                );
+
+                // first remove all requred
+                requiredFields.forEach((field) => {
+                    this.inputService.changeValidators(
+                        this.driverForm.get(field),
+                        false,
+                        [],
+                        false
+                    );
+                });
 
                 // Per Mile
                 if (this.selectedPayType?.id === 1) {
@@ -677,11 +744,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         );
                     }
                 }
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -823,70 +889,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private createForm(): void {
-        this.driverForm = this.formBuilder.group({
-            firstName: [null, [Validators.required, ...firstNameValidation]],
-            lastName: [null, [Validators.required, ...lastNameValidation]],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            email: [null, [Validators.required]],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            dateOfBirth: [null, Validators.required],
-            ssn: [null, [Validators.required, ssnNumberRegex]],
-            mvrExpiration: [null, Validators.required],
-            bankId: [null, [...bankValidation]],
-            account: [null, accountBankValidation],
-            routing: [null, routingBankValidation],
-            payType: [null, [Validators.required]],
-            useTruckAssistAch: [false],
-            soloDriver: [false],
-            teamDriver: [false],
-            soloEmptyMile: [null],
-            soloLoadedMile: [null],
-            soloPerStop: [null, perStopValidation],
-            perMileSolo: [null], // if has same rate loaded and empty
-            soloFlatRate: [null, perStopValidation],
-            teamEmptyMile: [null],
-            teamLoadedMile: [null],
-            teamPerStop: [null, perStopValidation],
-            perMileTeam: [null], // if has same rate loaded and empty
-            teamFlatRate: [null, perStopValidation],
-            commissionSolo: [25],
-            commissionTeam: [25],
-            isOwner: [false],
-            ownerId: [null],
-            ownerType: ['Sole Proprietor'],
-            ein: [null, einNumberRegex],
-            bussinesName: [null],
-            offDutyLocations: this.formBuilder.array([]),
-            emergencyContactName: [
-                null,
-                [Validators.required, ...name2_24Validation],
-            ],
-            emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
-            emergencyContactRelationship: [null, name2_24Validation],
-            note: [null],
-            avatar: [null],
-            twic: [false],
-            twicExpDate: [null],
-            fuelCard: [null, [...fuelCardValidation]],
-            mailNotificationGeneral: [true],
-            pushNotificationGeneral: [false],
-            smsNotificationGeneral: [false],
-            mailNotificationPayroll: [true],
-            pushNotificationPayroll: [false],
-            smsNotificationPayroll: [false],
-            files: [null],
-            tags: [null],
-        });
-
-        this.inputService.customInputValidator(
-            this.driverForm.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
-
     private createOffDutyLocation(data?: {
         id: number;
         nickname: string;
@@ -979,7 +981,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private isCheckedOwner() {
+    private isCheckedOwner(): void {
         this.driverForm
             .get('isOwner')
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -988,77 +990,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.driverForm
                         .get('ownerType')
                         .patchValue('Sole Proprietor');
-                }
-
-                if (value) {
-                    this.disablePayType = true;
-                    this.inputService.changeValidators(
-                        this.driverForm.get('payType'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('soloEmptyMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('soloLoadedMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('soloPerStop'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('soloPerMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('teamEmptyMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('teamLoadedMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('teamPerStop'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('teamPerMile'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('commissionSolo'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('commissionTeam'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('bankId'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('routing'),
-                        false
-                    );
-                    this.inputService.changeValidators(
-                        this.driverForm.get('account'),
-                        false
-                    );
-                    this.driverForm.get('soloDriver').patchValue(false);
-                    this.driverForm.get('teamDriver').patchValue(false);
-                    this.driverForm.get('useTruckAssistAch').patchValue(false);
-                    this.isBankSelected = false;
-                    this.selectedBank = null;
-                    this.selectedPayType = null;
-                } else {
-                    this.disablePayType = false;
-                    this.inputService.changeValidators(
-                        this.driverForm.get('payType')
-                    );
                 }
             });
     }
@@ -1097,8 +1028,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: GetDriverModalResponse) => {
-                    this.labelsBank = data.banks;
-                    this.labelsPayType = data.payTypes;
+                    this.banksDropdownList = data.banks;
+                    this.payTypeDropdownList = data.payTypes;
                     this.driverForm
                         .get('mvrExpiration')
                         .patchValue(data.mvrExpiration);
@@ -1588,7 +1519,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get('ownerType').patchValue(null);
                         this.driverForm.get('payType').patchValue(null);
 
-                        this.tabChange({ id: 1 });
+                        this.onTabChange({ id: 1 });
 
                         this.driverForm
                             .get('soloEmptyMile')
@@ -2248,7 +2179,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .find((item) => item.checked);
 
                         if (activeOwnerTab) {
-                            this.tabOwnerChange(activeOwnerTab);
+                            this.onOwnerTabChange(activeOwnerTab);
                         }
                     }
 

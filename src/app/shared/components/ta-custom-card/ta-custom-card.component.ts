@@ -7,6 +7,7 @@ import {
     ViewChild,
     ViewEncapsulation,
     ChangeDetectionStrategy,
+    OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -50,7 +51,7 @@ import { TaNoteContainerComponent } from '@shared/components/ta-note-container/t
         TaNoteContainerComponent,
     ],
 })
-export class TaCustomCardComponent {
+export class TaCustomCardComponent implements OnInit {
     @ViewChild('noteContainer') noteContainer: any;
 
     @Input() animationsDisabled = true;

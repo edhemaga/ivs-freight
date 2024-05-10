@@ -1,50 +1,105 @@
-<div
-    [ngClass]="{ disabled: disabled || disabledStillCheckMark }"
-    class="ta-checkbox-container {{ customClass }}"
->
-    <label for="{{ name }}" (click)="onAction()">
-        <span
-            *ngIf="getSuperControl.errors?.['required'] && getSuperControl.touched"
-            class="required-text-checkbox"
-        >
-            Required
-        </span>
-        <input
-            *ngIf="!disabled || disabledStillCheckMark"
-            type="checkbox"
-            class="ta-checkbox"
-            name="{{ name }}"
-            id="{{ name }}"
-            [checked]="getSuperControl.value"
-            (change)="onChange($event.target.checked)"
-        />
-        <span
-            *ngIf="
-                !disabled || (disabledStillCheckMark && getSuperControl.value)
-            "
-            class="ta-mark"
-            [ngClass]="{
+<ng-container *ngIf="isUseCarrieraACHCheckBox; else regularCheckbox">
+    <div
+        [ngClass]="{
+            disabled: disabled || disabledStillCheckMark,
+            'disabled-blue': isDisabledBlue
+        }"
+        class="d-flex align-items-center ta-checkbox-container {{
+            customClass
+        }}"
+    >
+        <label for="{{ name }}" (click)="onAction()">
+            <input
+                type="checkbox"
+                class="ta-checkbox"
+                name="{{ name }}"
+                id="{{ name }}"
+                [checked]="getSuperControl.value"
+                (change)="onChange($event.target.checked)"
+            />
+
+            <span
+                *ngIf="!disabled || getSuperControl.value"
+                class="ta-mark"
+            ></span>
+
+            <svg-icon
+                class="carriera-icon"
+                [src]="
+                    getSuperControl.value
+                        ? 'assets/svg/common/ic_carriera-logo-active.svg'
+                        : 'assets/svg/common/ic_carriera-logo-inactive.svg'
+                "
+            ></svg-icon>
+        </label>
+    </div>
+</ng-container>
+
+<ng-template #regularCheckbox>
+    <div
+        [ngClass]="{
+            disabled: disabled || disabledStillCheckMark,
+            'disabled-blue': isDisabledBlue
+        }"
+        class="ta-checkbox-container {{ customClass }}"
+    >
+        <label for="{{ name }}" (click)="onAction()">
+            <span
+                *ngIf="getSuperControl.errors?.['required'] && getSuperControl.touched"
+                class="required-text-checkbox"
+            >
+                Required
+            </span>
+            <input
+                *ngIf="(!disabled || disabledStillCheckMark) && !isDisabledBlue"
+                type="checkbox"
+                class="ta-checkbox"
+                name="{{ name }}"
+                id="{{ name }}"
+                [checked]="getSuperControl.value"
+                (change)="onChange($event.target.checked)"
+            />
+            <span
+                *ngIf="
+                    (!disabled ||
+                        (disabledStillCheckMark && getSuperControl.value)) &&
+                    !isDisabledBlue
+                "
+                class="ta-mark"
+                [ngClass]="{
                 invalid: getSuperControl.errors?.['required'] && getSuperControl.touched,
                 disabled: disabledStillCheckMark,
                 'down-position': moveIconDown
             }"
-        ></span>
+            ></span>
 
-        <svg-icon
-            *ngIf="disabled && !disabledStillCheckMark"
-            class="ta-checkbox-disabled"
-            src="assets/svg/common/ic_disable.svg"
-        ></svg-icon>
+            <svg-icon
+                *ngIf="isDisabledBlue"
+                class="ta-checkbox-disabled-blue"
+                src="assets/svg/common/ic_disable.svg"
+            ></svg-icon>
 
-        <svg-icon
-            *ngIf="svg"
-            class="ta-checkbox-svg"
-            src="{{ svg }}"
-        ></svg-icon>
+            <svg-icon
+                *ngIf="disabled && !disabledStillCheckMark"
+                class="ta-checkbox-disabled"
+                src="assets/svg/common/ic_disable.svg"
+            ></svg-icon>
 
-        <span class="ta-checkbox-label">
-            {{ label }}
-            <span class="ta-checkbox-label-required" *ngIf="required">*</span>
-        </span>
-    </label>
-</div>
+            <svg-icon
+                *ngIf="svg"
+                class="ta-checkbox-svg"
+                src="{{ svg }}"
+            ></svg-icon>
+
+            <span
+                class="ta-checkbox-label"
+                [ngClass]="{ 'ta-checkbox-label-blue': isDisabledBlue }"
+            >
+                {{ label }}
+                <span class="ta-checkbox-label-required" *ngIf="required"
+                    >*</span
+                >
+            </span>
+        </label>
+    </div>
+</ng-template>
