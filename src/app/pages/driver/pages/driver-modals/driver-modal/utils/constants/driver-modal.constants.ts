@@ -1,29 +1,37 @@
-import { Tabs } from '@shared/models/tabs.model';
+// enums
+import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
+
+// models
+
 import { Options } from '@angular-slider/ngx-slider';
 import { CroppieOptions } from 'croppie';
+
+import { Tabs } from '@shared/models/tabs.model';
+import { AnimationObject } from '@pages/driver/pages/driver-modals/driver-modal/models/animation-object.model';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 
 export class DriverModalConstants {
     static MAIN_TABS: Tabs[] = [
         {
             id: 1,
-            name: 'Basic',
+            name: DriverModalStringEnum.BASIC,
             checked: true,
         },
         {
             id: 2,
-            name: 'Additional',
+            name: DriverModalStringEnum.ADDITIONAL,
         },
     ];
 
     static OWNER_TABS: Tabs[] = [
         {
             id: 1,
-            name: 'Sole Proprietor',
+            name: DriverModalStringEnum.SOLE_PROPRIETOR,
             checked: true,
         },
         {
             id: 2,
-            name: 'Company',
+            name: DriverModalStringEnum.COMPANY,
             checked: false,
         },
     ];
@@ -31,15 +39,36 @@ export class DriverModalConstants {
     static PAYROLL_TABS: Tabs[] = [
         {
             id: 1,
-            name: 'Company Driver',
+            name: DriverModalStringEnum.COMPANY_DRIVER,
             checked: true,
         },
         {
             id: 2,
-            name: '3rd Party Driver',
+            name: DriverModalStringEnum.THIRD_PARTY_DRIVER,
             checked: false,
         },
     ];
+
+    static ANIMATION_OBJECT: AnimationObject = {
+        value: 1,
+        params: { height: DriverModalStringEnum.ZERO_PX },
+    };
+
+    static DROPZONE_CONFIG_BASIC_TAB: DropZoneConfig = {
+        dropZoneType: DriverModalStringEnum.FILES,
+        dropZoneSvg: DriverModalStringEnum.DROPZONE_FILES_URL,
+        dropZoneAvailableFiles: DriverModalStringEnum.DROPZONE_FILES_EXTENSION,
+        multiple: true,
+        globalDropZone: false,
+    };
+
+    static DROPZONE_CONFIG_ADDITIONAL_TAB: DropZoneConfig = {
+        dropZoneType: DriverModalStringEnum.IMAGE,
+        dropZoneSvg: DriverModalStringEnum.DROPZONE_IMGAGE_URL,
+        dropZoneAvailableFiles: DriverModalStringEnum.DROPZONE_IMAGE_EXTENSION,
+        multiple: false,
+        globalDropZone: true,
+    };
 
     static SLIDER_OPTIONS: Options = {
         floor: 10,
@@ -52,14 +81,13 @@ export class DriverModalConstants {
     static CROPPIE_OPTIONS: CroppieOptions = {
         enableExif: true,
         viewport: {
-            width: 616,
+            width: 194,
             height: 194,
-            type: 'square',
+            type: DriverModalStringEnum.SQUARE,
         },
         boundary: {
-            width: 616,
+            width: 456,
             height: 194,
         },
-        enforceBoundary: false,
     };
 }

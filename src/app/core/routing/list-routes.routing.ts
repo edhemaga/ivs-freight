@@ -60,9 +60,9 @@ export class ListRoutes {
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
-                driverActive: DriverActiveResolver,
+                /*   driverActive: DriverActiveResolver,
                 driverInactive: DriverInactiveResolver,
-                applicantAdminTable: ApplicantTableResolver,
+                applicantAdminTable: ApplicantTableResolver, */
             },
         },
         {

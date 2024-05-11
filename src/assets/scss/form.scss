@@ -188,52 +188,37 @@
 
     .driver-twic-mvr-row {
         display: grid;
-        grid-template-columns: 59px 251px 1fr;
-        align-items: center;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        padding-left: 6px;
-
-        &.extended {
-            grid-template-columns: 59px 165px 200px 1fr;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
-
-        .ta-checkbox-container {
-            top: 2px !important;
-        }
+        grid-template-columns: 65px 150px 214px 151px;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        margin: 15px 0 14px 0;
     }
 
     // Driver Notification
     .driver-notification {
         display: grid;
-        gap: 12px;
-        align-items: center;
-        padding-left: 6px;
         grid-template-columns: 76px 73px 156px 1fr;
+        column-gap: 12px;
+        -moz-column-gap: 12px;
 
         p {
-            margin: 0;
-            padding: 0;
             font-size: 14px;
-            font-weight: 600;
-            color: $bw6-2;
-            margin-right: 10px;
+            line-height: 18px;
+            color: $ta-black;
 
             &::-moz-selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
-                background: rgb(108, 108, 108, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
         }
 
         &-payroll {
-            margin-top: 20px;
+            margin-top: 12px;
         }
     }
 
@@ -627,6 +612,7 @@
 .violation-special-checks {
     display: grid;
     grid-template-rows: repeat(2, 26px);
+    column-gap: 12px;
     -moz-column-gap: 12px;
     gap: 4px;
     align-items: center;

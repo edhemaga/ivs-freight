@@ -198,7 +198,7 @@
             line-height: 15px;
 
             position: relative;
-            bottom: 1px;
+            bottom: 2px;
 
             svg {
                 path {
@@ -209,6 +209,7 @@
 
         .ta-checkbox-label-blue {
             color: $ta-black !important;
+            font-weight: 500 !important;
 
             position: relative;
             bottom: 1px;

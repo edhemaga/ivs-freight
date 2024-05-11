@@ -937,9 +937,7 @@
                                 }"
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress[i]"
-                                (selectedAddress)="
-                                    onSelectAddress($event, 'address', i)
-                                "
+                                (selectedAddress)="onSelectAddress($event, i)"
                                 (mouseenter)="handleInputHover(true, i, 1)"
                                 (mouseleave)="handleInputHover(false, i, 1)"
                             ></app-ta-input-address-dropdown>

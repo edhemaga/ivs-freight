@@ -88,9 +88,12 @@ import {
     CreateResponse,
     EnumValue,
     GetDriverModalResponse,
+    OffDutyLocationResponse,
 } from 'appcoretruckassist';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Tabs } from '@shared/models/tabs.model';
+import { AnimationObject } from '@pages/driver/pages/driver-modals/driver-modal/models/animation-object.model';
+import { AddUpdateDriverProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-properties.model';
 
 @Component({
     selector: 'app-driver-modal',
@@ -136,13 +139,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public isAddNewAfterSave: boolean = false;
 
+    public driverFullName: string;
+    public driverStatus: boolean = true;
+
+    // animation
+    public animationObject: AnimationObject;
+
     // tabs
     public mainTabs: Tabs[] = [];
     public ownerTabs: Tabs[] = [];
     public payrollTabs: Tabs[] = [];
 
-    public selectedTab: number = 1;
-    public selectedOwnerTab: any = null;
+    public selectedTabId: number = 1;
 
     // dropdowns
     public payTypeDropdownList: EnumValue[] = [];
@@ -150,8 +158,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public selectedPayType: EnumValue;
     public selectedBank: BankResponse;
+    public selectedOwner: CheckOwnerSsnEinResponse;
 
-    public selectedAddress: AddressEntity = null;
+    public selectedAddress: AddressEntity;
+    public longitude: number;
+    public latitude: number;
+
+    public isBankSelected: boolean = false;
 
     // slider
     public soloSliderOptions: Options;
@@ -162,8 +175,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isOffDutyLocationRowCreated: boolean = false;
     public isEachOffDutyLocationRowValid: boolean = true;
 
-    public offDutyLocationItems = [];
-    public updateOffDutyLocationItems = [];
+    public offDutyLocationItems: OffDutyLocationResponse[] = [];
+    public updateOffDutyLocationItems: OffDutyLocationResponse[] = [];
 
     // documents
     public dropZoneConfig: DropZoneConfig;
@@ -173,26 +186,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public isFileModified: boolean = false;
 
-    // animation
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
-
     // logo
     public croppieOptions: CroppieOptions;
-
-    public displayDeleteAction: boolean = false;
-    public displayUploadZone: boolean = false;
-
-    public isOwner: boolean = false;
-    public isBankSelected: boolean = false;
-
-    public driverFullName: string = null;
-
-    public owner: CheckOwnerSsnEinResponse = null;
-
-    public driverStatus: boolean = true;
 
     // Delete when back coming
     public hasMilesSameRate: boolean = false;
@@ -200,9 +195,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public payrollCompany: any;
     public loadingOwnerEin: boolean = false;
     public isCardAnimationDisabled: boolean = false;
-
-    public longitude: number;
-    public latitude: number;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -230,11 +222,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
         this.getDriverDropdowns();
 
-        this.onIncludePayroll();
+        this.isOwnerSelected();
 
-        this.onTwicTypeSelected();
+        this.isUseCarrieraACHSelected();
 
-        this.isCheckedOwner();
+        this.isTwicTypeSelected();
     }
 
     private createForm(): void {
@@ -250,11 +242,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             isOwner: [false],
             ownerId: [null],
-            ownerType: ['Sole Proprietor'],
+            ownerType: [DriverModalStringEnum.SOLE_PROPRIETOR],
             ein: [null, einNumberRegex],
             bussinesName: [null],
 
-            useTruckAssistAch: [false],
+            payrollType: [DriverModalStringEnum.COMPANY_DRIVER],
+            useCarrieraACH: [false],
             payType: [null, [Validators.required]],
             soloDriver: [true],
             teamDriver: [true],
@@ -280,7 +273,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             account: [null, accountBankValidation],
             routing: [null, routingBankValidation],
 
-            shareOpenPayroll: [false],
+            isOpenPayrollShared: [false],
 
             offDutyLocationItems: [null],
 
@@ -293,25 +286,35 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             note: [null],
 
-            mvrExpiration: [null, Validators.required],
-
             avatar: [null],
             twic: [false],
             twicExpDate: [null],
+            mvrExpiration: [null, Validators.required],
             fuelCard: [null, [...fuelCardValidation]],
+
             mailNotificationGeneral: [true],
-            pushNotificationGeneral: [false],
+            pushNotificationGeneral: [true],
             smsNotificationGeneral: [false],
-            mailNotificationPayroll: [true],
-            pushNotificationPayroll: [false],
+            mailNotificationPayroll: [false],
+            pushNotificationPayroll: [true],
             smsNotificationPayroll: [false],
         });
 
         this.inputService.customInputValidator(
-            this.driverForm.get('email'),
-            'email',
+            this.driverForm.get(DriverModalStringEnum.EMAIL),
+            DriverModalStringEnum.EMAIL,
             this.destroy$
         );
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.driverForm);
+
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
+            });
     }
 
     private getConstantData(): void {
@@ -327,6 +330,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             JSON.stringify(DriverModalConstants.PAYROLL_TABS)
         );
 
+        this.animationObject = JSON.parse(
+            JSON.stringify(DriverModalConstants.ANIMATION_OBJECT)
+        );
+
         this.soloSliderOptions = JSON.parse(
             JSON.stringify(DriverModalConstants.SLIDER_OPTIONS)
         );
@@ -338,15 +345,64 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.croppieOptions = DriverModalConstants.CROPPIE_OPTIONS;
     }
 
-    public handleSliderValueChange(
-        event: ChangeContext | number,
-        type: string
-    ) {
-        this.driverForm.get(type).patchValue(event);
+    private isOwnerSelected(): void {
+        this.driverForm
+            .get(DriverModalStringEnum.IS_OWNER)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (
+                    value &&
+                    !this.driverForm.get(DriverModalStringEnum.OWNER_TYPE).value
+                ) {
+                    this.driverForm
+                        .get(DriverModalStringEnum.OWNER_TYPE)
+                        .patchValue(DriverModalStringEnum.SOLE_PROPRIETOR);
+                }
+            });
+    }
+
+    private isUseCarrieraACHSelected(): void {
+        this.driverForm
+            .get(DriverModalStringEnum.USE_CARRIERA_ACH)
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.inputService.changeValidators(
+                        this.driverForm.get(DriverModalStringEnum.BANK_ID)
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.driverForm.get(DriverModalStringEnum.BANK_ID),
+                        false,
+                        [],
+                        false
+                    );
+                }
+            });
+    }
+
+    private isTwicTypeSelected(): void {
+        this.driverForm
+            .get(DriverModalStringEnum.TWIC)
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.inputService.changeValidators(
+                        this.driverForm.get(DriverModalStringEnum.TWIC_EXP_DATE)
+                    );
+                } else {
+                    this.inputService.changeValidators(
+                        this.driverForm.get(
+                            DriverModalStringEnum.TWIC_EXP_DATE
+                        ),
+                        false
+                    );
+                }
+            });
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === 'close') return;
+        if (data.action === TableStringEnum.CLOSE) return;
 
         if (data.action === TableStringEnum.DEACTIVATE && this.editData) {
             const mappedEvent = {
@@ -356,7 +412,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     name: this.editData.data?.fullName,
                 },
             };
+
             this.ngbActiveModal.close();
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
@@ -370,38 +428,46 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 }
             );
         }
-        // Save And Add New
-        else if (data.action === 'save and add new') {
+        // save and add new
+        else if (data.action === DriverModalStringEnum.SAVE_AND_ADD_NEW) {
             if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
+
                 return;
             }
+
             this.addDriver();
+
             this.modalService.setModalSpinner({
-                action: 'save and add new',
+                action: DriverModalStringEnum.SAVE_AND_ADD_NEW,
                 status: true,
                 close: false,
             });
+
             this.isAddNewAfterSave = true;
         }
-        // Save or Update and Close
-        else if (data.action === 'save') {
-            if (this.driverForm.invalid || !this.isFormDirty) {
+        // save or update and close
+        else if (data.action === TableStringEnum.SAVE) {
+            /*    if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
                 return;
-            }
-            // Update
+            } */
+
+            // update
             if (this.editData?.id) {
                 this.updateDriver(this.editData.id);
+
                 this.modalService.setModalSpinner({
                     action: null,
                     status: true,
                     close: false,
                 });
             }
-            // Save
+
+            // save
             else {
                 this.addDriver();
+
                 this.modalService.setModalSpinner({
                     action: null,
                     status: true,
@@ -409,7 +475,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 });
             }
         }
-        // Delete
+        // delete
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
             const mappedEvent = {
                 ...this.editData,
@@ -418,7 +484,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     name: this.editData.data?.fullName,
                 },
             };
+
             this.ngbActiveModal.close();
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
@@ -432,181 +500,57 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public addOffDutyLocation(): void {
-        if (!this.isEachOffDutyLocationRowValid) return;
-
-        this.isOffDutyLocationRowCreated = true;
-
-        setTimeout(() => {
-            this.isOffDutyLocationRowCreated = false;
-        }, 400);
-
-        this.changeDetector.detectChanges();
-    }
-
-    public handleModalTableValueEmit(modalTableDataValue): void {
-        this.offDutyLocationItems = modalTableDataValue;
-
-        this.driverForm
-            .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
-            .patchValue(JSON.stringify(this.offDutyLocationItems));
-
-        this.changeDetector.detectChanges();
-    }
-
-    public handleModalTableValidStatusEmit(
-        isEachOffDutyLocationRowValid: boolean
-    ): void {
-        this.isEachOffDutyLocationRowValid = isEachOffDutyLocationRowValid;
-    }
-
-    public onSaveNewBank(bank: { data: any; action: string }) {
-        this.selectedBank = bank.data;
-
-        this.bankVerificationService
-            .createBank({ name: bank.data.name })
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: CreateResponse) => {
-                    this.selectedBank = {
-                        id: res.id,
-                        name: bank.data.name,
-                    };
-                    this.banksDropdownList = [
-                        ...this.banksDropdownList,
-                        this.selectedBank,
-                    ];
-                },
-                error: () => {},
-            });
-    }
-
-    public onHandleAddress(event: {
-        address: AddressEntity;
-        valid: boolean;
-        longLat: any;
-    }): void {
-        if (event.valid) {
-            this.selectedAddress = event.address;
-            this.longitude = event.longLat.longitude;
-            this.latitude = event.longLat.latitude;
-        }
-    }
-
-    public handlingPayrollFleetType(
-        fleetType: string,
-        dropdownsInit: boolean = false
-    ) {
-        if (fleetType === 'Combined') {
-            if (dropdownsInit) {
-                this.driverForm.get('teamDriver').patchValue(true);
-                this.driverForm.get('soloDriver').patchValue(true);
-            }
-
-            this.driverForm
-                .get('soloDriver')
-                .valueChanges.pipe(takeUntil(this.destroy$))
-                .subscribe((val) => {
-                    if (!val && !this.driverForm.get('isOwner').value) {
-                        this.driverForm.get('teamDriver').patchValue(true);
-                        this.inputService.changeValidators(
-                            this.driverForm.get('soloEmptyMile'),
-                            false,
-                            [],
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.driverForm.get('soloLoadedMile'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-                });
-
-            this.driverForm
-                .get('teamDriver')
-                .valueChanges.pipe(takeUntil(this.destroy$))
-                .subscribe((val) => {
-                    if (!val && !this.driverForm.get('isOwner').value) {
-                        this.driverForm.get('soloDriver').patchValue(true);
-                        this.inputService.changeValidators(
-                            this.driverForm.get('teamEmptyMile'),
-                            false,
-                            [],
-                            false
-                        );
-                        this.inputService.changeValidators(
-                            this.driverForm.get('teamLoadedMile'),
-                            false,
-                            [],
-                            false
-                        );
-                    }
-                });
-        }
-    }
-
     public onTabChange(event: Tabs): void {
-        this.selectedTab = event.id;
+        this.selectedTabId = event.id;
 
-        this.mainTabs = this.mainTabs.map((item) => {
+        this.mainTabs = this.mainTabs?.map((tab) => {
             return {
-                ...item,
-                checked: item.id === event.id,
+                ...tab,
+                checked: tab.id === event?.id,
             };
         });
 
-        this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
+        this.uploadFileService.visibilityDropZone(this.selectedTabId === 2);
 
-        let dotAnimation = document.querySelector('.animation-two-tabs');
+        const dotAnimation = document.querySelector(
+            DriverModalStringEnum.ANIMATION_TWO_TABS_CLASS
+        );
 
         this.animationObject = {
-            value: this.selectedTab,
+            value: this.selectedTabId,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
         };
 
-        if (this.selectedTab === 1) {
-            this.dropZoneConfig = {
-                dropZoneType: 'files',
-                dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
-                dropZoneAvailableFiles:
-                    'application/pdf, image/png, image/jpeg, image/jpg',
-                multiple: true,
-                globalDropZone: false,
-            };
+        if (this.selectedTabId === 1) {
+            this.dropZoneConfig =
+                DriverModalConstants.DROPZONE_CONFIG_BASIC_TAB;
         } else {
-            this.dropZoneConfig = {
-                dropZoneType: 'image',
-                dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-                dropZoneAvailableFiles:
-                    'image/gif, image/jpeg, image/jpg, image/png',
-                multiple: false,
-                globalDropZone: true,
-            };
+            this.dropZoneConfig =
+                DriverModalConstants.DROPZONE_CONFIG_ADDITIONAL_TAB;
         }
     }
 
     public onOwnerTabChange(event: Tabs): void {
         if (event) {
-            this.selectedOwnerTab = event;
             this.driverForm
-                .get('ownerType')
-                .patchValue(this.selectedOwnerTab.name);
+                .get(DriverModalStringEnum.OWNER_TYPE)
+                .patchValue(event.name);
+
             if (
-                this.driverForm.get('isOwner').value &&
-                this.selectedOwnerTab?.name.toLowerCase() === 'company'
+                this.driverForm.get(DriverModalStringEnum.IS_OWNER).value &&
+                event.name === DriverModalStringEnum.COMPANY
             ) {
                 this.inputService.changeValidators(
-                    this.driverForm.get('ein'),
+                    this.driverForm.get(DriverModalStringEnum.EIN),
                     true,
                     [einNumberRegex],
                     false
                 );
+
                 this.einNumberChange();
             } else {
                 this.inputService.changeValidators(
-                    this.driverForm.get('ein'),
+                    this.driverForm.get(DriverModalStringEnum.EIN),
                     false,
                     [],
                     false
@@ -614,21 +558,37 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
         }
 
-        this.ownerTabs = this.ownerTabs.map((item) => {
-            return { ...item, checked: item.id === this.selectedOwnerTab.id };
+        this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
+            return {
+                ...ownerTab,
+                checked: ownerTab.id === event.id,
+            };
         });
     }
 
     public onPayrolltTabChange(event: Tabs): void {
         if (event) {
+            this.driverForm
+                .get(DriverModalStringEnum.PAYROLL_TYPE)
+                .patchValue(event.name);
         }
+
+        this.payrollTabs = this.payrollTabs?.map((payrollTab) => {
+            return {
+                ...payrollTab,
+                checked: payrollTab.id === event?.id,
+            };
+        });
     }
 
     public onSelectDropdown(event: any, action: string): void {
         switch (action) {
             case 'bank':
                 this.selectedBank = event;
-                if (!event) this.driverForm.get('bankId').patchValue(null);
+                if (!event)
+                    this.driverForm
+                        .get(DriverModalStringEnum.BANK_ID)
+                        .patchValue(null);
 
                 this.onBankSelected();
 
@@ -726,12 +686,63 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onUploadImage(event: any) {
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+        longLat: any;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+            this.longitude = event.longLat.longitude;
+            this.latitude = event.longLat.latitude;
+        }
+    }
+
+    public onSaveNewBank(bank: { data: any; action: string }): void {
+        this.selectedBank = bank.data;
+
+        this.bankVerificationService
+            .createBank({ name: bank.data.name })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: CreateResponse) => {
+                    this.selectedBank = {
+                        id: res.id,
+                        name: bank.data.name,
+                    };
+                    this.banksDropdownList = [
+                        ...this.banksDropdownList,
+                        this.selectedBank,
+                    ];
+                },
+                error: () => {},
+            });
+    }
+
+    private onBankSelected(): void {
+        this.driverForm
+            .get(DriverModalStringEnum.BANK_ID)
+            .valueChanges.pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                const timeout = setTimeout(async () => {
+                    this.isBankSelected =
+                        await this.bankVerificationService.onSelectBank(
+                            this.selectedBank ? this.selectedBank.name : null,
+                            this.driverForm.get('routing'),
+                            this.driverForm.get('account')
+                        );
+
+                    clearTimeout(timeout);
+                }, 100);
+            });
+    }
+
+    public onUploadImage(event: any): void {
         this.driverForm.get('avatar').patchValue(event);
         this.driverForm.get('avatar').setErrors(null);
     }
 
-    public onImageValidation(event: boolean) {
+    public onImageValidation(event: boolean): void {
         if (!event) {
             this.driverForm.get('avatar').setErrors({ invalid: true });
         } else {
@@ -742,37 +753,35 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSaveLogoAction(event: any) {
-        if (event) {
-            this.displayDeleteAction = true;
-        }
-    }
-
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         switch (event.action) {
-            case 'add': {
+            case 'add':
                 this.documents = event.files;
+
                 this.driverForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
+
                 break;
-            }
-            case 'delete': {
+            case 'delete':
                 this.documents = event.files;
+
                 this.driverForm
                     .get('files')
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
+
                 if (event.deleteId) {
                     this.filesForDelete.push(event.deleteId);
                 }
 
                 this.isFileModified = true;
+
                 break;
-            }
-            case 'tag': {
+            case 'tag':
                 let changedTag = false;
+
                 event.files.map((item) => {
                     if (item.tagChanged) {
                         changedTag = true;
@@ -782,182 +791,114 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.driverForm
                     .get('tags')
                     .patchValue(changedTag ? true : null);
+
                 break;
-            }
-            default: {
+            default:
                 break;
+        }
+    }
+
+    public addOffDutyLocation(): void {
+        if (
+            !this.isEachOffDutyLocationRowValid ||
+            this.offDutyLocationItems?.length === 8
+        )
+            return;
+
+        this.isOffDutyLocationRowCreated = true;
+
+        setTimeout(() => {
+            this.isOffDutyLocationRowCreated = false;
+        }, 400);
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: OffDutyLocationResponse[]
+    ): void {
+        this.offDutyLocationItems = modalTableDataValue;
+
+        this.driverForm
+            .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
+            .patchValue(JSON.stringify(this.offDutyLocationItems));
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(
+        isEachOffDutyLocationRowValid: boolean
+    ): void {
+        this.isEachOffDutyLocationRowValid = isEachOffDutyLocationRowValid;
+    }
+
+    public handleSliderValueChange(
+        event: ChangeContext | number,
+        type: string
+    ) {
+        this.driverForm.get(type).patchValue(event);
+    }
+
+    public handlingPayrollFleetType(
+        fleetType: string,
+        dropdownsInit: boolean = false
+    ): void {
+        if (fleetType === 'Combined') {
+            if (dropdownsInit) {
+                this.driverForm.get('teamDriver').patchValue(true);
+                this.driverForm.get('soloDriver').patchValue(true);
             }
-        }
-    }
-
-    public validateMiles() {
-        if (['Solo', 'Combined'].includes(this.fleetType)) {
-            this.driverForm
-                .get('soloEmptyMile')
-                .valueChanges.pipe(
-                    distinctUntilChanged(),
-                    takeUntil(this.destroy$)
-                )
-                .subscribe((value) => {
-                    if (value > 10) {
-                        this.driverForm
-                            .get('soloEmptyMile')
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.driverForm.get('soloEmptyMile').setErrors(null);
-                    }
-                });
 
             this.driverForm
-                .get('soloLoadedMile')
-                .valueChanges.pipe(
-                    distinctUntilChanged(),
-                    takeUntil(this.destroy$)
-                )
-                .subscribe((value) => {
-                    if (value > 10) {
-                        this.driverForm
-                            .get('soloLoadedMile')
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.driverForm.get('soloLoadedMile').setErrors(null);
-
-                        this.driverForm.get('soloEmptyMile').patchValue(value);
-                    }
-                });
-        }
-
-        if (['Team', 'Combined'].includes(this.fleetType)) {
-            this.driverForm
-                .get('teamEmptyMile')
-                .valueChanges.pipe(
-                    distinctUntilChanged(),
-                    takeUntil(this.destroy$)
-                )
-                .subscribe((value) => {
-                    if (value > 10) {
-                        this.driverForm
-                            .get('teamEmptyMile')
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.driverForm.get('teamEmptyMile').setErrors(null);
-                    }
-                });
-
-            this.driverForm
-                .get('teamLoadedMile')
-                .valueChanges.pipe(
-                    distinctUntilChanged(),
-                    takeUntil(this.destroy$)
-                )
-                .subscribe((value) => {
-                    if (value > 10) {
-                        this.driverForm
-                            .get('teamLoadedMile')
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.driverForm.get('teamLoadedMile').setErrors(null);
-
-                        this.driverForm.get('teamEmptyMile').patchValue(value);
-                    }
-                });
-        }
-    }
-
-    private onIncludePayroll(): void {
-        this.driverForm
-            .get('useTruckAssistAch')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.driverForm.get('bankId')
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.driverForm.get('bankId'),
-                        false,
-                        [],
-                        false
-                    );
-                }
-            });
-    }
-
-    private onBankSelected() {
-        this.driverForm
-            .get('bankId')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe(() => {
-                const timeout = setTimeout(async () => {
-                    this.isBankSelected =
-                        await this.bankVerificationService.onSelectBank(
-                            this.selectedBank ? this.selectedBank.name : null,
-                            this.driverForm.get('routing'),
-                            this.driverForm.get('account')
+                .get('soloDriver')
+                .valueChanges.pipe(takeUntil(this.destroy$))
+                .subscribe((val) => {
+                    if (
+                        !val &&
+                        !this.driverForm.get(DriverModalStringEnum.IS_OWNER)
+                            .value
+                    ) {
+                        this.driverForm.get('teamDriver').patchValue(true);
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloEmptyMile'),
+                            false,
+                            [],
+                            false
                         );
-                    clearTimeout(timeout);
-                }, 100);
-            });
-    }
+                        this.inputService.changeValidators(
+                            this.driverForm.get('soloLoadedMile'),
+                            false,
+                            [],
+                            false
+                        );
+                    }
+                });
 
-    private onTwicTypeSelected(): void {
-        this.driverForm
-            .get('twic')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.driverForm.get('twicExpDate')
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.driverForm.get('twicExpDate'),
-                        false
-                    );
-                }
-            });
-    }
-
-    private isCheckedOwner(): void {
-        this.driverForm
-            .get('isOwner')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value && !this.driverForm.get('ownerType').value) {
-                    this.driverForm
-                        .get('ownerType')
-                        .patchValue('Sole Proprietor');
-                }
-            });
-    }
-
-    private einNumberChange() {
-        this.driverForm
-            .get('ein')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value?.length === 10) {
-                    this.loadingOwnerEin = true;
-                    this.driverService
-                        .checkOwnerEinNumber(value.toString())
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (res: CheckOwnerSsnEinResponse) => {
-                                this.owner = res?.name ? res : null;
-                                this.loadingOwnerEin = false;
-                                if (this.owner?.name) {
-                                    this.driverForm
-                                        .get('bussinesName')
-                                        .patchValue(this.owner.name);
-                                }
-                            },
-                            error: () => {},
-                        });
-                } else {
-                    this.driverForm.get('bussinesName').patchValue(null);
-                }
-            });
+            this.driverForm
+                .get('teamDriver')
+                .valueChanges.pipe(takeUntil(this.destroy$))
+                .subscribe((val) => {
+                    if (
+                        !val &&
+                        !this.driverForm.get(DriverModalStringEnum.IS_OWNER)
+                            .value
+                    ) {
+                        this.driverForm.get('soloDriver').patchValue(true);
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamEmptyMile'),
+                            false,
+                            [],
+                            false
+                        );
+                        this.inputService.changeValidators(
+                            this.driverForm.get('teamLoadedMile'),
+                            false,
+                            [],
+                            false
+                        );
+                    }
+                });
+        }
     }
 
     private getDriverDropdowns(): void {
@@ -1152,8 +1093,474 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             });
     }
 
+    public validateMiles(): void {
+        if (['Solo', 'Combined'].includes(this.fleetType)) {
+            this.driverForm
+                .get('soloEmptyMile')
+                .valueChanges.pipe(
+                    distinctUntilChanged(),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe((value) => {
+                    if (value > 10) {
+                        this.driverForm
+                            .get('soloEmptyMile')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.driverForm.get('soloEmptyMile').setErrors(null);
+                    }
+                });
+
+            this.driverForm
+                .get('soloLoadedMile')
+                .valueChanges.pipe(
+                    distinctUntilChanged(),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe((value) => {
+                    if (value > 10) {
+                        this.driverForm
+                            .get('soloLoadedMile')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.driverForm.get('soloLoadedMile').setErrors(null);
+
+                        this.driverForm.get('soloEmptyMile').patchValue(value);
+                    }
+                });
+        }
+
+        if (['Team', 'Combined'].includes(this.fleetType)) {
+            this.driverForm
+                .get('teamEmptyMile')
+                .valueChanges.pipe(
+                    distinctUntilChanged(),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe((value) => {
+                    if (value > 10) {
+                        this.driverForm
+                            .get('teamEmptyMile')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.driverForm.get('teamEmptyMile').setErrors(null);
+                    }
+                });
+
+            this.driverForm
+                .get('teamLoadedMile')
+                .valueChanges.pipe(
+                    distinctUntilChanged(),
+                    takeUntil(this.destroy$)
+                )
+                .subscribe((value) => {
+                    if (value > 10) {
+                        this.driverForm
+                            .get('teamLoadedMile')
+                            .setErrors({ invalid: true });
+                    } else {
+                        this.driverForm.get('teamLoadedMile').setErrors(null);
+
+                        this.driverForm.get('teamEmptyMile').patchValue(value);
+                    }
+                });
+        }
+    }
+
+    private einNumberChange(): void {
+        this.driverForm
+            .get(DriverModalStringEnum.EIN)
+            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value?.length === 10) {
+                    this.loadingOwnerEin = true;
+                    this.driverService
+                        .checkOwnerEinNumber(value.toString())
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                            next: (res: CheckOwnerSsnEinResponse) => {
+                                this.selectedOwner = res?.name ? res : null;
+
+                                this.loadingOwnerEin = false;
+
+                                if (this.selectedOwner?.name) {
+                                    this.driverForm
+                                        .get('bussinesName')
+                                        .patchValue(this.selectedOwner.name);
+                                }
+                            },
+                            error: () => {},
+                        });
+                } else {
+                    this.driverForm.get('bussinesName').patchValue(null);
+                }
+            });
+    }
+
+    private createAddOrUpdateDriverProperties(
+        dateOfBirth: string,
+        addressUnit: string,
+        isOwner: boolean,
+        ownerType: string,
+        ein: string,
+        bussinesName: string,
+        twic: boolean,
+        twicExpDate: string
+    ): AddUpdateDriverProperties {
+        // date
+        const convertedDate =
+            MethodsCalculationsHelper.convertDateToBackend(dateOfBirth);
+
+        // address
+        this.selectedAddress = {
+            ...this.selectedAddress,
+            addressUnit,
+        };
+
+        // owner type
+        const conditionalOwnerType = !isOwner
+            ? null
+            : ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
+            ? 'Proprietor'
+            : 'Company';
+
+        // owner id
+        const conditionalOwnerId =
+            ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
+                ? null
+                : this.selectedOwner?.id || null;
+
+        // ein
+        const conditionalEin =
+            !isOwner || ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
+                ? null
+                : ein;
+
+        // bussines name
+        const conditionalBussinesName =
+            !isOwner || ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
+                ? null
+                : bussinesName;
+
+        const conditionalTwicExpDate = twic
+            ? MethodsCalculationsHelper.convertDateToBackend(twicExpDate)
+            : null;
+
+        // documents
+        const convertedDocuments = [];
+        let convertedTagsArray = [];
+
+        this.documents.map((item) => {
+            if (item.tagId?.length)
+                convertedTagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
+            if (item.realFile) convertedDocuments.push(item.realFile);
+        });
+
+        return {
+            convertedDate,
+            conditionalOwnerType,
+            conditionalOwnerId,
+            conditionalEin,
+            conditionalBussinesName,
+            convertedDocuments,
+            convertedTagsArray,
+            conditionalTwicExpDate,
+        };
+    }
+
+    private updateTags(): void {
+        const tags = [];
+
+        this.documents.map((item) => {
+            if (item?.tagChanged && item?.fileId) {
+                const tagsData = {
+                    storageId: item.fileId,
+                    tagId: item.tagId?.length ? item.tagId[0] : null,
+                };
+
+                tags.push(tagsData);
+            }
+        });
+
+        if (tags.length) {
+            this.tagsService.updateTag({ tags: tags }).subscribe();
+        }
+    }
+
+    private getDriverById(id: number): void {
+        this.driverService
+            .getDriverById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    this.driverForm.patchValue({
+                        firstName: res.firstName,
+                        lastName: res.lastName,
+                        phone: res.phone,
+                        email: res.email,
+                        address: res.address ? res.address.address : null,
+                        addressUnit: res.address
+                            ? res.address.addressUnit
+                            : null,
+                        dateOfBirth:
+                            MethodsCalculationsHelper.convertDateFromBackend(
+                                res.dateOfBirth
+                            ),
+                        ssn: res.ssn,
+                        mvrExpiration: res.mvrExpiration,
+                        bankId: res.bank ? res.bank.name : null,
+                        account: res.account,
+                        routing: res.routing,
+                        payType: res.payType ? res.payType.name : null,
+                        soloPerStop: res.solo.perStop
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.solo.perStop
+                              )
+                            : null,
+                        soloDriver: res.soloDriver,
+                        teamPerStop: res.team.perStop
+                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                  res.team.perStop
+                              )
+                            : null,
+                        teamDriver: res.teamDriver,
+                        commissionSolo: res.commissionSolo,
+                        commissionTeam: res.commissionTeam,
+                        ownerId: res.owner ? res.owner.id : null,
+                        useCarrieraACH: res.useTruckAssistAch,
+                        isOwner: !!res.owner,
+                        ownerType: res.owner
+                            ? res.owner?.ownerType?.name
+                                ? res.owner?.ownerType?.name.includes(
+                                      'Proprietor'
+                                  )
+                                    ? 'Sole'.concat(
+                                          ' ',
+                                          res.owner?.ownerType?.name
+                                      )
+                                    : res.owner?.ownerType?.name
+                                : null
+                            : null,
+                        ein: res.owner
+                            ? res.owner?.ownerType?.name.includes('Proprietor')
+                                ? null
+                                : res.owner?.ssnEin
+                            : null,
+                        bussinesName: res.owner
+                            ? res.owner?.ownerType?.name.includes('Proprietor')
+                                ? null
+                                : res.owner?.name
+                            : null,
+                        emergencyContactName: res.emergencyContactName,
+                        emergencyContactPhone: res.emergencyContactPhone,
+                        emergencyContactRelationship:
+                            res.emergencyContactRelationship,
+
+                        note: res.note,
+                        avatar: res.avatar ? res.avatar : null,
+
+                        twic: res.twic,
+                        twicExpDate: res.twicExpDate
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  res.twicExpDate
+                              )
+                            : null,
+                        fuelCard: res.fuelCard,
+
+                        mailNotificationGeneral: res.general.mailNotification,
+                        pushNotificationGeneral: res.general.pushNotification,
+                        smsNotificationGeneral: res.general.smsNotification,
+
+                        mailNotificationPayroll: res.payroll.mailNotification,
+                        pushNotificationPayroll: res.payroll.pushNotification,
+                        smsNotificationPayroll: res.payroll.smsNotification,
+                        files: res.files?.length
+                            ? JSON.stringify(res.files)
+                            : null,
+                    });
+
+                    this.driverForm
+                        .get('soloLoadedMile')
+                        .patchValue(
+                            res.solo?.loadedMile ? res.solo.loadedMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
+
+                    this.driverForm
+                        .get('teamLoadedMile')
+                        .patchValue(
+                            res.team?.loadedMile ? res.team.loadedMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
+
+                    this.driverForm
+                        .get('soloEmptyMile')
+                        .patchValue(
+                            res.solo?.emptyMile ? res.solo.emptyMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
+
+                    this.driverForm
+                        .get('teamEmptyMile')
+                        .patchValue(
+                            res.team?.emptyMile ? res.team.emptyMile : null,
+                            {
+                                emitEvent: false,
+                            }
+                        );
+
+                    this.driverForm
+                        .get('soloFlatRate')
+                        .patchValue(
+                            ['Solo', 'Combined'].includes(res.fleetType.name)
+                                ? res.soloFlatRate
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                          res.soloFlatRate
+                                      )
+                                    : null
+                                : null,
+                            { emitEvent: false }
+                        );
+
+                    this.driverForm
+                        .get('teamFlatRate')
+                        .patchValue(
+                            ['Team', 'Combined'].includes(res.fleetType.name)
+                                ? res.teamFlatRate
+                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
+                                          res.teamFlatRate
+                                      )
+                                    : null
+                                : null,
+                            { emitEvent: false }
+                        );
+
+                    this.driverForm
+                        .get('perMileSolo')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
+
+                    this.driverForm
+                        .get('perMileTeam')
+                        .patchValue(res.perMileSolo, {
+                            emitEvent: false,
+                        });
+
+                    res.firstName =
+                        res.firstName.charAt(0).toUpperCase() +
+                        res.firstName.slice(1);
+
+                    res.lastName =
+                        res.lastName.charAt(0).toUpperCase() +
+                        res.lastName.slice(1);
+
+                    this.driverFullName = res.firstName.concat(
+                        ' ',
+                        res.lastName
+                    );
+
+                    this.selectedBank = res.bank ? res.bank : null;
+
+                    this.isBankSelected = !!this.selectedBank;
+
+                    this.documents = res.files;
+
+                    this.selectedPayType = res.payType
+                        ? res.payType.id === 0
+                            ? null
+                            : res.payType
+                        : null;
+
+                    this.onHandleAddress({
+                        address: res.address,
+                        valid: !!res.address,
+                        longLat: {
+                            longitude: res.longitude,
+                            latitude: res.latitude,
+                        },
+                    });
+
+                    this.modalService.changeModalStatus({
+                        name: 'deactivate',
+                        status: res.status !== 1,
+                    });
+
+                    this.driverStatus = res.status !== 1;
+
+                    this.fleetType = res.fleetType.name;
+
+                    this.handlingPayrollFleetType(this.fleetType);
+
+                    if (res.owner) {
+                        if (
+                            this.driverForm.get(DriverModalStringEnum.EIN).value
+                        ) {
+                            this.einNumberChange();
+                        }
+
+                        const activeOwnerTab = this.ownerTabs
+                            .map((item) => {
+                                return {
+                                    ...item,
+                                    checked:
+                                        res.owner?.ownerType.name === item.name,
+                                };
+                            })
+                            .find((item) => item.checked);
+
+                        if (activeOwnerTab) {
+                            this.onOwnerTabChange(activeOwnerTab);
+                        }
+                    }
+
+                    this.startFormChanges();
+                    setTimeout(() => {
+                        this.isCardAnimationDisabled = false;
+                    }, 1000);
+                },
+                error: () => {},
+            });
+    }
+
     private addDriver(): void {
         const {
+            // eslint-disable-next-line no-unused-vars
+            address, // eslint-disable-next-line no-unused-vars
+            ownerId, // eslint-disable-next-line no-unused-vars
+            payType, // eslint-disable-next-line no-unused-vars
+            driverCommission, // eslint-disable-next-line no-unused-vars
+            bankId, // eslint-disable-next-line no-unused-vars
+            offDutyLocationItems, // eslint-disable-next-line no-unused-vars
+            files, // eslint-disable-next-line no-unused-vars
+            tags,
+
+            dateOfBirth,
+            addressUnit,
+            isOwner,
+            ownerType,
+            ein,
+            bussinesName,
+            useCarrieraACH,
+            twic,
+            twicExpDate,
+            mailNotificationGeneral,
+            pushNotificationGeneral,
+            smsNotificationGeneral,
+            mailNotificationPayroll,
+            pushNotificationPayroll,
+            smsNotificationPayroll,
+
             soloEmptyMile,
             soloLoadedMile,
             soloPerStop,
@@ -1172,69 +1579,61 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             soloDriver,
             teamDriver,
 
-            mailNotificationGeneral,
-            pushNotificationGeneral,
-            smsNotificationGeneral,
-
-            mailNotificationPayroll,
-            pushNotificationPayroll,
-            smsNotificationPayroll,
-            mvrExpiration,
-            addressUnit,
             ...form
         } = this.driverForm.value;
 
-        let documents = [];
-        let tagsArray = [];
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
+        console.log('...form', form);
 
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const {
+            convertedDate,
+            conditionalOwnerType,
+            conditionalOwnerId,
+            conditionalEin,
+            conditionalBussinesName,
+            convertedDocuments,
+            convertedTagsArray,
+            conditionalTwicExpDate,
+        } = this.createAddOrUpdateDriverProperties(
+            dateOfBirth,
+            addressUnit,
+            isOwner,
+            ownerType,
+            ein,
+            bussinesName,
+            twic,
+            twicExpDate
+        );
 
-        if (!tagsArray.length) {
-            tagsArray = null;
-        }
+        const newData = {
+            dateOfBirth: convertedDate,
+            address: this.selectedAddress,
+            longitude: this.longitude,
+            latitude: this.latitude,
+            ownerType: conditionalOwnerType,
+            ownerId: conditionalOwnerId,
+            ein: conditionalEin,
+            bussinesName: conditionalBussinesName,
+            useTruckAssistAch: useCarrieraACH,
+            payType: this.selectedPayType?.id ?? null,
+            /* SOLO TEAM */
+            bankId: this.selectedBank?.id ?? null,
+            offDutyLocations: this.offDutyLocationItems,
+            files: convertedDocuments,
+            tags: convertedTagsArray,
 
-        const newData: any = {
-            ...form,
-            dateOfBirth: MethodsCalculationsHelper.convertDateToBackend(
-                this.driverForm.get('dateOfBirth').value
-            ),
-            mvrExpiration: mvrExpiration,
-            ownerId:
-                this.driverForm.get('ownerType').value === 'Sole Proprietor'
-                    ? null
-                    : this.owner
-                    ? this.owner.id
-                    : null,
-            ownerType: !this.driverForm.get('isOwner').value
-                ? null
-                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
-                ? 2
-                : 1,
-            ein: !this.driverForm.get('isOwner').value
-                ? null
-                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
-                ? null
-                : form.ein,
-            bussinesName: !this.driverForm.get('isOwner').value
-                ? null
-                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
-                ? null
-                : this.driverForm.get('bussinesName').value,
-            address: {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
+            twicExpDate: conditionalTwicExpDate,
+            general: {
+                mailNotification: mailNotificationGeneral,
+                pushNotification: pushNotificationGeneral,
+                smsNotification: smsNotificationGeneral,
             },
-            bankId: this.selectedBank ? this.selectedBank.id : null,
-            payType: this.selectedPayType ? this.selectedPayType.id : null,
+            payroll: {
+                mailNotification: mailNotificationPayroll,
+                pushNotification: pushNotificationPayroll,
+                smsNotification: smsNotificationPayroll,
+            },
+
+            /*
             solo:
                 this.selectedPayType?.name === 'Per Mile'
                     ? {
@@ -1408,39 +1807,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                           )
                         : null
                     : null,
-            general: {
-                mailNotification: mailNotificationGeneral,
-                pushNotification: pushNotificationGeneral,
-                smsNotification: smsNotificationGeneral,
-            },
-            payroll: {
-                mailNotification: mailNotificationPayroll,
-                pushNotification: pushNotificationPayroll,
-                smsNotification: smsNotificationPayroll,
-            },
-            twicExpDate: this.driverForm.get('twic').value
-                ? MethodsCalculationsHelper.convertDateToBackend(
-                      this.driverForm.get('twicExpDate').value
-                  )
-                : null,
+            
+           
             fleetType: this.fleetType,
-            soloDriver: !this.driverForm.get('isOwner').value
+            soloDriver: !this.driverForm.get(DriverModalStringEnum.IS_OWNER).value
                 ? this.fleetType === 'Combined'
                     ? soloDriver
                     : false
                 : null,
-            teamDriver: !this.driverForm.get('isOwner').value
+            teamDriver: !this.driverForm.get(DriverModalStringEnum.IS_OWNER).value
                 ? this.fleetType === 'Combined'
                     ? teamDriver
                     : false
                 : null,
-            files: documents,
-            longitude: this.longitude,
-            latitude: this.latitude,
-            tags: tagsArray,
+           */
         };
 
-        this.driverService
+        console.log('newData', newData);
+
+        /*   this.driverService
             .addDriver(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
@@ -1449,11 +1834,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     if (this.isAddNewAfterSave) {
                         this.formService.resetForm(this.driverForm);
                         this.modalService.setModalSpinner({
-                            action: 'save and add new',
+                            action: DriverModalStringEnum.SAVE_AND_ADD_NEW,
                             status: false,
                             close: false,
                         });
-                        this.driverForm.get('ownerType').patchValue(null);
+                        this.driverForm.get(DriverModalStringEnum.OWNER_TYPE).patchValue(null);
                         this.driverForm.get('payType').patchValue(null);
 
                         this.onTabChange({ id: 1 });
@@ -1525,13 +1910,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                             .get('pushNotificationPayroll')
                             .patchValue(false);
 
+                        this.driverForm.get('useCarrieraACH').patchValue(false);
+
                         this.driverForm
-                            .get('useTruckAssistAch')
+                            .get(DriverModalStringEnum.TWIC)
                             .patchValue(false);
 
-                        this.driverForm.get('twic').patchValue(false);
-
-                        this.driverForm.get('isOwner').patchValue(false);
+                        this.driverForm.get(DriverModalStringEnum.IS_OWNER).patchValue(false);
 
                         if (this.fleetType === 'Combined') {
                             this.driverForm.get('teamDriver').patchValue(true);
@@ -1558,13 +1943,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: this.isAddNewAfterSave
-                            ? 'save and add new'
+                            ? DriverModalStringEnum.SAVE_AND_ADD_NEW
                             : null,
                         status: false,
                         close: false,
                     });
                 },
-            });
+            }); */
     }
 
     private updateDriver(id: number): void {
@@ -1627,18 +2012,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ),
             mvrExpiration: mvrExpiration,
             ownerId:
-                this.driverForm.get('ownerType').value === 'Sole Proprietor'
+                this.driverForm.get(DriverModalStringEnum.OWNER_TYPE).value ===
+                DriverModalStringEnum.SOLE_PROPRIETOR
                     ? null
-                    : this.owner
-                    ? this.owner.id
+                    : this.selectedOwner
+                    ? this.selectedOwner.id
                     : null,
-            ownerType: !this.driverForm.get('isOwner').value
+            ownerType: !this.driverForm.get(DriverModalStringEnum.IS_OWNER)
+                .value
                 ? null
-                : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+                : this.driverForm.get(DriverModalStringEnum.OWNER_TYPE)
+                      .value === DriverModalStringEnum.SOLE_PROPRIETOR
                 ? 2
                 : 1,
             bussinesName:
-                this.driverForm.get('ownerType').value === 'Sole Proprietor'
+                this.driverForm.get(DriverModalStringEnum.OWNER_TYPE).value ===
+                DriverModalStringEnum.SOLE_PROPRIETOR
                     ? null
                     : this.driverForm.get('bussinesName').value,
             address: {
@@ -1841,18 +2230,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 pushNotification: pushNotificationPayroll,
                 smsNotification: smsNotificationPayroll,
             },
-            twicExpDate: this.driverForm.get('twic').value
+            twicExpDate: this.driverForm.get(DriverModalStringEnum.TWIC).value
                 ? MethodsCalculationsHelper.convertDateToBackend(
-                      this.driverForm.get('twicExpDate').value
+                      this.driverForm.get(DriverModalStringEnum.TWIC_EXP_DATE)
+                          .value
                   )
                 : null,
             fleetType: this.fleetType,
-            soloDriver: !this.driverForm.get('isOwner').value
+            soloDriver: !this.driverForm.get(DriverModalStringEnum.IS_OWNER)
+                .value
                 ? this.fleetType === 'Combined'
                     ? soloDriver
                     : false
                 : null,
-            teamDriver: !this.driverForm.get('isOwner').value
+            teamDriver: !this.driverForm.get(DriverModalStringEnum.IS_OWNER)
+                .value
                 ? this.fleetType === 'Combined'
                     ? teamDriver
                     : false
@@ -1883,246 +2275,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
-            });
-    }
-
-    private getDriverById(id: number): void {
-        this.driverService
-            .getDriverById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    this.driverForm.patchValue({
-                        firstName: res.firstName,
-                        lastName: res.lastName,
-                        phone: res.phone,
-                        email: res.email,
-                        address: res.address ? res.address.address : null,
-                        addressUnit: res.address
-                            ? res.address.addressUnit
-                            : null,
-                        dateOfBirth:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.dateOfBirth
-                            ),
-                        ssn: res.ssn,
-                        mvrExpiration: res.mvrExpiration,
-                        bankId: res.bank ? res.bank.name : null,
-                        account: res.account,
-                        routing: res.routing,
-                        payType: res.payType ? res.payType.name : null,
-                        soloPerStop: res.solo.perStop
-                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.solo.perStop
-                              )
-                            : null,
-                        soloDriver: res.soloDriver,
-                        teamPerStop: res.team.perStop
-                            ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                  res.team.perStop
-                              )
-                            : null,
-                        teamDriver: res.teamDriver,
-                        commissionSolo: res.commissionSolo,
-                        commissionTeam: res.commissionTeam,
-                        ownerId: res.owner ? res.owner.id : null,
-                        useTruckAssistAch: res.useTruckAssistAch,
-                        isOwner: !!res.owner,
-                        ownerType: res.owner
-                            ? res.owner?.ownerType?.name
-                                ? res.owner?.ownerType?.name.includes(
-                                      'Proprietor'
-                                  )
-                                    ? 'Sole'.concat(
-                                          ' ',
-                                          res.owner?.ownerType?.name
-                                      )
-                                    : res.owner?.ownerType?.name
-                                : null
-                            : null,
-                        ein: res.owner
-                            ? res.owner?.ownerType?.name.includes('Proprietor')
-                                ? null
-                                : res.owner?.ssnEin
-                            : null,
-                        bussinesName: res.owner
-                            ? res.owner?.ownerType?.name.includes('Proprietor')
-                                ? null
-                                : res.owner?.name
-                            : null,
-                        emergencyContactName: res.emergencyContactName,
-                        emergencyContactPhone: res.emergencyContactPhone,
-                        emergencyContactRelationship:
-                            res.emergencyContactRelationship,
-
-                        note: res.note,
-                        avatar: res.avatar ? res.avatar : null,
-
-                        twic: res.twic,
-                        twicExpDate: res.twicExpDate
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  res.twicExpDate
-                              )
-                            : null,
-                        fuelCard: res.fuelCard,
-
-                        mailNotificationGeneral: res.general.mailNotification,
-                        pushNotificationGeneral: res.general.pushNotification,
-                        smsNotificationGeneral: res.general.smsNotification,
-
-                        mailNotificationPayroll: res.payroll.mailNotification,
-                        pushNotificationPayroll: res.payroll.pushNotification,
-                        smsNotificationPayroll: res.payroll.smsNotification,
-                        files: res.files?.length
-                            ? JSON.stringify(res.files)
-                            : null,
-                    });
-
-                    this.driverForm
-                        .get('soloLoadedMile')
-                        .patchValue(
-                            res.solo?.loadedMile ? res.solo.loadedMile : null,
-                            {
-                                emitEvent: false,
-                            }
-                        );
-
-                    this.driverForm
-                        .get('teamLoadedMile')
-                        .patchValue(
-                            res.team?.loadedMile ? res.team.loadedMile : null,
-                            {
-                                emitEvent: false,
-                            }
-                        );
-
-                    this.driverForm
-                        .get('soloEmptyMile')
-                        .patchValue(
-                            res.solo?.emptyMile ? res.solo.emptyMile : null,
-                            {
-                                emitEvent: false,
-                            }
-                        );
-
-                    this.driverForm
-                        .get('teamEmptyMile')
-                        .patchValue(
-                            res.team?.emptyMile ? res.team.emptyMile : null,
-                            {
-                                emitEvent: false,
-                            }
-                        );
-
-                    this.driverForm
-                        .get('soloFlatRate')
-                        .patchValue(
-                            ['Solo', 'Combined'].includes(res.fleetType.name)
-                                ? res.soloFlatRate
-                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          res.soloFlatRate
-                                      )
-                                    : null
-                                : null,
-                            { emitEvent: false }
-                        );
-
-                    this.driverForm
-                        .get('teamFlatRate')
-                        .patchValue(
-                            ['Team', 'Combined'].includes(res.fleetType.name)
-                                ? res.teamFlatRate
-                                    ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                          res.teamFlatRate
-                                      )
-                                    : null
-                                : null,
-                            { emitEvent: false }
-                        );
-
-                    this.driverForm
-                        .get('perMileSolo')
-                        .patchValue(res.perMileSolo, {
-                            emitEvent: false,
-                        });
-
-                    this.driverForm
-                        .get('perMileTeam')
-                        .patchValue(res.perMileSolo, {
-                            emitEvent: false,
-                        });
-
-                    res.firstName =
-                        res.firstName.charAt(0).toUpperCase() +
-                        res.firstName.slice(1);
-
-                    res.lastName =
-                        res.lastName.charAt(0).toUpperCase() +
-                        res.lastName.slice(1);
-
-                    this.driverFullName = res.firstName.concat(
-                        ' ',
-                        res.lastName
-                    );
-
-                    this.selectedBank = res.bank ? res.bank : null;
-
-                    this.isBankSelected = !!this.selectedBank;
-
-                    this.documents = res.files;
-
-                    this.selectedPayType = res.payType
-                        ? res.payType.id === 0
-                            ? null
-                            : res.payType
-                        : null;
-
-                    this.onHandleAddress({
-                        address: res.address,
-                        valid: !!res.address,
-                        longLat: {
-                            longitude: res.longitude,
-                            latitude: res.latitude,
-                        },
-                    });
-
-                    this.modalService.changeModalStatus({
-                        name: 'deactivate',
-                        status: res.status !== 1,
-                    });
-
-                    this.driverStatus = res.status !== 1;
-
-                    this.fleetType = res.fleetType.name;
-
-                    this.handlingPayrollFleetType(this.fleetType);
-
-                    if (res.owner) {
-                        if (this.driverForm.get('ein').value) {
-                            this.einNumberChange();
-                        }
-
-                        const activeOwnerTab = this.ownerTabs
-                            .map((item) => {
-                                return {
-                                    ...item,
-                                    checked:
-                                        res.owner?.ownerType.name === item.name,
-                                };
-                            })
-                            .find((item) => item.checked);
-
-                        if (activeOwnerTab) {
-                            this.onOwnerTabChange(activeOwnerTab);
-                        }
-                    }
-
-                    this.startFormChanges();
-                    setTimeout(() => {
-                        this.isCardAnimationDisabled = false;
-                    }, 1000);
-                },
-                error: () => {},
             });
     }
 
@@ -2167,33 +2319,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {},
-            });
-    }
-
-    updateTags() {
-        let tags = [];
-
-        this.documents.map((item) => {
-            if (item?.tagChanged && item?.fileId) {
-                var tagsData = {
-                    storageId: item.fileId,
-                    tagId: item.tagId?.length ? item.tagId[0] : null,
-                };
-                tags.push(tagsData);
-            }
-        });
-
-        if (tags.length) {
-            this.tagsService.updateTag({ tags: tags }).subscribe();
-        }
-    }
-
-    private startFormChanges() {
-        this.formService.checkFormChange(this.driverForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
             });
     }
 

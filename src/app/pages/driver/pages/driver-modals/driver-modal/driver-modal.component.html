@@ -4,9 +4,9 @@
     [editData]="editData"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
-    [isModalValid]="driverForm.valid && isFormDirty"
+    [isModalValid]="true"
     (action)="onModalAction($event)"
->
+    ><!-- driverForm.valid && isFormDirty -->
     <div origin>
         <!-- Tabs -->
 
@@ -22,8 +22,8 @@
         <form
             class="form-container"
             [ngClass]="{
-                'tab-2': selectedTab === 2,
-                'form-container-without-mb': selectedTab === 2
+                'tab-2': selectedTabId === 2,
+                'form-container-without-mb': selectedTabId === 2
             }"
             [formGroup]="driverForm"
         >
@@ -33,7 +33,7 @@
             >
                 <!-- Basic Tab -->
 
-                <ng-container *ngIf="selectedTab === 1">
+                <ng-container *ngIf="selectedTabId === 1; else selectedTabTwo">
                     <div class="m-tab">
                         <!-- First Name, Last Name, DOB -->
 
@@ -45,6 +45,7 @@
                                     type: 'text',
                                     label: 'First Name',
                                     isRequired: true,
+                                    textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 26,
                                     autoFocus: editData?.type !== 'edit'
@@ -57,6 +58,7 @@
                                     name: 'Last name',
                                     type: 'text',
                                     label: 'Last Name',
+                                    textTransform: 'capitalize',
                                     isRequired: true,
                                     minLength: 2,
                                     maxLength: 26
@@ -179,7 +181,8 @@
                                     class="animation-checkbox-card-tabs"
                                     [ngClass]="{
                                         'fade-checkbox-inputs':
-                                            selectedOwnerTab?.name === 'Company'
+                                            driverForm.get('ownerType')
+                                                .value === 'Company'
                                     }"
                                 >
                                     <div class="row">
@@ -210,11 +213,12 @@
                                                     name: 'Business Name',
                                                     type: 'text',
                                                     label: 'Company Name',
-                                                    isRequired: !!owner,
+                                                    isRequired: !!selectedOwner,
                                                     textTransform: 'uppercase',
                                                     isDisabled: !!(
                                                         !driverForm.get('ein')
-                                                            .value || owner
+                                                            .value ||
+                                                        selectedOwner
                                                     ),
                                                     minLength: 2,
                                                     maxLength: 64
@@ -261,7 +265,7 @@
                                 }"
                             >
                                 <app-ta-checkbox
-                                    formControlName="useTruckAssistAch"
+                                    formControlName="useCarrieraACH"
                                     [customClass]="'medium'"
                                     [name]="'truckassistACH'"
                                     [isUseCarrieraACHCheckBox]="true"
@@ -642,9 +646,8 @@
                                             textTransform: 'uppercase',
                                             isDropdown: true,
                                             isRequired:
-                                                driverForm.get(
-                                                    'useTruckAssistAch'
-                                                ).value,
+                                                driverForm.get('useCarrieraACH')
+                                                    .value,
                                             dropdownWidthClass: 'w-col-184'
                                         }"
                                         [canAddNew]="true"
@@ -694,7 +697,7 @@
                                 *ngIf="!driverForm.get('isOwner').value"
                             >
                                 <app-ta-checkbox
-                                    formControlName="shareOpenPayroll"
+                                    formControlName="isOpenPayrollShared"
                                     [customClass]="'medium'"
                                     [name]="'shareOpenPayroll'"
                                     [label]="'Share open payroll with driver'"
@@ -710,7 +713,6 @@
                             [headerSvgEnabled]="true"
                             [hasActionSvg]="true"
                             [subText]="
-                                offDutyLocationItems?.length &&
                                 'Driver can disable GPS tracking. Parking location included.'
                             "
                             [isCardOpen]="offDutyLocationItems?.length > 0"
@@ -825,149 +827,158 @@
 
                 <!-- Additional Tab -->
 
-                <div class="m-tab" *ngIf="selectedTab === 2">
-                    <app-ta-custom-card
-                        [cardName]="'Profile Picture'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="isCardAnimationDisabled"
-                    >
-                        <app-ta-logo-change
-                            [croppieOptions]="croppieOptions"
-                            [croppieShape]="'rectangle'"
-                            [customClass]="'modal-container-M'"
-                            [imageUrl]="this.driverForm.get('avatar').value"
-                            [displayUploadZone]="displayUploadZone"
-                            (validationEvent)="onImageValidation($event)"
-                            (base64ImageEvent)="onUploadImage($event)"
-                            (saveLogoEvent)="onSaveLogoAction($event)"
-                        ></app-ta-logo-change>
-                    </app-ta-custom-card>
-                    <div class="driver-cards-mvr">
+                <ng-template #selectedTabTwo>
+                    <div class="m-tab" *ngIf="selectedTabId === 2">
+                        <!-- Profile Picture -->
+
                         <app-ta-custom-card
-                            [cardName]="'Cards & MVR Exp.'"
-                            [isCardOpen]="true"
+                            [cardName]="'Profile Picture'"
+                            [isCardOpen]="!!this.driverForm.get('avatar').value"
                             [disableAnimation]="isCardAnimationDisabled"
-                            [animationMarginParams]="{
-                                marginTop: '18px',
-                                marginBottom: '22px'
-                            }"
                         >
-                            <div
-                                class="driver-twic-mvr-row"
-                                [ngClass]="{
-                                    extended: driverForm.get('twic').value
-                                }"
+                            <app-ta-logo-change
+                                [croppieOptions]="croppieOptions"
+                                [customClass]="'modal-container-S'"
+                                [imageUrl]="this.driverForm.get('avatar').value"
+                                (base64ImageEvent)="onUploadImage($event)"
+                                (validationEvent)="onImageValidation($event)"
+                            ></app-ta-logo-change>
+                        </app-ta-custom-card>
+
+                        <!-- Cards & MVR Exp. -->
+
+                        <div class="driver-cards-mvr">
+                            <app-ta-custom-card
+                                [cardName]="'Cards & MVR Exp.'"
+                                [hasArrow]="false"
+                                [disabledCard]="true"
+                                [isCardOpen]="true"
                             >
-                                <app-ta-checkbox
-                                    formControlName="twic"
-                                    [label]="'TWIC'"
-                                    [customClass]="'medium'"
-                                ></app-ta-checkbox>
-                                <div *ngIf="driverForm.get('twic').value">
+                                <div
+                                    class="align-items-center driver-twic-mvr-row"
+                                >
+                                    <app-ta-checkbox
+                                        formControlName="twic"
+                                        [label]="'TWIC'"
+                                        [customClass]="'medium'"
+                                    ></app-ta-checkbox>
+
                                     <app-ta-input
                                         formControlName="twicExpDate"
                                         [inputConfig]="{
                                             name: 'datepicker',
                                             type: 'text',
                                             isDropdown: true,
-                                            label: 'Exp. Date',
+                                            label: 'Twic Exp.',
                                             placeholderIcon: 'date',
-                                            isRequired: true,
+                                            isRequired:
+                                                driverForm.get('twic').value,
+                                            isDisabled:
+                                                !driverForm.get('twic').value,
                                             customClass: 'datetimeclass'
                                         }"
                                     ></app-ta-input>
-                                </div>
 
-                                <app-ta-input
-                                    formControlName="fuelCard"
-                                    [inputConfig]="{
-                                        name: 'fuel-card',
-                                        type: 'text',
-                                        label: 'Fuel Card #',
-                                        minLength: 10,
-                                        maxLength: 19
-                                    }"
-                                ></app-ta-input>
+                                    <app-ta-input
+                                        formControlName="fuelCard"
+                                        [inputConfig]="{
+                                            name: 'fuel-card',
+                                            type: 'text',
+                                            label: 'Fuel Card #',
+                                            minLength: 10,
+                                            maxLength: 19
+                                        }"
+                                    ></app-ta-input>
 
-                                <app-ta-input
-                                    formControlName="mvrExpiration"
-                                    [inputConfig]="{
-                                        name: 'months',
-                                        type: 'text',
-                                        placeholderText: 'months',
-                                        label: 'MVR Exp.',
-                                        isRequired: true,
-                                        hideClear: true,
-                                        commands: {
-                                            active: true,
-                                            type: 'months',
-                                            firstCommand: {
-                                                name: 'minus',
-                                                svg: 'assets/svg/common/ic_pm_decrement.svg'
-                                            },
-                                            secondCommand: {
-                                                name: 'plus',
-                                                svg: 'assets/svg/common/ic_pm_increment.svg'
+                                    <app-ta-input
+                                        formControlName="mvrExpiration"
+                                        [inputConfig]="{
+                                            name: 'months',
+                                            type: 'text',
+                                            placeholderText: 'months',
+                                            label: 'MVR Renewal.',
+                                            isRequired: true,
+                                            hideClear: true,
+                                            commands: {
+                                                active: true,
+                                                type: 'months',
+                                                firstCommand: {
+                                                    name: 'minus',
+                                                    svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                                },
+                                                secondCommand: {
+                                                    name: 'plus',
+                                                    svg: 'assets/svg/common/ic_pm_increment.svg'
+                                                }
                                             }
-                                        }
-                                    }"
-                                ></app-ta-input>
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                            </app-ta-custom-card>
+                        </div>
+
+                        <!-- Notification -->
+
+                        <app-ta-custom-card
+                            [cardName]="'Notification'"
+                            [hasArrow]="false"
+                            [disabledCard]="true"
+                            [isCardOpen]="true"
+                        >
+                            <div class="align-items-center driver-notification">
+                                <p class="m-0 ta-font-medium">GENERAL</p>
+
+                                <app-ta-checkbox
+                                    formControlName="mailNotificationGeneral"
+                                    [customClass]="'medium'"
+                                    [name]="'Email General'"
+                                    [label]="'Email'"
+                                ></app-ta-checkbox>
+
+                                <app-ta-checkbox
+                                    formControlName="pushNotificationGeneral"
+                                    [customClass]="'medium'"
+                                    [name]="'Push General'"
+                                    [label]="'Push Notification'"
+                                ></app-ta-checkbox>
+
+                                <app-ta-checkbox
+                                    formControlName="smsNotificationGeneral"
+                                    [customClass]="'medium'"
+                                    [name]="'SMS General'"
+                                    [label]="'SMS'"
+                                ></app-ta-checkbox>
+                            </div>
+
+                            <div
+                                class="align-items-center driver-notification driver-notification-payroll"
+                            >
+                                <p class="m-0 ta-font-medium">PAYROLL</p>
+
+                                <app-ta-checkbox
+                                    formControlName="mailNotificationPayroll"
+                                    [name]="'Email Payroll'"
+                                    [label]="'Email'"
+                                    [isDisabledBlue]="true"
+                                ></app-ta-checkbox>
+
+                                <app-ta-checkbox
+                                    formControlName="pushNotificationPayroll"
+                                    [customClass]="'medium'"
+                                    [name]="'Push Payroll'"
+                                    [label]="'Push Notification'"
+                                ></app-ta-checkbox>
+
+                                <app-ta-checkbox
+                                    formControlName="smsNotificationPayroll"
+                                    [customClass]="'medium'"
+                                    [name]="'SMS Payroll'"
+                                    [label]="'SMS'"
+                                ></app-ta-checkbox>
                             </div>
                         </app-ta-custom-card>
                     </div>
-
-                    <app-ta-custom-card
-                        [cardName]="'Notification'"
-                        [isCardOpen]="true"
-                        [disableAnimation]="isCardAnimationDisabled"
-                    >
-                        <div class="driver-notification">
-                            <p>GENERAL</p>
-                            <app-ta-checkbox
-                                formControlName="mailNotificationGeneral"
-                                [customClass]="'medium'"
-                                [name]="'Email General'"
-                                [label]="'Email'"
-                            ></app-ta-checkbox>
-                            <app-ta-checkbox
-                                formControlName="pushNotificationGeneral"
-                                [customClass]="'medium'"
-                                [name]="'Push General'"
-                                [label]="'Push Notification'"
-                            ></app-ta-checkbox>
-                            <app-ta-checkbox
-                                formControlName="smsNotificationGeneral"
-                                [customClass]="'medium'"
-                                [name]="'SMS General'"
-                                [label]="'SMS'"
-                            ></app-ta-checkbox>
-                        </div>
-                        <div
-                            class="driver-notification driver-notification-payroll"
-                        >
-                            <p>PAYROLL</p>
-                            <app-ta-checkbox
-                                formControlName="mailNotificationPayroll"
-                                [customClass]="'medium disabled-valid'"
-                                [name]="'Email Payroll'"
-                                [label]="'Email'"
-                                [disabled]="true"
-                            ></app-ta-checkbox>
-                            <app-ta-checkbox
-                                formControlName="pushNotificationPayroll"
-                                [customClass]="'medium'"
-                                [name]="'Push Payroll'"
-                                [label]="'Push Notification'"
-                            ></app-ta-checkbox>
-                            <app-ta-checkbox
-                                formControlName="smsNotificationPayroll"
-                                [customClass]="'medium'"
-                                [name]="'SMS Payroll'"
-                                [label]="'SMS'"
-                            ></app-ta-checkbox>
-                        </div>
-                    </app-ta-custom-card>
-                </div>
+                </ng-template>
             </div>
         </form>
     </div>

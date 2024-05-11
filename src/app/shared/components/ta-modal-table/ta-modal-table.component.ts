@@ -309,9 +309,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         },
         index: number
     ): void {
-        if (address.valid) {
-            this.selectedAddress[index] = address.address;
-        }
+        if (address?.valid) this.selectedAddress[index] = address.address;
     }
 
     private getDropdownLists(
@@ -483,6 +481,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             this.selectedTruckTrailerRepairPm[index],
                         quantity: +itemRow.quantity,
                         price: +itemRow.price,
+                    };
+                }
+            );
+        }
+
+        if (this.isOffDutyLocationTable) {
+            modalTableDataValue = modalTableDataValue.map(
+                (itemRow: OffDutyLocationResponse, index: number) => {
+                    return {
+                        ...itemRow,
+                        address:
+                            this.selectedAddress[index]?.address &&
+                            this.selectedAddress[index],
                     };
                 }
             );
