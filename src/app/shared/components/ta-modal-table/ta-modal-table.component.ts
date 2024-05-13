@@ -27,6 +27,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -44,6 +45,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // validations
 import {
     descriptionValidation,
+    nicknameValidation,
     phoneExtension,
     phoneFaxRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -56,12 +58,14 @@ import { HeaderRequiredStarPipe } from '@shared/components/ta-modal-table/pipes/
 
 // models
 import {
+    AddressEntity,
     ContactEmailResponse,
     ContactPhoneResponse,
     CreateContactEmailCommand,
     CreateContactPhoneCommand,
     DepartmentResponse,
     EnumValue,
+    OffDutyLocationResponse,
     RepairItemCommand,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
@@ -83,6 +87,7 @@ import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dro
         TaInputComponent,
         TaInputDropdownComponent,
         TaCheckboxComponent,
+        TaInputAddressDropdownComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -98,6 +103,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() isContactTable?: boolean = false;
     @Input() isPMTruckTable?: boolean = false;
     @Input() isPMTrailerTable?: boolean = false;
+    @Input() isOffDutyLocationTable?: boolean = false;
 
     @Input() isNewRowCreated: boolean = false;
     @Input() isEdit?: boolean = false;
@@ -107,7 +113,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | ContactPhoneResponse[]
         | ContactEmailResponse[]
         | RepairItemResponse[]
-        | PMTableData[] = [];
+        | PMTableData[]
+        | OffDutyLocationResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
 
     @Output() modalTableValueEmitter = new EventEmitter<
@@ -147,6 +154,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public pmTruckOptions: ModalTableDropdownOption[] = [];
     public pmTrailerOptions: ModalTableDropdownOption[] = [];
     public activePmDropdownItem: ModalTableDropdownOption[] = [];
+
+    // off duty location table
+    public selectedAddress: AddressEntity[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -218,6 +228,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             repairOrderTableItems: this.formBuilder.array([]),
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
+            offDutyLocationTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -288,6 +299,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             default:
                 break;
+        }
+    }
+
+    public onSelectAddress(
+        address: {
+            address: AddressEntity;
+            valid: boolean;
+        },
+        index: number
+    ): void {
+        if (address.valid) {
+            this.selectedAddress[index] = address.address;
         }
     }
 
@@ -429,6 +452,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.PM_TRAILER_TABLE_HEADER_ITEMS;
 
                 break;
+            case this.isOffDutyLocationTable:
+                this.modalTableHeaders =
+                    ModalTableConstants.OFF_DUTY_LOCATION_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -488,6 +516,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case this.isPMTruckTable || this.isPMTrailerTable:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.PM_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case this.isOffDutyLocationTable:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS
                 ) as UntypedFormArray;
             default:
                 break;
@@ -583,6 +615,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case this.isOffDutyLocationTable:
+                newFormArrayRow = this.formBuilder.group({
+                    nickname: [
+                        null,
+                        [Validators.required, ...nicknameValidation],
+                    ],
+                    address: [null, [Validators.required]],
+                });
+
+                break;
             default:
                 break;
         }
@@ -609,6 +651,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.selectedTruckTrailerRepairPm.splice(index, 1);
 
                 break;
+            case this.isOffDutyLocationTable:
+                this.selectedAddress.splice(index, 1);
+
+                break;
             default:
                 break;
         }
@@ -631,6 +677,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
                     : this.isContactTable
                     ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
+                    : this.isOffDutyLocationTable
+                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION
                     : null
             )
         );
@@ -650,6 +698,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | ContactEmailResponse
             | RepairItemResponse
             | PMTableData
+            | OffDutyLocationResponse
         )[]
     ): void {
         for (let i = 0; i < modalTableData.length; i++) {
@@ -752,6 +801,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         status: pmData?.status,
                         value: pmData?.title,
                     });
+
+                    break;
+                case this.isOffDutyLocationTable:
+                    const offDutyLocationData = modalTableData[
+                        i
+                    ] as OffDutyLocationResponse;
+
+                    this.getFormArray().at(i).patchValue({
+                        nickname: offDutyLocationData?.nickname,
+                        address: offDutyLocationData?.address?.address,
+                    });
+
+                    this.selectedAddress[i] = offDutyLocationData?.address;
 
                     break;
                 default:

@@ -159,7 +159,7 @@
 
         &.custom-bank-row-driver {
             grid-template-columns: 184px 160px 248px;
-            margin-bottom: 0px;
+            margin-bottom: 22px;
         }
 
         &.custom-bank-row-repair-shop {
@@ -218,16 +218,16 @@
             padding: 0;
             font-size: 14px;
             font-weight: 600;
-            color: #6c6c6c;
+            color: $bw6-2;
             margin-right: 10px;
 
             &::-moz-selection {
-                color: #6c6c6c;
+                color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-                color: #6c6c6c;
+                color: $bw6-2;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
@@ -240,21 +240,13 @@
     //---------------- Pay Type DRIVER ----------------
     .custom-row-paytype-driver {
         display: grid;
-        grid-template-columns: repeat(2, 167px) 98px 105px;
-        align-items: center;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        padding-left: 6px;
-        margin-bottom: 32px;
+        grid-template-columns: 154px 210px 104px 112px;
+        -moz-column-gap: 12px;
+        column-gap: 12px;
+        margin: 22px 0 32px 0;
 
-        &.custom-row-paytype-driver-disabled {
-            grid-template-columns: repeat(2, 167px) 119px 107px;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-        }
-
-        &.fleet-type {
-            grid-template-columns: 1fr 414px;
+        &.owner-selected {
+            grid-template-columns: 154px 1fr;
         }
     }
 
@@ -262,22 +254,12 @@
     .paytype-commission {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 22px;
-        grid-column-gap: 22px;
-        -moz-column-gap: 22px;
+        grid-column-gap: 12px;
         align-items: center;
-        column-gap: 22px;
-        padding-left: 6px;
-        padding-right: 1px;
         margin-bottom: 30px;
 
-        .paytype-field {
-            height: 20px;
-        }
-
-        &.paytype-commission-single {
+        &-single {
             grid-template-columns: 1fr;
-            margin-bottom: 40px;
         }
     }
 
@@ -285,45 +267,51 @@
     .paytype-permile {
         max-height: 0px;
         overflow: hidden;
-        transition: all 0.3s ease-in-out;
         margin-bottom: 30px;
 
         &.active {
             max-height: 600px !important;
             margin-top: 32px;
             overflow: visible;
-            transition: all 0.3s ease-in-out;
         }
 
         .permile-fields {
             display: grid;
             grid-template-columns: auto repeat(3, 177px);
             grid-template-rows: 26px;
-            align-items: center;
             -moz-column-gap: 12px;
             column-gap: 12px;
-
             margin-bottom: 32px;
 
             p {
-                margin: 0;
                 font-size: 14px;
-                font-weight: 600;
-                color: #6c6c6c;
+                line-height: 18px;
+                color: $bw6-2;
 
                 &::-moz-selection {
-                    color: #6c6c6c;
+                    color: $bw6-2;
                     background-color: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                    color: #6c6c6c;
+                    color: $bw6-2;
                     background-color: rgb(108, 108, 108, 0.2);
                 }
             }
 
             &.permile-fields-same-rate {
                 grid-template-columns: auto repeat(2, 265px);
+            }
+
+            &.disabled {
+                p {
+                    color: $ta-light-grey-2;
+
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                }
             }
         }
     }
@@ -369,7 +357,7 @@
                 margin-right: 6px;
                 font-size: 14px;
                 font-weight: 500;
-                color: #6c6c6c;
+                color: $bw6-2;
                 position: relative;
                 top: 1px;
                 -webkit-user-select: none;

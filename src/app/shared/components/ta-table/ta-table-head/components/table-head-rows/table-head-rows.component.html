@@ -27,10 +27,9 @@
             cdkDragBoundary="tr"
             [cdkDragPreviewClass]="'cdk-drag-preview'"
             [cdkDragDisabled]="
-                tableHeadRowsData?.notPinedColumns &&
-                (tableHeadRowsData?.locked ||
-                    tableHeadRowsData?.resizing ||
-                    column.isAction)
+                tableHeadRowsData?.locked ||
+                tableHeadRowsData?.resizing ||
+                column.isAction
             "
             [resizeColumn]="column.resizable && !tableHeadRowsData?.locked"
             [index]="i"

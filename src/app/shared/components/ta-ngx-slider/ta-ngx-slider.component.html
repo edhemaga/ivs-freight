@@ -1,6 +1,9 @@
 <ng-container [ngSwitch]="sliderTemplate">
     <ng-container *ngSwitchCase="'commission'">
-        <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
+        <div
+            class="ta-ngx-slider custom-slider-commission {{ customClass }}"
+            [ngClass]="{ disabled: isDisabled }"
+        >
             <p class="custom-slider-text">{{ sliderName }}</p>
             <ngx-slider
                 #slider
@@ -10,6 +13,7 @@
             ></ngx-slider>
         </div>
     </ng-container>
+
     <ng-container *ngSwitchCase="'logo-change'">
         <div class="ta-ngx-slider custom-slider-logo-change {{ customClass }}">
             <ngx-slider
@@ -20,6 +24,7 @@
             ></ngx-slider>
         </div>
     </ng-container>
+
     <ng-container *ngSwitchCase="'hos-change'">
         <ngx-slider
             #slider
@@ -28,6 +33,7 @@
             (userChangeEnd)="userChangeEnd($event)"
         ></ngx-slider>
     </ng-container>
+
     <ng-container *ngSwitchCase="'range-slider'" class="range-slider-holder">
         <div class=" ta-ngx-slider custom-slider-commission {{ customClass }}">
             <ngx-slider
