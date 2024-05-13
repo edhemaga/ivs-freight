@@ -42,7 +42,6 @@ export interface ITaInput {
     textAlign?: string | 'center';
     blackInput?: boolean; // has only black background && input clear, no validations
     blueInput?: boolean;
-    textBlueColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
     incorrectInput?: boolean;
     dangerMark?: boolean;
     autoFocus?: boolean;
@@ -63,6 +62,9 @@ export interface ITaInput {
     };
     addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
     customClass?: string; // - 'datetimeclass' -> date/time pickers, 'datetimeclass dark -> date/time pickers dark
+    isIconInput?: boolean; // display icon instead of regular input
+    isValidIcon?: boolean; // display icon instead of regular input
+    inputIcon?: string; // display icon instead of regular input
 
     // ***************** Multiple Inputs & Labels *****************
     multipleInputValues?: {
@@ -73,7 +75,8 @@ export interface ITaInput {
         labels: string[]; // ['Driver', 'Truck #', 'Trailer #']
         customClass: string;
     };
-    removeInputBackground?: boolean;
+    isInputBackgroundRemoved?: boolean;
+    isBlueText?: boolean;
 
     // ***************** Input Actions (confirm-cancel buttons) *****************
     commands?: {
@@ -99,7 +102,7 @@ export interface ITaInput {
             popup?: {
                 name?: string;
                 backgroundColor?: string;
-            }
+            };
             name?: string;
             svg?: string;
         };

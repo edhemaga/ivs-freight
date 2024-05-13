@@ -160,9 +160,19 @@
                     }
                 }
             }
+
+            &.innit {
+                padding: 4px;
+                margin: 0px 4px;
+
+                &:hover {
+                    background-color: $ta-black-2;
+                    transition: background 0.3s;
+                }
+            }
         }
 
-        .not-clickable {
+        .not-clickable-action {
             pointer-events: none;
             cursor: not-allowed;
         }

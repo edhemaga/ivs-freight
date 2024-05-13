@@ -38,8 +38,16 @@
             grid-template-columns: 26px 312px 110px;
         }
 
-        &.description-table-header {
+        &.repair-bill-table-header {
             grid-template-columns: 26px 306px 26px 60px 90px 88px;
+
+            .table-header-box.repair-bill-header {
+                padding-left: 6px;
+            }
+        }
+
+        &.repair-order-table-header {
+            grid-template-columns: 26px 492px 26px 60px;
         }
 
         &.contact-table-header {
@@ -63,10 +71,6 @@
         }
     }
 
-    .description-header {
-        padding-left: 6px !important;
-    }
-
     .subtotal {
         padding-right: 6px;
     }
@@ -78,6 +82,7 @@
             display: grid;
             grid-gap: 4px;
             background: $bw2;
+            margin-bottom: 4px;
 
             &:hover {
                 .table-item-number {
@@ -87,6 +92,42 @@
 
                     .delete-icon {
                         display: inline-block;
+                    }
+                }
+            }
+
+            &.valid {
+                background: $white;
+
+                .subtotal {
+                    p {
+                        color: $ta-black;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
+
+                    &.valid {
+                        p {
+                            color: $ta-blue-13;
+
+                            &::-moz-selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+                        }
                     }
                 }
             }
@@ -188,34 +229,58 @@
             }
         }
 
+        /* Email Table */
+
         .email-table-container {
             .table-item {
                 grid-template-columns: 26px 312px 110px;
             }
         }
 
-        // Description Table
+        /* Repair Bill Table */
 
-        .description-table-container {
+        .repair-bill-table-container {
+            &.repair-order-table-container {
+                .table-item {
+                    grid-template-columns: 26px 492px 26px 60px;
+                }
+            }
+
             .table-item {
                 grid-template-columns: 26px 306px 26px 60px 90px 88px;
             }
 
+            .pm-dropdown-container {
+                &.hidden-pm-dropdown {
+                    cursor: pointer;
+                    pointer-events: none;
+                    opacity: 0;
+                    visibility: 0;
+                }
+            }
+
             .subtotal {
-                color: $ta-black;
-                font-size: 14px;
                 padding-right: 6px;
 
-                &::-moz-selection {
+                p {
+                    font-size: 14px;
+                    line-height: 11px;
                     color: $ta-black;
-                    background: rgb(66, 66, 66, 0.2);
-                }
-                &::selection {
-                    color: $ta-black;
-                    background: rgb(66, 66, 66, 0.2);
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
                 }
             }
         }
+
+        /* Contact Table */
 
         .contact-table-container {
             overflow-x: scroll;
@@ -236,11 +301,13 @@
             }
         }
 
+        /* Pm Table */
+
         .pm-table-container {
             grid-template-rows: 26px;
             column-gap: 4px;
             row-gap: 4px;
-            
+
             .pm-item {
                 grid-template-columns: 26px 276px 146px;
                 background: none;

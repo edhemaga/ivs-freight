@@ -24,6 +24,13 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
+import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
+
+// Store
+import { StoreModule } from '@ngrx/store';
+import { repairCardModalReducer } from '@pages/repair/pages/repair-card-modal/state/repair-card-modal.reducer';
 
 @NgModule({
     declarations: [RepairTableComponent, RepairCardComponent],
@@ -50,6 +57,12 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
         // Pipes
         FormatDatePipe,
+        FlipCardsPipe,
+        NFormatterPipe,
+        NgForLengthFilterPipe,
+
+        // Store
+        StoreModule.forFeature('repairCardData', repairCardModalReducer),
     ],
 })
 export class RepairModule {}

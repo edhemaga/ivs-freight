@@ -25,6 +25,10 @@ import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-mo
 import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -411,6 +415,25 @@ export class DropDownService {
                         template: 'repair',
                         type: 'delete',
                         image: false,
+                    }
+                );
+                break;
+            }
+            case TableStringEnum.DELETE_REPAIR_DETAIL: {
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...any,
+                        id: data.id,
+                        template: TableStringEnum.REPAIR_DETAIL,
+                        type: TableStringEnum.DELETE,
+                        modalHeaderTitle:
+                            data?.data?.repairType?.name ===
+                            TableStringEnum.ORDER
+                                ? ConfirmationModalStringEnum.DELETE_ORDER
+                                : ConfirmationModalStringEnum.DELETE_REPAIR,
+                        subType: data?.data?.repairType?.name,
                     }
                 );
                 break;

@@ -13,5 +13,6 @@
 
 export interface StatusSetMultipleCompanyUserCommand { 
     ids?: Array<number> | null;
+    activate?: boolean;
 }
 

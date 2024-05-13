@@ -199,10 +199,15 @@ export enum TableStringEnum {
     DRIVER_2 = 'drivers',
     APPLICANT = 'APPLICANT',
 
-    APP = 'App.',
+    APP = 'APP',
+    OWN = 'OWN',
+    MED = 'MED',
+    MVR = 'MVR',
+    PSP = 'PSP',
+    SPH = 'SPH',
+    HOS = 'HOS',
+    TEST = 'TEST',
 
-    MVR = 'Mvr',
-    MVR_2 = 'MVR',
     ADD_MVR = 'Add MVR',
     TEST_MVR = 'test-mvr',
 
@@ -219,13 +224,9 @@ export enum TableStringEnum {
     REQUEST = 'Request',
     ADD_TO_FAVORITES = 'add-to-favourites',
 
-    PSP = 'Psp',
-    SPH = 'Sph',
-    HOS = 'Hos',
     SSN = 'Ssn',
-
-    EMAIL = 'Email•',
-    PUSH = 'Push•',
+    EMAIL = 'Email • ',
+    PUSH = 'Push • ',
     SMS = 'SMS',
 
     // Truck
@@ -271,10 +272,13 @@ export enum TableStringEnum {
     SHOP = 'Shop',
     FAVORITE = 'favorite',
     FINISH_ORDER = 'finish-order',
+    FINISH_ORDER_2 = 'finish order',
+    FINISH_ORDER_3 = 'Finish Order',
     DELETE_REPAIR = 'delete-repair',
+    DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
-    REPAIR_SHOP = 'repair-shop',
+    REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
     NEW_TRAILER = 'new-trailer',
     NEW_TRUCK = 'new-truck',
@@ -291,6 +295,18 @@ export enum TableStringEnum {
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
     REPAIR_MODAL = 'repair-modal',
+    ALL_BILS = 'All Bills',
+    ALL_BILS_2 = 'all-bills',
+    ALL_ORDERS = 'All Orders',
+    ALL_ORDERS_2 = 'all-orders',
+    UNIT = 'Unit ',
+    SHOP_DETAIL = 'Shop Detail ',
+    ITEM_DETAIL = 'Item Detail ',
+
+    REPAIR_DETAIL = 'repair-detail',
+    ALL_BILLS = 'all bills',
+    ALL_BILLS_2 = 'All Bills',
+
     // PM
     PM_TABLE_VIEW = 'PM-table-view',
     PM_TRUCK = 'PM_TRUCK',
@@ -315,6 +331,12 @@ export enum TableStringEnum {
     PM_DEFAULT_SVG = 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     PM_DEFAULT_MILEAGE = '10,000',
     PM_DEFAULT_MONTHS = '6',
+    INVOICE = 'invoice',
+    REPAIR_2 = 'repair',
+    TRUCK_REPAIR = 'truck repair',
+    TRAILER_REPAIR = 'trailer repair',
+    REPAIR_ORDER = 'repair order',
+    REPAIR_REVIEW = 'repair-review',
 
     // Owner
     TRUCK_TYPE_FILTER = 'truckTypeFilter',
@@ -476,4 +498,7 @@ export enum TableStringEnum {
 
     CUSTOM_FIELD = 'customField',
     COMMON = 'common',
+
+    // Border
+    BORDER = 'border',
 }

@@ -27,6 +27,8 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { ConfirmationModalTextPipe } from '@shared/components/ta-shared-modals/confirmation-modal/pipes/confirmation-modal-text.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // models
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
@@ -50,6 +52,8 @@ import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-m
 
         // pipes
         FormatDatePipe,
+        ConfirmationModalTextPipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class ConfirmationModalComponent implements OnInit {

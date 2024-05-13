@@ -1171,15 +1171,15 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                descriptionPopoverOpen !==
-                                                row.id
-                                                    ? row[column.field]
-                                                    : null
+                                                row[column.field]
+                                                    | tableDescriptionTextPipe
+                                                        : column.width
                                             "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
-                                                    row
+                                                    row,
+                                                    column.width
                                                 )
                                             "
                                             [ngbPopover]="descriptionPopover"
@@ -1293,8 +1293,8 @@
                                         ></span>
 
                                         <div
-                                            class="finish-order-action"
-                                            (click)="onFinishOrder(row)"
+                                            class="finish-order-action d-flex justify-content-center"
+                                            (click)="onFinishOrder(row.id)"
                                             *ngIf="row.isRepairOrder"
                                         >
                                             Finish Order
@@ -1901,7 +1901,7 @@
                                         *ngIf="column.ngTemplate === 'progress'"
                                     >
                                         <div
-                                            class="table-progress-cotnainer"
+                                            class="table-progress-container"
                                             *ngIf="
                                                 row[column.field]
                                                     ?.expirationDays !== null &&
@@ -2025,113 +2025,40 @@
                                     </div>
 
                                     <!-- APPLICANT PROGRESS COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
                                             'applicant-progress'
                                         "
                                     >
                                         <div
-                                            class="applicant-progress-container"
+                                            class="td-content"
                                             [ngStyle]="{
-                                                width:
-                                                    progressStatus.width + 'px'
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
-                                            *ngFor="
-                                                let progressStatus of row[
-                                                    column.field
-                                                ]
-                                            "
                                         >
-                                            <!-- Progress -->
-                                            <div
-                                                class="table-progress-cotnainer"
-                                                *ngIf="
-                                                    progressStatus.status ===
-                                                    'In Progres'
+                                            <ng-container
+                                                *ngFor="
+                                                    let applicantProgress of row[
+                                                        column.field
+                                                    ];
+                                                    trackBy: trackTableNotPinedColumns
                                                 "
                                             >
-                                                <!-- Progress Bar  -->
                                                 <div
-                                                    class="table-progress-bar-container"
-                                                    [ngClass]="{
-                                                        'bg-expired-container':
-                                                            progressStatus.percentage ===
-                                                            100,
-                                                        'bg-sliver-container':
-                                                            progressStatus.percentage >=
-                                                                50 &&
-                                                            progressStatus.percentage <
-                                                                100,
-                                                        'bg-orange-container':
-                                                            progressStatus.percentage >=
-                                                                20 &&
-                                                            progressStatus.percentage <
-                                                                50,
-                                                        'bg-danger-container':
-                                                            progressStatus.percentage >
-                                                                0 &&
-                                                            progressStatus.percentage <
-                                                                20,
-                                                        'bg-inactive-container':
-                                                            !progressStatus.percentage
-                                                    }"
+                                                    class="d-flex align-items-center justify-content-center applicant-progress-container"
                                                 >
-                                                    <div
-                                                        [ngClass]="{
-                                                            'bg-progress-sliver':
-                                                                progressStatus.percentage >=
-                                                                    50 &&
-                                                                progressStatus.percentage <
-                                                                    100,
-                                                            'bg-progress-orange':
-                                                                progressStatus.percentage >=
-                                                                    20 &&
-                                                                progressStatus.percentage <
-                                                                    50,
-                                                            'bg-progress-danger':
-                                                                progressStatus.percentage >
-                                                                    0 &&
-                                                                progressStatus.percentage <
-                                                                    20
-                                                        }"
-                                                        class="table-progress-bar"
-                                                        *ngIf="
-                                                            progressStatus.percentage >
-                                                                0 &&
-                                                            progressStatus.percentage <
-                                                                100
-                                                        "
-                                                    ></div>
+                                                    <p class="m-0 ta-font-bold">
+                                                        {{
+                                                            applicantProgress?.title
+                                                        }}
+                                                    </p>
                                                 </div>
-                                            </div>
-
-                                            <!-- Status Icon -->
-                                            <div
-                                                class="applicant-status-container"
-                                                *ngIf="
-                                                    progressStatus.status !==
-                                                        'In Progres' &&
-                                                    progressStatus.status !==
-                                                        'No Started'
-                                                "
-                                            >
-                                                <div
-                                                    class="status-icon"
-                                                    [class]="
-                                                        progressStatus.class
-                                                    "
-                                                ></div>
-                                            </div>
+                                            </ng-container>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- APPLICANT REVIEW COLUMN -->
                                     <div
@@ -2945,15 +2872,15 @@
                                             }"
                                             class="description-container"
                                             [innerHtml]="
-                                                descriptionPopoverOpen !==
-                                                row.id
-                                                    ? row[column.field]
-                                                    : null
+                                                row[column.field]
+                                                    | tableDescriptionTextPipe
+                                                        : column.width
                                             "
                                             (click)="
                                                 onShowDescriptionDropdown(
                                                     t1,
-                                                    row
+                                                    row,
+                                                    column.width
                                                 )
                                             "
                                             [ngbPopover]="descriptionPopover"
@@ -3217,7 +3144,7 @@
 
                                         <div
                                             class="finish-order-action"
-                                            (click)="onFinishOrder(row)"
+                                            (click)="onFinishOrder(row.id)"
                                             *ngIf="row.isRepairOrder"
                                         >
                                             Finish Order
@@ -3832,118 +3759,40 @@
                                     </ng-container>
 
                                     <!-- APPLICANT PROGRESS COLUMN -->
-                                    <div
-                                        class="td-content"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
-                                        }"
+                                    <ng-container
                                         *ngIf="
                                             column.ngTemplate ===
                                             'applicant-progress'
                                         "
                                     >
                                         <div
-                                            class="applicant-progress-container"
+                                            class="td-content"
                                             [ngStyle]="{
-                                                width:
-                                                    progressStatus.width + 'px'
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
-                                            *ngFor="
-                                                let progressStatus of row[
-                                                    column.field
-                                                ]
-                                            "
                                         >
-                                            <!-- Progress -->
-                                            <div
-                                                class="table-progress-cotnainer"
-                                                *ngIf="
-                                                    progressStatus.status ===
-                                                    'In Progres'
+                                            <ng-container
+                                                *ngFor="
+                                                    let applicantProgress of row[
+                                                        column.field
+                                                    ];
+                                                    trackBy: trackTableNotPinedColumns
                                                 "
                                             >
-                                                <!-- Progress Bar  -->
                                                 <div
-                                                    class="table-progress-bar-container"
-                                                    [ngClass]="{
-                                                        'bg-expired-container':
-                                                            progressStatus.percentage ===
-                                                            100,
-                                                        'bg-sliver-container':
-                                                            progressStatus.percentage >=
-                                                                50 &&
-                                                            progressStatus.percentage <
-                                                                100,
-                                                        'bg-orange-container':
-                                                            progressStatus.percentage >=
-                                                                20 &&
-                                                            progressStatus.percentage <
-                                                                50,
-                                                        'bg-danger-container':
-                                                            progressStatus.percentage >
-                                                                0 &&
-                                                            progressStatus.percentage <
-                                                                20,
-                                                        'bg-inactive-container':
-                                                            !progressStatus.percentage
-                                                    }"
+                                                    class="d-flex align-items-center justify-content-center applicant-progress-container"
                                                 >
-                                                    <div
-                                                        [ngClass]="{
-                                                            'bg-progress-sliver':
-                                                                progressStatus.percentage >=
-                                                                    50 &&
-                                                                progressStatus.percentage <
-                                                                    100,
-                                                            'bg-progress-orange':
-                                                                progressStatus.percentage >=
-                                                                    20 &&
-                                                                progressStatus.percentage <
-                                                                    50,
-                                                            'bg-progress-danger':
-                                                                progressStatus.percentage >
-                                                                    0 &&
-                                                                progressStatus.percentage <
-                                                                    20
-                                                        }"
-                                                        [ngStyle]="{
-                                                            width:
-                                                                progressStatus.percentage +
-                                                                '%'
-                                                        }"
-                                                        class="table-progress-bar"
-                                                        *ngIf="
-                                                            progressStatus.percentage >
-                                                                0 &&
-                                                            progressStatus.percentage <
-                                                                100
-                                                        "
-                                                    ></div>
+                                                    <p class="m-0 ta-font-bold">
+                                                        {{
+                                                            applicantProgress?.title
+                                                        }}
+                                                    </p>
                                                 </div>
-                                            </div>
-
-                                            <!-- Status Icon -->
-                                            <div
-                                                class="applicant-status-container"
-                                                *ngIf="
-                                                    progressStatus.status !==
-                                                        'In Progres' &&
-                                                    progressStatus.status !==
-                                                        'No Started'
-                                                "
-                                            >
-                                                <div
-                                                    class="status-icon"
-                                                    [class]="
-                                                        progressStatus.class
-                                                    "
-                                                ></div>
-                                            </div>
+                                            </ng-container>
                                         </div>
-                                    </div>
+                                    </ng-container>
 
                                     <!-- APPLICANT REVIEW COLUMN -->
                                     <div
@@ -4511,7 +4360,7 @@
 
                                     <div class="due-date">
                                         <div
-                                            class="table-progress-cotnainer"
+                                            class="table-progress-container"
                                             *ngIf="
                                                 row['tableDropdownProgress']
                                                     ?.expirationDays
@@ -4874,7 +4723,7 @@
                     'table-list-dropdown-content-dropdown': action?.isDropdown,
                     'table-list-dropdown-content-dropdown-active':
                         action?.isInnerDropActive,
-                        'table-list-dropdown-content-dropdown-disabled':
+                    'table-list-dropdown-content-dropdown-disabled':
                         action.title === 'Delete' &&
                         tableData[0].title === 'Contacts' &&
                         companyUser.companyUserId !== data.companyUserId
@@ -4924,17 +4773,32 @@
 
 <!-- DESCRIPTION -->
 <ng-template #descriptionPopover let-data="data">
-    <div class="description-dropdown-container">
+    <div
+        class="description-dropdown-container"
+        [ngStyle]="{
+            width: widthPopover + 100 + 'px'
+        }"
+    >
         <div class="description-titles">
-            <div class="number-title">#</div>
-            <div class="item-title">Item</div>
-            <div class="qty-title">Qty</div>
-            <div class="price-title">Price</div>
+            <div
+                *ngFor="
+                    let popoverDescriptionItem of popoverDescriptionItems;
+                    trackBy: trackByDescriptionIdentity
+                "
+                [ngClass]="popoverDescriptionItem.className"
+            >
+                {{ popoverDescriptionItem.title }}
+            </div>
             <div class="price-total-title">
                 {{ data.tabelDescriptionDropTotal }}
             </div>
         </div>
-        <div class="description-items">
+        <div
+            class="description-items"
+            [ngStyle]="{
+                width: widthPopover + 100 + 'px'
+            }"
+        >
             <div
                 class="description-item"
                 [ngClass]="{ 'description-item-margin': i !== 0 }"
@@ -4953,24 +4817,20 @@
                 <div
                     class="item-title"
                     [ngClass]="{ 'pm-style': item.pmDescription }"
-                    [ngStyle]="{
-                        'min-width.px': item.pmDescription ? 229 : 253,
-                        'width.px': item.pmDescription ? 229 : 253
-                    }"
                 >
                     {{ item.description }}
-                </div>
-                <div
-                    class="item-cost"
-                    [ngClass]="{ 'pm-style': item.pmDescription }"
-                >
-                    {{ item.descriptionPrice }}
                 </div>
                 <div
                     class="number-of-items"
                     [ngClass]="{ 'pm-style': item.pmDescription }"
                 >
                     {{ item.quantity }}
+                </div>
+                <div
+                    class="item-cost"
+                    [ngClass]="{ 'pm-style': item.pmDescription }"
+                >
+                    {{ item.descriptionPrice }}
                 </div>
                 <div
                     class="item-total-cost"

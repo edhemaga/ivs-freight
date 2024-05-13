@@ -37,10 +37,14 @@ export class RepairDetailsService {
         dateFrom?: string,
         dateTo?: string,
         isPM?: number,
-        categoryIds?: Array<number>,
-        pmTruckTitles?: Array<string>,
-        pmTrailerTitles?: Array<string>,
+        categoryIds?: number[],
+        pmTruckTitles?: string[],
+        pmTrailerTitles?: string[],
         isOrder?: boolean,
+        truckNumbers?: string[],
+        trailerNumbers?: string[],
+        costFrom?: number,
+        costTo?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -59,6 +63,10 @@ export class RepairDetailsService {
             pmTruckTitles,
             pmTrailerTitles,
             isOrder,
+            truckNumbers,
+            trailerNumbers,
+            costFrom,
+            costTo,
             pageIndex,
             pageSize,
             companyId,
@@ -68,7 +76,6 @@ export class RepairDetailsService {
             search2
         );
     }
-
     // Get Repair Minimal List
     public getRepairShopMinimalList(
         pageIndex?: number,

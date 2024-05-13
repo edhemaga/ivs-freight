@@ -89,6 +89,7 @@
 
     <!-- Dropdown search -->
     <app-ta-input
+        *ngIf="!inputConfig.isIconInput"
         #t2="ngbPopover"
         [ngbPopover]="taInputDropdownPopover"
         popoverClass="ta-input-dropdown"
@@ -114,6 +115,30 @@
         (dropDownKeyNavigation)="dropDownKeyNavigation($event)"
         (incorrectEvent)="onIncorrectInput($event)"
     ></app-ta-input>
+
+    <!-- Dropdown icon instead of input -->
+    <ng-container *ngIf="inputConfig?.isIconInput">
+        <div
+            class="d-flex justify-content-center align-items-center input-icon-container"
+            [ngClass]="{
+                valid:
+                    inputConfig?.isValidIcon &&
+                    !inputConfig?.inputIcon.includes('custom'),
+                active: popoverRef?.isOpen()
+            }"
+        >
+            <svg-icon
+                #t2="ngbPopover"
+                [ngbPopover]="taInputDropdownPopover"
+                popoverClass="ta-input-dropdown"
+                [autoClose]="'outside'"
+                [container]="'body'"
+                [placement]="['bottom-left']"
+                class="input-icon"
+                [src]="'assets/svg/common/repair-pm/' + inputConfig?.inputIcon"
+            ></svg-icon>
+        </div>
+    </ng-container>
 </div>
 
 <ng-template #taInputDropdownPopover>
@@ -159,7 +184,6 @@
                             _options.length === 1 &&
                             _options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
-
                         active: option.id === _activeItem?.id
                     }"
                     class="dropdown-option"
@@ -229,6 +253,7 @@
                             option.name.trim().replace(' ', '').toLowerCase()
                         }}"
                     ></svg-icon>
+
                     <img
                         *ngIf="option.logoName && option?.isDriver"
                         [alt]="option.name"
@@ -241,6 +266,7 @@
                         [ngStyle]="{ 'margin-right': '6px' }"
                         class="svg-template-logo"
                     />
+
                     <div
                         *ngIf="!option.logoName && option?.isDriver"
                         class="no-profile-image"
@@ -254,7 +280,9 @@
                         >
                         </app-ta-profile-images>
                     </div>
+
                     <!-- Text -->
+
                     <div
                         [innerHtml]="
                             option?.number
@@ -283,6 +311,7 @@
                     ></div>
 
                     <!-- Additional Text -->
+
                     <div
                         *ngIf="option?.additionalText"
                         [innerHtml]="
@@ -297,6 +326,19 @@
                         "
                         class="svgtext-template-text additional-text"
                     ></div>
+
+                    <!-- Plus Icon -->
+
+                    <ng-container *ngIf="option.name === 'ADD NEW'">
+                        <svg-icon
+                            class="plus-icon"
+                            src="assets/svg/common/ic_plus.svg"
+                            [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '14'
+                            }"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </div>
             <!-------------------------------------------Dispatch dropdown-------------------------------------------->
@@ -1336,6 +1378,7 @@
                     class="dropdown-option dropdown-double-text-option"
                 >
                     <!-- First Text -->
+
                     <div
                         [innerHtml]="
                             option.name
@@ -1351,23 +1394,38 @@
                     ></div>
 
                     <!-- Additional Text -->
-                    <div
-                        *ngIf="option?.additionalText"
-                        [innerHtml]="
-                            option.additionalText
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
-                        class="svgtext-template-text additional-text"
-                        [ngClass]="{
-                            active: option.id === _activeItem?.id
-                        }"
-                    ></div>
+
+                    <ng-container *ngIf="option?.additionalText">
+                        <div
+                            [innerHtml]="
+                                option.additionalText
+                                    | taHighlight
+                                        : [
+                                              {
+                                                  index: 45632,
+                                                  text: getSuperControl.value
+                                              }
+                                          ]
+                            "
+                            class="svgtext-template-text additional-text"
+                            [ngClass]="{
+                                active: option.id === _activeItem?.id
+                            }"
+                        ></div>
+                    </ng-container>
+
+                    <!-- Plus Icon -->
+
+                    <ng-container *ngIf="option.name === 'ADD NEW'">
+                        <svg-icon
+                            class="plus-icon"
+                            src="assets/svg/common/ic_plus.svg"
+                            [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '14'
+                            }"
+                        ></svg-icon>
+                    </ng-container>
                 </div>
             </div>
             <!--------------------------- Default Template - Render Only Text --------------------------->

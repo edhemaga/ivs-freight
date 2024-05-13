@@ -36,10 +36,13 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
+                undefined,
+                undefined,
                 1,
                 25
             ),
-            this.tableService.getTableConfig(10),
+            this.tableService.getTableConfig(11),
         ]).pipe(
             tap(([repairTruckPagination, tableConfig]) => {
                 localStorage.setItem(

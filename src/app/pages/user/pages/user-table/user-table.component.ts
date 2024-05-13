@@ -37,10 +37,7 @@ import { DisplayUserConfiguration } from '@pages/user/utils/constants/user-card-
 // models
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import {
-    CompanyUserResponse,
-    GetCompanyUserListResponse,
-} from 'appcoretruckassist';
+import { CompanyUserResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-user-table',
@@ -591,7 +588,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.searchThree
             )
             .pipe(takeUntil(this.destroy$))
-            .subscribe((users: GetCompanyUserListResponse) => {
+            .subscribe((users) => {
                 if (!isShowMore) {
                     this.viewData = users.pagination.data;
 

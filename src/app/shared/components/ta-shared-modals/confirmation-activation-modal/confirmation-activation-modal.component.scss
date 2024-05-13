@@ -1,0 +1,114 @@
+@import 'src/theme/variables';
+
+.confirmation-activation {
+    padding: 12px 0;
+
+    position: relative;
+
+    /* Icon */
+
+    &-icon {
+        position: absolute;
+        top: -30px;
+        right: 0;
+        padding-left: 10px;
+        background: $white;
+    }
+
+    /* Body */
+
+    &-body {
+        &-title,
+        &-middle {
+            p, div {
+                font-size: 18px;
+                line-height: 22px;
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &.limit-text {
+                    max-width: 73%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 66%;
+                    }
+                }
+            }
+
+            span {
+                font-size: 14px;
+                line-height: 18px;
+                color: $bw5;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+            }
+        }
+
+        &-middle {
+            margin: 8px 0;
+
+            &-box {
+                background: $bw2;
+                border-radius: 2px;
+                padding: 2px 6px;
+                margin-left: 6px;
+
+                p {
+                    font-size: 11px;
+                    line-height: 24px;
+                    color: $ta-black;
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+            }
+        }
+
+        &-subtitle {
+            width: 70%;
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+        }
+    }
+}

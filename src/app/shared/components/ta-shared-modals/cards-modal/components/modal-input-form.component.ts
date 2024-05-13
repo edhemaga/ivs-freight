@@ -26,15 +26,18 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 
 // enums
-import { CardsModalEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal.enum';
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
 
 // helpers
 import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 
+// components
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+
 @Component({
     selector: 'app-modal-input-form',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule, NgbModule],
+    imports: [CommonModule, AngularSvgIconModule, NgbModule, TaCustomCardComponent],
     templateUrl: './modal-input-form.component.html',
     styleUrls: ['./modal-input-form.component.scss'],
 })
@@ -110,10 +113,10 @@ export class ModalInputFormComponent implements OnInit, ControlValueAccessor {
 
     public cardTitleSelected(selectedRow: CardRows, popover: NgbPopover): void {
         switch (selectedRow.title) {
-            case CardsModalEnum.EMPTY:
+            case CardsModalStringEnum.EMPTY:
                 const emptyObj = {
-                    title: CardsModalEnum.EMPTY,
-                    endpoint: CardsModalEnum.EMPTY,
+                    title: CardsModalStringEnum.EMPTY,
+                    endpoint: CardsModalStringEnum.EMPTY,
                 };
 
                 this.inputTitleValue.nativeElement.value = this.backupValue;

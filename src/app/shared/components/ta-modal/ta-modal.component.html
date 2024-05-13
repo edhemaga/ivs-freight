@@ -64,6 +64,16 @@
                             {{ cardsSecTitle }}
                         </h5>
                     </ng-container>
+
+                    <ng-container
+                        *ngIf="showCounter && confirmationData?.array?.length"
+                    >
+                        <div
+                            class="modal-header-counter d-flex align-items-center justify-content-center ta-font-extra-bold"
+                        >
+                            {{ confirmationData.array.length }}
+                        </div>
+                    </ng-container>
                 </div>
 
                 <div class="modal-header-rightside">
@@ -229,7 +239,8 @@
                                     !resendEmail &&
                                     !loadModalTemplate &&
                                     !mapSettingsModal &&
-                                    !mapRouteModal
+                                    !mapRouteModal &&
+                                    !isFinishOrder
                                 "
                             >
                                 <button
@@ -357,6 +368,20 @@
                                     type="button"
                                 >
                                     Convert to Template
+                                </button>
+                            </ng-container>
+
+                            <ng-container
+                                *ngIf="
+                                    editData.finishOrderBtn && !isFinishOrder
+                                "
+                            >
+                                <button
+                                    (click)="onAction('finish-order')"
+                                    class="d-flex align-items-center justify-content-center ta-font-bold modal-finish-order-btn"
+                                    type="button"
+                                >
+                                    Finish Order
                                 </button>
                             </ng-container>
                         </div>
@@ -526,8 +551,8 @@
                                         ? 'Saving'
                                         : editData?.type?.includes('edit') ||
                                           editData?.type?.includes('payroll')
-                                        ? editData?.type?.includes('fo')
-                                            ? 'Save'
+                                        ? isFinishOrder
+                                            ? 'Finish'
                                             : 'Save Changes'
                                         : 'Save'
                                 }}
@@ -609,7 +634,12 @@
                                     'reset modal',
                                     'user',
                                     'truck',
-                                    'owner'
+                                    'owner',
+                                    'repair',
+                                    'repair_shop',
+                                    'info',
+                                    'repair-detail',
+                                    'repair-review'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -639,14 +669,12 @@
                                 )
                             "
                             class="modal-delete-btn modal-gray-btn modal-confirmation-btn"
-                            [ngClass]="{
-                                'not-clickable': disableDelete
-                            }"
                             type="button"
                             [ngClass]="{
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
-                                )
+                                ),
+                                'not-clickable': disableDelete
                             }"
                         >
                             Yes
@@ -774,6 +802,12 @@
                         <button
                             (click)="onAction('business')"
                             class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+                            [ngClass]="{
+                                'modal-blue-btn':
+                                    confirmationData?.type === 'open',
+                                'modal-gray-btn':
+                                    confirmationData?.type !== 'open'
+                            }"
                             type="button"
                         >
                             Yes

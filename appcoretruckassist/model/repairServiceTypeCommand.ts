@@ -15,5 +15,6 @@ import { ServiceType } from './serviceType';
 export interface RepairServiceTypeCommand { 
     serviceType?: ServiceType;
     active?: boolean;
+    isSelected?: boolean;
 }
 
