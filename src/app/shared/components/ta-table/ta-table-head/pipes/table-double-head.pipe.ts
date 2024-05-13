@@ -26,10 +26,16 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === 'NAME  ' ||
                     tableHeadTitle === 'TERM');
 
+            const brokerTableColumnsCondition =
+                gridNameTitle === 'Broker' &&
+                (tableHeadTitle === 'ADDRESS ' ||
+                    tableHeadTitle === 'BILLING ');
+
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
-                driverTableColumnsCondition
+                driverTableColumnsCondition ||
+                brokerTableColumnsCondition
             ) {
                 return true;
             }
@@ -61,6 +67,11 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     groupName?.trim()
                 );
 
+            const brokerTableColumnsCondition =
+                gridNameTitle !== 'Broker' &&
+                tableHeadTitle !== 'ADDRESS ' &&
+                tableHeadTitle !== 'BILLING ';
+
             const excludedGroupNames = [
                 'Owner Details',
                 'Registration Detail',
@@ -71,6 +82,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 'Fuel Detail',
                 'Wheel Detail',
                 'Toll Device',
+                'Address',
+                'Billing'
             ];
 
             return (
@@ -78,6 +91,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 pmTableColumnsCondition &&
                 driverTableColumnsCondition &&
                 repairTableColumnsCondition &&
+                brokerTableColumnsCondition &&
                 !excludedGroupNames.includes(groupName?.trim())
             );
         }

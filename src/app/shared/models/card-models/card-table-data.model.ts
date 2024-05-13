@@ -164,6 +164,8 @@ export interface CardDetails {
     truck?: TruckMinimalResponse;
     trailer?: TrailerMinimalResponse;
     pmId?: number;
+    businessName?: string;
+    billingAddress?: Address;
 }
 
 export interface PmTruckProgressData {

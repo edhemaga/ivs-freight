@@ -156,6 +156,121 @@
                 </div>
             </ng-container>
 
+            <!-- Move to Ban list -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    options.toolbarActions.showMoveToBanList
+                "
+            >
+                <div
+                    (click)="banSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    ngbTooltip
+                    [mainTooltip]="
+                        'Move to Ban List (' + tableRowsSelected.length + ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    customClass="mt-1"
+                >
+                    <svg-icon
+                        class="ban-action-icon"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_banned_broker.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Move to DNU -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    options.toolbarActions.showMoveToDnuList
+                "
+            >
+                <div
+                    (click)="dnuSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    ngbTooltip
+                    [mainTooltip]="
+                        'Move to DNU List (' + tableRowsSelected.length + ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    customClass="mt-1"
+                >
+                    <svg-icon
+                        class="dnu-action-icon"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_dnu_broker.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Remove from Ban/DNU -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    (options.toolbarActions.showRemoveFromBanList ||
+                        options.toolbarActions.showRemoveFromDnuList)
+                "
+            >
+                <div
+                    (click)="dnuSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    ngbTooltip
+                    [mainTooltip]="
+                        'Remove From ' +
+                        (options.toolbarActions.showRemoveFromBanList
+                            ? 'Ban'
+                            : 'DNU') +
+                        ' List (' +
+                        tableRowsSelected.length +
+                        ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    customClass="mt-1"
+                >
+                    <svg-icon
+                        class="remove-action-icon"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_remove_dnu.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Open Bussiness -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    options.toolbarActions.showMoveToOpenList
+                "
+            >
+                <div
+                    (click)="dnuSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    ngbTooltip
+                    [mainTooltip]="
+                        'Open Bussiness (' + tableRowsSelected.length + ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    customClass="mt-1"
+                >
+                    <svg-icon
+                        class="open-bussiness-icon"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_open_bussiness.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
             <!-- Delete -->
             <ng-container
                 *ngIf="

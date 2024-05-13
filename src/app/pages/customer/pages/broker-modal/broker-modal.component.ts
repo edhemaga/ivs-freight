@@ -125,7 +125,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public tabs: any[] = [
         {
             id: 1,
-            name: 'Details',
+            name: 'Detail',
             checked: true,
         },
         {
@@ -234,12 +234,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        console.log('broker-modal editData', this.editData);
         this.createForm();
         this.getBrokerDropdown();
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
-        if (this.editData.tab) this.selectedTab = this.editData.tab;
+        if (this.editData?.tab) this.selectedTab = this.editData.tab;
+        console.log('selectedTab', this.selectedTab);
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -868,13 +870,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
-                    this.tabs = this.tabs.map((tab) => {
-                        if (tab.name === this.editData.openedTab) {
-                            return { ...tab, checked: true };
-                        } else {
-                            return { ...tab, checked: false };
-                        }
-                    });
+                    if (this.editData) {
+                        this.tabs = this.tabs.map((tab) => {
+                            if (tab.name === this.editData?.openedTab) {
+                                return { ...tab, checked: true };
+                            } else {
+                                return { ...tab, checked: false };
+                            }
+                        });
+                    }
+
+                    console.log(
+                        'broker-modal getBrokerDropdown tabs',
+                        this.tabs
+                    );
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {
@@ -986,6 +995,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 checked: index === 0,
                             };
                         });
+
+                        console.log('broker-modal addBroker tabs', this.tabs);
 
                         this.selectedBillingAddressTab = 5;
                         this.billingAddressTabs = this.billingAddressTabs.map(
@@ -1263,14 +1274,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                     // Review
-                    this.reviews = reasponse.reviews.map((item: any) => ({
+                    console.log('broker-modal reasponse', reasponse);
+                    this.reviews = reasponse.ratingReviews.map((item) => ({
                         ...item,
                         companyUser: {
                             ...item.companyUser,
                             avatar: item.companyUser.avatar,
                         },
                         commentContent: item.comment,
-                        rating: item.ratingFromTheReviewer,
+                        rating: item.thumb,
                     }));
 
                     const reviewIndex = this.reviews.findIndex(

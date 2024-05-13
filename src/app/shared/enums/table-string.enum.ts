@@ -29,6 +29,7 @@ export enum TableStringEnum {
 
     UPDATE_STATUS = 'update-status',
     DELETE_MULTIPLE = 'delete-multiple',
+    UPDATE_MULTIPLE = 'update-multiple',
     RESET_PASSWORD = 'reset-password',
     RESEND_INVITATION = 'resend-invitation',
     RESET = 'reset',
@@ -176,6 +177,7 @@ export enum TableStringEnum {
     ADD_CONTRACT_2 = 'Add Contact',
     REVIEW = 'Review',
     DETAILS = 'Details',
+    DETAIL = 'Detail',
     CONTRACT = 'Contact',
     CREATE_LOAD = 'create-load',
     CREATE_LOAD_2 = 'Create Load',
