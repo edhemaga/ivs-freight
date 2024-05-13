@@ -43,15 +43,15 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
 
 // models
-import { TruckListResponse } from 'appcoretruckassist';
+import { TruckListResponse, TruckShortResponse } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-
 import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
+import { TruckTableStringEnum } from './enum/truck-table-string.enum';
 
 @Component({
     selector: 'app-truck-table',
@@ -616,7 +616,62 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return TooltipColorsStringEnum.BROWN;
         }
     }
+    private featuresData(
+        data: TruckShortResponse
+    ): { name: string; image: string }[] {
+        const tableFeaturesArray: { name: string; image: string }[] = [];
 
+        if (data?.doubleBunk) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DOUBLE_BANK,
+                image: TruckTableStringEnum.DOUBLE_BANK_IMG,
+            });
+        }
+
+        if (data?.refrigerator) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.REFRIGERATOR,
+                image: TruckTableStringEnum.REFRIGERATOR_IMG,
+            });
+        }
+
+        if (data?.dcInverter) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DC_INVERTER,
+                image: TruckTableStringEnum.DC_INVERTER_IMG,
+            });
+        }
+
+        if (data?.blower) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.BLOWER,
+                image: TruckTableStringEnum.BLOWER_IMG,
+            });
+        }
+
+        if (data?.pto) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.PTO,
+                image: TruckTableStringEnum.PTO_IMG,
+            });
+        }
+
+        if (data?.headacheRack) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.HEADACHE_RACK,
+                image: TruckTableStringEnum.HEADACHE_RACK_IMG,
+            });
+        }
+
+        if (data?.dashCam) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DASH_CAM,
+                image: TruckTableStringEnum.DASH_CAM_IMG,
+            });
+        }
+
+        return tableFeaturesArray;
+    }
     // TODO any type
     private mapTruckData(data: any): void {
         return {
@@ -709,27 +764,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAPUnit: data?.apUnit?.name
                 ? data.apUnit.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableFeatures: `${
-                data?.doubleBunk
-                    ? TableStringEnum.DBUNK
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.refrigerator
-                    ? TableStringEnum.FRIDGE
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.dcInverter
-                    ? TableStringEnum.DCI
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.blower
-                    ? TableStringEnum.BLOWER
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.pto
-                    ? TableStringEnum.PTO
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+            tableFeatures: this.featuresData(data),
             tableTollDeviceTransponder: data?.tollTransponder?.name
                 ? data.tollTransponder.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,

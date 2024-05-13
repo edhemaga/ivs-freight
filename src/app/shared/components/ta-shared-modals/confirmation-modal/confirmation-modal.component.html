@@ -11,7 +11,8 @@
                 : 'Move'
             : editData?.type === 'multiple delete' &&
               editData?.template !== 'repair' &&
-              editData?.template !== 'repair_shop'
+              editData?.template !== 'repair_shop' &&
+              editData?.template !== 'truck'
             ? 'Delete'
             : editData?.template === 'void'
             ? ' Void Registration '
@@ -26,6 +27,12 @@
             ? 'Delete Repair / Order'
             : editData?.template === 'repair_shop'
             ? 'Delete Repair Shop'
+            : editData?.template === 'truck'
+            ? editData?.type === 'deactivate'
+                ? 'Deactivate Truck'
+                : editData?.type === 'activate'
+                ? 'Activate Truck'
+                : 'Delete Truck'
             : ' Confirmation'
     "
     [editName]="
@@ -49,7 +56,15 @@
             : false
     "
     [headerSvg]="
-        editData?.type === 'multiple delete' ? 'delete' : editData?.type
+        editData?.type === 'multiple delete'
+            ? 'delete'
+            : editData?.template === 'truck'
+            ? editData?.type === 'deactivate'
+                ? 'delete'
+                : editData?.type === 'activate'
+                ? 'hire'
+                : editData?.type
+            : editData?.type
     "
     [confirmationData]="editData"
     [isCloseIconRemoved]="true"
@@ -269,6 +284,15 @@
                             <div class="confirmation-info">
                                 <p class="m-0 confirmation-text-1">
                                     Unit {{ editData?.data?.number }}
+                                    <ng-container
+                                        *ngIf="!editData?.data?.status"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
+                                            "
+                                        ></svg-icon>
+                                    </ng-container>
                                 </p>
                                 <p class="m-0 confirmation-text-2">
                                     VIN: {{ editData?.data?.vin }}
@@ -1071,10 +1095,34 @@
                     }"
                 ></svg-icon>
             </ng-container>
-            <ng-container *ngIf="editData?.type !== 'void'">
+            <ng-container
+                *ngIf="
+                    editData?.type !== 'void' &&
+                    editData?.type !== 'deactivate' &&
+                    editData?.type !== 'activate'
+                "
+            >
                 <svg-icon
                     [src]="
                         'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '90',
+                        'height.px': '90'
+                    }"
+                ></svg-icon>
+            </ng-container>
+            <ng-container
+                *ngIf="
+                    editData.type === 'deactivate' ||
+                    editData.type === 'activate'
+                "
+            >
+                <svg-icon
+                    [src]="
+                        editData.type === 'activate'
+                            ? 'assets/svg/common/confirmation/ic_confirmation_modal_button_activate.svg'
+                            : 'assets/svg/common/confirmation/ic_confirmation_modal_button_deactivate.svg'
                     "
                     [svgStyle]="{
                         'width.px': '90',

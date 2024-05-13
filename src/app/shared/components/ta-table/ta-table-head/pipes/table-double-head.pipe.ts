@@ -26,10 +26,34 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === 'NAME  ' ||
                     tableHeadTitle === 'TERM');
 
+            const truckTableColumnsCondition =
+                gridNameTitle === 'Truck' &&
+                (tableHeadTitle === ' NAME' ||
+                    tableHeadTitle === 'Registration Detail ' ||
+                    tableHeadTitle === 'FHWA Inspection ' ||
+                    tableHeadTitle === 'DRIVER' ||
+                    tableHeadTitle === 'GROSS' ||
+                    tableHeadTitle === 'TERM' ||
+                    tableHeadTitle === 'NUMBER  ' ||
+                    tableHeadTitle === ' NUMBER' ||
+                    tableHeadTitle === 'PRICE' ||
+                    tableHeadTitle === 'TYPE ' ||
+                    tableHeadTitle === 'TRANSPONDER' ||
+                    tableHeadTitle === 'FRONT' ||
+                    tableHeadTitle === ' MODEL' ||
+                    tableHeadTitle === 'MODEL ');
+
+            const repairTableColumnsCondition =
+                gridNameTitle === 'Repair' &&
+                (tableHeadTitle === 'NAME   ' ||
+                    tableHeadTitle === 'NUMBER   ' ||
+                    tableHeadTitle === 'DESCRIPTION');
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
-                driverTableColumnsCondition
+                driverTableColumnsCondition ||
+                truckTableColumnsCondition ||
+                repairTableColumnsCondition
             ) {
                 return true;
             }
@@ -57,28 +81,34 @@ export class TableDoubleHeadPipe implements PipeTransform {
 
             const repairTableColumnsCondition =
                 gridNameTitle !== 'Repair' ||
-                !['Unit', 'Item Detail', 'Shop Detail'].includes(
-                    groupName?.trim()
-                );
+                (tableHeadTitle !== 'NAME   ' &&
+                    tableHeadTitle !== 'NUMBER   ' &&
+                    tableHeadTitle !== 'DESCRIPTION');
 
-            const excludedGroupNames = [
-                'Owner Details',
-                'Registration Detail',
-                'FHWA Inspection',
-                'Assigned To',
-                'Purchase Detail',
-                'Title',
-                'Fuel Detail',
-                'Wheel Detail',
-                'Toll Device',
-            ];
+            const truckTableColumnsCondition =
+                gridNameTitle !== 'Truck' ||
+                (tableHeadTitle !== ' NAME' &&
+                    tableHeadTitle !== 'Registration Detail ' &&
+                    tableHeadTitle !== 'FHWA Inspection ' &&
+                    tableHeadTitle !== 'DRIVER' &&
+                    tableHeadTitle !== 'GROSS' &&
+                    tableHeadTitle !== 'TERM' &&
+                    tableHeadTitle !== 'NUMBER  ' &&
+                    tableHeadTitle !== 'PRICE' &&
+                    tableHeadTitle !== ' NUMBER' &&
+                    tableHeadTitle !== 'TYPE ' &&
+                    tableHeadTitle !== 'TRANSPONDER' &&
+                    tableHeadTitle !== 'FRONT' &&
+                    tableHeadTitle !== ' MODEL' &&
+                    tableHeadTitle !== 'MODEL ');
 
             return (
                 contactsTableColumnsCondition &&
                 pmTableColumnsCondition &&
                 driverTableColumnsCondition &&
                 repairTableColumnsCondition &&
-                !excludedGroupNames.includes(groupName?.trim())
+                truckTableColumnsCondition &&
+                repairTableColumnsCondition
             );
         }
     }
