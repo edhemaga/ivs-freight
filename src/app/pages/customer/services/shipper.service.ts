@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 // Models
 import {
@@ -26,6 +26,7 @@ import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shi
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 import { ShipperService as ShipperMainService } from 'appcoretruckassist';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -61,13 +62,13 @@ export class ShipperService implements OnDestroy {
                             this.shipperStore.add(shipper);
                             this.shipperMinimalStore.add(shipper);
                             const brokerShipperCount = JSON.parse(
-                                localStorage.getItem('brokerShipperTableCount')
+                                localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
                             );
 
                             brokerShipperCount.shipper++;
 
                             localStorage.setItem(
-                                'brokerShipperTableCount',
+                                TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
                                 JSON.stringify({
                                     broker: brokerShipperCount.broker,
                                     shipper: brokerShipperCount.shipper,
@@ -196,8 +197,34 @@ export class ShipperService implements OnDestroy {
     }
 
     // Delete Shipper List
-    public deleteShipperList(): Observable<any> {
-        return of(null);
+    public deleteShipperList(ids: number[]): Observable<void> {
+        return this.shipperService.apiShipperListDelete(ids).pipe(
+            tap(() => {
+                let storeShippers = this.shipperMinimalQuery.getAll()
+
+                storeShippers.map((shipper: any) => {
+                    ids.map((d) => {
+                        if (d === shipper.id) {
+                                 this.shipperStore.remove(
+                                      ({ id }) => id === shipper.id
+                                  );
+                        }
+                    });
+                });
+
+                const brokerShipperCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
+                );
+                
+                localStorage.setItem(
+                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
+                    JSON.stringify({
+                        broker: brokerShipperCount.broker,
+                        shipper: brokerShipperCount.shipper - ids.length,
+                    })
+                );
+            })
+        );
     }
 
     // Delete Shipper By Id
@@ -208,13 +235,13 @@ export class ShipperService implements OnDestroy {
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
                 const brokerShipperCount = JSON.parse(
-                    localStorage.getItem('brokerShipperTableCount')
+                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
                 );
 
                 brokerShipperCount.shipper--;
 
                 localStorage.setItem(
-                    'brokerShipperTableCount',
+                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
                     JSON.stringify({
                         broker: brokerShipperCount.broker,
                         shipper: brokerShipperCount.shipper,
@@ -246,13 +273,13 @@ export class ShipperService implements OnDestroy {
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
                 const brokerShipperCount = JSON.parse(
-                    localStorage.getItem('brokerShipperTableCount')
+                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
                 );
 
                 brokerShipperCount.shipper--;
 
                 localStorage.setItem(
-                    'brokerShipperTableCount',
+                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
                     JSON.stringify({
                         broker: brokerShipperCount.broker,
                         shipper: brokerShipperCount.shipper,

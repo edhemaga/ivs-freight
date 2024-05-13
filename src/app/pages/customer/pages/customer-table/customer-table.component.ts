@@ -189,20 +189,60 @@ export class CustomerTableComponent
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.type === TableStringEnum.INFO) {
-                    if (res.subType === TableStringEnum.BAN_LIST) {
-                        this.changeBanStatus(res.data);
-                    } else {
-                        this.changeDnuStatus(res.data);
-                    }
+                switch (res.type) {
+                    case TableStringEnum.INFO:
+                        if (res.subType === TableStringEnum.BAN_LIST) {
+                            this.changeBanStatus(res.data);
+                        } else {
+                            this.changeDnuStatus(res.data);
+                        }
+                        break;
+                    case TableStringEnum.INFO:
+                        if (this.selectedTab === TableStringEnum.ACTIVE) {
+                            this.changeBussinesStatusBroker(res.data);
+                        } else {
+                            this.changeBussinesStatusShipper(res.data);
+                        }
+                        break;
+                    case TableStringEnum.MULTIPLE_DELETE:
+                        if (this.selectedTab === TableStringEnum.INACTIVE)
+                            this.deleteShipperList(res.array);
+                        break;
+                    default:
+                        break;
                 }
-                if (res.template === TableStringEnum.INFO) {
-                    if (this.selectedTab === TableStringEnum.ACTIVE) {
-                        this.changeBussinesStatusBroker(res.data);
-                    } else {
-                        this.changeBussinesStatusShipper(res.data);
-                    }
-                }
+            });
+    }
+
+    private deleteShipperList(ids: number[]): void {
+        this.shipperService
+            .deleteShipperList(ids)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((fuel) => {
+                    ids.map((id) => {
+                        if (fuel.id === id)
+                            fuel.actionAnimation =
+                                TableStringEnum.DELETE_MULTIPLE;
+                    });
+
+                    return fuel;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+                    this.tableData[0].data = this.viewData;
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -440,30 +480,25 @@ export class CustomerTableComponent
                     }
                     // Delete Shipper List
                     else {
-                        let shipperName: TableStringEnum | string =
-                            TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-
-                        this.viewData.map((data: ShipperResponse) => {
-                            response.map((r: ShipperResponse) => {
-                                if (data.id === r.id) {
-                                    if (!shipperName) {
-                                        shipperName = data.businessName;
-                                    } else {
-                                        shipperName =
-                                            shipperName +
-                                            TableStringEnum.COMA +
-                                            data.businessName;
-                                    }
-                                }
-                            });
+                        const mappedRes = response.map((item) => {
+                            return {
+                                id: item.id,
+                                data: {
+                                    ...item.tableData,
+                                },
+                            };
                         });
-
-                        this.shipperService
-                            .deleteShipperList()
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe(() => {
-                                this.multipleDeleteData(response);
-                            });
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.SMALL },
+                            {
+                                data: null,
+                                array: mappedRes,
+                                template: TableStringEnum.SHIPPER,
+                                type: TableStringEnum.MULTIPLE_DELETE,
+                                svg: true,
+                            }
+                        );
                     }
                 }
             });
@@ -553,10 +588,10 @@ export class CustomerTableComponent
                       name: TableStringEnum.CARD,
                       active: this.activeViewMode === TableStringEnum.CARD,
                   },
-                  {
-                      name: TableStringEnum.MAP,
-                      active: this.activeViewMode === TableStringEnum.MAP,
-                  },
+                //   {
+                //       name: TableStringEnum.MAP,
+                //       active: this.activeViewMode === TableStringEnum.MAP,
+                //   }, this is not going into this sprint
               ];
     }
 
@@ -1189,7 +1224,13 @@ export class CustomerTableComponent
                 ConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
                 {
+                    ...event,
+                    template:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.BROKER
+                            : TableStringEnum.SHIPPER,
                     type: TableStringEnum.DELETE,
+                    svg: true,
                 }
             );
             if (this.selectedTab === TableStringEnum.ACTIVE) {
