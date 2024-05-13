@@ -1,0 +1,67 @@
+<div class="table-container">
+    <app-ta-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+        [activeViewMode]="activeViewMode"
+    ></app-ta-table-toolbar>
+    <ng-container *ngIf="activeViewMode === 'List'">
+        <app-ta-table-head
+            [options]="tableOptions"
+            [viewData]="viewData"
+            [columns]="columns"
+            [tableData]="tableData"
+            (headActions)="onTableHeadActions($event)"
+        ></app-ta-table-head>
+
+        <app-ta-table-body
+            [viewData]="viewData"
+            [columns]="columns"
+            [options]="tableOptions"
+            [selectedTab]="selectedTab"
+            (bodyActions)="onTableBodyActions($event)"
+            [tableData]="tableData"
+        ></app-ta-table-body>
+    </ng-container>
+    <!-- Cards -->
+
+    <ng-container *ngIf="activeViewMode === 'Card'">
+        <div class="elements">
+            <app-load-card
+                [viewData]="viewData"
+                [rows]="rows"
+                [cardTitle]="cardTitle"
+                [cardTitleLink]="cardTitleLink"
+                [displayRowsFront]="sendDataToCardsFront"
+                [displayRowsBack]="sendDataToCardsBack"
+                [selectedTab]="selectedTab"
+            ></app-load-card>
+
+            <!-- Show More -->
+
+            <ng-container *ngIf="viewData.length">
+                <div
+                    class="show-more-container d-flex align-items-center justify-content-between"
+                    [ngStyle]="{ 'width.px': tableWidth }"
+                >
+                    <div class="showing ta-font-semi-bold">
+                        {{ viewData.length }} OF
+                        {{ activeTableData.length }}
+                    </div>
+                    <ng-container
+                        *ngIf="viewData.length < activeTableData.length"
+                    >
+                        <div
+                            class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
+                            (click)="onShowMore()"
+                        >
+                            SHOW MORE
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

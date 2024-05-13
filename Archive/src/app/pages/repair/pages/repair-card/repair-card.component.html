@@ -1,0 +1,471 @@
+<div class="cards-container">
+    <ng-container
+        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+    >
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div
+                class="card-body d-flex justify-content-between"
+                [ngClass]="{
+                    'body-active':
+                        isCardFlippedCheckInCards.includes(i) ||
+                        isAllCardsFlipp,
+                    'body-checked': card.isSelected
+                }"
+            >
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                [mainTooltip]="
+                                    !card.isSelected ? 'Select' : 'Clear'
+                                "
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                customClass="mt-1"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
+                        </div>
+                        <!-- Card Title -->
+
+                        <div class="name d-flex ta-font-bold">
+                            <div
+                                class="finish-order-holder d-flex justify-content-between"
+                            >
+                                <span class="title">
+                                    <span
+                                        type="button"
+                                        ngbTooltip
+                                        mainTooltip="View Detail"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
+                                        customClass="mt-1"
+                                    >
+                                        <ng-container
+                                            *ngFor="let title of titleArray"
+                                        >
+                                            <span class="title-tooltip">
+                                                {{ title[i] }}
+                                            </span>
+                                        </ng-container>
+                                    </span></span
+                                >
+
+                                <ng-container *ngIf="card.isRepairOrder">
+                                    <span
+                                        class="finish-order-action ta-font-bold d-flex align-items-center"
+                                        (click)="onFinishOrder(card)"
+                                    >
+                                        Finish Order
+                                    </span>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card body front-->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                !isCardFlippedCheckInCards.includes(i) &&
+                                !isAllCardsFlipp
+                        }"
+                    >
+                        <!-- Card body item -->
+
+                        <ng-container
+                            *ngFor="
+                                let rowsFront of cardsFront;
+                                trackBy: trackCard
+                            "
+                        >
+                            <ng-container *ngFor="let row of rowsFront[i]">
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div
+                                            class="top-item-body d-flex align-items-center"
+                                        >
+                                            {{ row.title }}
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        #parentElement
+                                        class="bottom-item-body d-flex align-items-center"
+                                    >
+                                        <ng-container
+                                            *ngIf="row.title === 'Item'"
+                                        >
+                                            <div
+                                                class="items-container-body d-flex align-items-center"
+                                            >
+                                                <span
+                                                    class="checkbox-tooltip d-flex"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    mainTooltip="View Items"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                    customClass="mt-2"
+                                                >
+                                                    <div
+                                                        (click)="
+                                                            onShowDescriptionDropdown(
+                                                                description,
+                                                                card
+                                                            )
+                                                        "
+                                                        #description="ngbPopover"
+                                                        class="description-container d-flex align-items-center"
+                                                        [ngbPopover]="
+                                                            descriptionCardsPopover
+                                                        "
+                                                        container="body"
+                                                        [placement]="
+                                                            'bottom-left'
+                                                        "
+                                                        popoverClass="table-description-popover"
+                                                        [style.width.px]="
+                                                            elementWidth
+                                                        "
+                                                        triggers="manual"
+                                                    ></div>
+                                                    <div
+                                                        #itemsRepair
+                                                        class="items-container"
+                                                        [innerHTML]="
+                                                            itemsForRepair[i]
+                                                        "
+                                                    ></div>
+                                                </span>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- If finished or not -->
+                                        <ng-container
+                                            *ngIf="row.title === 'Repair Shop'"
+                                        >
+                                            <ng-container
+                                                *ngIf="card.isRepairOrder"
+                                            >
+                                                {{ card?.repairShop?.name }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="!card.isRepairOrder"
+                                            >
+                                                {{
+                                                    card?.tabelDescriptionDropTotal
+                                                }}
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- Repair Shop -->
+                                        <ng-container
+                                            *ngIf="row.title === 'Services'"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let item of card.serviceTypes
+                                                "
+                                            >
+                                                <svg-icon
+                                                    class="service-svg"
+                                                    [src]="
+                                                        '/assets/svg/common/repair-services/' +
+                                                        item.logoName
+                                                    "
+                                                    [ngClass]="{
+                                                        'active-svg':
+                                                            item.active
+                                                    }"
+                                                ></svg-icon>
+                                            </ng-container>
+                                        </ng-container>
+
+                                        <!-- Rest of body items -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                row.title !== 'Item' &&
+                                                row.title !== 'Repair Shop' &&
+                                                row.title !== 'Services'
+                                            "
+                                        >
+                                            {{ row.key }}
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <!-- Card body Back -->
+
+                    <div
+                        class="flipped"
+                        [ngClass]="{
+                            'card-body-content':
+                                isCardFlippedCheckInCards.includes(i) ||
+                                isAllCardsFlipp
+                        }"
+                    >
+                        <!-- First item in back of the card -->
+
+                        <ng-container
+                            *ngFor="
+                                let rowsBack of cardsBack;
+                                trackBy: trackCard
+                            "
+                        >
+                            <ng-container *ngFor="let row of rowsBack[i]">
+                                <div class="one-row">
+                                    <div class="item-body">
+                                        <div
+                                            class="top-item-body d-flex align-items-center"
+                                        >
+                                            {{ row.title }}
+                                        </div>
+
+                                        <div
+                                            class="bottom-item-body d-flex align-items-center gap"
+                                        >
+                                            <!-- Odometer -->
+                                            <ng-container
+                                                *ngIf="row.title === 'Odometer'"
+                                            >
+                                                {{ row.key }}
+                                                <span class="muted">mi</span>
+                                            </ng-container>
+
+                                            <!-- Rest of items in repair page body -->
+                                            <ng-container
+                                                *ngIf="row.title !== 'Odometer'"
+                                            >
+                                                {{ row.key }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    row.title ===
+                                                    'Rating & Review'
+                                                "
+                                            >
+                                                <div
+                                                    class="rating-holder d-flex"
+                                                >
+                                                    <span
+                                                        class="rating ta-font-semi-bold d-flex align-items-center"
+                                                    >
+                                                        <svg-icon
+                                                            class="svg-like"
+                                                            [src]="
+                                                                'assets/svg/common/ic_like.svg'
+                                                            "
+                                                        ></svg-icon>
+                                                        <span>
+                                                            {{ row.key }}
+                                                        </span>
+                                                    </span>
+                                                    <span
+                                                        class="rating ta-font-semi-bold d-flex align-items-center"
+                                                    >
+                                                        <svg-icon
+                                                            class="svg-dislike"
+                                                            [src]="
+                                                                'assets/svg/common/ic_dislike.svg'
+                                                            "
+                                                        ></svg-icon>
+                                                        <span>
+                                                            {{ row.secondKey }}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Open dropdown element-->
+
+                        <app-ta-table-card-dropdown-actions
+                            [card]="card"
+                        ></app-ta-table-card-dropdown-actions>
+
+                        <!-- Note element -->
+
+                        <div
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                        >
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
+                        </div>
+
+                        <!-- Expand element -->
+
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Expand Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards.includes(i) ||
+                                        isAllCardsFlipp,
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards.includes(i)
+                                }"
+                                customClass="mt-2"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+<!-- Description-->
+<ng-template #descriptionCardsPopover let-data="data">
+    <div class="card-dropdown-container" [style.width.px]="elementWidth">
+        <div class="description-titles d-flex align-items-center">
+            <div
+                class="number-title ta-font-bold d-flex align-items-center justify-content-center"
+            >
+                #
+            </div>
+            <div class="dropdown-titles d-flex justify-content-between">
+                <ng-container *ngIf="data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESCRIPTION
+                    </p>
+                    <p
+                        class="dropdown-right m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        QTY
+                    </p>
+                </ng-container>
+                <ng-container *ngIf="!data.isRepairOrder">
+                    <p
+                        class="dropdown-left m-0 ta-font-bold d-flex align-items-center"
+                    >
+                        DESC • QTY • PRICE
+                    </p>
+                    <div class="dropdown-right">
+                        <p class="price-total-title ta-font-semi-bold m-0">
+                            {{ data.tabelDescriptionDropTotal }}
+                        </p>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="description-items">
+            <div class="description-item d-flex flex-column">
+                <ng-container
+                    *ngFor="
+                        let item of data.descriptionItems;
+                        let i = index;
+                        trackBy: trackCard
+                    "
+                >
+                    <div class="d-flex align-items-center item-description">
+                        <div
+                            class="item-index d-flex justify-content-center align-items-center"
+                        >
+                            {{ i + 1 }}
+                        </div>
+                        <ng-container *ngIf="item.pmDescription">
+                            <div class="pm-item">
+                                <svg-icon
+                                    [src]="
+                                        'assets/svg/common/repair-pm/' +
+                                        item.pmDescription.logoName
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '20',
+                                        'height.px': '20'
+                                    }"
+                                ></svg-icon>
+                            </div>
+                        </ng-container>
+                        <div
+                            class="items-holder d-flex justify-content-between"
+                        >
+                            <div class="left-description">
+                                <div class="item-title ta-font-medium">
+                                    {{ item.description }}
+                                </div>
+                                <div class="items-number-items-cost d-flex">
+                                    <div
+                                        class="number-of-items ta-font-regular"
+                                    >
+                                        {{ item.quantity }} X
+                                        {{ item.descriptionPrice }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="item-total-cost d-flex align-items-center"
+                                [ngClass]="{
+                                    'pm-style': item.pmDescription
+                                }"
+                            >
+                                {{ item.descriptionTotalPrice }}
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>

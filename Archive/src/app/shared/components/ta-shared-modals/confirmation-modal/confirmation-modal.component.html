@@ -1,0 +1,721 @@
+<app-ta-modal
+    [modalTitle]="
+        editData.cdlStatus
+            ? editData.cdlStatus.concat(' ', 'CDL')
+            : editData?.type === 'info'
+            ? editData?.subType === 'archive'
+                ? editData?.subType?.substring(0, 1).toUpperCase() +
+                  editData?.subType?.substring(1)
+                : 'Move'
+            : editData?.type === 'multiple delete'
+            ? 'Delete'
+            : editData?.template === 'void'
+            ? ' Void Registration '
+            : editData?.type?.substring(0, 1).toUpperCase() +
+                  editData?.type?.substring(1) +
+                  editData?.template ===
+              'fuel stop'
+            ? ' Fuel Stop'
+            : editData?.template === ' contact'
+            ? 'Contact'
+            : ' Confirmation'
+    "
+    [editName]="
+        editData.cdlStatus
+            ? editData.data.data?.firstName?.concat(
+                  ' ',
+                  editData.data.data?.lastName
+              )
+            : ''
+    "
+    [specificCaseModalName]="editData.modalHeader"
+    [customClass]="'modal-container-XS'"
+    [bottomDivider]="true"
+    [showCounter]="true"
+    [disableDelete]="
+        editData?.array?.length
+            ? editData?.array?.length && !selectedCdl?.id
+                ? true
+                : false
+            : false
+    "
+    [headerSvg]="
+        editData?.type === 'multiple delete' ? 'delete' : editData?.type
+    "
+    [confirmationData]="editData"
+    [isCloseIconRemoved]="true"
+    (confirmationAction)="onModalAction($event)"
+>
+    <div
+        origin
+        class="d-flex flex-column justify-content-center confirmation-modal"
+    >
+        <!-- Renew CDL -->
+        <div class="confirmation-header">
+            <p
+                *ngIf="
+                    editData.subType === 'cdl void' &&
+                    editData?.type === 'info' &&
+                    editData.template === 'cdl'
+                "
+                class="m-0 ta-font-medium"
+            >
+                <span class="ta-font-bold">{{
+                    editData.data.data?.firstName?.concat(
+                        ' ',
+                        editData.data.data?.lastName
+                    )
+                }}</span>
+                has active CDL. <br />
+                You need to void current CDL first.
+            </p>
+        </div>
+
+        <!---------------------------------------------- Confirmation Body For Single ---------------------------------------------->
+        <div
+            *ngIf="editData.data"
+            class="d-flex align-items-center confirmation-body"
+        >
+            <!-- Svg -->
+            <svg-icon
+                class="confirmation-svg"
+                *ngIf="editData?.svg && editData?.data?.avatar"
+                [src]="editData?.data?.avatar"
+            ></svg-icon>
+            <!-- Image -->
+            <img
+                *ngIf="editData?.image && editData?.data?.avatar"
+                [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
+                [alt]="editData?.data?.name?.substring(0, 1)"
+                class="confirmation-img"
+            />
+            <!-- Initial name, if avatar not upload -->
+            <div
+                *ngIf="editData?.image && !editData?.data?.avatar"
+                class="no-profile-image"
+            >
+                <app-ta-profile-images
+                    [indx]="0"
+                    [size]="'confirmation'"
+                    [name]="editData?.data?.name"
+                >
+                </app-ta-profile-images>
+            </div>
+            <!---------------------------------------------- Different templates for body --------------------------------------------->
+
+            <!-- Fuel -->
+
+            <ng-container *ngIf="['fuel stop'].includes(editData?.template)">
+                <div
+                    class="d-flex flex-column justify-content-center confirmation-body-content"
+                >
+                    <p class="m-0 ta-font-bold text-1">
+                        {{ editData.data.businessName }}
+                        {{
+                            editData.data.store
+                                ? '- ' + editData.data.store
+                                : ''
+                        }}
+                    </p>
+
+                    <p class="m-0 ta-font-medium text-2">
+                        {{ editData.data.address.state }},
+                        {{ editData.data.address.stateShortName }}
+                    </p>
+                </div>
+            </ng-container>
+
+            <!-- Contact -->
+
+            <ng-container *ngIf="['contact'].includes(editData?.template)">
+                <div
+                    class="d-flex flex-column justify-content-center confirmation-body-content"
+                >
+                    <div class="d-flex align-items-center">
+                        <ng-container *ngIf="editData.data.avatarImg">
+                            <img
+                                class="avatar-img"
+                                [src]="editData.data.avatarImg"
+                                alt="avatar"
+                            />
+                        </ng-container>
+
+                        <ng-container *ngIf="!editData.data.avatarImg">
+                            <div
+                                class="d-flex justify-content-center align-items-center avatar-div-img"
+                                [ngStyle]="{
+                                    background:
+                                        editData.data.avatarColor.background,
+                                    color: editData.data.avatarColor.color
+                                }"
+                            >
+                                {{
+                                    editData.data.name.slice(0, 1).toUpperCase()
+                                }}
+                            </div>
+                        </ng-container>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="m-0 ta-font-bold text-1">
+                                {{ editData.data.name }}
+                            </p>
+
+                            <p class="m-0 ta-font-medium text-2">
+                                {{ editData.data.phone }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Driver, Owner -->
+
+            <ng-container
+                *ngIf="['driver', 'owner'].includes(editData?.template)"
+            >
+                <div class="confirmation-info">
+                    <p class="m-0 confirmation-text-1 large-text-1">
+                        {{ editData?.data?.name }}
+                        <ng-container *ngIf="!editData?.data?.status">
+                            <span class="inactive-icon-holder">
+                                <svg-icon
+                                    src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                ></svg-icon>
+                            </span>
+                        </ng-container>
+                    </p>
+                    <ng-container
+                        *ngIf="['driver'].includes(editData?.template)"
+                    >
+                        <p class="m-0 confirmation-text-2 large-text-2">
+                            {{ editData?.dateOfBirth | formatDateP }}
+                        </p>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="['owner'].includes(editData?.template)"
+                    >
+                        <p class="m-0 confirmation-text-2 large-text-2">
+                            {{ editData?.data?.address }}
+                        </p>
+                    </ng-container>
+                </div>
+            </ng-container>
+
+            <!-- Account/User -->
+            <ng-container *ngIf="['user'].includes(editData?.template)">
+                <div class="confirmation-info">
+                    <p class="m-0 confirmation-text-1 large-text-1">
+                        {{ editData?.data?.name }}
+                    </p>
+                    <p class="m-0 confirmation-text-2 large-text-2">
+                        {{ editData?.data?.username }}
+                    </p>
+                </div>
+            </ng-container>
+
+            <!-- Truck, Trailer -->
+
+            <div
+                *ngIf="['truck', 'trailer'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="m-0 confirmation-text-1">
+                    Unit {{ editData?.data?.number }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    VIN: {{ editData?.data?.vin }}
+                </p>
+            </div>
+
+            <!-- Shipper, Repair Shop -->
+
+            <div
+                *ngIf="
+                    [
+                        'shipper',
+                        'repair shop',
+                        'Company Parking',
+                        'Company Office',
+                        'Company Repair Shop',
+                        'Company Terminal'
+                    ].includes(editData?.template)
+                "
+                class="confirmation-info"
+            >
+                <p class="m-0 confirmation-text-1">
+                    {{ editData?.data?.name }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    Address: {{ editData?.data?.address?.address }}
+                </p>
+            </div>
+
+            <!-- Broker -->
+            <div
+                *ngIf="['broker'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="m-0 confirmation-text-1">
+                    {{ editData?.data?.businessName }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    Phone: {{ editData?.data?.phone }}
+                </p>
+            </div>
+
+            <ng-container *ngIf="editData?.subTypeStatus === 'business'">
+                <div class="confirmation-info">
+                    <p class="m-0 confirmation-text-1 large-text-1">
+                        {{ editData?.data?.businessName }}
+                    </p>
+                    <p class="m-0 confirmation-text-2 large-text-2">
+                        {{
+                            editData?.data.mainAddress
+                                ? editData?.data.mainAddress.address
+                                : editData?.data?.address?.address
+                        }}
+                    </p>
+                </div>
+            </ng-container>
+
+            <!-- void -->
+            <ng-container *ngIf="['void'].includes(editData?.template)">
+                <div
+                    class="confirmation-info d-flex flex-column justify-content-center"
+                >
+                    <div class="d-flex flex-row justify-content-left">
+                        <img
+                            class="avatar-img"
+                            src="/assets/svg/void.svg"
+                            alt="avatar"
+                        />
+                        <div>
+                            <p
+                                class="m-0 confirmation-text-1 d-flex align-items-center"
+                            >
+                                {{ editData?.data.state?.stateShortName }}
+                                {{ editData?.data.licensePlate }}
+                            </p>
+                            <p class="m-0 confirmation-text-2">
+                                {{ editData?.data.expDate | formatDateP }}
+                            </p>
+                        </div>
+                    </div>
+                    <!-- CDL dropdown slecet if Cdl array is sent -->
+                    <div *ngIf="editData?.array?.length > 0">
+                        <div class="col-12 void-holder" [formGroup]="cdlForm">
+                            <app-ta-input-dropdown
+                                formControlName="cdlId"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'New Active Registration',
+                                    isRequired: true,
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-264'
+                                }"
+                                [options]="editData?.array"
+                                (selectedItem)="onSelectDropdown($event, 'cdl')"
+                            ></app-ta-input-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- CDL -->
+
+            <div
+                *ngIf="['cdl'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="m-0 confirmation-text-1 d-flex align-items-center">
+                    <span class="confirmation-state">{{
+                        editData?.data?.state
+                    }}</span>
+                    {{ editData?.data?.cdlNumber }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    Expires: {{ editData?.data.expDate | formatDateP }}
+                </p>
+                <!-- CDL dropdown slecet if Cdl array is sent -->
+                <div *ngIf="editData?.cdlsArray?.length > 0">
+                    <div class="col-6 cdl-holder" [formGroup]="cdlForm">
+                        <app-ta-input-dropdown
+                            formControlName="cdlId"
+                            [inputConfig]="{
+                                name: 'Input Dropdown',
+                                type: 'text',
+                                label: 'CDL',
+                                isRequired: true,
+                                isDropdown: true,
+                                isDisabled: cdls?.length === 1,
+                                dropdownWidthClass: 'w-col-228'
+                            }"
+                            [options]="editData?.cdlsArray"
+                            [activeItem]="selectedCdl"
+                            (selectedItem)="onSelectDropdown($event, 'cdl')"
+                        ></app-ta-input-dropdown>
+                    </div>
+                </div>
+
+                <div
+                    *ngIf="editData.subType === 'cdl void'"
+                    class="confirmation-text-3 cdl-void-message"
+                >
+                    This action can be undone by voiding or deleting active CDL
+                    and activate or renew old one.
+                </div>
+            </div>
+
+            <!-- Medical, Mvr, Test -->
+
+            <div
+                *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p
+                    class="m-0 confirmation-text-1"
+                    *ngIf="editData?.template === 'test'"
+                >
+                    {{ editData?.data?.testTypeName }} Test ({{
+                        editData?.data?.reasonName
+                    }})
+                </p>
+                <p
+                    class="m-0 confirmation-text-1"
+                    *ngIf="editData?.template === 'medical'"
+                >
+                    Issued: {{ editData?.data?.issueDate | formatDateP }}
+                </p>
+                <p
+                    class="m-0 confirmation-text-1"
+                    *ngIf="editData?.template === 'mvr'"
+                >
+                    CDL: {{ editData?.data.cdlNumber }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    {{
+                        editData?.template === 'test' ||
+                        editData?.template === 'mvr'
+                            ? 'Issued'
+                            : 'Expires'
+                    }}:
+                    <span *ngIf="editData?.template === 'test'">{{
+                        editData?.data.testingDate | formatDateP
+                    }}</span>
+                    <span *ngIf="editData?.template === 'medical'">{{
+                        editData?.data.expDate | formatDateP
+                    }}</span>
+                    <span *ngIf="editData?.template === 'mvr'">{{
+                        editData?.data.issueDate | formatDateP
+                    }}</span>
+                </p>
+            </div>
+
+            <!-- Route -->
+
+            <div
+                *ngIf="['route'].includes(editData?.template)"
+                class="confirmation-info"
+            >
+                <p class="m-0 confirmation-text-1">
+                    {{ editData?.data?.name }}
+                </p>
+                <p class="m-0 confirmation-text-2">
+                    {{ editData?.data?.routeType }}
+                </p>
+            </div>
+        </div>
+
+        <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
+        <div
+            *ngIf="editData.array?.length"
+            class="d-flex flex-column justify-content-center confirmation-array-body"
+        >
+            <div
+                *ngFor="
+                    let item of editData.array;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+                class="d-flex align-items-center confirmation-body confirmation-body-content"
+            >
+                <!-- Svg -->
+                <svg-icon
+                    class="confirmation-svg"
+                    *ngIf="editData?.svg && item?.data?.avatar"
+                    [src]="item?.data?.avatar"
+                ></svg-icon>
+                <!-- Image -->
+                <img
+                    *ngIf="editData?.image && item?.data?.avatar"
+                    [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
+                    [alt]="item?.data?.name?.substring(0, 1)"
+                    class="confirmation-img"
+                />
+                <!-- Initial name, if avatar not upload -->
+                <div
+                    *ngIf="editData?.image && !item?.data?.avatar"
+                    class="no-profile-image"
+                >
+                    <app-ta-profile-images
+                        [indx]="0"
+                        [size]="'confirmation'"
+                        [name]="item?.data?.name"
+                    >
+                    </app-ta-profile-images>
+                </div>
+                <!---------------------------------------------- Different templates for body --------------------------------------------->
+
+                <!-- Contact -->
+
+                <ng-container *ngIf="['contact'].includes(editData?.template)">
+                    <div
+                        class="d-flex align-items-center"
+                        [ngClass]="{
+                            'mb-2': i !== editData.array.length - 1
+                        }"
+                    >
+                        <ng-container *ngIf="item.data.avatarImg">
+                            <img
+                                class="avatar-img"
+                                [src]="item.data.avatarImg"
+                                alt="avatar"
+                            />
+                        </ng-container>
+
+                        <ng-container *ngIf="!item.data.avatarImg">
+                            <div
+                                class="d-flex justify-content-center align-items-center avatar-div-img"
+                                [ngStyle]="{
+                                    background:
+                                        item.data.avatarColor.background,
+                                    color: item.data.avatarColor.color
+                                }"
+                            >
+                                {{ item.data.name.slice(0, 1).toUpperCase() }}
+                            </div>
+                        </ng-container>
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <p class="m-0 ta-font-bold text-1">
+                                {{ item.data.name }}
+                            </p>
+
+                            <p class="m-0 ta-font-medium text-2">
+                                {{ item.data.phone }}
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- Driver, Owner -->
+
+                <ng-container
+                    *ngIf="['driver', 'owner'].includes(editData?.template)"
+                >
+                    <div class="confirmation-info">
+                        <p class="m-0 confirmation-text-1 large-text-1">
+                            {{ item?.data?.name }}
+
+                            <ng-container *ngIf="!editData?.data?.status">
+                                <span class="inactive-icon-holder">
+                                    <svg-icon
+                                        src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                    ></svg-icon>
+                                </span>
+                            </ng-container>
+                        </p>
+                        <ng-container
+                            *ngIf="['driver'].includes(editData?.template)"
+                        >
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.dateOfBirth | formatDateP }}
+                            </p>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="['owner'].includes(editData?.template)"
+                        >
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.address }}
+                            </p>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <!-- Account/User -->
+                <ng-container *ngIf="['user'].includes(editData?.template)">
+                    <div class="confirmation-info">
+                        <p class="m-0 confirmation-text-1 large-text-1">
+                            {{ item?.data?.name }}
+                        </p>
+                        <ng-container>
+                            <p class="m-0 confirmation-text-2 large-text-2">
+                                {{ item?.data?.username }}
+                            </p>
+                        </ng-container>
+                    </div>
+                </ng-container>
+
+                <!-- Truck, Trailer -->
+                <div
+                    *ngIf="['truck', 'trailer'].includes(editData?.template)"
+                    class="confirmation-info"
+                >
+                    <p class="m-0 confirmation-text-1">
+                        Unit {{ item?.data?.number }}
+                    </p>
+                    <p class="m-0 confirmation-text-2">
+                        VIN: {{ item?.data?.vin }}
+                    </p>
+                </div>
+                <ng-container
+                    *ngIf="['fuel transaction'].includes(editData?.template)"
+                >
+                    <div class="confirmation-info">
+                        <p class="m-0 confirmation-text-1">
+                            Unit {{ item?.data?.tableTruckNumber }} - ${{
+                                item?.data.total
+                            }}
+                        </p>
+                        <div class="confirmation-text-holder d-flex">
+                            <p class="m-0 confirmation-text-2">
+                                {{ item?.data?.date }}
+                            </p>
+                            <p class="m-0 confirmation-text-2">
+                                {{ item?.data?.time }}
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+                <!-- Shipper, Repair Shop -->
+                <div
+                    *ngIf="
+                        ['shipper', 'repair shop', 'parking'].includes(
+                            editData?.template
+                        )
+                    "
+                    class="confirmation-info"
+                >
+                    <p class="m-0 confirmation-text-1">
+                        {{ item?.data?.name }}
+                    </p>
+                    <p class="m-0 confirmation-text-2">
+                        Address: {{ item?.data?.address?.address }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating Header -->
+
+        <ng-container *ngIf="editData.rating && editData?.type === 'delete'">
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to delete rating for this
+                    {{ editData?.template }}?
+                </p>
+            </div>
+        </ng-container>
+
+        <!-- Info Header -->
+
+        <ng-container
+            *ngIf="editData.subTypeStatus && editData?.type === 'info'"
+        >
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to {{ editData?.subTypeStatus }} this
+                    {{ editData?.template }}
+                    {{ editData?.subTypeStatus === 'move' ? 'to' : 'from' }}
+                    {{
+                        editData?.subType === 'archive'
+                            ? 'archive'
+                            : editData?.subType === 'dnu'
+                            ? 'do not use list'
+                            : editData?.subType === 'favorite'
+                            ? 'favorite list'
+                            : 'ban list'
+                    }}?
+                </p>
+            </div>
+        </ng-container>
+
+        <!-- Business Header -->
+
+        <ng-container
+            *ngIf="editData.type && editData?.subTypeStatus === 'business'"
+        >
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to {{ editData?.type }} selected
+                    {{ editData?.subType }}?
+                </p>
+            </div>
+        </ng-container>
+
+        <!-- Normal Header -->
+        <ng-container *ngIf="editData.type === 'void'">
+            <div class="confirmation-header">
+                <p class="m-0 ta-font-medium">
+                    Are you sure you want to
+                    {{ editData.type }}
+                    selected registration
+                </p>
+            </div>
+        </ng-container>
+        <div
+            *ngIf="
+                !editData.rating &&
+                !editData.subTypeStatus &&
+                editData.subType !== 'cdl void' &&
+                editData.type !== 'void'
+            "
+            class="confirmation-header"
+        >
+            <p class="m-0 ta-font-medium">
+                Are you sure you want to
+                {{
+                    editData?.type === 'info'
+                        ? editData?.subType
+                        : editData?.type === 'multiple delete'
+                        ? 'delete' + ' ' + 'selected'
+                        : editData.type
+                }}
+                {{ editData?.type === 'multiple delete' ? null : 'selected' }}
+                {{
+                    editData?.type === 'multiple delete'
+                        ? editData?.template + 's'
+                        : editData?.template
+                }}?
+            </p>
+        </div>
+
+        <!-- Icon -->
+
+        <div class="confirmation-icon">
+            <ng-container *ngIf="editData?.type === 'void'">
+                <svg-icon
+                    [src]="
+                        'assets/svg/common/confirmation/ic_confirmation_print.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '90',
+                        'height.px': '90'
+                    }"
+                ></svg-icon>
+            </ng-container>
+            <ng-container *ngIf="editData?.type !== 'void'">
+                <svg-icon
+                    [src]="
+                        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
+                    "
+                    [svgStyle]="{
+                        'width.px': '90',
+                        'height.px': '90'
+                    }"
+                ></svg-icon>
+            </ng-container>
+        </div>
+    </div>
+</app-ta-modal>

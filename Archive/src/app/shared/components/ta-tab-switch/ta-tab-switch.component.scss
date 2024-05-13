@@ -1,0 +1,278 @@
+@import '/src/theme/variables.scss';
+$tab-colors: '26A690', 'EF5350', '3074D3';
+
+.tab-switch-holder {
+    position: relative;
+    width: 100%;
+    height: 32px;
+    border-radius: 3px;
+    background-color: #fff;
+    padding: 4px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    user-select: none;
+    line-height: 32px;
+
+    &.dashboard-height {
+        height: 38px;
+    }
+
+    .tab-switch-items-holder {
+        .tab-switch-text {
+            pointer-events: none;
+
+            .tab-counter {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                height: 14px;
+                width: 14px;
+                margin-left: 4px;
+
+                background-color: #aaaaaa;
+                border-radius: 100%;
+
+                .counter-number {
+                    font-size: 11px;
+                    color: #424242;
+                }
+            }
+        }
+    }
+
+    &.dark {
+        .tab-switch-items-holder {
+            .tab-switch-text {
+                .tab-switch-name {
+                    text-transform: uppercase !important;
+                    font-weight: 700;
+                    font-size: 11px;
+                    line-height: 13px;
+                }
+            }
+        }
+    }
+
+    .tab-switch-items-holder {
+        position: relative;
+        flex: 1 auto;
+        height: 32px;
+        padding: 3px 8px;
+        box-sizing: border-box;
+        border-radius: 2px;
+        background-color: #eeeeee00;
+        font-size: 14px;
+        font-weight: 800;
+        color: #b7b7b7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        cursor: pointer;
+
+        &.active {
+            color: #424242;
+
+            .tab-switch-text {
+                .tab-counter {
+                    background-color: #ffffff !important;
+
+                    .counter-number {
+                        color: #424242 !important;
+                    }
+                }
+            }
+        }
+
+        &:hover:not(.active) {
+            color: #919191;
+
+            .tab-switch-text {
+                .tab-counter {
+                    background-color: #919191 !important;
+                }
+            }
+        }
+
+        &.disabled {
+            pointer-events: none !important;
+
+            .tab-switch-text {
+                .tab-switch-name {
+                    color: #aaaaaa33;
+                }
+            }
+        }
+    }
+
+    .slide-active-holder {
+        position: absolute;
+        background-color: #eeeeee;
+        color: #fff;
+        border-radius: 2px;
+        height: calc(100% - 8px);
+        transition: all 0.25s ease-out;
+        pointer-events: none;
+
+        &.dark {
+            background-color: #424242;
+        }
+    }
+
+    &.type1-modal-popup {
+        margin-top: 12px;
+        height: 34px;
+        background-color: #eeeeee;
+        line-height: 34px;
+        padding: 4px;
+
+        .tab-switch-items-holder {
+            height: 30px;
+            font-weight: 700;
+
+            &.active {
+                color: #3b73ed !important;
+            }
+
+            &:hover:not(.active) {
+                color: #6c6c6c;
+            }
+        }
+
+        .slide-active-holder {
+            background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1a;
+            height: calc(100% - 8px);
+        }
+    }
+
+    &.type2-modal-popup {
+        height: 26px;
+        background-color: #eeeeee;
+        line-height: 26px;
+        padding: 4px;
+
+        .tab-switch-text {
+            .tab-switch-name {
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        }
+
+        .tab-switch-items-holder {
+            height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+
+            &.active {
+                color: #3b73ed !important;
+            }
+
+            &:hover:not(.active) {
+                color: #6c6c6c;
+            }
+        }
+
+        .slide-active-holder {
+            background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1a;
+            height: calc(100% - 8px);
+        }
+
+        &-header {
+            margin-top: 12px;
+        }
+    }
+
+    &.type3-modal-popup {
+        height: 26px;
+        background-color: #f7f7f7;
+        line-height: 26px;
+        padding: 2px;
+
+        .tab-switch-items-holder {
+            height: 26px;
+            font-size: 16px;
+            font-weight: 800;
+
+            &.active {
+                color: #3b73ed !important;
+            }
+
+            &:hover:not(.active) {
+                background-color: #f3f3f3;
+                color: #6c6c6c;
+            }
+        }
+
+        .slide-active-holder {
+            background-color: #fff;
+            box-shadow: 0 0 2px #ffffff1a;
+            height: calc(100% - 4px);
+        }
+    }
+
+    &.dark {
+        background-color: #1d1d1d;
+        border-radius: 2px;
+
+        .tab-switch-items-holder {
+            color: #aaaaaa;
+
+            &.active {
+                color: #ffffff;
+            }
+        }
+    }
+}
+
+.custom-popover-holder {
+    width: 300px;
+    margin-top: -4px;
+}
+
+.rating-review {
+    width: 252px;
+    height: 26px;
+    background: $ta-black-3;
+    border-radius: 1px;
+
+    .tab-switch-items-holder {
+        width: 33.33%;
+
+        .tab-switch-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: $muted;
+        }
+    }
+
+    .slide-active-holder {
+        background: $ta-black;
+        border-radius: 1px;
+    }
+
+    .tab-switch-items-holder.active {
+        .tab-switch-name {
+            color: $white;
+        }
+    }
+}
+
+@each $col in $tab-colors {
+    .tab-switch-#{$col}.active {
+        .tab-switch-text {
+            .tab-switch-name {
+                color: unquote('#' + $col) !important;
+            }
+
+            .tab-counter {
+                background-color: unquote('#' + $col) !important;
+            }
+        }
+    }
+}

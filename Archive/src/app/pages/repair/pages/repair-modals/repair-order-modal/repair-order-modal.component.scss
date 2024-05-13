@@ -1,0 +1,65 @@
+@import 'src/theme/variables.scss';
+
+.item-total-row {
+    margin: 0 !important;
+    text-align: right;
+    .item-total {
+        align-self: end;
+        font-size: 14px;
+        font-weight: 800;
+        color: $ta-black;
+        margin: 4px 0 0 0;
+        height: 18px;
+        padding-left: 6px !important;
+        padding-right: 4px !important;
+
+        &-text {
+            font-size: 14px;
+            color: $muted;
+        }
+
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
+        &::selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
+    }
+}
+
+.repair-shop-services {
+    grid-template-columns: 120px repeat(4, 120px);
+    grid-template-rows: repeat(2, 26px);
+
+    .repair-shop-service {
+        flex-direction: row;
+    }
+}
+
+.repair-order {
+    ::ng-deep .content-holder {
+        margin-bottom: 0px !important;
+    }
+}
+
+.repair-type {
+    margin: 22px 0 22px 0;
+
+    .repair-shop-input {
+        padding: 0 !important;
+    }
+}
+
+.not-exist-in-shop {
+    background: $ta-light-grey-5;
+    color: $ta-light-grey-6 !important;
+    pointer-events: none;
+
+    svg {
+        path {
+            fill: $ta-light-grey-6;
+        }
+    }
+}

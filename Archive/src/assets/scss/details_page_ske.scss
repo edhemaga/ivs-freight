@@ -1,0 +1,2333 @@
+@import '/src/theme/variables.scss';
+
+// Constants
+$color-white-light: #f3f3f3;
+$color-white: #ffffff;
+$color-white-dark: #f7f7f7;
+
+$color-gray-light: #b7b7b7;
+$color-gray: #919191;
+$color-gray-dark: #6c6c6c;
+
+$color-blue-light: #778fbb;
+$color-blue: #5673aa;
+$settings-blue-dark: #6d82c7;
+$settings-blue-hover: #3551b7;
+
+$font-size12: 12px;
+$font-size14: 14px;
+$font-size18: 18px;
+$font-size20: 20px;
+
+$font-regular: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+$font-extrabold: 800;
+
+$border-radius: 3px;
+
+$transition: all 0.3s ease-in-out;
+
+p {
+    margin-bottom: 0 !important;
+}
+.desc {
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}
+
+.details-container-items {
+    display: grid;
+    grid-template-columns: 440px repeat(4, 335px);
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    row-gap: 12px;
+
+    padding-bottom: 12px;
+}
+// Common Class
+.details-component {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 12px;
+    row-gap: 12px;
+
+    // BODY
+    .truck-wrapper {
+        background-color: $color-white;
+        border-radius: $border-radius;
+        margin-bottom: 8px;
+        width: 440px;
+        height: 226px;
+        p {
+            margin: 0px;
+        }
+
+        .truck-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .truck-card-name {
+                color: $color-gray-dark;
+                font-size: $font-size18;
+                font-weight: $font-medium;
+                position: relative;
+                top: 1px;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        }
+
+        //   // Note
+        .details-page-row-5 {
+            margin-top: 8px;
+        }
+
+        //   // PDF - big
+        .details-page-row-7 {
+            height: 236px;
+            width: 100%;
+            margin: 22px 0px;
+        }
+
+        .show-details {
+            font-size: $font-size12;
+            font-weight: $font-bold;
+            color: $color-blue-light;
+            text-decoration: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            &:hover {
+                transition: $transition;
+                cursor: pointer;
+                text-decoration: underline;
+                color: $color-blue;
+            }
+        }
+    }
+
+    .details-cards {
+        border-radius: 3px;
+        overflow: hidden;
+        width: 440px;
+        background-color: $color-white;
+        padding: 1px 8px 0px 8px;
+
+        &.trailer-details-card {
+            padding: 0px 8px 0px 8px;
+        }
+    }
+}
+.assignTo {
+    position: relative;
+    left: -3px;
+    display: grid;
+    grid-template-columns: 204px 204px;
+    column-gap: 12px;
+    padding: 0 0px;
+    .assignTo-vehicle {
+        svg {
+            width: 55px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            &:hover {
+                path {
+                    fill: #6c6c6c !important;
+                }
+            }
+            path {
+                fill: #aaaaaa;
+            }
+        }
+    }
+    .first {
+        .assignTo-vehicle {
+            svg {
+                display: flex;
+                align-items: center;
+            }
+        }
+        &:hover {
+            .open-modal-icon {
+                display: block;
+                position: relative;
+                bottom: 4px;
+                height: 18px;
+                width: 18px;
+                svg {
+                    cursor: pointer;
+                    &:hover {
+                        path {
+                            fill: #6c6c6c;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .second {
+        .icon-text-wrapper-cmp {
+            position: relative;
+            top: 1px;
+        }
+        .assignTo-vehicle {
+            svg {
+                display: flex;
+            }
+        }
+        &:hover {
+            .open-modal-icon2 {
+                display: block;
+                height: 18px;
+                width: 18px;
+                position: relative;
+                bottom: 4px;
+                svg {
+                    cursor: pointer;
+                    &:hover {
+                        path {
+                            fill: #6c6c6c;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .assignTo-item {
+        background-color: $color-white-dark;
+        border-radius: 3px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .icon-text-wrapper-cmp {
+            display: flex;
+            align-items: center;
+            padding-left: 6px;
+            margin: 7px 0px;
+        }
+        .semi-tooltip {
+            width: 40px;
+            height: 20px;
+
+            &.typeDetails {
+                width: auto;
+            }
+        }
+        svg {
+            fill: #aaaaaa;
+            object-fit: fill;
+            height: 20px;
+            width: 55px;
+        }
+        .open-modal-icon {
+            display: none;
+        }
+        .open-modal-icon2 {
+            display: none;
+        }
+        .assignTo-vehicle {
+            margin-right: 6px;
+            position: relative;
+            bottom: 0px;
+
+            &.backImage {
+                margin-right: 0px;
+            }
+        }
+
+        .assignTo-value {
+            font-size: $font-size18;
+            font-weight: $font-medium;
+            color: $color-gray-dark;
+            line-height: 16px;
+            padding-left: 12px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            &.inactive-assignTo-value {
+                padding-left: 6px;
+                color: #2f2f2f;
+                line-height: 34px;
+            }
+        }
+        p {
+            margin: 0 !important;
+        }
+    }
+}
+.item-cards {
+    .ta-card-header {
+        //padding-top: 6px !important;
+        //padding-bottom: 6px !important;
+        //padding-right: 4px !important;
+    }
+}
+.card-container {
+    //padding: 0 6px;
+    .card-body-cdl {
+        display: grid;
+        padding: 0px 4px;
+        .card-restriction-endorsment {
+            display: grid;
+            grid-template-columns: 110px 131px;
+            column-gap: 53px;
+            height: 44px;
+            .item-card-wrapper {
+                display: flex;
+                .restriction-item-value {
+                    .value-name {
+                        font-size: 14px !important;
+                        font-weight: 400 !important;
+                        color: #2f2f2f;
+                    }
+                    &:not(:first-child) {
+                        .value-name:before {
+                            content: ', ';
+                        }
+                    }
+                }
+            }
+        }
+        .card-item-name {
+            font-size: 11px;
+            color: #2f2f2f;
+            font-weight: $font-bold;
+            height: 15px;
+            margin-bottom: 2px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .card-item-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            color: #2f2f2f;
+            white-space: nowrap;
+            height: 18px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &:hover {
+                color: #2f2f2f;
+            }
+        }
+        .card-row-issued {
+            display: grid;
+            grid-template-columns: 32px 32px 32px;
+            column-gap: 49px;
+            margin-top: 12px;
+        }
+        .card-row-endor {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(20%, 1fr));
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .card-row-progress {
+            margin-top: 8px;
+        }
+        .card-restriction {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+            .restriction-name {
+                font-size: 11px;
+                font-weight: $font-bold;
+                color: #2f2f2f;
+                height: 15px;
+                &::-moz-selection {
+                    color: #2f2f2f;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: #2f2f2f;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+            .span-value {
+                &::-moz-selection {
+                    color: #2f2f2f !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                &::selection {
+                    color: #2f2f2f !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+            }
+            .restriction-item-value {
+                font-size: $font-size14;
+                font-weight: 400;
+                color: #2f2f2f;
+                height: 18px;
+                white-space: nowrap;
+                margin-bottom: 2px;
+                margin-top: 2px;
+                &::-moz-selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                &::selection {
+                    color: #6c6c6c !important;
+                    background: rgb(108, 108, 108, 0.2) !important;
+                }
+                .value-name {
+                    font-size: $font-size14;
+                    font-weight: $font-semibold;
+
+                    color: #6c6c6c;
+                    &::-moz-selection {
+                        color: #6c6c6c;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                    &::selection {
+                        color: #6c6c6c;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
+        }
+        .endorsement {
+            margin-top: 12px;
+        }
+    }
+}
+.perfomance {
+    display: flex !important;
+    flex-direction: column;
+
+    .common-template-item-name {
+        font-size: $font-size14 !important;
+        font-weight: $font-semibold !important;
+    }
+    .common-template-item-value {
+        font-size: $font-size18 !important;
+        font-weight: $font-semibold !important;
+    }
+}
+.card-pdf {
+    padding: 0 5px;
+    margin-bottom: 12px;
+
+    &.extended {
+        margin-bottom: 30px;
+    }
+
+    &.disabled {
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+// Progress bar details
+.card-details-progress-container {
+    .table-progress-cotnainer {
+        display: flex !important;
+        flex-direction: column !important;
+
+        .table-progress {
+            order: 1 !important;
+            width: 100% !important;
+            height: 8px !important;
+        }
+
+        .table-progress-panel {
+            order: -1 !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            color: #2f2f2f !important;
+
+            .progress-text {
+                margin: 2px 0px !important;
+            }
+        }
+    }
+}
+
+.status-container {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: -12px !important;
+    .status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .status-item {
+            height: 18px;
+
+            .p-status {
+                font-size: $font-size14;
+                font-weight: 700;
+                color: #2f2f2f;
+                &::-moz-selection {
+                    color: #2f2f2f;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+                &::selection {
+                    color: #2f2f2f;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+                .note-textarea {
+                    color: #6c6c6c !important;
+                    font-weight: 500 !important;
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+
+                    span,
+                    div,
+                    b {
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    font[color='#dadada'] {
+                        &::-moz-selection {
+                            color: rgb(218, 218, 218) !important;
+                            background: rgb(218, 218, 218, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(218, 218, 218) !important;
+                            background: rgb(218, 218, 218, 0.2) !important;
+                        }
+                    }
+
+                    font[color='#6692f1'] {
+                        &::-moz-selection {
+                            color: rgb(102, 146, 241) !important;
+                            background: rgb(102, 146, 241, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(102, 146, 241) !important;
+                            background: rgb(102, 146, 241, 0.2) !important;
+                        }
+                    }
+
+                    font[color='#56b4ac'] {
+                        &::-moz-selection {
+                            color: rgb(86, 180, 172) !important;
+                            background: rgb(86, 180, 172, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(86, 180, 172) !important;
+                            background: rgb(86, 180, 172, 0.2) !important;
+                        }
+                    }
+
+                    font[color='#e66767'] {
+                        &::-moz-selection {
+                            color: rgb(230, 103, 103) !important;
+                            background: rgb(230, 103, 103, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(230, 103, 103) !important;
+                            background: rgb(230, 103, 103, 0.2) !important;
+                        }
+                    }
+
+                    font[color='#fab15c'] {
+                        &::-moz-selection {
+                            color: rgb(250, 177, 92) !important;
+                            background: rgb(250, 177, 92, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(250, 177, 92) !important;
+                            background: rgb(250, 177, 92, 0.2) !important;
+                        }
+                    }
+
+                    font[color='#b370f0'] {
+                        &::-moz-selection {
+                            color: rgb(179, 112, 240) !important;
+                            background: rgb(179, 112, 240, 0.2) !important;
+                        }
+
+                        &::selection {
+                            color: rgb(179, 112, 240) !important;
+                            background: rgb(179, 112, 240, 0.2) !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .status-items {
+        .item-wrapper {
+            display: grid;
+            grid-template-columns: 119px 137px 78px;
+            grid-column-gap: 45px;
+            align-content: center;
+            justify-content: center;
+
+            .svg-text {
+                display: flex;
+                align-items: center;
+                .employment {
+                    margin-left: 6px;
+                    position: relative;
+                    bottom: -2px;
+                }
+            }
+            .duration {
+                text-align: right;
+            }
+            p {
+                font-size: 14px;
+                font-weight: 400;
+                color: #2f2f2f;
+                white-space: nowrap;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                span {
+                    &::-moz-selection {
+                        color: $color-gray-dark;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                    &::selection {
+                        color: $color-gray-dark;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                }
+            }
+        }
+    }
+}
+.charts-template {
+    display: grid;
+    grid-template-columns: 215px 1fr;
+    grid-row-gap: 12px;
+    row-gap: 12px;
+    margin-bottom: 12px;
+
+    .charts-template-item {
+        display: flex;
+        flex-direction: column;
+
+        .icon-name-item {
+            display: flex;
+            align-items: baseline;
+            height: 18px;
+            .charts-template-item-name {
+                margin-right: 4px;
+            }
+        }
+        .charts-template-item-name {
+            font-size: 11px;
+            color: $ta-black;
+            font-weight: $font-bold;
+            line-height: 14px;
+
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+
+        .charts-template-item-value {
+            font-size: $font-size18;
+            font-weight: $font-medium;
+            color: $ta-black;
+            width: 220px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            p {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .hidden-svg-eye {
+                margin-left: 6px;
+                position: relative;
+                bottom: 1px;
+            }
+        }
+    }
+}
+.second-progress {
+    margin-bottom: 16px;
+}
+
+.truck-details-wrapper {
+    padding: 0px 12px;
+    //margin-left: 12px;
+    .truck {
+        svg {
+            width: 132px;
+            height: 48px;
+        }
+    }
+    .details-header-avatar {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        margin-top: 14px;
+
+        .model-name {
+            flex-direction: column;
+            margin-left: 12px;
+            margin-top: 12px;
+
+            p {
+                font-size: 18px;
+                font-weight: 500;
+                color: #2f2f2f;
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+            .svg-wrapper {
+                height: 14px;
+                display: flex;
+                align-items: flex-end;
+                margin-bottom: 2px;
+            }
+            svg {
+                path {
+                    fill: #424242;
+                    object-fit: fill;
+                }
+                rect {
+                    fill: #aaaaaa;
+                }
+            }
+        }
+    }
+    .details-header-data {
+        margin-top: 14px;
+        .details-header-data-item {
+            display: flex;
+            height: 18px;
+            align-items: center;
+            p {
+                font-size: 18px;
+                color: #2f2f2f;
+                font-weight: 400;
+            }
+            .header-text {
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 18px;
+                text-align: left;
+            }
+        }
+        .second {
+            margin-top: 14px;
+            margin-bottom: 14px;
+            p {
+                font-size: 14px !important;
+                color: #2f2f2f;
+                font-weight: 400;
+                position: relative;
+                bottom: -1px;
+            }
+            // .light-green {
+            //   margin-right: 29px;
+            // }
+            .date {
+                margin-left: 8px !important;
+                position: relative;
+            }
+        }
+    }
+    .color-text {
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+        text-align: left;
+    }
+    .vin-text {
+        margin-left: 6px !important;
+        margin-right: 37px;
+        position: relative;
+        bottom: -1px !important;
+    }
+}
+.common-template {
+    display: grid;
+    grid-template-columns: 202px 1fr;
+    row-gap: 12px;
+    //padding: 0 4px;
+    // margin-top: -7px;
+    .common-item-wrapper {
+        display: flex;
+        align-items: center;
+        height: 40px;
+    }
+    .common-template-item {
+        display: flex;
+        flex-direction: column;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        .icon-name-item {
+            display: flex;
+            align-items: center;
+            height: 18px;
+            .common-template-item-name {
+                margin-left: 6px;
+            }
+        }
+        .common-template-item-name {
+            font-size: $font-size12;
+            font-weight: $font-semibold;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
+
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+
+        .common-template-item-value {
+            font-size: $font-size14;
+            font-weight: 400;
+            //color: $color-gray-dark;
+            color: #2f2f2f;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+
+            p {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+
+            .hidden-svg-eye {
+                margin-left: 6px;
+                position: relative;
+                bottom: 1px;
+            }
+        }
+    }
+}
+
+.divider {
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    border-radius: 1px;
+    background-color: #f3f3f3;
+}
+
+.card_files_holder {
+    &.active {
+        min-height: 448px;
+    }
+}
+
+.note-cards {
+    .note-body {
+        padding-left: 0px !important;
+        padding-right: 2px !important;
+
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 400 !important;
+            padding-bottom: 12px !important;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+}
+.vin-text {
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}
+.no-data-driver-details {
+    font-size: 14px;
+    font-weight: 400;
+    //padding: 0 10px;
+    //color: #b7b7b7;
+    color: #919191;
+    &::-moz-selection {
+        color: #919191;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+        color: #919191;
+        background: rgb(183, 183, 183, 0.2);
+    }
+}
+
+.mileage-template {
+    display: grid;
+    grid-template-columns: 130px 130px 130px;
+    row-gap: 10px;
+    column-gap: 10px;
+    //padding: 0 2px;
+    .mileage-template-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        .mileage-template-item-name {
+            //color: $color-gray-dark;
+            color: #2f2f2f;
+            font-size: 11px;
+            font-weight: 700;
+            &::-moz-selection {
+                color: #2f2f2f;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #2f2f2f;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+        .mileage-template-item-value {
+            color: #2f2f2f;
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: -3px;
+            &::-moz-selection {
+                color: #2f2f2f;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #2f2f2f;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+}
+.owner-items {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    .card-icon {
+        display: none;
+        cursor: pointer;
+        margin-left: 6px;
+    }
+    .information-value {
+        font-size: 14px;
+        font-weight: 400;
+        color: $color-gray-dark;
+        margin-left: 6px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    &:hover {
+        .card-icon {
+            display: flex;
+        }
+    }
+}
+.copied {
+    .vin-text {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+    .information-value {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+    .card-icon {
+        svg {
+            path {
+                animation-duration: 1500ms;
+                animation-name: changeSVG;
+                &:hover {
+                    animation-duration: 1500ms;
+                    animation-name: changeSVG;
+                }
+            }
+        }
+    }
+}
+.hide-show {
+    font-size: $font-size14;
+    color: #6d82c7;
+    font-weight: $font-semibold;
+    margin-left: 6px;
+    cursor: pointer;
+    &::-moz-selection {
+        color: #6d82c7;
+        background: rgb(83, 107, 194, 0.2);
+    }
+    &::selection {
+        color: #6d82c7;
+        background: rgb(83, 107, 194, 0.2);
+    }
+    &:hover {
+        color: #536bc2;
+    }
+}
+.bind-height {
+    max-height: fit-content !important;
+}
+.card-width {
+    width: 335px;
+}
+.icons-details {
+    margin-right: 6px;
+}
+.date-details-svg {
+    margin-left: 29px;
+}
+
+.note-details-holder {
+    padding-right: 6px;
+    padding-left: 3px;
+
+    .note-container {
+        .note-header {
+            .note-label {
+                //color: #919191 !important;
+
+                &:hover {
+                    //color: #6c6c6c !important;
+                }
+            }
+
+            &.active {
+                .note-label {
+                    color: #6c6c6c !important;
+                }
+            }
+
+            .note_upper_hold {
+                svg {
+                    path {
+                        fill: #919191;
+                    }
+                }
+
+                .rotate {
+                    svg {
+                        path {
+                            fill: #aaaaaa;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.boldSanVin {
+    font-weight: 800;
+}
+
+/* responsive start */
+
+@media (max-width: 1910px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 320px);
+    }
+
+    .card-width {
+        width: 320px;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 440px 712px 320px 260px !important;
+    }
+
+    .responsiveHolderRepair {
+        grid-template-columns: 125px 109px 95px 179px 145px !important;
+    }
+
+    .repair-container {
+        width: 712px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 320px !important;
+    }
+
+    .likes-count-container {
+        width: 260px;
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 50px 46px !important;
+    }
+
+    .repair-items-vehicle {
+        .items-vehicle {
+            grid-template-columns: 50px 79px 52px 66px !important;
+        }
+    }
+
+    app-repair-shop-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                    &.repair-item-column {
+                        &.responsiveHolderRepair {
+                            grid-template-columns: 85px 35px 110px 95px 325px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .counter-text {
+        padding: 0px 0px 0px 8px !important;
+    }
+
+    .card-row-progress {
+        //width: 95%;
+    }
+
+    .reason-span {
+        display: none;
+    }
+
+    .card-restriction-endorsment {
+        grid-template-columns: 110px 115px !important;
+    }
+
+    .restriction-item-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .load {
+            width: 712px !important;
+        }
+
+        .contact {
+            width: 320px !important;
+
+            .contact-wrapper {
+                width: 320px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 260px !important;
+        }
+
+        .review-container {
+            width: 260px !important;
+        }
+    }
+}
+
+@media (max-width: 1870px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 300px);
+    }
+
+    .card-width {
+        width: 300px;
+    }
+}
+
+@media (max-width: 1850px) {
+    .repair-details-container {
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 430px 702px 310px 250px !important;
+    }
+
+    .repair-general-holder {
+        width: 430px;
+    }
+
+    .repair-container {
+        width: 702px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 310px !important;
+    }
+
+    .likes-count-container {
+        width: 250px;
+    }
+
+    .repair-component {
+        height: max-content;
+        .repair-cards {
+            width: 430px !important;
+        }
+    }
+
+    app-repair-shop-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                    &.repair-item-column {
+                        &.responsiveHolderRepair {
+                            grid-template-columns: 85px 35px 110px 95px 315px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .responsiveHolderRepair {
+        grid-template-columns: 125px 109px 95px 179px 137px !important;
+    }
+
+    .repair-items-vehicle {
+        .items-vehicle {
+            grid-template-columns: 50px 88px 37px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 40px 46px !important;
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .details-header-wrapper {
+            width: 430px !important;
+
+            .details-header-wrapper-switcher {
+                grid-template-columns: 360px 53px !important;
+            }
+        }
+
+        .load {
+            width: 702px !important;
+        }
+
+        .contact {
+            width: 310px !important;
+
+            .contact-wrapper {
+                width: 310px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 250px !important;
+        }
+
+        .review-container {
+            width: 250px !important;
+        }
+
+        .credit-perctange {
+            width: 407px !important;
+        }
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 360px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1820px) {
+    .card-restriction-endorsment {
+        column-gap: 30px !important;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 420px 692px 300px 240px !important;
+    }
+
+    .repair-general-holder {
+        width: 420px;
+    }
+
+    .repair-container {
+        width: 692px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 300px !important;
+    }
+
+    .likes-count-container {
+        width: 240px;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 420px !important;
+        }
+    }
+
+    app-repair-shop-details-item {
+        .finish-order-cont {
+            .repair-items {
+                .items-header {
+                    &.repair-item-column {
+                        &.responsiveHolderRepair {
+                            grid-template-columns: 85px 35px 100px 95px 315px !important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .responsiveHolderRepair {
+        grid-template-columns: 125px 99px 95px 179px 137px !important;
+    }
+
+    .repair-items-vehicle {
+        .items-vehicle {
+            grid-template-columns: 50px 88px 27px 66px !important;
+        }
+    }
+
+    .repaired-vehicle-container .repair-vehicle-header {
+        grid-template-columns: 37px 55px 29px 46px !important;
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .details-header-wrapper {
+            width: 420px !important;
+
+            .details-header-wrapper-switcher {
+                grid-template-columns: 348px 53px !important;
+            }
+        }
+
+        .load {
+            width: 692px !important;
+        }
+
+        .contact {
+            width: 300px !important;
+
+            .contact-wrapper {
+                width: 300px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 240px !important;
+        }
+
+        .review-container {
+            width: 240px !important;
+        }
+
+        .credit-perctange {
+            width: 396px !important;
+        }
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 350px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1780px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 280px);
+    }
+
+    .card-width {
+        width: 280px;
+    }
+
+    .card-restriction-endorsment {
+        column-gap: 20px !important;
+    }
+
+    .request-header-container {
+        display: none !important;
+        width: 26px;
+
+        &.icon-request-holder {
+            display: flex !important;
+            width: 26px !important;
+            height: 26px !important;
+
+            background-color: #ffffff !important;
+
+            svg {
+                path {
+                    fill: #3074d3;
+                }
+            }
+
+            &:hover {
+                background-color: #3074d3 !important;
+
+                svg {
+                    path {
+                        fill: #ffffff;
+                    }
+                }
+            }
+        }
+    }
+
+    .repair-details-container {
+        grid-template-columns: 475px 760px 410px 0px !important;
+    }
+
+    .repair-general-holder {
+        width: 475px;
+    }
+
+    .repair-container {
+        width: 760px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 410px !important;
+        max-width: 410px !important;
+    }
+
+    .likes-count-container {
+        width: 0px;
+    }
+
+    .details-header-wrapper-reapirShop {
+        max-width: 475px !important;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 475px !important;
+        }
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 475px 760px 410px 0px !important;
+        .repair-component {
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder {
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+
+            &.reviewShopHolder {
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+        }
+
+        .review-container {
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+
+        .likes-count-container {
+            display: flex;
+            justify-content: center;
+            width: 410px !important;
+            max-width: 410px !important;
+        }
+    }
+
+    .purchase-template {
+        display: grid;
+        grid-template-columns: repeat(2, 50%) !important;
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .toolbar-general-cmp {
+            max-width: 475px !important;
+        }
+
+        .details-header-wrapper {
+            width: 475px !important;
+            max-width: 475px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 403px 53px !important;
+            }
+        }
+
+        .load {
+            width: 760px !important;
+        }
+
+        .contact {
+            width: 410px !important;
+
+            .contact-wrapper {
+                width: 410px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 410px !important;
+        }
+
+        .review-container {
+            width: 410px !important;
+        }
+
+        .credit-perctange {
+            width: 450px !important;
+        }
+
+        /*
+        .repair-component{
+            column-gap: 0px;
+            height: 40px;
+            &.contactGridHolder{
+                grid-row: 1 !important;
+                grid-column: 2 !important;
+                height: fit-content;
+            }
+        
+            &.reviewGridHolder{
+                grid-row: 2 !important;
+                grid-column: 2 !important;
+                width: 410px !important;
+            }
+
+        }
+        */
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 404px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1760px) {
+    .repair-details-container {
+        grid-template-columns: 455px 740px 390px 0px !important;
+    }
+
+    .repair-general-holder {
+        width: 455px;
+    }
+
+    .repair-container {
+        width: 740px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 390px !important;
+        max-width: 390px !important;
+    }
+
+    .likes-count-container {
+        width: 0px;
+    }
+
+    .details-header-wrapper-reapirShop {
+        max-width: 455px !important;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 455px !important;
+        }
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 455px 740px 390px 0px !important;
+        .repair-component {
+            column-gap: 0px;
+            height: 40px;
+            &.vehicleHolder {
+                grid-row: 1 !important;
+                grid-column: 3 !important;
+                height: fit-content;
+            }
+
+            &.reviewShopHolder {
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 410px !important;
+            }
+        }
+
+        .review-container {
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+
+        .likes-count-container {
+            display: flex;
+            justify-content: center;
+            width: 390px !important;
+            max-width: 390px !important;
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .toolbar-general-cmp {
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper {
+            width: 455px !important;
+            max-width: 455px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 382px 53px !important;
+            }
+        }
+
+        .load {
+            width: 740px !important;
+        }
+
+        .contact {
+            width: 390px !important;
+
+            .contact-wrapper {
+                width: 390px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 390px !important;
+        }
+
+        .review-container {
+            width: 390px !important;
+        }
+
+        .credit-perctange {
+            width: 430px !important;
+        }
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 385px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1700px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 420px repeat(4, 270px);
+    }
+
+    .card-width {
+        width: 270px;
+    }
+
+    .cards-item-wrapper-1 {
+        width: 420px;
+    }
+
+    .details-component .details-cards {
+        width: 420px;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 350px 53px !important;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
+    .repair-general-holder {
+        width: 400px;
+    }
+
+    .details-header-wrapper-reapirShop {
+        max-width: 400px !important;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 400px !important;
+        }
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 400px 740px 390px 0px !important;
+    }
+
+    .longText {
+        display: none !important;
+    }
+
+    .shortText {
+        display: block !important;
+    }
+
+    .owner-history-container {
+        .status-container {
+            .item-wrapper {
+                grid-template-columns: 85px 105px 92px !important;
+            }
+        }
+    }
+
+    .employment-history-container {
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 137px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .details-header-wrapper {
+            width: 400px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 330px 53px !important;
+            }
+        }
+
+        .credit-perctange {
+            width: 377px !important;
+        }
+    }
+
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 400px repeat(4, 270px);
+    }
+
+    .details-component .details-cards {
+        width: 400px;
+    }
+
+    .cards-item-wrapper-1 {
+        width: 400px;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 330px 53px !important;
+    }
+
+    .restriction-item-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .card-restriction-endorsment {
+        grid-template-columns: 110px 120px !important;
+    }
+
+    .assignTo {
+        grid-template-columns: 185px 185px;
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 330px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1640px) {
+    .repair-details-container {
+        grid-template-columns: 400px 720px 370px 0px !important;
+    }
+
+    .repair-container {
+        width: 720px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 370px !important;
+        max-width: 370px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 400px 720px 370px 0px !important;
+        .repair-component {
+            &.reviewShopHolder {
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 370px !important;
+            }
+        }
+
+        .review-container {
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+
+        .likes-count-container {
+            width: 370px !important;
+            max-width: 370px !important;
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .load {
+            width: 720px !important;
+        }
+
+        .contact {
+            width: 370px !important;
+
+            .contact-wrapper {
+                width: 370px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 370px !important;
+        }
+
+        .review-container {
+            width: 370px !important;
+        }
+    }
+}
+
+@media (max-width: 1610px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 380px repeat(4, 270px);
+    }
+
+    .details-component .details-cards {
+        width: 380px;
+    }
+
+    .cards-item-wrapper-1 {
+        width: 380px;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 308px 53px !important;
+    }
+
+    .assignTo {
+        grid-template-columns: 175px 175px;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 380px 710px 350px 0px !important;
+    }
+
+    .repair-container {
+        width: 710px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 350px !important;
+        max-width: 350px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 380px 710px 350px 0px !important;
+        .repair-component {
+            &.reviewShopHolder {
+                grid-row: 2 !important;
+                grid-column: 3 !important;
+                width: 350px !important;
+            }
+        }
+
+        .review-container {
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+
+        .likes-count-container {
+            width: 350px !important;
+            max-width: 350px !important;
+        }
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 380px !important;
+        }
+    }
+
+    .owner-history-container {
+        .status-container {
+            .item-wrapper {
+                grid-template-columns: 85px 86px 92px !important;
+            }
+        }
+    }
+
+    .mileage-template {
+        grid-template-columns: 112px 112px 111px;
+    }
+
+    .employment-history-container {
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 114px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-details-card {
+        .hours-template {
+            grid-template-columns: 150px 150px !important;
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .toolbar-general-cmp {
+            max-width: 455px !important;
+        }
+
+        .details-header-wrapper {
+            width: 380px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 310px 53px !important;
+            }
+        }
+
+        .load {
+            width: 710px !important;
+        }
+
+        .contact {
+            width: 350px !important;
+
+            .contact-wrapper {
+                width: 350px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;
+        }
+
+        .review-container {
+            width: 350px !important;
+        }
+
+        .credit-perctange {
+            width: 356px !important;
+        }
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 309px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1590px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 260px);
+    }
+
+    .details-component .details-cards {
+        width: 360px;
+    }
+
+    .cards-item-wrapper-1 {
+        width: 360px;
+    }
+
+    .card-width {
+        width: 260px;
+    }
+
+    .card-restriction-endorsment {
+        column-gap: 12px !important;
+    }
+
+    .card-body-cdl {
+        .card-restriction-endorsment {
+            grid-template-columns: 110px 95px !important;
+        }
+    }
+
+    .reason-span {
+        display: none;
+    }
+
+    .details-header-wrapper-switcher {
+        grid-template-columns: 290px 53px !important;
+    }
+
+    .assignTo {
+        grid-template-columns: 162px 162px;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 360px 710px 350px 0px !important;
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
+    .owner-history-container {
+        .status-container {
+            .item-wrapper {
+                grid-template-columns: 85px 91px 70px !important;
+            }
+        }
+    }
+
+    .employment-history-container {
+        .status-items {
+            .item-wrapper {
+                grid-template-columns: 72px 95px 70px !important;
+            }
+        }
+    }
+
+    app-shipper-details-card {
+        .hours-template {
+            grid-template-columns: 140px 140px !important;
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .details-header-wrapper {
+            width: 360px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 290px 53px !important;
+            }
+        }
+
+        .load {
+            width: 710px !important;
+        }
+
+        .contact {
+            width: 350px !important;
+
+            .contact-wrapper {
+                width: 350px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 350px !important;
+        }
+
+        .review-container {
+            width: 350px !important;
+        }
+
+        .credit-perctange {
+            width: 336px !important;
+        }
+    }
+
+    app-repair-shop-details {
+        .details-header-wrapper-switcher {
+            grid-template-columns: 290px 53px !important;
+        }
+    }
+}
+
+@media (max-width: 1540px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 250px);
+    }
+
+    .card-width {
+        width: 250px;
+    }
+
+    .repair-details-container {
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 360px 700px 272px 0px !important;
+    }
+
+    .repair-container {
+        width: 700px !important;
+    }
+
+    .repaired-vehicle-container {
+        width: 272 !important;
+        max-width: 272px !important;
+    }
+
+    .repair-details-cmp {
+        grid-template-columns: 360px 700px 272px 0px !important;
+        .repair-component {
+            &.reviewShopHolder {
+                width: 272px !important;
+            }
+        }
+
+        .review-container {
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+
+        .likes-count-container {
+            width: 272px !important;
+            max-width: 272px !important;
+        }
+    }
+
+    .repair-component {
+        .repair-cards {
+            width: 360px !important;
+        }
+    }
+
+    .repaired-vehicle-container {
+        .repair-vehicle-header {
+            grid-template-columns: 35px 40px 25px 35px !important;
+        }
+    }
+
+    .repair-items-vehicle {
+        .items-vehicle {
+            grid-template-columns: 45px 68px 27px 66px !important;
+        }
+    }
+
+    app-shipper-details,
+    app-broker-details {
+        .details-header-wrapper {
+            width: 360px !important;
+            .details-header-wrapper-switcher {
+                grid-template-columns: 289px 53px !important;
+            }
+        }
+
+        .load {
+            width: 700px !important;
+        }
+
+        .contact {
+            width: 272px !important;
+
+            .contact-wrapper {
+                width: 272px !important;
+            }
+        }
+
+        .likes-count-container {
+            width: 272px !important;
+        }
+
+        .review-container {
+            width: 272px !important;
+        }
+    }
+}
+
+@media (max-width: 1500px) {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 360px repeat(4, 237px);
+    }
+
+    .card-width {
+        width: 237px;
+    }
+    /*
+    .card-row-endor {
+        grid-template-columns: 100px 100px !important;
+    } */
+
+    .restriction-item-value {
+    }
+}
+
+/*
+@media (min-width: 1300px) {  
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px repeat(4, 237px);
+    }
+    
+    .card-width {
+        width: 237px;
+    }
+
+    .counter-text{
+        padding: 0px 7px !important;
+    }
+
+    .request-header-container{
+        display: none !important;
+        width: 26px;
+
+        &.icon-request-holder{
+            display: flex !important;
+            width: 26px !important;
+            height: 26px !important;
+            
+            background-color: #ffffff !important;
+
+            svg {
+                path{
+                    fill: #3074D3;
+                }
+            }
+
+            &:hover {
+
+                background-color: #3074D3 !important;
+
+            svg {
+                path{
+                    fill: #ffffff;
+                }
+            }
+
+            }
+        }
+    }
+} */
