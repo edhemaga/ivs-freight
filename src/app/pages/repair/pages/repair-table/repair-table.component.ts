@@ -529,6 +529,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 ? this.getTabData(TableStringEnum.REPAIR_SHOP)
                 : [];
 
+                
         this.tableData = [
             {
                 title: TableStringEnum.TRUCK_2,
