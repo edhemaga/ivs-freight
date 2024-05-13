@@ -191,18 +191,14 @@ export class CustomerTableComponent
             .subscribe((res) => {
                 switch (res.type) {
                     case TableStringEnum.INFO:
-                        if (res.subType === TableStringEnum.BAN_LIST) {
+                        if (res.subType === TableStringEnum.BAN_LIST)
                             this.changeBanStatus(res.data);
-                        } else {
-                            this.changeDnuStatus(res.data);
-                        }
+                        else this.changeDnuStatus(res.data);
                         break;
                     case TableStringEnum.INFO:
-                        if (this.selectedTab === TableStringEnum.ACTIVE) {
+                        if (this.selectedTab === TableStringEnum.ACTIVE)
                             this.changeBussinesStatusBroker(res.data);
-                        } else {
-                            this.changeBussinesStatusShipper(res.data);
-                        }
+                        else this.changeBussinesStatusShipper(res.data);
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
@@ -588,10 +584,10 @@ export class CustomerTableComponent
                       name: TableStringEnum.CARD,
                       active: this.activeViewMode === TableStringEnum.CARD,
                   },
-                //   {
-                //       name: TableStringEnum.MAP,
-                //       active: this.activeViewMode === TableStringEnum.MAP,
-                //   }, this is not going into this sprint
+                  //   {
+                  //       name: TableStringEnum.MAP,
+                  //       active: this.activeViewMode === TableStringEnum.MAP,
+                  //   }, this is not going into this sprint
               ];
     }
 
