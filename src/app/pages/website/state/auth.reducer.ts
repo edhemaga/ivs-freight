@@ -2,7 +2,8 @@
 import { createReducer, on } from '@ngrx/store';
 
 // actions
-import * as AuthActions from '@pages/website/state/actions/login/auth.actions';
+import * as AuthLoginActions from '@pages/website/state/actions/login/login.actions';
+import * as AuthRegisterActions from '@pages/website/state/actions/register/register.actions';
 
 //models
 import { AuthState } from '@pages/website/state/models/auth-state.model';
@@ -16,18 +17,37 @@ export const authState: AuthState = {
 
 export const authReducer = createReducer(
     authState,
-    on(AuthActions.authLogin, (state) => ({
+
+    // Login Actions
+    on(AuthLoginActions.authLogin, (state) => ({
         ...state,
         loading: true,
         error: null,
     })),
-    on(AuthActions.authLoginSuccess, (state, user) => ({
+    on(AuthLoginActions.authLoginSuccess, (state, user) => ({
         ...state,
         user: user,
         loading: false,
         hideSIdebar: true,
     })),
-    on(AuthActions.authLoginError, (state, error) => ({
+    on(AuthLoginActions.authLoginError, (state, error) => ({
+        ...state,
+        error: error.error,
+        loading: false,
+    })),
+
+    // Register Actions
+    on(AuthRegisterActions.authRegister, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+    on(AuthRegisterActions.authRegisterSuccess, (state) => ({
+        ...state,
+        loading: false,
+        error: null,
+    })),
+    on(AuthRegisterActions.authRegisterError, (state, error) => ({
         ...state,
         error: error.error,
         loading: false,
