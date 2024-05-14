@@ -26,6 +26,12 @@
             ? 'Delete Repair / Order'
             : editData?.template === 'repair_shop'
             ? 'Delete Repair Shop'
+            : editData?.template === 'registration'
+            ? 'Delete Registration'
+            : editData?.template === 'inspection'
+            ? 'Delete FHWA Inspection'
+            : editData?.template === 'title'
+            ? 'Delete Title'
             : ' Confirmation'
     "
     [editName]="
@@ -325,6 +331,103 @@
                             </div>
                         </ng-container>
 
+                        <ng-container *ngSwitchCase="'registration'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="confirmation-img"
+                                        src="/assets/svg/common/registration.svg"
+                                        alt="registration"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-bold text-1">
+                                            {{ editData?.data?.licensePlate }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-medium">
+                                            {{
+                                                editData?.data.expDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'inspection'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="confirmation-img"
+                                        src="/assets/svg/common/inspection.svg"
+                                        alt="registration"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-medium text-1">
+                                            {{
+                                                editData?.data.expDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'title'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="m-1 confirmation-img"
+                                        src="/assets/svg/common/title.svg"
+                                        alt="registration"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-bold text-1">
+                                            {{ editData?.data?.number }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-medium">
+                                            {{
+                                                editData?.data.issueDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
                         <!-- void -->
 
                         <ng-container *ngSwitchCase="'void'">

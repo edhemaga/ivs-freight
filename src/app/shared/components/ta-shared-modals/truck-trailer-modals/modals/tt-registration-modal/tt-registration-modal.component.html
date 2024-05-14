@@ -39,11 +39,25 @@
                 <app-ta-input-dropdown
                     (selectedItem)="onSelectDropdown($event, 'state')"
                     [activeItem]="selectedStateType"
+                    [template]="'svgtext-template'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'State',
+                        label: 'States',
                         textTransform: 'uppercase',
+                        dropdownImageInput: {
+                            withText: true,
+                            svg: true,
+                            image: false,
+                            url: selectedStateType?.logoName
+                                ? 'assets/svg/common/states/' +
+                                  'ic_' +
+                                  selectedStateType?.logoName
+                                : '',
+                            template: 'color',
+                            class: 'state'
+                        },
+                        customClass: 'state-dropdown',
                         isRequired: true,
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-228'

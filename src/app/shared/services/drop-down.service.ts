@@ -240,11 +240,21 @@ export class DropDownService {
                 break;
             }
             case 'delete-inspection': {
+                let inspection = data.inspections.find(
+                    (ins) => ins.id === any.id
+                );
+                const mappedEvent = {
+                    ...any,
+                    data: {
+                        ...inspection,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'inspection',
                         type: 'delete',
                         image: false,
@@ -253,11 +263,21 @@ export class DropDownService {
                 break;
             }
             case 'delete-registration': {
+                let registration = data.registrations.find(
+                    (reg) => reg.id === any.id
+                );
+                const mappedEvent = {
+                    ...any,
+                    data: {
+                        ...registration,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'registration',
                         type: 'delete',
                         image: false,
@@ -266,11 +286,19 @@ export class DropDownService {
                 break;
             }
             case 'delete-title': {
+                let title = data.titles.find((title) => title.id === any.id);
+                const mappedEvent = {
+                    ...any,
+                    data: {
+                        ...title,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'title',
                         type: 'delete',
                         image: false,
