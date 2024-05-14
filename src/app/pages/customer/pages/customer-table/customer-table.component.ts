@@ -92,7 +92,8 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
     providers: [ThousandSeparatorPipe],
 })
 export class CustomerTableComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     private destroy$ = new Subject<void>();
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
@@ -162,7 +163,7 @@ export class CustomerTableComponent
 
         // Router
         private router: Router
-    ) { }
+    ) {}
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
@@ -220,6 +221,7 @@ export class CustomerTableComponent
                     case TableStringEnum.MULTIPLE_DELETE:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.deleteShipperList(res.array);
+                        else this.deleteBrokerList(res.array);
                         break;
                     default:
                         break;
@@ -301,6 +303,37 @@ export class CustomerTableComponent
             });
     }
 
+    private deleteBrokerList(ids: number[]): void {
+        this.brokerService
+            .deleteBrokerList(ids)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((broker) => {
+                    ids.map((id) => {
+                        if (broker.id === id)
+                            broker.actionAnimation =
+                                TableStringEnum.DELETE_MULTIPLE;
+                    });
+
+                    return broker;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
     public changeDnuStatus(data): void {
         this.brokerService
             .changeDnuStatus(data.id)
@@ -319,9 +352,6 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendCustomerData();
-
-                this.tableService.sendRowsSelected([]);
-                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -347,7 +377,7 @@ export class CustomerTableComponent
     }
 
     public changeBanListStatus(dataArray): void {
-        let brokerIds = dataArray.map((broker) => {
+        const brokerIds = dataArray.map((broker) => {
             return broker.id;
         });
 
@@ -384,7 +414,7 @@ export class CustomerTableComponent
     }
 
     public changeDnuListStatus(dataArray): void {
-        let brokerIds = dataArray.map((broker) => {
+        const brokerIds = dataArray.map((broker) => {
             return broker.id;
         });
 
@@ -400,7 +430,7 @@ export class CustomerTableComponent
     }
 
     public changeBrokerListStatus(dataArray): void {
-        let brokerIds = dataArray.map((broker) => {
+        const brokerIds = dataArray.map((broker) => {
             return broker.id;
         });
 
@@ -591,61 +621,26 @@ export class CustomerTableComponent
                 // Multiple Delete
                 if (response.length) {
                     // Delete Broker List
-
-                    // const mappedRes = response.map((item) => {
-                    //     return {
-                    //         id: item.id,
-                    //         data: {
-                    //             ...item.tableData,
-                    //         },
-                    //     };
-                    // });
-                    // this.modalService.openModal(
-                    //     ConfirmationModalComponent,
-                    //     { size: TableStringEnum.SMALL },
-                    //     {
-                    //         data: null,
-                    //         array: mappedRes,
-                    //         template:
-                    //             this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                    //                 ? TableStringEnum.REPAIR_2
-                    //                 : TableStringEnum.REPAIR_SHOP,
-                    //         type:
-                    //             mappedRes?.length > 1
-                    //                 ? TableStringEnum.MULTIPLE_DELETE
-                    //                 : TableStringEnum.DELETE,
-                    //         subType:
-                    //             this.selectedTab === TableStringEnum.ACTIVE
-                    //                 ? TableStringEnum.TRUCK
-                    //                 : TableStringEnum.TRAILER_2,
-                    //     }
-                    // );
-
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
-                        this.brokerService
-                            .deleteBrokerList()
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe(() => {
-                                let brokerName: TableStringEnum | string =
-                                    TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-
-                                this.viewData.map((data: BrokerResponse) => {
-                                    response.map((r: BrokerResponse) => {
-                                        if (data.id === r.id) {
-                                            if (!brokerName) {
-                                                brokerName = data.businessName;
-                                            } else {
-                                                brokerName =
-                                                    brokerName +
-                                                    TableStringEnum.COMA +
-                                                    data.businessName;
-                                            }
-                                        }
-                                    });
-                                });
-
-                                this.multipleDeleteData(response);
-                            });
+                        const mappedRes = response.map((item) => {
+                            return {
+                                id: item.id,
+                                data: {
+                                    ...item.tableData,
+                                },
+                            };
+                        });
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.SMALL },
+                            {
+                                data: null,
+                                array: mappedRes,
+                                template: TableStringEnum.BROKER,
+                                type: TableStringEnum.MULTIPLE_DELETE,
+                                svg: true,
+                            }
+                        );
                     }
                     // Delete Shipper List
                     else {
@@ -860,29 +855,29 @@ export class CustomerTableComponent
     }[] {
         return this.selectedTab === TableStringEnum.ACTIVE
             ? [
-                {
-                    name: TableStringEnum.LIST,
-                    active: this.activeViewMode === TableStringEnum.LIST,
-                },
-                {
-                    name: TableStringEnum.CARD,
-                    active: this.activeViewMode === TableStringEnum.CARD,
-                },
-            ]
+                  {
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
+                  },
+                  {
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
+                  },
+              ]
             : [
-                {
-                    name: TableStringEnum.LIST,
-                    active: this.activeViewMode === TableStringEnum.LIST,
-                },
-                {
-                    name: TableStringEnum.CARD,
-                    active: this.activeViewMode === TableStringEnum.CARD,
-                },
-                //   {
-                //       name: TableStringEnum.MAP,
-                //       active: this.activeViewMode === TableStringEnum.MAP,
-                //   }, this is not going into this sprint
-            ];
+                  {
+                      name: TableStringEnum.LIST,
+                      active: this.activeViewMode === TableStringEnum.LIST,
+                  },
+                  {
+                      name: TableStringEnum.CARD,
+                      active: this.activeViewMode === TableStringEnum.CARD,
+                  },
+                  //   {
+                  //       name: TableStringEnum.MAP,
+                  //       active: this.activeViewMode === TableStringEnum.MAP,
+                  //   }, this is not going into this sprint
+              ];
     }
 
     private sendCustomerData(): void {
@@ -1037,9 +1032,9 @@ export class CustomerTableComponent
             // Set data for cards based on tab active
             this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                    (this.sendDataToCardsBack = this.displayRowsBack))
+                  (this.sendDataToCardsBack = this.displayRowsBack))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
-                    (this.sendDataToCardsBack = this.displayRowsBackShipper));
+                  (this.sendDataToCardsBack = this.displayRowsBackShipper));
 
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
@@ -1058,30 +1053,40 @@ export class CustomerTableComponent
             isSelected: false,
             businessName: this.filter
                 ? {
-                    hasBanDnu: data?.ban || data?.dnu || data?.status === 0,
-                    isDnu: data?.dnu,
-                    isClosed: data?.status === 0 ?? false,
-                    name: data?.businessName
-                        ? data.businessName
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                }
+                      hasBanDnu: data?.ban || data?.dnu || !data?.status,
+                      isDnu: data?.dnu,
+                      isClosed: data?.status === 0 ?? false,
+                      name: data?.businessName
+                          ? data.businessName
+                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                  }
                 : data?.businessName,
             tableAddressPhysical: data?.mainAddress?.address
                 ? data.mainAddress.address
                 : data?.mainPoBox?.poBox
-                    ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
-                    'Treba da se postavo odgovarajuci redosled za po box address'
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.mainPoBox.poBox +
+                  ' ' +
+                  data.mainPoBox.city +
+                  ' ' +
+                  data.mainPoBox.state +
+                  ' ' +
+                  data.mainPoBox.zipCode
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
                 : data?.billingPoBox?.poBox
-                    ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
-                    'Treba da se postavo odgovarajuci redosled za po box address'
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                ? data.mainPoBox.poBox +
+                  ' ' +
+                  data.mainPoBox.city +
+                  ' ' +
+                  data.mainPoBox.state +
+                  ' ' +
+                  data.mainPoBox.zipCode
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailAvailCredit: TableStringEnum.NA,
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? TableStringEnum.DOLLAR_SIGN +
-                this.thousandSeparator.transform(data.creditLimit)
+                  this.thousandSeparator.transform(data.creditLimit)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailTerm: data?.payTerm?.name
                 ? data.payTerm.name
@@ -1102,11 +1107,11 @@ export class CustomerTableComponent
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePPM: data?.pricePerMile
                 ? TableStringEnum.DOLLAR_SIGN +
-                this.thousandSeparator.transform(data.pricePerMile)
+                  this.thousandSeparator.transform(data.pricePerMile)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableRevenue: data?.revenue
                 ? TableStringEnum.DOLLAR_SIGN +
-                this.thousandSeparator.transform(data.revenue)
+                  this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
             tableContact: data?.brokerContacts?.length
@@ -1114,15 +1119,15 @@ export class CustomerTableComponent
                 : 0,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
-                    data.createdAt,
-                    TableStringEnum.DATE_FORMAT
-                )
+                      data.createdAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
-                    data.updatedAt,
-                    TableStringEnum.DATE_FORMAT
-                )
+                      data.updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDropdownContent: {
                 hasContent: true,
@@ -1136,13 +1141,13 @@ export class CustomerTableComponent
             ...data,
             businessName: this.filter
                 ? {
-                    hasBanDnu: data?.status === 0,
-                    isDnu: false,
-                    isClosed: data?.status === 0 ?? false,
-                    name: data?.businessName
-                        ? data.businessName
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                }
+                      hasBanDnu: !data?.status,
+                      isDnu: false,
+                      isClosed: data?.status === 0 ?? false,
+                      name: data?.businessName
+                          ? data.businessName
+                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                  }
                 : data?.businessName,
             isSelected: false,
             tableAddress: data?.address?.address
@@ -1170,9 +1175,9 @@ export class CustomerTableComponent
                 : 0,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
-                    data.createdAt,
-                    TableStringEnum.DATE_FORMAT
-                )
+                      data.createdAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: TableStringEnum.NA,
             tableDropdownContent: {
@@ -1183,7 +1188,33 @@ export class CustomerTableComponent
     }
 
     private getDropdownBrokerContent(data): DropdownItem[] {
-        return DropdownContentHelper.getDropdownBrokerContent(data);
+        let dropdownContent =
+            DropdownContentHelper.getDropdownBrokerContent(data);
+
+        dropdownContent.map((dropItem) => {
+            if (
+                dropItem.name === TableStringEnum.CREATE_LOAD &&
+                (data.ban || data.dnu)
+            )
+                dropItem.mutedStyle = true;
+            else dropItem.mutedStyle = false;
+
+            if (
+                !data.status &&
+                [
+                    TableStringEnum.CREATE_LOAD.toString(),
+                    TableStringEnum.ADD_CONTRACT.toString(),
+                    TableStringEnum.WRITE_REVIEW.toString(),
+                    TableStringEnum.MOVE_TO_BAN_LIST.toString(),
+                ].includes(dropItem.name)
+            )
+                dropItem.mutedStyle = true;
+            else dropItem.mutedStyle = false;
+
+            return dropItem;
+        });
+
+        return dropdownContent;
     }
 
     private getDropdownShipperContent(data): DropdownItem[] {
@@ -1427,8 +1458,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                    ? TableStringEnum.REVIEW
-                                    : TableStringEnum.DETAIL,
+                                ? TableStringEnum.REVIEW
+                                : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -1444,8 +1475,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                    ? TableStringEnum.REVIEW
-                                    : TableStringEnum.DETAIL,
+                                ? TableStringEnum.REVIEW
+                                : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -1464,7 +1495,6 @@ export class CustomerTableComponent
                     ...mappedEvent,
                     template: TableStringEnum.BROKER,
                     subType: TableStringEnum.BAN,
-                    //subTypeStatus: TableStringEnum.BUSINESS,
                     tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
                     modalTitle: event.data.businessName,
                     modalSecondTitle:
@@ -1472,19 +1502,6 @@ export class CustomerTableComponent
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
-
-            // this.modalService.openModal(
-            //     ConfirmationModalComponent,
-            //     { size: TableStringEnum.SMALL },
-            //     {
-            //         ...event,
-            //         type: TableStringEnum.INFO,
-            //         subType: TableStringEnum.BAN_LIST,
-            //         subTypeStatus: !event.data.ban
-            //             ? TableStringEnum.MOVE
-            //             : TableStringEnum.REMOVE,
-            //     }
-            // );
         } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
             const mappedEvent = {
                 ...event,
@@ -1500,7 +1517,6 @@ export class CustomerTableComponent
                     ...mappedEvent,
                     template: TableStringEnum.BROKER,
                     subType: TableStringEnum.DNU,
-                    //subTypeStatus: TableStringEnum.BUSINESS,
                     tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
                     modalTitle: event.data.businessName,
                     modalSecondTitle:
@@ -1508,41 +1524,7 @@ export class CustomerTableComponent
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
-
-            // this.modalService.openModal(
-            //     ConfirmationModalComponent,
-            //     { size: TableStringEnum.SMALL },
-            //     {
-            //         ...event,
-            //         type: TableStringEnum.INFO,
-            //         subType: TableStringEnum.DNU,
-            //         subTypeStatus: !event.data.dnu
-            //             ? TableStringEnum.MOVE
-            //             : TableStringEnum.REMOVE,
-            //     }
-            // );
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
-            // const mappedEvent = {
-            //     ...event,
-            //     type:
-            //         event.data.status === 1
-            //             ? TableStringEnum.CLOSE
-            //             : TableStringEnum.OPEN,
-            // };
-            // this.modalService.openModal(
-            //     ConfirmationModalComponent,
-            //     { size: TableStringEnum.SMALL },
-            //     {
-            //         ...mappedEvent,
-            //         template: TableStringEnum.INFO,
-            //         subType:
-            //             this.selectedTab === TableStringEnum.ACTIVE
-            //                 ? TableStringEnum.BROKER
-            //                 : TableStringEnum.SHIPPER,
-            //         subTypeStatus: TableStringEnum.BUSINESS,
-            //     }
-            // );
-
             const mappedEvent = {
                 ...event,
                 type: event.data.status
@@ -1589,8 +1571,10 @@ export class CustomerTableComponent
                             : TableStringEnum.SHIPPER,
                     type: TableStringEnum.DELETE,
                     svg: true,
-                    modalHeaderTitle: this.selectedTab === TableStringEnum.ACTIVE
-                        ? ConfirmationModalStringEnum.DELETE_BROKER : ConfirmationModalStringEnum.DELETE_SHIPPER,
+                    modalHeaderTitle:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? ConfirmationModalStringEnum.DELETE_BROKER
+                            : ConfirmationModalStringEnum.DELETE_SHIPPER,
                 }
             );
             if (this.selectedTab === TableStringEnum.ACTIVE) {

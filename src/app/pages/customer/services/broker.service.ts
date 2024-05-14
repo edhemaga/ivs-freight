@@ -196,8 +196,30 @@ export class BrokerService implements OnDestroy {
     }
 
     // Delete Broker List
-    public deleteBrokerList(): Observable<any> {
-        return of(null);
+    public deleteBrokerList(brokerIds: number[]): Observable<any> {
+        return this.brokerService.apiBrokerListDelete(brokerIds).pipe(
+            tap(() => {
+                const brokerShipperCount = JSON.parse(
+                    localStorage.getItem('brokerShipperTableCount')
+                );
+
+                brokerIds.forEach((brokerId) => {
+                    this.brokerStore.remove(({ id }) => id === brokerId);
+                    this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+                    this.bls.remove(({ id }) => id === brokerId);
+
+                    brokerShipperCount.broker--;
+                });
+
+                localStorage.setItem(
+                    'brokerShipperTableCount',
+                    JSON.stringify({
+                        broker: brokerShipperCount.broker,
+                        shipper: brokerShipperCount.shipper,
+                    })
+                );
+            })
+        );
     }
 
     // Delete Broker By Id Details
@@ -491,32 +513,34 @@ export class BrokerService implements OnDestroy {
     }
 
     public changeBrokerListStatus(brokerIds: number[]): Observable<any> {
-        return this.brokerService.apiBrokerStatusListPut({ ids: brokerIds }).pipe(
-            tap(() => {
-                this.getBrokerList().subscribe({
-                    next: (brokersList) => {
-                        brokersList.pagination.data.map((broker) => {
-                            this.brokerStore.remove(
-                                ({ id }) => id === broker.id
-                            );
-                            this.brokerMinimalStore.remove(
-                                ({ id }) => id === broker.id
-                            );
-                            this.brokerStore.add(broker);
-                            this.brokerMinimalStore.add(broker);
-                            this.bls.update(broker.id, { ban: broker.ban });
-                        });
+        return this.brokerService
+            .apiBrokerStatusListPut({ ids: brokerIds })
+            .pipe(
+                tap(() => {
+                    this.getBrokerList().subscribe({
+                        next: (brokersList) => {
+                            brokersList.pagination.data.map((broker) => {
+                                this.brokerStore.remove(
+                                    ({ id }) => id === broker.id
+                                );
+                                this.brokerMinimalStore.remove(
+                                    ({ id }) => id === broker.id
+                                );
+                                this.brokerStore.add(broker);
+                                this.brokerMinimalStore.add(broker);
+                                this.bls.update(broker.id, { ban: broker.ban });
+                            });
 
-                        this.tableService.sendActionAnimation({
-                            animation: TableStringEnum.UPDATE_MULTIPLE,
-                            tab: TableStringEnum.BROKER,
-                            data: brokersList?.pagination?.data?.[0],
-                            id: brokersList?.pagination?.data?.[0]?.id,
-                        });
-                    },
-                });
-            })
-        );
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_MULTIPLE,
+                                tab: TableStringEnum.BROKER,
+                                data: brokersList?.pagination?.data?.[0],
+                                id: brokersList?.pagination?.data?.[0]?.id,
+                            });
+                        },
+                    });
+                })
+            );
     }
 
     public getMileageChartData(id: number, chartType: number) {

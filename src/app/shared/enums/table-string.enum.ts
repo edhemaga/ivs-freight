@@ -171,6 +171,7 @@ export enum TableStringEnum {
     REMOVE_FROM_DNU_LIST = 'Remove from DNU List',
     CLOSE_BUSINESS_2 = 'Close Business',
     OPEN_BUSINESS = 'Open Business',
+    OPEN_BUSINESS_2 = 'open-business',
     WRITE_REVIEW = 'write-review',
     WRITE_REVIEW_2 = 'Write Review',
     ADD_CONTRACT = 'add-contact',
@@ -272,6 +273,7 @@ export enum TableStringEnum {
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
+    FAVOURITE = 'favourite',
     FINISH_ORDER = 'finish-order',
     FINISH_ORDER_2 = 'finish order',
     FINISH_ORDER_3 = 'Finish Order',

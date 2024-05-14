@@ -27,9 +27,9 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === 'TERM');
 
             const brokerTableColumnsCondition =
-                gridNameTitle === 'Broker' &&
-                (tableHeadTitle === 'ADDRESS ' ||
-                    tableHeadTitle === 'BILLING ');
+                gridNameTitle === 'Customer' &&
+                (tableHeadTitle === 'PHYSICAL' ||
+                    tableHeadTitle === 'CREDIT LIMIT');
 
             if (
                 contactsTableColumnsCondition ||
@@ -68,9 +68,9 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 );
 
             const brokerTableColumnsCondition =
-                gridNameTitle !== 'Broker' &&
-                tableHeadTitle !== 'ADDRESS ' &&
-                tableHeadTitle !== 'BILLING ';
+                gridNameTitle !== 'Customer' ||
+                (tableHeadTitle !== 'PHYSICAL' &&
+                    tableHeadTitle !== 'CREDIT LIMIT');
 
             const excludedGroupNames = [
                 'Owner Details',
@@ -82,8 +82,6 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 'Fuel Detail',
                 'Wheel Detail',
                 'Toll Device',
-                'Address',
-                'Billing'
             ];
 
             return (

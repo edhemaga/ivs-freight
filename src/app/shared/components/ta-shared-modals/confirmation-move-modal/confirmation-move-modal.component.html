@@ -63,7 +63,9 @@
                 </ng-container>
 
                 <ng-template #arrayTemplate>
-                    <ng-container *ngFor="let item of editData.array">
+                    <ng-container
+                        *ngFor="let item of editData.array; trackBy: identity"
+                    >
                         <div>
                             <div class="d-flex align-items-center">
                                 <div
