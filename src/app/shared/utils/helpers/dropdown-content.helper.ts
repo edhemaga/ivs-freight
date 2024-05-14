@@ -15,7 +15,7 @@ export class DropdownContentHelper {
                     width: 18,
                     height: 18,
                 },
-                mutedStyle: data.status === 1 ? false : true,
+                mutedStyle: !data.status,
                 hasBorder: true,
                 svgClass: TableStringEnum.REGULAR,
             },
@@ -43,7 +43,7 @@ export class DropdownContentHelper {
                     height: 18,
                 },
                 hasBorder: true,
-                mutedStyle: data.status === 1 ? false : true,
+                mutedStyle: !data.status,
                 svgClass: TableStringEnum.REGULAR,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
