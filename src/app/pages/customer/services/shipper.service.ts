@@ -26,6 +26,8 @@ import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shi
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 import { ShipperService as ShipperMainService } from 'appcoretruckassist';
+
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Injectable({
