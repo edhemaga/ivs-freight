@@ -18,7 +18,6 @@ export class TableHeadConditionsPipe implements PipeTransform {
                 return (
                     ![
                         'checkbox',
-                        'applicant-progress',
                         'sw-tw-total',
                         'citation',
                         'accident-citation',
@@ -35,8 +34,6 @@ export class TableHeadConditionsPipe implements PipeTransform {
                 );
             case 'heading':
                 return ngTemplate === 'text' && conditionData?.title === 'ft';
-            case 'special-heading':
-                return ngTemplate === 'applicant-progress';
             case 'sw-tw-heading':
                 return ngTemplate === 'sw-tw-total';
             case 'citation':

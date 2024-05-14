@@ -14,6 +14,7 @@ import { TableDoubleHeadPipe } from '@shared/components/ta-table/ta-table-head/p
 import { TableDoubleHeadTextPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-text.pipe';
 import { TableDoubleHeadHeightPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-double-head-height.pipe';
 import { TableHeadConditionsPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-conditions.pipe';
+import { TableHeadBorderPipe } from '@shared/components/ta-table/ta-table-head/pipes/table-head-border.pipe';
 
 // components
 import { TableHeadRowsPopoverComponent } from '@shared/components/ta-table/ta-table-head/components/table-head-rows-popover/table-head-rows-popover.component';
@@ -43,6 +44,7 @@ import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-he
         TableDoubleHeadTextPipe,
         TableDoubleHeadHeightPipe,
         TableHeadConditionsPipe,
+        TableHeadBorderPipe,
 
         // components
         TableHeadRowsPopoverComponent,
@@ -56,6 +58,10 @@ export class TableHeadRowsComponent {
         new EventEmitter();
 
     constructor() {}
+
+    public trackByIdentity(_: number, item: any): string {
+        return item.name || item.title;
+    }
 
     public handleTableHeadRowsActionClick(event: any, action: string): void {
         const eventEmit: TableHeadRowsActionEmit = {

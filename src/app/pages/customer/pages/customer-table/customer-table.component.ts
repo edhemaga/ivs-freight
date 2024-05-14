@@ -92,8 +92,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
     providers: [ThousandSeparatorPipe],
 })
 export class CustomerTableComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+    implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
@@ -163,7 +162,7 @@ export class CustomerTableComponent
 
         // Router
         private router: Router
-    ) {}
+    ) { }
 
     // ---------------------------- ngOnInit ------------------------------
     ngOnInit(): void {
@@ -207,19 +206,23 @@ export class CustomerTableComponent
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res.type === TableStringEnum.INFO) {
-                    if (res.subType === TableStringEnum.BAN_LIST) {
-                        this.changeBanStatus(res.data);
-                    } else {
-                        this.changeDnuStatus(res.data);
-                    }
-                }
-                if (res.template === TableStringEnum.INFO) {
-                    if (this.selectedTab === TableStringEnum.ACTIVE) {
-                        this.changeBussinesStatusBroker(res.data);
-                    } else {
-                        this.changeBussinesStatusShipper(res.data);
-                    }
+                switch (res.type) {
+                    case TableStringEnum.INFO:
+                        if (res.subType === TableStringEnum.BAN_LIST)
+                            this.changeBanStatus(res.data);
+                        else this.changeDnuStatus(res.data);
+                        break;
+                    case TableStringEnum.INFO:
+                        if (this.selectedTab === TableStringEnum.ACTIVE)
+                            this.changeBussinesStatusBroker(res.data);
+                        else this.changeBussinesStatusShipper(res.data);
+                        break;
+                    case TableStringEnum.MULTIPLE_DELETE:
+                        if (this.selectedTab === TableStringEnum.INACTIVE)
+                            this.deleteShipperList(res.array);
+                        break;
+                    default:
+                        break;
                 }
             });
 
@@ -263,6 +266,38 @@ export class CustomerTableComponent
                         }
                     }
                 }
+            });
+    }
+
+    private deleteShipperList(ids: number[]): void {
+        this.shipperService
+            .deleteShipperList(ids)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((fuel) => {
+                    ids.map((id) => {
+                        if (fuel.id === id)
+                            fuel.actionAnimation =
+                                TableStringEnum.DELETE_MULTIPLE;
+                    });
+
+                    return fuel;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+                    this.tableData[0].data = this.viewData;
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -614,30 +649,25 @@ export class CustomerTableComponent
                     }
                     // Delete Shipper List
                     else {
-                        let shipperName: TableStringEnum | string =
-                            TableStringEnum.EMPTY_STRING_PLACEHOLDER;
-
-                        this.viewData.map((data: ShipperResponse) => {
-                            response.map((r: ShipperResponse) => {
-                                if (data.id === r.id) {
-                                    if (!shipperName) {
-                                        shipperName = data.businessName;
-                                    } else {
-                                        shipperName =
-                                            shipperName +
-                                            TableStringEnum.COMA +
-                                            data.businessName;
-                                    }
-                                }
-                            });
+                        const mappedRes = response.map((item) => {
+                            return {
+                                id: item.id,
+                                data: {
+                                    ...item.tableData,
+                                },
+                            };
                         });
-
-                        this.shipperService
-                            .deleteShipperList()
-                            .pipe(takeUntil(this.destroy$))
-                            .subscribe(() => {
-                                this.multipleDeleteData(response);
-                            });
+                        this.modalService.openModal(
+                            ConfirmationModalComponent,
+                            { size: TableStringEnum.SMALL },
+                            {
+                                data: null,
+                                array: mappedRes,
+                                template: TableStringEnum.SHIPPER,
+                                type: TableStringEnum.MULTIPLE_DELETE,
+                                svg: true,
+                            }
+                        );
                     }
                 }
             });
@@ -830,29 +860,29 @@ export class CustomerTableComponent
     }[] {
         return this.selectedTab === TableStringEnum.ACTIVE
             ? [
-                  {
-                      name: TableStringEnum.LIST,
-                      active: this.activeViewMode === TableStringEnum.LIST,
-                  },
-                  {
-                      name: TableStringEnum.CARD,
-                      active: this.activeViewMode === TableStringEnum.CARD,
-                  },
-              ]
+                {
+                    name: TableStringEnum.LIST,
+                    active: this.activeViewMode === TableStringEnum.LIST,
+                },
+                {
+                    name: TableStringEnum.CARD,
+                    active: this.activeViewMode === TableStringEnum.CARD,
+                },
+            ]
             : [
-                  {
-                      name: TableStringEnum.LIST,
-                      active: this.activeViewMode === TableStringEnum.LIST,
-                  },
-                  {
-                      name: TableStringEnum.CARD,
-                      active: this.activeViewMode === TableStringEnum.CARD,
-                  },
-                  {
-                      name: TableStringEnum.MAP,
-                      active: this.activeViewMode === TableStringEnum.MAP,
-                  },
-              ];
+                {
+                    name: TableStringEnum.LIST,
+                    active: this.activeViewMode === TableStringEnum.LIST,
+                },
+                {
+                    name: TableStringEnum.CARD,
+                    active: this.activeViewMode === TableStringEnum.CARD,
+                },
+                //   {
+                //       name: TableStringEnum.MAP,
+                //       active: this.activeViewMode === TableStringEnum.MAP,
+                //   }, this is not going into this sprint
+            ];
     }
 
     private sendCustomerData(): void {
@@ -1007,9 +1037,9 @@ export class CustomerTableComponent
             // Set data for cards based on tab active
             this.selectedTab === TableStringEnum.ACTIVE
                 ? ((this.sendDataToCardsFront = this.displayRowsFront),
-                  (this.sendDataToCardsBack = this.displayRowsBack))
+                    (this.sendDataToCardsBack = this.displayRowsBack))
                 : ((this.sendDataToCardsFront = this.displayRowsFrontShipper),
-                  (this.sendDataToCardsBack = this.displayRowsBackShipper));
+                    (this.sendDataToCardsBack = this.displayRowsBackShipper));
 
             this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
@@ -1028,30 +1058,30 @@ export class CustomerTableComponent
             isSelected: false,
             businessName: this.filter
                 ? {
-                      hasBanDnu: data?.ban || data?.dnu || data?.status === 0,
-                      isDnu: data?.dnu,
-                      isClosed: data?.status === 0 ?? false,
-                      name: data?.businessName
-                          ? data.businessName
-                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                  }
+                    hasBanDnu: data?.ban || data?.dnu || data?.status === 0,
+                    isDnu: data?.dnu,
+                    isClosed: data?.status === 0 ?? false,
+                    name: data?.businessName
+                        ? data.businessName
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                }
                 : data?.businessName,
             tableAddressPhysical: data?.mainAddress?.address
                 ? data.mainAddress.address
                 : data?.mainPoBox?.poBox
-                ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
-                  'Treba da se postavo odgovarajuci redosled za po box address'
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
+                    'Treba da se postavo odgovarajuci redosled za po box address'
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAddressBilling: data?.billingAddress?.address
                 ? data.billingAddress.address
                 : data?.billingPoBox?.poBox
-                ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
-                  'Treba da se postavo odgovarajuci redosled za po box address'
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    ? // ? data.mainPoBox.poBox + ' ' + data.mainPoBox.city + ' ' + data.mainPoBox.state + ' ' + data.mainPoBox.zipCode
+                    'Treba da se postavo odgovarajuci redosled za po box address'
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailAvailCredit: TableStringEnum.NA,
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.creditLimit)
+                this.thousandSeparator.transform(data.creditLimit)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailTerm: data?.payTerm?.name
                 ? data.payTerm.name
@@ -1072,11 +1102,11 @@ export class CustomerTableComponent
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePPM: data?.pricePerMile
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.pricePerMile)
+                this.thousandSeparator.transform(data.pricePerMile)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableRevenue: data?.revenue
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.revenue)
+                this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
             tableContact: data?.brokerContacts?.length
@@ -1084,15 +1114,15 @@ export class CustomerTableComponent
                 : 0,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
-                      data.createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                    data.createdAt,
+                    TableStringEnum.DATE_FORMAT
+                )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: data.updatedAt
                 ? this.datePipe.transform(
-                      data.updatedAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                    data.updatedAt,
+                    TableStringEnum.DATE_FORMAT
+                )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableDropdownContent: {
                 hasContent: true,
@@ -1106,13 +1136,13 @@ export class CustomerTableComponent
             ...data,
             businessName: this.filter
                 ? {
-                      hasBanDnu: data?.status === 0,
-                      isDnu: false,
-                      isClosed: data?.status === 0 ?? false,
-                      name: data?.businessName
-                          ? data.businessName
-                          : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                  }
+                    hasBanDnu: data?.status === 0,
+                    isDnu: false,
+                    isClosed: data?.status === 0 ?? false,
+                    name: data?.businessName
+                        ? data.businessName
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                }
                 : data?.businessName,
             isSelected: false,
             tableAddress: data?.address?.address
@@ -1140,9 +1170,9 @@ export class CustomerTableComponent
                 : 0,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
-                      data.createdAt,
-                      TableStringEnum.DATE_FORMAT
-                  )
+                    data.createdAt,
+                    TableStringEnum.DATE_FORMAT
+                )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableEdited: TableStringEnum.NA,
             tableDropdownContent: {
@@ -1397,8 +1427,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                    ? TableStringEnum.REVIEW
+                                    : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -1414,8 +1444,8 @@ export class CustomerTableComponent
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                    ? TableStringEnum.REVIEW
+                                    : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -1553,9 +1583,14 @@ export class CustomerTableComponent
                 { size: TableStringEnum.DELETE },
                 {
                     ...event,
-                    template: TableStringEnum.BROKER,
+                    template:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.BROKER
+                            : TableStringEnum.SHIPPER,
                     type: TableStringEnum.DELETE,
-                    modalHeaderTitle: ConfirmationModalStringEnum.DELETE_BROKER,
+                    svg: true,
+                    modalHeaderTitle: this.selectedTab === TableStringEnum.ACTIVE
+                        ? ConfirmationModalStringEnum.DELETE_BROKER : ConfirmationModalStringEnum.DELETE_SHIPPER,
                 }
             );
             if (this.selectedTab === TableStringEnum.ACTIVE) {

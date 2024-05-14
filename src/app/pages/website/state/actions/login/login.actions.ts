@@ -7,7 +7,7 @@ import { SignInResponse } from 'appcoretruckassist';
 import { LoginProps } from '@pages/website/state/models/auth-login.model';
 
 // enums
-import { AuthLoginEnum } from '@pages/website/state/auth.enums';
+import { AuthLoginEnum } from '@pages/website/state/enums/login.enum';
 
 export const authLogin = createAction(
     AuthLoginEnum.LOGIN,

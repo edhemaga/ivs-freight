@@ -236,10 +236,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public addContactPhoneOrEmail(
-        _: { check: boolean; action: string },
-        type: string
-    ): void {
+    public addContactPhoneOrEmail(type: string): void {
         switch (type) {
             case ContactsModalStringEnum.PHONE:
                 if (

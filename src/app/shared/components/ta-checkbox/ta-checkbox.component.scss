@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .ta-checkbox-container {
     display: inline-block;
     position: relative;
@@ -132,6 +134,14 @@
         }
     }
 
+    /* Use Carriera ACH */
+
+    .carriera-icon {
+        line-height: 10px;
+        margin-left: 6px;
+        cursor: pointer;
+    }
+
     // -------------------------- Custom Class --------------------------------
     &.disabled {
         pointer-events: none !important;
@@ -153,6 +163,18 @@
             color: #dadada !important;
         }
 
+        .ta-checkbox-disabled-blue {
+            svg {
+                path {
+                    fill: $ta-blue-13 !important;
+                }
+            }
+        }
+
+        .ta-checkbox-label-blue {
+            color: $ta-black !important;
+        }
+
         &.disabled-valid {
             svg {
                 path {
@@ -164,6 +186,32 @@
                 font-weight: 500;
                 color: #6c6c6c !important;
             }
+        }
+    }
+
+    &.disabled-blue {
+        pointer-events: none !important;
+
+        .ta-checkbox-disabled-blue {
+            height: 14px;
+            width: 14px;
+            line-height: 15px;
+
+            position: relative;
+            bottom: 1px;
+
+            svg {
+                path {
+                    fill: $ta-blue-13 !important;
+                }
+            }
+        }
+
+        .ta-checkbox-label-blue {
+            color: $ta-black !important;
+
+            position: relative;
+            bottom: 1px;
         }
     }
 

@@ -136,7 +136,7 @@ export enum TableStringEnum {
     NEW_LICENCE = 'new-licence',
     NEW_MEDICAL = 'new-medical',
     NEW_MVR = 'new-mvr',
-    ADD_CDL = 'Add CDL',
+    CDL = 'CDL',
     NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
@@ -201,11 +201,15 @@ export enum TableStringEnum {
     DRIVER_2 = 'drivers',
     APPLICANT = 'APPLICANT',
 
-    APP = 'App.',
+    APP = 'APP',
+    OWN = 'OWN',
+    MED = 'MED',
+    MVR = 'MVR',
+    PSP = 'PSP',
+    SPH = 'SPH',
+    HOS = 'HOS',
+    TEST = 'TEST',
 
-    MVR = 'Mvr',
-    MVR_2 = 'MVR',
-    ADD_MVR = 'Add MVR',
     TEST_MVR = 'test-mvr',
 
     TEST_DRUG_ALCOHOL = 'Test (Drug, Alcohol)',
@@ -221,13 +225,9 @@ export enum TableStringEnum {
     REQUEST = 'Request',
     ADD_TO_FAVORITES = 'add-to-favourites',
 
-    PSP = 'Psp',
-    SPH = 'Sph',
-    HOS = 'Hos',
     SSN = 'Ssn',
-
-    EMAIL = 'Email•',
-    PUSH = 'Push•',
+    EMAIL = 'Email • ',
+    PUSH = 'Push • ',
     SMS = 'SMS',
 
     // Truck

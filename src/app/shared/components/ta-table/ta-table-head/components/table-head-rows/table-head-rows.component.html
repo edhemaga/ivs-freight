@@ -17,7 +17,8 @@
         *ngFor="
             let column of tableHeadRowsData?.pinedColumns ??
                 tableHeadRowsData?.notPinedColumns;
-            let i = index
+            let i = index;
+            trackBy: trackByIdentity
         "
     >
         <th
@@ -26,10 +27,9 @@
             cdkDragBoundary="tr"
             [cdkDragPreviewClass]="'cdk-drag-preview'"
             [cdkDragDisabled]="
-                tableHeadRowsData?.notPinedColumns &&
-                (tableHeadRowsData?.locked ||
-                    tableHeadRowsData?.resizing ||
-                    column.isAction)
+                tableHeadRowsData?.locked ||
+                tableHeadRowsData?.resizing ||
+                column.isAction
             "
             [resizeColumn]="column.resizable && !tableHeadRowsData?.locked"
             [index]="i"
@@ -693,7 +693,11 @@
                                     column.sortDirection,
                                 'th-title-locked-cursor':
                                     tableHeadRowsData?.locked,
-                                'set-center-th-title': column.setCenter
+                                'set-center-th-title': column.setCenter,
+                                'border-left':
+                                    tableHeadRowsData?.tableData[0]
+                                        .gridNameTitle
+                                    | tableHeadBorder : column.tableHeadTitle
                             }"
                         >
                             {{ column.tableHeadTitle }}
@@ -740,7 +744,7 @@
                                       conditionType: 'heading',
                                       title: column.title
                                   };
-                        else specialHeading
+                        else swTwHeading
                     "
                 >
                     <div
@@ -764,49 +768,6 @@
                         (click)="handleTableHeadRowsActionClick(column, 'sort')"
                     >
                         {{ column.title }}
-                    </div>
-                </ng-container>
-            </ng-template>
-
-            <!-- Special Heading -->
-
-            <ng-template #specialHeading>
-                <ng-container
-                    *ngIf="
-                        column.ngTemplate
-                            | tableHeadConditions
-                                : {
-                                      conditionType: 'special-heading'
-                                  };
-                        else swTwHeading
-                    "
-                >
-                    <div
-                        class="d-flex special-title"
-                        [ngStyle]="{
-                            'min-width.px':
-                                column.resizable && !tableHeadRowsData?.locked
-                                    ? column.width - 100
-                                    : column.width
-                        }"
-                        [ngClass]="{
-                            'sort-active':
-                                column.sortDirection !== '' &&
-                                column.sortDirection,
-                            'th-title-locked-cursor': tableHeadRowsData?.locked
-                        }"
-                        (click)="handleTableHeadRowsActionClick(column, 'sort')"
-                    >
-                        <ng-container *ngFor="let title of column.headTitle">
-                            <div
-                                class="ta-font-bold title"
-                                [ngStyle]="{
-                                    'width.px': title.width
-                                }"
-                            >
-                                {{ title.title }}
-                            </div>
-                        </ng-container>
                     </div>
                 </ng-container>
             </ng-template>

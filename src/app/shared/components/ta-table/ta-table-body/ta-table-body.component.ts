@@ -35,7 +35,6 @@ import { TableStrategy } from '@shared/components/ta-table/ta-table-body/strateg
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { SharedService } from '@shared/services/shared.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { FilesService } from '@shared/services/files.service';
 
@@ -81,7 +80,7 @@ import { TableBodyColorLabel } from '@shared/models/table-models/table-body-colo
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
-//
+// constants
 import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constant';
 
 @Titles()
@@ -191,7 +190,6 @@ export class TaTableBodyComponent
         private router: Router,
         private tableService: TruckassistTableService,
         private changeDetectorRef: ChangeDetectorRef,
-        private sharedService: SharedService,
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
         private sanitizer: DomSanitizer
@@ -702,17 +700,6 @@ export class TaTableBodyComponent
                 });
 
                 this.dropdownActions = [...actions];
-
-                // // remove this line when we enable those options
-                // this.dropdownActions = this.dropdownActions.filter(
-                //     (data) =>
-                //         ![
-                //             'share',
-                //             'print',
-                //             'send-sms',
-                //             'view-details',
-                //         ].includes(data.name)
-                // );
 
                 const dropdownData = {
                     companyUserId: row.companyUserId,

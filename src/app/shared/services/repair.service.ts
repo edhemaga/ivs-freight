@@ -191,7 +191,6 @@ export class RepairService {
             search2
         );
     }
-
     public getRepairById(id: number): Observable<RepairResponse> {
         return this.repairService.apiRepairIdGet(id);
     }
