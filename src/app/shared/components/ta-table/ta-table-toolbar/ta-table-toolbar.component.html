@@ -175,7 +175,12 @@
             </ng-container>
 
             <!-- Print -->
-            <ng-container *ngIf="tableRowsSelected.length">
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    !options.toolbarActions.hidePrintButton
+                "
+            >
                 <div
                     class="action-div d-flex justify-content-center align-items-center"
                 >

@@ -204,6 +204,14 @@ export class CustomerTableComponent
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.deleteShipperList(res.array);
                         break;
+                    case TableStringEnum.CLOSE:
+                        if (this.selectedTab === TableStringEnum.INACTIVE)
+                            this.changeBussinesStatusShipper(res.data);
+                        break;
+                    case TableStringEnum.OPEN:
+                        if (this.selectedTab === TableStringEnum.INACTIVE)
+                            this.changeBussinesStatusShipper(res.data);
+                        break;
                     default:
                         break;
                 }
@@ -548,6 +556,7 @@ export class CustomerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
+                hidePrintButton: true,
                 showBrokerFilter: this.selectedTab === TableStringEnum.ACTIVE,
                 showBrokerFilterClosed:
                     this.selectedTab === TableStringEnum.INACTIVE,
@@ -1266,11 +1275,7 @@ export class CustomerTableComponent
                 this.confiramtionService.confirmationData$.subscribe(
                     (response) => {
                         if (response.type === TableStringEnum.DELETE) {
-                            this.shipperService
-                                .deleteShipperById(event.id)
-                                .pipe(takeUntil(this.destroy$))
-
-                                .subscribe();
+                            this.deleteShipperList([event.id]);
                         }
                     }
                 );

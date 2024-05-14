@@ -881,7 +881,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.isAppointmentShipping = true;
                     }
 
-                    this.reviews = res.reviews.map((item: any) => ({
+                    this.reviews = res?.reviews?.map((item: any) => ({
                         ...item,
                         companyUser: {
                             ...item.companyUser,
@@ -891,7 +891,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         rating: item.ratingFromTheReviewer,
                     }));
 
-                    const reviewIndex = this.reviews.findIndex(
+                    const reviewIndex = this.reviews?.findIndex(
                         (item) =>
                             item.companyUser.id ===
                             this.companyUser.companyUserId
@@ -944,17 +944,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         if (this.editData?.id) {
                             this.disableCardAnimation = true;
                             this.editShipperById(this.editData.id);
-                            this.tabs.push({
-                                id: 3,
-                                name: 'Review',
-                            });
+                            // this.tabs.push({
+                            //     id: 3,
+                            //     name: 'Review',
+                            // }); this is not going into first spring
                             this.ratingChanges();
                         } else {
                             this.startFormChanges();
                         }
                     }
                     this.tabs = this.tabs.map((tab) => {
-                        if (tab.name === this.editData.openedTab) {
+                        if (this.editData?.openedTab && tab.name === this.editData.openedTab) {
                             return { ...tab, checked: true };
                         } else {
                             return { ...tab, checked: false };
