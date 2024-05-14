@@ -200,7 +200,7 @@
                                                         size: 'small',
                                                         color: 'white',
                                                         isLoading:
-                                                            loadingOwnerEin
+                                                            isOwnerEinLoading
                                                     }
                                                 }"
                                             ></app-ta-input>
@@ -258,10 +258,7 @@
                             <div
                                 class="align-items-center custom-row-paytype-driver"
                                 [ngClass]="{
-                                    'owner-selected':
-                                        driverForm.get('isOwner').value &&
-                                        selectedPayType &&
-                                        selectedPayType?.name === 'Commission'
+                                    'not-combined': fleetType !== 'Combined'
                                 }"
                             >
                                 <app-ta-checkbox
@@ -293,14 +290,7 @@
                                     "
                                 ></app-ta-input-dropdown>
 
-                                <ng-container
-                                    *ngIf="
-                                        (driverForm.get('isOwner').value &&
-                                            selectedPayType?.name !==
-                                                'Commission') ||
-                                        !driverForm.get('isOwner').value
-                                    "
-                                >
+                                <ng-container *ngIf="fleetType === 'Combined'">
                                     <app-ta-checkbox
                                         formControlName="soloDriver"
                                         [customClass]="'medium'"
@@ -310,16 +300,7 @@
                                             !driverForm.get('teamDriver').value
                                         "
                                     ></app-ta-checkbox>
-                                </ng-container>
 
-                                <ng-container
-                                    *ngIf="
-                                        (driverForm.get('isOwner').value &&
-                                            selectedPayType?.name !==
-                                                'Commission') ||
-                                        !driverForm.get('isOwner').value
-                                    "
-                                >
                                     <app-ta-checkbox
                                         formControlName="teamDriver"
                                         [customClass]="'medium'"
@@ -336,145 +317,245 @@
 
                             <ng-container
                                 *ngIf="
-                                    selectedPayType?.name.toLowerCase() ===
-                                        'per mile';
+                                    selectedPayType?.name === 'Per Mile';
                                     else commission
                                 "
                             >
                                 <div
                                     class="paytype-permile"
                                     [class.active]="
-                                        selectedPayType?.name.toLowerCase() ===
-                                        'per mile'
+                                        selectedPayType?.name === 'Per Mile'
                                     "
                                 >
-                                    <div
-                                        class="align-items-center permile-fields"
-                                        [ngClass]="{
-                                            disabled:
-                                                !driverForm.get('soloDriver')
-                                                    .value
-                                        }"
+                                    <!-- Per Mile Solo -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            ['Solo', 'Combined'].includes(
+                                                fleetType
+                                            )
+                                        "
                                     >
-                                        <p class="m-0 ta-font-medium">SOLO</p>
-
-                                        <app-ta-input
-                                            formControlName="soloEmptyMile"
-                                            [inputConfig]="{
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Empty Mi',
-                                                placeholderIcon: 'dollar',
-                                                isRequired: true,
-                                                isDisabled:
+                                        <div
+                                            class="align-items-center permile-fields"
+                                            [ngClass]="{
+                                                disabled:
                                                     !driverForm.get(
                                                         'soloDriver'
                                                     ).value,
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4
+                                                'solo-or-team':
+                                                    fleetType === 'Solo',
+                                                'permile-fields-same-rate':
+                                                    hasMilesSameRate
                                             }"
-                                        ></app-ta-input>
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    fleetType === 'Combined' ||
+                                                    hasMilesSameRate
+                                                "
+                                            >
+                                                <p class="m-0 ta-font-medium">
+                                                    SOLO
+                                                </p>
+                                            </ng-container>
 
-                                        <app-ta-input
-                                            formControlName="soloLoadedMile"
-                                            [inputConfig]="{
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Loaded Mi',
-                                                placeholderIcon: 'dollar',
-                                                isRequired: true,
-                                                isDisabled:
-                                                    !driverForm.get(
-                                                        'soloDriver'
-                                                    ).value,
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4
-                                            }"
-                                        ></app-ta-input>
+                                            <ng-container
+                                                *ngIf="
+                                                    !hasMilesSameRate;
+                                                    else perMileSolo
+                                                "
+                                            >
+                                                <app-ta-input
+                                                    formControlName="soloEmptyMile"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Empty Mi',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'soloDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                ></app-ta-input>
 
-                                        <app-ta-input
-                                            formControlName="soloPerStop"
-                                            [inputConfig]="{
-                                                name: 'Per Stop',
-                                                label: 'Per Stop',
-                                                type: 'text',
-                                                placeholderIcon: 'dollar',
-                                                thousandSeparator: true,
-                                                isDisabled:
-                                                    !driverForm.get(
-                                                        'soloDriver'
-                                                    ).value,
-                                                min: 0,
-                                                max: 5000
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
+                                                <app-ta-input
+                                                    formControlName="soloLoadedMile"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Loaded Mi',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'soloDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                ></app-ta-input>
+                                            </ng-container>
 
-                                    <div
-                                        class="align-items-center permile-fields"
-                                        [ngClass]="{
-                                            disabled:
-                                                !driverForm.get('teamDriver')
-                                                    .value
-                                        }"
+                                            <ng-template #perMileSolo>
+                                                <app-ta-input
+                                                    formControlName="perMileSolo"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Per Mile',
+                                                        isRequired: true,
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                >
+                                                </app-ta-input>
+                                            </ng-template>
+
+                                            <app-ta-input
+                                                formControlName="soloPerStop"
+                                                [inputConfig]="{
+                                                    name: 'Per Stop',
+                                                    label: 'Per Stop',
+                                                    type: 'text',
+                                                    placeholderIcon: 'dollar',
+                                                    thousandSeparator: true,
+                                                    isDisabled:
+                                                        !driverForm.get(
+                                                            'soloDriver'
+                                                        ).value,
+                                                    min: 0,
+                                                    max: 5000
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- Per Mile Team -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            ['Team', 'Combined'].includes(
+                                                fleetType
+                                            )
+                                        "
                                     >
-                                        <p class="m-0 ta-font-medium">TEAM</p>
-
-                                        <app-ta-input
-                                            formControlName="teamEmptyMile"
-                                            [inputConfig]="{
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Empty Mi',
-                                                placeholderIcon: 'dollar',
-                                                isRequired: true,
-                                                isDisabled:
+                                        <div
+                                            class="align-items-center permile-fields"
+                                            [ngClass]="{
+                                                disabled:
                                                     !driverForm.get(
                                                         'teamDriver'
                                                     ).value,
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4
+                                                'solo-or-team':
+                                                    fleetType === 'Team',
+                                                'permile-fields-same-rate':
+                                                    hasMilesSameRate
                                             }"
-                                        ></app-ta-input>
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    fleetType === 'Combined' ||
+                                                    hasMilesSameRate
+                                                "
+                                            >
+                                                <p class="m-0 ta-font-medium">
+                                                    TEAM
+                                                </p>
+                                            </ng-container>
 
-                                        <app-ta-input
-                                            formControlName="teamLoadedMile"
-                                            [inputConfig]="{
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Loaded Mi',
-                                                placeholderIcon: 'dollar',
-                                                isRequired: true,
-                                                isDisabled:
-                                                    !driverForm.get(
-                                                        'teamDriver'
-                                                    ).value,
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4
-                                            }"
-                                        ></app-ta-input>
+                                            <ng-container
+                                                *ngIf="
+                                                    !hasMilesSameRate;
+                                                    else perMileTeam
+                                                "
+                                            >
+                                                <app-ta-input
+                                                    formControlName="teamEmptyMile"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Empty Mi',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'teamDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                ></app-ta-input>
 
-                                        <app-ta-input
-                                            formControlName="teamPerStop"
-                                            [inputConfig]="{
-                                                name: 'Per Stop',
-                                                label: 'Per Stop',
-                                                type: 'text',
-                                                placeholderIcon: 'dollar',
-                                                thousandSeparator: true,
-                                                isDisabled:
-                                                    !driverForm.get(
-                                                        'teamDriver'
-                                                    ).value,
-                                                min: 0,
-                                                max: 5000
-                                            }"
-                                        ></app-ta-input>
-                                    </div>
+                                                <app-ta-input
+                                                    formControlName="teamLoadedMile"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Loaded Mi',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'teamDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                ></app-ta-input>
+                                            </ng-container>
+
+                                            <ng-template #perMileTeam>
+                                                <app-ta-input
+                                                    formControlName="perMileTeam"
+                                                    [inputConfig]="{
+                                                        name: 'Per Mile',
+                                                        type: 'text',
+                                                        label: 'Per Mile',
+                                                        isRequired: true,
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        min: 0,
+                                                        max: 10,
+                                                        maxLength: 4
+                                                    }"
+                                                >
+                                                </app-ta-input>
+                                            </ng-template>
+
+                                            <app-ta-input
+                                                formControlName="teamPerStop"
+                                                [inputConfig]="{
+                                                    name: 'Per Stop',
+                                                    label: 'Per Stop',
+                                                    type: 'text',
+                                                    placeholderIcon: 'dollar',
+                                                    thousandSeparator: true,
+                                                    isDisabled:
+                                                        !driverForm.get(
+                                                            'teamDriver'
+                                                        ).value,
+                                                    min: 0,
+                                                    max: 5000
+                                                }"
+                                            ></app-ta-input>
+                                        </div>
+                                    </ng-container>
                                 </div>
                             </ng-container>
 
@@ -489,11 +570,13 @@
                                 >
                                     <ng-container
                                         *ngIf="
-                                            !driverForm.get('isOwner').value;
+                                            fleetType === 'Combined';
                                             else singleCommission
                                         "
                                     >
                                         <div class="paytype-commission">
+                                            <!-- Commission Solo -->
+
                                             <div class="paytype-field">
                                                 <app-ta-ngx-slider
                                                     [sliderName]="
@@ -518,6 +601,8 @@
                                                     "
                                                 ></app-ta-ngx-slider>
                                             </div>
+
+                                            <!-- Commission Team -->
 
                                             <div class="paytype-field">
                                                 <app-ta-ngx-slider
@@ -582,50 +667,89 @@
                             <ng-template #flatRate>
                                 <ng-container
                                     *ngIf="
-                                        selectedPayType?.name.toLowerCase() ===
-                                        'flat rate'
+                                        selectedPayType?.name === 'Flat Rate'
                                     "
                                 >
                                     <div class="row">
-                                        <div class="col-6">
-                                            <app-ta-input
-                                                formControlName="soloFlatRate"
-                                                [inputConfig]="{
-                                                    name: 'Flat Rate',
-                                                    label: 'Solo Rate',
-                                                    type: 'text',
-                                                    placeholderIcon: 'dollar',
-                                                    thousandSeparator: true,
-                                                    isRequired: true,
-                                                    isDisabled:
-                                                        !driverForm.get(
-                                                            'soloDriver'
-                                                        ).value,
-                                                    min: 0,
-                                                    max: 5000
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
+                                        <!-- Flat Rate Solo -->
 
-                                        <div class="col-6">
-                                            <app-ta-input
-                                                formControlName="teamFlatRate"
-                                                [inputConfig]="{
-                                                    name: 'Flat Rate',
-                                                    label: 'Team Rate',
-                                                    type: 'text',
-                                                    placeholderIcon: 'dollar',
-                                                    thousandSeparator: true,
-                                                    isRequired: true,
-                                                    isDisabled:
-                                                        !driverForm.get(
-                                                            'teamDriver'
-                                                        ).value,
-                                                    min: 0,
-                                                    max: 5000
+                                        <ng-container
+                                            *ngIf="
+                                                ['Solo', 'Combined'].includes(
+                                                    fleetType
+                                                )
+                                            "
+                                        >
+                                            <div
+                                                [ngClass]="{
+                                                    'col-6':
+                                                        fleetType === 'Combined'
                                                 }"
-                                            ></app-ta-input>
-                                        </div>
+                                            >
+                                                <app-ta-input
+                                                    formControlName="soloFlatRate"
+                                                    [inputConfig]="{
+                                                        name: 'Flat Rate',
+                                                        label:
+                                                            fleetType ===
+                                                            'Combined'
+                                                                ? 'Solo Rate'
+                                                                : 'Rate',
+                                                        type: 'text',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        thousandSeparator: true,
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'soloDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 5000
+                                                    }"
+                                                ></app-ta-input>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- Flat Rate Team -->
+
+                                        <ng-container
+                                            *ngIf="
+                                                ['Team', 'Combined'].includes(
+                                                    fleetType
+                                                )
+                                            "
+                                        >
+                                            <div
+                                                [ngClass]="{
+                                                    'col-6':
+                                                        fleetType === 'Combined'
+                                                }"
+                                            >
+                                                <app-ta-input
+                                                    formControlName="teamFlatRate"
+                                                    [inputConfig]="{
+                                                        name: 'Flat Rate',
+                                                        label:
+                                                            fleetType ===
+                                                            'Combined'
+                                                                ? 'Team Rate'
+                                                                : 'Rate',
+                                                        type: 'text',
+                                                        placeholderIcon:
+                                                            'dollar',
+                                                        thousandSeparator: true,
+                                                        isRequired: true,
+                                                        isDisabled:
+                                                            !driverForm.get(
+                                                                'teamDriver'
+                                                            ).value,
+                                                        min: 0,
+                                                        max: 5000
+                                                    }"
+                                                ></app-ta-input>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </ng-container>
                             </ng-template>

@@ -11,6 +11,11 @@ export enum DriverModalStringEnum {
     OWNER_TYPE = 'ownerType',
     EMAIL = 'email',
     EIN = 'ein',
+    MVR_EXPIRATION = 'mvrExpiration',
+
+    SOLO = 'Solo',
+    TEAM = 'Team',
+    COMBINED = 'Combined',
 
     BASIC = 'Basic',
     ADDITIONAL = 'Additional',
