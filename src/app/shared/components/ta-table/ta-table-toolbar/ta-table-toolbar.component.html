@@ -219,7 +219,11 @@
                 "
             >
                 <div
-                    (click)="dnuSelectedRows()"
+                    (click)="
+                        options.toolbarActions.showRemoveFromBanList
+                            ? banSelectedRows()
+                            : dnuSelectedRows()
+                    "
                     class="action-div d-flex justify-content-center align-items-center action-hover"
                     ngbTooltip
                     [mainTooltip]="
@@ -252,7 +256,7 @@
                 "
             >
                 <div
-                    (click)="dnuSelectedRows()"
+                    (click)="bussinessSelectedRows()"
                     class="action-div d-flex justify-content-center align-items-center action-hover"
                     ngbTooltip
                     [mainTooltip]="
@@ -267,6 +271,33 @@
                         class="open-bussiness-icon"
                         [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                         [src]="'assets/svg/common/ic_open_bussiness.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Close Bussiness -->
+            <ng-container
+                *ngIf="
+                    tableRowsSelected.length &&
+                    options.toolbarActions.showMoveToClosedList
+                "
+            >
+                <div
+                    (click)="bussinessSelectedRows()"
+                    class="action-div d-flex justify-content-center align-items-center action-hover"
+                    ngbTooltip
+                    [mainTooltip]="
+                        'Permanently Close (' + tableRowsSelected.length + ')'
+                    "
+                    tooltipBackground="#424242"
+                    tooltipColor="#FFFFFF"
+                    position="bottom"
+                    customClass="mt-1"
+                >
+                    <svg-icon
+                        class="close-bussiness-icon"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        [src]="'assets/svg/common/ic_closed_broker.svg'"
                     ></svg-icon>
                 </div>
             </ng-container>

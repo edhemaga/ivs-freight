@@ -29,23 +29,58 @@
             <!-- Title -->
 
             <div
-                class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-3"
+                class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
             >
-                <div class="d-flex align-items-center">
-                    <div
-                        class="m-0 ta-font-bold limit-text"
-                        [class.shorter-text]="editData?.type === 'open'"
-                    >
-                        {{ editData.modalTitle }}
-                    </div>
+                <ng-container *ngIf="!editData?.array; else arrayTemplate">
+                    <div>
+                        <div class="d-flex align-items-center">
+                            <div
+                                class="m-0 ta-font-bold limit-text"
+                                [class.shorter-text]="editData?.type === 'open'"
+                            >
+                                {{ editData.modalTitle }}
+                            </div>
 
-                    <ng-container *ngIf="editData?.type === 'open'">
-                        <svg-icon
-                            class="d-flex ms-1"
-                            src="assets/svg/common/ic_closed_broker.svg"
-                        ></svg-icon
-                    ></ng-container>
-                </div>
+                            <ng-container *ngIf="editData?.type === 'open'">
+                                <svg-icon
+                                    class="d-flex ms-1"
+                                    src="assets/svg/common/ic_closed_broker.svg"
+                                ></svg-icon
+                            ></ng-container>
+                        </div>
+
+                        <div class="m-0 text-2 limit-text">
+                            {{ editData.modalSecondTitle }}
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #arrayTemplate>
+                    <ng-container *ngFor="let item of editData.array">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="m-0 ta-font-bold limit-text"
+                                    [class.shorter-text]="
+                                        editData?.type === 'open'
+                                    "
+                                >
+                                    {{ item.modalTitle }}
+                                </div>
+
+                                <ng-container *ngIf="editData?.type === 'open'">
+                                    <svg-icon
+                                        class="d-flex ms-1"
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
+                            </div>
+                            <div class="m-0 text-2 limit-text">
+                                {{ item.modalSecondTitle }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-template>
             </div>
 
             <!-- Subtitle -->

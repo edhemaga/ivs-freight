@@ -70,8 +70,6 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
         setTimeout(() => {
             this.setSwitchActive(this.tabs);
         }, 550);
-
-        console.log('tabs', this.tabs);
     }
 
     public setSwitchActive(tabs): void {
@@ -79,17 +77,10 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
             (item) => item.checked && !item.disabled
         );
         this.indexSwitch = selectedIndex;
-        console.log('indexSwitch', this.indexSwitch);
-        console.log('tabs', this.tabs);
         if (selectedIndex == -1) return;
 
         this.hoverStyle = this.getElementOffset(
             this.elem.nativeElement.children[0].children[this.indexSwitch]
-        );
-        console.log('hoverStyle', this.hoverStyle);
-        console.log(
-            'elem.nativeElement',
-            this.elem.nativeElement.children[0].children
         );
 
         this.det.detectChanges();
@@ -97,18 +88,12 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
     public switchTab(e, indx, item): void {
         e.stopPropagation();
         this.indexSwitch = indx;
-        console.log('switchTab indexSwitch', this.indexSwitch);
-        console.log('tabs', this.tabs);
 
         this.tabs.map((tab) => {
             if (tab.id === item.id) tab.checked = true;
             else tab.checked = false;
-
-            console.log('switchTab tab', tab);
-            console.log('switchTab item', item);
         });
         this.hoverStyle = this.getElementOffset(e.target);
-        console.log('hoverStyle', this.hoverStyle);
         const closeComponentArray = this.autoCloseComponent.toArray().reverse();
 
         if (

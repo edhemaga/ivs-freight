@@ -240,15 +240,8 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                         ? true
                         : false;
 
-                    console.log('activeTableData', this.activeTableData);
                     this.activeTableData.moneyCount =
                         this.tableRowsSelected.reduce((total, selectRow) => {
-                            console.log('tableRowsSelected total', total);
-                            console.log(
-                                'tableRowsSelected selectRow',
-                                selectRow
-                            );
-
                             let cost: string;
 
                             if (
@@ -517,6 +510,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     public dnuSelectedRows(): void {
         this.tableService.sendDnuListSelectedRows(this.tableRowsSelected);
+    }
+
+    public bussinessSelectedRows(): void {
+        this.tableService.sendBussinessSelectedRows(this.tableRowsSelected);
     }
 
     public deleteSelectedRows(): void {

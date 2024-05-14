@@ -125,9 +125,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     //On special filter
     public onSpecialFilter(event: any, data: string): void {
-        console.log('onSpecialFilter event', event);
-        console.log('onSpecialFilter data', data);
-        
         if (this.activeTableData?.ftlArray)
             this.activeTableData.ftlArray.selectedFilter =
                 data == TableStringEnum.FTL_ARRAY ?? false;

@@ -84,6 +84,15 @@ export class TruckassistTableService {
     >([]);
     public currentDnuListSelectedRows = this.dnuSelectedRows.asObservable();
 
+    /* Open/Close Bussiness Selected Rows */
+    private bussinessSelectedRows = new BehaviorSubject<
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
+    >([]);
+    public currentBussinessSelectedRows = this.bussinessSelectedRows.asObservable();
+
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
         | ShipperResponse[]
@@ -209,6 +218,11 @@ export class TruckassistTableService {
     /* DNU List Selected Rows */
     public sendDnuListSelectedRows(dnuListSelectedRows) {
         this.dnuSelectedRows.next(dnuListSelectedRows);
+    }
+    
+    /* Open/Close Bussiness Selected Rows */
+    public sendBussinessSelectedRows(bussinessListSelectedRows) {
+        this.bussinessSelectedRows.next(bussinessListSelectedRows);
     }
 
     /* Delete Selected Rows */

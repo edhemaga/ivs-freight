@@ -234,14 +234,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        console.log('broker-modal editData', this.editData);
         this.createForm();
         this.getBrokerDropdown();
         this.isCredit({ id: 301, name: 'Custom', checked: true });
         this.followIsBillingAddressSame();
 
         if (this.editData?.tab) this.selectedTab = this.editData.tab;
-        console.log('selectedTab', this.selectedTab);
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -880,10 +878,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         });
                     }
 
-                    console.log(
-                        'broker-modal getBrokerDropdown tabs',
-                        this.tabs
-                    );
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {
@@ -995,8 +989,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 checked: index === 0,
                             };
                         });
-
-                        console.log('broker-modal addBroker tabs', this.tabs);
 
                         this.selectedBillingAddressTab = 5;
                         this.billingAddressTabs = this.billingAddressTabs.map(
@@ -1274,7 +1266,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                     // Review
-                    console.log('broker-modal reasponse', reasponse);
                     this.reviews = reasponse.ratingReviews.map((item) => ({
                         ...item,
                         companyUser: {

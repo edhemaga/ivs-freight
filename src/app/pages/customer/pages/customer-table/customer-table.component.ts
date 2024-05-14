@@ -15,6 +15,7 @@ import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -27,6 +28,7 @@ import { MapsService } from '@shared/services/maps.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -69,6 +71,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // Helpers
 import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
@@ -148,6 +151,7 @@ export class CustomerTableComponent
         private mapsService: MapsService,
         private confiramtionService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
+        private confirmationActivationService: ConfirmationActivationService,
 
         // Store
         private brokerQuery: BrokerQuery,
@@ -188,7 +192,8 @@ export class CustomerTableComponent
         this.dnuListSelectedRows();
 
         this.rowsSelected();
-        console.log('customer-table viewData', this.viewData);
+
+        this.openCloseBussinessSelectedRows();
     }
 
     // ---------------------------- ngAfterViewInit ------------------------------
@@ -202,8 +207,6 @@ export class CustomerTableComponent
         this.confiramtionService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('confirmationSubscribe res', res);
-
                 if (res.type === TableStringEnum.INFO) {
                     if (res.subType === TableStringEnum.BAN_LIST) {
                         this.changeBanStatus(res.data);
@@ -223,7 +226,6 @@ export class CustomerTableComponent
         this.confirmationMoveService.getConfirmationMoveData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('confirmationMoveService res', res);
                 if (res) {
                     if (!res.array) {
                         if (res.subType === TableStringEnum.BAN) {
@@ -240,6 +242,28 @@ export class CustomerTableComponent
                     }
                 }
             });
+
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (!res.array) {
+                        if (res.template === TableStringEnum.INFO) {
+                            if (this.selectedTab === TableStringEnum.ACTIVE) {
+                                this.changeBussinesStatusBroker(res.data);
+                            } else {
+                                this.changeBussinesStatusShipper(res.data);
+                            }
+                        }
+                    } else {
+                        if (res.template === TableStringEnum.INFO) {
+                            if (this.selectedTab === TableStringEnum.ACTIVE) {
+                                this.changeBrokerListStatus(res.array);
+                            }
+                        }
+                    }
+                }
+            });
     }
 
     public changeDnuStatus(data): void {
@@ -248,6 +272,9 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -257,6 +284,9 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -275,6 +305,9 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -282,8 +315,6 @@ export class CustomerTableComponent
         let brokerIds = dataArray.map((broker) => {
             return broker.id;
         });
-
-        console.log('changeBanListStatus brokerIds', brokerIds);
 
         this.brokerService
             .changeBanListStatus(brokerIds)
@@ -322,13 +353,30 @@ export class CustomerTableComponent
             return broker.id;
         });
 
-        console.log('changeBanListStatus brokerIds', brokerIds);
-
         this.brokerService
             .changeDnuListStatus(brokerIds)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    public changeBrokerListStatus(dataArray): void {
+        let brokerIds = dataArray.map((broker) => {
+            return broker.id;
+        });
+
+        this.brokerService
+            .changeBrokerListStatus(brokerIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
             });
     }
 
@@ -336,7 +384,6 @@ export class CustomerTableComponent
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('setTableFilter res', res);
                 if (res?.filteredArray) {
                     if (res.selectedFilter) {
                         this.filter = true;
@@ -631,7 +678,6 @@ export class CustomerTableComponent
         this.tableService.currentBanListSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentBanListSelectedRows res', res);
                 if (res?.length) {
                     const mappedRes = res.map((item) => {
                         return {
@@ -645,6 +691,7 @@ export class CustomerTableComponent
                                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                         };
                     });
+
                     this.modalService.openModal(
                         ConfirmationMoveModalComponent,
                         { size: TableStringEnum.SMALL },
@@ -659,21 +706,6 @@ export class CustomerTableComponent
                                 : TableStringEnum.REMOVE,
                         }
                     );
-                    // this.modalService.openModal(
-                    //     ConfirmationMoveModalComponent,
-                    //     { size: TableStringEnum.SMALL },
-                    //     {
-                    //         ...mappedEvent,
-                    //         template: TableStringEnum.BROKER,
-                    //         subType: TableStringEnum.BAN,
-                    //         //subTypeStatus: TableStringEnum.BUSINESS,
-                    //         tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-                    //         modalTitle: event.data.businessName,
-                    //         modalSecondTitle:
-                    //             event.data?.billingAddress?.address ??
-                    //             TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                    //     }
-                    // );
                 }
             });
     }
@@ -682,7 +714,6 @@ export class CustomerTableComponent
         this.tableService.currentDnuListSelectedRows
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentDnuListSelectedRows res', res);
                 if (res?.length) {
                     const mappedRes = res.map((item) => {
                         return {
@@ -696,7 +727,7 @@ export class CustomerTableComponent
                                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                         };
                     });
-                    console.log('dnu list mappedRes', mappedRes);
+
                     this.modalService.openModal(
                         ConfirmationMoveModalComponent,
                         { size: TableStringEnum.SMALL },
@@ -709,6 +740,44 @@ export class CustomerTableComponent
                             type: !mappedRes[0].data.dnu
                                 ? TableStringEnum.MOVE
                                 : TableStringEnum.REMOVE,
+                        }
+                    );
+                }
+            });
+    }
+
+    private openCloseBussinessSelectedRows(): void {
+        this.tableService.currentBussinessSelectedRows
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.length) {
+                    const mappedRes = res.map((item) => {
+                        return {
+                            id: item.id,
+                            data: {
+                                ...item.tableData,
+                            },
+                            modalTitle: item.tableData.businessName,
+                            modalSecondTitle:
+                                item.tableData.billingAddress?.address ??
+                                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        };
+                    });
+
+                    this.modalService.openModal(
+                        ConfirmationActivationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            data: null,
+                            array: mappedRes,
+                            template: TableStringEnum.INFO,
+                            subType: TableStringEnum.BROKER_2,
+                            subTypeStatus: TableStringEnum.BUSINESS,
+                            tableType:
+                                ConfirmationActivationStringEnum.BROKER_TEXT,
+                            type: mappedRes[0].data.status
+                                ? TableStringEnum.CLOSE
+                                : TableStringEnum.OPEN,
                         }
                     );
                 }
@@ -869,7 +938,6 @@ export class CustomerTableComponent
     private getTabData(dataType: string): BrokerResponse[] {
         if (dataType === TableStringEnum.ACTIVE) {
             this.brokerActive = this.brokerQuery.getAll();
-            console.log('getTabData brokerActive', this.brokerActive);
 
             return this.brokerActive?.length ? this.brokerActive : [];
         } else if (dataType === TableStringEnum.INACTIVE) {
@@ -1223,8 +1291,6 @@ export class CustomerTableComponent
     // Toolbar Actions
     public onToolBarAction(event: TableToolbarActions): void {
         // Add Call
-
-        console.log('onToolBarAction event', event);
         if (event.action === TableStringEnum.OPEN_MODAL) {
             // Add Broker Call Modal
 
@@ -1263,7 +1329,6 @@ export class CustomerTableComponent
         action: string;
         direction: string;
     }): void {
-        console.log('onTableHeadActions', event);
         if (event.action === TableStringEnum.SORT) {
             if (event.direction) {
                 if (this.selectedTab === TableStringEnum.ACTIVE) {
@@ -1355,8 +1420,6 @@ export class CustomerTableComponent
                 );
             }
         } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
-            console.log('ban list event', event);
-
             const mappedEvent = {
                 ...event,
                 type: !event.data.ban
@@ -1429,24 +1492,47 @@ export class CustomerTableComponent
             //     }
             // );
         } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
+            // const mappedEvent = {
+            //     ...event,
+            //     type:
+            //         event.data.status === 1
+            //             ? TableStringEnum.CLOSE
+            //             : TableStringEnum.OPEN,
+            // };
+            // this.modalService.openModal(
+            //     ConfirmationModalComponent,
+            //     { size: TableStringEnum.SMALL },
+            //     {
+            //         ...mappedEvent,
+            //         template: TableStringEnum.INFO,
+            //         subType:
+            //             this.selectedTab === TableStringEnum.ACTIVE
+            //                 ? TableStringEnum.BROKER
+            //                 : TableStringEnum.SHIPPER,
+            //         subTypeStatus: TableStringEnum.BUSINESS,
+            //     }
+            // );
+
             const mappedEvent = {
                 ...event,
-                type:
-                    event.data.status === 1
-                        ? TableStringEnum.CLOSE
-                        : TableStringEnum.OPEN,
+                type: event.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
             };
+
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
                     template: TableStringEnum.INFO,
-                    subType:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.BROKER
-                            : TableStringEnum.SHIPPER,
+                    subType: TableStringEnum.BROKER_2,
                     subTypeStatus: TableStringEnum.BUSINESS,
+                    tableType: ConfirmationActivationStringEnum.BROKER_TEXT,
+                    modalTitle: event.data.businessName,
+                    modalSecondTitle:
+                        event.data?.billingAddress?.address ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
         } else if (event.type === TableStringEnum.VIEW_DETAILS) {
@@ -1462,8 +1548,6 @@ export class CustomerTableComponent
         }
         // Delete Call
         else if (event.type === TableStringEnum.DELETE) {
-            console.log('onTableBodyActions event', event);
-
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.DELETE },
@@ -1698,8 +1782,6 @@ export class CustomerTableComponent
         this.tableService.currentRowsSelected
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('customer-table rowsSelected res', res);
-
                 if (res) {
                     if (this.selectedTab === TableStringEnum.ACTIVE) {
                         let selectedBannedCount = 0;

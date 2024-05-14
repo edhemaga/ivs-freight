@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Modules
@@ -38,17 +38,13 @@ import { ConfirmationMoveModalTextPipe } from '@shared/components/ta-shared-moda
     templateUrl: './confirmation-move-modal.component.html',
     styleUrls: ['./confirmation-move-modal.component.scss'],
 })
-export class ConfirmationMoveModalComponent implements OnInit {
+export class ConfirmationMoveModalComponent {
     @Input() editData: ConfirmationMove;
 
     constructor(
         private confirmationMoveService: ConfirmationMoveService,
         private ngbActiveModal: NgbActiveModal
     ) {}
-
-    ngOnInit() {
-        console.log('confirmation move editData', this.editData);
-    }
 
     public onModalAction(data: ConfirmationMove): void {
         this.confirmationMoveService.setConfirmationMoveData(data);

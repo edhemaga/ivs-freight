@@ -295,10 +295,6 @@ export class BrokerService implements OnDestroy {
             tap(() => {
                 this.getBrokerList().subscribe({
                     next: (brokersList) => {
-                        console.log(
-                            'changeBanListStatus brokersList',
-                            brokersList
-                        );
                         brokersList.pagination.data.map((broker) => {
                             this.brokerStore.remove(
                                 ({ id }) => id === broker.id
@@ -489,6 +485,35 @@ export class BrokerService implements OnDestroy {
                     tab: 'broker',
                     data: broker,
                     id: broker.id,
+                });
+            })
+        );
+    }
+
+    public changeBrokerListStatus(brokerIds: number[]): Observable<any> {
+        return this.brokerService.apiBrokerStatusListPut({ ids: brokerIds }).pipe(
+            tap(() => {
+                this.getBrokerList().subscribe({
+                    next: (brokersList) => {
+                        brokersList.pagination.data.map((broker) => {
+                            this.brokerStore.remove(
+                                ({ id }) => id === broker.id
+                            );
+                            this.brokerMinimalStore.remove(
+                                ({ id }) => id === broker.id
+                            );
+                            this.brokerStore.add(broker);
+                            this.brokerMinimalStore.add(broker);
+                            this.bls.update(broker.id, { ban: broker.ban });
+                        });
+
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.UPDATE_MULTIPLE,
+                            tab: TableStringEnum.BROKER,
+                            data: brokersList?.pagination?.data?.[0],
+                            id: brokersList?.pagination?.data?.[0]?.id,
+                        });
+                    },
                 });
             })
         );

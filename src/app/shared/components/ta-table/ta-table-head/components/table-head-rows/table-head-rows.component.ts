@@ -1,6 +1,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // modules
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
@@ -48,7 +48,7 @@ import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-he
         TableHeadRowsPopoverComponent,
     ],
 })
-export class TableHeadRowsComponent implements OnInit {
+export class TableHeadRowsComponent {
     @Input() tableHeadRowsData: TableHeadRowsData;
 
     @Output()
@@ -56,10 +56,6 @@ export class TableHeadRowsComponent implements OnInit {
         new EventEmitter();
 
     constructor() {}
-
-    ngOnInit(): void {
-        console.log('tableHeadRowsData', this.tableHeadRowsData);
-    }
 
     public handleTableHeadRowsActionClick(event: any, action: string): void {
         const eventEmit: TableHeadRowsActionEmit = {
