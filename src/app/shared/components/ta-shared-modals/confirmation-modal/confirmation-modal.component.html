@@ -278,10 +278,20 @@
 
                         <!-- Shipper -->
 
+                        <ng-container *ngSwitchCase="'shipper'">
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ editData?.data?.businessName }}
+                                </p>
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ editData?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
                         <ng-container
                             *ngSwitchCase="
                                 [
-                                    'shipper',
                                     'Company Parking',
                                     'Company Office',
                                     'Company Repair Shop',
@@ -887,11 +897,20 @@
 
                         <!-- Shipper -->
 
+                        <ng-container *ngSwitchCase="'shipper'">
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ item?.data?.businessName }}
+                                </p>
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ item?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
                         <ng-container
                             *ngSwitchCase="
-                                ['shipper', 'parking'].includes(
-                                    editData?.template
-                                )
+                                'parking'.includes(editData?.template)
                                     ? editData?.template
                                     : ''
                             "
