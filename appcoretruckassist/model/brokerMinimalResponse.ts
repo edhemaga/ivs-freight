@@ -15,5 +15,8 @@ export interface BrokerMinimalResponse {
     id?: number;
     businessName?: string | null;
     status?: number;
+    totalDebt?: number | null;
+    revenue?: number | null;
+    loadCount?: number;
 }
 

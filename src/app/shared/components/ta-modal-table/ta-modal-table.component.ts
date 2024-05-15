@@ -7,6 +7,7 @@ import {
     OnInit,
     Output,
     SimpleChanges,
+    ViewEncapsulation,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -24,10 +25,12 @@ import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaModalTablePhoneComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-phone/ta-modal-table-phone.component';
+import { TaModalTableEmailComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-email/ta-modal-table-email.component';
+import { TaModalTableRepairComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-repair/ta-modal-table-repair.component';
+import { TaModalTableContactComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-contact/ta-modal-table-contact.component';
+import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-pm/ta-modal-table-pm.component';
+import { TaModalTabelOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-tabel-off-duty-location/ta-modal-tabel-off-duty-location.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -41,13 +44,14 @@ import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/con
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // validations
 import {
     descriptionValidation,
-    nicknameValidation,
     phoneExtension,
     phoneFaxRegex,
+    nicknameValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
@@ -55,6 +59,8 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // pipes
 import { HeaderRequiredStarPipe } from '@shared/components/ta-modal-table/pipes/header-required-star.pipe';
+import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
+import { MultiSwitchCasePipe } from '@shared/pipes/multi-switch-case.pipe';
 
 // models
 import {
@@ -66,17 +72,20 @@ import {
     DepartmentResponse,
     EnumValue,
     OffDutyLocationResponse,
-    RepairItemCommand,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
+import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
 
 @Component({
     selector: 'app-ta-modal-table',
+    templateUrl: './ta-modal-table.component.html',
+    styleUrls: ['./ta-modal-table.component.scss'],
     standalone: true,
+    encapsulation: ViewEncapsulation.None,
     imports: [
         // modules
         CommonModule,
@@ -84,27 +93,21 @@ import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dro
         ReactiveFormsModule,
 
         // components
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaCheckboxComponent,
-        TaInputAddressDropdownComponent,
+        TaModalTablePhoneComponent,
+        TaModalTableEmailComponent,
+        TaModalTableRepairComponent,
+        TaModalTableContactComponent,
+        TaModalTablePmComponent,
+        TaModalTabelOffDutyLocationComponent,
 
         // pipes
         HeaderRequiredStarPipe,
+        TrackByPropertyPipe,
+        MultiSwitchCasePipe,
     ],
-    templateUrl: './ta-modal-table.component.html',
-    styleUrls: ['./ta-modal-table.component.scss'],
 })
 export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() isPhoneTable?: boolean = false;
-    @Input() isEmailTable?: boolean = false;
-    @Input() isRepairBillTable?: boolean = false;
-    @Input() isRepairOrderTable?: boolean = false;
-    @Input() isContactTable?: boolean = false;
-    @Input() isPMTruckTable?: boolean = false;
-    @Input() isPMTrailerTable?: boolean = false;
-    @Input() isOffDutyLocationTable?: boolean = false;
-
+    @Input() tableType: ModalTableTypeEnum;
     @Input() isNewRowCreated: boolean = false;
     @Input() isEdit?: boolean = false;
     @Input() isResetSelected?: boolean = false;
@@ -158,6 +161,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     // off duty location table
     public selectedAddress: AddressEntity[] = [];
 
+    public taModalTableStringEnum = TaModalTableStringEnum;
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -167,6 +173,38 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private repairService: RepairService,
         private pmService: PmService
     ) {}
+
+    get isPhoneTable() {
+        return this.tableType === ModalTableTypeEnum.PHONE;
+    }
+
+    get isEmailTable() {
+        return this.tableType === ModalTableTypeEnum.EMAIL;
+    }
+
+    get isRepairBillTable() {
+        return this.tableType === ModalTableTypeEnum.REPAIR_BILL;
+    }
+
+    get isRepairOrderTable() {
+        return this.tableType === ModalTableTypeEnum.REPAIR_ORDER;
+    }
+
+    get isContactTable() {
+        return this.tableType === ModalTableTypeEnum.CONTACT;
+    }
+
+    get isPMTruckTable() {
+        return this.tableType === ModalTableTypeEnum.PM_TRUCK;
+    }
+
+    get isPMTrailerTable() {
+        return this.tableType === ModalTableTypeEnum.PM_TRAILER;
+    }
+
+    get isOffDutyLocationTable() {
+        return this.tableType === ModalTableTypeEnum.OFF_DUTY_LOCATION;
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -204,7 +242,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.getDropdownLists(changes.dropdownData.currentValue);
         }
 
-        if (changes.isRepairOrderTable) {
+        if (
+            changes.tableType?.currentValue ===
+                ModalTableTypeEnum.REPAIR_ORDER ||
+            changes.tableType?.currentValue === ModalTableTypeEnum.REPAIR_BILL
+        ) {
             this.getConstantData();
 
             this.resetIsRepairBillTableForm();
@@ -237,86 +279,83 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.selectedTruckTrailerRepairPm = [];
     }
 
-    public onSelectDropdown(
-        event: ModalTableDropdownOption,
-        action: string,
-        index?: number
-    ): void {
+    public onSelectAddress(event: {
+        address: {
+            address: AddressEntity;
+            valid: boolean;
+        };
+        index: number;
+    }): void {
+        const { address, index } = event;
+
+        if (address.valid) {
+            this.selectedAddress[index] = address.address;
+        }
+    }
+
+    public onSelectDropdown(event: {
+        dropdownEvent: ModalTableDropdownOption;
+        action: string;
+        index?: number;
+    }): void {
+        const { dropdownEvent, action, index } = event;
+
         switch (action) {
             case TaModalTableStringEnum.CONTACT_PHONE_TYPE:
-                this.selectedContactPhoneType[index] = event;
-
+                this.selectedContactPhoneType[index] = dropdownEvent;
                 break;
             case TaModalTableStringEnum.CONTACT_EMAIL_TYPE:
-                this.selectedContactEmailType[index] = event;
-
+                this.selectedContactEmailType[index] = dropdownEvent;
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
-                this.selectedTruckTrailerRepairPm[index] = event;
-
+                this.selectedTruckTrailerRepairPm[index] = dropdownEvent;
                 this.getModalTableDataValue();
-
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TYPE:
-                if (event) {
-                    this.activePmDropdownItem[index] = event;
-
-                    this.getFormArray()
-                        .at(index)
-                        .patchValue({
-                            svg: event.logoName,
-                            title: event.title,
-                            mileage:
-                                event.mileage ??
-                                TableStringEnum.PM_DEFAULT_MILEAGE,
-                            defaultMileage:
-                                event.mileage ??
-                                TableStringEnum.PM_DEFAULT_MILEAGE,
-                            value: event.title,
-                        });
-                }
-
+                this.handleDropdownPmType(
+                    dropdownEvent,
+                    index,
+                    TableStringEnum.PM_DEFAULT_MILEAGE
+                );
                 break;
             case TaModalTableStringEnum.PM_TRAILER_TYPE:
-                if (event) {
-                    this.activePmDropdownItem[index] = event;
-
-                    this.getFormArray()
-                        .at(index)
-                        .patchValue({
-                            svg: event.logoName,
-                            title: event.title,
-                            mileage:
-                                event.mileage ??
-                                TableStringEnum.PM_DEFAULT_MONTHS,
-                            defaultMileage:
-                                event.mileage ??
-                                TableStringEnum.PM_DEFAULT_MONTHS,
-                            value: event.title,
-                        });
-                }
-
+                this.handleDropdownPmType(
+                    dropdownEvent,
+                    index,
+                    TableStringEnum.PM_DEFAULT_MONTHS
+                );
                 break;
             default:
                 break;
         }
     }
 
-    public onSelectAddress(
-        address: {
-            address: AddressEntity;
-            valid: boolean;
-        },
-        index: number
+    private handleDropdownPmType(
+        event: ModalTableDropdownOption,
+        index: number,
+        defaultMileage: string
     ): void {
-        if (address?.valid) this.selectedAddress[index] = address.address;
+        if (event) {
+            this.activePmDropdownItem[index] = event;
+
+            this.getFormArray()
+                .at(index)
+                .patchValue({
+                    svg: event.logoName,
+                    title: event.title,
+                    mileage: event.mileage ?? defaultMileage,
+                    defaultMileage: event.mileage ?? defaultMileage,
+                    value: event.title,
+                });
+        }
     }
 
     private getDropdownLists(
         dropdownData?: TruckTrailerPmDropdownLists[]
     ): void {
-        switch (true) {
-            case this.isPhoneTable || this.isEmailTable:
+        switch (this.tableType) {
+            case ModalTableTypeEnum.EMAIL:
+            case ModalTableTypeEnum.PHONE:
                 this.contactService
                     .getCompanyContactModal()
                     .pipe(takeUntil(this.destroy$))
@@ -326,11 +365,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     });
 
                 break;
-            case this.isRepairBillTable || this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_BILL:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 this.truckTrailerRepairPmOptions = dropdownData;
 
                 break;
-            case this.isContactTable:
+            case ModalTableTypeEnum.CONTACT:
                 this.repairService
                     .getRepairShopModalDropdowns()
                     .pipe(takeUntil(this.destroy$))
@@ -339,7 +379,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     });
 
                 break;
-            case this.isPMTruckTable:
+            case ModalTableTypeEnum.PM_TRUCK:
                 this.pmService
                     .getPMTruckDropdown()
                     .pipe(takeUntil(this.destroy$))
@@ -375,7 +415,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     });
 
                 break;
-            case this.isPMTrailerTable:
+            case ModalTableTypeEnum.PM_TRAILER:
                 this.pmService
                     .getPMTrailerDropdown()
                     .pipe(takeUntil(this.destroy$))
@@ -414,47 +454,45 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getConstantData(): void {
-        switch (true) {
-            case this.isPhoneTable:
+        switch (this.tableType) {
+            case ModalTableTypeEnum.PHONE:
                 this.modalTableHeaders =
                     ModalTableConstants.PHONE_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isEmailTable:
+            case ModalTableTypeEnum.EMAIL:
                 this.modalTableHeaders =
                     ModalTableConstants.EMAIL_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isRepairBillTable && !this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_BILL:
                 this.modalTableHeaders =
                     ModalTableConstants.REPAIR_BILL_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 this.modalTableHeaders =
                     ModalTableConstants.REPAIR_ORDER_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isContactTable:
+            case ModalTableTypeEnum.CONTACT:
                 this.modalTableHeaders =
                     ModalTableConstants.CONTACT_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isPMTruckTable:
+            case ModalTableTypeEnum.PM_TRUCK:
                 this.modalTableHeaders =
                     ModalTableConstants.PM_TRUCK_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isPMTrailerTable:
+            case ModalTableTypeEnum.PM_TRAILER:
                 this.modalTableHeaders =
                     ModalTableConstants.PM_TRAILER_TABLE_HEADER_ITEMS;
 
                 break;
-            case this.isOffDutyLocationTable:
+            case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 this.modalTableHeaders =
                     ModalTableConstants.OFF_DUTY_LOCATION_TABLE_HEADER_ITEMS;
-
-                break;
             default:
                 break;
         }
@@ -503,32 +541,34 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public getFormArray(): UntypedFormArray {
-        switch (true) {
-            case this.isPhoneTable:
+        switch (this.tableType) {
+            case ModalTableTypeEnum.PHONE:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.PHONE_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isEmailTable:
+            case ModalTableTypeEnum.EMAIL:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.EMAIL_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isRepairBillTable:
+            case ModalTableTypeEnum.REPAIR_BILL:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.REPAIR_ORDER_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isContactTable:
+            case ModalTableTypeEnum.CONTACT:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.CONTACT_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isPMTruckTable || this.isPMTrailerTable:
+            case ModalTableTypeEnum.PM_TRUCK:
+            case ModalTableTypeEnum.PM_TRAILER:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.PM_TABLE_ITEMS
                 ) as UntypedFormArray;
-            case this.isOffDutyLocationTable:
+            case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS
                 ) as UntypedFormArray;
@@ -542,8 +582,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         let newFormArrayRow: UntypedFormGroup;
 
-        switch (true) {
-            case this.isPhoneTable:
+        switch (this.tableType) {
+            case ModalTableTypeEnum.PHONE:
                 newFormArrayRow = this.formBuilder.group({
                     phone: [null, [Validators.required, phoneFaxRegex]],
                     phoneExt: [null, phoneExtension],
@@ -556,7 +596,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 ];
 
                 break;
-            case this.isEmailTable:
+            case ModalTableTypeEnum.EMAIL:
                 newFormArrayRow = this.formBuilder.group({
                     email: [null, [Validators.required]],
                     contactEmailType: [null],
@@ -569,7 +609,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 );
 
                 break;
-            case this.isRepairBillTable && !this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_BILL:
                 newFormArrayRow = this.formBuilder.group({
                     description: [null, [Validators.required]],
                     pm: [null],
@@ -578,7 +618,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
-            case this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 newFormArrayRow = this.formBuilder.group({
                     description: [null, [Validators.required]],
                     pm: [null],
@@ -586,7 +626,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
-            case this.isContactTable:
+            case ModalTableTypeEnum.CONTACT:
                 newFormArrayRow = this.formBuilder.group({
                     fullName: [null, [Validators.required]],
                     departmant: [null, [Validators.required]],
@@ -607,7 +647,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 );
 
                 break;
-            case this.isPMTruckTable || this.isPMTrailerTable:
+            case ModalTableTypeEnum.PM_TRAILER:
+            case ModalTableTypeEnum.PM_TRUCK:
                 newFormArrayRow = this.formBuilder.group({
                     id: [null],
                     isChecked: [true, [Validators.required]],
@@ -626,7 +667,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
-            case this.isOffDutyLocationTable:
+            case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 newFormArrayRow = this.formBuilder.group({
                     nickname: [
                         null,
@@ -634,7 +675,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ],
                     address: [null, [Validators.required]],
                 });
-
                 break;
             default:
                 break;
@@ -648,23 +688,20 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     public deleteFormArrayRow(index: number): void {
         this.getFormArray().removeAt(index);
 
-        switch (true) {
-            case this.isPhoneTable:
+        switch (this.tableType) {
+            case ModalTableTypeEnum.PHONE:
                 this.isContactPhoneExtExist.splice(index, 1);
                 this.selectedContactPhoneType.splice(index, 1);
-
                 break;
-            case this.isEmailTable:
+            case ModalTableTypeEnum.EMAIL:
                 this.selectedContactEmailType.splice(index, 1);
-
                 break;
-            case this.isRepairBillTable || this.isRepairOrderTable:
+            case ModalTableTypeEnum.REPAIR_BILL:
+            case ModalTableTypeEnum.REPAIR_ORDER:
                 this.selectedTruckTrailerRepairPm.splice(index, 1);
-
                 break;
-            case this.isOffDutyLocationTable:
+            case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 this.selectedAddress.splice(index, 1);
-
                 break;
             default:
                 break;
@@ -674,32 +711,42 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private createIsHoverRow(): boolean[] {
-        return JSON.parse(
-            JSON.stringify(
-                this.isPhoneTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_PHONE
-                    : this.isEmailTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_EMAIL
-                    : this.isRepairBillTable && !this.isRepairOrderTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_BILL
-                    : this.isRepairOrderTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_ORDER
-                    : this.isContactTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
-                    : this.isContactTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT
-                    : this.isOffDutyLocationTable
-                    ? ModalTableConstants.IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION
-                    : null
-            )
-        );
+        let isInputHoverRow = null;
+
+        switch (this.tableType) {
+            case ModalTableTypeEnum.PHONE:
+                isInputHoverRow = ModalTableConstants.IS_INPUT_HOVER_ROW_PHONE;
+                break;
+            case ModalTableTypeEnum.EMAIL:
+                isInputHoverRow = ModalTableConstants.IS_INPUT_HOVER_ROW_EMAIL;
+                break;
+            case ModalTableTypeEnum.REPAIR_BILL:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_BILL;
+                break;
+            case ModalTableTypeEnum.REPAIR_ORDER:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_REPAIR_ORDER;
+                break;
+            case ModalTableTypeEnum.CONTACT:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_CONTACT;
+                break;
+            case ModalTableTypeEnum.OFF_DUTY_LOCATION:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION;
+                break;
+        }
+
+        return JSON.parse(JSON.stringify(isInputHoverRow));
     }
 
-    public handleInputHover(
-        isHovering: boolean,
-        isInputHoverRowIndex: number,
-        inputIndex: number
-    ): void {
+    public handleInputHover(event: {
+        isHovering: boolean;
+        isInputHoverRowIndex: number;
+        inputIndex: number;
+    }): void {
+        const { isHovering, isInputHoverRowIndex, inputIndex } = event;
         this.isInputHoverRows[isInputHoverRowIndex][inputIndex] = isHovering;
     }
 
@@ -712,140 +759,150 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | OffDutyLocationResponse
         )[]
     ): void {
-        for (let i = 0; i < modalTableData.length; i++) {
+        modalTableData.forEach((data, i) => {
             this.createFormArrayRow();
-
-            switch (true) {
-                case this.isPhoneTable:
-                    const phoneData = modalTableData[i] as ContactPhoneResponse;
-
-                    this.getFormArray().at(i).patchValue({
-                        phone: phoneData?.phone,
-                        phoneExt: phoneData?.phoneExt,
-                        contactPhoneType: phoneData?.contactPhoneType.name,
-                    });
-
-                    if (phoneData?.phoneExt)
-                        this.isContactPhoneExtExist[i] = true;
-
-                    if (phoneData?.contactPhoneType.name)
-                        this.selectedContactPhoneType[i] =
-                            phoneData?.contactPhoneType;
-
+            switch (this.tableType) {
+                case ModalTableTypeEnum.PHONE:
+                    this.handlePhoneData(data, i);
                     break;
-                case this.isEmailTable:
-                    const emailData = modalTableData[i] as ContactEmailResponse;
-
-                    this.getFormArray().at(i).patchValue({
-                        email: emailData?.email,
-                        contactEmailType: emailData?.contactEmailType.name,
-                    });
-
-                    this.inputService.customInputValidator(
-                        this.getFormArray()
-                            .at(i)
-                            .get(TaModalTableStringEnum.EMAIL),
-                        TaModalTableStringEnum.EMAIL,
-                        this.destroy$
-                    );
-
-                    if (emailData?.contactEmailType.name)
-                        this.selectedContactEmailType[i] =
-                            emailData?.contactEmailType;
-
+                case ModalTableTypeEnum.EMAIL:
+                    this.handleEmailData(data, i);
                     break;
-                case this.isRepairBillTable && !this.isRepairOrderTable:
-                    const repairBillData = modalTableData[
-                        i
-                    ] as RepairItemResponse;
-
-                    this.getFormArray()
-                        .at(i)
-                        .patchValue({
-                            description: repairBillData?.description,
-                            pm:
-                                repairBillData?.pmTruck?.title ||
-                                repairBillData?.pmTrailer?.title,
-                            quantity: repairBillData?.quantity,
-                            price: repairBillData?.price,
-                            subtotal: repairBillData?.subtotal,
-                        });
-
-                    this.subTotals[i] = {
-                        subtotal: repairBillData?.subtotal,
-                        index: i,
-                    };
-
-                    this.selectedTruckTrailerRepairPm[i] =
-                        repairBillData?.pmTruck || repairBillData?.pmTrailer;
-
+                case ModalTableTypeEnum.REPAIR_BILL:
+                    this.handleRepairBillData(data, i);
                     break;
-                case this.isRepairOrderTable:
-                    const repairOrderData = modalTableData[
-                        i
-                    ] as RepairItemResponse;
-
-                    this.getFormArray()
-                        .at(i)
-                        .patchValue({
-                            description: repairOrderData?.description,
-                            pm:
-                                repairOrderData?.pmTruck?.title ||
-                                repairOrderData?.pmTrailer?.title,
-                            quantity: repairOrderData?.quantity,
-                        });
-
-                    this.selectedTruckTrailerRepairPm[i] =
-                        repairOrderData?.pmTruck || repairOrderData?.pmTrailer;
-
+                case ModalTableTypeEnum.REPAIR_ORDER:
+                    this.handleRepairOrderData(data, i);
                     break;
-                case this.isPMTruckTable || this.isPMTrailerTable:
-                    const pmData = modalTableData[i] as PMTableData;
-
-                    this.getFormArray().at(i).patchValue({
-                        id: pmData?.id,
-                        isChecked: pmData?.isChecked,
-                        svg: pmData?.svg,
-                        title: pmData?.title,
-                        mileage: pmData?.mileage,
-                        defaultMileage: pmData?.defaultMileage,
-                        status: pmData?.status,
-                        value: pmData?.title,
-                    });
-
+                case ModalTableTypeEnum.PM_TRUCK:
+                case ModalTableTypeEnum.PM_TRAILER:
+                    this.handlePmData(data, i);
                     break;
-                case this.isOffDutyLocationTable:
+                case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                     const offDutyLocationData = modalTableData[
                         i
                     ] as OffDutyLocationResponse;
-
                     this.getFormArray().at(i).patchValue({
                         nickname: offDutyLocationData?.nickname,
                         address: offDutyLocationData?.address?.address,
                     });
-
                     this.selectedAddress[i] = offDutyLocationData?.address;
-
                     break;
                 default:
                     break;
             }
 
             if (i === modalTableData.length - 1) {
-                if (
-                    this.getFormArray().status === TaModalTableStringEnum.VALID
-                ) {
-                    this.modalTableValidStatusEmitter.emit(true);
-                } else {
-                    this.modalTableValidStatusEmitter.emit(false);
-                }
+                const isFormValid =
+                    this.getFormArray().status === TaModalTableStringEnum.VALID;
+                this.modalTableValidStatusEmitter.emit(isFormValid);
             }
-        }
+        });
 
-        if (this.isRepairBillTable)
+        if (this.isRepairBillTable || this.isRepairOrderTable)
             setTimeout(() => {
                 this.calculateRepairBillSubtotal();
             }, 300);
+    }
+
+    private handlePhoneData(
+        phoneData: ContactPhoneResponse,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+
+        formGroup.patchValue({
+            phone: phoneData?.phone,
+            phoneExt: phoneData?.phoneExt,
+            contactPhoneType: phoneData?.contactPhoneType?.name,
+        });
+
+        if (phoneData?.phoneExt) {
+            this.isContactPhoneExtExist[index] = true;
+        }
+
+        if (phoneData?.contactPhoneType?.name) {
+            this.selectedContactPhoneType[index] = phoneData.contactPhoneType;
+        }
+    }
+
+    private handleEmailData(
+        emailData: ContactEmailResponse,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+
+        formGroup.patchValue({
+            email: emailData?.email,
+            contactEmailType: emailData?.contactEmailType?.name,
+        });
+
+        this.inputService.customInputValidator(
+            formGroup.get(TaModalTableStringEnum.EMAIL),
+            TaModalTableStringEnum.EMAIL,
+            this.destroy$
+        );
+
+        if (emailData?.contactEmailType?.name) {
+            this.selectedContactEmailType[index] = emailData.contactEmailType;
+        }
+    }
+
+    private handleRepairBillData(
+        repairBillData: RepairItemResponse,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+
+        formGroup.patchValue({
+            description: repairBillData?.description,
+            pm:
+                repairBillData?.pmTruck?.title ||
+                repairBillData?.pmTrailer?.title,
+            quantity: repairBillData?.quantity,
+            price: repairBillData?.price,
+            subtotal: repairBillData?.subtotal,
+        });
+
+        this.subTotals[index] = {
+            subtotal: repairBillData?.subtotal,
+            index: index,
+        };
+        this.selectedTruckTrailerRepairPm[index] =
+            repairBillData?.pmTruck || repairBillData?.pmTrailer;
+    }
+
+    private handleRepairOrderData(
+        repairOrderData: RepairItemResponse,
+        index: number
+    ): void {
+        const formGroup = this.getFormArray().at(index);
+
+        formGroup.patchValue({
+            description: repairOrderData?.description,
+            pm:
+                repairOrderData?.pmTruck?.title ||
+                repairOrderData?.pmTrailer?.title,
+            quantity: repairOrderData?.quantity,
+        });
+
+        this.selectedTruckTrailerRepairPm[index] =
+            repairOrderData?.pmTruck || repairOrderData?.pmTrailer;
+    }
+
+    private handlePmData(pmData: PMTableData, index: number): void {
+        const formGroup = this.getFormArray().at(index);
+
+        formGroup.patchValue({
+            id: pmData?.id,
+            isChecked: pmData?.isChecked,
+            svg: pmData?.svg,
+            title: pmData?.title,
+            mileage: pmData?.mileage,
+            defaultMileage: pmData?.defaultMileage,
+            status: pmData?.status,
+            value: pmData?.title,
+        });
     }
 
     private checkForInputChanges(): void {
@@ -855,20 +912,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 if (res) {
                     this.getModalTableDataValue();
 
-                    if (
+                    const isValid =
                         this.getFormArray().status ===
-                        TaModalTableStringEnum.VALID
-                    ) {
-                        this.modalTableValidStatusEmitter.emit(true);
-                    } else {
-                        this.modalTableValidStatusEmitter.emit(false);
-                    }
+                        TaModalTableStringEnum.VALID;
+                    this.modalTableValidStatusEmitter.emit(isValid);
                 }
             });
     }
 
     public calculateRepairBillSubtotal(): void {
-        if (this.isRepairBillTable && !this.isRepairOrderTable)
+        if (this.tableType === ModalTableTypeEnum.REPAIR_BILL)
             this.modalTableForm
                 .get(TaModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS)
                 .valueChanges.pipe(takeUntil(this.destroy$))
@@ -882,25 +935,16 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             (item) => item.index === index
                         );
 
-                        if (calculateSubtotal) {
-                            if (existingItemIndex !== -1) {
-                                this.subTotals[existingItemIndex].subtotal =
-                                    calculateSubtotal;
-                            } else {
-                                this.subTotals.push({
-                                    subtotal: calculateSubtotal,
-                                    index: index,
-                                });
-                            }
+                        const subtotalValue = calculateSubtotal || 0;
+
+                        if (existingItemIndex !== -1) {
+                            this.subTotals[existingItemIndex].subtotal =
+                                subtotalValue;
                         } else {
-                            if (existingItemIndex !== -1) {
-                                this.subTotals[existingItemIndex].subtotal = 0;
-                            } else {
-                                this.subTotals.push({
-                                    subtotal: 0,
-                                    index: index,
-                                });
-                            }
+                            this.subTotals.push({
+                                subtotal: subtotalValue,
+                                index: index,
+                            });
                         }
 
                         this.totalCostValueEmitter.emit(this.subTotals);
@@ -909,34 +953,24 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private resetIsRepairBillTableForm(): void {
-        if (!this.isRepairOrderTable) {
-            const formArray = this.getFormArray();
+        const formArray = this.getFormArray();
 
-            if (formArray) {
-                formArray.controls.forEach((control) => {
-                    if (control instanceof FormGroup) {
+        if (formArray) {
+            formArray.controls.forEach((control) => {
+                if (control instanceof FormGroup) {
+                    if (this.tableType === ModalTableTypeEnum.REPAIR_ORDER) {
+                        this.inputService.changeValidators(
+                            control.get(TaModalTableStringEnum.PRICE),
+                            false
+                        );
+                    } else {
                         control.addControl(
                             TaModalTableStringEnum.PRICE,
                             this.formBuilder.control(null, Validators.required)
                         );
                     }
-                });
-            }
-        }
-
-        if (this.isRepairOrderTable) {
-            const formArray = this.getFormArray();
-
-            if (formArray) {
-                formArray.controls.forEach((control) => {
-                    if (control instanceof FormGroup) {
-                        this.inputService.changeValidators(
-                            control.get(TaModalTableStringEnum.PRICE),
-                            false
-                        );
-                    }
-                });
-            }
+                }
+            });
         }
     }
 

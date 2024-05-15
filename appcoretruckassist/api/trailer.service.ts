@@ -783,6 +783,7 @@ export class TrailerService {
 
     /**
      * @param active 
+     * @param trailerTypeIds 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -793,15 +794,21 @@ export class TrailerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TrailerListResponse>;
-    public apiTrailerListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TrailerListResponse>>;
-    public apiTrailerListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TrailerListResponse>>;
-    public apiTrailerListGet(active?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTrailerListGet(active?: number, trailerTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TrailerListResponse>;
+    public apiTrailerListGet(active?: number, trailerTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TrailerListResponse>>;
+    public apiTrailerListGet(active?: number, trailerTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TrailerListResponse>>;
+    public apiTrailerListGet(active?: number, trailerTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>active, 'Active');
+        }
+        if (trailerTypeIds) {
+            trailerTypeIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TrailerTypeIds');
+            })
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1051,6 +1058,7 @@ export class TrailerService {
      * @param suspension 
      * @param tireSizeId 
      * @param doorType 
+     * @param liftgate 
      * @param reeferUnit 
      * @param emptyWeight 
      * @param mileage 
@@ -1061,10 +1069,10 @@ export class TrailerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTrailerPost(companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1164,6 +1172,9 @@ export class TrailerService {
         if (doorType !== undefined) {
             localVarFormParams = localVarFormParams.append('DoorType', <any>doorType) as any || localVarFormParams;
         }
+        if (liftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('Liftgate', <any>liftgate) as any || localVarFormParams;
+        }
         if (reeferUnit !== undefined) {
             localVarFormParams = localVarFormParams.append('ReeferUnit', <any>reeferUnit) as any || localVarFormParams;
         }
@@ -1232,6 +1243,7 @@ export class TrailerService {
      * @param suspension 
      * @param tireSizeId 
      * @param doorType 
+     * @param liftgate 
      * @param reeferUnit 
      * @param emptyWeight 
      * @param mileage 
@@ -1243,10 +1255,10 @@ export class TrailerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiTrailerPut(id?: number, companyOwned?: boolean, trailerNumber?: string, trailerTypeId?: number, vin?: string, trailerMakeId?: number, model?: string, colorId?: number, year?: number, trailerLengthId?: number, ownerId?: number, note?: string, purchaseDate?: string, purchasePrice?: number, axles?: number, suspension?: number, tireSizeId?: number, doorType?: number, liftgate?: boolean, reeferUnit?: number, emptyWeight?: number, mileage?: number, volume?: number, insurancePolicy?: string, fhwaExp?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1348,6 +1360,9 @@ export class TrailerService {
         }
         if (doorType !== undefined) {
             localVarFormParams = localVarFormParams.append('DoorType', <any>doorType) as any || localVarFormParams;
+        }
+        if (liftgate !== undefined) {
+            localVarFormParams = localVarFormParams.append('Liftgate', <any>liftgate) as any || localVarFormParams;
         }
         if (reeferUnit !== undefined) {
             localVarFormParams = localVarFormParams.append('ReeferUnit', <any>reeferUnit) as any || localVarFormParams;

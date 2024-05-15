@@ -5,4 +5,6 @@ export enum ConfirmationActivationStringEnum {
     CLOSE_TITLE = 'Close',
     REPAIR_SHOP_TITLE = 'Repair Shop',
     REPAIR_SHOP_TEXT = 'repair shop',
+    BROKER_TITLE = 'Broker',
+    BROKER_TEXT = 'broker',
 }

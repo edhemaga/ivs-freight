@@ -9,6 +9,7 @@ import {
 import { Observable, Subject, takeUntil } from 'rxjs';
 
 // services
+import { AuthFacadeService } from '@pages/website/state/services/auth.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 
 // validations
@@ -16,18 +17,6 @@ import { passwordValidation } from '@shared/components/ta-input/validators/ta-in
 
 // enums
 import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
-
-// store
-import { Store, select } from '@ngrx/store';
-
-// actions
-import { authLogin } from '@pages/website/state/actions/login/auth.actions';
-
-// selectors
-import {
-    selectAuthLoginError,
-    selectAuthLoginLoading,
-} from '@pages/website/state/selectors/auth-login.selector';
 
 @Component({
     selector: 'app-login',
@@ -47,8 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
         // services
         private inputService: TaInputService,
-        // store
-        private store: Store
+        private authFacadeService: AuthFacadeService
     ) {}
 
     ngOnInit(): void {
@@ -57,15 +45,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     private subscribeToStoreSelectors(): void {
-        this.store
-            .select(selectAuthLoginError)
+        this.authFacadeService.loginError$
             .pipe(takeUntil(this.destroy$))
             .subscribe((error) => {
                 if (!error) return;
                 this.loginForm.get(error.type).setErrors(error.error);
             });
 
-        this.displaySpinner$ = this.store.pipe(select(selectAuthLoginLoading));
+        this.displaySpinner$ = this.authFacadeService.showSpinner$;
     }
 
     private createForm(): void {
@@ -97,7 +84,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             return;
         }
 
-        this.store.dispatch(authLogin(this.loginForm.value));
+        this.authFacadeService.logIn(this.loginForm.value);
     }
 
     ngOnDestroy(): void {

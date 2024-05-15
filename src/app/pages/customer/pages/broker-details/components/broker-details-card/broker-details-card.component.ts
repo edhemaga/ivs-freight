@@ -178,10 +178,15 @@ export class BrokerDetailsCardComponent
         this.getPercntageOfPaid =
             (data?.availableCredit / data?.creditLimit) * 100;
 
-        let firstGroup = data?.invoiceAgeingGroupOne?.countInvoice;
-        let secondGroup = data?.invoiceAgeingGroupTwo?.countInvoice;
-        let threeGroup = data?.invoiceAgeingGroupThree?.countInvoice;
-        let fourGroup = data?.invoiceAgeingGroupFour?.countInvoice;
+        let firstGroup =
+            data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupOne?.countInvoice;
+        let secondGroup =
+            data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupTwo?.countInvoice;
+        let threeGroup =
+            data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupThree
+                ?.countInvoice;
+        let fourGroup =
+            data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupFour?.countInvoice;
         this.invoiceAgeingCounter =
             firstGroup + secondGroup + threeGroup + fourGroup;
     }

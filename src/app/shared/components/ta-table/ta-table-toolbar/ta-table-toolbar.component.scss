@@ -158,6 +158,43 @@
                         }
                     }
                 }
+
+                &.action-hover:hover {
+                    background: $bw2;
+                    border-radius: 2px;
+
+                    .ban-action-icon {
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
+                        }
+                    }
+
+                    .dnu-action-icon, .close-bussiness-icon {
+                        svg {
+                            path {
+                                fill: $ta-red-14;
+                            }
+                        }
+                    }
+
+                    .remove-action-icon {
+                        svg {
+                            path {
+                                fill: $ta-blue-15;
+                            }
+                        }
+                    }
+                    
+                    .open-bussiness-icon {
+                        svg {
+                            path {
+                                fill: $special-filter-green;
+                            }
+                        }
+                    }
+                }
             }
 
             .border-container {

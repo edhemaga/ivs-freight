@@ -89,8 +89,10 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
         e.stopPropagation();
         this.indexSwitch = indx;
 
-        this.tabs.map((item) => (item.checked = false));
-        item.checked = true;
+        this.tabs.map((tab) => {
+            if (tab.id === item.id) tab.checked = true;
+            else tab.checked = false;
+        });
         this.hoverStyle = this.getElementOffset(e.target);
         const closeComponentArray = this.autoCloseComponent.toArray().reverse();
 
@@ -101,6 +103,8 @@ export class TaTabSwitchComponent implements AfterViewInit, OnChanges {
             closeComponentArray[0].tooltip.close();
         }
         this.switchClicked.emit(item);
+
+        this.det.detectChanges();
     }
 
     private getElementOffset(item): { x: number; width: string } {

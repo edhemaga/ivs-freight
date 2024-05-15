@@ -25,6 +25,10 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? 'ASSIGNED'
             : tableHeadTitle === 'NAME  '
             ? 'EMERGENCY CONTACT'
+            : tableHeadTitle === 'PHYSICAL'
+            ? 'ADDRESS'
+            : tableHeadTitle === 'CREDIT LIMIT'
+            ? 'BILLING'
             : 'MVR';
     }
 }

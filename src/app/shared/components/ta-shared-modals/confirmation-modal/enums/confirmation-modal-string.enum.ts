@@ -8,6 +8,8 @@ export enum ConfirmationModalStringEnum {
     REPAIR_SHOP = 'repair shop',
     DELETE_REPAIR = 'Delete Repair',
     DELETE_ORDER = 'Delete Order',
+    DELETE_BROKER = 'Delete Broker',
+    DELETE_SHIPPER = 'Delete Shipper',
     REPAIR_SHOP_REVIEW = 'repair shop review',
     QUESTION_MARK = '?',
 }

@@ -885,7 +885,7 @@
                             (onActionEvent)="addOffDutyLocation($event)"
                         >
                             <app-ta-modal-table
-                                [isOffDutyLocationTable]="true"
+                                [tableType]="modalTableTypeEnum.OFF_DUTY_LOCATION"
                                 [isNewRowCreated]="isOffDutyLocationRowCreated"
                                 (modalTableValueEmitter)="
                                     handleModalTableValueEmit($event)

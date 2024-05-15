@@ -9,6 +9,7 @@ export enum TableActionsStringEnum {
     VIEW_MODE = 'view-mode',
     TAB_SELECTED = 'tab-selected',
     DELETE_MULTIPLE = 'delete-multiple',
+    DEACTIVATE_MULTIPLE = 'multiple-deactivate',
     EDIT = 'edit',
     UPDATE = 'update',
     DELETE = 'delete',
