@@ -315,12 +315,12 @@
                         <!-- Broker -->
 
                         <ng-container *ngSwitchCase="'broker'">
-                            <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                            <div class="confirmation-info w-100">
+                                <p class="m-0 confirmation-text-1 large-text-1 limit-text">
                                     {{ editData?.data?.businessName }}
                                 </p>
-                                <p class="m-0 confirmation-text-2">
-                                    Phone: {{ editData?.data?.phone }}
+                                <p class="m-0 confirmation-text-2 large-text-2 limit-text">
+                                    {{ editData?.data?.billingAddress?.address }}
                                 </p>
                             </div>
                         </ng-container>
@@ -992,6 +992,19 @@
 
                                 <p class="m-0 text-2">
                                     {{ item?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Broker -->
+
+                        <ng-container *ngSwitchCase="'broker'">
+                            <div class="confirmation-info w-100">
+                                <p class="m-0 confirmation-text-1 large-text-1 limit-text">
+                                    {{ item?.data?.businessName }}
+                                </p>
+                                <p class="m-0 confirmation-text-2 large-text-2 limit-text">
+                                    {{ item?.data?.billingAddress?.address }}
                                 </p>
                             </div>
                         </ng-container>

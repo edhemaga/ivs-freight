@@ -1,0 +1,18 @@
+export enum ConfirmationMoveStringEnum {
+    MOVE = 'move',
+    REMOVE = 'remove',
+    MULTIPLE_MOVE = 'multiple move',
+    MULTIPLE_REMOVE = 'multiple remove',
+    MOVE_TITLE = 'Move',
+    REMOVE_TITLE = 'Remove',
+    BROKER_TITLE = 'Broker',
+    BROKER_TEXT = 'broker',
+    MOVE_SELECTED = 'move selected',
+    REMOVE_SELECTED = 'remove selected',
+    BAN = 'ban',
+    DNU = 'dnu',
+    BAN_LIST = 'ban list',
+    DNU_LIST = 'DNU list',
+    TO = 'to',
+    FROM = 'from',
+}

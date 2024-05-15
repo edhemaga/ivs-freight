@@ -242,7 +242,19 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
                     this.activeTableData.moneyCount =
                         this.tableRowsSelected.reduce((total, selectRow) => {
-                            const cost = selectRow.tableData?.tableCost;
+                            let cost: string;
+
+                            if (
+                                this.activeTableData.title ===
+                                TableStringEnum.BROKER
+                            ) {
+                                cost =
+                                    selectRow.tableData
+                                        ?.tablePaymentDetailCreditLimit;
+                            } else {
+                                cost = selectRow.tableData?.tableCost;
+                            }
+
                             if (cost) {
                                 const num = parseFloat(
                                     cost.replace(/\$|,/g, '')
@@ -490,6 +502,18 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     public hireSelectedRows(): void {
         this.tableService.sendHireSelectedRows(this.tableRowsSelected);
+    }
+
+    public banSelectedRows(): void {
+        this.tableService.sendBanListSelectedRows(this.tableRowsSelected);
+    }
+
+    public dnuSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows(this.tableRowsSelected);
+    }
+
+    public bussinessSelectedRows(): void {
+        this.tableService.sendBussinessSelectedRows(this.tableRowsSelected);
     }
 
     public deleteSelectedRows(): void {

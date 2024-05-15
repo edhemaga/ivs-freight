@@ -640,7 +640,8 @@
                                     'info',
                                     'repair-detail',
                                     'repair-review',
-                                    'shipper'
+                                    'broker',
+                                    'shipper',
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -769,7 +770,10 @@
 
                     <!-- DNU -->
                     <ng-container
-                        *ngIf="confirmationData?.subType === 'ban list'"
+                        *ngIf="
+                            confirmationData?.subType === 'ban list' ||
+                            confirmationData?.subType === 'ban'
+                        "
                     >
                         <button
                             (click)="onAction('bfb')"

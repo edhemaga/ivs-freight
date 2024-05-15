@@ -62,7 +62,7 @@ export class DropdownContentHelper {
             // this is not going into first sprint },
             {
                 title:
-                    data.status === 1
+                    data.status
                         ? TableStringEnum.CLOSE_BUSINESS_2
                         : TableStringEnum.OPEN_BUSINESS,
                 name: TableStringEnum.CLOSE_BUSINESS,
@@ -127,12 +127,12 @@ export class DropdownContentHelper {
             {
                 title: TableStringEnum.CREATE_LOAD_2,
                 name: TableStringEnum.CREATE_LOAD,
-                svgUrl: '',
+                svgUrl: 'assets/svg/common/ic_plus.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: TableStringEnum.REGULAR,
+                svgClass: TableStringEnum.FAVOURITE,
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
@@ -141,7 +141,7 @@ export class DropdownContentHelper {
             {
                 title: TableStringEnum.ADD_CONTRACT_2,
                 name: TableStringEnum.ADD_CONTRACT,
-                svgUrl: '',
+                svgUrl: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -155,7 +155,7 @@ export class DropdownContentHelper {
             {
                 title: TableStringEnum.WRITE_REVIEW_2,
                 name: TableStringEnum.WRITE_REVIEW,
-                svgUrl: '',
+                svgUrl: 'assets/svg/common/review-pen.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -171,7 +171,7 @@ export class DropdownContentHelper {
                     ? TableStringEnum.MOVE_TO_BAN_LIST_2
                     : TableStringEnum.REMOVE_FROM_BAN_LIST,
                 name: TableStringEnum.MOVE_TO_BAN_LIST,
-                svgUrl: '',
+                svgUrl: 'assets/svg/common/ic_banned_broker.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -187,12 +187,12 @@ export class DropdownContentHelper {
                     ? TableStringEnum.MOVE_TO_DNU_LIST_2
                     : TableStringEnum.REMOVE_FROM_DNU_LIST,
                 name: TableStringEnum.MOVE_TO_DNU_LIST,
-                svgUrl: '',
+                svgUrl: 'assets/svg/common/ic_dnu_broker.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
                 },
-                svgClass: TableStringEnum.REGULAR,
+                svgClass: TableStringEnum.DELETE,
                 hasBorder: true,
             },
 
@@ -225,11 +225,14 @@ export class DropdownContentHelper {
 
             {
                 title:
-                    data.status === 1
+                    data.status
                         ? TableStringEnum.CLOSE_BUSINESS_2
                         : TableStringEnum.OPEN_BUSINESS,
                 name: TableStringEnum.CLOSE_BUSINESS,
-                svgUrl: '',
+                svgUrl:
+                    data.status
+                        ? 'assets/svg/common/ic_closed_broker.svg'
+                        : 'assets/svg/common/ic_open_bussiness.svg',
                 svgStyle: {
                     width: 18,
                     height: 18,
@@ -237,7 +240,10 @@ export class DropdownContentHelper {
                 tableListDropdownContentStyle: {
                     'margin-bottom.px': 4,
                 },
-                svgClass: TableStringEnum.DELETE,
+                svgClass:
+                    data.status
+                        ? TableStringEnum.DELETE
+                        : TableStringEnum.OPEN_BUSINESS_2,
             },
 
             {

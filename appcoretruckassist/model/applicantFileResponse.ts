@@ -19,6 +19,7 @@ export interface ApplicantFileResponse {
     fileSize?: number | null;
     tags?: Array<string> | null;
     tagGeneratedByUser?: boolean;
+    updatedAt?: string | null;
     review?: FileReviewResponse;
 }
 

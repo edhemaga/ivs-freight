@@ -17,6 +17,7 @@ export interface GetBrokerListResponse {
     brokerCount?: number;
     banCount?: number;
     dnuCount?: number;
+    closedCount?: number;
     shipperCount?: number;
 }
 

@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface TruckTypeFilterResponse { 
-    id?: number;
-    name?: string | null;
-    logoName?: string | null;
+    truckType?: TruckTypeResponse;
+    count?: number;
 }
 
