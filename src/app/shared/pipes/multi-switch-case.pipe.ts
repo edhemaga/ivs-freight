@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true,
 })
 export class MultiSwitchCasePipe implements PipeTransform {
-    transform<T = any>(cases: T[], value: T): T {
+    transform<T>(cases: T[], value: T): T {
         return cases.includes(value) ? value : cases[0];
     }
 }

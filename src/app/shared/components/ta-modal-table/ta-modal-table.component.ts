@@ -128,38 +128,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Output() modalTableValidStatusEmitter = new EventEmitter<boolean>();
     @Output() totalCostValueEmitter = new EventEmitter<RepairSubtotal[]>();
 
-    get isPhoneTable() {
-        return this.tableType === ModalTableTypeEnum.PHONE;
-    }
-
-    get isEmailTable() {
-        return this.tableType === ModalTableTypeEnum.EMAIL;
-    }
-
-    get isRepairBillTable() {
-        return this.tableType === ModalTableTypeEnum.REPAIR_BILL;
-    }
-
-    get isRepairOrderTable() {
-        return this.tableType === ModalTableTypeEnum.REPAIR_ORDER;
-    }
-
-    get isContactTable() {
-        return this.tableType === ModalTableTypeEnum.CONTACT;
-    }
-
-    get isPMTruckTable() {
-        return this.tableType === ModalTableTypeEnum.PM_TRUCK;
-    }
-
-    get isPMTrailerTable() {
-        return this.tableType === ModalTableTypeEnum.PM_TRAILER;
-    }
-
-    get isOffDutyLocationTable() {
-        return this.tableType === ModalTableTypeEnum.OFF_DUTY_LOCATION;
-    }
-
     private destroy$ = new Subject<void>();
 
     public modalTableForm: UntypedFormGroup;
@@ -205,6 +173,38 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private repairService: RepairService,
         private pmService: PmService
     ) {}
+
+    get isPhoneTable() {
+        return this.tableType === ModalTableTypeEnum.PHONE;
+    }
+
+    get isEmailTable() {
+        return this.tableType === ModalTableTypeEnum.EMAIL;
+    }
+
+    get isRepairBillTable() {
+        return this.tableType === ModalTableTypeEnum.REPAIR_BILL;
+    }
+
+    get isRepairOrderTable() {
+        return this.tableType === ModalTableTypeEnum.REPAIR_ORDER;
+    }
+
+    get isContactTable() {
+        return this.tableType === ModalTableTypeEnum.CONTACT;
+    }
+
+    get isPMTruckTable() {
+        return this.tableType === ModalTableTypeEnum.PM_TRUCK;
+    }
+
+    get isPMTrailerTable() {
+        return this.tableType === ModalTableTypeEnum.PM_TRAILER;
+    }
+
+    get isOffDutyLocationTable() {
+        return this.tableType === ModalTableTypeEnum.OFF_DUTY_LOCATION;
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -796,14 +796,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
+        
         formGroup.patchValue({
             phone: phoneData?.phone,
             phoneExt: phoneData?.phoneExt,
             contactPhoneType: phoneData?.contactPhoneType?.name,
         });
+
         if (phoneData?.phoneExt) {
             this.isContactPhoneExtExist[index] = true;
         }
+
         if (phoneData?.contactPhoneType?.name) {
             this.selectedContactPhoneType[index] = phoneData.contactPhoneType;
         }
@@ -814,15 +817,18 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
+        
         formGroup.patchValue({
             email: emailData?.email,
             contactEmailType: emailData?.contactEmailType?.name,
         });
+
         this.inputService.customInputValidator(
             formGroup.get(TaModalTableStringEnum.EMAIL),
             TaModalTableStringEnum.EMAIL,
             this.destroy$
         );
+
         if (emailData?.contactEmailType?.name) {
             this.selectedContactEmailType[index] = emailData.contactEmailType;
         }
@@ -833,6 +839,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
+        
         formGroup.patchValue({
             description: repairBillData?.description,
             pm:
@@ -842,6 +849,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             price: repairBillData?.price,
             subtotal: repairBillData?.subtotal,
         });
+
         this.subTotals[index] = {
             subtotal: repairBillData?.subtotal,
             index: index,
@@ -855,6 +863,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
+        
         formGroup.patchValue({
             description: repairOrderData?.description,
             pm:
@@ -862,12 +871,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 repairOrderData?.pmTrailer?.title,
             quantity: repairOrderData?.quantity,
         });
+
         this.selectedTruckTrailerRepairPm[index] =
             repairOrderData?.pmTruck || repairOrderData?.pmTrailer;
     }
 
     private handlePmData(pmData: PMTableData, index: number): void {
         const formGroup = this.getFormArray().at(index);
+        
         formGroup.patchValue({
             id: pmData?.id,
             isChecked: pmData?.isChecked,
