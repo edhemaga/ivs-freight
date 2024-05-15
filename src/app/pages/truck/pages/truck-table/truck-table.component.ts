@@ -7,6 +7,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
@@ -15,6 +16,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -36,6 +38,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TruckTableStringEnum } from '@pages/truck/pages/truck-table/enum/truck-table-string.enum';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -51,7 +54,6 @@ import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
-import { TruckTableStringEnum } from './enum/truck-table-string.enum';
 
 @Component({
     selector: 'app-truck-table',
@@ -108,7 +110,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
         private TruckCardsModalService: TruckCardsModalService,
-        private truckCardModalQuery: truckCardModalQuery
+        private truckCardModalQuery: truckCardModalQuery,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     ngOnInit(): void {
@@ -234,6 +237,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 },
+            });
+
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.changeTruckStatus(res.data.id);
+                }
             });
     }
 
@@ -1170,15 +1181,19 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
-                    ConfirmationModalComponent,
+                    ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
                         template: TableStringEnum.TRUCK,
+                        subType: TableStringEnum.TRUCK,
                         type:
                             event.data.status === 1
                                 ? TableStringEnum.DEACTIVATE
                                 : TableStringEnum.ACTIVATE,
+                        tableType: TableStringEnum.TRUCK,
+                        modalTitle: ' Unit ' + mappedEvent?.data?.number,
+                        modalSecondTitle: mappedEvent?.data?.vin,
                         svg: true,
                     }
                 );
