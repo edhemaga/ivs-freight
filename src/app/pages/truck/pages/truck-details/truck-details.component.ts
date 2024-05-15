@@ -433,7 +433,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             return data.every((item: TruckDetailsConfigData) => {
                 return item.voidedOn || this.isExpired(item.expDate);
             });
-        }
+        } else return false;
     }
 
     public isExpired(expDate: string): boolean {
