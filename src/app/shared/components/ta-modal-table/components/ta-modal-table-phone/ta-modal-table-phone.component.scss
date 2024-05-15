@@ -1,0 +1,53 @@
+@import 'src/theme/variables.scss';
+
+.phone-table-container {
+    .table-item {
+        grid-template-columns: 26px 168px 140px 110px;
+
+        .phone-extension-container {
+            cursor: pointer;
+
+            &:hover {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $bw6-2;
+                        }
+                    }
+                }
+            }
+
+            svg-icon {
+                svg {
+                    path {
+                        transition: fill 0.3s ease-in;
+                        fill: $bw5;
+                    }
+                }
+            }
+
+            .divider {
+                height: 14px;
+                width: 1px;
+                background: $ta-gray-01;
+                margin: 0 4px;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black-2;
+
+                &::-moz-selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                    color: $bw5;
+                    background: rgb(145, 145, 145, 0.2);
+                }
+            }
+        }
+    }
+}

@@ -471,7 +471,7 @@
                             class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
                         >
                             <app-ta-modal-table
-                                [isContactTable]="true"
+                                [tableType]="modalTableTypeEnum.CONTACT"
                                 [isNewRowCreated]="isNewContactAdded"
                                 (modalTableValueEmitter)="
                                     handleModalTableValueEmit($event)

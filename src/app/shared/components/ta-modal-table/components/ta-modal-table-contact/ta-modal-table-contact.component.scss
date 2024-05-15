@@ -1,0 +1,18 @@
+.contact-table-container {
+    overflow-x: scroll;
+
+    .contact-item {
+        grid-template-columns: 26px 170px 120px 140px 80px 200px;
+
+        .gradient-border-container {
+            border-right-width: 8px;
+            border-right-style: solid;
+            border-image: linear-gradient(
+                    to right,
+                    #dadada,
+                    rgba(0, 0, 0, 0)
+                )
+                1 100%;
+        }
+    }
+}
