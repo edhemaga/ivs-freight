@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, map, Subject, takeUntil } from 'rxjs';
+import { forkJoin, map, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -717,6 +717,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // TODO find model for this data
     private mapDriverData(data: any): any {
         const {
+            id,
             avatar,
             fullName,
             dateOfBirth,
@@ -748,6 +749,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!avatar) this.mapingIndex++;
 
         return {
+            id,
             isSelected: false,
             isOwner: owner ?? false,
             textShortName: this.nameInitialsPipe.transform(fullName),
@@ -1385,14 +1387,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 );
             } else {
-                this.modalService.openModal(
-                    DriverModalComponent,
-                    { size: TableStringEnum.MEDIUM },
-                    {
-                        ...event,
-                        disableButton: true,
-                    }
-                );
+                this.getDriverById(event.id);
             }
         } else if (event.type === TableStringEnum.NEW_LICENCE) {
             this.modalService.openModal(
@@ -1450,6 +1445,31 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }
+    }
+
+    private getDriverById(id: number): void {
+        this.driverService
+            .getDriverById(id)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap((driver) => {
+                    const editData = {
+                        data: {
+                            ...driver,
+                        },
+                        id,
+                    };
+
+                    this.modalService.openModal(
+                        DriverModalComponent,
+                        { size: TableStringEnum.MEDIUM },
+                        {
+                            ...editData,
+                        }
+                    );
+                })
+            )
+            .subscribe();
     }
 
     // Get Tab Table Data For Selected Tab

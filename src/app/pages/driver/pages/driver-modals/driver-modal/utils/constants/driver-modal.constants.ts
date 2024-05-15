@@ -71,7 +71,7 @@ export class DriverModalConstants {
     };
 
     static SLIDER_OPTIONS: Options = {
-        floor: 10,
+        floor: 5,
         ceil: 50,
         step: 1,
         showSelectionBar: true,

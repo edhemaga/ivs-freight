@@ -4,9 +4,9 @@
     [editData]="editData"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
-    [isModalValid]="true"
+    [isModalValid]="driverForm.valid && isFormDirty"
     (action)="onModalAction($event)"
-    ><!-- driverForm.valid && isFormDirty -->
+>
     <div origin>
         <!-- Tabs -->
 
@@ -346,14 +346,15 @@
                                                 'solo-or-team':
                                                     fleetType === 'Solo',
                                                 'permile-fields-same-rate':
+                                                    fleetType !== 'Combined' &&
+                                                    hasMilesSameRate,
+                                                'permile-fields-same-rate-combined':
+                                                    fleetType === 'Combined' &&
                                                     hasMilesSameRate
                                             }"
                                         >
                                             <ng-container
-                                                *ngIf="
-                                                    fleetType === 'Combined' ||
-                                                    hasMilesSameRate
-                                                "
+                                                *ngIf="fleetType === 'Combined'"
                                             >
                                                 <p class="m-0 ta-font-medium">
                                                     SOLO
@@ -376,6 +377,8 @@
                                                             'dollar',
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'soloDriver'
                                                             ).value,
@@ -395,6 +398,8 @@
                                                             'dollar',
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'soloDriver'
                                                             ).value,
@@ -415,6 +420,12 @@
                                                         isRequired: true,
                                                         placeholderIcon:
                                                             'dollar',
+                                                        isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
+                                                            !driverForm.get(
+                                                                'soloDriver'
+                                                            ).value,
                                                         min: 0,
                                                         max: 10,
                                                         maxLength: 4
@@ -432,6 +443,8 @@
                                                     placeholderIcon: 'dollar',
                                                     thousandSeparator: true,
                                                     isDisabled:
+                                                        fleetType ===
+                                                            'Combined' &&
                                                         !driverForm.get(
                                                             'soloDriver'
                                                         ).value,
@@ -461,14 +474,15 @@
                                                 'solo-or-team':
                                                     fleetType === 'Team',
                                                 'permile-fields-same-rate':
+                                                    fleetType !== 'Combined' &&
+                                                    hasMilesSameRate,
+                                                'permile-fields-same-rate-combined':
+                                                    fleetType === 'Combined' &&
                                                     hasMilesSameRate
                                             }"
                                         >
                                             <ng-container
-                                                *ngIf="
-                                                    fleetType === 'Combined' ||
-                                                    hasMilesSameRate
-                                                "
+                                                *ngIf="fleetType === 'Combined'"
                                             >
                                                 <p class="m-0 ta-font-medium">
                                                     TEAM
@@ -491,6 +505,8 @@
                                                             'dollar',
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'teamDriver'
                                                             ).value,
@@ -510,6 +526,8 @@
                                                             'dollar',
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'teamDriver'
                                                             ).value,
@@ -530,6 +548,12 @@
                                                         isRequired: true,
                                                         placeholderIcon:
                                                             'dollar',
+                                                        isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
+                                                            !driverForm.get(
+                                                                'teamDriver'
+                                                            ).value,
                                                         min: 0,
                                                         max: 10,
                                                         maxLength: 4
@@ -547,6 +571,8 @@
                                                     placeholderIcon: 'dollar',
                                                     thousandSeparator: true,
                                                     isDisabled:
+                                                        fleetType ===
+                                                            'Combined' &&
                                                         !driverForm.get(
                                                             'teamDriver'
                                                         ).value,
@@ -593,6 +619,11 @@
                                                     [customClass]="
                                                         'custom-slider-with-percentage custom-driver-modal'
                                                     "
+                                                    [isDisabled]="
+                                                        !driverForm.get(
+                                                            'commissionSolo'
+                                                        )?.value
+                                                    "
                                                     (onUserValueChange)="
                                                         handleSliderValueChange(
                                                             $event,
@@ -619,6 +650,11 @@
                                                     "
                                                     [customClass]="
                                                         'custom-slider-with-percentage custom-driver-modal'
+                                                    "
+                                                    [isDisabled]="
+                                                        !driverForm.get(
+                                                            'commissionTeam'
+                                                        )?.value
                                                     "
                                                     (onUserValueChange)="
                                                         handleSliderValueChange(

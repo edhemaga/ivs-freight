@@ -288,8 +288,16 @@
                 grid-template-columns: repeat(3, 197px);
             }
 
-            &.permile-fields-same-rate {
+            &.permile-fields-same-rate-combined {
                 grid-template-columns: auto repeat(2, 272px);
+            }
+
+            &.permile-fields-same-rate {
+                grid-template-columns: repeat(2, 302px);
+            }
+
+            &.permile-fields-same-rate-combined {
+                grid-template-columns: auto repeat(2, 275px);
             }
 
             &.disabled {
