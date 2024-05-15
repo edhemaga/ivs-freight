@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject, tap, takeUntil } from 'rxjs';
+import { Observable, Subject, tap, takeUntil, of } from 'rxjs';
 
 // models
 import {
@@ -112,16 +112,20 @@ export class TrailerService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<TrailerListResponse> {
-        return this.trailerService.apiTrailerListGet(
-            active,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // backend parameters changed
+        
+        // return this.trailerService.apiTrailerListGet(
+        //     active,
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+
+        return of();
     }
 
     public updateTrailer(data: any): Observable<any> {

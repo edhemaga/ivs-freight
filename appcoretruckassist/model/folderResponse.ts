@@ -9,14 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface BrokerMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    status?: number;
-    totalDebt?: number | null;
-    revenue?: number | null;
-    loadCount?: number;
+export interface FolderResponse { 
+    type?: EnumValue;
+    childCount?: number;
+    icon?: string | null;
+    parentId?: number | null;
+    parentParentId?: number | null;
 }
 

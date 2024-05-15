@@ -1249,12 +1249,16 @@ export class CustomerTableComponent
         filter: {
             ban: number | undefined;
             dnu: number | undefined;
+            status: number | undefined;
             invoiceAgeingFrom: number | undefined;
             invoiceAgeingTo: number | undefined;
             availableCreditFrom: number | undefined;
             availableCreditTo: number | undefined;
             revenueFrom: number | undefined;
             revenueTo: number | undefined;
+            _long: number | undefined;
+            lat: number | undefined;
+            distance: number | undefined;
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -1269,12 +1273,16 @@ export class CustomerTableComponent
             .getBrokerList(
                 filter.ban,
                 filter.dnu,
+                filter.status,
                 filter.invoiceAgeingFrom,
                 filter.invoiceAgeingTo,
                 filter.availableCreditFrom,
                 filter.availableCreditTo,
                 filter.revenueFrom,
                 filter.revenueTo,
+                filter._long,
+                filter.lat,
+                filter.distance,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,

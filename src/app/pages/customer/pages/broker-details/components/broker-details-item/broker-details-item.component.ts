@@ -63,30 +63,33 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
 
     public getStops(data: BrokerResponse) {
         let datas;
-        data?.loads?.map((item) => {
-            datas = item.stops.map((itemStop) => {
-                if (itemStop.stopType.name === 'Pickup') {
-                    return {
-                        date: itemStop.dateFrom,
-                        stopOrder: itemStop.stopOrder,
-                        addressCity: itemStop.shipper.address.city,
-                        addressShortState:
-                            itemStop.shipper.address.stateShortName,
-                    };
-                }
-                if (itemStop.stopType.name === 'Delivery') {
-                    return {
-                        date: itemStop.dateFrom,
-                        stopOrder: itemStop.stopOrder,
-                        addressCity: itemStop.shipper.address.city,
-                        addressShortState:
-                            itemStop.shipper.address.stateShortName,
-                    };
-                }
-            });
-            this.stopsDataPickup = datas[0];
-            this.stopsDataDelivery = datas[1];
-        });
+
+        // loads doesn't exist in BrokerResponse
+        
+        // data?.loads?.map((item) => {
+        //     datas = item.stops.map((itemStop) => {
+        //         if (itemStop.stopType.name === 'Pickup') {
+        //             return {
+        //                 date: itemStop.dateFrom,
+        //                 stopOrder: itemStop.stopOrder,
+        //                 addressCity: itemStop.shipper.address.city,
+        //                 addressShortState:
+        //                     itemStop.shipper.address.stateShortName,
+        //             };
+        //         }
+        //         if (itemStop.stopType.name === 'Delivery') {
+        //             return {
+        //                 date: itemStop.dateFrom,
+        //                 stopOrder: itemStop.stopOrder,
+        //                 addressCity: itemStop.shipper.address.city,
+        //                 addressShortState:
+        //                     itemStop.shipper.address.stateShortName,
+        //             };
+        //         }
+        //     });
+        //     this.stopsDataPickup = datas[0];
+        //     this.stopsDataDelivery = datas[1];
+        // });
     }
     public getReviews(reviewsData: BrokerResponse) {
         this.reviewsRepair = reviewsData.ratingReviews.map((item) => {

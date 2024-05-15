@@ -23,6 +23,8 @@ import { BrokerAvailableCreditCommand } from '../model/brokerAvailableCreditComm
 // @ts-ignore
 import { BrokerAvailableCreditResponse } from '../model/brokerAvailableCreditResponse';
 // @ts-ignore
+import { BrokerByIdResponse } from '../model/brokerByIdResponse';
+// @ts-ignore
 import { BrokerContactCommand } from '../model/brokerContactCommand';
 // @ts-ignore
 import { BrokerFilterListResponse } from '../model/brokerFilterListResponse';
@@ -40,8 +42,6 @@ import { BrokerModalResponse } from '../model/brokerModalResponse';
 import { BrokerPaidInvoiceResponse } from '../model/brokerPaidInvoiceResponse';
 // @ts-ignore
 import { BrokerPaymentHistoryResponse } from '../model/brokerPaymentHistoryResponse';
-// @ts-ignore
-import { BrokerResponse } from '../model/brokerResponse';
 // @ts-ignore
 import { CreateWithUploadsResponse } from '../model/createWithUploadsResponse';
 // @ts-ignore
@@ -921,9 +921,9 @@ export class BrokerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerResponse>;
-    public apiBrokerIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerResponse>>;
-    public apiBrokerIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerResponse>>;
+    public apiBrokerIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerByIdResponse>;
+    public apiBrokerIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerByIdResponse>>;
+    public apiBrokerIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerByIdResponse>>;
     public apiBrokerIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling apiBrokerIdGet.');
@@ -970,7 +970,7 @@ export class BrokerService {
         }
 
         let localVarPath = `/api/broker/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<BrokerResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<BrokerByIdResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -1070,15 +1070,23 @@ export class BrokerService {
 
     /**
      * @param id 
+     * @param isPaid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerInvoiceAgeingResponse>;
-    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerInvoiceAgeingResponse>>;
-    public apiBrokerInvoiceageingIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerInvoiceAgeingResponse>>;
-    public apiBrokerInvoiceageingIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiBrokerInvoiceageingIdGet.');
+    public apiBrokerInvoiceageingGet(id?: number, isPaid?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<BrokerInvoiceAgeingResponse>;
+    public apiBrokerInvoiceageingGet(id?: number, isPaid?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<BrokerInvoiceAgeingResponse>>;
+    public apiBrokerInvoiceageingGet(id?: number, isPaid?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<BrokerInvoiceAgeingResponse>>;
+    public apiBrokerInvoiceageingGet(id?: number, isPaid?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (id !== undefined && id !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
+        }
+        if (isPaid !== undefined && isPaid !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>isPaid, 'IsPaid');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -1121,10 +1129,11 @@ export class BrokerService {
             }
         }
 
-        let localVarPath = `/api/broker/invoiceageing/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        let localVarPath = `/api/broker/invoiceageing`;
         return this.httpClient.request<BrokerInvoiceAgeingResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1209,12 +1218,16 @@ export class BrokerService {
     /**
      * @param ban 
      * @param dnu 
+     * @param status 
      * @param invoiceAgeingFrom 
      * @param invoiceAgeingTo 
      * @param availableCreditFrom 
      * @param availableCreditTo 
      * @param revenueFrom 
      * @param revenueTo 
+     * @param _long 
+     * @param lat 
+     * @param distance 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -1225,10 +1238,10 @@ export class BrokerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerListGet(ban?: number, dnu?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetBrokerListResponse>;
-    public apiBrokerListGet(ban?: number, dnu?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetBrokerListResponse>>;
-    public apiBrokerListGet(ban?: number, dnu?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetBrokerListResponse>>;
-    public apiBrokerListGet(ban?: number, dnu?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetBrokerListResponse>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetBrokerListResponse>>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetBrokerListResponse>>;
+    public apiBrokerListGet(ban?: number, dnu?: number, status?: number, invoiceAgeingFrom?: number, invoiceAgeingTo?: number, availableCreditFrom?: number, availableCreditTo?: number, revenueFrom?: number, revenueTo?: number, _long?: number, lat?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (ban !== undefined && ban !== null) {
@@ -1238,6 +1251,10 @@ export class BrokerService {
         if (dnu !== undefined && dnu !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>dnu, 'Dnu');
+        }
+        if (status !== undefined && status !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>status, 'Status');
         }
         if (invoiceAgeingFrom !== undefined && invoiceAgeingFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1262,6 +1279,18 @@ export class BrokerService {
         if (revenueTo !== undefined && revenueTo !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>revenueTo, 'RevenueTo');
+        }
+        if (_long !== undefined && _long !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>_long, 'Long');
+        }
+        if (lat !== undefined && lat !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>lat, 'Lat');
+        }
+        if (distance !== undefined && distance !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>distance, 'Distance');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

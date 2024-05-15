@@ -10,7 +10,6 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
-import { LoadBrokerDetailsResponse } from './loadBrokerDetailsResponse';
 import { InvoiceAgeingResponse } from './invoiceAgeingResponse';
 
 
@@ -24,6 +23,7 @@ export interface BrokerInvoiceAgeingResponse {
     availableCredit?: number | null;
     percentage?: number | null;
     totalDebt?: number | null;
+    totalPaid?: number | null;
     averageRate?: number | null;
     highestRate?: number | null;
     lowestRate?: number | null;
@@ -36,6 +36,6 @@ export interface BrokerInvoiceAgeingResponse {
     miles?: number | null;
     pricePerMile?: number | null;
     revenue?: number | null;
-    loads?: Array<LoadBrokerDetailsResponse> | null;
+    invoiceAgeing?: number;
 }
 

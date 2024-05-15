@@ -15,8 +15,8 @@ import { EnumValue } from './enumValue';
 import { TrailerMakeResponse } from './trailerMakeResponse';
 import { StateResponse } from './stateResponse';
 import { ColorResponse } from './colorResponse';
+import { OwnerTrailerModalResponse } from './ownerTrailerModalResponse';
 import { TireSizeResponse } from './tireSizeResponse';
-import { OwnerShortResponse } from './ownerShortResponse';
 
 
 export interface GetTrailerModalResponse { 
@@ -25,7 +25,7 @@ export interface GetTrailerModalResponse {
     trailerLengths?: Array<TrailerLengthResponse> | null;
     tireSizes?: Array<TireSizeResponse> | null;
     colors?: Array<ColorResponse> | null;
-    owners?: Array<OwnerShortResponse> | null;
+    owners?: Array<OwnerTrailerModalResponse> | null;
     suspensions?: Array<EnumValue> | null;
     doorTypes?: Array<EnumValue> | null;
     reeferUnits?: Array<EnumValue> | null;

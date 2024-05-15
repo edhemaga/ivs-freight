@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { RatingReviewResponse } from './ratingReviewResponse';
 import { EnumValue } from './enumValue';
-import { BrokerInvoiceAgeingResponse } from './brokerInvoiceAgeingResponse';
 import { PoBoxEntity } from './poBoxEntity';
 import { AddressEntity } from './addressEntity';
 
 
-export interface BrokerResponse { 
+export interface BrokerByIdResponse { 
     id?: number;
     businessName?: string | null;
     dbaName?: string | null;
@@ -33,6 +33,7 @@ export interface BrokerResponse {
     availableCredit?: number | null;
     percentage?: number | null;
     payTerm?: EnumValue;
+    creditType?: EnumValue;
     latitude?: number;
     longitude?: number;
     upCount?: number;
@@ -44,21 +45,13 @@ export interface BrokerResponse {
     dnu?: boolean;
     ban?: boolean;
     note?: string | null;
-    creditType?: EnumValue;
     brokerContacts?: Array<BrokerContactResponse> | null;
     ratingReviews?: Array<RatingReviewResponse> | null;
     status?: number;
     currentCompanyUserRating?: number | null;
-    brokerUnpaidInvoiceAgeing?: BrokerInvoiceAgeingResponse;
-    brokerPaidInvoiceAgeing?: BrokerInvoiceAgeingResponse;
-    totalDebt?: number | null;
-    totalPaid?: number | null;
-    daysToPay?: number | null;
-    miles?: number | null;
-    pricePerMile?: number | null;
-    revenue?: number | null;
+    files?: Array<FileResponse> | null;
+    fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
-    fileCount?: number | null;
 }
 

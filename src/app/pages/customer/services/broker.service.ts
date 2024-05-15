@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { Observable, of, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 // Services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -135,12 +135,16 @@ export class BrokerService implements OnDestroy {
     public getBrokerList(
         ban?: number,
         dnu?: number,
+        status?: number,
         invoiceAgeingFrom?: number,
         invoiceAgeingTo?: number,
         availableCreditFrom?: number,
         availableCreditTo?: number,
         revenueFrom?: number,
         revenueTo?: number,
+        _long?: number,
+        lat?: number,
+        distance?: number,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -152,12 +156,16 @@ export class BrokerService implements OnDestroy {
         return this.brokerService.apiBrokerListGet(
             ban,
             dnu,
+            status,
             invoiceAgeingFrom,
             invoiceAgeingTo,
             availableCreditFrom,
             availableCreditTo,
             revenueFrom,
             revenueTo,
+            _long,
+            lat,
+            distance,
             pageIndex,
             pageSize,
             companyId,

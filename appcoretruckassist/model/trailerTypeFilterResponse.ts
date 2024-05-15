@@ -15,5 +15,6 @@ export interface TrailerTypeFilterResponse {
     id?: number;
     name?: string | null;
     logoName?: string | null;
+    count?: number;
 }
 

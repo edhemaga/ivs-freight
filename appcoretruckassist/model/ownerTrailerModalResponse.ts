@@ -11,12 +11,9 @@
  */
 
 
-export interface BrokerMinimalResponse { 
+export interface OwnerTrailerModalResponse { 
     id?: number;
-    businessName?: string | null;
-    status?: number;
-    totalDebt?: number | null;
-    revenue?: number | null;
-    loadCount?: number;
+    name?: string | null;
+    trailerCount?: number;
 }
 

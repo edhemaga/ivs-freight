@@ -66,13 +66,13 @@ import {
     DepartmentResponse,
     EnumValue,
     OffDutyLocationResponse,
-    RepairItemCommand,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
 import { PMTableData } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-table-data.model';
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
+import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
 
 @Component({
     selector: 'app-ta-modal-table',

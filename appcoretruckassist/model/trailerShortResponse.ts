@@ -10,9 +10,12 @@
  * Do not edit the class manually.
  */
 import { TrailerLengthResponse } from './trailerLengthResponse';
+import { TitleResponse } from './titleResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { TrailerMakeResponse } from './trailerMakeResponse';
+import { StateResponse } from './stateResponse';
 import { ColorResponse } from './colorResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { OwnerShortResponse } from './ownerShortResponse';
@@ -27,12 +30,14 @@ export interface TrailerShortResponse {
     trailerLength?: TrailerLengthResponse;
     color?: ColorResponse;
     status?: number;
+    assignedTo?: DispatchShortResponse;
     purchaseDate?: string | null;
     purchasePrice?: number | null;
     axles?: number | null;
     tireSize?: TireSizeResponse;
     suspension?: EnumValue;
     doorType?: EnumValue;
+    liftgate?: boolean | null;
     reeferUnit?: EnumValue;
     emptyWeight?: number | null;
     volume?: number | null;
@@ -44,6 +49,7 @@ export interface TrailerShortResponse {
     year?: number;
     note?: string | null;
     licensePlate?: string | null;
+    registrationState?: StateResponse;
     fhwaInspection?: string | null;
     fhwaExp?: number;
     inspectionPercentage?: number | null;
@@ -52,6 +58,7 @@ export interface TrailerShortResponse {
     registrationPercentage?: number | null;
     registrationExpirationDays?: number | null;
     registrationExpirationHours?: number | null;
+    title?: TitleResponse;
     fileCount?: number | null;
     createdAt?: string;
     updatedAt?: string;
