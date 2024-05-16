@@ -154,7 +154,7 @@
             (onActionEvent)="addContactPhoneOrEmail('phone')"
         >
             <app-ta-modal-table
-                [isPhoneTable]="true"
+                [tableType]="modalTableTypeEnum.PHONE"
                 [isNewRowCreated]="isPhoneRowCreated"
                 [modalTableData]="updateContactPhones"
                 (modalTableValueEmitter)="
@@ -183,7 +183,7 @@
             (onActionEvent)="addContactPhoneOrEmail('email')"
         >
             <app-ta-modal-table
-                [isEmailTable]="true"
+                [tableType]="modalTableTypeEnum.EMAIL"
                 [isNewRowCreated]="isEmailRowCreated"
                 [modalTableData]="updateContactEmails"
                 (modalTableValueEmitter)="

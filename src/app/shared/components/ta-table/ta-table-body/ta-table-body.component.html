@@ -4261,12 +4261,16 @@
                                             [mainData]="row"
                                             [entityId]="row.id"
                                             [entityType]="
-                                                activeTableData?.gridNameTitle !=
-                                                'Repair'
+                                                activeTableData?.gridNameTitle ===
+                                                    'Customer' &&
+                                                selectedTab === 'inactive'
+                                                    ? 'Shipper'
+                                                    : activeTableData?.gridNameTitle !==
+                                                      'Repair'
                                                     ? activeTableData?.gridNameTitle
-                                                    : activeTableData?.gridNameTitle ==
+                                                    : activeTableData?.gridNameTitle ===
                                                           'Repair' &&
-                                                      selectedTab ==
+                                                      selectedTab ===
                                                           'repair-shop'
                                                     ? 'RepairShop'
                                                     : 'Repair'

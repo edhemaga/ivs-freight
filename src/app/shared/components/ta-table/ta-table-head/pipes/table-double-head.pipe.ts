@@ -48,12 +48,18 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle === 'NAME   ' ||
                     tableHeadTitle === 'NUMBER   ' ||
                     tableHeadTitle === 'DESCRIPTION');
+            const brokerTableColumnsCondition =
+                gridNameTitle === 'Customer' &&
+                (tableHeadTitle === 'PHYSICAL' ||
+                    tableHeadTitle === 'CREDIT LIMIT');
+
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
                 driverTableColumnsCondition ||
                 truckTableColumnsCondition ||
-                repairTableColumnsCondition
+                repairTableColumnsCondition ||
+                brokerTableColumnsCondition
             ) {
                 return true;
             }
@@ -85,6 +91,11 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== 'NUMBER   ' &&
                     tableHeadTitle !== 'DESCRIPTION');
 
+            const brokerTableColumnsCondition =
+                gridNameTitle !== 'Customer' ||
+                (tableHeadTitle !== 'PHYSICAL' &&
+                    tableHeadTitle !== 'CREDIT LIMIT');
+
             const truckTableColumnsCondition =
                 gridNameTitle !== 'Truck' ||
                 (tableHeadTitle !== ' NAME' &&
@@ -107,6 +118,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 pmTableColumnsCondition &&
                 driverTableColumnsCondition &&
                 repairTableColumnsCondition &&
+                brokerTableColumnsCondition &&
                 truckTableColumnsCondition &&
                 repairTableColumnsCondition
             );

@@ -28,11 +28,7 @@
             : editData?.template === 'repair_shop'
             ? 'Delete Repair Shop'
             : editData?.template === 'truck'
-            ? editData?.type === 'deactivate'
-                ? 'Deactivate Truck'
-                : editData?.type === 'activate'
-                ? 'Activate Truck'
-                : 'Delete Truck'
+            ? 'Delete Truck'
             : ' Confirmation'
     "
     [editName]="
@@ -59,11 +55,7 @@
         editData?.type === 'multiple delete'
             ? 'delete'
             : editData?.template === 'truck'
-            ? editData?.type === 'deactivate'
-                ? 'delete'
-                : editData?.type === 'activate'
-                ? 'hire'
-                : editData?.type
+            ? editData?.type
             : editData?.type
     "
     [confirmationData]="editData"
@@ -302,10 +294,20 @@
 
                         <!-- Shipper -->
 
+                        <ng-container *ngSwitchCase="'shipper'">
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ editData?.data?.businessName }}
+                                </p>
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ editData?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
                         <ng-container
                             *ngSwitchCase="
                                 [
-                                    'shipper',
                                     'Company Parking',
                                     'Company Office',
                                     'Company Repair Shop',
@@ -329,12 +331,18 @@
                         <!-- Broker -->
 
                         <ng-container *ngSwitchCase="'broker'">
-                            <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                            <div class="confirmation-info w-100">
+                                <p
+                                    class="m-0 confirmation-text-1 large-text-1 limit-text"
+                                >
                                     {{ editData?.data?.businessName }}
                                 </p>
-                                <p class="m-0 confirmation-text-2">
-                                    Phone: {{ editData?.data?.phone }}
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
+                                    {{
+                                        editData?.data?.billingAddress?.address
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -911,11 +919,20 @@
 
                         <!-- Shipper -->
 
+                        <ng-container *ngSwitchCase="'shipper'">
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ item?.data?.businessName }}
+                                </p>
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ item?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
                         <ng-container
                             *ngSwitchCase="
-                                ['shipper', 'parking'].includes(
-                                    editData?.template
-                                )
+                                'parking'.includes(editData?.template)
                                     ? editData?.template
                                     : ''
                             "
@@ -997,6 +1014,23 @@
 
                                 <p class="m-0 text-2">
                                     {{ item?.data?.address?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Broker -->
+
+                        <ng-container *ngSwitchCase="'broker'">
+                            <div class="confirmation-info w-100">
+                                <p
+                                    class="m-0 confirmation-text-1 large-text-1 limit-text"
+                                >
+                                    {{ item?.data?.businessName }}
+                                </p>
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
+                                    {{ item?.data?.billingAddress?.address }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1095,34 +1129,10 @@
                     }"
                 ></svg-icon>
             </ng-container>
-            <ng-container
-                *ngIf="
-                    editData?.type !== 'void' &&
-                    editData?.type !== 'deactivate' &&
-                    editData?.type !== 'activate'
-                "
-            >
+            <ng-container *ngIf="editData?.type !== 'void'">
                 <svg-icon
                     [src]="
                         'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
-                    "
-                    [svgStyle]="{
-                        'width.px': '90',
-                        'height.px': '90'
-                    }"
-                ></svg-icon>
-            </ng-container>
-            <ng-container
-                *ngIf="
-                    editData.type === 'deactivate' ||
-                    editData.type === 'activate'
-                "
-            >
-                <svg-icon
-                    [src]="
-                        editData.type === 'activate'
-                            ? 'assets/svg/common/confirmation/ic_confirmation_modal_button_activate.svg'
-                            : 'assets/svg/common/confirmation/ic_confirmation_modal_button_deactivate.svg'
                     "
                     [svgStyle]="{
                         'width.px': '90',

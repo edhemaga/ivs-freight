@@ -125,7 +125,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public tabs: any[] = [
         {
             id: 1,
-            name: 'Details',
+            name: 'Detail',
             checked: true,
         },
         {
@@ -169,13 +169,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public billingCredit = [
         {
-            id: 301,
-            name: 'Custom',
+            id: 300,
+            name: 'Unlimited',
             checked: true,
         },
         {
-            id: 300,
-            name: 'Unlimited',
+            id: 301,
+            name: 'Custom',
             checked: false,
         },
     ];
@@ -236,10 +236,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
         this.getBrokerDropdown();
-        this.isCredit({ id: 301, name: 'Custom', checked: true });
+        this.isCredit({ id: 300, name: 'Unlimited', checked: true });
         this.followIsBillingAddressSame();
 
-        if (this.editData.tab) this.selectedTab = this.editData.tab;
+        if (this.editData?.tab) this.selectedTab = this.editData.tab;
 
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
@@ -270,10 +270,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             billingPoBox: [null, poBoxValidation],
             billingPoBoxCity: [null, [...addressValidation]],
             isCredit: [true],
-            creditType: ['Custom'], // Custom | Unlimited
+            creditType: ['Unlimited'], // Custom | Unlimited
             creditLimit: [null, creditLimitValidation],
             availableCredit: [null],
-            payTerm: [null],
+            payTerm: [null, [Validators.required]],
             note: [null],
             ban: [null],
             dnu: [null],
@@ -868,13 +868,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             this.startFormChanges();
                         }
                     }
-                    this.tabs = this.tabs.map((tab) => {
-                        if (tab.name === this.editData.openedTab) {
-                            return { ...tab, checked: true };
-                        } else {
-                            return { ...tab, checked: false };
-                        }
-                    });
+                    if (this.editData) {
+                        this.tabs = this.tabs.map((tab) => ({
+                            ...tab,
+                            checked: tab.name === this.editData?.openedTab,
+                        }));
+                    }
+
                     // Open Tab Position
                     if (this.editData?.openedTab) {
                         setTimeout(() => {
@@ -1007,7 +1007,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                             }
                         );
 
-                        this.brokerForm.get('creditType').patchValue('Custom');
+                        this.brokerForm
+                            .get('creditType')
+                            .patchValue('Unlimited');
                         this.billingCredit = this.billingCredit.map(
                             (item, index) => {
                                 return {
@@ -1263,14 +1265,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         }
                     }
                     // Review
-                    this.reviews = reasponse.reviews.map((item: any) => ({
+                    this.reviews = reasponse.ratingReviews.map((item) => ({
                         ...item,
                         companyUser: {
                             ...item.companyUser,
                             avatar: item.companyUser.avatar,
                         },
                         commentContent: item.comment,
-                        rating: item.ratingFromTheReviewer,
+                        rating: item.thumb,
                     }));
 
                     const reviewIndex = this.reviews.findIndex(

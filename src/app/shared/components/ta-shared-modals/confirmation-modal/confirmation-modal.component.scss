@@ -157,6 +157,7 @@
                 &.large-text-1 {
                     font-size: 18px;
                     line-height: 22px;
+                    color: $ta-black;
 
                     .inactive-icon-holder {
                         svg-icon {
@@ -166,6 +167,17 @@
                                 }
                             }
                         }
+                    }
+                }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
                     }
                 }
             }
@@ -203,6 +215,17 @@
                     font-size: 14px;
                     line-height: 18px;
                     color: #919191;
+                }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
                 }
             }
             .avatar-img {
@@ -248,10 +271,6 @@
             }
         }
 
-        .confirmation-array-body {
-            gap: 12px;
-        }
-
         .confirmation-state {
             padding: 2px 9px;
             background-color: #f3f3f3;
@@ -269,6 +288,10 @@
                 color: $bw6-2;
             }
         }
+    }
+
+    .confirmation-array-body {
+        gap: 12px;
     }
 
     .confirmation-icon {

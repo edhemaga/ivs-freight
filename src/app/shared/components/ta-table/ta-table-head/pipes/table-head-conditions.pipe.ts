@@ -21,6 +21,7 @@ export class TableHeadConditionsPipe implements PipeTransform {
                         'sw-tw-total',
                         'citation',
                         'accident-citation',
+                        'contact'
                     ].includes(ngTemplate) &&
                     conditionData?.name !== '' &&
                     conditionData?.title !== 'ft'

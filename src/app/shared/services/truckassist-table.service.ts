@@ -66,6 +66,33 @@ export class TruckassistTableService {
     // hire selected rows
     private hireSelectedRows = new BehaviorSubject<DriverResponse[]>([]);
 
+    /* Ban List Selected Rows */
+    private banSelectedRows = new BehaviorSubject<
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
+    >([]);
+    public currentBanListSelectedRows = this.banSelectedRows.asObservable();
+
+    /* DNU List Selected Rows */
+    private dnuSelectedRows = new BehaviorSubject<
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
+    >([]);
+    public currentDnuListSelectedRows = this.dnuSelectedRows.asObservable();
+
+    /* Open/Close Bussiness Selected Rows */
+    private bussinessSelectedRows = new BehaviorSubject<
+        | ShipperResponse[]
+        | BrokerResponse[]
+        | DriverResponse[]
+        | BrokerResponse[]
+    >([]);
+    public currentBussinessSelectedRows = this.bussinessSelectedRows.asObservable();
+
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
         | ShipperResponse[]
@@ -181,6 +208,21 @@ export class TruckassistTableService {
     /* Hire Selected Rows */
     public sendHireSelectedRows(hireSelectedRows: DriverResponse[]) {
         this.hireSelectedRows.next(hireSelectedRows);
+    }
+
+    /* Ban List Selected Rows */
+    public sendBanListSelectedRows(banListSelectedRows) {
+        this.banSelectedRows.next(banListSelectedRows);
+    }
+
+    /* DNU List Selected Rows */
+    public sendDnuListSelectedRows(dnuListSelectedRows) {
+        this.dnuSelectedRows.next(dnuListSelectedRows);
+    }
+    
+    /* Open/Close Bussiness Selected Rows */
+    public sendBussinessSelectedRows(bussinessListSelectedRows) {
+        this.bussinessSelectedRows.next(bussinessListSelectedRows);
     }
 
     /* Delete Selected Rows */

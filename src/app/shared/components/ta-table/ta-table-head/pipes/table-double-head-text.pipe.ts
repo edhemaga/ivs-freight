@@ -59,6 +59,10 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? 'UNIT'
             : tableHeadTitle === 'DESCRIPTION'
             ? 'ITEM'
+            : tableHeadTitle === 'PHYSICAL'
+            ? 'ADDRESS'
+            : tableHeadTitle === 'CREDIT LIMIT'
+            ? 'BILLING'
             : 'MVR';
     }
 }

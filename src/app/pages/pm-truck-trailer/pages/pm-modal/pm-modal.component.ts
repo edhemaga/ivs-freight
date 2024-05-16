@@ -53,6 +53,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 @Component({
     selector: 'app-pm-modal',
@@ -96,6 +97,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
     public removedPMs: number[] = [];
 
     public isFormValid: boolean = false;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         // Form

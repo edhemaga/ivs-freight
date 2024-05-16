@@ -76,6 +76,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
 import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
@@ -203,6 +204,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     public longitude: number;
     public latitude: number;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

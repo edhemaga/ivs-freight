@@ -208,26 +208,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.deleteTruckById(res.id);
                             break;
                         }
-                        case TableStringEnum.ACTIVATE: {
-                            if (res.array?.length) {
-                                res.array.map((e) => {
-                                    this.changeTruckStatus(e.id);
-                                });
-                            } else {
-                                this.changeTruckStatus(res.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            if (res.array?.length) {
-                                res.array.map((e) => {
-                                    this.changeTruckStatus(e.id);
-                                });
-                            } else {
-                                this.changeTruckStatus(res.id);
-                            }
-                            break;
-                        }
+
                         case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrucks(res.array);
                             break;
@@ -243,7 +224,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
-                    this.changeTruckStatus(res.data.id);
+                    if (!res.array) {
+                        this.changeTruckStatus(res.data.id);
+                    } else {
+                        res.array.map((e) => {
+                            this.changeTruckStatus(e.id);
+                        });
+                    }
                 }
             });
     }
@@ -1069,20 +1056,24 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 number: data.truckNumber,
                                 avatar: `assets/svg/common/trucks/${data?.truckType?.logoName}`,
                             },
+                            modalTitle: data.truckNumber,
+                            modalSecondTitle: data.vin,
                         });
                     }
                 });
             });
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
                     template: TableStringEnum.TRUCK,
+                    subType: TableStringEnum.TRUCKS,
                     type: status
                         ? TableStringEnum.DEACTIVATE
                         : TableStringEnum.ACTIVATE,
+                    tableType: TableStringEnum.TRUCK,
                     svg: true,
                 }
             );
