@@ -37,6 +37,11 @@ import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 //pipes
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+
+//store
+import { StoreModule } from '@ngrx/store';
+import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.reducer';
 
 @NgModule({
     declarations: [
@@ -73,6 +78,10 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         // Pipes
         FormatDatePipe,
         FormatEinPipe,
+        FlipCardsPipe,
+
+        //Store
+        StoreModule.forFeature('customerCardData', customerCardModalReducer),
     ],
 })
 export class CustomerModule {}

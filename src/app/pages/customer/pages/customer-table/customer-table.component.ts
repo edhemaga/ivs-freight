@@ -6,7 +6,7 @@ import {
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -29,12 +29,15 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { CustomerCardsModalService } from './components/customer-card-modal/services/customer-cards-modal.service';
 
 // Store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
 import { ShipperState } from '@pages/customer/state/shipper-state/shipper.store';
 import { BrokerQuery } from '@pages/customer/state/broker-state/broker.query';
 import { ShipperQuery } from '@pages/customer/state/shipper-state/shipper.query';
+import { Store, select } from '@ngrx/store';
+import { selectActiveTabCards, selectInactiveTabCards } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.selectors';
 
 // Models
 import {
@@ -136,6 +139,8 @@ export class CustomerTableComponent
     public brokerActive: BrokerResponse[];
     public shipperActive: ShipperResponse[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
         // Ref
         private ref: ChangeDetectorRef,
@@ -152,10 +157,12 @@ export class CustomerTableComponent
         private confiramtionService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
+        private customerCardsModalService: CustomerCardsModalService,
 
         // Store
         private brokerQuery: BrokerQuery,
         private shipperQuery: ShipperQuery,
+        private store: Store,
 
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
@@ -967,6 +974,7 @@ export class CustomerTableComponent
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
         this.setCustomerData(td);
+        this.updateCardView();
     }
 
     private getTabData(dataType: string): BrokerResponse[] {
@@ -1977,5 +1985,26 @@ export class CustomerTableComponent
 
     public trackByIdentity(id: number): number {
         return id;
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.cardTitle = TableStringEnum.INVOICE;
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.customerCardsModalService.updateTab(this.selectedTab);
     }
 }
