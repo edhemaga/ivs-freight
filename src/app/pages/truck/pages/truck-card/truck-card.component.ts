@@ -2,11 +2,9 @@ import {
     Component,
     EventEmitter,
     Input,
-    OnChanges,
     Output,
     OnDestroy,
     OnInit,
-    SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
@@ -18,6 +16,7 @@ import { CardDataResult } from '@shared/models/card-models/card-data-result.mode
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { truckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -30,9 +29,15 @@ import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-b
     styleUrls: ['./truck-card.component.scss'],
     providers: [CardHelper],
 })
-export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() viewData: CardDetails[];
-
+export class TruckCardComponent implements OnInit, OnDestroy {
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value.map((v) => {
+            return {
+                ...v,
+                features: truckFeaturesDataHelper.truckFeaturesData(v),
+            };
+        });
+    }
     @Input() cardTitle: string;
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
@@ -41,7 +46,7 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
 
     private destroy$ = new Subject<void>();
     public isAllCardsFlipp: boolean = false;
-
+    public _viewData: CardDetails[];
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
@@ -55,44 +60,6 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         this.flipAllCards();
-    }
-
-    ngOnChanges(cardChanges: SimpleChanges) {
-        if (
-            cardChanges.displayRowsBack.currentValue ||
-            cardChanges.displayRowsFront.currentValue
-        )
-            this.getTransformedCardsData();
-    }
-
-    public getTransformedCardsData(): void {
-        this.cardsFront = [];
-        this.cardsBack = [];
-        this.titleArray = [];
-
-        const cardTitles = this.cardHelper.renderCards(
-            this.viewData,
-            this.cardTitle,
-            null
-        );
-
-        const frontOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsFront
-        );
-
-        const backOfCards = this.cardHelper.renderCards(
-            this.viewData,
-            null,
-            this.displayRowsBack
-        );
-
-        this.cardsFront = [...this.cardsFront, frontOfCards.dataForRows];
-
-        this.cardsBack = [...this.cardsBack, backOfCards.dataForRows];
-
-        this.titleArray = [...this.titleArray, cardTitles.cardsTitle];
     }
 
     public flipAllCards(): void {
@@ -114,7 +81,7 @@ export class TruckCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 

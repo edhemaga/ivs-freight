@@ -10,7 +10,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TruckTableComponent } from '@pages/truck/pages/truck-table/truck-table.component';
 import { TruckCardComponent } from '@pages/truck/pages/truck-card/truck-card.component';
 
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
@@ -20,6 +19,9 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 //pipes
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 @NgModule({
     declarations: [TruckTableComponent, TruckCardComponent],
@@ -42,6 +44,8 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
         //pipes
         ThousandSeparatorPipe,
         DatePipe,
+        FlipCardsPipe,
+        FormatDatePipe,
     ],
 })
 export class TruckModule {}
