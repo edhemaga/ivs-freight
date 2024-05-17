@@ -1861,6 +1861,63 @@
                                             ></svg-icon>
                                         </div>
                                     </div>
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'features'"
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let features of row[
+                                                        column.field
+                                                    ]
+                                                "
+                                            >
+                                                <div
+                                                    ngbTooltip
+                                                    class="features-icon"
+                                                    mainContent
+                                                    [mainTooltip]="
+                                                        features.name
+                                                    "
+                                                    position="bottom"
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#ffff"
+                                                    tooltipTextAlign="center"
+                                                >
+                                                    <svg-icon
+                                                        [class]="
+                                                            row[
+                                                                column
+                                                                    .classField
+                                                            ]
+                                                        "
+                                                        [src]="
+                                                            column.svgUrl +
+                                                            features.image
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px':
+                                                                column
+                                                                    .svgDimensions
+                                                                    .width,
+                                                            'height.px':
+                                                                column
+                                                                    .svgDimensions
+                                                                    .height
+                                                        }"
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- STATE TEXT COLUMN -->
                                     <div
@@ -3629,6 +3686,63 @@
                                             ></svg-icon>
                                         </div>
                                     </div>
+                                    <!-- SVG COLUMN -->
+                                    <ng-container
+                                        *ngIf="column.ngTemplate === 'features'"
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngFor="
+                                                    let features of row[
+                                                        column.field
+                                                    ]
+                                                "
+                                            >
+                                                <div
+                                                    ngbTooltip
+                                                    class="features-icon"
+                                                    [mainTooltip]="
+                                                        features.name
+                                                    "
+                                                    position="bottom"
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#ffff"
+                                                    tooltipTextAlign="center"
+                                                >
+                                                    <svg-icon
+                                                        [class]="
+                                                            row[
+                                                                column
+                                                                    .classField
+                                                            ]
+                                                        "
+                                                        [src]="
+                                                            column.svgUrl +
+                                                            features.image
+                                                        "
+                                                        [svgStyle]="{
+                                                            'width.px':
+                                                                column
+                                                                    .svgDimensions
+                                                                    .width,
+                                                            'height.px':
+                                                                column
+                                                                    .svgDimensions
+                                                                    .height
+                                                        }"
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
 
                                     <!-- STATE TEXT COLUMN -->
                                     <div

@@ -11,7 +11,8 @@
                 : 'Move'
             : editData?.type === 'multiple delete' &&
               editData?.template !== 'repair' &&
-              editData?.template !== 'repair_shop'
+              editData?.template !== 'repair_shop' &&
+              editData?.template !== 'truck'
             ? 'Delete'
             : editData?.template === 'void'
             ? ' Void Registration '
@@ -26,6 +27,8 @@
             ? 'Delete Repair / Order'
             : editData?.template === 'repair_shop'
             ? 'Delete Repair Shop'
+            : editData?.template === 'truck'
+            ? 'Delete Truck'
             : ' Confirmation'
     "
     [editName]="
@@ -49,7 +52,11 @@
             : false
     "
     [headerSvg]="
-        editData?.type === 'multiple delete' ? 'delete' : editData?.type
+        editData?.type === 'multiple delete'
+            ? 'delete'
+            : editData?.template === 'truck'
+            ? editData?.type
+            : editData?.type
     "
     [confirmationData]="editData"
     [isCloseIconRemoved]="true"
@@ -269,6 +276,15 @@
                             <div class="confirmation-info">
                                 <p class="m-0 confirmation-text-1">
                                     Unit {{ editData?.data?.number }}
+                                    <ng-container
+                                        *ngIf="!editData?.data?.status"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
+                                            "
+                                        ></svg-icon>
+                                    </ng-container>
                                 </p>
                                 <p class="m-0 confirmation-text-2">
                                     VIN: {{ editData?.data?.vin }}
@@ -316,11 +332,17 @@
 
                         <ng-container *ngSwitchCase="'broker'">
                             <div class="confirmation-info w-100">
-                                <p class="m-0 confirmation-text-1 large-text-1 limit-text">
+                                <p
+                                    class="m-0 confirmation-text-1 large-text-1 limit-text"
+                                >
                                     {{ editData?.data?.businessName }}
                                 </p>
-                                <p class="m-0 confirmation-text-2 large-text-2 limit-text">
-                                    {{ editData?.data?.billingAddress?.address }}
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
+                                    {{
+                                        editData?.data?.billingAddress?.address
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1000,10 +1022,14 @@
 
                         <ng-container *ngSwitchCase="'broker'">
                             <div class="confirmation-info w-100">
-                                <p class="m-0 confirmation-text-1 large-text-1 limit-text">
+                                <p
+                                    class="m-0 confirmation-text-1 large-text-1 limit-text"
+                                >
                                     {{ item?.data?.businessName }}
                                 </p>
-                                <p class="m-0 confirmation-text-2 large-text-2 limit-text">
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
                                     {{ item?.data?.billingAddress?.address }}
                                 </p>
                             </div>

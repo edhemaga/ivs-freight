@@ -7,6 +7,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
@@ -15,6 +16,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -36,6 +38,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TruckTableStringEnum } from '@pages/truck/pages/truck-table/enum/truck-table-string.enum';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -43,14 +46,13 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
 
 // models
-import { TruckListResponse } from 'appcoretruckassist';
+import { TruckListResponse, TruckShortResponse } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-
 import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
 
 @Component({
@@ -108,7 +110,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
         private TruckCardsModalService: TruckCardsModalService,
-        private truckCardModalQuery: truckCardModalQuery
+        private truckCardModalQuery: truckCardModalQuery,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     ngOnInit(): void {
@@ -205,26 +208,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.deleteTruckById(res.id);
                             break;
                         }
-                        case TableStringEnum.ACTIVATE: {
-                            if (res.array?.length) {
-                                res.array.map((e) => {
-                                    this.changeTruckStatus(e.id);
-                                });
-                            } else {
-                                this.changeTruckStatus(res.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            if (res.array?.length) {
-                                res.array.map((e) => {
-                                    this.changeTruckStatus(e.id);
-                                });
-                            } else {
-                                this.changeTruckStatus(res.id);
-                            }
-                            break;
-                        }
+
                         case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrucks(res.array);
                             break;
@@ -234,6 +218,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 },
+            });
+
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (!res.array) {
+                        this.changeTruckStatus(res.data.id);
+                    } else {
+                        res.array.map((e) => {
+                            this.changeTruckStatus(e.id);
+                        });
+                    }
+                }
             });
     }
 
@@ -616,7 +614,62 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return TooltipColorsStringEnum.BROWN;
         }
     }
+    private featuresData(
+        data: TruckShortResponse
+    ): { name: string; image: string }[] {
+        const tableFeaturesArray: { name: string; image: string }[] = [];
 
+        if (data?.doubleBunk) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DOUBLE_BANK,
+                image: TruckTableStringEnum.DOUBLE_BANK_IMG,
+            });
+        }
+
+        if (data?.refrigerator) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.REFRIGERATOR,
+                image: TruckTableStringEnum.REFRIGERATOR_IMG,
+            });
+        }
+
+        if (data?.dcInverter) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DC_INVERTER,
+                image: TruckTableStringEnum.DC_INVERTER_IMG,
+            });
+        }
+
+        if (data?.blower) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.BLOWER,
+                image: TruckTableStringEnum.BLOWER_IMG,
+            });
+        }
+
+        if (data?.pto) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.PTO,
+                image: TruckTableStringEnum.PTO_IMG,
+            });
+        }
+
+        if (data?.headacheRack) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.HEADACHE_RACK,
+                image: TruckTableStringEnum.HEADACHE_RACK_IMG,
+            });
+        }
+
+        if (data?.dashCam) {
+            tableFeaturesArray.push({
+                name: TruckTableStringEnum.DASH_CAM,
+                image: TruckTableStringEnum.DASH_CAM_IMG,
+            });
+        }
+
+        return tableFeaturesArray;
+    }
     // TODO any type
     private mapTruckData(data: any): void {
         return {
@@ -709,27 +762,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAPUnit: data?.apUnit?.name
                 ? data.apUnit.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableFeatures: `${
-                data?.doubleBunk
-                    ? TableStringEnum.DBUNK
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.refrigerator
-                    ? TableStringEnum.FRIDGE
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.dcInverter
-                    ? TableStringEnum.DCI
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.blower
-                    ? TableStringEnum.BLOWER
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                data?.pto
-                    ? TableStringEnum.PTO
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+            tableFeatures: this.featuresData(data),
             tableTollDeviceTransponder: data?.tollTransponder?.name
                 ? data.tollTransponder.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1023,20 +1056,24 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 number: data.truckNumber,
                                 avatar: `assets/svg/common/trucks/${data?.truckType?.logoName}`,
                             },
+                            modalTitle: data.truckNumber,
+                            modalSecondTitle: data.vin,
                         });
                     }
                 });
             });
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
                     template: TableStringEnum.TRUCK,
+                    subType: TableStringEnum.TRUCKS,
                     type: status
                         ? TableStringEnum.DEACTIVATE
                         : TableStringEnum.ACTIVATE,
+                    tableType: TableStringEnum.TRUCK,
                     svg: true,
                 }
             );
@@ -1135,15 +1172,19 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
-                    ConfirmationModalComponent,
+                    ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
                         template: TableStringEnum.TRUCK,
+                        subType: TableStringEnum.TRUCK,
                         type:
                             event.data.status === 1
                                 ? TableStringEnum.DEACTIVATE
                                 : TableStringEnum.ACTIVATE,
+                        tableType: TableStringEnum.TRUCK,
+                        modalTitle: ' Unit ' + mappedEvent?.data?.number,
+                        modalSecondTitle: mappedEvent?.data?.vin,
                         svg: true,
                     }
                 );
