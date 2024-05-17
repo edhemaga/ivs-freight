@@ -223,7 +223,9 @@
                                     >
                                         <span class="inactive-icon-holder">
                                             <svg-icon
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationActivationSvg
+                                                "
                                             ></svg-icon>
                                         </span>
                                     </ng-container>
@@ -287,7 +289,7 @@
                                     >
                                         <svg-icon
                                             [src]="
-                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
+                                                'confirmationImageRoutes.confirmationDeactivationSvg'
                                             "
                                         ></svg-icon>
                                     </ng-container>
@@ -360,7 +362,9 @@
                                 <div class="d-flex align-items-center">
                                     <img
                                         class="confirmation-img"
-                                        src="/assets/svg/common/registration.svg"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationRegistrationSvg
+                                        "
                                         alt="registration"
                                     />
 
@@ -394,8 +398,10 @@
                                 <div class="d-flex align-items-center">
                                     <img
                                         class="confirmation-img"
-                                        src="/assets/svg/common/inspection.svg"
-                                        alt="registration"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationInspectionSvg
+                                        "
+                                        alt="inspection"
                                     />
 
                                     <div
@@ -424,8 +430,10 @@
                                 <div class="d-flex align-items-center">
                                     <img
                                         class="m-1 confirmation-img"
-                                        src="/assets/svg/common/title.svg"
-                                        alt="registration"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationTitle
+                                        "
+                                        alt="title"
                                     />
 
                                     <div
@@ -461,7 +469,9 @@
                                 >
                                     <img
                                         class="avatar-img"
-                                        src="/assets/svg/void.svg"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationVoidSvg
+                                        "
                                         alt="avatar"
                                     />
                                     <div>
@@ -663,7 +673,7 @@
                                             <svg-icon
                                                 class="order-icon"
                                                 [src]="
-                                                    'assets/svg/common/ic_note_order.svg'
+                                                    confirmationImageRoutes.confirmationNoteOrderSvg
                                                 "
                                             ></svg-icon>
                                         </span>
@@ -694,7 +704,9 @@
                                     >
                                         <svg-icon
                                             class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationCloseBrokerSvg
+                                            "
                                         ></svg-icon
                                     ></ng-container>
                                 </div>
@@ -740,7 +752,7 @@
                                                 <svg-icon
                                                     class="order-icon"
                                                     [src]="
-                                                        'assets/svg/common/ic_note_order.svg'
+                                                        confirmationImageRoutes.confirmationNoteOrderSvg
                                                     "
                                                 ></svg-icon>
                                             </span>
@@ -783,7 +795,7 @@
                                     <span>
                                         <svg-icon
                                             [src]="
-                                                'assets/svg/common/ic_review_like.svg'
+                                                confirmationImageRoutes.confirmationReviewLikeSvg
                                             "
                                             [svgStyle]="{
                                                 'width.px': 18,
@@ -930,7 +942,9 @@
                                     >
                                         <span class="inactive-icon-holder">
                                             <svg-icon
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationActivationSvg
+                                                "
                                             ></svg-icon>
                                         </span>
                                     </ng-container>
@@ -1076,7 +1090,7 @@
                                             <svg-icon
                                                 class="order-icon"
                                                 [src]="
-                                                    'assets/svg/common/ic_note_order.svg'
+                                                    confirmationImageRoutes.confirmationNoteOrderSvg
                                                 "
                                             ></svg-icon>
                                         </span>
@@ -1110,7 +1124,9 @@
                                     <ng-container *ngIf="!item?.data?.status">
                                         <svg-icon
                                             class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
+                                            [src]="
+                                                confirmationNoteOrderSvg.confirmationCloseBrokerSvg
+                                            "
                                         ></svg-icon
                                     ></ng-container>
                                 </div>
@@ -1223,9 +1239,7 @@
         <div class="confirmation-icon">
             <ng-container *ngIf="editData?.type === 'void'">
                 <svg-icon
-                    [src]="
-                        'assets/svg/common/confirmation/ic_confirmation_print.svg'
-                    "
+                    [src]="'confirmationImageRoutes.confirmationPrintSvg'"
                     [svgStyle]="{
                         'width.px': '90',
                         'height.px': '90'
@@ -1234,9 +1248,7 @@
             </ng-container>
             <ng-container *ngIf="editData?.type !== 'void'">
                 <svg-icon
-                    [src]="
-                        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
-                    "
+                    [src]="confirmationImageRoutes.confirmationTrashSvg"
                     [svgStyle]="{
                         'width.px': '90',
                         'height.px': '90'
