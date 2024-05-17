@@ -1,4 +1,4 @@
-import { ContactData } from "@shared/components/ta-contacts/models/contact-data.model";
+import { ContactData } from "@shared/components/ta-input-dropdown-contacts/models/contact-data.model";
 
 export interface ContactDepartmentData {
     id?: number;

@@ -9,7 +9,7 @@ import {
     BrokerContactResponse,
     ShipperContactResponse,
 } from 'appcoretruckassist';
-import { ContactDepartmentData } from '@shared/components/ta-contacts/models/contact-department-data.model';
+import { ContactDepartmentData } from '@shared/components/ta-input-dropdown-contacts/models/contact-department-data.model';
 import { ContactData } from './models/contact-data.model';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import {
