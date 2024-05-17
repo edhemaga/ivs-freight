@@ -13,6 +13,10 @@ export class ConfirmationModalTitlePipe implements PipeTransform {
         let titleString = '';
         if (type === ConfirmationActivationStringEnum.OPEN) {
             titleString = ConfirmationActivationStringEnum.OPEN_TITLE;
+        } else if (type === TableStringEnum.DEACTIVATE) {
+            titleString = TableStringEnum.DEACTIVATE_2;
+        } else if (type === TableStringEnum.ACTIVATE) {
+            titleString = TableStringEnum.ACTIVATE_2;
         } else {
             titleString = ConfirmationActivationStringEnum.CLOSE_TITLE;
         }
@@ -21,6 +25,8 @@ export class ConfirmationModalTitlePipe implements PipeTransform {
 
         if (template === TableStringEnum.REPAIR_SHOP) {
             titleString += ConfirmationActivationStringEnum.REPAIR_SHOP_TITLE;
+        } else if (template === TableStringEnum.TRUCK) {
+            titleString += TableStringEnum.TRUCK_2;
         } else {
             titleString += template;
         }
