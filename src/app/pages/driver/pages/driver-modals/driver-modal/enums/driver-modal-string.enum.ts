@@ -28,6 +28,10 @@ export enum DriverModalStringEnum {
     TEAM = 'Team',
     COMBINED = 'Combined',
     DRIVER_COMMISSION = 'driverCommission',
+    ROUTING = 'routing',
+    ACCOUNT = 'account',
+    AVATAR = 'avatar',
+    BUSSINES_NAME = 'bussinesName',
 
     PER_MILE = 'Per Mile',
     COMMISSION = 'Commission',
@@ -42,6 +46,7 @@ export enum DriverModalStringEnum {
     COMPANY = 'Company',
     COMPANY_DRIVER = 'Company Driver',
     THIRD_PARTY_DRIVER = '3rd Party Driver',
+    PROPRIETOR = 'Proprietor',
 
     SQUARE = 'square',
     ZERO_PX = '0px',
@@ -54,6 +59,14 @@ export enum DriverModalStringEnum {
     DROPZONE_IMAGE_EXTENSION = 'image/gif, image/jpeg, image/jpg, image/png',
 
     SAVE_AND_ADD_NEW = 'save and add new',
+    ADD = 'add',
+    DELETE = 'delete',
+    TAG = 'tag',
+    TAGS = 'tags',
+
+    MEDIUM = 'medium',
 
     ANIMATION_TWO_TABS_CLASS = '.animation-two-tabs',
+
+    EMPTY_STRING = ' ',
 }

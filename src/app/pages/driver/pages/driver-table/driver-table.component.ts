@@ -1457,6 +1457,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         data: {
                             ...driver,
                         },
+                        type: TableStringEnum.EDIT,
                         id,
                     };
 

@@ -4,12 +4,16 @@
     [editData]="editData"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
-    [isModalValid]="driverForm.valid && isFormDirty"
+    [isModalValid]="
+        driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid
+    "
     (action)="onModalAction($event)"
 >
     <div origin>
         <!-- Tabs -->
-
+        <p>{{ driverForm.valid }}</p>
+        <p>{{ isFormDirty }}</p>
+        <p>{{ isEachOffDutyLocationRowValid }}</p>
         <app-ta-tab-switch
             [tabs]="mainTabs"
             [type]="'type1-modal-popup'"
@@ -737,6 +741,8 @@
                                                         thousandSeparator: true,
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'soloDriver'
                                                             ).value,
@@ -777,6 +783,8 @@
                                                         thousandSeparator: true,
                                                         isRequired: true,
                                                         isDisabled:
+                                                            fleetType ===
+                                                                'Combined' &&
                                                             !driverForm.get(
                                                                 'teamDriver'
                                                             ).value,
@@ -885,8 +893,11 @@
                             (onActionEvent)="addOffDutyLocation($event)"
                         >
                             <app-ta-modal-table
-                                [tableType]="modalTableTypeEnum.OFF_DUTY_LOCATION"
+                                [tableType]="
+                                    modalTableTypeEnum.OFF_DUTY_LOCATION
+                                "
                                 [isNewRowCreated]="isOffDutyLocationRowCreated"
+                                [modalTableData]="updatedOffDutyLocationItems"
                                 (modalTableValueEmitter)="
                                     handleModalTableValueEmit($event)
                                 "
@@ -914,6 +925,7 @@
                                         name: 'Emergency Name',
                                         type: 'text',
                                         label: 'Name',
+                                        textTransform: 'capitalize',
                                         minLength: 2,
                                         maxLength: 24
                                     }"
@@ -937,6 +949,7 @@
                                         name: 'Relationship',
                                         type: 'text',
                                         label: 'Relationship',
+                                        textTransform: 'capitalize',
                                         minLength: 2,
                                         maxLength: 24
                                     }"

@@ -6,22 +6,22 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//components
+// components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
-//enums
+// enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-//models
+// models
 import { AddressEntity } from 'appcoretruckassist';
 
-//pipes
+// pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 @Component({
@@ -41,7 +41,7 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         TaCheckboxComponent,
         TaInputAddressDropdownComponent,
 
-        //pipes
+        // pipes
         TrackByPropertyPipe,
     ],
 })

@@ -198,6 +198,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public tags: TagResponse[] = [];
 
+    // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
@@ -910,24 +911,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         );
 
         // documents
-        const documents = [];
-        let tagsArray = [];
-
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
-
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        // documents
         const convertedDocuments = [];
-        let convertedTagsArray = [];
+        const convertedTagsArray = [];
 
         this.documents.map((item) => {
             if (item.tagId?.length)
