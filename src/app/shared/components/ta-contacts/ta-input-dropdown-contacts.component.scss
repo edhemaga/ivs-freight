@@ -1,0 +1,55 @@
+@import 'src/theme/variables';
+
+.contact-container {
+    width: fit-content;
+    height: 26px;
+    display: flex;
+    padding: 4px;
+    border-radius: 2px;
+
+    .contact-count {
+        width: fit-content;
+        min-width: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-black;
+
+        &::selection {
+            color: $muted;
+            background: #91919120;
+        }
+    }
+
+    .contact-avatar {
+        width: 18px;
+        height: 18px;
+
+        .contact-avatar-icon {
+            svg {
+                path {
+                    fill: $bw5;
+                }
+            }
+        }
+    }
+
+    &:hover {
+        background: $dark-2;
+        cursor: pointer;
+
+        .contact-count {
+            color: $ta-black-2;
+        }
+
+        .contact-avatar-icon {
+            svg {
+                path {
+                    fill: $ta-black;
+                }
+            }
+        }
+    }
+}

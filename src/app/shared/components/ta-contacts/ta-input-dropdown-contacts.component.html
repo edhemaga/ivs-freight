@@ -1,0 +1,158 @@
+<ng-container *ngIf="_contactsData?.length">
+    <div
+        class="contact-container gap-1"
+        [ngbPopover]="dropdownContacts"
+        #contactsDropdown="ngbPopover"
+        [autoClose]="'outside'"
+        [placement]="['bottom-left', 'bottom-right']"
+        popoverClass="table-contacts-popover"
+        triggers="manual"
+        (click)="toggleDropdownContacts(contactsDropdown)"
+        container="body"
+        (hidden)="dropDownActive = -1"
+    >
+        <div class="contact-avatar">
+            <svg-icon
+                class="contact-avatar-icon d-flex"
+                src="assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+            ></svg-icon>
+        </div>
+        <div class="contact-count ta-font-semi-bold">
+            {{ _contactsData.length }}
+        </div>
+    </div>
+</ng-container>
+
+<!------------------------------------------------- CONTACTS DROPDOWN ----------------------------------------------------------------->
+<ng-template #dropdownContacts let-contacts="contacts">
+    <div class="table-contacts-dropdown">
+        <div
+            class="contacts-dropdown-header d-flex flex-column gap-1"
+        >
+            <div class="d-flex align-items-center gap-1">
+                <p class="ta-font-extra-bold text-white">CONTACT</p>
+
+                <span class="d-flex align-items-center justify-content-center">
+                    <span class="ta-font-bold text-white">
+                        {{ _contactsData?.length }}
+                    </span>
+                </span>
+            </div>
+
+            <!-- Input Search -->
+            <div class="contacts-dropdown-input-holder">
+                <input
+                    placeholder="Search"
+                    (keyup)="filterContacts($event)"
+                    class="input-search"
+                    spellcheck="false"
+                />
+                <div class="search-container d-flex align-items-center gap-1">
+                    <svg-icon
+                        class="search-icon"
+                        [src]="'assets/svg/common/ic_search.svg'"
+                        [svgStyle]="{
+                            'width.px': '14',
+                            'height.px': '14'
+                        }"
+                    ></svg-icon>
+                    <div class="search-divider"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="contacts-dropdown-content d-flex flex-column gap-2"></div>
+
+        <!-- <div class="table-inner">
+            <div class="description-titles d-flex justify-content-between">
+                <div class="d-flex align-items-center gap">
+                    <p class="dropdown-left m-0 ta-font-bold text-white">
+                        CONTACT
+                    </p>
+
+                    <span
+                        class="total-number-fleet count d-flex align-items-center"
+                    >
+                        <span class="counter ta-font-extra-bold text-white">
+                            {{ _contactsData?.length }}
+                        </span>
+                    </span>
+                </div>
+
+                <div class="filter-drodpown d-flex">
+                    <span class="filter-date ta-font-medium">Name</span>
+
+                    <svg-icon
+                        class="svg-date"
+                        [src]="'assets/svg/sort-by-descending.svg'"
+                    ></svg-icon>
+                </div>
+            </div>
+
+            <div class="d-flex flex-column contact-items">
+                <ng-container
+                    *ngFor="
+                        let department of _contactsData.departments;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <app-ta-custom-card
+                        [cardName]="department.name"
+                        [isDropdownCard]="true"
+                        [hasDivider]="false"
+                        [hasCounter]="department.count"
+                        [isCardOpen]="isContactCardOpenArray[i]"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let contact of department.companyUsers;
+                                let i = index;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div class="d-flex align-items-center contact-item">
+                                <ng-container *ngIf="contact.avatar">
+                                    <img
+                                        class="contact-item-avatar-img"
+                                        [src]="contact.avatar"
+                                        alt="avatar"
+                                    />
+                                </ng-container>
+
+                                <ng-container *ngIf="!contact.avatar">
+                                    <div
+                                        class="d-flex justify-content-center align-items-center contact-item-avatar-div-img"
+                                        [ngStyle]="{
+                                            background:
+                                                contact.avatarColor.background
+                                        }"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-bold"
+                                            [ngStyle]="{
+                                                color: contact.avatarColor.color
+                                            }"
+                                        >
+                                            {{
+                                                contact.fullName
+                                                    .slice(0, 1)
+                                                    .toUpperCase()
+                                            }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+
+                                <p class="m-0">{{ contact.fullName }}</p>
+                            </div>
+                        </ng-container>
+                    </app-ta-custom-card>
+                </ng-container>
+            </div>
+        </div> -->
+    </div>
+</ng-template>

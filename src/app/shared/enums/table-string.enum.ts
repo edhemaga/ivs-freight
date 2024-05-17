@@ -195,6 +195,7 @@ export enum TableStringEnum {
     BAN_LIST = 'ban list',
     SHIPPER = 'shipper',
     SHIPPER_2 = 'shippers',
+    SHIPPER_3 = 'Shipper ',
     STATE_FILTER = 'stateFilter',
     // Driver
     DRIVER = 'driver',

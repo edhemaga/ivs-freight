@@ -272,6 +272,8 @@ export class CustomerTableComponent
                         if (res.template === TableStringEnum.INFO) {
                             if (this.selectedTab === TableStringEnum.ACTIVE) {
                                 this.changeBrokerListStatus(res.array);
+                            } else {
+                                this.changeShipperListStatus(res.array);
                             }
                         }
                     }
@@ -453,6 +455,22 @@ export class CustomerTableComponent
             });
     }
 
+    public changeShipperListStatus(dataArray): void {
+        const shipperIds = dataArray.map((shipper) => {
+            return shipper.id;
+        });
+
+        this.shipperService
+            .changeShipperListStatus(shipperIds)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.sendCustomerData();
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
@@ -617,6 +635,13 @@ export class CustomerTableComponent
                     const updatedShipper = this.mapShipperData(res.data);
 
                     this.updateData(res.id, updatedShipper);
+                }
+                // Update Multiple Shippers
+                else if (
+                    res?.animation === TableStringEnum.UPDATE_MULTIPLE &&
+                    res.tab === TableStringEnum.SHIPPER
+                ) {
+                    this.sendCustomerData();
                 }
             });
     }
@@ -792,7 +817,8 @@ export class CustomerTableComponent
                             },
                             modalTitle: item.tableData.businessName,
                             modalSecondTitle:
-                                item.tableData.billingAddress?.address ??
+                                item.tableData?.address?.address ??
+                                item.tableData?.billingAddress?.address ??
                                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                         };
                     });
@@ -804,10 +830,15 @@ export class CustomerTableComponent
                             data: null,
                             array: mappedRes,
                             template: TableStringEnum.INFO,
-                            subType: TableStringEnum.BROKER_2,
+                            subType:
+                                this.selectedTab === TableStringEnum.ACTIVE
+                                    ? TableStringEnum.BROKER_2
+                                    : TableStringEnum.SHIPPER_3,
                             subTypeStatus: TableStringEnum.BUSINESS,
                             tableType:
-                                ConfirmationActivationStringEnum.BROKER_TEXT,
+                                this.selectedTab === TableStringEnum.ACTIVE
+                                    ? ConfirmationActivationStringEnum.BROKER_TEXT
+                                    : ConfirmationActivationStringEnum.SHIPPER_TEXT,
                             type: mappedRes[0].data.status
                                 ? TableStringEnum.CLOSE
                                 : TableStringEnum.OPEN,
@@ -845,14 +876,12 @@ export class CustomerTableComponent
                 showMoveToBanList: this.selectedTab === TableStringEnum.ACTIVE,
                 showMoveToDnuList: this.selectedTab === TableStringEnum.ACTIVE,
                 showMoveToOpenList: this.selectedTab === TableStringEnum.ACTIVE,
-                showMoveToClosedList:
-                    this.selectedTab === TableStringEnum.ACTIVE,
+                showMoveToClosedList: true,
                 showRemoveFromBanList:
                     this.selectedTab === TableStringEnum.ACTIVE,
                 showRemoveFromDnuList:
                     this.selectedTab === TableStringEnum.ACTIVE,
-                hideActivationButton:
-                    this.selectedTab === TableStringEnum.ACTIVE,
+                hideActivationButton: true,
                 viewModeOptions: this.getViewModeOptions(),
             },
         };
@@ -1103,10 +1132,13 @@ export class CustomerTableComponent
             tablePaymentDetailDTP: data?.daysToPay
                 ? data.daysToPay + TableStringEnum.DAY
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailInvAgeing: {
-                bfb: TableStringEnum.NUMBER_0,
-                dnu: TableStringEnum.NUMBER_0,
-                amount: 'Template is changed',
+            tablePaidInvAging: {
+                ...data.brokerPaidInvoiceAgeing,
+                tablePayTerm: data?.payTerm,
+            },
+            tableUnpaidInvAging: {
+                ...data.brokerUnpaidInvoiceAgeing,
+                tablePayTerm: data?.payTerm,
             },
             tableLoads: data?.loadCount
                 ? this.thousandSeparator.transform(data.loadCount)
@@ -1123,9 +1155,7 @@ export class CustomerTableComponent
                   this.thousandSeparator.transform(data.revenue)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: data?.ratingReviews,
-            tableContact: data?.brokerContacts?.length
-                ? data.brokerContacts.length
-                : 0,
+            tableContactData: data?.brokerContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
@@ -1179,9 +1209,7 @@ export class CustomerTableComponent
                     ? data?.receivingFrom + ' - ' + data?.receivingTo
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             reviews: null,
-            tableContact: data?.shipperContacts?.length
-                ? data.shipperContacts.length
-                : 0,
+            tableContactData: data?.shipperContacts,
             tableAdded: data.createdAt
                 ? this.datePipe.transform(
                       data.createdAt,
@@ -1197,7 +1225,7 @@ export class CustomerTableComponent
     }
 
     private getDropdownBrokerContent(data): DropdownItem[] {
-        let dropdownContent =
+        const dropdownContent =
             DropdownContentHelper.getDropdownBrokerContent(data);
 
         dropdownContent.map((dropItem) => {
@@ -1555,11 +1583,18 @@ export class CustomerTableComponent
                 {
                     ...mappedEvent,
                     template: TableStringEnum.INFO,
-                    subType: TableStringEnum.BROKER_2,
+                    subType:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.BROKER_2
+                            : TableStringEnum.SHIPPER_3,
                     subTypeStatus: TableStringEnum.BUSINESS,
-                    tableType: ConfirmationActivationStringEnum.BROKER_TEXT,
+                    tableType:
+                        this.selectedTab === TableStringEnum.ACTIVE
+                            ? ConfirmationActivationStringEnum.BROKER_TEXT
+                            : ConfirmationActivationStringEnum.SHIPPER_TEXT,
                     modalTitle: event.data.businessName,
                     modalSecondTitle:
+                        event.data?.address?.address ??
                         event.data?.billingAddress?.address ??
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
@@ -1830,9 +1865,8 @@ export class CustomerTableComponent
                             if (item.tableData.dnu) selectedDnuCount++;
                             else selectedNotDnuCount++;
 
-                            if (item.tableData.status === 0)
-                                selectedClosedCount++;
-                            else selectedOpenCount++;
+                            if (item.tableData.status) selectedOpenCount++;
+                            else selectedClosedCount++;
                         });
 
                         this.tableOptions.toolbarActions.showMoveToBanList =
@@ -1862,6 +1896,20 @@ export class CustomerTableComponent
                             selectedDnuCount &&
                             !selectedNotDnuCount &&
                             !selectedClosedCount;
+                    } else {
+                        let selectedClosedCount = 0;
+                        let selectedOpenCount = 0;
+
+                        res.forEach((item) => {
+                            if (item.tableData.status) selectedOpenCount++;
+                            else selectedClosedCount++;
+                        });
+
+                        this.tableOptions.toolbarActions.showMoveToOpenList =
+                            selectedClosedCount && !selectedOpenCount;
+
+                        this.tableOptions.toolbarActions.showMoveToClosedList =
+                            selectedOpenCount && !selectedClosedCount;
                     }
                 }
             });

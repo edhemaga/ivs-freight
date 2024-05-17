@@ -64,7 +64,9 @@ export class ShipperService implements OnDestroy {
                             this.shipperStore.add(shipper);
                             this.shipperMinimalStore.add(shipper);
                             const brokerShipperCount = JSON.parse(
-                                localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
+                                localStorage.getItem(
+                                    TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
+                                )
                             );
 
                             brokerShipperCount.shipper++;
@@ -202,22 +204,24 @@ export class ShipperService implements OnDestroy {
     public deleteShipperList(ids: number[]): Observable<void> {
         return this.shipperService.apiShipperListDelete(ids).pipe(
             tap(() => {
-                let storeShippers = this.shipperMinimalQuery.getAll()
+                let storeShippers = this.shipperMinimalQuery.getAll();
 
                 storeShippers.map((shipper: any) => {
                     ids.map((d) => {
                         if (d === shipper.id) {
-                                 this.shipperStore.remove(
-                                      ({ id }) => id === shipper.id
-                                  );
+                            this.shipperStore.remove(
+                                ({ id }) => id === shipper.id
+                            );
                         }
                     });
                 });
 
                 const brokerShipperCount = JSON.parse(
-                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
+                    localStorage.getItem(
+                        TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
+                    )
                 );
-                
+
                 localStorage.setItem(
                     TableStringEnum.BROKER_SHIPPER_TABLE_COUNT,
                     JSON.stringify({
@@ -237,7 +241,9 @@ export class ShipperService implements OnDestroy {
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
                 const brokerShipperCount = JSON.parse(
-                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
+                    localStorage.getItem(
+                        TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
+                    )
                 );
 
                 brokerShipperCount.shipper--;
@@ -275,7 +281,9 @@ export class ShipperService implements OnDestroy {
                 this.shipperMinimalStore.remove(({ id }) => id === shipperId);
                 this.sListStore.remove(({ id }) => id === shipperId);
                 const brokerShipperCount = JSON.parse(
-                    localStorage.getItem(TableStringEnum.BROKER_SHIPPER_TABLE_COUNT)
+                    localStorage.getItem(
+                        TableStringEnum.BROKER_SHIPPER_TABLE_COUNT
+                    )
                 );
 
                 brokerShipperCount.shipper--;
@@ -513,6 +521,7 @@ export class ShipperService implements OnDestroy {
         return this.shipperService.apiShipperStatusIdPut(id).pipe(
             switchMap(() => this.getShipperById(id)),
             tap((shipper) => {
+                console.log('changeShipperStatus getShipperById', shipper);
                 const shipperId = id;
                 const shipperData = {
                     ...this.shipperDetailsStore?.getValue()?.entities[
@@ -536,6 +545,55 @@ export class ShipperService implements OnDestroy {
                 });
             })
         );
+    }
+
+    public changeShipperListStatus(shipperIds: number[]): Observable<any> {
+        return this.shipperService
+            .apiShipperStatusListPut({ ids: shipperIds })
+            .pipe(
+                tap(() => {
+                    this.getShippersList().subscribe({
+                        next: (shippersList) => {
+                            console.log(
+                                'shippersList',
+                                shippersList.pagination.data
+                            );
+                            shippersList.pagination.data.map((shipper) => {
+                                const shipperId = shipper.id;
+                                const shipperData = {
+                                    ...this.shipperDetailsStore?.getValue()
+                                        ?.entities[shipperId],
+                                };
+                                const newShipperData = {
+                                    ...shipper,
+                                    loadStops: shipperData.loadStops,
+                                };
+
+                                this.shipperStore.remove(
+                                    ({ id }) => id === shipperId
+                                );
+                                this.shipperMinimalStore.remove(
+                                    ({ id }) => id === shipperId
+                                );
+
+                                this.shipperStore.add(newShipperData);
+                                this.shipperMinimalStore.add(newShipperData);
+                                this.sListStore.update(
+                                    newShipperData.id,
+                                    newShipperData
+                                );
+                            });
+
+                            this.tableService.sendActionAnimation({
+                                animation: TableStringEnum.UPDATE_MULTIPLE,
+                                tab: TableStringEnum.SHIPPER,
+                                data: shippersList?.pagination?.data?.[0],
+                                id: shippersList?.pagination?.data?.[0]?.id,
+                            });
+                        },
+                    });
+                })
+            );
     }
 
     ngOnDestroy(): void {

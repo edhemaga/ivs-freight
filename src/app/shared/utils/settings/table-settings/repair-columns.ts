@@ -869,7 +869,7 @@ export function getRepairsShopColumnDefinition() {
         {
             ngTemplate: 'contact',
             title: 'Contact',
-            field: 'tableContact',
+            field: 'tableContactData',
             name: 'Contact',
             sortName: 'contact',
             hidden: false,

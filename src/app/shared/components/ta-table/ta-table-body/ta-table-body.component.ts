@@ -50,6 +50,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
+import { TaContactsComponent } from '@shared/components/ta-contacts/ta-input-dropdown-contacts.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -67,6 +68,8 @@ import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-tab
 import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -109,12 +112,15 @@ import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
         TaProgresBarComponent,
+        TaContactsComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
         TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
+        FormatCurrencyPipe,
+        ThousandToShortFormatPipe,
     ],
     providers: [
         {
@@ -166,6 +172,10 @@ export class TaTableBodyComponent
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
     descriptionPopoverOpen: number = -1;
+    invoiceAgingTooltip: any;
+    invoiceDropdownActive: number = -1;
+    invoiceDropdownType: string = null;
+    invoiceDropdownData: any;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -786,6 +796,25 @@ export class TaTableBodyComponent
 
             this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
+    }
+
+    // Show Invoice Aging Dropdown
+    public onShowInvoiceAgingDropdown(
+        tooltip: any,
+        row: any,
+        column: any
+    ): void {
+        this.invoiceAgingTooltip = tooltip;
+
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+
+        this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
+        this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
+        this.invoiceDropdownData = row[column.field];
     }
 
     // Dropdown Actions

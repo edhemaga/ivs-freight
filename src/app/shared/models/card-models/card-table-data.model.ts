@@ -169,6 +169,7 @@ export interface CardDetails {
     pmId?: number;
     businessName?: string;
     billingAddress?: Address;
+    address?: Address;
 }
 
 export interface PmTruckProgressData {
