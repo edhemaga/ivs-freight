@@ -39,6 +39,7 @@ export interface DriverResponse {
     account?: string | null;
     routing?: string | null;
     useTruckAssistAch?: boolean;
+    driverType?: EnumValue;
     payType?: EnumValue;
     solo?: PerMileEntity;
     team?: PerMileEntity;
