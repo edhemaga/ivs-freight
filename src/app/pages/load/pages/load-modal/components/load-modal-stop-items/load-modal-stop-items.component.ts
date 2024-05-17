@@ -37,7 +37,8 @@ import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-
 
 // model
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models/load-stop-item-dropdowns-list.model';
-import { EnumValue, LoadStopItemCommand } from 'appcoretruckassist';
+import { EnumValue } from 'appcoretruckassist';
+import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 
 @Component({
     selector: 'app-load-modal-stop-items',

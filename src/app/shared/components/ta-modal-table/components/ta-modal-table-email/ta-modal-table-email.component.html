@@ -1,0 +1,94 @@
+<form [formGroup]="modalTableForm" class="table-body">
+    <div class="d-flex flex-column email-table-container">
+        <ng-container
+            formArrayName="emailTableItems"
+            *ngFor="
+                let emailItemsRow of formArray.controls;
+                let i = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <div
+                class="align-items-center table-item"
+                [ngClass]="{ valid: emailItemsRow.valid }"
+                [formGroupName]="i"
+            >
+                <!-- Number & Delete -->
+
+                <div
+                    class="d-flex justify-content-center align-items-center table-item-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                    <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    ></svg-icon>
+                </div>
+
+                <!-- Email -->
+
+                <app-ta-input
+                    formControlName="email"
+                    [inputConfig]="{
+                        name: 'Email',
+                        type: 'text',
+                        placeholderIcon: 'email',
+                        label: 'Email',
+                        placeholderInsteadOfLabel: true,
+                        minLength: 5,
+                        maxLength: 64,
+                        textTransform: 'lowercase',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        isInputBackgroundRemoved:
+                            emailItemsRow.valid &&
+                            !isInputHoverRows[i][0],
+
+                        blackInput:
+                        formArray.at(i).get('email')
+                                .value && !isInputHoverRows[i][0]
+                    }"
+                    (mouseenter)="emitOnInputHover(true, i, 0)"
+                    (mouseleave)="emitOnInputHover(false, i, 0)"
+                ></app-ta-input>
+
+                <!-- Email Type -->
+
+                <app-ta-input-dropdown
+                    formControlName="contactEmailType"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Type',
+                        placeholderInsteadOfLabel: true,
+                        textTransform: 'capitalize',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-110',
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        isInputBackgroundRemoved:
+                            emailItemsRow.valid &&
+                            !isInputHoverRows[i][1],
+
+                        blackInput:
+                            formArray
+                                .at(i)
+                                .get('contactEmailType').value &&
+                            !isInputHoverRows[i][1]
+                    }"
+                    [activeItem]="selectedContactEmailType[i]"
+                    [options]="contactEmailTypeOptions"
+                    (selectedItem)="emitOnSelectDropdown($event,i)"
+                    (mouseenter)="emitOnInputHover(true, i, 1)"
+                    (mouseleave)="emitOnInputHover(false, i, 1)"
+                ></app-ta-input-dropdown>
+            </div>
+        </ng-container>
+    </div>
+</form>

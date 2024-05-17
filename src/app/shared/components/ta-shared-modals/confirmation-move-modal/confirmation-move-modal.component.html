@@ -1,0 +1,149 @@
+<app-ta-modal
+    [modalTitle]="
+        editData?.type | confirmationMoveModalTitle : editData?.template
+    "
+    [customClass]="'modal-container-XS'"
+    [bottomDivider]="true"
+    [headerSvg]="'info2'"
+    [isCloseIconRemoved]="true"
+    [confirmationData]="editData"
+    (confirmationAction)="onModalAction($event)"
+>
+    <div
+        origin
+        class="d-flex flex-column justify-content-center confirmation-move"
+    >
+        <!-- Icon -->
+
+        <div class="confirmation-move-icon">
+            <svg-icon
+                src="assets/svg/common/confirmation/ic_confirmation_modal_{{
+                    editData?.type
+                }}.svg"
+            ></svg-icon>
+        </div>
+
+        <!-- Body -->
+
+        <div
+            class="d-flex flex-column justify-content-center confirmation-move-body"
+        >
+            <!-- Title -->
+
+            <div
+                class="d-flex flex-column justify-content-center confirmation-move-body-title mb-2 gap-2"
+            >
+                <ng-container *ngIf="!editData?.array; else arrayTemplate">
+                    <div>
+                        <div class="d-flex align-items-center">
+                            <div
+                                class="m-0 ta-font-bold limit-text"
+                                [class.shorter-text]="
+                                    editData?.type === 'remove'
+                                "
+                            >
+                                {{ editData.modalTitle }}
+                            </div>
+
+                            <ng-container *ngIf="editData?.type === 'remove'">
+                                <svg-icon
+                                    class="d-flex ms-1"
+                                    [src]="
+                                        editData?.subType === 'ban'
+                                            ? 'assets/svg/common/ic_banned_broker.svg'
+                                            : 'assets/svg/common/ic_dnu_broker.svg'
+                                    "
+                                ></svg-icon
+                            ></ng-container>
+                        </div>
+                        <div class="m-0 text-2 limit-text">
+                            {{ editData.modalSecondTitle }}
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #arrayTemplate>
+                    <ng-container
+                        *ngFor="let item of editData.array; trackBy: identity"
+                    >
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="m-0 ta-font-bold limit-text"
+                                    [class.shorter-text]="
+                                        editData?.type === 'remove'
+                                    "
+                                >
+                                    {{ item.modalTitle }}
+                                </div>
+
+                                <ng-container
+                                    *ngIf="editData?.type === 'remove'"
+                                >
+                                    <svg-icon
+                                        class="d-flex ms-1"
+                                        [src]="
+                                            editData?.subType === 'ban'
+                                                ? 'assets/svg/common/ic_banned_broker.svg'
+                                                : 'assets/svg/common/ic_dnu_broker.svg'
+                                        "
+                                    ></svg-icon
+                                ></ng-container>
+                            </div>
+                            <div class="m-0 text-2 limit-text">
+                                {{ item.modalSecondTitle }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-template>
+            </div>
+
+            <div
+                class="d-flex align-items-center confirmation-move-body-subtitle mb-2"
+            >
+                <p class="ta-font-extra-bold">
+                    {{ editData?.type === 'move' ? 'to' : 'from' }}
+                </p>
+                <div
+                    class="ms-1 ban-card d-flex align-items-center"
+                    [class.dnu-card]="editData?.subType === 'dnu'"
+                >
+                    <p class="ta-font-bold">
+                        {{
+                            editData?.subType === 'ban'
+                                ? 'Ban List'
+                                : 'DNU List'
+                        }}
+                    </p>
+                    <svg-icon
+                        class="ms-1 card-icon"
+                        [src]="
+                            editData?.subType === 'ban'
+                                ? 'assets/svg/common/ic_banned_broker.svg'
+                                : 'assets/svg/common/ic_dnu_broker.svg'
+                        "
+                        [svgStyle]="{
+                            'width.px': 14,
+                            'height.px': 14
+                        }"
+                    ></svg-icon>
+                </div>
+            </div>
+
+            <!-- Subtitle -->
+
+            <div
+                class="d-flex align-items-center confirmation-move-body-subtitle"
+            >
+                <p class="m-0 ta-font-medium">
+                    {{
+                        editData?.type
+                            | confirmationMoveModalText
+                                : editData?.template
+                                : editData?.subType
+                    }}
+                </p>
+            </div>
+        </div>
+    </div>
+</app-ta-modal>

@@ -183,6 +183,17 @@
                         }
                     }
                 }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
+                }
             }
 
             .confirmation-text-2 {
@@ -218,6 +229,17 @@
                     font-size: 14px;
                     line-height: 18px;
                     color: #919191;
+                }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
                 }
             }
             .avatar-img {

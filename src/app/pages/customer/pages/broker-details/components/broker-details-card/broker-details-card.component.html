@@ -180,7 +180,8 @@
                 [hasCounter]="
                     invoiceAgeingCounter
                         ? invoiceAgeingCounter
-                        : broker?.invoiceAgeingGroup?.countInvoice
+                        : broker?.brokerUnpaidInvoiceAgeing?.invoiceAgeingGroup
+                              ?.countInvoice
                 "
                 [cardName]="'Invoice Ageing'"
                 [isCardOpen]="true"
@@ -212,17 +213,22 @@
                 <ng-container
                     *ngIf="
                         broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupOne
+                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupOne
                     "
                 >
                     <app-ta-progress-invoices
                         [invoiceDays]="
-                            broker?.invoiceAgeingGroupOne?.periodOfDays
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupOne?.periodOfDays
                         "
                         [invoiceCounter]="
-                            broker?.invoiceAgeingGroupOne?.countInvoice
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupOne?.countInvoice
                         "
-                        [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
+                        [invoiceTotal]="
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupOne?.totalSum
+                        "
                         [template]="'light-blue'"
                     >
                     </app-ta-progress-invoices>
@@ -231,17 +237,22 @@
                 <ng-container
                     *ngIf="
                         broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupTwo
+                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupTwo
                     "
                 >
                     <app-ta-progress-invoices
                         [invoiceDays]="
-                            broker?.invoiceAgeingGroupTwo?.periodOfDays
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupTwo?.periodOfDays
                         "
                         [invoiceCounter]="
-                            broker?.invoiceAgeingGroupTwo?.countInvoice
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupTwo?.countInvoice
                         "
-                        [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
+                        [invoiceTotal]="
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupTwo?.totalSum
+                        "
                         [template]="'mid-blue'"
                     >
                     </app-ta-progress-invoices>
@@ -249,18 +260,21 @@
                 <ng-container
                     *ngIf="
                         broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupThree
+                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupThree
                     "
                 >
                     <app-ta-progress-invoices
                         [invoiceDays]="
-                            broker?.invoiceAgeingGroupThree?.periodOfDays
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupThree?.periodOfDays
                         "
                         [invoiceCounter]="
-                            broker?.invoiceAgeingGroupThree?.countInvoice
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupThree?.countInvoice
                         "
                         [invoiceTotal]="
-                            broker?.invoiceAgeingGroupThree?.totalSum
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupThree?.totalSum
                         "
                         [template]="'dark-blue'"
                     >
@@ -269,18 +283,21 @@
                 <ng-container
                     *ngIf="
                         broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.invoiceAgeingGroupFour
+                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupFour
                     "
                 >
                     <app-ta-progress-invoices
                         [invoiceDays]="
-                            broker?.invoiceAgeingGroupFour?.periodOfDays
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupFour?.periodOfDays
                         "
                         [invoiceCounter]="
-                            broker?.invoiceAgeingGroupFour?.countInvoice
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupFour?.countInvoice
                         "
                         [invoiceTotal]="
-                            broker?.invoiceAgeingGroupFour?.totalSum
+                            broker?.brokerPaidInvoiceAgeing
+                                ?.invoiceAgeingGroupFour?.totalSum
                         "
                         [template]="'danger'"
                     >

@@ -50,9 +50,7 @@
                             svg: true,
                             image: false,
                             url: selectedStateType?.logoName
-                                ? 'assets/svg/common/states/' +
-                                  'ic_' +
-                                  selectedStateType?.logoName
+                                ? logoStateRoutes + selectedStateType?.logoName
                                 : '',
                             template: 'color',
                             class: 'state'

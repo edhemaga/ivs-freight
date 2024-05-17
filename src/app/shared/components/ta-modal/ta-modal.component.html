@@ -640,6 +640,7 @@
                                     'info',
                                     'repair-detail',
                                     'repair-review',
+                                    'broker',
                                     'shipper',
                                     'registration',
                                     'title',
@@ -772,7 +773,10 @@
 
                     <!-- DNU -->
                     <ng-container
-                        *ngIf="confirmationData?.subType === 'ban list'"
+                        *ngIf="
+                            confirmationData?.subType === 'ban list' ||
+                            confirmationData?.subType === 'ban'
+                        "
                     >
                         <button
                             (click)="onAction('bfb')"

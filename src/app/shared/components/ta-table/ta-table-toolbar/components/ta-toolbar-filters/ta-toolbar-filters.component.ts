@@ -167,7 +167,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             this.activeTableData?.closedArray
         ) {
             if (event.selectedFilter) {
-                this.customerFilter.filteredArray.push(event.filteredArray[0]);
+                event.filteredArray.forEach((item) => {
+                    this.customerFilter.filteredArray.push(item);
+                })
                 this.customerFilter.selectedFilter = event.selectedFilter;
             } else {
                 this.customerFilter.filteredArray =

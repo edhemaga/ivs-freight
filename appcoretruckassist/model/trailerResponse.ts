@@ -36,6 +36,7 @@ export interface TrailerResponse {
     tireSize?: TireSizeResponse;
     suspension?: EnumValue;
     doorType?: EnumValue;
+    liftgate?: boolean | null;
     reeferUnit?: EnumValue;
     emptyWeight?: number | null;
     mileage?: number | null;

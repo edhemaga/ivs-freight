@@ -392,8 +392,11 @@
             (onActionEvent)="addRepairItem()"
         >
             <app-ta-modal-table
-                [isRepairBillTable]="true"
-                [isRepairOrderTable]="selectedHeaderTab === 2"
+                [tableType]="
+                    selectedHeaderTab === 2 
+                        ? modalTableTypeEnum.REPAIR_ORDER 
+                        : modalTableTypeEnum.REPAIR_BILL
+                "
                 [isNewRowCreated]="
                     (selectedHeaderTab === 1 && isRepairBillRowCreated) ||
                     (selectedHeaderTab === 2 && isRepairOrderRowCreated)

@@ -1,0 +1,20 @@
+@import 'src/theme/variables.scss';
+
+.pm-table-container {
+    grid-template-rows: 26px;
+    column-gap: 4px;
+    row-gap: 4px;
+
+    .pm-item {
+        grid-template-columns: 26px 276px 146px;
+        background: none;
+
+        &.pm-item-new {
+            grid-template-columns: 26px 14px 258px 146px;
+        }
+
+        &:hover {
+            background: $bw2;
+        }
+    }
+}

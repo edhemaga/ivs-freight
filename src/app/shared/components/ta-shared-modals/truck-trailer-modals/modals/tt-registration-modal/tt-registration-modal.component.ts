@@ -72,6 +72,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public logoStateRoutes: string = 'assets/svg/common/states/ic_';
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private TruckTrailerService: TruckTrailerService,
