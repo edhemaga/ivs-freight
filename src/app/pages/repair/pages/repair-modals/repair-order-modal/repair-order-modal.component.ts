@@ -58,6 +58,7 @@ import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-o
 // enums
 import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/repair-order-modal/enums/repair-order-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -195,6 +196,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFileModified: boolean = false;
 
     public tags: TagResponse[] = [];
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

@@ -51,6 +51,7 @@ import { FormService } from '@shared/services/form.service';
 
 // enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
 import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
@@ -133,6 +134,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public isEachEmailRowValid: boolean = true;
     public contactEmails: ContactEmailResponse[] = [];
     public updateContactEmails: ContactEmailResponse[] = [];
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

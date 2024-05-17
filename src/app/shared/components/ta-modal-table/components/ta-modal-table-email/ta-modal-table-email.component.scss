@@ -1,0 +1,7 @@
+@import 'src/theme/variables.scss';
+
+.email-table-container {
+    .table-item {
+        grid-template-columns: 26px 312px 110px;
+    }
+}

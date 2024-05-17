@@ -18,9 +18,16 @@
     /* Body */
 
     &-body {
+        .confirmation-svg {
+            svg {
+                width: 77px;
+                height: 28px;
+            }
+        }
         &-title,
         &-middle {
-            p, div {
+            p,
+            div {
                 font-size: 18px;
                 line-height: 22px;
                 color: $ta-black;
@@ -40,7 +47,7 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    
+
                     &.shorter-text {
                         max-width: 66%;
                     }
