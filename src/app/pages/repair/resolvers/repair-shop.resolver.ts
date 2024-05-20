@@ -45,11 +45,6 @@ export class RepairShopResolver implements Resolve<RepairShopState> {
             tap(([repairTrailerPagination, tableConfig]) => {
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
                 }
 
                 this.repairShopStore.set(

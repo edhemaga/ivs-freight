@@ -49,7 +49,7 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    
+
                     &.shorter-text {
                         max-width: 68%;
                     }
@@ -74,6 +74,20 @@
                 &::selection {
                     background: rgb(145, 145, 145, 0.2);
                     color: $bw5;
+                }
+            }
+            .unit-container {
+                width: fit-content;
+                height: 18px;
+                padding: 2px 2px 2px 2px;
+                border-radius: 2px;
+                background-color: $muted;
+                margin-top: 8px;
+
+                .text-3 {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white;
                 }
             }
 
