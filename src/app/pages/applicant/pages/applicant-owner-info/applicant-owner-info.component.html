@@ -21,10 +21,7 @@
                                     ? '#919191'
                                     : '#6C6C6C'
                         }"
-                    >
-                        Please enter your company informations. In case you are
-                        a<br />
-                        Sole Proprietor please contact us.
+                    >   Please select owner type and fill in all required fields.
                     </h2>
 
                     <!-- TABS -->
@@ -539,7 +536,7 @@
                                         class="d-flex align-self-start add-truck-container"
                                     >
                                         <p class="m-0 ta-font-extra-bold">
-                                            Add Truck
+                                            Truck Detail
                                         </p>
                                     </div>
 
@@ -869,6 +866,10 @@
                                                     selectedMode !==
                                                     'APPLICANT_MODE'
                                                 "
+                                                [disabled]="
+                                                selectedMode !==
+                                                'APPLICANT_MODE'
+                                            "
                                             ></app-ta-checkbox>
 
                                             <p class="m-0 ta-font-extra-bold">
@@ -1328,7 +1329,7 @@
                                         class="d-flex align-self-start add-truck-container"
                                     >
                                         <p class="m-0 ta-font-extra-bold">
-                                            Add Truck
+                                            Truck Details
                                         </p>
                                     </div>
 
@@ -1375,6 +1376,36 @@
                                                     )
                                                 "
                                             ></app-ta-input-dropdown>
+                                        </div>
+
+                                        <div class="group year-group">
+                                            <app-ta-input
+                                                formControlName="soleTruckYear"
+                                                [inputConfig]="{
+                                                    name: 'Year',
+                                                    type: 'text',
+                                                    label: 'Year',
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTruckYearValid),
+                                                    isRequired: true,
+                                                    minLength: 4,
+                                                    maxLength: 4,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[1]
+                                                        .lineInputs[1]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 1, 1)
+                                                "
+                                            ></app-ta-input>
                                         </div>
 
                                         <div class="group vin-group">
@@ -1530,36 +1561,6 @@
                                             ></app-ta-input>
                                         </div>
 
-                                        <div class="group year-group">
-                                            <app-ta-input
-                                                formControlName="soleTruckYear"
-                                                [inputConfig]="{
-                                                    name: 'Year',
-                                                    type: 'text',
-                                                    label: 'Year',
-                                                    isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
-                                                        (selectedMode ===
-                                                            'FEEDBACK_MODE' &&
-                                                            stepFeedbackValues?.isTruckYearValid),
-                                                    isRequired: true,
-                                                    minLength: 4,
-                                                    maxLength: 4,
-                                                    incorrectInput:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE'
-                                                }"
-                                                [incorrectValue]="
-                                                    openAnnotationArray[1]
-                                                        .lineInputs[1]
-                                                "
-                                                (incorrectEvent)="
-                                                    incorrectInput($event, 1, 1)
-                                                "
-                                            ></app-ta-input>
-                                        </div>
-
                                         <div class="group color-group">
                                             <app-ta-input-dropdown
                                                 formControlName="soleTruckColor"
@@ -1647,33 +1648,146 @@
 
                                     <!-- DIVIDER -->
 
-                                    <div class="divider"></div>
-
-                                    <!-- ADD TRAILER -->
-
-                                    <div
-                                        class="d-flex align-self-start add-trailer-container"
+                                    <div class="truck-documents">
+                                        <div class="truck-licence">
+                                            <div class="divider divider-truck"></div>
+                                            <div
+                                                class="d-flex align-self-start add-truck-container"
+                                            >
+                                                <p class="m-0 ta-font-extra-bold">
+                                                    Truck Licence
+                                                </p>
+                                            </div>
+                                            <div
+                                        class="d-flex flex-column files-container"
+                                        [formGroup]="ownerInfoForm"
                                     >
-                                        <div class="d-flex align-items-center">
-                                            <app-ta-checkbox
-                                                formControlName="soleAddTrailer"
-                                                [name]="'soleAddTrailer'"
-                                                [disabledStillCheckMark]="
-                                                    selectedMode !==
-                                                    'APPLICANT_MODE'
-                                                "
-                                            ></app-ta-checkbox>
+                                        <div class="d-flex align-items-center files-header">
+                                            <!-- documents count deo -->
+                                        </div>
 
-                                            <p class="m-0 ta-font-extra-bold">
-                                                Add Trailer
-                                            </p>
+                                        <div
+                                            class="line-container"
+                                            [ngStyle]="{
+                                                width:
+                                                    selectedMode === 'REVIEW_MODE'
+                                                        ? 'fit-content'
+                                                        : '100%'
+                                            }"
+                                        >
+                                            <app-ta-upload-files
+                                                [files]="documents"
+                                                [size]="'small'"
+                                                [showDropzone]="
+                                                    selectedMode === 'APPLICANT_MODE'
+                                                "
+                                                [isRequired]="!documents.length"
+                                                [showRequired]="displayDocumentsRequiredNote"
+                                                [isReview]="selectedMode === 'REVIEW_MODE'"
+                                                [reviewMode]="
+                                                    selectedMode === 'REVIEW_MODE' &&
+                                                    'REVIEW_MODE'
+                                                "
+                                                [dropzoneColumn]="true"
+                                                (onFileEvent)="onFilesAction($event)"
+                                            ></app-ta-upload-files>
+
+                                            <!-- REVIEW AND FEEDBACK -->
+
+                                        </div>
+                                    </div>
+                                        </div>
+                                        <div class="truck-inspection">
+                                            <div class="divider divider-truck"></div>
+                                            <div
+                                                class="d-flex align-self-start add-truck-container"
+                                            >
+                                                <p class="m-0 ta-font-extra-bold">
+                                                    Truck FHWA Inspection
+                                                </p>
+                                            </div>
+                                            <div
+                                        class="d-flex flex-column files-container"
+                                        [formGroup]="ownerInfoForm"
+                                    >
+                                        <div class="d-flex align-items-center files-header">
+                                            <!-- Documents count deo izbrisan -->
+                                        </div>
+
+                                        <div
+                                            class="line-container"
+                                            [ngStyle]="{
+                                                width:
+                                                    selectedMode === 'REVIEW_MODE'
+                                                        ? 'fit-content'
+                                                        : '100%'
+                                            }"
+                                        >
+                                            <app-ta-upload-files
+                                                [files]="documents"
+                                                [size]="'small'"
+                                                [showDropzone]="
+                                                    selectedMode === 'APPLICANT_MODE'
+                                                "
+                                                [isRequired]="!documents.length"
+                                                [showRequired]="displayDocumentsRequiredNote"
+                                                [isReview]="selectedMode === 'REVIEW_MODE'"
+                                                [reviewMode]="
+                                                    selectedMode === 'REVIEW_MODE' &&
+                                                    'REVIEW_MODE'
+                                                "
+                                                [dropzoneColumn]="true"
+                                                (onFileEvent)="onFilesAction($event)"
+                                            ></app-ta-upload-files>
+
+                                            <!-- REVIEW AND FEEDBACK -->
+
+                                        </div>
+                                    </div>
                                         </div>
                                     </div>
 
-                                    <!-- TRAILER TYPE, VIN -->
+
+                                    <!-- TRUCK LICENCE AND INSPECTION -->
+                                    
+
+
+                                    <!-- new add trailer -->
+
+                                    <div
+                                        class="d-flex w-100 justify-content-between add-trailer-row"
+                                    >
+                                        <p class="m-0 ta-font-extra-bold">
+                                            Have trailer in your possession?
+                                        </p>
+
+                                        <button 
+                                            *ngIf="!isAddTrailerSelected"  
+                                            class="btn-secondary"
+                                            (click)="toggleAddTrailer()"
+                                        >
+                                            Add trailer
+                                        </button>
+
+                                        <div
+                                            *ngIf="isAddTrailerSelected"
+                                            ngbTooltip
+                                            mainTooltip="Delete"
+                                            position="top"
+                                            tooltipBackground="#EF5350"
+                                            class="common-fake-table-delete"
+                                            (click)="toggleAddTrailer()"
+                                        >
+                                            <svg-icon
+                                                src="assets/svg/common/ic_trash.svg"
+                                            ></svg-icon>
+                                        </div>
+                                    </div>
+
+                                    <!-- TYPE, LENGTH, YEAR, VIN -->
 
                                     <div class="d-flex line-container">
-                                        <div class="group type-group">
+                                        <div class="group trailer-type-group">
                                             <app-ta-input-dropdown
                                                 formControlName="soleTrailerType"
                                                 [template]="'svgtext-template'"
@@ -1735,7 +1849,73 @@
                                             ></app-ta-input-dropdown>
                                         </div>
 
-                                        <div class="group vin-group">
+                                        <div class="group trailer-length-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="soleTrailerLength"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Length',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
+                                                        (selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                            !isSoleAddTrailerSelected),
+                                                    isRequired:
+                                                        isSoleAddTrailerSelected,
+                                                    dropdownWidthClass:
+                                                        'w-col-216'
+                                                }"
+                                                [options]="trailerLengthType"
+                                                [activeItem]="
+                                                    selectedSoleTrailerLength
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-LENGTH'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+
+                                        <div class="group trailer-year-group">
+                                            <app-ta-input
+                                                formControlName="soleTrailerYear"
+                                                [inputConfig]="{
+                                                    name: 'Year',
+                                                    type: 'text',
+                                                    label: 'Year',
+                                                    isDisabled:
+                                                        selectedMode ===
+                                                            'REVIEW_MODE' ||
+                                                        (selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                            !isSoleAddTrailerSelected) ||
+                                                        (selectedMode ===
+                                                            'FEEDBACK_MODE' &&
+                                                            stepFeedbackValues?.isTrailerYearValid),
+                                                    isRequired:
+                                                        isSoleAddTrailerSelected,
+                                                    minLength: 4,
+                                                    maxLength: 4,
+                                                    incorrectInput:
+                                                        selectedMode ===
+                                                        'REVIEW_MODE'
+                                                }"
+                                                [incorrectValue]="
+                                                    openAnnotationArray[4]
+                                                        .lineInputs[0]
+                                                "
+                                                (incorrectEvent)="
+                                                    incorrectInput($event, 0, 4)
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+
+                                        <div class="group trailer-vin-group">
                                             <app-ta-input
                                                 formControlName="soleTrailerVin"
                                                 [inputConfig]="{
@@ -1823,7 +2003,7 @@
                                         </ng-container>
                                     </div>
 
-                                    <!-- TRAILER MAKE, MODEL -->
+                                    <!-- TRAILER MAKE, MODEL, COLOR -->
 
                                     <div class="d-flex line-container">
                                         <div class="group trailer-make-group">
@@ -1900,6 +2080,49 @@
                                             ></app-ta-input>
                                         </div>
 
+                                            
+                                        <div class="group trailer-color-group">
+                                            <app-ta-input-dropdown
+                                                formControlName="soleTrailerColor"
+                                                [template]="'svgtext-template'"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'Color',
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        selectedMode !==
+                                                            'APPLICANT_MODE' ||
+                                                        (selectedMode ===
+                                                            'APPLICANT_MODE' &&
+                                                            !isSoleAddTrailerSelected),
+                                                    dropdownImageInput: {
+                                                        withText: true,
+                                                        svg: true,
+                                                        image: false,
+                                                        url: selectedSoleTrailerColor?.code
+                                                            ? 'ic_color.svg'
+                                                            : null,
+                                                        template: 'color',
+                                                        color: selectedSoleTrailerColor?.code
+                                                    },
+                                                    dropdownWidthClass:
+                                                        'w-col-216'
+                                                }"
+                                                [options]="colorType"
+                                                [activeItem]="
+                                                    selectedSoleTrailerColor
+                                                "
+                                                (selectedItem)="
+                                                    handleInputSelect(
+                                                        $event,
+                                                        'TRAILER-COLOR'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+
+
                                         <!-- REVIEW AND FEEDBACK -->
 
                                         <ng-container
@@ -1949,112 +2172,110 @@
 
                                     <!-- TRAILER YEAR, COLOR, LENGTH -->
 
-                                    <div class="d-flex line-container">
-                                        <div class="group trailer-year-group">
-                                            <app-ta-input
-                                                formControlName="soleTrailerYear"
-                                                [inputConfig]="{
-                                                    name: 'Year',
-                                                    type: 'text',
-                                                    label: 'Year',
-                                                    isDisabled:
-                                                        selectedMode ===
-                                                            'REVIEW_MODE' ||
-                                                        (selectedMode ===
-                                                            'APPLICANT_MODE' &&
-                                                            !isSoleAddTrailerSelected) ||
-                                                        (selectedMode ===
-                                                            'FEEDBACK_MODE' &&
-                                                            stepFeedbackValues?.isTrailerYearValid),
-                                                    isRequired:
-                                                        isSoleAddTrailerSelected,
-                                                    minLength: 4,
-                                                    maxLength: 4,
-                                                    incorrectInput:
-                                                        selectedMode ===
-                                                        'REVIEW_MODE'
-                                                }"
-                                                [incorrectValue]="
-                                                    openAnnotationArray[4]
-                                                        .lineInputs[0]
-                                                "
-                                                (incorrectEvent)="
-                                                    incorrectInput($event, 0, 4)
-                                                "
-                                            ></app-ta-input>
-                                        </div>
-                                        <div class="group trailer-color-group">
-                                            <app-ta-input-dropdown
-                                                formControlName="soleTrailerColor"
-                                                [template]="'svgtext-template'"
-                                                [inputConfig]="{
-                                                    name: 'Input Dropdown',
-                                                    type: 'text',
-                                                    label: 'Color',
-                                                    isDropdown: true,
-                                                    isDisabled:
-                                                        selectedMode !==
-                                                            'APPLICANT_MODE' ||
-                                                        (selectedMode ===
-                                                            'APPLICANT_MODE' &&
-                                                            !isSoleAddTrailerSelected),
-                                                    dropdownImageInput: {
-                                                        withText: true,
-                                                        svg: true,
-                                                        image: false,
-                                                        url: selectedSoleTrailerColor?.code
-                                                            ? 'ic_color.svg'
-                                                            : null,
-                                                        template: 'color',
-                                                        color: selectedSoleTrailerColor?.code
-                                                    },
-                                                    dropdownWidthClass:
-                                                        'w-col-216'
-                                                }"
-                                                [options]="colorType"
-                                                [activeItem]="
-                                                    selectedSoleTrailerColor
-                                                "
-                                                (selectedItem)="
-                                                    handleInputSelect(
-                                                        $event,
-                                                        'TRAILER-COLOR'
-                                                    )
-                                                "
-                                            ></app-ta-input-dropdown>
+                                    <!-- TRAILER LICENCE AND INSPECTION  --> 
+
+                                    <div class="truck-documents">
+                                        <div class="truck-licence">
+                                            <div class="divider divider-truck"></div>
+                                            <div
+                                                class="d-flex align-self-start add-truck-container"
+                                            >
+                                                <p class="m-0 ta-font-extra-bold">
+                                                    Trailer Licence
+                                                </p>
+                                            </div>
+                                            <div
+                                        class="d-flex flex-column files-container"
+                                        [formGroup]="ownerInfoForm"
+                                    >
+                                        <div class="d-flex align-items-center files-header">
+                                            <!-- documents count deo -->
                                         </div>
 
-                                        <div class="group trailer-length-group">
-                                            <app-ta-input-dropdown
-                                                formControlName="soleTrailerLength"
-                                                [inputConfig]="{
-                                                    name: 'Input Dropdown',
-                                                    type: 'text',
-                                                    label: 'Length',
-                                                    isDropdown: true,
-                                                    isDisabled:
-                                                        selectedMode !==
-                                                            'APPLICANT_MODE' ||
-                                                        (selectedMode ===
-                                                            'APPLICANT_MODE' &&
-                                                            !isSoleAddTrailerSelected),
-                                                    isRequired:
-                                                        isSoleAddTrailerSelected,
-                                                    dropdownWidthClass:
-                                                        'w-col-216'
-                                                }"
-                                                [options]="trailerLengthType"
-                                                [activeItem]="
-                                                    selectedSoleTrailerLength
+                                        <div
+                                            class="line-container"
+                                            [ngStyle]="{
+                                                width:
+                                                    selectedMode === 'REVIEW_MODE'
+                                                        ? 'fit-content'
+                                                        : '100%'
+                                            }"
+                                        >
+                                            <app-ta-upload-files
+                                                [files]="documents"
+                                                [size]="'small'"
+                                                [showDropzone]="
+                                                    selectedMode === 'APPLICANT_MODE'
                                                 "
-                                                (selectedItem)="
-                                                    handleInputSelect(
-                                                        $event,
-                                                        'TRAILER-LENGTH'
-                                                    )
+                                                [isRequired]="!documents.length"
+                                                [showRequired]="displayDocumentsRequiredNote"
+                                                [isReview]="selectedMode === 'REVIEW_MODE'"
+                                                [reviewMode]="
+                                                    selectedMode === 'REVIEW_MODE' &&
+                                                    'REVIEW_MODE'
                                                 "
-                                            ></app-ta-input-dropdown>
+                                                [dropzoneColumn]="true"
+                                                (onFileEvent)="onFilesAction($event)"
+                                            ></app-ta-upload-files>
+
+                                            <!-- REVIEW AND FEEDBACK -->
+
                                         </div>
+                                    </div>
+                                        </div>
+                                        <div class="truck-inspection">
+                                            <div class="divider divider-truck"></div>
+                                            <div
+                                                class="d-flex align-self-start add-truck-container"
+                                            >
+                                                <p class="m-0 ta-font-extra-bold">
+                                                    Trailer FHWA Inspection
+                                                </p>
+                                            </div>
+                                            <div
+                                        class="d-flex flex-column files-container"
+                                        [formGroup]="ownerInfoForm"
+                                    >
+                                        <div class="d-flex align-items-center files-header">
+                                            <!-- Documents count deo izbrisan -->
+                                        </div>
+
+                                        <div
+                                            class="line-container"
+                                            [ngStyle]="{
+                                                width:
+                                                    selectedMode === 'REVIEW_MODE'
+                                                        ? 'fit-content'
+                                                        : '100%'
+                                            }"
+                                        >
+                                            <app-ta-upload-files
+                                                [files]="documents"
+                                                [size]="'small'"
+                                                [showDropzone]="
+                                                    selectedMode === 'APPLICANT_MODE'
+                                                "
+                                                [isRequired]="!documents.length"
+                                                [showRequired]="displayDocumentsRequiredNote"
+                                                [isReview]="selectedMode === 'REVIEW_MODE'"
+                                                [reviewMode]="
+                                                    selectedMode === 'REVIEW_MODE' &&
+                                                    'REVIEW_MODE'
+                                                "
+                                                [dropzoneColumn]="true"
+                                                (onFileEvent)="onFilesAction($event)"
+                                            ></app-ta-upload-files>
+
+                                            <!-- REVIEW AND FEEDBACK -->
+
+                                        </div>
+                                    </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex line-container">
+                                    
+                                        
 
                                         <!-- REVIEW AND FEEDBACK -->
 

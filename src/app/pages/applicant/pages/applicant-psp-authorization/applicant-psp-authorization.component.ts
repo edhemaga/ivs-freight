@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -28,19 +29,39 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import {
     ApplicantResponse,
     CreatePspAuthReviewCommand,
+    PersonalInfoFeedbackResponse,
     PspAuthFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
+
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
 
 @Component({
     selector: 'app-psp-authorization',
     templateUrl: './applicant-psp-authorization.component.html',
     styleUrls: ['./applicant-psp-authorization.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+        ApplicantCardComponent
+    ],
 })
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 
@@ -55,7 +76,7 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
 
-    public applicantCardInfo: any;
+    public applicantCardInfo: PersonalInfoFeedbackResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -67,6 +88,22 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private route: ActivatedRoute
     ) {}
+
+    get isAuthorizeFormControl() {
+        return this.pspAuthorizationForm.get('isAuthorize');
+    }
+
+    get isFurtherUnderstandFormControl() {
+        return this.pspAuthorizationForm.get('isFurtherUnderstand');
+    }
+
+    get isPspReportFormControl() {
+        return this.pspAuthorizationForm.get('isPspReport');
+    }
+
+    get isDisclosureRegardingReportFormControl() {
+        return this.pspAuthorizationForm.get('isDisclosureRegardingReport');
+    }
 
     ngOnInit(): void {
         this.getQueryParams();
@@ -102,9 +139,9 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
                     const personalInfo = res.personalInfo;
 
                     this.applicantCardInfo = {
-                        name: personalInfo?.fullName,
+                        fullName: personalInfo?.fullName,
                         ssn: personalInfo?.ssn,
-                        dob: MethodsCalculationsHelper.convertDateFromBackend(
+                        doB: MethodsCalculationsHelper.convertDateFromBackend(
                             personalInfo?.doB
                         ),
                     };

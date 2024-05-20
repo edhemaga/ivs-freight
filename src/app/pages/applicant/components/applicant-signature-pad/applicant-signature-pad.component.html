@@ -4,66 +4,60 @@
     class="signature-pad-container"
     *ngIf="mode === 'APPLICANT_MODE' && !signatureImgSrc"
 >
-    <signature-pad
-        #signature
-        [options]="signaturePadOptions"
-        (drawStart)="onDrawStart($event)"
-    ></signature-pad>
+    <div class="canvas-container">
+        <div *ngIf="isSignautrePadEmpty" class="canvas-container-text">
+            <p class="ta-font-bold">CLICK HERE</p>
+            <p class="ta-font-semi-bold small-text">TO SIGN USING YOUR MOUSE</p>
+        </div>
+        <signature-pad
+            #signature
+            [options]="signaturePadOptions"
+            (drawStart)="onDrawStart($event)"
+        ></signature-pad>
+    </div>
+
 
     <div
-        class="d-flex align-items-center signature-pad-bottom-container"
-        [ngStyle]="{ background: displayRequiredNote ? '#E57373' : '#EEEEEE' }"
+        class="d-flex align-items-center justify-content-between signature-pad-bottom-container"
     >
-        <p
-            class="m-0 ta-font-regular"
-            [ngStyle]="{ color: displayRequiredNote ? '#FFFFFF' : '#6c6c6c' }"
-        >
-            PLEASE USE YOUR MOUSE TO SIGN ABOVE <span>*</span>
-        </p>
-
         <ng-container *ngIf="displayActionButtons">
-            <div class="d-flex align-items-center btn-container">
-                <div
-                    ngbTooltip
-                    mainTooltip="Undo"
-                    tooltipBackground="#424242"
-                    position="top"
+            <div class="d-flex">
+                <button
+                    type="button"
+                    class="d-flex align-items-center justify-content-center "
+                    (click)="onClearDrawing()"
                 >
-                    <svg-icon
-                        class="undo-icon"
-                        src="assets/svg/applicant/reset.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        (click)="onUndoDrawing()"
-                    ></svg-icon>
-                </div>
+                    <p class="m-0 ta-font-bold">CANCEL</p>
+                </button>
 
-                <div
-                    ngbTooltip
-                    mainTooltip="Confirm"
-                    tooltipBackground="#3074d3"
-                    position="top"
+                <button
+                    type="button"
+                    class="d-flex align-items-center justify-content-center"
+                    (click)="onUndoDrawing()"
                 >
-                    <svg-icon
-                        class="confirm-icon"
-                        src="assets/svg/common/ic_save-logo.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        (click)="onConfirmDrawing()"
-                    ></svg-icon>
-                </div>
+                    <p class="m-0 ta-font-bold">UNDO</p>
+                </button>
+            </div>
 
-                <div
-                    ngbTooltip
-                    mainTooltip="Clear"
-                    tooltipBackground="#424242"
-                    position="top"
+            <div class="d-flex align-items-center">
+                <p class="ta-font-semi-bold confirmation-required">
+                    Confirmation Required
+                </p>
+                <button
+                    type="button"
+                    class="d-flex align-items-center justify-content-center saved-signature-button"
+                    (click)="onUseSavedSignature()"
                 >
-                    <svg-icon
-                        class="clear-icon"
-                        src="assets/svg/applicant/cancel.svg"
-                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                        (click)="onClearDrawing()"
-                    ></svg-icon>
-                </div>
+                    <p class="m-0 ta-font-bold">USE SAVED SIGNATURE</p>
+                </button>
+
+                <button
+                    type="button"
+                    class="d-flex align-items-center justify-content-center primary-btn"
+                    (click)="onConfirmDrawing()"
+                >
+                    <p class="m-0 ta-font-bold">CONFIRM</p>
+                </button>
             </div>
         </ng-container>
     </div>
@@ -83,13 +77,13 @@
 
 <div
     *ngIf="signatureImgSrc"
-    class="d-flex justify-content-center align-items-end signature-image-container"
+    class="d-flex justify-content-center align-items-center signature-image-container"
 >
     <img [src]="signatureImgSrc" alt="signature" />
 
     <ng-container *ngIf="mode === 'APPLICANT_MODE'">
         <div
-            class="d-flex justify-content-center align-items-center clear-signature-container"
+            class="d-flex justify-content-center align-items-center icon-signature-container"
             ngbTooltip
             mainTooltip="Sign Again"
             tooltipBackground="#424242"
@@ -97,8 +91,22 @@
             (click)="onDeleteImageSrc()"
         >
             <svg-icon
-                class="clear-signature-icon"
+                class="signature-icon"
                 src="assets/svg/common/ic_pen.svg"
+                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            ></svg-icon>
+        </div>
+        <div
+            class="d-flex justify-content-center align-items-center icon-signature-container"
+            ngbTooltip
+            mainTooltip="Sign Again"
+            tooltipBackground="#424242"
+            position="top"
+            (click)="onDeleteImageSrc()"
+        >
+            <svg-icon
+                class="signature-icon"
+                src="assets/svg/common/ic_trash.svg"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
             ></svg-icon>
         </div>

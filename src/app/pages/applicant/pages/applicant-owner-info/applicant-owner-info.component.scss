@@ -129,6 +129,27 @@
             border-radius: 1px;
         }
 
+        .truck-documents {
+            display: flex;
+            gap: 10px;
+            .divider-truck {
+                width: 303px;
+            }
+
+            .truck-licence {
+                max-width: 303px;
+            }
+
+            .truck-inspection {
+                max-width: 303px;
+            }
+        }
+
+        .add-trailer-container {
+            width: 100%;
+            justify-content: space-between;
+        }
+
         .add-truck-container,
         .add-trailer-container {
             margin: 8px 0 28px 4px;
@@ -157,22 +178,7 @@
         }
 
         .type-group {
-            width: 364px;
-        }
-
-        .vin-group {
-            width: 240px;
-            margin-right: 0;
-        }
-
-        .make-group {
-            width: 210px;
-            margin-bottom: 22px;
-        }
-
-        .model-group {
-            width: 170px;
-            margin-bottom: 22px;
+            width: 220px;
         }
 
         .year-group {
@@ -180,32 +186,53 @@
             margin-bottom: 22px;
         }
 
+        .vin-group {
+            width: 288px;
+            margin-right: 0;
+        }
+
+        .make-group {
+            width: 156px;
+            margin-bottom: 22px;
+        }
+
+        .model-group {
+            width: 280px;
+            margin-bottom: 22px;
+        }
+
         .color-group {
-            width: 116px;
+            width: 156px;
             margin-bottom: 22px;
             margin-right: 0;
         }
 
         .trailer-make-group {
-            width: 302px;
+            width: 156px;
         }
 
         .trailer-model-group {
-            width: 302px;
-            margin-right: 0;
+            width: 280px;
         }
 
         .trailer-year-group {
-            width: 160px;
+            width: 84px;
         }
 
         .trailer-color-group {
-            width: 216px;
+            width: 156px;
         }
 
         .trailer-length-group {
-            width: 216px;
-            margin-right: 0;
+            width: 99px;
+        }
+
+        .trailer-vin-group {
+            width: 187px;
+        }
+
+        .trailer-type-group {
+            width: 210px;
         }
     }
 }

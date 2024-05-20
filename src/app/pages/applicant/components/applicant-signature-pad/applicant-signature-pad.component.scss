@@ -1,13 +1,29 @@
 @import 'src/theme/variables.scss';
 
 .signature-pad-container {
-    &:hover .signature-pad-bottom-container {
-        background: $ta-light-grey !important;
-    }
+    .canvas-container {
+        position: relative;
+        .canvas-container-text {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            gap: 4px;
 
-    &:hover {
-        .signature-pad-canvas {
-            background: $bw5;
+            p {
+                color: $ta-black;
+                font-size: 14px;
+                line-height: 18px;
+
+                &.small-text {
+                    font-size: 11px;
+                    line-height: 14px;
+                }
+            }
         }
     }
 
@@ -18,10 +34,13 @@
         user-select: none;
 
         .signature-pad-canvas {
+            outline: 4px dashed $ta-light-grey-6;
+            border-radius: 3px;
+
             border: none !important;
             border-top-left-radius: 3px;
             border-top-right-radius: 3px;
-            background: $ta-light-grey-6;
+            background: $white;
 
             transition: background 0.2s ease-in-out;
         }
@@ -30,57 +49,90 @@
     .signature-pad-bottom-container {
         padding: 5px 0;
         height: 28px;
+        margin-top: 8px;
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
         transition: background 0.2s ease-in-out;
 
-        p {
-            height: 15px;
-            font-size: 12px;
-            margin-left: 176px !important;
+        .confirmation-required {
+            font-size: 11px;
+            color: $ta-red-11;
+            line-height: 15px;
+            margin-right: 6px;
 
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            &::-moz-selection {
+                color: $ta-red-11;
+                background: rgb(239, 83, 80, 0.2);
+            }
 
-            span {
-                color: $ta-red-3;
+            &::selection {
+                color: $ta-red-11;
+                background: rgb(239, 83, 80, 0.2);
             }
         }
 
-        .btn-container {
-            height: 18px;
-            margin-left: auto;
+        button {
+            width: 80px;
+            height: 22px;
+            padding: 4px;
+            border: none;
+            outline: none;
+            border-radius: 2px;
+            background: $bw2;
+            transition: background 0.2s ease-in-out;
             margin-right: 6px;
 
-            .undo-icon,
-            .confirm-icon,
-            .clear-icon {
-                cursor: pointer;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            p {
+                position: relative;
+                top: 1px;
+                line-height: 14px;
+                font-size: 11px;
+                color: $ta-black;
+                padding: 0 4px;
+
+                transition: color 0.2s ease-in-out;
+
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            &:hover {
+                background: $ta-black;
+
+                p {
+                    color: $white;
+                }
+            }
+
+            &.primary-btn {
+                background: $ta-blue-5;
+
+                p {
+                    color: $white;
+                }
+            }
+
+            &.saved-signature-button {
+                width: 152px;
+                background: $bw2;
+
+                p {
+                    color: $ta-blue-5;
+                }
 
                 &:hover {
-                    svg {
-                        rect {
-                            fill: $ta-black;
-                        }
-                    }
-                }
+                    background: $ta-blue-5;
 
-                svg {
-                    rect {
-                        transition: fill 0.3s ease-in-out;
-                        fill: $bw5;
+                    p {
+                        color: $white;
                     }
-
-                    path {
-                        fill: $white;
-                    }
-                }
-
-                &.confirm-icon,
-                &.undo-icon {
-                    margin-right: 4px;
                 }
             }
         }
@@ -106,19 +158,28 @@
     }
 
     .signature-image-container {
-        &:hover .clear-signature-container {
+        &:hover .icon-signature-container {
             visibility: visible;
             opacity: 1;
+            background: $bw2;
+        }
+
+        &:hover {
+            img {
+                background: $bw2;
+                transition: background 0.3s ease-in-out;
+            }
         }
 
         img {
             width: 400px;
             padding: 6px;
             border-bottom: 0.1px solid $ta-light-grey-2;
+            margin-right: 6px;
         }
 
-        .clear-signature-container {
-            margin-left: 22px;
+        .icon-signature-container {
+            margin-left: 4px;
             margin-bottom: 4px;
             width: 28px;
             height: 28px;
@@ -130,10 +191,19 @@
             transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out,
                 background 0.3s ease-in-out;
 
+            .signature-icon {
+                svg {
+                    path {
+                        transition: fill 0.3s ease-in-out;
+                        fill: $bw5;
+                    }
+                }
+            }
+
             &:hover {
                 background: $ta-black;
 
-                .clear-signature-icon {
+                .signature-icon {
                     svg {
                         path {
                             transition: fill 0.3s ease-in-out;

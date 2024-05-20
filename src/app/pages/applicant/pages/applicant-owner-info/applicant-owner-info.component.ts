@@ -6,6 +6,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import {
     distinctUntilChanged,
@@ -67,17 +68,45 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { IdNameList } from '@pages/applicant/models/lists.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+
+//components
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+
+//modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
 
 @Component({
     selector: 'app-owner-info',
     templateUrl: './applicant-owner-info.component.html',
     styleUrls: ['./applicant-owner-info.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        // ApplicantOwnerInfoRoutingModule,
+        ApplicantModule,
+
+        // components
+        TaInputAddressDropdownComponent,
+        TaCheckboxComponent,
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaTabSwitchComponent,
+        TaUploadFilesComponent,
+    ],
 })
 export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.FEEDBACK;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public subscription: Subscription;
     public soleSubscription: Subscription;
@@ -94,7 +123,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
-    public selectedTab: number = 1;
+    public selectedTab: number = 2;
     public selectedAddress: AddressEntity;
     public selectedBank: any = null;
     public selectedTruckType: TruckTypeResponse = null;
@@ -142,15 +171,22 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public skipSoleTruckVinDecocerEdit: boolean = true;
     public skipSoleTrailerVinDecocerEdit: boolean = true;
 
-    public ownerInfoTabs: IdNameList[] = [
-        {
-            id: 1,
-            name: 'Company',
-        },
+    public documents: any[] = [];
+    public documentsForDeleteIds: number[] = [];
+    public displayDocumentsRequiredNote: boolean = false;
+
+    public ownerInfoTabs: TabOptions[] = [
         {
             id: 2,
             name: 'Sole Proprietor',
+            checked: true,
         },
+        {
+            id: 1,
+            name: 'Company',
+            checked: false,
+        },
+
     ];
 
     public openAnnotationArray: {
@@ -279,7 +315,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
         this.vinDecoder();
 
-        this.onTabChange({ id: 1, name: 'Company', checked: true });
+        this.onTabChange({ id: 2, name: 'Company', checked: true });
 
         this.onAddTrailerSelected();
     }
@@ -294,7 +330,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             addressUnit: [null, addressUnitValidation],
             bank: [null, [...bankValidation]],
             accountNumber: [null, accountBankValidation],
-            routingNumber: [null, routingBankValidation],
+            routingNumber: [null],
             truckType: [null, Validators.required],
             truckVin: [null, [Validators.required, ...vinNumberValidation]],
             truckMake: [null, Validators.required],
@@ -352,6 +388,8 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             soleThirdRowReview: [null],
             soleFourthRowReview: [null],
             soleFifthRowReview: [null],
+
+            files: [null, Validators.required],
         });
 
         this.inputService.customInputValidator(
@@ -803,7 +841,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 this.selectedBank = event;
 
                 if (!event) {
-                    this.isBankSelected = false;
+                    this.isBankSelected = true;
 
                     this.ownerInfoForm.patchValue({
                         bank: null,
@@ -883,15 +921,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             .get('bank')
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                const timeout = setTimeout(async () => {
-                    this.isBankSelected =
-                        await this.bankVerificationService.onSelectBank(
-                            this.selectedBank ? this.selectedBank.name : null,
-                            this.ownerInfoForm.get('routingNumber'),
-                            this.ownerInfoForm.get('accountNumber')
-                        );
-                    clearTimeout(timeout);
-                }, 100);
+                this.isBankSelected = true;
             });
     }
 
@@ -1941,6 +1971,53 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                     console.log(err);
                 },
             });
+    }
+
+    public onFilesAction(event: any): void {
+        this.documents = event.files;
+
+        this.displayDocumentsRequiredNote = false;
+
+        switch (event.action) {
+            case 'add':
+                this.ownerInfoForm
+                    .get('files')
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case 'delete':
+                this.ownerInfoForm
+                    .get('files')
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                this.documentsForDeleteIds = [
+                    ...this.documentsForDeleteIds,
+                    event.deleteId,
+                ];
+
+                break;
+            case 'mark-incorrect':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(true, event.index, 1);
+                }
+
+                break;
+            case 'mark-correct':
+                if (this.selectedMode === SelectedMode.REVIEW) {
+                    this.incorrectInput(false, event.index, 1);
+                }
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    toggleAddTrailer() {
+        this.isAddTrailerSelected = !this.isAddTrailerSelected;
     }
 
     ngOnDestroy(): void {
