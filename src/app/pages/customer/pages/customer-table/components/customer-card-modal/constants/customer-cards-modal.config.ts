@@ -7,19 +7,19 @@ export class CustomerCardsModalConfig {
 
     static displayRowsFrontActive: CardRows[] = [
         {
-            title: 'Date Issued',
-            key: 'tableIssued',
+            title: 'Phone',
+            key: 'phone',
         },
         {
-            title: 'Unit Detail • Number',
-            key: 'tableUnit',
+            title: 'Email',
+            key: 'email',
         },
         {
-            title: 'Item Detail • Description',
-            key: 'items',
+            title: 'Billing Detail • Available Credit',
+            key: 'availableCredit',
         },
         {
-            title: 'Item Detail • Cost',
+            title: 'Billing Detail • Unpaid Invoice Ageing',
             key: 'total',
         },
         null,
@@ -28,23 +28,20 @@ export class CustomerCardsModalConfig {
 
     static displayRowsBackActive: CardRows[] = [
         {
-            title: 'Shop Detail • Name',
-            key: 'repairShop',
-            secondKey: 'name'
+            title: 'Contacts',
+            key: 'brokerContacts',
         },
         {
-            title: 'Shop Detail • Address',
-            key: 'repairShop',
-            secondKey: 'address',
-            thirdKey: 'address',
+            title: 'Price per Mile',
+            key: 'pricePerMile',
         },
         {
-            title: 'Unit Detail • Type',
-            key: 'unitType.name',
+            title: 'Load Count',
+            key: 'loadCount',
         },
         {
-            title: 'Unit Detail • Odometer',
-            key: 'odometer',
+            title: 'Revenue',
+            key: 'revenue',
         },
         null,
         null,

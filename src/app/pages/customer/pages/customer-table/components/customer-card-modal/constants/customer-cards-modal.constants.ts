@@ -128,4 +128,121 @@ export class CustomerCardsModalData {
             key: 'updatedAt',
         },
     ];
+
+    static allDataLoadBroker: CardRows[] = [
+        {
+            title: 'DBA Name',
+            key: 'dbaName',
+        },
+        {
+            title: 'EIN',
+            key: 'ein',
+        },
+        {
+            title: 'MC/FF',
+            key: 'mcNumber',
+        },
+        {
+            title: 'Phone',
+            key: 'phone',
+        },
+        {
+            title: 'Email',
+            key: 'email',
+        },
+        {
+            title: 'Address',
+            isDropdown: true,
+            values: [
+                {
+                    id: 5,
+                    title: 'Address • Physical',
+                    secondTitle: 'Physical',
+                    key: 'mainAddress',
+                    secondKey: 'address',
+                },
+                {
+                    id: 5,
+                    title: 'Address • Billing',
+                    secondTitle: 'Billing',
+                    key: 'billingAddress',
+                    secondKey: 'address',
+                },
+            ],
+        },
+        {
+            isDropdown: true,
+            title: 'Billing Detail',
+            values: [
+                {
+                    title: 'Billing Detail • Credit Limit',
+                    secondTitle: 'Credit Limit',
+                    key: 'creditLimit',
+                },
+                {
+                    title: 'Billing Detail • Pay Term',
+                    secondTitle: 'Pay Term',
+                    key: 'payTerm',
+                },
+                {
+                    title: 'Billing Detail • Available Credit',
+                    secondTitle: 'Available Credit',
+                    key: 'availableCredit',
+                },
+                {
+                    title: 'Billing Detail • Unpaid Invoice Ageing',
+                    secondTitle: 'Unpaid Invoice Ageing',
+                    key: 'brokerUnpaidInvoiceAgeing',
+                    secondKey: 'totalDebt'
+                },
+                {
+                    title: 'Billing Detail • Paid Invoice Ageing',
+                    secondTitle: 'Paid Invoice Ageing',
+                    key: 'brokerPaidInvoiceAgeing',
+                    secondKey: 'totalPaid'
+                },
+            ],
+        },
+        {
+            title: 'Load Count',
+            key: 'loadCount',
+        },
+        {
+            title: 'Miles',
+            key: 'miles',
+        },
+        {
+            title: 'Price per Mile',
+            key: 'pricePerMile',
+        },
+        {
+            title: 'Contacts',
+            key: 'brokerContacts',
+        },
+        {
+            title: 'Revenue',
+            key: 'revenue',
+        },
+        {
+            id: 9,
+            title: 'Contacts',
+            key: 'shipperContacts',
+        },
+
+        {
+            id: 10,
+            title: 'Date Added',
+            key: 'createdAt',
+        },
+        {
+            id: 11,
+            title: 'Date Edited',
+            key: 'updatedAt',
+        },
+        {
+            id: 12,
+            title: 'Date Moved',
+            key: 'updatedAt',
+        },
+    ];
 }

@@ -216,7 +216,6 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
     }
 
     public createForm(dataState: CardsModalData): void {
-        console.log(dataState, 'datastate')
         this.cardsForm.patchValue({
             numberOfRows: dataState.numberOfRows,
             checked: dataState.checked,
@@ -247,7 +246,6 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe(
                 (res: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE) => {
-                    console.log(res, 'rrrrrrrrrrr')
                     this.tabSelected = res;
                     this.setDefaultValues(res);
                 }
@@ -304,6 +302,10 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
     }
 
     public getFormValueOnInit(): void {
+        this.cardsAllData =
+            this.tabSelected === TableStringEnum.ACTIVE
+                ? CustomerCardsModalData.allDataLoadBroker
+                : CustomerCardsModalData.allDataLoad;
         const formValue = Object.values(this.cardsForm.value);
 
         this.filterTitlesFromForm(formValue);
