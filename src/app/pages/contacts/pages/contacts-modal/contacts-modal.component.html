@@ -151,10 +151,10 @@
             [isCardOpen]="contactPhones.length"
             [disabledCard]="!contactPhones.length"
             [disableAnimation]="isCardAnimationDisabled"
-            (onActionEvent)="addContactPhoneOrEmail($event, 'phone')"
+            (onActionEvent)="addContactPhoneOrEmail('phone')"
         >
             <app-ta-modal-table
-                [isPhoneTable]="true"
+                [tableType]="modalTableTypeEnum.PHONE"
                 [isNewRowCreated]="isPhoneRowCreated"
                 [modalTableData]="updateContactPhones"
                 (modalTableValueEmitter)="
@@ -180,10 +180,10 @@
             [isCardOpen]="contactEmails.length"
             [disabledCard]="!contactEmails.length"
             [disableAnimation]="isCardAnimationDisabled"
-            (onActionEvent)="addContactPhoneOrEmail($event, 'email')"
+            (onActionEvent)="addContactPhoneOrEmail('email')"
         >
             <app-ta-modal-table
-                [isEmailTable]="true"
+                [tableType]="modalTableTypeEnum.EMAIL"
                 [isNewRowCreated]="isEmailRowCreated"
                 [modalTableData]="updateContactEmails"
                 (modalTableValueEmitter)="

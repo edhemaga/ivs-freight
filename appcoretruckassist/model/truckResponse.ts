@@ -69,6 +69,7 @@ export interface TruckResponse {
     pto?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
+    deactivatedAt?: string;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
     assignedTo?: DispatchShortResponse;
     files?: Array<FileResponse> | null;

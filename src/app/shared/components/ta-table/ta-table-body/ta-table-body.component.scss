@@ -1006,6 +1006,25 @@ table.truckassist-table-body-style {
                         }
 
                         // SVG COLUMN
+                        .features-icon {
+                            margin-right: 5px;
+                            svg-icon {
+                                display: flex;
+
+                                svg {
+                                    path {
+                                        fill: $muted;
+                                    }
+                                }
+                            }
+                            &:hover {
+                                svg {
+                                    path {
+                                        fill: $bw6-2;
+                                    }
+                                }
+                            }
+                        }
                         .truckassist-icon {
                             svg-icon {
                                 display: flex;

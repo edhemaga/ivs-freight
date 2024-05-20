@@ -152,12 +152,13 @@
                         }"
                     >
                         <div class="shipper-work-hours">
-                            <div
-                                class="shipper-work-hours-field appointment"
-                                [ngClass]="{ active: isAppointmentReceiving }"
-                                (click)="onAppontmentReceiving()"
-                            >
-                                Appointment
+                            <div class="shipper-work-hours-field">
+                                <app-ta-checkbox
+                                    formControlName="receivingAppointment"
+                                    [name]="'receivingAppointment'"
+                                    [customClass]="'medium'"
+                                    [label]="'Appointment'"
+                                ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <app-ta-checkbox
@@ -473,7 +474,7 @@
                     </app-ta-custom-card>
                 </div>
                 <!-------------------------------- Review Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+                <!--<div class="m-tab" *ngIf="selectedTab === 3 && editData">
                     <app-ta-custom-card
                         [hasCounter]="reviews.length ? reviews.length : 0"
                         [cardName]="'Review'"
@@ -505,7 +506,7 @@
                             (changeReviewsEvent)="changeReviewsEvent($event)"
                         ></app-ta-user-review>
                     </app-ta-custom-card>
-                </div>
+                </div> this is not going into this sprint -->
             </div>
         </form>
     </div>

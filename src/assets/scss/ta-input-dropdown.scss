@@ -326,6 +326,13 @@
                         &.hazardous-svg {
                             line-height: 14px;
                         }
+                        &.state-logo {
+                            svg {
+                                path {
+                                    fill: #cccc;
+                                }
+                            }
+                        }
 
                         &.truck-trailer-logo {
                             position: absolute;

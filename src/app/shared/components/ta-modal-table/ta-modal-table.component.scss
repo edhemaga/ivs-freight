@@ -8,10 +8,6 @@
         grid-gap: 4px;
 
         &-box {
-            &:not(:first-child):not(:last-child) {
-                padding-left: 32px;
-            }
-
             p,
             span {
                 font-size: 11px;
@@ -38,8 +34,16 @@
             grid-template-columns: 26px 312px 110px;
         }
 
-        &.description-table-header {
+        &.repair-bill-table-header {
             grid-template-columns: 26px 306px 26px 60px 90px 88px;
+
+            .table-header-box.repair-bill-header {
+                padding-left: 6px;
+            }
+        }
+
+        &.repair-order-table-header {
+            grid-template-columns: 26px 492px 26px 60px;
         }
 
         &.contact-table-header {
@@ -61,10 +65,14 @@
                 padding-left: 0px;
             }
         }
-    }
 
-    .description-header {
-        padding-left: 6px !important;
+        &.off-duty-location-table-header {
+            grid-template-columns: 26px 170px 412px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
+        }
     }
 
     .subtotal {
@@ -78,6 +86,7 @@
             display: grid;
             grid-gap: 4px;
             background: $bw2;
+            margin-bottom: 4px;
 
             &:hover {
                 .table-item-number {
@@ -87,6 +96,42 @@
 
                     .delete-icon {
                         display: inline-block;
+                    }
+                }
+            }
+
+            &.valid {
+                background: $white;
+
+                .subtotal {
+                    p {
+                        color: $ta-black;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
+
+                    &.valid {
+                        p {
+                            color: $ta-blue-13;
+
+                            &::-moz-selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-blue-13;
+                                background: rgb(59, 115, 237, 0.2);
+                            }
+                        }
                     }
                 }
             }
@@ -130,127 +175,6 @@
                     .delete-icon {
                         display: none !important;
                     }
-                }
-            }
-        }
-
-        /* Phone Table */
-
-        .phone-table-container {
-            .table-item {
-                grid-template-columns: 26px 168px 140px 110px;
-
-                .phone-extension-container {
-                    cursor: pointer;
-
-                    &:hover {
-                        svg-icon {
-                            svg {
-                                path {
-                                    fill: $bw6-2;
-                                }
-                            }
-                        }
-                    }
-
-                    svg-icon {
-                        svg {
-                            path {
-                                transition: fill 0.3s ease-in;
-                                fill: $bw5;
-                            }
-                        }
-                    }
-
-                    .divider {
-                        height: 14px;
-                        width: 1px;
-                        background: $ta-gray-01;
-                        margin: 0 4px;
-                    }
-
-                    p {
-                        font-size: 14px;
-                        line-height: 18px;
-                        color: $ta-black-2;
-
-                        &::-moz-selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-
-                        &::selection {
-                            color: $bw5;
-                            background: rgb(145, 145, 145, 0.2);
-                        }
-                    }
-                }
-            }
-        }
-
-        .email-table-container {
-            .table-item {
-                grid-template-columns: 26px 312px 110px;
-            }
-        }
-
-        // Description Table
-
-        .description-table-container {
-            .table-item {
-                grid-template-columns: 26px 306px 26px 60px 90px 88px;
-            }
-
-            .subtotal {
-                color: $ta-black;
-                font-size: 14px;
-                padding-right: 6px;
-
-                &::-moz-selection {
-                    color: $ta-black;
-                    background: rgb(66, 66, 66, 0.2);
-                }
-                &::selection {
-                    color: $ta-black;
-                    background: rgb(66, 66, 66, 0.2);
-                }
-            }
-        }
-
-        .contact-table-container {
-            overflow-x: scroll;
-
-            .contact-item {
-                grid-template-columns: 26px 170px 120px 140px 80px 200px;
-
-                .gradient-border-container {
-                    border-right-width: 8px;
-                    border-right-style: solid;
-                    border-image: linear-gradient(
-                            to right,
-                            #dadada,
-                            rgba(0, 0, 0, 0)
-                        )
-                        1 100%;
-                }
-            }
-        }
-
-        .pm-table-container {
-            grid-template-rows: 26px;
-            column-gap: 4px;
-            row-gap: 4px;
-            
-            .pm-item {
-                grid-template-columns: 26px 276px 146px;
-                background: none;
-
-                &.pm-item-new {
-                    grid-template-columns: 26px 14px 258px 146px;
-                }
-
-                &:hover {
-                    background: $bw2;
                 }
             }
         }

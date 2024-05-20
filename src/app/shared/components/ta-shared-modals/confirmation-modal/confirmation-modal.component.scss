@@ -27,6 +27,8 @@
         gap: 8px;
 
         &-content {
+            width: 100%;
+
             .text-1 {
                 font-size: 18px;
                 line-height: 22px;
@@ -41,12 +43,28 @@
                     background: rgb(66, 66, 66, 0.2);
                     color: $ta-black;
                 }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
+                }
             }
 
             .text-2 {
                 font-size: 14px;
                 line-height: 18px;
                 color: $bw5;
+
+                max-width: 70%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
 
                 &::-moz-selection {
                     background: rgb(145, 145, 145, 0.2);
@@ -56,6 +74,20 @@
                 &::selection {
                     background: rgb(145, 145, 145, 0.2);
                     color: $bw5;
+                }
+            }
+            .unit-container {
+                width: fit-content;
+                height: 18px;
+                padding: 2px 2px 2px 2px;
+                border-radius: 2px;
+                background-color: $muted;
+                margin-top: 8px;
+
+                .text-3 {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white;
                 }
             }
 
@@ -72,6 +104,27 @@
                 height: 28px;
                 border-radius: 50%;
                 margin-right: 6px;
+            }
+
+            .order-icon {
+                svg {
+                    path {
+                        fill: $black;
+                    }
+                }
+            }
+
+            .item-card {
+                width: fit-content;
+                padding: 2px 6px;
+                background-color: $bw5;
+                border-radius: 2px;
+
+                p {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white;
+                }
             }
         }
 
@@ -118,6 +171,7 @@
                 &.large-text-1 {
                     font-size: 18px;
                     line-height: 22px;
+                    color: $ta-black;
 
                     .inactive-icon-holder {
                         svg-icon {
@@ -127,6 +181,17 @@
                                 }
                             }
                         }
+                    }
+                }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
                     }
                 }
             }
@@ -164,6 +229,17 @@
                     font-size: 14px;
                     line-height: 18px;
                     color: #919191;
+                }
+
+                &.limit-text {
+                    max-width: 70%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    
+                    &.shorter-text {
+                        max-width: 68%;
+                    }
                 }
             }
             .avatar-img {
@@ -209,10 +285,6 @@
             }
         }
 
-        .confirmation-array-body {
-            gap: 12px;
-        }
-
         .confirmation-state {
             padding: 2px 9px;
             background-color: #f3f3f3;
@@ -232,9 +304,13 @@
         }
     }
 
+    .confirmation-array-body {
+        gap: 12px;
+    }
+
     .confirmation-icon {
         position: absolute;
-        top: -42px;
+        top: -36px;
         right: -7px;
         padding-left: 10px;
         background: $white;

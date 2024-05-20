@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadResponse } from './loadResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { RatingReviewResponse } from './ratingReviewResponse';
 import { EnumValue } from './enumValue';
+import { BrokerInvoiceAgeingResponse } from './brokerInvoiceAgeingResponse';
 import { PoBoxEntity } from './poBoxEntity';
-import { InvoiceAgeingResponse } from './invoiceAgeingResponse';
 import { AddressEntity } from './addressEntity';
 
 
@@ -50,19 +49,16 @@ export interface BrokerResponse {
     ratingReviews?: Array<RatingReviewResponse> | null;
     status?: number;
     currentCompanyUserRating?: number | null;
+    brokerUnpaidInvoiceAgeing?: BrokerInvoiceAgeingResponse;
+    brokerPaidInvoiceAgeing?: BrokerInvoiceAgeingResponse;
     totalDebt?: number | null;
-    invoiceAgeingGroup?: InvoiceAgeingResponse;
-    invoiceAgeingGroupOne?: InvoiceAgeingResponse;
-    invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
-    invoiceAgeingGroupThree?: InvoiceAgeingResponse;
-    invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+    totalPaid?: number | null;
     daysToPay?: number | null;
     miles?: number | null;
     pricePerMile?: number | null;
     revenue?: number | null;
     createdAt?: string;
     updatedAt?: string;
-    loads?: Array<LoadResponse> | null;
     fileCount?: number | null;
 }
 

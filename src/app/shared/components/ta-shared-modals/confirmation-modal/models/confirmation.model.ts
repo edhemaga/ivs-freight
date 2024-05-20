@@ -8,6 +8,8 @@ export interface Confirmation {
         | 'deactivate'
         | 'info'
         | 'reset'
+        | 'close'
+        | 'open'
         | 'void'; // if type is info => subtype must be: archive | ban list | dnu | void;
     id?: number; // id for item
     data?: any;

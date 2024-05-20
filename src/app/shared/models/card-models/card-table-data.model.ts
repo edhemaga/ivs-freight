@@ -1,4 +1,7 @@
-import { TrailerMinimalResponse, TruckMinimalResponse } from 'appcoretruckassist';
+import {
+    TrailerMinimalResponse,
+    TruckMinimalResponse,
+} from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 
 export interface Trucks {
@@ -164,6 +167,8 @@ export interface CardDetails {
     truck?: TruckMinimalResponse;
     trailer?: TrailerMinimalResponse;
     pmId?: number;
+    businessName?: string;
+    billingAddress?: Address;
 }
 
 export interface PmTruckProgressData {
@@ -203,6 +208,7 @@ export interface DropdownItem {
     svgClass?: string;
     isDropdown?: boolean;
     hasBorder?: boolean;
+    isDisabled?: boolean;
     tableListDropdownContentStyle?: { [key: string]: any };
     insideDropdownContent?: InsideDropdownContent[];
 }

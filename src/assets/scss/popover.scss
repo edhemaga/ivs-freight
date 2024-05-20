@@ -73,19 +73,19 @@
                     }
 
                     // Icon Specific Classes
-                    .regular {
+                    .regular,
+                    .deactivate {
                         svg {
                             path {
-                                fill: #aaaaaa;
+                                fill: $ta-light-grey-2;
                             }
                         }
                     }
 
-                    .delete,
-                    .deactivate {
+                    .delete {
                         svg {
                             path {
-                                fill: #e57373;
+                                fill: $ta-red;
                             }
                         }
                     }
@@ -93,7 +93,7 @@
                     .activate {
                         svg {
                             path {
-                                fill: #6f9ee0;
+                                fill: $ta-blue-7;
                             }
                         }
                     }
@@ -101,7 +101,23 @@
                     .check {
                         svg {
                             path {
-                                fill: #4db6a2;
+                                fill: $ta-review-green;
+                            }
+                        }
+                    }
+
+                    .favourite {
+                        svg {
+                            path {
+                                fill: $ta-blue-13;
+                            }
+                        }
+                    }
+
+                    .open-business {
+                        svg {
+                            path {
+                                fill: $ta-green;
                             }
                         }
                     }
@@ -139,21 +155,6 @@
                 .table-list-inner-dropdown-active {
                     max-height: 200px !important;
                     transition: 0.25s;
-                }
-
-                // Muted Style Text
-                .table-list-dropdown-content-muted {
-                    .table-list-dropdown-content-text {
-                        color: #6c6c6c !important;
-                    }
-
-                    .regular {
-                        svg {
-                            path {
-                                fill: #6c6c6c !important;
-                            }
-                        }
-                    }
                 }
 
                 // Content Dropdown
@@ -201,6 +202,14 @@
                     svg {
                         path {
                             fill: $bw6-2 !important;
+                        }
+                    }
+
+                    .hire-applicant {
+                        svg {
+                            path {
+                                fill: $ta-green-5 !important;
+                            }
                         }
                     }
                 }
@@ -512,7 +521,7 @@
                     .option-icon {
                         svg {
                             path {
-                                fill: #6f9ee0 !important;
+                                fill: $ta-blue-7 !important;
                                 transition: 0.25s;
                             }
                         }
@@ -613,7 +622,7 @@
 
                             .some-selected {
                                 background-image: url('/assets/svg/truckassist-table/some-selected-chack-mark.svg');
-                                background-color: #6f9ee0;
+                                background-color: $ta-blue-7;
                                 background-repeat: no-repeat;
                                 background-position: center;
                                 transition: background-color 0.25s;
@@ -625,7 +634,7 @@
 
                             .columns-options-checkbox:checked
                                 + .columns-options-label {
-                                background-color: #6f9ee0;
+                                background-color: $ta-blue-7;
                                 background-image: url('/assets/svg/truckassist-table/check-new.svg') !important;
                                 background-repeat: no-repeat;
                                 background-position: center;
@@ -1241,7 +1250,7 @@
 
                     svg {
                         path {
-                            fill: #aaaaaa;
+                            fill: $ta-light-grey-2;
                             transition: 0.25s;
 
                             &#Path_10766 {
@@ -1293,7 +1302,7 @@
                     .action-svg {
                         svg {
                             path {
-                                fill: #aaaaaa !important;
+                                fill: $ta-light-grey-2 !important;
                             }
                         }
                     }
@@ -1312,7 +1321,7 @@
 
                     svg {
                         path {
-                            fill: #aaaaaa;
+                            fill: $ta-light-grey-2;
                         }
                     }
                 }
@@ -1539,7 +1548,7 @@
                         font-weight: 600;
 
                         .input-required {
-                            color: #e57373;
+                            color: $ta-red;
                         }
                     }
 
@@ -1622,7 +1631,7 @@
                         }
 
                         .map-settings-button-text {
-                            color: #aaaaaa;
+                            color: $ta-light-grey-2;
                             font-size: 14px;
                             line-height: 18px;
                             font-weight: 700;
@@ -1773,7 +1782,7 @@
                 top: -2px;
                 width: 3px;
                 height: 11px;
-                background-color: #aaaaaa;
+                background-color: $ta-light-grey-2;
             }
 
             &::before {
@@ -1802,7 +1811,7 @@
                     svg-icon {
                         svg {
                             rect {
-                                fill: #aaaaaa;
+                                fill: $ta-light-grey-2;
                             }
                             path {
                                 fill: #fff;
@@ -1814,7 +1823,7 @@
                         svg-icon {
                             svg {
                                 rect {
-                                    fill: #4db6a2;
+                                    fill: $ta-review-green;
                                 }
                                 path {
                                     fill: #fff;
@@ -1911,7 +1920,7 @@
                     &.off-items {
                         .ngx-slider {
                             .ngx-slider-selection {
-                                background-color: #aaaaaa;
+                                background-color: $ta-light-grey-2;
                             }
                         }
                     }
@@ -1919,7 +1928,7 @@
                     &.on-items {
                         .ngx-slider {
                             .ngx-slider-selection {
-                                background-color: #4db6a2;
+                                background-color: $ta-review-green;
                             }
                         }
                     }

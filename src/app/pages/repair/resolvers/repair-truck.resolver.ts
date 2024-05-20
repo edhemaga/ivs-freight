@@ -60,11 +60,6 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
 
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
                 }
 
                 this.repairTruckStore.set(

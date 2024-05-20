@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-3">
                             <app-ta-input
                                 formControlName="year"
                                 [inputConfig]="{
@@ -121,7 +121,7 @@
                                 }"
                             ></app-ta-input>
                         </div>
-                        <div class="col-6">
+                        <div class="col-5">
                             <app-ta-input
                                 formControlName="vin"
                                 [inputConfig]="{
@@ -157,7 +157,7 @@
                                         url: selectedTruckMake?.logoName,
                                         class: 'truck-make'
                                     },
-                                    dropdownWidthClass: 'w-col-228'
+                                    dropdownWidthClass: 'w-col-156'
                                 }"
                                 [options]="truckMakeType"
                                 [activeItem]="selectedTruckMake"
@@ -350,7 +350,7 @@
                                 type: 'text',
                                 label: 'Engine Model',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-248'
+                                dropdownWidthClass: 'w-col-196'
                             }"
                             [options]="engineModels"
                             [activeItem]="selectedtruckEngineModelId"
@@ -386,7 +386,7 @@
                                 label: 'Fuel Type',
                                 isDropdown: true,
                                 isDisabled: truckForm.get('fuelType').value,
-                                dropdownWidthClass: 'w-col-134'
+                                dropdownWidthClass: 'w-col-164'
                             }"
                             [options]="fuelTypes"
                             [activeItem]="selectedFuelType"
@@ -410,7 +410,7 @@
                                 type: 'text',
                                 label: 'AP Unit',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
+                                dropdownWidthClass: 'w-col-134'
                             }"
                             [options]="apUnits"
                             [activeItem]="selectedAPUnit"
@@ -435,7 +435,7 @@
                                 type: 'text',
                                 label: 'Shifter',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-164'
+                                dropdownWidthClass: 'w-col-134'
                             }"
                             [options]="shifters"
                             [activeItem]="selectedShifter"
@@ -468,7 +468,7 @@
                                 type: 'text',
                                 label: 'Tire Size',
                                 isDropdown: true,
-                                dropdownWidthClass: 'w-col-134'
+                                dropdownWidthClass: 'w-col-164'
                             }"
                             [options]="tireSize"
                             [activeItem]="selectedTireSize"

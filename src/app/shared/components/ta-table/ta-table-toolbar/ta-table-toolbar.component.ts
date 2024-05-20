@@ -48,6 +48,7 @@ import { TruckCardModalComponent } from '@pages/truck/pages/truck-card-modal/tru
 import { PMCardModalComponent } from '@pages/pm-truck-trailer/pages/pm-card-modal/pm-card-modal.component';
 import { AccountCardModalComponent } from '@pages/account/pages/account-card-modal/account-card-modal.component';
 import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
+import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/repair-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -58,7 +59,6 @@ import { TableToolbarConstants } from './utils/constants/table-toolbar.constants
 // models
 import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
-import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-title.pipe';
 
 @Titles()
 @Component({
@@ -82,7 +82,6 @@ import { ToolbarTableHeadTitlePipe } from '@shared/pipes/toolbar-table-head-titl
         TaInputDropdownComponent,
         LoadCardModalComponent,
         ConfirmationResetModalComponent,
-        ToolbarTableHeadTitlePipe,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -195,6 +194,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.modalService.openModal(OwnerCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
+        } else if (this.listName === TableStringEnum.REPAIR) {
+            this.modalService.openModal(RepairCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
         } else {
             this.modalService.openModal(LoadCardModalComponent, {
                 size: TableStringEnum.SMALL,
@@ -236,6 +239,30 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                         .tableRowsSelected.length
                         ? true
                         : false;
+
+                    this.activeTableData.moneyCount =
+                        this.tableRowsSelected.reduce((total, selectRow) => {
+                            let cost: string;
+
+                            if (
+                                this.activeTableData.title ===
+                                TableStringEnum.BROKER
+                            ) {
+                                cost =
+                                    selectRow.tableData
+                                        ?.tablePaymentDetailCreditLimit;
+                            } else {
+                                cost = selectRow.tableData?.tableCost;
+                            }
+
+                            if (cost) {
+                                const num = parseFloat(
+                                    cost.replace(/\$|,/g, '')
+                                );
+                                total += num;
+                            }
+                            return total;
+                        }, 0);
                 }
 
                 if (this.options.toolbarActions.showCountSelectedInList) {
@@ -471,6 +498,22 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         this.isMapShowning = modeView.mode === TableStringEnum.MAP;
+    }
+
+    public hireSelectedRows(): void {
+        this.tableService.sendHireSelectedRows(this.tableRowsSelected);
+    }
+
+    public banSelectedRows(): void {
+        this.tableService.sendBanListSelectedRows(this.tableRowsSelected);
+    }
+
+    public dnuSelectedRows(): void {
+        this.tableService.sendDnuListSelectedRows(this.tableRowsSelected);
+    }
+
+    public bussinessSelectedRows(): void {
+        this.tableService.sendBussinessSelectedRows(this.tableRowsSelected);
     }
 
     public deleteSelectedRows(): void {

@@ -89,6 +89,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Constants
 import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants/repair-order.constant';
 
+//Enums
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+
 @Component({
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
@@ -193,6 +196,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public isNewContactAdded: boolean = false;
     public contactAddedCounter: number = 0;
+
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
 
     constructor(
         // Form

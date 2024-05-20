@@ -91,8 +91,8 @@ import {
     TruckTypeResponse,
     TrailerTypeResponse,
     TagResponse,
-    LoadStopItemCommand,
 } from 'appcoretruckassist';
+import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { LoadBilling } from '@pages/load/pages/load-modal/models/load-billing.model';
 import { LoadPayment } from '@pages/load/pages/load-modal/models/load-payment.model';

@@ -16,5 +16,6 @@ export interface InvoiceAgeingResponse {
     totalSum?: number | null;
     countInvoice?: number;
     averageDays?: number;
+    percentage?: number;
 }
 

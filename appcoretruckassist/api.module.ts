@@ -23,6 +23,7 @@ import { DispatchService } from './api/dispatch.service';
 import { DriverService } from './api/driver.service';
 import { EmploymentHistoryService } from './api/employmentHistory.service';
 import { EventService } from './api/event.service';
+import { FileService } from './api/file.service';
 import { FuelService } from './api/fuel.service';
 import { GeolocationService } from './api/geolocation.service';
 import { InspectionService } from './api/inspection.service';

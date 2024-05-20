@@ -1,7 +1,6 @@
 import { OwnerBackFilterQuery } from '@shared/models/owner-back-filter-query.model';
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model'; // models
-import { RepairBackFilter } from '@pages/repair/pages/repair-table/models/repair-back-filter.model';
 import { ShopBackFilterQuery } from '@pages/repair/pages/repair-table/models/shop-back-filter-query.model';
 import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
 import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
@@ -16,25 +15,25 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 export class TableDropdownComponentConstants {
     static LOAD_BACK_FILTER: FilterOptionsLoad = {
-        loadType: undefined,
+        loadType: null,
         statusType: 1,
-        status: undefined,
-        dispatcherId: undefined,
-        dispatchId: undefined,
-        brokerId: undefined,
-        shipperId: undefined,
-        dateFrom: undefined,
-        dateTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
-        truckId: undefined,
+        status: null,
+        dispatcherId: null,
+        dispatchId: null,
+        brokerId: null,
+        shipperId: null,
+        dateFrom: null,
+        dateTo: null,
+        revenueFrom: null,
+        revenueTo: null,
+        truckId: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DROPDOWN_DATA: DropdownItem[] = [
@@ -106,33 +105,37 @@ export class TableDropdownComponentConstants {
     static BROKER_BACK_FILTER: FilterOptionBroker = {
         ban: null,
         dnu: null,
-        invoiceAgeingFrom: undefined,
-        invoiceAgeingTo: undefined,
-        availableCreditFrom: undefined,
-        availableCreditTo: undefined,
-        revenueFrom: undefined,
-        revenueTo: undefined,
+        status: null,
+        invoiceAgeingFrom: null,
+        invoiceAgeingTo: null,
+        availableCreditFrom: null,
+        availableCreditTo: null,
+        revenueFrom: null,
+        revenueTo: null,
+        _long: null,
+        lat: null,
+        distance: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static SHIPPER_BACK_FILTER: FilterOptionShipper = {
-        stateIds: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
+        stateIds: null,
+        long: null,
+        lat: null,
+        distance: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DROPDOWN_SHIPPER: DropdownItem[] = [
@@ -242,30 +245,30 @@ export class TableDropdownComponentConstants {
     ];
 
     static APPLICANT_BACK_FILTER: FilterOptionApplicant = {
-        applicantSpecParamsArchived: undefined,
-        applicantSpecParamsHired: undefined,
-        applicantSpecParamsFavourite: undefined,
+        applicantSpecParamsArchived: null,
+        applicantSpecParamsHired: null,
+        applicantSpecParamsFavourite: null,
         applicantSpecParamsPageIndex: 1,
         applicantSpecParamsPageSize: 25,
-        applicantSpecParamsCompanyId: undefined,
-        applicantSpecParamsSort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        applicantSpecParamsCompanyId: null,
+        applicantSpecParamsSort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DRIVER_BACK_FILTER: FilterOptionDriver = {
         active: 1,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
+        long: null,
+        lat: null,
+        distance: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DROPDOWN_APPLICANT: DropdownItem[] = [
@@ -280,7 +283,6 @@ export class TableDropdownComponentConstants {
             hasBorder: true,
             svgClass: 'regular',
         },
-
         {
             title: 'View Details',
             name: 'view-details',
@@ -289,17 +291,16 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
+            svgClass: 'regular',
         },
-
         {
             title: 'Hire Applicant',
             name: 'hire-applicant',
             mutedStyle: true,
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_hire-applicant.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -307,14 +308,13 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'regular',
+            svgClass: 'hire-applicant',
         },
-
         {
             title: 'Review',
             name: 'review',
             mutedStyle: true,
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_pen.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -324,25 +324,23 @@ export class TableDropdownComponentConstants {
             },
             svgClass: 'regular',
         },
-
         {
-            title: 'Move to Favourites',
+            title: 'Mark as Favourite',
             name: 'add-to-favourites',
+            svgUrl: 'assets/svg/common/ic_star.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
             },
-            svgUrl: '',
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
+            svgClass: 'favourite',
         },
-
         {
             title: 'Resend Invitation',
             name: 'resend-invitation',
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_resend-invitation.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -350,10 +348,9 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'regular',
             hasBorder: true,
+            svgClass: 'regular',
         },
-
         {
             title: 'Share',
             name: 'share',
@@ -362,12 +359,12 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-            svgClass: 'regular',
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-        },
 
+            svgClass: 'regular',
+        },
         {
             title: 'Print',
             name: 'print',
@@ -376,15 +373,13 @@ export class TableDropdownComponentConstants {
                 width: 18,
                 height: 18,
             },
-
-            svgClass: 'regular',
             hasBorder: true,
+            svgClass: 'regular',
         },
-
         {
             title: 'Move to Archive',
             name: 'move-to-archive',
-            svgUrl: '',
+            svgUrl: 'assets/svg/common/ic_driver_arhive.svg',
             svgStyle: {
                 width: 18,
                 height: 18,
@@ -392,9 +387,8 @@ export class TableDropdownComponentConstants {
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
-            svgClass: 'delete',
+            svgClass: 'regular',
         },
-
         {
             title: 'Delete',
             name: 'delete-applicant',
@@ -411,61 +405,41 @@ export class TableDropdownComponentConstants {
         active: 1,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static BACK_FILTER_QUERY: TrailerBackFilterQueryInterface = {
         active: 1,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
-    };
-
-    static REPAIR_BACK_FILTER_QUERY: RepairBackFilter = {
-        repairShopId: undefined,
-        unitType: 1,
-        dateFrom: undefined,
-        dateTo: undefined,
-        isPM: undefined,
-        categoryIds: undefined,
-        pmTruckTitles: undefined,
-        pmTrailerTitles: undefined,
-        isOrder: undefined,
-        truckId: undefined,
-        pageIndex: 1,
-        pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static SHOP_FILTER_QUERY: ShopBackFilterQuery = {
         active: 1,
-        pinned: undefined,
-        companyOwned: undefined,
-        categoryIds: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        costFrom: undefined,
-        costTo: undefined,
+        pinned: null,
+        companyOwned: null,
+        categoryIds: null,
+        long: null,
+        lat: null,
+        distance: null,
+        costFrom: null,
+        costTo: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DROPDOWN_SHOP: DropdownItem[] = [
@@ -552,6 +526,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'View Details',
             name: 'view-details',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
@@ -564,6 +544,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'Share',
             name: 'share',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             tableListDropdownContentStyle: {
                 'margin-bottom.px': 4,
             },
@@ -571,6 +557,12 @@ export class TableDropdownComponentConstants {
         {
             title: 'Print',
             name: 'print',
+            svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
+            svgStyle: {
+                width: 18,
+                height: 18,
+            },
+            svgClass: TableStringEnum.REGULAR,
             hasBorder: true,
         },
         {
@@ -692,19 +684,19 @@ export class TableDropdownComponentConstants {
 
     static OWNER_BACKFILTER_QUERY: OwnerBackFilterQuery = {
         active: 1,
-        companyOwnerId: undefined,
-        long: undefined,
-        lat: undefined,
-        distance: undefined,
-        truckTypeIds: undefined,
-        trailerTypeIds: undefined,
+        companyOwnerId: null,
+        long: null,
+        lat: null,
+        distance: null,
+        truckTypeIds: null,
+        trailerTypeIds: null,
         pageIndex: 1,
         pageSize: 25,
-        companyId: undefined,
-        sort: undefined,
-        searchOne: undefined,
-        searchTwo: undefined,
-        searchThree: undefined,
+        companyId: null,
+        sort: null,
+        searchOne: null,
+        searchTwo: null,
+        searchThree: null,
     };
 
     static DROPDOWN_OWNER_CONTENT: DropdownItem[] = [

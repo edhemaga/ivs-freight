@@ -1024,10 +1024,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     .subscribe(([repairTrailerPagination, tableConfig]) => {
                         if (tableConfig) {
                             const config = JSON.parse(tableConfig.config);
-                            localStorage.setItem(
-                                `table-${tableConfig.tableType}-Configuration`,
-                                JSON.stringify(config)
-                            );
                         }
                         this.repairTrailerStore.set(
                             repairTrailerPagination.pagination.data
