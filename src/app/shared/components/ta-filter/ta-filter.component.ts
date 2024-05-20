@@ -928,12 +928,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 return type;
                             });
                         } else {
-                            newData = res.data?.pagination?.data.map(
-                                (type: any) => {
-                                    type['name'] = type.truckNumber;
-                                    return type;
-                                }
-                            );
+                            newData = res.data?.map((type: any) => {
+                                type['name'] = type.truckType.name;
+                                type['logo'] =
+                                    'assets/svg/common/trucks/' +
+                                    type.truckType.logoName;
+                                return type;
+                            });
                         }
                         this.truckArray = newData;
                     }
@@ -1126,9 +1127,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
             } else {
-                this.truckArray.map((item) => {
-                    if (item.id === id) {
-                        item.isSelected = false;
+                this.truckArray.map((truck) => {
+                    if (truck.truckType.id === item?.truckType.id) {
+                        truck.isSelected = false;
                     }
                 });
             }
@@ -1755,6 +1756,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.type === 'pmFilter' || this.isRepairFilter) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
+                    });
+                } else if (this.type === 'truckFilter') {
+                    this.filterActiveArray.map((data) => {
+                        selectedUsersIdArray.push(data.truckType.id);
                     });
                 } else {
                     this.filterActiveArray.map((data) => {
