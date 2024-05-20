@@ -11,6 +11,14 @@ export interface ArrayStatus {
     trailerNumber?: string;
     activeIcon?: string;
     image?: string;
+    truckType?: TruckType;
     short?: string;
     count?: number;
+}
+
+interface TruckType {
+    companyId?: string | undefined;
+    id?: number | undefined;
+    logoName?: string | undefined;
+    name?: string | undefined;
 }

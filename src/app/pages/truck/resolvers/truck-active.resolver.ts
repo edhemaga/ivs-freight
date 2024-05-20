@@ -24,7 +24,7 @@ export class TruckActiveResolver implements Resolve<TruckActiveState> {
     ) {}
     resolve(): Observable<any> {
         return forkJoin([
-            this.truckService.getTruckList(1, 1, 25),
+            this.truckService.getTruckList(1, null, 1, 25),
             this.tableService.getTableConfig(8),
         ]).pipe(
             tap(([truckPagination, tableConfig]) => {
