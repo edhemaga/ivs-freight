@@ -170,8 +170,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public selectedOwner: CheckOwnerSsnEinResponse;
 
     public selectedAddress: AddressEntity;
-    public longitude: number;
-    public latitude: number;
 
     public isBankSelected: boolean = false;
 
@@ -754,7 +752,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private onSelectPayTypeDropdownCommission(): void {
-        const changeValidatorsAndPatch = (key: string, value: any) => {
+        const changeValidatorsAndPatch = (key: string, value: number) => {
             this.inputService.changeValidators(this.driverForm.get(key));
 
             this.driverForm.get(key).patchValue(value);
@@ -807,13 +805,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public onHandleAddress(event: {
         address: AddressEntity;
         valid: boolean;
-        longLat: any;
     }): void {
-        if (event.valid) {
-            this.selectedAddress = event.address;
-            this.longitude = event.longLat.longitude;
-            this.latitude = event.longLat.latitude;
-        }
+        if (event.valid) this.selectedAddress = event.address;
     }
 
     public onSaveNewBank(bank: { data: any; action: string }): void {
@@ -1380,7 +1373,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         isOwner: boolean,
         ownerType: string,
         ein: string,
-        bussinesName: string,
         soloDriver: boolean,
         teamDriver: boolean,
         twic: boolean,
@@ -1414,12 +1406,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             !isOwner || ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
                 ? null
                 : ein;
-
-        // bussines name
-        const conditionalBussinesName =
-            !isOwner || ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
-                ? null
-                : bussinesName;
 
         // payroll
         const conditionalSoloDriver =
@@ -1455,7 +1441,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             conditionalOwnerType,
             conditionalOwnerId,
             conditionalEin,
-            conditionalBussinesName,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
@@ -1620,8 +1605,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType,
             ein,
-            bussinesName,
-            useCarrieraACH,
             twic,
             twicExpDate,
             mailNotificationGeneral,
@@ -1661,7 +1644,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             conditionalOwnerType,
             conditionalOwnerId,
             conditionalEin,
-            conditionalBussinesName,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
@@ -1673,7 +1655,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType,
             ein,
-            bussinesName,
             soloDriver,
             teamDriver,
             twic,
@@ -1714,16 +1695,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             dateOfBirth: convertedDate,
             address: this.selectedAddress,
-            longitude: this.longitude,
-            latitude: this.latitude,
 
             isOwner,
             ownerType: conditionalOwnerType,
             ownerId: conditionalOwnerId,
             ein: conditionalEin,
-            bussinesName: conditionalBussinesName,
 
-            useTruckAssistAch: useCarrieraACH,
             payType: this.selectedPayType?.id ?? null,
 
             soloDriver: conditionalSoloDriver,
@@ -1865,10 +1842,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.onHandleAddress({
             address,
             valid: !!address,
-            longLat: {
-                longitude: null,
-                latitude: null,
-            },
         });
 
         // fleet type
@@ -2027,8 +2000,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType,
             ein,
-            bussinesName,
-            useCarrieraACH,
             twic,
             twicExpDate,
             mailNotificationGeneral,
@@ -2068,7 +2039,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             conditionalOwnerType,
             conditionalOwnerId,
             conditionalEin,
-            conditionalBussinesName,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
@@ -2080,7 +2050,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType,
             ein,
-            bussinesName,
             soloDriver,
             teamDriver,
             twic,
@@ -2122,16 +2091,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             dateOfBirth: convertedDate,
             address: this.selectedAddress,
-            longitude: this.longitude,
-            latitude: this.latitude,
 
             isOwner,
             ownerType: conditionalOwnerType,
             ownerId: conditionalOwnerId,
             ein: conditionalEin,
-            bussinesName: conditionalBussinesName,
 
-            useTruckAssistAch: useCarrieraACH,
             payType: this.selectedPayType?.id ?? null,
 
             soloDriver: conditionalSoloDriver,

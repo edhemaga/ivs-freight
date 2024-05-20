@@ -113,7 +113,7 @@ export class DriverService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.driverService.apiDriverPost().pipe(
             tap((res: any) => {
-                const subDriver = this.getDriverById(res.id)
+                this.getDriverById(res.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (driver: any) => {
@@ -148,8 +148,6 @@ export class DriverService {
                                 data: driver,
                                 id: driver.id,
                             });
-
-                            subDriver.unsubscribe();
                         },
                     });
             })
@@ -193,7 +191,7 @@ export class DriverService {
                     })
                 );
 
-                const driverSub = this.getDriverById(this.driverId, true)
+                this.getDriverById(this.driverId, true)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (driver: any) => {
@@ -202,7 +200,6 @@ export class DriverService {
                                 data: driver,
                                 id: driver.id,
                             });
-                            driverSub.unsubscribe();
                         },
                     });
             })
@@ -296,9 +293,10 @@ export class DriverService {
             tap(() => {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
+
                 let newData = driverData[data.id];
 
-                const subDriver = this.getDriverById(data.id)
+                this.getDriverById(data.id)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (driver: any) => {
@@ -337,8 +335,6 @@ export class DriverService {
                                 data: driver,
                                 id: driver.id,
                             });
-
-                            subDriver.unsubscribe();
                         },
                     });
             })
@@ -449,7 +445,7 @@ export class DriverService {
                         })
                     );
 
-                    const subDriver = this.getDriverById(driverId)
+                    this.getDriverById(driverId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
                             next: (driver: any) => {
@@ -468,14 +464,8 @@ export class DriverService {
                                     data: driver,
                                     id: driver.id,
                                 });
-                                subDriver.unsubscribe();
                             },
                         });
-                    /* Send Info For Table To Do Action Animation */
-                    // this.tableService.sendActionAnimation({
-                    //   animation: 'update-status',
-                    //   id: driverId,
-                    // });
                 })
             );
     }

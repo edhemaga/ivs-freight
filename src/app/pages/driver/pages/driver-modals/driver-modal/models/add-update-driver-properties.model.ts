@@ -3,7 +3,6 @@ export interface AddUpdateDriverProperties {
     conditionalOwnerType: string;
     conditionalOwnerId: number;
     conditionalEin: string;
-    conditionalBussinesName: string;
     conditionalSoloDriver: boolean;
     conditionalTeamDriver: boolean;
     conditionalTwicExpDate: string;
