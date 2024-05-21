@@ -53,7 +53,7 @@ export class TaCopyComponent implements OnInit {
     ngOnInit(): void {}
 
     /* To copy any Text */
-    public copyText(event: Event, val: any) {
+    public copyText(event: Event, val: string) {
         event.stopPropagation();
         event.preventDefault();
 

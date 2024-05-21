@@ -14,7 +14,7 @@
         <div class="contact-avatar">
             <svg-icon
                 class="contact-avatar-icon d-flex"
-                src="assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg"
+                [src]="contactsImageRoutes.contactsAvatarIcon"
                 [svgStyle]="{
                     'width.px': 18,
                     'height.px': 18
@@ -63,7 +63,7 @@
                     <svg-icon
                         (click)="addButtonAction()"
                         class="plus-icon d-flex align-items-center justify-content-center"
-                        [src]="'assets/svg/common/ic_plus.svg'"
+                        [src]="contactsImageRoutes.contactsAddIcon"
                         [svgStyle]="{
                             'width.px': 14,
                             'height.px': 14
@@ -82,7 +82,7 @@
                 />
                 <svg-icon
                     class="search-icon"
-                    [src]="'assets/svg/common/ic_search.svg'"
+                    [src]="contactsImageRoutes.contactsSearchIcon"
                 ></svg-icon>
             </div>
 
@@ -139,7 +139,9 @@
                                         class="d-flex align-items-center gap-1 mt-1"
                                     >
                                         <svg-icon
-                                            src="assets/svg/common/ic_phone.svg"
+                                            [src]="
+                                                contactsImageRoutes.contactsPhoneIcon
+                                            "
                                             [svgStyle]="{
                                                 'width.px': 18,
                                                 'height.px': 18
@@ -163,7 +165,9 @@
                                             class="d-flex align-items-center gap-1"
                                         >
                                             <svg-icon
-                                                src="assets/svg/common/ic_email.svg"
+                                                [src]="
+                                                    contactsImageRoutes.contactsEmailIcon
+                                                "
                                                 [svgStyle]="{
                                                     'width.px': 18,
                                                     'height.px': 18
@@ -183,7 +187,9 @@
                                     [class.rotate-arrow]="
                                         contactsOpenIds.includes(contact.id)
                                     "
-                                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                                    [src]="
+                                        contactsImageRoutes.contactsArrowIcon
+                                    "
                                     [svgStyle]="{
                                         'width.px': 18,
                                         'height.px': 18
@@ -201,7 +207,9 @@
                                     >
                                         <svg-icon
                                             class="edit-icon d-flex align-items-center justify-content-center"
-                                            src="assets/svg/truckassist-table/edit-icon.svg"
+                                            [src]="
+                                                contactsImageRoutes.contactsEditIcon
+                                            "
                                             [svgStyle]="{
                                                 'width.px': 14,
                                                 'height.px': 14
@@ -219,7 +227,9 @@
                                     >
                                         <svg-icon
                                             class="delete-icon d-flex align-items-center justify-content-center"
-                                            src="assets/svg/truckassist-table/new-list-dropdown/Delete.svg"
+                                            [src]="
+                                                contactsImageRoutes.contactsDeleteIcon
+                                            "
                                             [svgStyle]="{
                                                 'width.px': 14,
                                                 'height.px': 14

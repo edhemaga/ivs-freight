@@ -80,6 +80,7 @@ export enum TableStringEnum {
 
     // Money
     DOLLAR_SIGN = '$',
+    MONEY_FILTER = 'moneyFilter',
 
     // Time formating
     DATE_FORMAT = 'MM/dd/yy',

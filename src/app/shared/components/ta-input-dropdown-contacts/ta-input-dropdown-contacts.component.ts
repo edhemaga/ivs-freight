@@ -36,6 +36,9 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
 
+// Constants
+import { DropdownContactsSvgRoutes } from '@shared/components/ta-input-dropdown-contacts/utils/svg-routes/dropdown-contacts-svg-routes';
+
 @Component({
     selector: 'app-ta-input-dropdown-contacts',
     templateUrl: './ta-input-dropdown-contacts.component.html',
@@ -70,6 +73,8 @@ export class TaContactsComponent implements OnInit {
     @Output() onAddButton = new EventEmitter<boolean>();
     @Output() onEditButton = new EventEmitter<boolean>();
     @Output() onDeleteButton = new EventEmitter<boolean>();
+
+    public contactsImageRoutes = DropdownContactsSvgRoutes;
 
     public contactDepartments: ContactDepartmentData[] = [];
     public contactsDataBeforeSearch: ContactDepartmentData[];

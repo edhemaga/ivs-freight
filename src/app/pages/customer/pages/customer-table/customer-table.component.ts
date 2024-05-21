@@ -594,6 +594,89 @@ export class CustomerTableComponent
                                 }
                             );
                         } else this.viewData = this.customerTableData;
+                    } else if (
+                        res.filterType === TableStringEnum.MONEY_FILTER
+                    ) {
+                        if (res.action === TableStringEnum.SET) {
+                            const invoiceFilterFrom = res.queryParams
+                                .firstFormFrom
+                                ? parseInt(res.queryParams.firstFormFrom)
+                                : null;
+                            const invoiceFilterTo = res.queryParams.firstFormTo
+                                ? parseInt(res.queryParams.firstFormTo)
+                                : null;
+
+                            const availableCreditFilterFrom = res.queryParams
+                                .secondFormFrom
+                                ? parseInt(res.queryParams.secondFormFrom)
+                                : null;
+                            const availableCreditFilterTo = res.queryParams
+                                .secondFormTo
+                                ? parseInt(res.queryParams.secondFormTo)
+                                : null;
+
+                            const revenueFilterFrom = res.queryParams
+                                .thirdFormFrom
+                                ? parseInt(res.queryParams.thirdFormFrom)
+                                : null;
+                            const revenueFilterTo = res.queryParams.thirdFormTo
+                                ? parseInt(res.queryParams.thirdFormTo)
+                                : null;
+
+                            this.viewData = this.customerTableData.filter(
+                                (broker) => {
+                                    let inoviceFrom = true;
+                                    let inovoiceTo = true;
+                                    let availableCreditFrom = true;
+                                    let availableCreditTo = true;
+                                    let revenueFrom = true;
+                                    let revenueTo = true;
+
+                                    if (invoiceFilterFrom) {
+                                        inoviceFrom =
+                                            broker.brokerPaidInvoiceAgeing
+                                                .totalPaid >= invoiceFilterFrom;
+                                    }
+
+                                    if (invoiceFilterTo) {
+                                        inovoiceTo =
+                                            broker.brokerPaidInvoiceAgeing
+                                                .totalPaid <= invoiceFilterFrom;
+                                    }
+
+                                    if (availableCreditFilterFrom) {
+                                        availableCreditFrom =
+                                            broker.availableCredit >=
+                                            availableCreditFilterFrom;
+                                    }
+
+                                    if (availableCreditFilterTo) {
+                                        availableCreditTo =
+                                            broker.availableCredit <=
+                                            availableCreditFilterTo;
+                                    }
+
+                                    if (revenueFilterFrom) {
+                                        revenueFrom =
+                                            broker.revenue >= revenueFilterFrom;
+                                    }
+
+                                    if (revenueFilterTo) {
+                                        revenueTo =
+                                            broker.revenue <= revenueFilterTo;
+                                    }
+
+                                    return (
+                                        inoviceFrom &&
+                                        inovoiceTo &&
+                                        availableCreditFrom &&
+                                        availableCreditTo &&
+                                        revenueFrom &&
+                                        revenueTo
+                                    );
+                                }
+                            );
+                        } else this.viewData = this.customerTableData;
                     }
                 }
             });
@@ -1183,7 +1266,10 @@ export class CustomerTableComponent
                   ' ' +
                   data.mainPoBox.zipCode
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailAvailCredit: TableStringEnum.NA,
+            tablePaymentDetailAvailCredit: data?.availableCredit
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(data.availableCredit)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.creditLimit)
