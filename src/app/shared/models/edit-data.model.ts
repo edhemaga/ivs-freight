@@ -1,8 +1,15 @@
-import { CompanyResponse, LoadResponse } from 'appcoretruckassist';
+import {
+    CompanyContactResponse,
+    CompanyResponse,
+    LoadResponse,
+    RepairResponse,
+} from 'appcoretruckassist';
 
 export interface EditData {
-    data: LoadResponse;
+    data: LoadResponse | CompanyContactResponse | RepairResponse;
     type: string;
     company: CompanyResponse;
     id: number;
+    shopId?: number;
+    isFinishOrder?: number;
 }

@@ -496,7 +496,7 @@ export class NavigationDataConstants {
         {
             id: 31,
             name: 'Logout',
-            image: 'assets/svg/common/ic_exit.svg',
+            image: 'ic_exit.svg',
             action: 'logout',
         },
     ];

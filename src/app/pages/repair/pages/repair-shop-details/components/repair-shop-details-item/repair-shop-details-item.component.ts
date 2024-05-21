@@ -31,6 +31,7 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 
 // Animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-repair-shop-details-item',
@@ -218,62 +219,61 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                 },
                 {
                     title: 'border',
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
+                    title: TableStringEnum.VIEW_DETAILS_2,
+                    name: TableStringEnum.VIEW_DETAILS,
                     svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
+                    iconName: TableStringEnum.VIEW_DETAILS,
                     show: true,
                 },
                 {
-                    title: 'Finish Order',
-                    name: 'finish order',
-                    iconName: 'finish-order',
+                    title: TableStringEnum.FINISH_ORDER_3,
+                    name: TableStringEnum.FINISH_ORDER,
+                    iconName: TableStringEnum.FINISH_ORDER,
                     blueIcon: true,
                 },
                 {
-                    title: 'All Bills',
-                    name: 'all bills',
+                    title: TableStringEnum.ALL_BILLS_2,
+                    name: TableStringEnum.ALL_BILLS,
                     iconName: 'ic_truck',
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Share',
-                    name: 'share',
+                    title: TableStringEnum.SHARE_2,
+                    name: TableStringEnum.SHARE,
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share',
+                    iconName: TableStringEnum.SHARE,
                 },
                 {
-                    title: 'Print',
-                    name: 'print',
+                    title: TableStringEnum.PRINT_2,
+                    name: TableStringEnum.PRINT,
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print',
+                    iconName: TableStringEnum.PRINT,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.REPAIR_DETAIL,
                     svg: 'assets/svg/common/ic_trash.svg',
                     danger: true,
                     show: true,
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                     redIcon: true,
                 },
             ],

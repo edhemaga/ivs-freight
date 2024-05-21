@@ -61,11 +61,13 @@ import { RepairResponse } from '../model/repairResponse';
 // @ts-ignore
 import { RepairServiceTypeCommand } from '../model/repairServiceTypeCommand';
 // @ts-ignore
+import { RepairTrailerFilterListResponse } from '../model/repairTrailerFilterListResponse';
+// @ts-ignore
+import { RepairTruckFilterListResponse } from '../model/repairTruckFilterListResponse';
+// @ts-ignore
 import { RepairType } from '../model/repairType';
 // @ts-ignore
 import { RepairUnitType } from '../model/repairUnitType';
-// @ts-ignore
-import { ShopServiceType } from '../model/shopServiceType';
 // @ts-ignore
 import { UpdatePMTrailerListDefaultCommand } from '../model/updatePMTrailerListDefaultCommand';
 // @ts-ignore
@@ -654,7 +656,10 @@ export class RepairService {
      * @param pmTruckTitles 
      * @param pmTrailerTitles 
      * @param isOrder 
-     * @param truckId 
+     * @param truckNumbers 
+     * @param trailerNumbers 
+     * @param costFrom 
+     * @param costTo 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -665,10 +670,10 @@ export class RepairService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairListResponse>;
-    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairListResponse>>;
-    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckNumbers?: Array<string>, trailerNumbers?: Array<string>, costFrom?: number, costTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairListResponse>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckNumbers?: Array<string>, trailerNumbers?: Array<string>, costFrom?: number, costTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckNumbers?: Array<string>, trailerNumbers?: Array<string>, costFrom?: number, costTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairListResponse>>;
+    public apiRepairListGet(repairShopId?: number, unitType?: number, dateFrom?: string, dateTo?: string, isPM?: number, categoryIds?: Array<number>, pmTruckTitles?: Array<string>, pmTrailerTitles?: Array<string>, isOrder?: boolean, truckNumbers?: Array<string>, trailerNumbers?: Array<string>, costFrom?: number, costTo?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (repairShopId !== undefined && repairShopId !== null) {
@@ -713,9 +718,25 @@ export class RepairService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>isOrder, 'IsOrder');
         }
-        if (truckId !== undefined && truckId !== null) {
+        if (truckNumbers) {
+            truckNumbers.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TruckNumbers');
+            })
+        }
+        if (trailerNumbers) {
+            trailerNumbers.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'TrailerNumbers');
+            })
+        }
+        if (costFrom !== undefined && costFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>truckId, 'TruckId');
+            <any>costFrom, 'CostFrom');
+        }
+        if (costTo !== undefined && costTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>costTo, 'CostTo');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1000,50 +1021,13 @@ export class RepairService {
     }
 
     /**
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTrailerFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PMTrailerListResponse>;
-    public apiRepairPmTrailerFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PMTrailerListResponse>>;
-    public apiRepairPmTrailerFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PMTrailerListResponse>>;
-    public apiRepairPmTrailerFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
-        }
+    public apiRepairPmTrailerFilterListGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PMTrailerListResponse>;
+    public apiRepairPmTrailerFilterListGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PMTrailerListResponse>>;
+    public apiRepairPmTrailerFilterListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PMTrailerListResponse>>;
+    public apiRepairPmTrailerFilterListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1089,7 +1073,6 @@ export class RepairService {
         return this.httpClient.request<PMTrailerListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1725,50 +1708,13 @@ export class RepairService {
     }
 
     /**
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param search 
-     * @param search1 
-     * @param search2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPmTruckFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PMTruckListResponse>;
-    public apiRepairPmTruckFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PMTruckListResponse>>;
-    public apiRepairPmTruckFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PMTruckListResponse>>;
-    public apiRepairPmTruckFilterListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
-        }
+    public apiRepairPmTruckFilterListGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<PMTruckListResponse>;
+    public apiRepairPmTruckFilterListGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<PMTruckListResponse>>;
+    public apiRepairPmTruckFilterListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<PMTruckListResponse>>;
+    public apiRepairPmTruckFilterListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1814,7 +1760,6 @@ export class RepairService {
         return this.httpClient.request<PMTruckListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2396,6 +2341,7 @@ export class RepairService {
      * @param odometer 
      * @param date 
      * @param invoice 
+     * @param orderNumber 
      * @param repairShopId 
      * @param total 
      * @param serviceTypes 
@@ -2404,13 +2350,15 @@ export class RepairService {
      * @param files 
      * @param tags 
      * @param shopServiceType 
+     * @param payType 
+     * @param datePaid 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPost(repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, driverId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, shopServiceType?: number, payType?: number, datePaid?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2483,6 +2431,9 @@ export class RepairService {
         if (invoice !== undefined) {
             localVarFormParams = localVarFormParams.append('Invoice', <any>invoice) as any || localVarFormParams;
         }
+        if (orderNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('OrderNumber', <any>orderNumber) as any || localVarFormParams;
+        }
         if (repairShopId !== undefined) {
             localVarFormParams = localVarFormParams.append('RepairShopId', <any>repairShopId) as any || localVarFormParams;
         }
@@ -2515,6 +2466,12 @@ export class RepairService {
         if (shopServiceType !== undefined) {
             localVarFormParams = localVarFormParams.append('ShopServiceType', <any>shopServiceType) as any || localVarFormParams;
         }
+        if (payType !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayType', <any>payType) as any || localVarFormParams;
+        }
+        if (datePaid !== undefined) {
+            localVarFormParams = localVarFormParams.append('DatePaid', <any>datePaid) as any || localVarFormParams;
+        }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
@@ -2544,9 +2501,13 @@ export class RepairService {
     /**
      * @param id 
      * @param repairType 
+     * @param unitType 
+     * @param truckId 
+     * @param trailerId 
      * @param odometer 
      * @param date 
      * @param invoice 
+     * @param orderNumber 
      * @param repairShopId 
      * @param total 
      * @param serviceTypes 
@@ -2556,13 +2517,16 @@ export class RepairService {
      * @param tags 
      * @param filesForDeleteIds 
      * @param shopServiceType 
+     * @param payType 
+     * @param datePaid 
+     * @param finishOrder 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiRepairPut(id?: number, repairType?: RepairType, odometer?: number, date?: string, invoice?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: ShopServiceType, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiRepairPut(id?: number, repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, payType?: number, datePaid?: string, finishOrder?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiRepairPut(id?: number, repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, payType?: number, datePaid?: string, finishOrder?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, payType?: number, datePaid?: string, finishOrder?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiRepairPut(id?: number, repairType?: RepairType, unitType?: RepairUnitType, truckId?: number, trailerId?: number, odometer?: number, date?: string, invoice?: string, orderNumber?: string, repairShopId?: number, total?: number, serviceTypes?: Array<RepairServiceTypeCommand>, note?: string, items?: Array<RepairItemCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, shopServiceType?: number, payType?: number, datePaid?: string, finishOrder?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -2617,6 +2581,15 @@ export class RepairService {
         if (repairType !== undefined) {
             localVarFormParams = localVarFormParams.append('RepairType', <any>repairType) as any || localVarFormParams;
         }
+        if (unitType !== undefined) {
+            localVarFormParams = localVarFormParams.append('UnitType', <any>unitType) as any || localVarFormParams;
+        }
+        if (truckId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
+        }
+        if (trailerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;
+        }
         if (odometer !== undefined) {
             localVarFormParams = localVarFormParams.append('Odometer', <any>odometer) as any || localVarFormParams;
         }
@@ -2625,6 +2598,9 @@ export class RepairService {
         }
         if (invoice !== undefined) {
             localVarFormParams = localVarFormParams.append('Invoice', <any>invoice) as any || localVarFormParams;
+        }
+        if (orderNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('OrderNumber', <any>orderNumber) as any || localVarFormParams;
         }
         if (repairShopId !== undefined) {
             localVarFormParams = localVarFormParams.append('RepairShopId', <any>repairShopId) as any || localVarFormParams;
@@ -2663,6 +2639,15 @@ export class RepairService {
         if (shopServiceType !== undefined) {
             localVarFormParams = localVarFormParams.append('ShopServiceType', <any>shopServiceType) as any || localVarFormParams;
         }
+        if (payType !== undefined) {
+            localVarFormParams = localVarFormParams.append('PayType', <any>payType) as any || localVarFormParams;
+        }
+        if (datePaid !== undefined) {
+            localVarFormParams = localVarFormParams.append('DatePaid', <any>datePaid) as any || localVarFormParams;
+        }
+        if (finishOrder !== undefined) {
+            localVarFormParams = localVarFormParams.append('FinishOrder', <any>finishOrder) as any || localVarFormParams;
+        }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
@@ -2680,6 +2665,130 @@ export class RepairService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairTrailerFilterListGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairTrailerFilterListResponse>;
+    public apiRepairTrailerFilterListGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairTrailerFilterListResponse>>;
+    public apiRepairTrailerFilterListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairTrailerFilterListResponse>>;
+    public apiRepairTrailerFilterListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repair/trailer/filter/list`;
+        return this.httpClient.request<RepairTrailerFilterListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairTruckFilterListGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairTruckFilterListResponse>;
+    public apiRepairTruckFilterListGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairTruckFilterListResponse>>;
+    public apiRepairTruckFilterListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairTruckFilterListResponse>>;
+    public apiRepairTruckFilterListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/repair/truck/filter/list`;
+        return this.httpClient.request<RepairTruckFilterListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

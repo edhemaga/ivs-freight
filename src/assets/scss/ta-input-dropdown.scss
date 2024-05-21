@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 .ta-input-dropdown {
     .arrow {
         display: none !important;
@@ -107,7 +109,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                color: #ffffff;
+                color: $white;
 
                 // Text and Additional Text
                 &.dropdown-double-text-option {
@@ -118,7 +120,7 @@
                     .additional-text {
                         font-size: 11px;
                         font-weight: 400;
-                        color: #919191;
+                        color: $bw5;
                         line-height: 14px;
 
                         &.active {
@@ -129,7 +131,7 @@
                     &:hover {
                         .additional-text {
                             &.active {
-                                color: #3074d3;
+                                color: $ta-blue-17;
                             }
                         }
                     }
@@ -176,7 +178,7 @@
                     font-size: 11px;
                     font-weight: 700;
                     padding: 0px !important;
-                    color: #919191;
+                    color: $bw5;
                     height: auto !important;
                     -webkit-user-select: none;
                     -moz-user-select: none;
@@ -196,25 +198,39 @@
                     padding: 4.5px 4px;
                     font-size: 11px;
                     font-weight: 700;
-                    color: #6f9ee0;
-                    transition: all 0.3s ease-in-out;
+                    color: $ta-blue-19;
                     position: relative;
+                    transition: background 0.2s ease-in-out,
+                        color 0.2s ease-in-out;
 
                     &:hover {
-                        color: #3074d3;
+                        color: $white;
+                        background: $ta-blue-21;
                     }
 
                     .labels-template-text {
-                        color: #6f9ee0;
+                        color: $ta-blue-7;
                         font-weight: 600 !important;
                         transition: all 0.3s ease-in-out;
+                    }
+
+                    .plus-icon {
+                        margin-left: auto !important;
+                        position: relative;
+                        bottom: 1px;
+
+                        svg {
+                            path {
+                                fill: $ta-blue-19;
+                            }
+                        }
                     }
                 }
 
                 &.all-assigned {
                     .details-template-text,
                     .svgtext-template-text {
-                        color: #919191;
+                        color: $bw5;
                         font-size: 11px;
                         font-weight: 700;
                         line-height: 14px;
@@ -231,7 +247,7 @@
                     position: relative;
 
                     &:hover {
-                        color: #3074d3;
+                        color: $ta-blue-17;
                         transition: all 0.3s ease-in-out;
                     }
 
@@ -240,7 +256,7 @@
                         font-weight: 700;
                         transition: all 0.3s ease-in-out;
                         &:hover {
-                            color: #3074d3 !important;
+                            color: $ta-blue-17 !important;
                         }
                     }
 
@@ -346,7 +362,17 @@
                             }
                         }
 
-                        &.radiator, &.turbo, &.alignment, &.accompressor, &.aircompressor, &.fuelpump, &.waterpump, &.oilpump, &.brakechamber, &.battery, &.enginetuneup {
+                        &.radiator,
+                        &.turbo,
+                        &.alignment,
+                        &.accompressor,
+                        &.aircompressor,
+                        &.fuelpump,
+                        &.waterpump,
+                        &.oilpump,
+                        &.brakechamber,
+                        &.battery,
+                        &.enginetuneup {
                             svg {
                                 path {
                                     fill: $bw5;
@@ -370,7 +396,7 @@
                             font-size: 11px;
                             font-weight: 400;
                             line-height: 14px;
-                            color: #919191;
+                            color: $bw5;
                             text-align: right;
                         }
                     }
@@ -451,7 +477,7 @@
                                 font-size: 11px;
                                 font-weight: 700;
                                 padding: 0px !important;
-                                color: #919191;
+                                color: $bw5;
                                 height: 12px;
                                 -webkit-user-select: none;
                                 -moz-user-select: none;
@@ -490,7 +516,7 @@
                         font-size: 11px;
                         font-weight: 700;
                         padding: 0px !important;
-                        color: #919191;
+                        color: $bw5;
                         -webkit-user-select: none;
                         -moz-user-select: none;
                         -ms-user-select: none;
@@ -511,7 +537,7 @@
                             color: #ffffff;
 
                             &.add-new {
-                                color: #3074d3;
+                                color: $ta-blue-17;
                             }
                         }
 
@@ -531,7 +557,7 @@
                             color: #6f9ee0;
 
                             &:hover {
-                                color: #3074d3;
+                                color: $ta-blue-17;
                                 transition: all 0.3s ease-in-out;
                             }
                         }
@@ -540,7 +566,7 @@
                     .additional-text {
                         font-size: 11px;
                         font-weight: 400;
-                        color: #919191;
+                        color: $bw5;
                         line-height: 12px;
                     }
 
@@ -694,7 +720,7 @@
                                 -moz-user-select: none;
                                 -ms-user-select: none;
                                 user-select: none;
-                                color: #cccccc;
+                                color: $ta-light-grey-6;
                             }
 
                             &.active {
@@ -885,7 +911,7 @@
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
-                    color: #919191;
+                    color: $bw5;
                     padding-bottom: 1px;
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -946,7 +972,7 @@
                     text-align: center;
 
                     .progress-bar-price {
-                        color: #919191;
+                        color: $bw5;
                         font-size: 11px;
                         font-weight: 400;
                     }
@@ -965,7 +991,7 @@
                     text-align: center;
                     font-size: 11px;
                     font-weight: 400;
-                    color: #919191;
+                    color: $bw5;
                     background-color: rgb(145, 145, 145, 0.2);
                     padding: 1px 6px;
 
@@ -1012,7 +1038,7 @@
                     }
 
                     &:nth-child(2) {
-                        color: #919191;
+                        color: $bw5;
                         font-size: 11px;
                         font-weight: 400;
 
@@ -1031,7 +1057,7 @@
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
-                    color: #919191;
+                    color: $bw5;
                     background-color: rgb(145, 145, 145, 0.2);
                     padding: 1px 6px;
                     justify-self: flex-end;
@@ -1085,7 +1111,7 @@
 
                     .dropdown-group-header {
                         font-size: 11px;
-                        color: #cccccc;
+                        color: $ta-light-grey-6;
                         font-weight: 700;
                         text-transform: uppercase;
                         line-height: 14px;
@@ -1133,7 +1159,7 @@
                         .dropdown-subgroup-text {
                             font-size: 14px;
                             font-weight: 400;
-                            color: #cccccc;
+                            color: $ta-light-grey-6;
                             transition: all 0.3s ease-in-out;
 
                             &.active {
@@ -1178,7 +1204,7 @@
                         padding-left: 4px;
                         margin-bottom: 4px;
 
-                        color: #cccccc;
+                        color: $ta-light-grey-6;
                         font-size: 11px;
                         text-transform: capitalize;
 
@@ -1193,7 +1219,7 @@
 
                             &:hover {
                                 border-radius: 2px;
-                                color: #3074d3;
+                                color: $ta-blue-17;
                                 background-color: #1d1d1d;
                             }
                         }
@@ -1248,7 +1274,7 @@
                         }
 
                         .dropdown-subgroup-additional-text {
-                            color: #919191;
+                            color: $bw5;
                             font-size: 11px;
                             font-weight: 400;
                             position: relative;
@@ -1378,120 +1404,99 @@
 
 // Selected Dropdown Card Preview
 .selected-item-container {
-    height: 50px;
+    height: 52px;
     padding: 6px;
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(111, 158, 224, 0.2);
+    background: $ta-blue-16;
     position: relative;
     border-radius: 2px;
+    transition: background 0.3s ease-in-out;
+
+    &:hover {
+        background: $ta-blue-17;
+
+        .selected-item-additional {
+            .selected-item-info {
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-blue-14;
+                        }
+                    }
+                }
+            }
+        }
+
+        .clear-selected-item {
+            display: flex;
+            align-items: center;
+        }
+    }
 
     .selected-item-label {
         position: absolute;
         top: -16px;
         font-size: 11px;
         font-weight: 600;
-        color: #2f2f2f;
+        color: $ta-black;
+
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
 
         span {
-            color: #ef5350;
+            color: $ta-red-11;
         }
     }
 
     .selected-item-name {
-        gap: 8px;
         font-size: 14px;
-        font-weight: 600;
         line-height: 18px;
-        color: #2f2f2f;
-        margin: 0;
-        display: flex;
-        align-items: center;
+        color: $ta-black;
 
         &::-moz-selection {
-            color: #2f2f2f;
-            background-color: rgb(47, 47, 47, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
 
         &::selection {
-            color: #2f2f2f;
-            background-color: rgb(47, 47, 47, 0.2);
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
         }
 
         .selected-item-star {
             position: relative;
             bottom: 2px;
-            cursor: pointer;
 
             svg {
-                width: 16px;
-                height: 16px;
-            }
+                margin-left: 6px;
 
-            &:hover {
-                transition: all 0.3s ease-in-out;
-                svg {
-                    path {
-                        fill: #2f2f2f;
-                    }
-                }
-            }
-
-            &.active {
-                svg {
-                    path {
-                        fill: #6f9ee0;
-                    }
-                }
-
-                &:hover {
-                    transition: all 0.3s ease-in-out;
-                    svg {
-                        path {
-                            fill: #3074d3;
-                        }
-                    }
+                path {
+                    fill: $ta-blue-13;
                 }
             }
         }
     }
 
     .selected-item-additional {
-        display: flex;
-        align-items: center;
-        gap: 32px;
+        gap: 22px;
 
         .selected-item-info {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-
             svg-icon {
                 width: 14px;
-                padding-bottom: 1px;
 
                 svg {
                     width: 100%;
                     height: 100%;
+
                     path {
-                        fill: #6f9ee0;
+                        fill: $ta-blue-13;
+                        transition: fill 0.3s ease-in-out;
                     }
                 }
             }
 
-            p {
-                font-size: 11px;
-                height: 13px;
-                font-weight: 400;
-                margin: 0;
-                padding: 0;
-            }
-
-            .hideSvgOnCopy {
+            .hide-svg-on-copy {
                 display: none;
             }
         }
@@ -1501,61 +1506,43 @@
         position: absolute;
         right: 4px;
         top: 0px;
-        border-radius: 1px;
-        transition: all 0.3s ease-in-out;
         display: none;
-        z-index: 10;
-        cursor: pointer;
+        gap: 6px;
 
         .clear-x {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+
             svg {
-                width: 18px !important;
-                height: 18px !important;
-                overflow: visible;
                 path {
-                    fill: #3074d3;
+                    fill: $ta-blue-17;
                 }
+
                 rect {
-                    transition: transform 0.3s;
-                    transform: scale(1);
-                    transform-origin: center;
-                    fill: transparent;
+                    fill: $ta-blue-13;
                 }
             }
 
             &:hover {
                 svg {
-                    overflow: visible;
-                    path {
-                        fill: #255bb9;
-                    }
                     rect {
-                        transform: scale(1.2);
-                        transform-origin: center;
-                        transition: transform 0.3s;
-                        fill: rgb(37, 91, 185, 0.2);
+                        fill: $ta-blue-15;
                     }
                 }
             }
         }
     }
 
-    &:hover {
-        .clear-selected-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        transition: all 0.3s ease-in-out;
-    }
-
     &.non-editable {
-        background-color: #f7f7f7;
+        background-color: $ta-light-grey-5;
 
         .selected-item-label,
         .selected-item-name {
-            color: #919191;
+            color: $bw5;
         }
 
         .selected-item-additional {
@@ -1563,12 +1550,12 @@
                 svg-icon {
                     svg {
                         path {
-                            fill: #cccccc;
+                            fill: $ta-light-grey-6;
                         }
                     }
                 }
                 p {
-                    color: #919191;
+                    color: $bw5;
                 }
             }
         }

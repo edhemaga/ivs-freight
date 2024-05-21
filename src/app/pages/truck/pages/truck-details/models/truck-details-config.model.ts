@@ -1,4 +1,4 @@
-import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/truck-details-config-data.model';
+import type { TruckDetailsConfigData } from './truck-details-config-data.model';
 
 export interface TruckDetailsConfig {
     id: number;

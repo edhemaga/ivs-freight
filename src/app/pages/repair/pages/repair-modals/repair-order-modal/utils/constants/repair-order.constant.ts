@@ -1,5 +1,5 @@
 import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
-import { RepairData } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-data.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 export class RepairOrderConstants {
     static REPAIR_TYPES: RepairTypes[] = [
@@ -20,7 +20,7 @@ export class RepairOrderConstants {
         },
     ];
 
-    static HEADER_TABS: RepairData[] = [
+    static HEADER_TABS: Tabs[] = [
         {
             id: 1,
             name: 'Bill',
@@ -33,51 +33,34 @@ export class RepairOrderConstants {
         },
     ];
 
-    static TYPE_OF_REPAIR: RepairData[] = [
+    static UNIT_TABS: Tabs[] = [
         {
-            id: 3,
+            id: 1,
             name: 'Truck',
             checked: true,
         },
         {
-            id: 4,
+            id: 2,
             name: 'Trailer',
             checked: false,
         },
     ];
 
-    static PAID: { id: number; name: string }[] = [
-        {
-            id: 0,
-            name: 'Wire Transfer',
-        },
+    static SERVICE_TABS: Tabs[] = [
         {
             id: 1,
-            name: 'Cash',
+            name: 'IN STORE',
+            checked: false,
         },
         {
             id: 2,
-            name: 'Check',
+            name: 'AT LOCATION',
+            checked: false,
         },
         {
             id: 3,
-            name: 'Money Code',
-        },
-        {
-            id: 4,
-            name: 'Q. pay (Zelle)',
-        },
-        {
-            id: 5,
-            name: 'Q. pay (Venmo)',
-        },
-        {
-            id: 6,
-            name: 'Q. pay (Cashapp',
-        },
-        {
-            id: 7,
-            name: 'Q. pay (PayPal)',
+            name: 'COMBINED',
+            checked: false,
         },
     ];
 }

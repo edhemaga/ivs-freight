@@ -1,6 +1,6 @@
 <div
     class="tab-switch-holder {{ type }}"
-    [ngClass]="{ 'dashboard-height': dashboardHeight }"
+    [ngClass]="{ 'dashboard-height': dashboardHeight, disabled: isDisabled }"
 >
     <div
         *ngFor="let item of tabs; let indx = index"

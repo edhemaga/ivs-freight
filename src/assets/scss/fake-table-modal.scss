@@ -788,7 +788,7 @@
                         width: 18px;
                         height: 18px;
                         margin-left: 10px;
-    
+
                         svg {
                             path {
                                 fill: $bw4 !important;
@@ -825,111 +825,6 @@
             .common-fake-table-delete {
                 left: 0;
                 top: 0;
-            }
-        }
-    }
-
-    // Repair Bill Modal Items
-    &-repair-bill-item {
-        .common-fake-table-label {
-            p {
-                &:nth-child(2) {
-                    margin-left: 34px;
-                }
-
-                &:nth-child(3) {
-                    margin-left: 215px;
-                }
-
-                &:nth-child(4) {
-                    margin-left: 22px;
-                }
-
-                &:nth-child(5) {
-                    margin-left: 57px;
-                }
-
-                &:nth-child(6) {
-                    margin-left: 69px;
-                }
-            }
-        }
-        .common-fake-table-body {
-            .common-fake-table-card {
-                grid-template-columns: 18px 332px 90px 60px 93px;
-                -moz-column-gap: 12px;
-                column-gap: 12px;
-                padding-left: 6px;
-                position: relative;
-
-                p {
-                    margin: 0;
-                    padding: 0;
-                    font-size: 14px;
-                    font-weight: 600;
-                    color: #919191;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-
-                    &:nth-child(1) {
-                        padding-left: 5px;
-                        text-align: center;
-                    }
-
-                    &::-moz-selection {
-                        background-color: #919191 !important;
-                    }
-
-                    &::selection {
-                        background-color: #919191 !important;
-                    }
-                }
-
-                &.card-item-active {
-                    p {
-                        color: #536bc2 !important;
-                        &::-moz-selection {
-                            background-color: rgb(83, 107, 194, 0.2) !important;
-                        }
-                        &::selection {
-                            background-color: rgb(83, 107, 194, 0.2) !important;
-                        }
-                        &::-moz-selection {
-                            background-color: rgb(83, 107, 194, 0.2) !important;
-                        }
-                    }
-                }
-
-                .item-subtotal {
-                    text-align: end;
-                }
-
-                .desc-pm-container {
-                    position: relative;
-
-                    .pm-item {
-                        position: absolute;
-                        right: 6px;
-                        top: 1px;
-                    }
-
-                    .pm-svg {
-                        position: absolute;
-                        top: 0px;
-                        right: 4px;
-                        cursor: pointer;
-
-                        &.active {
-                            svg {
-                                path {
-                                    fill: #536bc2;
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }

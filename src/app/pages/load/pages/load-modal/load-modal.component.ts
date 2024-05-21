@@ -3420,8 +3420,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private updateLoad(): void {
-        const { id, dateCreated, status, loadRequirements } =
-            this.editData.data;
+        const { id, dateCreated, status, loadRequirements } = this.editData
+            .data as LoadResponse;
 
         const {
             referenceNumber,

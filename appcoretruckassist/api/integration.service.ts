@@ -27,9 +27,11 @@ import { CompanyIntegrationResponse } from '../model/companyIntegrationResponse'
 // @ts-ignore
 import { EditIntegrationCommand } from '../model/editIntegrationCommand';
 // @ts-ignore
-import { EfsIntegrationConnectDisconnectCommand } from '../model/efsIntegrationConnectDisconnectCommand';
+import { EnumValue } from '../model/enumValue';
 // @ts-ignore
 import { IntegrationConectedResponse } from '../model/integrationConectedResponse';
+// @ts-ignore
+import { IntegrationConnectDisconnectCommand } from '../model/integrationConnectDisconnectCommand';
 // @ts-ignore
 import { IntegrationListResponse } from '../model/integrationListResponse';
 // @ts-ignore
@@ -108,14 +110,14 @@ export class IntegrationService {
     }
 
     /**
-     * @param efsIntegrationConnectDisconnectCommand 
+     * @param integrationConnectDisconnectCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
-    public apiIntegrationEfsConnectDisconnectPost(efsIntegrationConnectDisconnectCommand?: EfsIntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationConectedResponse>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationConectedResponse>>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationConectedResponse>>;
+    public apiIntegrationConnectDisconnectPost(integrationConnectDisconnectCommand?: IntegrationConnectDisconnectCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -168,11 +170,11 @@ export class IntegrationService {
             }
         }
 
-        let localVarPath = `/api/integration/efs/connect/disconnect`;
+        let localVarPath = `/api/integration/connect/disconnect`;
         return this.httpClient.request<IntegrationConectedResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: efsIntegrationConnectDisconnectCommand,
+                body: integrationConnectDisconnectCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -387,6 +389,7 @@ export class IntegrationService {
     }
 
     /**
+     * @param integrationTypeIds 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -397,12 +400,18 @@ export class IntegrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiIntegrationListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationListResponse>;
-    public apiIntegrationListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationListResponse>>;
-    public apiIntegrationListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationListResponse>>;
-    public apiIntegrationListGet(pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiIntegrationListGet(integrationTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<IntegrationListResponse>;
+    public apiIntegrationListGet(integrationTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<IntegrationListResponse>>;
+    public apiIntegrationListGet(integrationTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<IntegrationListResponse>>;
+    public apiIntegrationListGet(integrationTypeIds?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (integrationTypeIds) {
+            integrationTypeIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'IntegrationTypeIds');
+            })
+        }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
@@ -794,6 +803,68 @@ export class IntegrationService {
             {
                 context: localVarHttpContext,
                 body: editIntegrationCommand,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiIntegrationTypeFilterGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<EnumValue>>;
+    public apiIntegrationTypeFilterGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<EnumValue>>>;
+    public apiIntegrationTypeFilterGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<EnumValue>>>;
+    public apiIntegrationTypeFilterGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/integration/type/filter`;
+        return this.httpClient.request<Array<EnumValue>>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

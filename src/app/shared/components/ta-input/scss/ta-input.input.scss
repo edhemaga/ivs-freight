@@ -117,9 +117,9 @@
     &.valid-focus-out-filled {
         background-color: $valid-input;
         color: $valid-content;
-        &.input-dropdown-table{
+        &.input-dropdown-table {
             background-color: $default-focus-content;
-         }
+        }
         &::-moz-selection {
             background-color: $valid-content-background-selection;
             color: $valid-content;
@@ -207,10 +207,6 @@
     }
 
     // -------------------
-
-    &.input-blue-content {
-        color: $default-content-blue;
-    }
 
     &.has-placeholderIcon {
         padding-left: 37px;

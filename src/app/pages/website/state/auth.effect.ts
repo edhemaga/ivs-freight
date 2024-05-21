@@ -30,7 +30,7 @@ export class AuthEffect {
         // services
         private websiteActionsService: WebsiteActionsService,
         public authService: AuthService
-    ) { }
+    ) {}
 
     public login$ = createEffect(
         (): Observable<Action> =>

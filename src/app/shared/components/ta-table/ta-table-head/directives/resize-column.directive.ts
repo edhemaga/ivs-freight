@@ -16,7 +16,7 @@ import {
     standalone: true,
 })
 export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
-    @Output() resizeing: EventEmitter<any> = new EventEmitter();
+    @Output() resizing: EventEmitter<any> = new EventEmitter();
     @Input('resizeColumn') canDoResize: boolean;
     @Input() index: number;
     @Input() tableSection: string;
@@ -58,7 +58,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
 
     addResizer() {
         this.resizer = this.renderer.createElement('div');
-        this.renderer.addClass(this.resizer, 'resise-btn');
+        this.renderer.addClass(this.resizer, 'resize-btn');
         this.renderer.appendChild(this.column, this.resizer);
 
         this.listenerMouseDown = this.renderer.listen(
@@ -69,14 +69,14 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     removeResizer() {
-        this.renderer.removeClass(this.resizer, 'resise-btn');
+        this.renderer.removeClass(this.resizer, 'resize-btn');
         this.renderer.removeChild(this.column, this.resizer);
         this.listenerMouseDown();
     }
 
     onMouseDown = (event: MouseEvent) => {
         if (!this.pressed) {
-            this.resizeing.emit({
+            this.resizing.emit({
                 isResizeing: true,
                 section: this.tableSection,
             });
@@ -98,7 +98,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
             const maxWidth = this.tableColumn.minWidth * 3;
 
             if (!this.tableColumn.minWidth) {
-                this.resizeing.emit({
+                this.resizing.emit({
                     isResizeing: true,
                     width: this.newColumnWidth,
                     index: this.index,
@@ -113,7 +113,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
                 this.newColumnWidth > this.tableColumn.minWidth &&
                 this.newColumnWidth < maxWidth
             ) {
-                this.resizeing.emit({
+                this.resizing.emit({
                     isResizeing: true,
                     width: this.newColumnWidth,
                     index: this.index,
@@ -123,7 +123,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
 
             // If It Has Reached Min Or Max Width, Show Animation
             else {
-                this.resizeing.emit({
+                this.resizing.emit({
                     beyondTheLimits: true,
                     index: this.index,
                     isResizeing: false,
@@ -137,7 +137,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges, OnDestroy {
         if (this.pressed) {
             this.pressed = false;
 
-            this.resizeing.emit({
+            this.resizing.emit({
                 isResizeing: false,
                 section: this.tableSection,
             });
