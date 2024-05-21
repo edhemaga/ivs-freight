@@ -4,14 +4,14 @@ export interface PayrollDefaultValues {
     perMileSolo: number;
     soloPerStop: string;
     commissionSolo: number;
-    soloFlatRate: string;
+    flatRateSolo: string;
 
     teamEmptyMile: number;
     teamLoadedMile: number;
     perMileTeam: number;
     teamPerStop: string;
     commissionTeam: number;
-    teamFlatRate: string;
+    flatRateTeam: string;
 
     mvrExpiration: number;
 }

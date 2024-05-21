@@ -4,11 +4,9 @@
     [editData]="editData"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
-    [isModalValid]="
-        driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid
-    "
+    [isModalValid]="true"
     (action)="onModalAction($event)"
->
+    ><!--  driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid -->
     <div origin>
         <!-- Tabs -->
 
@@ -109,6 +107,7 @@
                                     maxLength: 64,
                                     textTransform: 'lowercase'
                                 }"
+                                (blurInput)="validateEmail()"
                             ></app-ta-input>
 
                             <app-ta-input
@@ -121,6 +120,7 @@
                                     mask: '000-00-0000',
                                     maxLength: 11
                                 }"
+                                (blurInput)="validateSsn()"
                             ></app-ta-input>
                         </div>
 
@@ -264,7 +264,7 @@
                                 }"
                             >
                                 <app-ta-checkbox
-                                    formControlName="useCarrieraACH"
+                                    formControlName="useCarrieraAch"
                                     [customClass]="'medium'"
                                     [name]="'truckassistACH'"
                                     [isUseCarrieraACHCheckBox]="true"
@@ -725,7 +725,7 @@
                                                 }"
                                             >
                                                 <app-ta-input
-                                                    formControlName="soloFlatRate"
+                                                    formControlName="flatRateSolo"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
                                                         label:
@@ -767,7 +767,7 @@
                                                 }"
                                             >
                                                 <app-ta-input
-                                                    formControlName="teamFlatRate"
+                                                    formControlName="flatRateTeam"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
                                                         label:
@@ -812,7 +812,7 @@
                                             textTransform: 'uppercase',
                                             isDropdown: true,
                                             isRequired:
-                                                driverForm.get('useCarrieraACH')
+                                                driverForm.get('useCarrieraAch')
                                                     .value,
                                             dropdownWidthClass: 'w-col-184'
                                         }"
@@ -857,10 +857,15 @@
                                 </div>
                             </div>
 
-                            <!-- Share Open Payroll -->
+                            <!-- Share Open Payroll | Calculate Payroll  -->
 
                             <ng-container
-                                *ngIf="!driverForm.get('isOwner').value"
+                                *ngIf="
+                                    !driverForm.get('isOwner').value &&
+                                        driverForm.get('payrollType').value ===
+                                            'Company Driver';
+                                    else calculatePayroll
+                                "
                             >
                                 <app-ta-checkbox
                                     formControlName="isOpenPayrollShared"
@@ -869,6 +874,25 @@
                                     [label]="'Share open payroll with driver'"
                                 ></app-ta-checkbox>
                             </ng-container>
+
+                            <ng-template #calculatePayroll>
+                                <ng-container
+                                    *ngIf="
+                                        !driverForm.get('isOwner').value &&
+                                        driverForm.get('payrollType').value ===
+                                            '3rd Party Driver'
+                                    "
+                                >
+                                    <app-ta-checkbox
+                                        formControlName="isPayrollCalculated"
+                                        [customClass]="'medium'"
+                                        [name]="'calculatePayroll'"
+                                        [label]="
+                                            'Calculate payroll for 3rd party driver'
+                                        "
+                                    ></app-ta-checkbox>
+                                </ng-container>
+                            </ng-template>
                         </app-ta-custom-card>
 
                         <!-- Off Duty Location -->
