@@ -9,20 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TestResponse } from './testResponse';
+import { BankDto } from './bankDto';
+import { TestDto } from './testDto';
+import { NotificationDto } from './notificationDto';
 import { EnumValue } from './enumValue';
-import { OwnerResponse } from './ownerResponse';
-import { OffDutyLocationResponse } from './offDutyLocationResponse';
-import { PerMileEntity } from './perMileEntity';
-import { NotificationEntity } from './notificationEntity';
+import { OffDutyLocationDto } from './offDutyLocationDto';
+import { OwnerDto } from './ownerDto';
+import { PayrollDto } from './payrollDto';
+import { EmergencyContactDto } from './emergencyContactDto';
+import { CdlDto } from './cdlDto';
+import { FuelCardDto } from './fuelCardDto';
 import { AddressEntity } from './addressEntity';
-import { FuelCardShortResponse } from './fuelCardShortResponse';
+import { MvrDto } from './mvrDto';
 
 
 export interface DriverDto { 
     id?: number;
     name?: string | null;
-    fullName?: string | null;
     status?: number;
     avatar?: string | null;
     note?: string | null;
@@ -32,41 +35,27 @@ export interface DriverDto {
     phone?: string | null;
     email?: string | null;
     address?: AddressEntity;
-    owner?: OwnerResponse;
+    owner?: OwnerDto;
     driverType?: EnumValue;
     payType?: EnumValue;
-    solo?: PerMileEntity;
-    team?: PerMileEntity;
-    commissionSolo?: number | null;
-    commissionTeam?: number | null;
-    soloFlatRate?: number | null;
-    teamFlatRate?: number | null;
-    bankName?: string | null;
-    routing?: string | null;
-    account?: string | null;
-    offDutyLocations?: Array<OffDutyLocationResponse> | null;
-    emergencyContactName?: string | null;
-    emergencyContactRelationship?: string | null;
-    emergencyContactPhone?: string | null;
+    solo?: PayrollDto;
+    team?: PayrollDto;
+    bank?: BankDto;
+    offDutyLocations?: Array<OffDutyLocationDto> | null;
+    emergencyContact?: EmergencyContactDto;
     twicExpirationDays?: number | null;
-    fuelCards?: Array<FuelCardShortResponse> | null;
-    cdlNumber?: string | null;
-    cdlState?: string | null;
-    cdlEndorsementDescription?: string | null;
-    cdlRestrictionDescription?: string | null;
-    cdlExpirationDays?: number | null;
-    testResponse?: TestResponse;
+    fuelCards?: Array<FuelCardDto> | null;
+    cdl?: CdlDto;
+    test?: TestDto;
     medicalExpirationDays?: number | null;
     medicalPercentage?: number | null;
-    mvrExpiration?: number | null;
-    mvrExpirationDays?: number | null;
-    mvrPercentage?: number | null;
-    general?: NotificationEntity;
-    payroll?: NotificationEntity;
-    assignedTruck?: string | null;
-    assignedTrailer?: string | null;
-    hired?: string | null;
-    dateTerminated?: string | null;
+    mvr?: MvrDto;
+    general?: NotificationDto;
+    payroll?: NotificationDto;
+    truck?: string | null;
+    trailer?: string | null;
+    hiredAt?: string | null;
+    terminatedAt?: string | null;
     createdAt?: string;
     updatedAt?: string;
 }

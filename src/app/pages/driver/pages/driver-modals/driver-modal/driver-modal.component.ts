@@ -18,6 +18,9 @@ import { CommonModule } from '@angular/common';
 
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
+// svg routes
+import { DriverModalSvgRoutes } from '@pages/driver/pages/driver-modals/driver-modal/utils/svg-routes/driver-modal-svg-routes';
+
 // modules
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -146,6 +149,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isAddNewAfterSave: boolean = false;
 
     public driverFullName: string;
+
+    // svg routes
+    public driverModalSvgRoutes: DriverModalSvgRoutes = DriverModalSvgRoutes;
 
     // animation
     public isCardAnimationDisabled: boolean = false;
@@ -1552,10 +1558,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             defaultSoloDriverCommission,
             defaultTeamDriverCommission,
             solo,
-            soloFlatRate: flatRateSolo,
+            flatRateSolo,
             perMileSolo,
             team,
-            teamFlatRate: flatRateTeam,
+            flatRateTeam,
             perMileTeam,
         } = data;
 
@@ -1624,6 +1630,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .getDriverDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: GetDriverModalResponse) => {
+                console.log('DROPDOWN data', data);
                 if (data) {
                     const {
                         banks,
@@ -1635,10 +1642,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         defaultSoloDriverCommission,
                         defaultTeamDriverCommission,
                         solo,
-                        soloFlatRate,
+                        flatRateSolo,
                         perMileSolo,
                         team,
-                        teamFlatRate,
+                        flatRateTeam,
                         perMileTeam,
                     } = data;
 
@@ -1662,11 +1669,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.handlePayrollDefaultValueCombinations(
                         solo,
-                        soloFlatRate,
+                        flatRateSolo,
                         perMileSolo,
                         defaultSoloDriverCommission,
                         team,
-                        teamFlatRate,
+                        flatRateTeam,
                         perMileTeam,
                         defaultTeamDriverCommission
                     );

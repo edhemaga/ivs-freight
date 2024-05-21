@@ -416,7 +416,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
                     this.labelsDrivers = res.pagination.data.map((item) => {
                         return {
                             id: item.id,
-                            name: item.fullName,
+                            /*  name: item.fullName, */
                         };
                     });
                 },

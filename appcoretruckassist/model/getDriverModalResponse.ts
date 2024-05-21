@@ -30,8 +30,8 @@ export interface GetDriverModalResponse {
     perMileTeam?: number | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;
-    soloFlatRate?: number | null;
-    teamFlatRate?: number | null;
+    flatRateSolo?: number | null;
+    flatRateTeam?: number | null;
     tags?: Array<TagResponse> | null;
     driverTypes?: Array<EnumValue> | null;
     owners?: Array<OwnerShortResponse> | null;

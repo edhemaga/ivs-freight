@@ -183,6 +183,7 @@ model/avatarResponse.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
 model/bankCardResponse.ts
+model/bankDto.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
@@ -217,6 +218,7 @@ model/brokerShortResponse.ts
 model/byStateReportType.ts
 model/cdlCardFeedbackResponse.ts
 model/cdlCardReviewResponse.ts
+model/cdlDto.ts
 model/cdlEndorsementResponse.ts
 model/cdlFeedbackResponse.ts
 model/cdlLicenseResponse.ts
@@ -425,6 +427,7 @@ model/editTagCommand.ts
 model/editTagsCommand.ts
 model/educationFeedbackResponse.ts
 model/educationReviewResponse.ts
+model/emergencyContactDto.ts
 model/emergencyContactResponse.ts
 model/emergencyContactReviewResponse.ts
 model/employmentHistoryResponse.ts
@@ -446,6 +449,7 @@ model/forgotPasswordCommand.ts
 model/fuelByStateListResponse.ts
 model/fuelByStateResponse.ts
 model/fuelByStateResponsePagination.ts
+model/fuelCardDto.ts
 model/fuelCardListResponse.ts
 model/fuelCardResponse.ts
 model/fuelCardResponsePagination.ts
@@ -617,10 +621,14 @@ model/multipleChangeDnuFlagCommand.ts
 model/multipleChangeTrailerStatusCommand.ts
 model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
+model/mvrDto.ts
 model/mvrResponse.ts
+model/notificationDto.ts
 model/notificationEntity.ts
+model/offDutyLocationDto.ts
 model/offDutyLocationResponse.ts
 model/ownerDetailsResponse.ts
+model/ownerDto.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
 model/ownerModalResponse.ts
@@ -685,6 +693,7 @@ model/payrollDriverCommissionResponsePagination.ts
 model/payrollDriverFlatRateClosedByIdResponse.ts
 model/payrollDriverMileageListResponse.ts
 model/payrollDriverMileageResponse.ts
+model/payrollDto.ts
 model/payrollFlatRateTotalSum.ts
 model/payrollFuelMinimalResponse.ts
 model/payrollListResponse.ts
@@ -859,6 +868,7 @@ model/tagResponse.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts
+model/testDto.ts
 model/testResponse.ts
 model/testResult.ts
 model/testType.ts
