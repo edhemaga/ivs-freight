@@ -17,8 +17,8 @@ export interface ArrayStatus {
 }
 
 interface TruckType {
-    companyId?: string | undefined;
-    id?: number | undefined;
-    logoName?: string | undefined;
-    name?: string | undefined;
+    companyId?: string;
+    id?: number;
+    logoName?: string;
+    name?: string;
 }

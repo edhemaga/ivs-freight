@@ -162,9 +162,9 @@
                 </ng-container>
                 <ng-container
                     *ngIf="
-                        type == 'categoryRepairFilter' ||
-                            type == 'pmFilter' ||
-                            type == 'truckFilter';
+                        type === 'categoryRepairFilter' ||
+                            type === 'pmFilter' ||
+                            type === 'truckFilter';
                         else truckFilter
                     "
                 >
@@ -181,8 +181,8 @@
                 <ng-template #truckFilter>
                     <ng-container
                         *ngIf="
-                            (type == 'truckFilter' ||
-                                type == 'trailerFilter') &&
+                            (type === 'truckFilter' ||
+                                type === 'trailerFilter') &&
                                 isRepairFilter;
                             else stateFilter
                         "
@@ -222,7 +222,7 @@
             </div>
             <ng-container
                 *ngIf="
-                    (type == 'truckFilter' || type == 'trailerFilter') &&
+                    (type === 'truckFilter' || type === 'trailerFilter') &&
                     isRepairFilter
                 "
             >
@@ -231,8 +231,8 @@
                     [class.hidenClass]="
                         !expandSearch &&
                         !(
-                            (type == 'truckFilter' ||
-                                type == 'trailerFilter') &&
+                            (type === 'truckFilter' ||
+                                type === 'trailerFilter') &&
                             isRepairFilter
                         )
                     "
@@ -255,7 +255,7 @@
                         *ngIf="
                             !searchInputValue.length &&
                             !(
-                                type == 'truckFilter' ||
+                                type === 'truckFilter' ||
                                 type === 'trailerFilter'
                             ) &&
                             !isRepairFilter

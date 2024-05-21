@@ -72,6 +72,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
+    public logoStateRoutes: string = 'assets/svg/common/states/ic_';
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private TruckTrailerService: TruckTrailerService,
@@ -305,11 +307,19 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
                     this.stateTypes = res.states.map((item) => {
                         return {
                             id: item.id,
-                            name: item.stateShortName,
+                            name:
+                                item.stateShortName +
+                                ' (' +
+                                item.stateName +
+                                ')',
                             stateName: item.stateName,
+                            folder: 'common',
+                            subFolder: 'states',
+                            logoName:
+                                item.stateName.toLowerCase().replace(' ', '_') +
+                                '.svg',
                         };
                     });
-
                     if (this.editData.type === 'edit-registration') {
                         this.disableCardAnimation = true;
                         this.editRegistrationById();

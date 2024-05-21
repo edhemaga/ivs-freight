@@ -251,7 +251,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log(res);
                 if (res?.filterType) {
                     if (res.action === TableStringEnum.SET) {
                         this.backFilterQuery.truckType = res.queryParams;
@@ -617,7 +616,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         data: TruckShortResponse
     ): { name: string; image: string }[] {
         const tableFeaturesArray: { name: string; image: string }[] = [];
-
         if (data?.doubleBunk) {
             tableFeaturesArray.push({
                 name: TruckTableStringEnum.DOUBLE_BANK,
@@ -666,7 +664,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 image: TruckTableStringEnum.DASH_CAM_IMG,
             });
         }
-
+        console.log(tableFeaturesArray);
         return tableFeaturesArray;
     }
     // TODO any type

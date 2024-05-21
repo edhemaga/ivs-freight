@@ -47,6 +47,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // constants
 import { DirectiveConstants } from '@shared/components/ta-filter/utils/constants/directive.constants';
 import { FilterConfigConstants } from '@shared/components/ta-filter/utils/constants/filter-config.constants';
+import { FilterIconsRoutesConstants } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
 
 // animations
 import { areaLeftSideAnimation } from '@shared/components/ta-filter/animations/area-left-side.animation';
@@ -816,7 +817,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'truck-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/trucks/' + type.logoName;
+                                FilterIconsRoutesConstants.truckSVG +
+                                type.logoName;
                             return type;
                         });
 
@@ -826,7 +828,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'trailer-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/trailers/' + type.logoName;
+                                FilterIconsRoutesConstants.trailerSVG +
+                                type.logoName;
                             return type;
                         });
                         this.trailerTypeArray = newData;
@@ -835,7 +838,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'repair-category-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/category/' + type.logo;
+                                FilterIconsRoutesConstants.categorySVG +
+                                type.logo;
                             return type;
                         });
                         this.categoryRepairArray = newData;
@@ -873,7 +877,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             const newData = res.data.pmTrucks.map(
                                 (type: any) => {
                                     type['icon'] =
-                                        'assets/svg/common/repair-pm/' +
+                                        FilterIconsRoutesConstants.repairPmSVG +
                                         type.logoName;
                                     type['name'] = type.title;
 
@@ -895,7 +899,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             const newData = res.data.pmTrailer.map(
                                 (type: any) => {
                                     type['icon'] =
-                                        'assets/svg/common/repair-pm/' +
+                                        FilterIconsRoutesConstants.repairPmSVG +
                                         type.logoName;
                                     type['name'] = type.title;
 
@@ -931,7 +935,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             newData = res.data?.map((type: any) => {
                                 type['name'] = type.truckType.name;
                                 type['logo'] =
-                                    'assets/svg/common/trucks/' +
+                                    FilterIconsRoutesConstants.truckSVG +
                                     type.truckType.logoName;
                                 return type;
                             });
