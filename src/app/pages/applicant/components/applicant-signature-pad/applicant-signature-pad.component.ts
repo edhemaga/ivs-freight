@@ -24,6 +24,7 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 @Component({
     selector: 'app-applicant-signature-pad',
@@ -55,6 +56,8 @@ export class ApplicantSignaturePadComponent
     public signatureImgSrcCopy: string | SafeResourceUrl = null;
 
     public displayActionButtons: boolean = false
+
+    public applicantSvgRoutes = ApplicantSvgRoutes;
 
 
     constructor(public imageBase64Service: ImageBase64Service) {}

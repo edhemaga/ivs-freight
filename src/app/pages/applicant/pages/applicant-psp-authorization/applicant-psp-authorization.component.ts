@@ -24,6 +24,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { PspAuthorizationFormFields } from '@pages/applicant/pages/applicant-psp-authorization/enums/psp-authorization-form-fields.enum';
 
 // models
 import {
@@ -55,7 +56,7 @@ import { ApplicantCardComponent } from '@pages/applicant/components/applicant-ca
 
         // components
         TaCheckboxComponent,
-        ApplicantCardComponent
+        ApplicantCardComponent,
     ],
 })
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
@@ -90,19 +91,27 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     ) {}
 
     get isAuthorizeFormControl() {
-        return this.pspAuthorizationForm.get('isAuthorize');
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_AUTHORIZE
+        );
     }
 
     get isFurtherUnderstandFormControl() {
-        return this.pspAuthorizationForm.get('isFurtherUnderstand');
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_FURTHER_UNDERSTAND
+        );
     }
 
     get isPspReportFormControl() {
-        return this.pspAuthorizationForm.get('isPspReport');
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_PSP_REPORT
+        );
     }
 
     get isDisclosureRegardingReportFormControl() {
-        return this.pspAuthorizationForm.get('isDisclosureRegardingReport');
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_DISCLOSURE_REGARDING_REPORT
+        );
     }
 
     ngOnInit(): void {

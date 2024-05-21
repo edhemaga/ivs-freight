@@ -30,7 +30,7 @@
         class="ta-upload-dropzone-label"
         [class.required]="isRequired && showRequired && !textChangeOverModal"
         [ngClass]="{
-            small: size == 'medium' && filesLength > 1 && modalSize == 'small',
+            small: size === 'medium' && filesLength > 1 && modalSize === 'small',
             'ta-upload-dropzone-column': dropzoneColumn
         }"
     >

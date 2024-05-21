@@ -4,11 +4,13 @@
     class="signature-pad-container"
     *ngIf="mode === 'APPLICANT_MODE' && !signatureImgSrc"
 >
-    <div class="canvas-container">
-        <div *ngIf="isSignautrePadEmpty" class="canvas-container-text">
-            <p class="ta-font-bold">CLICK HERE</p>
-            <p class="ta-font-semi-bold small-text">TO SIGN USING YOUR MOUSE</p>
-        </div>
+    <div class="d-flex flex-column justify-content-center align-items-center canvas-container">
+        <ng-container *ngIf="isSignautrePadEmpty">
+            <div class="canvas-container-text">
+                <p class="ta-font-bold">CLICK HERE</p>
+                <p class="ta-font-semi-bold small-text">TO SIGN USING YOUR MOUSE</p>
+            </div>
+        </ng-container>
         <signature-pad
             #signature
             [options]="signaturePadOptions"
@@ -92,7 +94,7 @@
         >
             <svg-icon
                 class="signature-icon"
-                src="assets/svg/common/ic_pen.svg"
+                [src]="applicantSvgRoutes.penIcon"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
             ></svg-icon>
         </div>
@@ -106,7 +108,7 @@
         >
             <svg-icon
                 class="signature-icon"
-                src="assets/svg/common/ic_trash.svg"
+                [src]="applicantSvgRoutes.trashIcon"
                 [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
             ></svg-icon>
         </div>

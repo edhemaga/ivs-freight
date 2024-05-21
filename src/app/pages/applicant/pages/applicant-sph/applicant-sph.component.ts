@@ -120,18 +120,12 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                 if (res && res.id == this.queryParamId) {
                     const personalInfo = res.personalInfo;
 
-                    // this.applicantCardInfo = {
-                    //     name: personalInfo?.fullName,
-                    //     ssn: personalInfo?.ssn,
-                    //     dob: MethodsCalculationsHelper.convertDateFromBackend(
-                    //         personalInfo?.doB
-                    //     ),
-                    // };
-
                     this.applicantCardInfo = {
                         fullName: personalInfo?.fullName,
-                        ssn: '123-45-6987',
-                        doB: '01/18/76',
+                        ssn: personalInfo?.ssn,
+                        doB: MethodsCalculationsHelper.convertDateFromBackend(
+                            personalInfo?.doB
+                        ),
                     };
 
                     this.applicantId = res.id;
@@ -233,7 +227,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
         const saveData: UpdateSphCommand = {
             applicantId: this.applicantId,
             authorize: isTested,
-            // hasReadAndUnderstood,
             signature:
                 this.selectedMode === SelectedMode.APPLICANT
                     ? this.signature
@@ -255,8 +248,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                                 sph: {
                                     ...store.applicant.sph,
                                     authorize: saveData.authorize,
-                                    // hasReadAndUnderstood:
-                                    //     saveData.hasReadAndUnderstood,
                                     signature: saveData.signature,
                                 },
                             },

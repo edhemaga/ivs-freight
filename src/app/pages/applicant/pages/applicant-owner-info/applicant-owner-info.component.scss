@@ -130,8 +130,8 @@
         }
 
         .truck-documents {
-            display: flex;
             gap: 10px;
+            
             .divider-truck {
                 width: 303px;
             }
@@ -147,7 +147,6 @@
 
         .add-trailer-container {
             width: 100%;
-            justify-content: space-between;
         }
 
         .add-truck-container,

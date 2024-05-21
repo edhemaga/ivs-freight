@@ -856,7 +856,7 @@
                                     <!-- ADD TRAILER -->
 
                                     <div
-                                        class="d-flex align-self-start add-trailer-container"
+                                        class="d-flex align-self-start add-trailer-container justify-content-between"
                                     >
                                         <div class="d-flex align-items-center">
                                             <app-ta-checkbox
@@ -1648,7 +1648,7 @@
 
                                     <!-- DIVIDER -->
 
-                                    <div class="truck-documents">
+                                    <div class="truck-documents d-flex">
                                         <div class="truck-licence">
                                             <div class="divider divider-truck"></div>
                                             <div
@@ -1761,27 +1761,30 @@
                                             Have trailer in your possession?
                                         </p>
 
-                                        <button 
-                                            *ngIf="!isAddTrailerSelected"  
-                                            class="btn-secondary"
-                                            (click)="toggleAddTrailer()"
-                                        >
-                                            Add trailer
-                                        </button>
+                                        <ng-template #addTrailer>
+                                            <button 
+                                                *ngIf="!isAddTrailerSelected"  
+                                                class="btn-secondary"
+                                                (click)="toggleAddTrailer()"
+                                            >
+                                                Add trailer
+                                            </button>
+                                        </ng-template>
 
-                                        <div
-                                            *ngIf="isAddTrailerSelected"
-                                            ngbTooltip
-                                            mainTooltip="Delete"
-                                            position="top"
-                                            tooltipBackground="#EF5350"
-                                            class="common-fake-table-delete"
-                                            (click)="toggleAddTrailer()"
-                                        >
-                                            <svg-icon
-                                                src="assets/svg/common/ic_trash.svg"
-                                            ></svg-icon>
-                                        </div>
+                                        <ng-container *ngIf="isAddTrailerSelected else addTrailer">
+                                            <div
+                                                ngbTooltip
+                                                mainTooltip="Delete"
+                                                position="top"
+                                                tooltipBackground="#EF5350"
+                                                class="common-fake-table-delete"
+                                                (click)="toggleAddTrailer()"
+                                            >
+                                                <svg-icon
+                                                    [src]="applicantSvgRoutes.trashIcon"
+                                                ></svg-icon>
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- TYPE, LENGTH, YEAR, VIN -->
@@ -2174,7 +2177,7 @@
 
                                     <!-- TRAILER LICENCE AND INSPECTION  --> 
 
-                                    <div class="truck-documents">
+                                    <div class="truck-documents d-flex">
                                         <div class="truck-licence">
                                             <div class="divider divider-truck"></div>
                                             <div

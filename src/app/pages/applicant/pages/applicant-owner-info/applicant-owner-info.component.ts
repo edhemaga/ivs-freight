@@ -81,6 +81,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 //modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 @Component({
     selector: 'app-owner-info',
@@ -291,6 +292,8 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public stepFeedbackValues: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public applicantSvgRoutes = ApplicantSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
