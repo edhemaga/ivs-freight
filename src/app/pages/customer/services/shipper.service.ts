@@ -204,7 +204,7 @@ export class ShipperService implements OnDestroy {
     public deleteShipperList(ids: number[]): Observable<void> {
         return this.shipperService.apiShipperListDelete(ids).pipe(
             tap(() => {
-                let storeShippers = this.shipperMinimalQuery.getAll();
+                const storeShippers = this.shipperMinimalQuery.getAll();
 
                 storeShippers.map((shipper: any) => {
                     ids.map((d) => {
@@ -521,7 +521,6 @@ export class ShipperService implements OnDestroy {
         return this.shipperService.apiShipperStatusIdPut(id).pipe(
             switchMap(() => this.getShipperById(id)),
             tap((shipper) => {
-                console.log('changeShipperStatus getShipperById', shipper);
                 const shipperId = id;
                 const shipperData = {
                     ...this.shipperDetailsStore?.getValue()?.entities[
@@ -554,10 +553,6 @@ export class ShipperService implements OnDestroy {
                 tap(() => {
                     this.getShippersList().subscribe({
                         next: (shippersList) => {
-                            console.log(
-                                'shippersList',
-                                shippersList.pagination.data
-                            );
                             shippersList.pagination.data.map((shipper) => {
                                 const shipperId = shipper.id;
                                 const shipperData = {

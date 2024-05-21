@@ -3,23 +3,19 @@
 .contact-container {
     width: fit-content;
     height: 26px;
-    display: flex;
     padding: 4px;
     border-radius: 2px;
 
     .contact-count {
         width: fit-content;
         min-width: 16px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-size: 11px;
         line-height: 14px;
         color: $ta-black;
 
         &::selection {
             color: $muted;
-            background: #91919120;
+            background: $dark-4;
         }
     }
 
@@ -52,4 +48,167 @@
             }
         }
     }
+}
+
+.customer-contacts-dropdown-container {
+    .table-inner {
+        .plus-icon {
+            width: 18px;
+            border-radius: 1px;
+
+            svg {
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+                background: $ta-blue-20;
+
+                svg {
+                    path {
+                        fill: $ta-blue-5;
+                    }
+                }
+            }
+        }
+
+        .input-holder input {
+            border-radius: 2px;
+        }
+
+        .contact-items .ta-custom-card {
+            .ta-card-header:hover {
+                .header-content {
+                    .header-text {
+                        color: $white !important;
+                    }
+                }
+            } 
+    
+            .ta-card-body .content-holder {
+                margin: 0px !important;
+            }
+        }
+    } 
+
+    .copy-text {
+        color: $white !important;
+    }
+
+    .contact-item {
+        position: relative;
+        padding: 4px;
+        border-radius: 2px;
+        transition: 0.2s;
+
+        .contact-data {
+            height: 0;
+            overflow: hidden;
+            transition: height 0.2s;
+    
+            .phone-ext {
+                color: $bw5;
+            }
+        }
+
+        .arrow-icon {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: none;
+            transition: all 0.3s ease-in-out;
+
+            &.rotate-arrow {
+                transform: rotate(180deg);
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: $ta-light-grey-2;
+                    }
+                }
+            }
+        }
+
+        .action-icons-container {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            display: none;
+
+            .edit-icon {
+                width: 18px;
+                height: 18px;
+                border-radius: 1px;
+
+                svg {
+                    path {
+                        fill: $bw5;
+                    }
+                }
+
+                &:hover {
+                    background: $bw6-2;
+
+                    svg {
+                        path {
+                            fill: $bw-9;
+                        }
+                    }
+                }
+            }
+            
+            .delete-icon {
+                width: 18px;
+                height: 18px;
+                border-radius: 1px;
+
+                svg {
+                    path {
+                        fill: $bw5;
+                    }
+                }
+
+                &:hover {
+                    background: $ta-red-16;
+
+                    svg {
+                        path {
+                            fill: $ta-red-15;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.expanded {
+            &:hover {
+                .action-icons-container {
+                    display: flex;
+                }
+
+                .arrow-icon {
+                    display: none !important;
+                }
+            }
+        }
+
+        &:hover {
+            background: $ta-black;
+            cursor: pointer;
+
+            .arrow-icon {
+                display: flex;
+            }
+        }
+    }
+}
+
+.highlighted-text {
+    color: $ta-blue-19;
+    background: $ta-blue-20;
+    padding: 0;
 }

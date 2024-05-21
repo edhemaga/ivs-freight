@@ -953,6 +953,32 @@ export class TaTableBodyComponent
         });
     }
 
+    // Contacts dropdown actions
+    public onAddContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.ADD_CONTACT,
+        });
+    }
+
+    public onEditContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.EDIT_CONTACT,
+        });
+    }
+
+    public onDeleteContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.DELTETE_CONTACT,
+        });
+    }
+
+    // Label actions
     public onSaveLabel(
         data: { data: { name: string; action: string } },
         index: number

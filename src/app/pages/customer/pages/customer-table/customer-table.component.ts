@@ -231,6 +231,11 @@ export class CustomerTableComponent
                         if (this.selectedTab === TableStringEnum.INACTIVE)
                             this.changeBussinesStatusShipper(res.data);
                         break;
+                    case TableStringEnum.DELETE:
+                        if (this.selectedTab === TableStringEnum.ACTIVE)
+                            this.deleteBrokerById(res.id);
+                        else this.deleteShipperById(res.id);
+                        break;
                     default:
                         break;
                 }
@@ -324,6 +329,63 @@ export class CustomerTableComponent
                             broker.actionAnimation =
                                 TableStringEnum.DELETE_MULTIPLE;
                     });
+
+                    return broker;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    public deleteShipperById(id: number): void {
+        this.shipperService
+            .deleteShipperById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((shipper) => {
+                    if (shipper.id === id)
+                        shipper.actionAnimation = TableStringEnum.DELETE;
+
+                    return shipper;
+                });
+
+                this.updateDataCount();
+
+                const interval = setInterval(() => {
+                    this.viewData = MethodsGlobalHelper.closeAnimationAction(
+                        true,
+                        this.viewData
+                    );
+                    this.tableData[0].data = this.viewData;
+
+                    clearInterval(interval);
+                }, 900);
+
+                this.tableService.sendRowsSelected([]);
+                this.tableService.sendResetSelectedColumns(true);
+            });
+    }
+
+    public deleteBrokerById(id: number): void {
+        this.brokerService
+            .deleteBrokerById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.viewData = this.viewData.map((broker) => {
+                    if (broker.id === id)
+                        broker.actionAnimation = TableStringEnum.DELETE;
 
                     return broker;
                 });
@@ -1486,6 +1548,8 @@ export class CustomerTableComponent
         } else if (
             event.type === TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER ||
             event.type === TableStringEnum.ADD_CONTRACT ||
+            event.type === TableStringEnum.EDIT_CONTACT ||
+            event.type === TableStringEnum.DELTETE_CONTACT ||
             event.type === TableStringEnum.WRITE_REVIEW
         ) {
             // Edit Broker Call Modal
@@ -1500,7 +1564,9 @@ export class CustomerTableComponent
                         bfbButton: true,
                         tab: 3,
                         openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT
+                            event.type === TableStringEnum.ADD_CONTRACT ||
+                            event.type === TableStringEnum.EDIT_CONTACT ||
+                            event.type === TableStringEnum.DELTETE_CONTACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
                                 ? TableStringEnum.REVIEW
@@ -1629,48 +1695,6 @@ export class CustomerTableComponent
                             : ConfirmationModalStringEnum.DELETE_SHIPPER,
                 }
             );
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
-                this.confiramtionService.confirmationData$.subscribe(
-                    (response) => {
-                        if (response.type === TableStringEnum.DELETE) {
-                            this.brokerService
-                                .deleteBrokerById(event.id)
-                                .pipe(takeUntil(this.destroy$))
-                                .subscribe(() => {
-                                    this.viewData = this.viewData.map(
-                                        (broker) => {
-                                            if (broker.id === event.id)
-                                                broker.actionAnimation =
-                                                    TableStringEnum.DELETE;
-
-                                            return broker;
-                                        }
-                                    );
-
-                                    this.updateDataCount();
-
-                                    const interval = setInterval(() => {
-                                        this.viewData =
-                                            MethodsGlobalHelper.closeAnimationAction(
-                                                true,
-                                                this.viewData
-                                            );
-
-                                        clearInterval(interval);
-                                    }, 900);
-                                });
-                        }
-                    }
-                );
-            } else {
-                this.confiramtionService.confirmationData$.subscribe(
-                    (response) => {
-                        if (response.type === TableStringEnum.DELETE) {
-                            this.deleteShipperList([event.id]);
-                        }
-                    }
-                );
-            }
         }
         // Raiting
         else if (event.type === TableStringEnum.RATING) {

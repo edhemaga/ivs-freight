@@ -3145,6 +3145,15 @@
                                                 [contactsData]="
                                                     row[column.field]
                                                 "
+                                                (onAddButton)="
+                                                    onAddContact(row)
+                                                "
+                                                (onEditButton)="
+                                                    onEditContact(row)
+                                                "
+                                                (onDeleteButton)="
+                                                    onDeleteContact(row)
+                                                "
                                             ></app-ta-input-dropdown-contacts>
                                         </ng-container>
                                     </div>

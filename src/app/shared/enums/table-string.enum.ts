@@ -375,6 +375,8 @@ export enum TableStringEnum {
     // Contact
     DELTETE_CONTACT = 'delete-contact',
     CONTACT = 'contact',
+    ADD_CONTACT = 'add-contact',
+    EDIT_CONTACT = 'edit-contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

@@ -53,7 +53,10 @@ export class TaCopyComponent implements OnInit {
     ngOnInit(): void {}
 
     /* To copy any Text */
-    public copyText(val: any) {
+    public copyText(event: Event, val: any) {
+        event.stopPropagation();
+        event.preventDefault();
+
         this.textCopied = true;
         if (this.arrayText) {
             val = this.copyValue[0] + this.copyValue[1];
