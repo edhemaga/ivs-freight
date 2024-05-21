@@ -23,12 +23,12 @@
     }
 
     .info-container {
-        width: 820px;
+        width: 616px;
 
         p {
             font-size: 14px;
-            line-height: 22px;
-            margin-bottom: 22px !important;
+            line-height: 18px;
+            margin-bottom: 16px !important;
 
             &::-moz-selection {
                 color: $bw6-2;
@@ -51,15 +51,6 @@
                     background: rgb(108, 108, 108, 0.2);
                 }
             }
-
-            &:nth-child(1) {
-                margin-bottom: 12px !important;
-            }
-
-            &:nth-child(3),
-            &:nth-child(4) {
-                margin-bottom: 6px !important;
-            }
         }
 
         .title-container {
@@ -67,7 +58,7 @@
 
             h3 {
                 font-size: 14px;
-                margin-bottom: 6px !important;
+                margin-bottom: 16px !important;
 
                 &::-moz-selection {
                     color: $bw6-2;

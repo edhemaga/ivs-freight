@@ -19,6 +19,8 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
+import { CheckDriverBySsnResponse } from '../model/checkDriverBySsnResponse';
+// @ts-ignore
 import { CreateOffDutyLocationCommand } from '../model/createOffDutyLocationCommand';
 // @ts-ignore
 import { CreateTagCommand } from '../model/createTagCommand';
@@ -269,9 +271,9 @@ export class DriverService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<boolean>;
-    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<boolean>>;
-    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<boolean>>;
+    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CheckDriverBySsnResponse>;
+    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CheckDriverBySsnResponse>>;
+    public apiDriverCheckSsnSsnGet(ssn: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CheckDriverBySsnResponse>>;
     public apiDriverCheckSsnSsnGet(ssn: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
         if (ssn === null || ssn === undefined) {
             throw new Error('Required parameter ssn was null or undefined when calling apiDriverCheckSsnSsnGet.');
@@ -318,7 +320,7 @@ export class DriverService {
         }
 
         let localVarPath = `/api/driver/check/ssn/${this.configuration.encodeParam({name: "ssn", value: ssn, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CheckDriverBySsnResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -977,13 +979,20 @@ export class DriverService {
     }
 
     /**
+     * @param driverId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetDriverModalResponse>;
-    public apiDriverModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetDriverModalResponse>>;
-    public apiDriverModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetDriverModalResponse>>;
-    public apiDriverModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDriverModalGet(driverId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetDriverModalResponse>;
+    public apiDriverModalGet(driverId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetDriverModalResponse>>;
+    public apiDriverModalGet(driverId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetDriverModalResponse>>;
+    public apiDriverModalGet(driverId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (driverId !== undefined && driverId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>driverId, 'DriverId');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1029,6 +1038,7 @@ export class DriverService {
         return this.httpClient.request<GetDriverModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1116,8 +1126,10 @@ export class DriverService {
     /**
      * @param firstName 
      * @param lastName 
+     * @param dateOfBirth 
      * @param phone 
      * @param email 
+     * @param ssn 
      * @param addressCity 
      * @param addressState 
      * @param addressCounty 
@@ -1128,16 +1140,14 @@ export class DriverService {
      * @param addressZipCode 
      * @param addressStateShortName 
      * @param addressAddressUnit 
-     * @param dateOfBirth 
-     * @param ssn 
-     * @param mvrExpiration 
-     * @param longitude 
-     * @param latitude 
-     * @param bankId 
-     * @param account 
-     * @param routing 
+     * @param isOwner 
+     * @param ownerType 
+     * @param ownerId 
+     * @param driverType 
+     * @param useCarrieraAch 
      * @param payType 
-     * @param useTruckAssistAch 
+     * @param soloDriver 
+     * @param teamDriver 
      * @param soloEmptyMile 
      * @param soloLoadedMile 
      * @param soloPerStop 
@@ -1145,43 +1155,40 @@ export class DriverService {
      * @param teamLoadedMile 
      * @param teamPerStop 
      * @param fleetType 
-     * @param soloDriver 
-     * @param teamDriver 
+     * @param bankId 
+     * @param account 
+     * @param routing 
      * @param perMileSolo 
      * @param perMileTeam 
      * @param commissionSolo 
      * @param commissionTeam 
-     * @param soloFlatRate 
-     * @param teamFlatRate 
-     * @param isOwner 
-     * @param ownerId 
-     * @param ownerType 
-     * @param ein 
-     * @param bussinesName 
+     * @param flatRateSolo 
+     * @param flatRateTeam 
      * @param offDutyLocations 
      * @param emergencyContactName 
      * @param emergencyContactPhone 
      * @param emergencyContactRelationship 
+     * @param files 
+     * @param tags 
      * @param note 
      * @param avatar 
      * @param twic 
      * @param twicExpDate 
-     * @param fuelCard 
+     * @param fuelCardIds 
+     * @param mvrExpiration 
      * @param generalMailNotification 
      * @param generalPushNotification 
      * @param generalSmsNotification 
      * @param payrollMailNotification 
      * @param payrollPushNotification 
      * @param payrollSmsNotification 
-     * @param files 
-     * @param tags 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverPost(firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, soloFlatRate?: number, teamFlatRate?: number, isOwner?: boolean, ownerId?: number, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiDriverPost(firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, soloFlatRate?: number, teamFlatRate?: number, isOwner?: boolean, ownerId?: number, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiDriverPost(firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, soloFlatRate?: number, teamFlatRate?: number, isOwner?: boolean, ownerId?: number, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiDriverPost(firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, soloFlatRate?: number, teamFlatRate?: number, isOwner?: boolean, ownerId?: number, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDriverPost(firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiDriverPost(firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiDriverPost(firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiDriverPost(firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<CreateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1236,11 +1243,17 @@ export class DriverService {
         if (lastName !== undefined) {
             localVarFormParams = localVarFormParams.append('LastName', <any>lastName) as any || localVarFormParams;
         }
+        if (dateOfBirth !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateOfBirth', <any>dateOfBirth) as any || localVarFormParams;
+        }
         if (phone !== undefined) {
             localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
         }
         if (email !== undefined) {
             localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (ssn !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
         }
         if (addressCity !== undefined) {
             localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
@@ -1272,35 +1285,29 @@ export class DriverService {
         if (addressAddressUnit !== undefined) {
             localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
         }
-        if (dateOfBirth !== undefined) {
-            localVarFormParams = localVarFormParams.append('DateOfBirth', <any>dateOfBirth) as any || localVarFormParams;
+        if (isOwner !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsOwner', <any>isOwner) as any || localVarFormParams;
         }
-        if (ssn !== undefined) {
-            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
+        if (ownerType !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
         }
-        if (mvrExpiration !== undefined) {
-            localVarFormParams = localVarFormParams.append('MvrExpiration', <any>mvrExpiration) as any || localVarFormParams;
+        if (ownerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
         }
-        if (longitude !== undefined) {
-            localVarFormParams = localVarFormParams.append('Longitude', <any>longitude) as any || localVarFormParams;
+        if (driverType !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverType', <any>driverType) as any || localVarFormParams;
         }
-        if (latitude !== undefined) {
-            localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
-        }
-        if (bankId !== undefined) {
-            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
-        }
-        if (account !== undefined) {
-            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
-        }
-        if (routing !== undefined) {
-            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
+        if (useCarrieraAch !== undefined) {
+            localVarFormParams = localVarFormParams.append('UseCarrieraAch', <any>useCarrieraAch) as any || localVarFormParams;
         }
         if (payType !== undefined) {
             localVarFormParams = localVarFormParams.append('PayType', <any>payType) as any || localVarFormParams;
         }
-        if (useTruckAssistAch !== undefined) {
-            localVarFormParams = localVarFormParams.append('UseTruckAssistAch', <any>useTruckAssistAch) as any || localVarFormParams;
+        if (soloDriver !== undefined) {
+            localVarFormParams = localVarFormParams.append('SoloDriver', <any>soloDriver) as any || localVarFormParams;
+        }
+        if (teamDriver !== undefined) {
+            localVarFormParams = localVarFormParams.append('TeamDriver', <any>teamDriver) as any || localVarFormParams;
         }
         if (soloEmptyMile !== undefined) {
             localVarFormParams = localVarFormParams.append('Solo.EmptyMile', <any>soloEmptyMile) as any || localVarFormParams;
@@ -1323,11 +1330,14 @@ export class DriverService {
         if (fleetType !== undefined) {
             localVarFormParams = localVarFormParams.append('FleetType', <any>fleetType) as any || localVarFormParams;
         }
-        if (soloDriver !== undefined) {
-            localVarFormParams = localVarFormParams.append('SoloDriver', <any>soloDriver) as any || localVarFormParams;
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
         }
-        if (teamDriver !== undefined) {
-            localVarFormParams = localVarFormParams.append('TeamDriver', <any>teamDriver) as any || localVarFormParams;
+        if (account !== undefined) {
+            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
+        }
+        if (routing !== undefined) {
+            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
         }
         if (perMileSolo !== undefined) {
             localVarFormParams = localVarFormParams.append('PerMileSolo', <any>perMileSolo) as any || localVarFormParams;
@@ -1341,26 +1351,11 @@ export class DriverService {
         if (commissionTeam !== undefined) {
             localVarFormParams = localVarFormParams.append('CommissionTeam', <any>commissionTeam) as any || localVarFormParams;
         }
-        if (soloFlatRate !== undefined) {
-            localVarFormParams = localVarFormParams.append('SoloFlatRate', <any>soloFlatRate) as any || localVarFormParams;
+        if (flatRateSolo !== undefined) {
+            localVarFormParams = localVarFormParams.append('FlatRateSolo', <any>flatRateSolo) as any || localVarFormParams;
         }
-        if (teamFlatRate !== undefined) {
-            localVarFormParams = localVarFormParams.append('TeamFlatRate', <any>teamFlatRate) as any || localVarFormParams;
-        }
-        if (isOwner !== undefined) {
-            localVarFormParams = localVarFormParams.append('IsOwner', <any>isOwner) as any || localVarFormParams;
-        }
-        if (ownerId !== undefined) {
-            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
-        }
-        if (ownerType !== undefined) {
-            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
-        }
-        if (ein !== undefined) {
-            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
-        }
-        if (bussinesName !== undefined) {
-            localVarFormParams = localVarFormParams.append('BussinesName', <any>bussinesName) as any || localVarFormParams;
+        if (flatRateTeam !== undefined) {
+            localVarFormParams = localVarFormParams.append('FlatRateTeam', <any>flatRateTeam) as any || localVarFormParams;
         }
         if (offDutyLocations) {
             offDutyLocations.forEach((element) => {
@@ -1376,6 +1371,16 @@ export class DriverService {
         if (emergencyContactRelationship !== undefined) {
             localVarFormParams = localVarFormParams.append('EmergencyContactRelationship', <any>emergencyContactRelationship) as any || localVarFormParams;
         }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (tags) {
+            tags.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
+            })
+        }
         if (note !== undefined) {
             localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
         }
@@ -1388,8 +1393,13 @@ export class DriverService {
         if (twicExpDate !== undefined) {
             localVarFormParams = localVarFormParams.append('TwicExpDate', <any>twicExpDate) as any || localVarFormParams;
         }
-        if (fuelCard !== undefined) {
-            localVarFormParams = localVarFormParams.append('FuelCard', <any>fuelCard) as any || localVarFormParams;
+        if (fuelCardIds) {
+            fuelCardIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FuelCardIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (mvrExpiration !== undefined) {
+            localVarFormParams = localVarFormParams.append('MvrExpiration', <any>mvrExpiration) as any || localVarFormParams;
         }
         if (generalMailNotification !== undefined) {
             localVarFormParams = localVarFormParams.append('General.MailNotification', <any>generalMailNotification) as any || localVarFormParams;
@@ -1408,16 +1418,6 @@ export class DriverService {
         }
         if (payrollSmsNotification !== undefined) {
             localVarFormParams = localVarFormParams.append('Payroll.SmsNotification', <any>payrollSmsNotification) as any || localVarFormParams;
-        }
-        if (files) {
-            files.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (tags) {
-            tags.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
-            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -1449,8 +1449,10 @@ export class DriverService {
      * @param id 
      * @param firstName 
      * @param lastName 
+     * @param dateOfBirth 
      * @param phone 
      * @param email 
+     * @param ssn 
      * @param addressCity 
      * @param addressState 
      * @param addressCounty 
@@ -1461,16 +1463,14 @@ export class DriverService {
      * @param addressZipCode 
      * @param addressStateShortName 
      * @param addressAddressUnit 
-     * @param dateOfBirth 
-     * @param ssn 
-     * @param mvrExpiration 
-     * @param longitude 
-     * @param latitude 
-     * @param bankId 
-     * @param account 
-     * @param routing 
+     * @param isOwner 
+     * @param ownerType 
+     * @param ownerId 
+     * @param driverType 
+     * @param useCarrieraAch 
      * @param payType 
-     * @param useTruckAssistAch 
+     * @param soloDriver 
+     * @param teamDriver 
      * @param soloEmptyMile 
      * @param soloLoadedMile 
      * @param soloPerStop 
@@ -1478,44 +1478,41 @@ export class DriverService {
      * @param teamLoadedMile 
      * @param teamPerStop 
      * @param fleetType 
-     * @param soloDriver 
-     * @param teamDriver 
-     * @param commissionSolo 
-     * @param commissionTeam 
+     * @param bankId 
+     * @param account 
+     * @param routing 
      * @param perMileSolo 
      * @param perMileTeam 
-     * @param soloFlatRate 
-     * @param teamFlatRate 
-     * @param ownerId 
-     * @param isOwner 
-     * @param ownerType 
-     * @param ein 
-     * @param bussinesName 
+     * @param commissionSolo 
+     * @param commissionTeam 
+     * @param flatRateSolo 
+     * @param flatRateTeam 
      * @param offDutyLocations 
      * @param emergencyContactName 
      * @param emergencyContactPhone 
      * @param emergencyContactRelationship 
+     * @param files 
+     * @param tags 
+     * @param filesForDeleteIds 
      * @param note 
      * @param avatar 
      * @param twic 
      * @param twicExpDate 
-     * @param fuelCard 
+     * @param fuelCardIds 
+     * @param mvrExpiration 
      * @param generalMailNotification 
      * @param generalPushNotification 
      * @param generalSmsNotification 
      * @param payrollMailNotification 
      * @param payrollPushNotification 
      * @param payrollSmsNotification 
-     * @param files 
-     * @param tags 
-     * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDriverPut(id?: number, firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, commissionSolo?: number, commissionTeam?: number, perMileSolo?: number, perMileTeam?: number, soloFlatRate?: number, teamFlatRate?: number, ownerId?: number, isOwner?: boolean, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiDriverPut(id?: number, firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, commissionSolo?: number, commissionTeam?: number, perMileSolo?: number, perMileTeam?: number, soloFlatRate?: number, teamFlatRate?: number, ownerId?: number, isOwner?: boolean, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiDriverPut(id?: number, firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, commissionSolo?: number, commissionTeam?: number, perMileSolo?: number, perMileTeam?: number, soloFlatRate?: number, teamFlatRate?: number, ownerId?: number, isOwner?: boolean, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiDriverPut(id?: number, firstName?: string, lastName?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, dateOfBirth?: string, ssn?: string, mvrExpiration?: number, longitude?: number, latitude?: number, bankId?: number, account?: string, routing?: string, payType?: number, useTruckAssistAch?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, soloDriver?: boolean, teamDriver?: boolean, commissionSolo?: number, commissionTeam?: number, perMileSolo?: number, perMileTeam?: number, soloFlatRate?: number, teamFlatRate?: number, ownerId?: number, isOwner?: boolean, ownerType?: OwnerType, ein?: string, bussinesName?: string, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCard?: string, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiDriverPut(id?: number, firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiDriverPut(id?: number, firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiDriverPut(id?: number, firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiDriverPut(id?: number, firstName?: string, lastName?: string, dateOfBirth?: string, phone?: string, email?: string, ssn?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, isOwner?: boolean, ownerType?: OwnerType, ownerId?: number, driverType?: number, useCarrieraAch?: boolean, payType?: number, soloDriver?: boolean, teamDriver?: boolean, soloEmptyMile?: number, soloLoadedMile?: number, soloPerStop?: number, teamEmptyMile?: number, teamLoadedMile?: number, teamPerStop?: number, fleetType?: FleetType, bankId?: number, account?: string, routing?: string, perMileSolo?: number, perMileTeam?: number, commissionSolo?: number, commissionTeam?: number, flatRateSolo?: number, flatRateTeam?: number, offDutyLocations?: Array<UpdateOffDutyLocationCommand>, emergencyContactName?: string, emergencyContactPhone?: string, emergencyContactRelationship?: string, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, note?: string, avatar?: string, twic?: boolean, twicExpDate?: string, fuelCardIds?: Array<number>, mvrExpiration?: number, generalMailNotification?: boolean, generalPushNotification?: boolean, generalSmsNotification?: boolean, payrollMailNotification?: boolean, payrollPushNotification?: boolean, payrollSmsNotification?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -1573,11 +1570,17 @@ export class DriverService {
         if (lastName !== undefined) {
             localVarFormParams = localVarFormParams.append('LastName', <any>lastName) as any || localVarFormParams;
         }
+        if (dateOfBirth !== undefined) {
+            localVarFormParams = localVarFormParams.append('DateOfBirth', <any>dateOfBirth) as any || localVarFormParams;
+        }
         if (phone !== undefined) {
             localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
         }
         if (email !== undefined) {
             localVarFormParams = localVarFormParams.append('Email', <any>email) as any || localVarFormParams;
+        }
+        if (ssn !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
         }
         if (addressCity !== undefined) {
             localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
@@ -1609,35 +1612,29 @@ export class DriverService {
         if (addressAddressUnit !== undefined) {
             localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
         }
-        if (dateOfBirth !== undefined) {
-            localVarFormParams = localVarFormParams.append('DateOfBirth', <any>dateOfBirth) as any || localVarFormParams;
+        if (isOwner !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsOwner', <any>isOwner) as any || localVarFormParams;
         }
-        if (ssn !== undefined) {
-            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
+        if (ownerType !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
         }
-        if (mvrExpiration !== undefined) {
-            localVarFormParams = localVarFormParams.append('MvrExpiration', <any>mvrExpiration) as any || localVarFormParams;
+        if (ownerId !== undefined) {
+            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
         }
-        if (longitude !== undefined) {
-            localVarFormParams = localVarFormParams.append('Longitude', <any>longitude) as any || localVarFormParams;
+        if (driverType !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverType', <any>driverType) as any || localVarFormParams;
         }
-        if (latitude !== undefined) {
-            localVarFormParams = localVarFormParams.append('Latitude', <any>latitude) as any || localVarFormParams;
-        }
-        if (bankId !== undefined) {
-            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
-        }
-        if (account !== undefined) {
-            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
-        }
-        if (routing !== undefined) {
-            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
+        if (useCarrieraAch !== undefined) {
+            localVarFormParams = localVarFormParams.append('UseCarrieraAch', <any>useCarrieraAch) as any || localVarFormParams;
         }
         if (payType !== undefined) {
             localVarFormParams = localVarFormParams.append('PayType', <any>payType) as any || localVarFormParams;
         }
-        if (useTruckAssistAch !== undefined) {
-            localVarFormParams = localVarFormParams.append('UseTruckAssistAch', <any>useTruckAssistAch) as any || localVarFormParams;
+        if (soloDriver !== undefined) {
+            localVarFormParams = localVarFormParams.append('SoloDriver', <any>soloDriver) as any || localVarFormParams;
+        }
+        if (teamDriver !== undefined) {
+            localVarFormParams = localVarFormParams.append('TeamDriver', <any>teamDriver) as any || localVarFormParams;
         }
         if (soloEmptyMile !== undefined) {
             localVarFormParams = localVarFormParams.append('Solo.EmptyMile', <any>soloEmptyMile) as any || localVarFormParams;
@@ -1660,17 +1657,14 @@ export class DriverService {
         if (fleetType !== undefined) {
             localVarFormParams = localVarFormParams.append('FleetType', <any>fleetType) as any || localVarFormParams;
         }
-        if (soloDriver !== undefined) {
-            localVarFormParams = localVarFormParams.append('SoloDriver', <any>soloDriver) as any || localVarFormParams;
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
         }
-        if (teamDriver !== undefined) {
-            localVarFormParams = localVarFormParams.append('TeamDriver', <any>teamDriver) as any || localVarFormParams;
+        if (account !== undefined) {
+            localVarFormParams = localVarFormParams.append('Account', <any>account) as any || localVarFormParams;
         }
-        if (commissionSolo !== undefined) {
-            localVarFormParams = localVarFormParams.append('CommissionSolo', <any>commissionSolo) as any || localVarFormParams;
-        }
-        if (commissionTeam !== undefined) {
-            localVarFormParams = localVarFormParams.append('CommissionTeam', <any>commissionTeam) as any || localVarFormParams;
+        if (routing !== undefined) {
+            localVarFormParams = localVarFormParams.append('Routing', <any>routing) as any || localVarFormParams;
         }
         if (perMileSolo !== undefined) {
             localVarFormParams = localVarFormParams.append('PerMileSolo', <any>perMileSolo) as any || localVarFormParams;
@@ -1678,26 +1672,17 @@ export class DriverService {
         if (perMileTeam !== undefined) {
             localVarFormParams = localVarFormParams.append('PerMileTeam', <any>perMileTeam) as any || localVarFormParams;
         }
-        if (soloFlatRate !== undefined) {
-            localVarFormParams = localVarFormParams.append('SoloFlatRate', <any>soloFlatRate) as any || localVarFormParams;
+        if (commissionSolo !== undefined) {
+            localVarFormParams = localVarFormParams.append('CommissionSolo', <any>commissionSolo) as any || localVarFormParams;
         }
-        if (teamFlatRate !== undefined) {
-            localVarFormParams = localVarFormParams.append('TeamFlatRate', <any>teamFlatRate) as any || localVarFormParams;
+        if (commissionTeam !== undefined) {
+            localVarFormParams = localVarFormParams.append('CommissionTeam', <any>commissionTeam) as any || localVarFormParams;
         }
-        if (ownerId !== undefined) {
-            localVarFormParams = localVarFormParams.append('OwnerId', <any>ownerId) as any || localVarFormParams;
+        if (flatRateSolo !== undefined) {
+            localVarFormParams = localVarFormParams.append('FlatRateSolo', <any>flatRateSolo) as any || localVarFormParams;
         }
-        if (isOwner !== undefined) {
-            localVarFormParams = localVarFormParams.append('IsOwner', <any>isOwner) as any || localVarFormParams;
-        }
-        if (ownerType !== undefined) {
-            localVarFormParams = localVarFormParams.append('OwnerType', <any>ownerType) as any || localVarFormParams;
-        }
-        if (ein !== undefined) {
-            localVarFormParams = localVarFormParams.append('Ein', <any>ein) as any || localVarFormParams;
-        }
-        if (bussinesName !== undefined) {
-            localVarFormParams = localVarFormParams.append('BussinesName', <any>bussinesName) as any || localVarFormParams;
+        if (flatRateTeam !== undefined) {
+            localVarFormParams = localVarFormParams.append('FlatRateTeam', <any>flatRateTeam) as any || localVarFormParams;
         }
         if (offDutyLocations) {
             offDutyLocations.forEach((element) => {
@@ -1713,6 +1698,21 @@ export class DriverService {
         if (emergencyContactRelationship !== undefined) {
             localVarFormParams = localVarFormParams.append('EmergencyContactRelationship', <any>emergencyContactRelationship) as any || localVarFormParams;
         }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (tags) {
+            tags.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
         if (note !== undefined) {
             localVarFormParams = localVarFormParams.append('Note', <any>note) as any || localVarFormParams;
         }
@@ -1725,8 +1725,13 @@ export class DriverService {
         if (twicExpDate !== undefined) {
             localVarFormParams = localVarFormParams.append('TwicExpDate', <any>twicExpDate) as any || localVarFormParams;
         }
-        if (fuelCard !== undefined) {
-            localVarFormParams = localVarFormParams.append('FuelCard', <any>fuelCard) as any || localVarFormParams;
+        if (fuelCardIds) {
+            fuelCardIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FuelCardIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (mvrExpiration !== undefined) {
+            localVarFormParams = localVarFormParams.append('MvrExpiration', <any>mvrExpiration) as any || localVarFormParams;
         }
         if (generalMailNotification !== undefined) {
             localVarFormParams = localVarFormParams.append('General.MailNotification', <any>generalMailNotification) as any || localVarFormParams;
@@ -1745,21 +1750,6 @@ export class DriverService {
         }
         if (payrollSmsNotification !== undefined) {
             localVarFormParams = localVarFormParams.append('Payroll.SmsNotification', <any>payrollSmsNotification) as any || localVarFormParams;
-        }
-        if (files) {
-            files.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (tags) {
-            tags.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Tags', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (filesForDeleteIds) {
-            filesForDeleteIds.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
-            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';

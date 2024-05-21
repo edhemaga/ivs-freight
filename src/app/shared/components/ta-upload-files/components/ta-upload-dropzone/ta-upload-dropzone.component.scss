@@ -168,6 +168,17 @@
                 }
             }
         }
+
+        &.ta-upload-dropzone-column {
+            flex-direction: column;
+            
+            .ta-upload-dropzone-text {
+                margin-left: unset;
+                left: unset;
+                margin-top: 4px;
+                gap: 4px;
+            }
+        }
     }
 
     input[type='file'] {

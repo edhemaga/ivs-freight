@@ -14,6 +14,8 @@ import { TagResponse } from './tagResponse';
 import { EnumValue } from './enumValue';
 import { FleetType } from './fleetType';
 import { PerMileEntity } from './perMileEntity';
+import { OwnerShortResponse } from './ownerShortResponse';
+import { FuelCardShortResponse } from './fuelCardShortResponse';
 
 
 export interface GetDriverModalResponse { 
@@ -31,5 +33,8 @@ export interface GetDriverModalResponse {
     soloFlatRate?: number | null;
     teamFlatRate?: number | null;
     tags?: Array<TagResponse> | null;
+    driverTypes?: Array<EnumValue> | null;
+    owners?: Array<OwnerShortResponse> | null;
+    fuelCards?: Array<FuelCardShortResponse> | null;
 }
 

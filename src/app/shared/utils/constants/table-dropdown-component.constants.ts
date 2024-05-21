@@ -416,6 +416,7 @@ export class TableDropdownComponentConstants {
         active: 1,
         pageIndex: 1,
         pageSize: 25,
+        truckType: null,
         companyId: null,
         sort: null,
         searchOne: null,
