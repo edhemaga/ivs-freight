@@ -32,62 +32,67 @@ export class ApplicantRoutes {
         },
         {
             path: 'owner-info/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.module'
-                ).then((m) => m.ApplicantOwnerInfoModule),
+                    '@pages/applicant/pages/applicant-owner-info/applicant-owner-info.component'
+                ).then((m) => m.ApplicantOwnerInfoComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 1,
+                title: 'Owner Info',
             },
         },
         {
             path: 'medical-certificate/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate.module'
-                ).then((m) => m.ApplicantMedicalCertificateModule),
+                    '@pages/applicant/pages/applicant-medical-certificate/applicant-medical-certificate.component'
+                ).then((m) => m.ApplicantMedicalCertificateComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 2,
+                title: 'Medical Certificate',
             },
         },
         {
             path: 'mvr-authorization/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.module'
-                ).then((m) => m.ApplicantMvrAuthorizationModule),
+                    '@pages/applicant/pages/applicant-mvr-authorization/applicant-mvr-authorization.component'
+                ).then((m) => m.ApplicantMvrAuthorizationComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 3,
+                title: 'MVR Authorization',
             },
         },
         {
             path: 'psp-authorization/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.module'
-                ).then((m) => m.ApplicantPspAuthorizationModule),
+                    '@pages/applicant/pages/applicant-psp-authorization/applicant-psp-authorization.component'
+                ).then((m) => m.ApplicantPspAuthorizationComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 4,
+                title: 'PSP Authorization',
             },
         },
         {
             path: 'sph/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-sph/applicant-sph.module'
-                ).then((m) => m.ApplicantSphModule),
+                    '@pages/applicant/pages/applicant-sph/applicant-sph.component'
+                ).then((m) => m.ApplicantSphComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 5,
+                title: 'SPH'
             },
         },
         {
@@ -106,14 +111,15 @@ export class ApplicantRoutes {
         },
         {
             path: 'hos-rules/:id',
-            loadChildren: () =>
+            loadComponent: () =>
                 import(
-                    '@pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.module'
-                ).then((m) => m.ApplicantHosRulesModule),
+                    '@pages/applicant/pages/applicant-hos-rules/applicant-hos-rules.component'
+                ).then((m) => m.ApplicantHosRulesComponent),
             canActivate: [ApplicantGuard],
             resolve: { applicant: ApplicantResolver },
             data: {
                 routeIdx: 6,
+                title: 'HOS Rules',
             },
         },
         {

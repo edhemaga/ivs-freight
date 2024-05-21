@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -30,15 +31,35 @@ import {
     MedicalCertificateFeedbackResponse,
 } from 'appcoretruckassist';
 
+//components
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+
+//modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
 @Component({
     selector: 'app-medical-certificate',
     templateUrl: './applicant-medical-certificate.component.html',
     styleUrls: ['./applicant-medical-certificate.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaUploadFilesComponent,
+    ],
+
 })
 export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 
