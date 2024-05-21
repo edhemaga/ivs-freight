@@ -45,7 +45,7 @@ export class DropDownService {
             .subscribe((item) => (this.parkingDataById = item));
     }
     public dropActions(
-        any: any,
+        dropDownData: any,
         name: string,
         dataCdl?: any,
         dataMvr?: any,
@@ -62,7 +62,7 @@ export class DropDownService {
         switch (name) {
             case 'delete-cdl': {
                 const mappedEvent = {
-                    ...any,
+                    ...dropDownData,
                     data: {
                         ...dataCdl,
                         state: dataCdl.state.stateShortName,
@@ -83,7 +83,7 @@ export class DropDownService {
             }
             case 'void': {
                 let voidData = data.registrations.find(
-                    (registration) => registration.id === any.id
+                    (registration) => registration.id === dropDownData.id
                 );
                 let cdlsArray = data.registrations.map((registration) => {
                     if (registration.voidedOn) {
@@ -133,7 +133,7 @@ export class DropDownService {
                 break;
             case 'delete-medical': {
                 const mappedEvent = {
-                    ...any,
+                    ...dropDownData,
                     data: {
                         ...dataMedical,
                     },
@@ -152,7 +152,7 @@ export class DropDownService {
             }
             case 'delete-mvr': {
                 const mappedEvent = {
-                    ...any,
+                    ...dropDownData,
                     data: {
                         ...dataMvr,
                     },
@@ -171,7 +171,7 @@ export class DropDownService {
             }
             case 'delete-test': {
                 const mappedEvent = {
-                    ...any,
+                    ...dropDownData,
                     data: {
                         ...dataTest,
                         testTypeName: dataTest.testType.name,
@@ -195,7 +195,7 @@ export class DropDownService {
                     DriverCdlModalComponent,
                     { size: 'small' },
                     {
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         id: driverId,
                         type: name,
                     }
@@ -208,7 +208,7 @@ export class DropDownService {
                     DriverDrugAlcoholModalComponent,
                     { size: 'small' },
                     {
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         id: driverId,
                         type: name,
                     }
@@ -220,7 +220,7 @@ export class DropDownService {
                     DriverMedicalModalComponent,
                     { size: 'small' },
                     {
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         id: driverId,
                         type: name,
                     }
@@ -232,7 +232,7 @@ export class DropDownService {
                     DriverMvrModalComponent,
                     { size: 'small' },
                     {
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         id: driverId,
                         type: name,
                     }
@@ -240,11 +240,21 @@ export class DropDownService {
                 break;
             }
             case 'delete-inspection': {
+                const inspection = data.inspections.find(
+                    (ins) => ins.id === dropDownData.id
+                );
+                const mappedEvent = {
+                    ...dropDownData,
+                    data: {
+                        ...inspection,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'inspection',
                         type: 'delete',
                         image: false,
@@ -253,11 +263,21 @@ export class DropDownService {
                 break;
             }
             case 'delete-registration': {
+                const registration = data.registrations.find(
+                    (reg) => reg.id === dropDownData.id
+                );
+                const mappedEvent = {
+                    ...dropDownData,
+                    data: {
+                        ...registration,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'registration',
                         type: 'delete',
                         image: false,
@@ -266,11 +286,21 @@ export class DropDownService {
                 break;
             }
             case 'delete-title': {
+                const title = data.titles.find(
+                    (title) => title.id === dropDownData.id
+                );
+                const mappedEvent = {
+                    ...dropDownData,
+                    data: {
+                        ...title,
+                        unit: data.truckNumber,
+                    },
+                };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
-                        id: any.id,
+                        ...mappedEvent,
                         template: 'title',
                         type: 'delete',
                         image: false,
@@ -285,7 +315,7 @@ export class DropDownService {
                     {
                         id: data.id,
                         payload: data,
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         type: name,
                         modal: nameTruck === 'truck' ? 'truck' : 'trailer',
                     }
@@ -299,7 +329,7 @@ export class DropDownService {
                     {
                         id: data.id,
                         payload: data,
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         type: name,
                         modal: nameTruck === 'truck' ? 'truck' : 'trailer',
                     }
@@ -313,7 +343,7 @@ export class DropDownService {
                     {
                         id: data.id,
                         payload: data,
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         type: name,
                         modal: nameTruck === 'truck' ? 'truck' : 'trailer',
                     }
@@ -399,7 +429,7 @@ export class DropDownService {
                     {
                         id: data.id,
                         payload: data,
-                        file_id: any.id,
+                        file_id: dropDownData.id,
                         type: name,
                         modal: 'repair',
                     }
@@ -424,7 +454,7 @@ export class DropDownService {
                     ConfirmationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
-                        ...any,
+                        ...dropDownData,
                         id: data.id,
                         template: TableStringEnum.REPAIR_DETAIL,
                         type: TableStringEnum.DELETE,

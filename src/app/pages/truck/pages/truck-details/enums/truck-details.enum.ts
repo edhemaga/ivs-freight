@@ -5,8 +5,8 @@ export enum TruckDetailsEnum {
     INSPECTION = 'inspection',
     FHWA = 'fhwa',
     FHWA_INSPECTION = 'FHWA Inspection',
-    FHWA_INSPECTION_2 = 'fhwa-insepction',
-    FHWA_INSPECTION_3 = 'fhwa insepction',
+    FHWA_INSPECTION_2 = 'fhwa-inspection',
+    FHWA_INSPECTION_3 = 'fhwa inspection',
 
     TITLE = 'title',
     TITLE_2 = 'Title',

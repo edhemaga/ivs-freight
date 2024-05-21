@@ -120,7 +120,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             {
                 id: 2,
                 name: 'FHWA Inspection',
-                template: 'fhwa-insepction',
+                template: 'fhwa-inspection',
                 data: data.inspections,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 status: data?.status == 0 ? true : false,
