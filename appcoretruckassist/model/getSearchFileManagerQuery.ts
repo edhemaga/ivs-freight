@@ -11,12 +11,7 @@
  */
 
 
-export interface BrokerContactCommand { 
-    id?: number | null;
-    contactName?: string | null;
-    departmentId?: number;
-    phone?: string | null;
-    extensionPhone?: string | null;
-    email?: string | null;
+export interface GetSearchFileManagerQuery { 
+    searchString?: string | null;
 }
 

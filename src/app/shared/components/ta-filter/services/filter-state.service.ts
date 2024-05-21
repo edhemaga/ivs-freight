@@ -198,8 +198,7 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getTruckData() {
-        const truckList = this.truckService
-            .apiTruckFilterGet()
+        const truckList = this.TruckTypeService.apiTrucktypeFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

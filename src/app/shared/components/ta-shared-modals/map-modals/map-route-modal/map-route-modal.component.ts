@@ -207,7 +207,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
     private getTrucks() {
         this.truckService
-            .getTruckList(1, 1, 25)
+            .getTruckList(1, null, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trucks: TruckListResponse) => {
                 this.truckType = trucks.pagination.data.map((truck) => {

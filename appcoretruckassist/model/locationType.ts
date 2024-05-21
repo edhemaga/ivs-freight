@@ -11,12 +11,10 @@
  */
 
 
-export interface BrokerContactCommand { 
-    id?: number | null;
-    contactName?: string | null;
-    departmentId?: number;
-    phone?: string | null;
-    extensionPhone?: string | null;
-    email?: string | null;
-}
+export type LocationType = 'Address' | 'Coordinates';
+
+export const LocationType = {
+    Address: 'Address' as LocationType,
+    Coordinates: 'Coordinates' as LocationType
+};
 

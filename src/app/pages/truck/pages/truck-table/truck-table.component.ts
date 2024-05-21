@@ -75,8 +75,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public loadingPage: boolean = false;
     public inactiveTabClicked: boolean = false;
     public activeTableData: string;
-    public backFilterQuery: TruckFilter =
-        TableDropdownComponentConstants.BACK_FILTER_QUERY;
+    public backFilterQuery: TruckFilter = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
+    );
 
     public resizeObserver: ResizeObserver;
 
@@ -252,11 +253,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filterType) {
                     if (res.action === TableStringEnum.SET) {
-                        this.viewData = this.truckData?.filter((customerData) =>
-                            res.queryParams.some(
-                                (filterData) => filterData === customerData.id
-                            )
-                        );
+                        this.backFilterQuery.truckType = res.queryParams;
+                        this.truckBackFilter(this.backFilterQuery);
                     }
 
                     if (res.action === TableStringEnum.CLEAR)
@@ -618,7 +616,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         data: TruckShortResponse
     ): { name: string; image: string }[] {
         const tableFeaturesArray: { name: string; image: string }[] = [];
-
         if (data?.doubleBunk) {
             tableFeaturesArray.push({
                 name: TruckTableStringEnum.DOUBLE_BANK,
@@ -667,7 +664,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 image: TruckTableStringEnum.DASH_CAM_IMG,
             });
         }
-
+        console.log(tableFeaturesArray);
         return tableFeaturesArray;
     }
     // TODO any type
@@ -707,9 +704,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             colorName: data?.color?.name
                 ? data.color.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: TableStringEnum.NA,
-            tableTrailer: TableStringEnum.NA,
-            tableTrailerType: TableStringEnum.NA,
+            tableDriver: data.driver
+                ? data.driverAvatar
+                    ? data.driverAvatar + data.driver
+                    : data.driver
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTrailer:
+                data.trailerNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelOwnerDetailsName: data?.owner?.name
                 ? data.owner.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -813,10 +814,22 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: TableStringEnum.NA,
-            tableTitleST: TableStringEnum.NA,
-            tableTitleIssued: TableStringEnum.NA,
-            tableTitlePurchase: TableStringEnum.NA,
+            tableTitleNumber:
+                data.titleNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleST:
+                data.titleState ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleIssued: data.titleIssueDate
+                ? this.datePipe.transform(
+                      data.titlePurchaseDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitlePurchase: data.titlePurchaseDate
+                ? this.datePipe.transform(
+                      data.titlePurchaseDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePurchasePrice: data?.purchasePrice
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.purchasePrice)
@@ -964,6 +977,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private truckBackFilter(
         filter: {
             active: number;
+            truckType?: number[] | undefined;
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -977,6 +991,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.truckService
             .getTruckList(
                 filter.active,
+                filter.truckType,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -1026,7 +1041,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 !this.inactiveTabClicked
             ) {
                 this.truckService
-                    .getTruckList(0, 1, 25)
+                    .getTruckList(0, null, 1, 25)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((truckPagination: TruckListResponse) => {
                         this.truckInactiveStore.set(

@@ -66,6 +66,7 @@ export class TruckService implements OnDestroy {
     // Get Truck List
     public getTruckList(
         active?: number,
+        truckTypes?: Array<number>,
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
@@ -76,6 +77,7 @@ export class TruckService implements OnDestroy {
     ): Observable<TruckListResponse> {
         return this.truckService.apiTruckListGet(
             active,
+            truckTypes,
             pageIndex,
             pageSize,
             companyId,
