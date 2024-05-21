@@ -52,6 +52,7 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { FilesActions } from '@pages/applicant/enums/files-actions.enum';
 
 // models
 import {
@@ -187,7 +188,6 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             name: 'Company',
             checked: false,
         },
-
     ];
 
     public openAnnotationArray: {
@@ -1982,13 +1982,13 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case 'add':
+            case FilesActions.ADD:
                 this.ownerInfoForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case FilesActions.DELETE:
                 this.ownerInfoForm
                     .get('files')
                     .patchValue(
@@ -2001,13 +2001,13 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 ];
 
                 break;
-            case 'mark-incorrect':
+            case FilesActions.MARK_INCORRECT:
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.incorrectInput(true, event.index, 1);
                 }
 
                 break;
-            case 'mark-correct':
+            case FilesActions.MARK_CORRECT:
                 if (this.selectedMode === SelectedMode.REVIEW) {
                     this.incorrectInput(false, event.index, 1);
                 }
