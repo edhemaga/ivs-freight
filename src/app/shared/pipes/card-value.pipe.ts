@@ -1,12 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+//Models
+import { CardDataRow } from '@shared/models/card-models/card-data-row.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+
 @Pipe({
     name: 'cardValue',
     standalone: true,
 })
 export class CardValuePipe implements PipeTransform {
-    transform(value: any, cardRow: any): string {
-        //leave this as any becasus it's different model for each card
+    transform(value: CardRows, cardRow: CardDataRow): string {
         if (!value || !cardRow) return '/';
         if (!value[cardRow.key]) return '/';
         else if (cardRow.thirdKey)
