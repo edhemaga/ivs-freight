@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface BrokerContactCommand { 
-    id?: number | null;
-    contactName?: string | null;
-    departmentId?: number;
-    phone?: string | null;
-    extensionPhone?: string | null;
-    email?: string | null;
+export interface CheckDriverBySsnResponse { 
+    ssnExists?: boolean;
+    isOwner?: boolean;
+    ownerType?: EnumValue;
 }
 

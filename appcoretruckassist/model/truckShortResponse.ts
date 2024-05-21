@@ -71,6 +71,7 @@ export interface TruckShortResponse {
     inspectionExpirationDays?: number | null;
     inspectionExpirationHours?: number | null;
     titleNumber?: string | null;
+    titleState?: string | null;
     titlePurchaseDate?: string | null;
     titleIssueDate?: string | null;
     driver?: string | null;

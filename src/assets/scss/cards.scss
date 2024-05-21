@@ -323,6 +323,19 @@
                             color: $ta-yellow-5;
                         }
 
+                        .contacts-holder {
+                            gap: 4px;
+                            
+                            svg-icon {
+                                width: 18px;
+                                height: 18px;
+
+                                svg {
+                                    display: flex;
+                                }
+                            }
+                        }
+
                         .items-container-body {
                             width: 100%;
                             position: relative;
