@@ -32,6 +32,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // models
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
+import { ConfirmationModalSvgRoutes } from './utils/confirmation-modal-svg-routes';
 
 @Component({
     selector: 'app-confirmation-modal',
@@ -60,7 +61,7 @@ export class ConfirmationModalComponent implements OnInit {
     @Input() editData: Confirmation;
     public cdlForm: UntypedFormGroup;
     selectedCdl: any;
-
+    public confirmationImageRoutes = ConfirmationModalSvgRoutes;
     constructor(
         public imageBase64Service: ImageBase64Service,
         private ngbActiveModal: NgbActiveModal,
