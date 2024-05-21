@@ -94,13 +94,18 @@ export class CustomerCardModalComponent implements OnInit, OnDestroy {
     public titlesInForm: string[] = [];
     public displayData$: Observable<CardsModalData>;
     private subscription: Subscription = new Subscription();
-    public rowValues: number[] = [3, 4, 5, 6];
+    public rowValues: number[] = CustomerCardsModalData.rowValues;
     private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: UntypedFormBuilder,
         private cdr: ChangeDetectorRef,
+
+        //Form
+        private formBuilder: UntypedFormBuilder,
+
+        //Services
         private modalService: CustomerCardsModalService,
+
         //Store
         private store: Store
     ) {}

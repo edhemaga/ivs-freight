@@ -29,7 +29,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CustomerCardsModalService } from './components/customer-card-modal/services/customer-cards-modal.service';
+import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services/customer-cards-modal.service';
 
 // Store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';

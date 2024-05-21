@@ -1,6 +1,8 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class CustomerCardsModalData {
+    static rowValues: number[] = [3, 4, 5, 6];
+
     static frontDataLoad: CardRows[] = [
         {
             title: 'Date Issued',
@@ -193,13 +195,13 @@ export class CustomerCardsModalData {
                     title: 'Billing Detail • Unpaid Invoice Ageing',
                     secondTitle: 'Unpaid Invoice Ageing',
                     key: 'brokerUnpaidInvoiceAgeing',
-                    secondKey: 'totalDebt'
+                    secondKey: 'totalDebt',
                 },
                 {
                     title: 'Billing Detail • Paid Invoice Ageing',
                     secondTitle: 'Paid Invoice Ageing',
                     key: 'brokerPaidInvoiceAgeing',
-                    secondKey: 'totalPaid'
+                    secondKey: 'totalPaid',
                 },
             ],
         },
