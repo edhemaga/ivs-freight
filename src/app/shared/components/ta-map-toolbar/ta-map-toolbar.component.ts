@@ -772,7 +772,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     getTrucks() {
         this.truckService
-            .getTruckList(1, 1, 25)
+            .getTruckList(1, null, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trucks: TruckListResponse) => {
                 this.truckList = trucks.pagination.data;
