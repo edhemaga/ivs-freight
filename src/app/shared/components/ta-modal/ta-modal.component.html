@@ -373,7 +373,7 @@
 
                             <ng-container
                                 *ngIf="
-                                    editData.finishOrderBtn && !isFinishOrder
+                                    editData?.finishOrderBtn && !isFinishOrder
                                 "
                             >
                                 <button
@@ -642,6 +642,9 @@
                                     'repair-review',
                                     'broker',
                                     'shipper',
+                                    'registration',
+                                    'title',
+                                    'inspection'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"

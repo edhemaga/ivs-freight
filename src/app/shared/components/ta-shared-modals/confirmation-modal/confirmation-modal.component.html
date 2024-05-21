@@ -27,6 +27,12 @@
             ? 'Delete Repair / Order'
             : editData?.template === 'repair_shop'
             ? 'Delete Repair Shop'
+            : editData?.template === 'registration'
+            ? 'Delete Registration'
+            : editData?.template === 'inspection'
+            ? 'Delete FHWA Inspection'
+            : editData?.template === 'title'
+            ? 'Delete Title'
             : editData?.template === 'truck'
             ? 'Delete Truck'
             : ' Confirmation'
@@ -217,7 +223,9 @@
                                     >
                                         <span class="inactive-icon-holder">
                                             <svg-icon
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationActivationSvg
+                                                "
                                             ></svg-icon>
                                         </span>
                                     </ng-container>
@@ -281,7 +289,7 @@
                                     >
                                         <svg-icon
                                             [src]="
-                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
+                                                confirmationImageRoutes.confirmationDeactivationSvg
                                             "
                                         ></svg-icon>
                                     </ng-container>
@@ -347,6 +355,109 @@
                             </div>
                         </ng-container>
 
+                        <ng-container *ngSwitchCase="'registration'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="confirmation-img"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationRegistrationSvg
+                                        "
+                                        alt="registration"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-bold text-1">
+                                            {{ editData?.data?.licensePlate }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-medium">
+                                            {{
+                                                editData?.data.expDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'inspection'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="confirmation-img"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationInspectionSvg
+                                        "
+                                        alt="inspection"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-medium text-1">
+                                            {{
+                                                editData?.data.expDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'title'">
+                            <div
+                                class="d-flex flex-column justify-content-center confirmation-body-content"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <img
+                                        class="m-1 confirmation-img"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationTitle
+                                        "
+                                        alt="title"
+                                    />
+
+                                    <div
+                                        class="d-flex flex-column justify-content-center"
+                                    >
+                                        <p class="m-0 ta-font-bold text-1">
+                                            {{ editData?.data?.number }}
+                                        </p>
+
+                                        <p class="m-0 ta-font-medium">
+                                            {{
+                                                editData?.data.issueDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="unit-container">
+                                    <p class="text-3 ta-font-bold">
+                                        Unit {{ editData?.data?.unit }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
                         <!-- void -->
 
                         <ng-container *ngSwitchCase="'void'">
@@ -358,7 +469,9 @@
                                 >
                                     <img
                                         class="avatar-img"
-                                        src="/assets/svg/void.svg"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationVoidSvg
+                                        "
                                         alt="avatar"
                                     />
                                     <div>
@@ -560,7 +673,7 @@
                                             <svg-icon
                                                 class="order-icon"
                                                 [src]="
-                                                    'assets/svg/common/ic_note_order.svg'
+                                                    confirmationImageRoutes.confirmationNoteOrderSvg
                                                 "
                                             ></svg-icon>
                                         </span>
@@ -591,7 +704,9 @@
                                     >
                                         <svg-icon
                                             class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationCloseBrokerSvg
+                                            "
                                         ></svg-icon
                                     ></ng-container>
                                 </div>
@@ -637,7 +752,7 @@
                                                 <svg-icon
                                                     class="order-icon"
                                                     [src]="
-                                                        'assets/svg/common/ic_note_order.svg'
+                                                        confirmationImageRoutes.confirmationNoteOrderSvg
                                                     "
                                                 ></svg-icon>
                                             </span>
@@ -680,7 +795,7 @@
                                     <span>
                                         <svg-icon
                                             [src]="
-                                                'assets/svg/common/ic_review_like.svg'
+                                                confirmationImageRoutes.confirmationReviewLikeSvg
                                             "
                                             [svgStyle]="{
                                                 'width.px': 18,
@@ -827,7 +942,9 @@
                                     >
                                         <span class="inactive-icon-holder">
                                             <svg-icon
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationActivationSvg
+                                                "
                                             ></svg-icon>
                                         </span>
                                     </ng-container>
@@ -973,7 +1090,7 @@
                                             <svg-icon
                                                 class="order-icon"
                                                 [src]="
-                                                    'assets/svg/common/ic_note_order.svg'
+                                                    confirmationImageRoutes.confirmationNoteOrderSvg
                                                 "
                                             ></svg-icon>
                                         </span>
@@ -1007,7 +1124,9 @@
                                     <ng-container *ngIf="!item?.data?.status">
                                         <svg-icon
                                             class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
+                                            [src]="
+                                                confirmationNoteOrderSvg.confirmationCloseBrokerSvg
+                                            "
                                         ></svg-icon
                                     ></ng-container>
                                 </div>
@@ -1120,9 +1239,7 @@
         <div class="confirmation-icon">
             <ng-container *ngIf="editData?.type === 'void'">
                 <svg-icon
-                    [src]="
-                        'assets/svg/common/confirmation/ic_confirmation_print.svg'
-                    "
+                    [src]="confirmationImageRoutes.confirmationPrintSvg"
                     [svgStyle]="{
                         'width.px': '90',
                         'height.px': '90'
@@ -1131,9 +1248,7 @@
             </ng-container>
             <ng-container *ngIf="editData?.type !== 'void'">
                 <svg-icon
-                    [src]="
-                        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg'
-                    "
+                    [src]="confirmationImageRoutes.confirmationTrashSvg"
                     [svgStyle]="{
                         'width.px': '90',
                         'height.px': '90'
