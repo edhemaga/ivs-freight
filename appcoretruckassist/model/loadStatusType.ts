@@ -11,10 +11,11 @@
  */
 
 
-export interface DispatcherFilterResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
-    loadCount?: number | null;
-}
+export type LoadStatusType = 'Pending' | 'Active' | 'Closed';
+
+export const LoadStatusType = {
+    Pending: 'Pending' as LoadStatusType,
+    Active: 'Active' as LoadStatusType,
+    Closed: 'Closed' as LoadStatusType
+};
 

@@ -394,9 +394,7 @@ model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusResponse.ts
-model/dispatcherFilterListResponse.ts
 model/dispatcherFilterResponse.ts
-model/dispatcherFilterResponsePagination.ts
 model/dispatcherIntervalResponse.ts
 model/driverAccidentResponse.ts
 model/driverDispatchResponse.ts
@@ -566,6 +564,7 @@ model/loadMobileResponse.ts
 model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
+model/loadPossibleStatusesResponse.ts
 model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
@@ -574,6 +573,7 @@ model/loadShipperDetailsResponse.ts
 model/loadShortResponse.ts
 model/loadStatus.ts
 model/loadStatusHistoryResponse.ts
+model/loadStatusType.ts
 model/loadStopCommand.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts

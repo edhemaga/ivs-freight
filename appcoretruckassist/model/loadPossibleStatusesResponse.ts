@@ -9,12 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface DispatcherFilterResponse { 
-    id?: number;
-    fullName?: string | null;
-    avatar?: string | null;
-    loadCount?: number | null;
+export interface LoadPossibleStatusesResponse { 
+    possibleStatuses?: Array<EnumValue> | null;
+    previousStatus?: EnumValue;
 }
 

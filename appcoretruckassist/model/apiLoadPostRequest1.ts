@@ -11,6 +11,7 @@
  */
 import { LoadStopCommand } from './loadStopCommand';
 import { LoadBillingAdditionalCommand } from './loadBillingAdditionalCommand';
+import { LoadPaymentPayCommand } from './loadPaymentPayCommand';
 import { LoadType } from './loadType';
 import { CreateTagCommand } from './createTagCommand';
 
@@ -48,6 +49,7 @@ export interface ApiLoadPostRequest1 {
     TotalMinutes?: number;
     AdditionalBillingRates?: Array<LoadBillingAdditionalCommand>;
     Stops?: Array<LoadStopCommand>;
+    Pays?: Array<LoadPaymentPayCommand>;
     Files?: Array<Blob>;
     Tags?: Array<CreateTagCommand>;
 }
