@@ -11,11 +11,11 @@
  */
 import { BankResponse } from './bankResponse';
 import { TagResponse } from './tagResponse';
+import { DriverModalFuelCardResponse } from './driverModalFuelCardResponse';
 import { EnumValue } from './enumValue';
 import { FleetType } from './fleetType';
+import { DriverModalOwnerResponse } from './driverModalOwnerResponse';
 import { PerMileEntity } from './perMileEntity';
-import { OwnerShortResponse } from './ownerShortResponse';
-import { FuelCardShortResponse } from './fuelCardShortResponse';
 
 
 export interface GetDriverModalResponse { 
@@ -34,7 +34,7 @@ export interface GetDriverModalResponse {
     flatRateTeam?: number | null;
     tags?: Array<TagResponse> | null;
     driverTypes?: Array<EnumValue> | null;
-    owners?: Array<OwnerShortResponse> | null;
-    fuelCards?: Array<FuelCardShortResponse> | null;
+    owners?: Array<DriverModalOwnerResponse> | null;
+    fuelCards?: Array<DriverModalFuelCardResponse> | null;
 }
 

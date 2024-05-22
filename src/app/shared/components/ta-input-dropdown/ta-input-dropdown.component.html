@@ -174,6 +174,7 @@
     >
         <div [ngSwitch]="_template">
             <!--------------------------- SVG Template (Render svgs or text if svgs doesn't exist ) --------------------------->
+
             <div *ngSwitchCase="'svg-template'">
                 <div
                     (click)="onActiveItem(option)"
@@ -211,7 +212,9 @@
                     ></div>
                 </div>
             </div>
+
             <!--------------------------- Svg Text Template (display flex) --------------------------->
+
             <div *ngSwitchCase="'svgtext-template'">
                 <div
                     (click)="onActiveItem(option)"
@@ -343,6 +346,7 @@
                     </ng-container>
                 </div>
             </div>
+
             <!-------------------------------------------Dispatch dropdown-------------------------------------------->
 
             <div *ngSwitchCase="'svgtext-dispatch-template'">
@@ -458,6 +462,7 @@
             </div>
 
             <!--------------------------- Details template (truck, trailer... details-pages)  --------------------------->
+
             <div *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
@@ -514,7 +519,9 @@
                     </div>
                 </div>
             </div>
+
             <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
+
             <div *ngSwitchCase="'groups'">
                 <div
                     *ngFor="
@@ -566,7 +573,9 @@
                     </div>
                 </div>
             </div>
+
             <!--------------------------- Multiselect Template --------------------------->
+
             <div *ngSwitchCase="'multiselect'">
                 <div
                     (click)="onMultiselectSelect(option)"
@@ -593,7 +602,9 @@
                     class="dropdown-option"
                 ></div>
             </div>
+
             <!--------------------------- Labels Template --------------------------->
+
             <div *ngSwitchCase="'labels'">
                 <div
                     (click)="onActiveItem(option)"
@@ -674,7 +685,9 @@
                     </div>
                 </div>
             </div>
+
             <!--------------------------- Dispatch Template --------------------------->
+
             <div *ngSwitchCase="'dispatch'">
                 <div
                     (click)="onActiveItem(option)"
@@ -715,7 +728,9 @@
                     class="dropdown-option"
                 ></div>
             </div>
+
             <!--------------------------- Load Dispatcher Template (user avatar + user name) --------------------------->
+
             <div *ngSwitchCase="'load-dispatcher'">
                 <div
                     (click)="onActiveItem(option)"
@@ -778,7 +793,9 @@
                     ></div>
                 </div>
             </div>
+
             <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
+
             <div *ngSwitchCase="'load-dispatches-ttd'">
                 <div
                     (click)="onActiveItem(option)"
@@ -971,7 +988,9 @@
                     </span>
                 </div>
             </div>
+
             <!--------------------------- Load Broker Template --------------------------->
+
             <div *ngSwitchCase="'load-broker'">
                 <div
                     (click)="onActiveItem(option)"
@@ -1064,6 +1083,7 @@
             </div>
 
             <!--------------------------- Load Broker Contact Template --------------------------->
+
             <div *ngSwitchCase="'load-broker-contact'">
                 <div
                     *ngFor="
@@ -1144,6 +1164,7 @@
             </div>
 
             <!--------------------------- Load Shipper Template --------------------------->
+
             <div *ngSwitchCase="'load-shipper'">
                 <div
                     (click)="onActiveItem(option)"
@@ -1211,7 +1232,9 @@
                     </div>
                 </div>
             </div>
+
             <!--------------------------- Template Text - Counter --------------------------->
+
             <div *ngSwitchCase="'text-counter'">
                 <div
                     (click)="onActiveItem(option)"
@@ -1254,7 +1277,9 @@
                     </span>
                 </div>
             </div>
+
             <!--------------------------- Fuel Franchise Template --------------------------->
+
             <div *ngSwitchCase="'fuel-franchise'">
                 <div
                     *ngFor="let option of _options; trackBy: identity"
@@ -1363,7 +1388,9 @@
                     </div>
                 </div>
             </div>
+
             <!-- Double Text Template -->
+
             <div *ngSwitchCase="'double-text-template'">
                 <div
                     (click)="onActiveItem(option)"
@@ -1430,7 +1457,9 @@
                     </ng-container>
                 </div>
             </div>
+
             <!--------------------------- Default Template - Render Only Text --------------------------->
+
             <div *ngSwitchDefault>
                 <div
                     (click)="onActiveItem(option)"

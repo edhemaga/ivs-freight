@@ -716,10 +716,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO find model for this data
     private mapDriverData(data: any): any {
+        console.log('TABLE DATA', data);
         const {
             id,
             avatar,
-            fullName,
+            name,
             dateOfBirth,
             ssn,
             phone,
@@ -752,12 +753,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             id,
             isSelected: false,
             isOwner: owner ?? false,
-            textShortName: this.nameInitialsPipe.transform(fullName),
+            textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
             avatarImg: avatar
                 ? this.imageBase64Service.sanitizer(avatar)
                 : null,
-            fullName,
+            fullName: name,
             tableDOB: dateOfBirth
                 ? MethodsCalculationsHelper.convertDateFromBackend(dateOfBirth)
                 : null,

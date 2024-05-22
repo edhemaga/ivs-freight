@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverListItemResponsePagination } from './driverListItemResponsePagination';
 
 
-export interface DriverListResponse { 
-    pagination?: DriverListItemResponsePagination;
-    activeCount?: number;
-    inactiveCount?: number;
-    applicantCount?: number;
-    applicantArchived?: number;
+export interface DriverListFuelCardResponse { 
+    id?: number;
+    number?: string | null;
+    brand?: string | null;
+    account?: string | null;
 }
 
