@@ -21,7 +21,9 @@ export interface SevenDaysHosFeedbackResponse {
     releasedDate?: string;
     location?: AddressEntity;
     workingForAnotherEmployer?: boolean;
+    workingForAnotherEmployerDescription?: string | null;
     intendToWorkForAnotherEmployer?: boolean;
+    intendToWorkForAnotherEmployerDescription?: string | null;
     certifyInformation?: boolean;
     reviewed?: boolean | null;
     approved?: boolean | null;

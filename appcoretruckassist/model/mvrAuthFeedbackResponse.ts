@@ -22,6 +22,7 @@ export interface MvrAuthFeedbackResponse {
     signature?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
+    filesReviewMessage?: string | null;
     files?: Array<ApplicantFileResponse> | null;
     applicantId?: number;
 }
