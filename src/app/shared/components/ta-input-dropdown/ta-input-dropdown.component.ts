@@ -56,7 +56,7 @@ import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// directive
+// directives
 import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 
 @Component({

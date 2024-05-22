@@ -57,6 +57,8 @@ export interface ApiDriverPostRequest {
     CommissionTeam?: number;
     FlatRateSolo?: number;
     FlatRateTeam?: number;
+    IsOpenPayrollShared?: boolean;
+    IsPayrollCalculated?: boolean;
     OffDutyLocations?: Array<UpdateOffDutyLocationCommand>;
     EmergencyContactName?: string;
     EmergencyContactPhone?: string;

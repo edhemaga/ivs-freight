@@ -17,6 +17,7 @@ export class FormService implements OnDestroy {
 
     public checkFormChange(form: UntypedFormGroup) {
         this.originalValue = form.value;
+
         form.valueChanges
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe(() => {

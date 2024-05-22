@@ -24,7 +24,8 @@
                 class="d-flex align-items-center table-header-box"
                 [ngClass]="{
                     'justify-content-center': i === 0,
-                    'repair-bill-header': (isRepairBillTable || isRepairOrderTable) && i !== 0,
+                    'repair-bill-header':
+                        (isRepairBillTable || isRepairOrderTable) && i !== 0,
                     'justify-content-end subtotal': i === 5,
                     'first-item': i === 0 && isContactTable
                 }"
@@ -63,7 +64,7 @@
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
-                                : (isRepairBillTable || isRepairOrderTable)
+                                : isRepairBillTable || isRepairOrderTable
                                 : isContactTable
                                 : isPMTruckTable
                                 : isPMTrailerTable
@@ -111,7 +112,7 @@
                 [
                     modalTableTypeEnum.REPAIR_BILL,
                     modalTableTypeEnum.REPAIR_ORDER
-                ] | multiSwitchCase: tableType
+                ] | multiSwitchCase : tableType
             "
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS"
@@ -140,10 +141,8 @@
 
         <app-ta-modal-table-pm
             *ngSwitchCase="
-                [
-                    modalTableTypeEnum.PM_TRUCK,
-                    modalTableTypeEnum.PM_TRAILER
-                ] | multiSwitchCase: tableType
+                [modalTableTypeEnum.PM_TRUCK, modalTableTypeEnum.PM_TRAILER]
+                    | multiSwitchCase : tableType
             "
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.PM_TABLE_ITEMS"
@@ -170,8 +169,5 @@
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-tabel-off-duty-location>
-
     </ng-container>
-
-
 </div>

@@ -1,12 +1,17 @@
 import {
     CompanyContactResponse,
     CompanyResponse,
+    DriverResponse,
     LoadResponse,
     RepairResponse,
 } from 'appcoretruckassist';
 
 export interface EditData {
-    data: LoadResponse | CompanyContactResponse | RepairResponse;
+    data:
+        | LoadResponse
+        | CompanyContactResponse
+        | RepairResponse
+        | DriverResponse;
     type: string;
     company: CompanyResponse;
     id: number;

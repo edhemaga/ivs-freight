@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, map, Subject, takeUntil } from 'rxjs';
+import { forkJoin, map, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -717,18 +717,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     // TODO find model for this data
     private mapDriverData(data: any): any {
         const {
+            id,
+            owner,
+            name,
             avatar,
-            fullName,
             dateOfBirth,
             ssn,
             phone,
             email,
             address,
-            owner,
             payType,
-            bankName,
-            routing,
-            emergencyContactPhone,
+            bank,
+            emergencyContact,
             twicExpirationDays,
             fuelCardNumber,
             cdlNumber,
@@ -748,14 +748,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!avatar) this.mapingIndex++;
 
         return {
+            id,
             isSelected: false,
-            isOwner: owner ?? false,
-            textShortName: this.nameInitialsPipe.transform(fullName),
+            isOwner: !!owner,
+            textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
             avatarImg: avatar
                 ? this.imageBase64Service.sanitizer(avatar)
                 : null,
-            fullName,
+            fullName: name,
             tableDOB: dateOfBirth
                 ? MethodsCalculationsHelper.convertDateFromBackend(dateOfBirth)
                 : null,
@@ -763,13 +764,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             phone,
             email,
             tableAddress: address?.address,
-            tableOwnerDetailsType: owner?.ownerType?.name,
+            tableOwnerDetailsType: owner?.type,
             tableOwnerDetailsBusinesName: owner?.name,
-            tableOwnerDetailsEin: owner?.ssnEin,
+            tableOwnerDetailsEin: owner?.ein,
             tablePayrollDetailType: payType?.name,
-            tableBankDetailBankName: bankName,
-            tableBankDetailRouting: routing,
-            tableEmergContact: emergencyContactPhone,
+            tableBankDetailBankName: bank?.name,
+            tableBankDetailRouting: bank?.routing,
+            tableEmergContact: emergencyContact?.phone,
+
             tableTwicExp: twicExpirationDays,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber:
@@ -1385,14 +1387,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     }
                 );
             } else {
-                this.modalService.openModal(
-                    DriverModalComponent,
-                    { size: TableStringEnum.MEDIUM },
-                    {
-                        ...event,
-                        disableButton: true,
-                    }
-                );
+                this.getDriverById(event.id);
             }
         } else if (event.type === TableStringEnum.NEW_LICENCE) {
             this.modalService.openModal(
@@ -1450,6 +1445,32 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }
+    }
+
+    private getDriverById(id: number): void {
+        this.driverService
+            .getDriverById(id)
+            .pipe(
+                takeUntil(this.destroy$),
+                tap((driver) => {
+                    const editData = {
+                        data: {
+                            ...driver,
+                        },
+                        type: TableStringEnum.EDIT,
+                        id,
+                    };
+
+                    this.modalService.openModal(
+                        DriverModalComponent,
+                        { size: TableStringEnum.MEDIUM },
+                        {
+                            ...editData,
+                        }
+                    );
+                })
+            )
+            .subscribe();
     }
 
     // Get Tab Table Data For Selected Tab

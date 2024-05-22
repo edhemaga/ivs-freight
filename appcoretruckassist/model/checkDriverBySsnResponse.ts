@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
 export interface CheckDriverBySsnResponse { 
-    ssnExists?: boolean;
-    isOwner?: boolean;
-    ownerType?: EnumValue;
+    driverExists?: boolean;
+    soleProprietorExists?: boolean;
 }
 

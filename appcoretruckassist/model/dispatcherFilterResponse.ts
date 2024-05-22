@@ -15,5 +15,6 @@ export interface DispatcherFilterResponse {
     id?: number;
     fullName?: string | null;
     avatar?: string | null;
+    loadCount?: number | null;
 }
 

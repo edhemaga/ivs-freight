@@ -81,7 +81,8 @@ export class InputErrorPipe implements PipeTransform {
             if (
                 value['einAlreadyExist'] ||
                 value['phoneAlreadyExist'] ||
-                value['emailAlreadyExist']
+                value['emailAlreadyExist'] ||
+                value['ssnAlreadyExist']
             ) {
                 errorMessageValue = 'Already in use';
             }
