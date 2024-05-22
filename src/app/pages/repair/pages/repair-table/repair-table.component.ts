@@ -1062,7 +1062,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                     ? data.downCount
                     : TableStringEnum.NUMBER_0,
             },
-            tableContact: data?.contacts?.length ? data.contacts.length : 0,
+            tableContactData: data?.contacts,
             tableExpense: data?.cost
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.cost)
