@@ -1,0 +1,248 @@
+<ng-container *ngIf="_contactsData?.length">
+    <div
+        class="contact-container d-flex gap-1"
+        [ngbPopover]="dropdownContacts"
+        #contactsDropdown="ngbPopover"
+        [autoClose]="'outside'"
+        [placement]="['bottom-left', 'bottom-right']"
+        popoverClass="table-dropdown-popover"
+        triggers="manual"
+        (click)="toggleDropdownContacts(contactsDropdown)"
+        container="body"
+        (hidden)="dropDownActive = -1"
+    >
+        <div class="contact-avatar">
+            <svg-icon
+                class="contact-avatar-icon d-flex"
+                [src]="contactsImageRoutes.contactsAvatarIcon"
+                [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                }"
+            ></svg-icon>
+        </div>
+        <div
+            class="contact-count d-flex align-items-center justify-content-center ta-font-semi-bold"
+        >
+            {{ _contactsData.length }}
+        </div>
+    </div>
+</ng-container>
+
+<!------------------------------------------------- CONTACTS DROPDOWN ----------------------------------------------------------------->
+
+<ng-template #dropdownContacts let-contacts="contacts">
+    <div
+        class="table-list-dropdown comments-width contacts-dropdown-container customer-contacts-dropdown-container"
+    >
+        <div class="table-inner">
+            <!-- Head of dropdown -->
+            <div class="description-titles d-flex justify-content-between">
+                <div class="d-flex align-items-center gap">
+                    <p class="dropdown-left m-0 ta-font-bold text-white">
+                        CONTACTS
+                    </p>
+
+                    <span
+                        class="total-number-fleet count d-flex align-items-center"
+                    >
+                        <span class="counter ta-font-extra-bold text-white">
+                            {{ _contactsData?.length }}
+                        </span>
+                    </span>
+                </div>
+
+                <div
+                    class="filter-drodpown d-flex"
+                    ngbTooltip
+                    [mainTooltip]="'Add Contact'"
+                    tooltipBackground="#3B73ED"
+                    tooltipColor="#FFFFFF"
+                    position="top"
+                >
+                    <svg-icon
+                        (click)="addButtonAction()"
+                        class="plus-icon d-flex align-items-center justify-content-center"
+                        [src]="contactsImageRoutes.contactsAddIcon"
+                        [svgStyle]="{
+                            'width.px': 14,
+                            'height.px': 14
+                        }"
+                    ></svg-icon>
+                </div>
+            </div>
+
+            <!-- Input Search -->
+            <div class="input-holder mb-2">
+                <input
+                    placeholder="Search"
+                    (keyup)="filterContacts($event)"
+                    class="input-search"
+                    spellcheck="false"
+                />
+                <svg-icon
+                    class="search-icon"
+                    [src]="contactsImageRoutes.contactsSearchIcon"
+                ></svg-icon>
+            </div>
+
+            <div class="d-flex flex-column contact-items">
+                <ng-container
+                    *ngFor="
+                        let department of contactDepartments;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <app-ta-custom-card
+                        [cardName]="department.name"
+                        [isDropdownCard]="true"
+                        [hasDivider]="false"
+                        [hasCounter]="department.contacts.length"
+                        [isCardOpen]="isContactCardOpenArray[i]"
+                    >
+                        <ng-container
+                            *ngFor="
+                                let contact of department.contacts;
+                                let i = index;
+                                trackBy: trackByIdentity
+                            "
+                        >
+                            <div
+                                class="contact-item"
+                                [class.expanded]="
+                                    contactsOpenIds.includes(contact.id)
+                                "
+                                (click)="openCloseContact(contact.id)"
+                            >
+                                <p
+                                    class="m-0"
+                                    [class.ta-font-medium]="
+                                        contactsOpenIds.includes(contact.id)
+                                    "
+                                >
+                                    {{ contact.name }}
+                                </p>
+                                <div
+                                    class="contact-data d-flex flex-column gap-1"
+                                    [ngStyle]="{
+                                        height: contactsOpenIds.includes(
+                                            contact.id
+                                        )
+                                            ? contact.email
+                                                ? '48px'
+                                                : '24px'
+                                            : '0px'
+                                    }"
+                                >
+                                    <div
+                                        class="d-flex align-items-center gap-1 mt-1"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                contactsImageRoutes.contactsPhoneIcon
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 18,
+                                                'height.px': 18
+                                            }"
+                                        ></svg-icon>
+
+                                        <app-ta-copy
+                                            [copyValue]="contact.phone"
+                                            [textColor]="'#fff'"
+                                            [maxWidth]="'195px'"
+                                        ></app-ta-copy>
+
+                                        <ng-container *ngIf="contact.phoneExt">
+                                            <span class="phone-ext"
+                                                >x{{ contact.phoneExt }}</span
+                                            >
+                                        </ng-container>
+                                    </div>
+                                    <ng-container *ngIf="contact.email">
+                                        <div
+                                            class="d-flex align-items-center gap-1"
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    contactsImageRoutes.contactsEmailIcon
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': 18,
+                                                    'height.px': 18
+                                                }"
+                                            ></svg-icon>
+
+                                            <app-ta-copy
+                                                [copyValue]="contact.email"
+                                                [textColor]="'#fff'"
+                                                [maxWidth]="'195px'"
+                                            ></app-ta-copy>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                                <svg-icon
+                                    class="arrow-icon"
+                                    [class.rotate-arrow]="
+                                        contactsOpenIds.includes(contact.id)
+                                    "
+                                    [src]="
+                                        contactsImageRoutes.contactsArrowIcon
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 18,
+                                        'height.px': 18
+                                    }"
+                                ></svg-icon>
+                                <div
+                                    class="action-icons-container align-items-center gap-1"
+                                >
+                                    <div
+                                        tooltipBackground="#CCCCCC"
+                                        tooltipColor="#2F2F2F"
+                                        ngbTooltip
+                                        mainTooltip="Edit"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="edit-icon d-flex align-items-center justify-content-center"
+                                            [src]="
+                                                contactsImageRoutes.contactsEditIcon
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            (click)="editButtonAction($event)"
+                                        ></svg-icon>
+                                    </div>
+
+                                    <div
+                                        tooltipBackground="#DF3C3C"
+                                        tooltipColor="#FFFFFF"
+                                        ngbTooltip
+                                        mainTooltip="Delete"
+                                        position="top"
+                                    >
+                                        <svg-icon
+                                            class="delete-icon d-flex align-items-center justify-content-center"
+                                            [src]="
+                                                contactsImageRoutes.contactsDeleteIcon
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': 14,
+                                                'height.px': 14
+                                            }"
+                                            (click)="deleteButtonAction($event)"
+                                        ></svg-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </app-ta-custom-card>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</ng-template>
