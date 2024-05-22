@@ -121,6 +121,7 @@
                                     maxLength: 11
                                 }"
                                 (blurInput)="validateSsn()"
+                                (clearInputEvent)="validateSsn($event, true)"
                             ></app-ta-input>
                         </div>
 
@@ -170,6 +171,13 @@
                             [name]="'owner'"
                             [hasArrow]="false"
                             [disabledCard]="true"
+                            [subText]="
+                                isOwnerAlreadyAddedAsSoleProprietor &&
+                                'Already added as sole proprietor in owner list'
+                            "
+                            [isCheckboxDisabled]="
+                                isOwnerAlreadyAddedAsSoleProprietor
+                            "
                             [isCardOpen]="driverForm.get('isOwner').value"
                         >
                             <ng-container body>

@@ -148,6 +148,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isFormDirty: boolean;
     public isAddNewAfterSave: boolean = false;
 
+    public isOwnerAlreadyAddedAsSoleProprietor: boolean = false;
+
     public driverFullName: string;
 
     // svg routes
@@ -1274,28 +1276,57 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public validateEmail(): void {
         const email = this.driverForm.get(DriverModalStringEnum.EMAIL).value;
 
-        this.driverService
-            .validateDriverEmail(email)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((emailAlreadyInUse) => {
-                if (
-                    emailAlreadyInUse &&
-                    this.driverForm.get(DriverModalStringEnum.EMAIL).valid
-                )
-                    this.driverForm
-                        .get(DriverModalStringEnum.EMAIL)
-                        .setErrors({ emailAlreadyExist: true });
-            });
+        if (email) {
+            this.driverService
+                .validateDriverEmail(email)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((emailAlreadyInUse) => {
+                    if (
+                        emailAlreadyInUse &&
+                        this.driverForm.get(DriverModalStringEnum.EMAIL).valid
+                    )
+                        this.driverForm
+                            .get(DriverModalStringEnum.EMAIL)
+                            .setErrors({ emailAlreadyExist: true });
+                });
+        }
     }
 
-    public validateSsn(): void {
+    public validateSsn(event: any, isClear: boolean): void {
         const ssn = this.driverForm.get(DriverModalStringEnum.SSN).value;
+        const isOwnerControl = this.driverForm.get(
+            DriverModalStringEnum.IS_OWNER
+        );
+
+        if (isClear && this.isOwnerAlreadyAddedAsSoleProprietor) {
+            this.isOwnerAlreadyAddedAsSoleProprietor = false;
+
+            isOwnerControl.patchValue(false);
+
+            return;
+        }
 
         this.driverService
             .validateDriverSsn(ssn)
             .pipe(takeUntil(this.destroy$))
             .subscribe((ssnData) => {
-                console.log('ssnData', ssnData);
+                const ssnControl = this.driverForm.get(
+                    DriverModalStringEnum.SSN
+                );
+
+                if (this.isOwnerAlreadyAddedAsSoleProprietor) {
+                    this.isOwnerAlreadyAddedAsSoleProprietor = false;
+
+                    isOwnerControl.patchValue(false);
+                }
+
+                if (ssnData?.driverExists && ssnControl.valid) {
+                    ssnControl.setErrors({ ssnAlreadyExist: true });
+                } else if (ssnData?.soleProprietorExists && ssnControl.valid) {
+                    isOwnerControl.patchValue(ssnData.soleProprietorExists);
+
+                    this.isOwnerAlreadyAddedAsSoleProprietor = true;
+                }
             });
     }
 

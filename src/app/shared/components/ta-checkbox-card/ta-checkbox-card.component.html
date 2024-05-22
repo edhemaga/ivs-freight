@@ -1,11 +1,13 @@
 <div class="custom-checkbox-card">
     <div class="divider"></div>
     <div
-        class="d-flex align-items-center justify-content-between checkbox-card-header"
+        class="d-flex align-items-center checkbox-card-header"
         [ngClass]="{
             pointer: reverseLogic
                 ? !getSuperControl.value
-                : getSuperControl.value
+                : getSuperControl.value,
+            'justify-content-between': !subText,
+            'checkbox-disabled': isCheckboxDisabled
         }"
     >
         <app-ta-checkbox
@@ -13,9 +15,20 @@
             (ngModelChange)="onChange($event)"
             [label]="label"
             [name]="name"
+            [isDisabledRegularCheck]="isCheckboxDisabled"
         ></app-ta-checkbox>
 
         <ng-content select="[header]"></ng-content>
+
+        <!-- Sub Text -->
+
+        <ng-container *ngIf="subText">
+            <div class="d-flex align-items-center subtext-container">
+                <p class="m-0 ta-font-medium">
+                    {{ subText }}
+                </p>
+            </div>
+        </ng-container>
 
         <div class="d-flex align-items-center">
             <ng-container *ngIf="hasPricingButton">

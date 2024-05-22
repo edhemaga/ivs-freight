@@ -50,6 +50,8 @@ export class TaCheckboxCardComponent implements ControlValueAccessor {
         marginBottom: '12px',
     };
     @Input() hasPricingButton: boolean = false;
+    @Input() subText?: string;
+    @Input() isCheckboxDisabled?: boolean = false;
 
     public _isCardOpen: any = 'null';
     public noActive: string;

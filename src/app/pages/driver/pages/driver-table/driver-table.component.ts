@@ -716,21 +716,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // TODO find model for this data
     private mapDriverData(data: any): any {
-        console.log('TABLE DATA', data);
         const {
             id,
-            avatar,
+            owner,
             name,
+            avatar,
             dateOfBirth,
             ssn,
             phone,
             email,
             address,
-            owner,
             payType,
-            bankName,
-            routing,
-            emergencyContactPhone,
+            bank,
+            emergencyContact,
             twicExpirationDays,
             fuelCardNumber,
             cdlNumber,
@@ -752,7 +750,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return {
             id,
             isSelected: false,
-            isOwner: owner ?? false,
+            isOwner: !!owner,
             textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
             avatarImg: avatar
@@ -766,13 +764,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             phone,
             email,
             tableAddress: address?.address,
-            tableOwnerDetailsType: owner?.ownerType?.name,
+            tableOwnerDetailsType: owner?.type,
             tableOwnerDetailsBusinesName: owner?.name,
-            tableOwnerDetailsEin: owner?.ssnEin,
+            tableOwnerDetailsEin: owner?.ein,
             tablePayrollDetailType: payType?.name,
-            tableBankDetailBankName: bankName,
-            tableBankDetailRouting: routing,
-            tableEmergContact: emergencyContactPhone,
+            tableBankDetailBankName: bank?.name,
+            tableBankDetailRouting: bank?.routing,
+            tableEmergContact: emergencyContact?.phone,
+
             tableTwicExp: twicExpirationDays,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber:

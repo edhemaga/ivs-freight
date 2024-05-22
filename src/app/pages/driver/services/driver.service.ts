@@ -142,12 +142,12 @@ export class DriverService {
         //     );
 
         return this.driverService.apiDriverPost().pipe(
-            tap((res: any) => {
+            tap((res) => {
                 this.getDriverById(res.id).subscribe({
                     next: (driver: any) => {
                         driver = {
                             ...driver,
-                            fullName: driver.firstName + ' ' + driver.lastName,
+                            name: driver.firstName + ' ' + driver.lastName,
                         };
 
                         this.driverActiveStore.add(driver);
@@ -333,7 +333,7 @@ export class DriverService {
 
                         driver = {
                             ...driver,
-                            fullName: driver.firstName + ' ' + driver.lastName,
+                            name: driver.firstName + ' ' + driver.lastName,
                             cdls: newData?.cdls ? newData.cdls : null,
                             medicals: newData?.medicals
                                 ? newData.medicals
