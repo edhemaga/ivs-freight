@@ -1090,22 +1090,153 @@
                                         [ngStyle]="{
                                             width: column.width + 'px'
                                         }"
+                                        (click)="
+                                            row[column.field]?.tablePayTerm
+                                                ? onShowInvoiceAgingDropdown(
+                                                      invoicePopover,
+                                                      row,
+                                                      column
+                                                  )
+                                                : {}
+                                        "
+                                        #invoicePopover="ngbPopover"
+                                        [ngbPopover]="invoiceAgingPopover"
+                                        container="body"
+                                        [placement]="'bottom-left'"
+                                        popoverClass="table-invoice-aging-popover"
+                                        triggers="manual"
+                                        (hidden)="
+                                            invoiceDropdownActive === row.id &&
+                                            invoiceDropdownType === column.field
+                                                ? (invoiceDropdownActive = -1)
+                                                : {}
+                                        "
                                     >
-                                        <div class="inv-ageing-container">
-                                            <div class="bfb-container">
-                                                {{ row[column.field]?.bfb }}
-                                            </div>
-                                            <div class="dnu-container">
-                                                {{ row[column.field]?.dnu }}
+                                        <div
+                                            class="inv-ageing-container d-flex"
+                                            [ngClass]="{
+                                                'invoice-popover-open':
+                                                    invoiceDropdownActive ===
+                                                        row.id &&
+                                                    invoiceDropdownType ===
+                                                        column.field,
+                                                'disable-hover':
+                                                    !row[column.field]
+                                                        ?.tablePayTerm
+                                            }"
+                                            ngbTooltip
+                                            [mainTooltip]="
+                                                column.field ===
+                                                'tablePaidInvAging'
+                                                    ? 'Invoice Aging'
+                                                    : 'Unpaid Invoice Aging'
+                                            "
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
+                                            [disableTooltip]="
+                                                !row[column.field]?.tablePayTerm
+                                            "
+                                        >
+                                            <div
+                                                class="inv-aging-group main-group ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                            >
+                                                {{
+                                                    row[column.field]
+                                                        ?.invoiceAgeingGroup
+                                                        ?.countInvoice
+                                                        | thousandToShortFormatPipe
+                                                }}
                                             </div>
                                             <div
-                                                class="inv-ageing-text"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 42 + 'px'
-                                                }"
+                                                class="inv-aging-group-border mx-1"
+                                            ></div>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.tablePayTerm;
+                                                    else noPayTermTemplate
+                                                "
                                             >
-                                                {{ row[column.field]?.amount }}
+                                                <div
+                                                    class="inv-aging-group group-1 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupOne
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-2 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupTwo
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-3 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupThree
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-4 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupFour
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-template #noPayTermTemplate>
+                                                <div
+                                                    class="inv-ageing-text d-flex align-items-center"
+                                                >
+                                                    <div
+                                                        class="inv-aging-group group-5 ta-font-medium"
+                                                    >
+                                                        {{
+                                                            row[column.field]
+                                                                ?.invoiceAgeingGroup
+                                                                ?.averageDays ??
+                                                                0
+                                                        }}
+                                                    </div>
+                                                    days average
+                                                </div>
+                                            </ng-template>
+
+                                            <div
+                                                class="inv-aging-group-border mx-1"
+                                            ></div>
+                                            <div
+                                                class="inv-ageing-text total-amount-text"
+                                            >
+                                                {{
+                                                    row[column.field]?.totalPaid
+                                                        ? (row[column.field]
+                                                              .totalPaid
+                                                          | formatCurrency)
+                                                        : row[column.field]
+                                                              ?.totalDebt
+                                                        ? (row[column.field]
+                                                              .totalDebt
+                                                          | formatCurrency)
+                                                        : (0 | formatCurrency)
+                                                }}
                                             </div>
                                         </div>
                                     </div>
@@ -2848,22 +2979,153 @@
                                         [ngStyle]="{
                                             width: column.width + 'px'
                                         }"
+                                        (click)="
+                                            row[column.field]?.tablePayTerm
+                                                ? onShowInvoiceAgingDropdown(
+                                                      invoicePopover,
+                                                      row,
+                                                      column
+                                                  )
+                                                : {}
+                                        "
+                                        #invoicePopover="ngbPopover"
+                                        [ngbPopover]="invoiceAgingPopover"
+                                        container="body"
+                                        [placement]="'bottom-left'"
+                                        popoverClass="table-invoice-aging-popover"
+                                        triggers="manual"
+                                        (hidden)="
+                                            invoiceDropdownActive === row.id &&
+                                            invoiceDropdownType === column.field
+                                                ? (invoiceDropdownActive = -1)
+                                                : {}
+                                        "
                                     >
-                                        <div class="inv-ageing-container">
-                                            <div class="bfb-container">
-                                                {{ row[column.field]?.bfb }}
-                                            </div>
-                                            <div class="dnu-container">
-                                                {{ row[column.field]?.dnu }}
+                                        <div
+                                            class="inv-ageing-container d-flex"
+                                            [ngClass]="{
+                                                'invoice-popover-open':
+                                                    invoiceDropdownActive ===
+                                                        row.id &&
+                                                    invoiceDropdownType ===
+                                                        column.field,
+                                                'disable-hover':
+                                                    !row[column.field]
+                                                        ?.tablePayTerm
+                                            }"
+                                            ngbTooltip
+                                            [mainTooltip]="
+                                                column.field ===
+                                                'tablePaidInvAging'
+                                                    ? 'Invoice Aging'
+                                                    : 'Unpaid Invoice Aging'
+                                            "
+                                            [tooltipBackground]="'#424242'"
+                                            [tooltipColor]="'#ffff'"
+                                            position="bottom"
+                                            [disableTooltip]="
+                                                !row[column.field]?.tablePayTerm
+                                            "
+                                        >
+                                            <div
+                                                class="inv-aging-group main-group ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                            >
+                                                {{
+                                                    row[column.field]
+                                                        ?.invoiceAgeingGroup
+                                                        ?.countInvoice
+                                                        | thousandToShortFormatPipe
+                                                }}
                                             </div>
                                             <div
-                                                class="inv-ageing-text"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 42 + 'px'
-                                                }"
+                                                class="inv-aging-group-border mx-1"
+                                            ></div>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.tablePayTerm;
+                                                    else noPayTermTemplate
+                                                "
                                             >
-                                                {{ row[column.field]?.amount }}
+                                                <div
+                                                    class="inv-aging-group group-1 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupOne
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-2 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupTwo
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-3 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupThree
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                                <div
+                                                    class="inv-aging-group group-4 ta-font-semi-bold d-flex align-items-center justify-content-center"
+                                                >
+                                                    {{
+                                                        row[column.field]
+                                                            ?.invoiceAgeingGroupFour
+                                                            ?.countInvoice
+                                                            | thousandToShortFormatPipe
+                                                    }}
+                                                </div>
+                                            </ng-container>
+
+                                            <ng-template #noPayTermTemplate>
+                                                <div
+                                                    class="inv-ageing-text d-flex align-items-center"
+                                                >
+                                                    <div
+                                                        class="inv-aging-group group-5 ta-font-medium"
+                                                    >
+                                                        {{
+                                                            row[column.field]
+                                                                ?.invoiceAgeingGroup
+                                                                ?.averageDays ??
+                                                                0
+                                                        }}
+                                                    </div>
+                                                    days average
+                                                </div>
+                                            </ng-template>
+
+                                            <div
+                                                class="inv-aging-group-border mx-1"
+                                            ></div>
+                                            <div
+                                                class="inv-ageing-text total-amount-text"
+                                            >
+                                                {{
+                                                    row[column.field]?.totalPaid
+                                                        ? (row[column.field]
+                                                              .totalPaid
+                                                          | formatCurrency)
+                                                        : row[column.field]
+                                                              ?.totalDebt
+                                                        ? (row[column.field]
+                                                              .totalDebt
+                                                          | formatCurrency)
+                                                        : (0 | formatCurrency)
+                                                }}
                                             </div>
                                         </div>
                                     </div>
@@ -2876,15 +3138,24 @@
                                             width: column.width + 'px'
                                         }"
                                     >
-                                        <div
-                                            class="contact-container"
-                                            *ngIf="row[column.field]"
+                                        <ng-container
+                                            *ngIf="row?.[column?.field]"
                                         >
-                                            <div class="contact-count">
-                                                {{ row[column.field] }}
-                                            </div>
-                                            <div class="contact-avatar"></div>
-                                        </div>
+                                            <app-ta-input-dropdown-contacts
+                                                [contactsData]="
+                                                    row[column.field]
+                                                "
+                                                (onAddButton)="
+                                                    onAddContact(row)
+                                                "
+                                                (onEditButton)="
+                                                    onEditContact(row)
+                                                "
+                                                (onDeleteButton)="
+                                                    onDeleteContact(row)
+                                                "
+                                            ></app-ta-input-dropdown-contacts>
+                                        </ng-container>
                                     </div>
 
                                     <!-- WORK HOUR COLUMN -->
@@ -4971,6 +5242,166 @@
             *ngFor="let item of [{}, {}, {}, {}]; let i = index"
         >
             Active
+        </div>
+    </div>
+</ng-template>
+
+<!-- INVOICE AGING POPOVER -->
+<ng-template #invoiceAgingPopover let-data="data">
+    <div class="invoice-aging-dropdown">
+        <div class="invoice-aging-dropdown-content d-flex flex-column gap-3">
+            <div
+                class="invoice-aging-dropdown-content-item d-flex flex-column align-items-center gap-2"
+            >
+                <div
+                    class="invoice-aging-item-header d-flex align-items-center w-100"
+                >
+                    <div class="days-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupOne
+                                ?.periodOfDays
+                        }}
+                        <span class="ms-1">d.</span>
+                    </div>
+                    <div class="invoice-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupOne
+                                ?.countInvoice
+                        }}
+                        Inv.
+                    </div>
+                    <div class="total-amount">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupOne?.totalSum
+                                | formatCurrency
+                        }}
+                    </div>
+                </div>
+                <div class="invoice-aging-item-progress-bar-container">
+                    <div
+                        class="progress-bar group-1"
+                        [ngStyle]="{
+                            width:
+                                invoiceDropdownData?.invoiceAgeingGroupOne
+                                    ?.percentage + '%'
+                        }"
+                    ></div>
+                </div>
+            </div>
+            <div
+                class="invoice-aging-dropdown-content-item d-flex flex-column gap-2"
+            >
+                <div
+                    class="invoice-aging-item-header d-flex align-items-center w-100"
+                >
+                    <div class="days-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupTwo
+                                ?.periodOfDays
+                        }}
+                        <span class="ms-1">d.</span>
+                    </div>
+                    <div class="invoice-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupTwo
+                                ?.countInvoice
+                        }}
+                        Inv.
+                    </div>
+                    <div class="total-amount">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupTwo?.totalSum
+                                | formatCurrency
+                        }}
+                    </div>
+                </div>
+                <div class="invoice-aging-item-progress-bar-container">
+                    <div
+                        class="progress-bar group-1"
+                        [ngStyle]="{
+                            width:
+                                invoiceDropdownData?.invoiceAgeingGroupTwo
+                                    ?.percentage + '%'
+                        }"
+                    ></div>
+                </div>
+            </div>
+            <div
+                class="invoice-aging-dropdown-content-item d-flex flex-column gap-2"
+            >
+                <div
+                    class="invoice-aging-item-header d-flex align-items-center w-100"
+                >
+                    <div class="days-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupThree
+                                ?.periodOfDays
+                        }}
+                        <span class="ms-1">d.</span>
+                    </div>
+                    <div class="invoice-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupThree
+                                ?.countInvoice
+                        }}
+                        Inv.
+                    </div>
+                    <div class="total-amount">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupThree
+                                ?.totalSum | formatCurrency
+                        }}
+                    </div>
+                </div>
+                <div class="invoice-aging-item-progress-bar-container">
+                    <div
+                        class="progress-bar group-1"
+                        [ngStyle]="{
+                            width:
+                                invoiceDropdownData?.invoiceAgeingGroupThree
+                                    ?.percentage + '%'
+                        }"
+                    ></div>
+                </div>
+            </div>
+            <div
+                class="invoice-aging-dropdown-content-item d-flex flex-column gap-2"
+            >
+                <div
+                    class="invoice-aging-item-header d-flex align-items-center w-100"
+                >
+                    <div class="days-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupFour
+                                ?.periodOfDays
+                        }}
+                        <span class="ms-1">d.</span>
+                    </div>
+                    <div class="invoice-count">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupFour
+                                ?.countInvoice
+                        }}
+                        Inv.
+                    </div>
+                    <div class="total-amount">
+                        {{
+                            invoiceDropdownData?.invoiceAgeingGroupFour
+                                ?.totalSum | formatCurrency
+                        }}
+                    </div>
+                </div>
+                <div class="invoice-aging-item-progress-bar-container">
+                    <div
+                        class="progress-bar group-1"
+                        [ngStyle]="{
+                            width:
+                                invoiceDropdownData?.invoiceAgeingGroupFour
+                                    ?.percentage + '%'
+                        }"
+                    ></div>
+                </div>
+            </div>
         </div>
     </div>
 </ng-template>

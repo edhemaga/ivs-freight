@@ -163,18 +163,6 @@
             color: #dadada !important;
         }
 
-        .ta-checkbox-disabled-blue {
-            svg {
-                path {
-                    fill: $ta-blue-13 !important;
-                }
-            }
-        }
-
-        .ta-checkbox-label-blue {
-            color: $ta-black !important;
-        }
-
         &.disabled-valid {
             svg {
                 path {
@@ -198,7 +186,7 @@
             line-height: 15px;
 
             position: relative;
-            bottom: 1px;
+            bottom: 2px;
 
             svg {
                 path {
@@ -209,9 +197,34 @@
 
         .ta-checkbox-label-blue {
             color: $ta-black !important;
+            font-weight: 500 !important;
 
             position: relative;
             bottom: 1px;
+        }
+    }
+
+    &.disabled-regular-check {
+        pointer-events: none !important;
+
+        .ta-checkbox-disabled-regular-check {
+            background: $ta-gray-02;
+            height: 14px;
+            width: 14px;
+
+            svg {
+                height: 10px;
+                width: 10px;
+
+                path {
+                    fill: $bw6-2 !important;
+                }
+            }
+        }
+
+        .ta-checkbox-label-regular-check {
+            color: $ta-black !important;
+            font-weight: 800 !important;
         }
     }
 
@@ -260,7 +273,7 @@
 
     &.bold-14 {
         .ta-checkbox-label {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 14px;
         }
     }

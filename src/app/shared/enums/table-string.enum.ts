@@ -80,6 +80,7 @@ export enum TableStringEnum {
 
     // Money
     DOLLAR_SIGN = '$',
+    MONEY_FILTER = 'moneyFilter',
 
     // Time formating
     DATE_FORMAT = 'MM/dd/yy',
@@ -195,6 +196,7 @@ export enum TableStringEnum {
     BAN_LIST = 'ban list',
     SHIPPER = 'shipper',
     SHIPPER_2 = 'shippers',
+    SHIPPER_3 = 'Shipper ',
     STATE_FILTER = 'stateFilter',
     // Driver
     DRIVER = 'driver',
@@ -374,6 +376,8 @@ export enum TableStringEnum {
     // Contact
     DELTETE_CONTACT = 'delete-contact',
     CONTACT = 'contact',
+    ADD_CONTACT = 'add-contact',
+    EDIT_CONTACT = 'edit-contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',

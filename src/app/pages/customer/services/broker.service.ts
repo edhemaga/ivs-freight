@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, forkJoin, switchMap, takeUntil, tap } from 'rxjs';
 
 // Services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -94,25 +94,43 @@ export class BrokerService implements OnDestroy {
         this.formDataService.extractFormDataFromFunction(data);
         return this.brokerService.apiBrokerPut().pipe(
             tap(() => {
-                const subBroker = this.getBrokerById(data.id).subscribe({
-                    next: (broker: BrokerResponse | any) => {
-                        this.brokerStore.remove(({ id }) => id === data.id);
-                        this.brokerMinimalStore.remove(
-                            ({ id }) => id === data.id
-                        );
-                        this.brokerStore.add(broker);
-                        this.brokerMinimalStore.add(broker);
-                        this.bls.replace(broker.id, broker);
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            tab: 'broker',
-                            data: broker,
-                            id: broker.id,
-                        });
+                forkJoin([
+                    this.getBrokerById(data.id),
+                    this.brokerService.apiBrokerInvoiceageingGet(data.id, true),
+                    this.brokerService.apiBrokerInvoiceageingGet(
+                        data.id,
+                        false
+                    ),
+                ])
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: ([
+                            broker,
+                            paidInvoiceAging,
+                            unpaidInvoiceAging,
+                        ]) => {
+                            this.brokerStore.remove(({ id }) => id === data.id);
+                            this.brokerMinimalStore.remove(
+                                ({ id }) => id === data.id
+                            );
 
-                        subBroker.unsubscribe();
-                    },
-                });
+                            const brokerData = {
+                                ...broker,
+                                brokerPaidInvoiceAgeing: paidInvoiceAging,
+                                brokerUnpaidInvoiceAgeing: unpaidInvoiceAging,
+                            };
+
+                            this.brokerStore.add(brokerData);
+                            this.brokerMinimalStore.add(brokerData);
+                            this.bls.replace(broker.id, brokerData);
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                tab: 'broker',
+                                data: brokerData,
+                                id: broker.id,
+                            });
+                        },
+                    });
             })
         );
     }

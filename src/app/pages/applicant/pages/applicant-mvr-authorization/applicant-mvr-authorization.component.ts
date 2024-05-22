@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -32,15 +33,36 @@ import {
     MvrAuthFeedbackResponse,
 } from 'appcoretruckassist';
 
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+
+// components
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+
 @Component({
     selector: 'app-mvr-authorization',
     templateUrl: './applicant-mvr-authorization.component.html',
     styleUrls: ['./applicant-mvr-authorization.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaUploadFilesComponent,
+        TaCheckboxComponent,
+    ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 
@@ -65,6 +87,18 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
+
+    public issueDateInputConfig = {
+        name: 'datepicker',
+        type: 'text',
+        label: 'Issue date',
+        isDropdown: true,
+        placeholderIcon: 'date',
+        isRequired: true,
+        customClass: 'datetimeclass',
+        isDisabled: this.selectedMode === 'REVIEW_MODE',
+        incorrectInput: this.selectedMode === 'REVIEW_MODE',
+    };
 
     public openAnnotationArray: {
         lineIndex?: number;
@@ -111,8 +145,8 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             isInformationCorrect: [false, Validators.requiredTrue],
             licenseCheck: [false, Validators.requiredTrue],
             files: [null, Validators.required],
-
             firstRowReview: [null],
+            issueDate: [null, Validators.required],
         });
 
         this.dontHaveMvrForm = this.formBuilder.group({
@@ -141,7 +175,8 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     this.licences = cdlInformation?.licences.map((item) => {
                         return {
                             license: item.licenseNumber,
-                            state: item.state?.stateShortName,
+                            state: item.state?.stateName,
+                            stateShort: item.state?.stateShortName,
                             classType: item.classType?.name,
                             expDate:
                                 MethodsCalculationsHelper.convertDateFromBackend(

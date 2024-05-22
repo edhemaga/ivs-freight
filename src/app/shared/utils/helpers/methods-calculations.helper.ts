@@ -162,6 +162,7 @@ export class MethodsCalculationsHelper {
                 notation: 'compact',
                 compactDisplay: 'short',
             }).format(value);
+        else return '0'
     };
 
     //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------

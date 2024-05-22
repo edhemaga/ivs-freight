@@ -98,6 +98,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     public isFormValid: boolean = false;
 
+    // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(

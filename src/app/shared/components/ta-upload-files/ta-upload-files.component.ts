@@ -94,6 +94,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     //Dropzone
     @Input() dropzoneFocus: boolean = false;
     @Input() showDropzone: boolean = false;
+    @Input() dropzoneColumn: boolean = false;
 
     // Review
     @Input() isReview: boolean;

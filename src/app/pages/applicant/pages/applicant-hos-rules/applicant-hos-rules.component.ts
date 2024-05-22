@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -27,15 +28,33 @@ import {
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
 
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+
+
 @Component({
     selector: 'app-hos-rules',
     templateUrl: './applicant-hos-rules.component.html',
     styleUrls: ['./applicant-hos-rules.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+    ],
 })
 export class ApplicantHosRulesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 

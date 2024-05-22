@@ -135,6 +135,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public contactEmails: ContactEmailResponse[] = [];
     public updateContactEmails: ContactEmailResponse[] = [];
 
+    // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(

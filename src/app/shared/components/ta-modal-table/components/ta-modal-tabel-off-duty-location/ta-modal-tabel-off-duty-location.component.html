@@ -1,13 +1,10 @@
 <form [formGroup]="modalTableForm" class="table-body">
-    <div
-        class="d-flex flex-column off-duty-location-table-container"
-    >
+    <div class="d-flex flex-column off-duty-location-table-container">
         <ng-container
             formArrayName="offDutyLocationTableItems"
             *ngFor="
-                let offDutyLocationItemRow of formArray
-                    .controls;
-                let i = index;
+                let offDutyLocationItemRow of formArray.controls;
+                let i = index
             "
         >
             <div
@@ -29,6 +26,7 @@
                         (click)="emitDeleteFormArrayRowClick(i)"
                     ></svg-icon>
                 </div>
+
                 <app-ta-input
                     formControlName="nickname"
                     [inputConfig]="{
@@ -39,18 +37,20 @@
                         placeholderInsteadOfLabel: true,
                         minLength: 2,
                         maxLength: 26,
+                        textTransform: 'capitalize',
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
                             offDutyLocationItemRow.valid &&
                             !isInputHoverRows[i][0],
                         blackInput:
-                            formArray.at(i).get('nickname')
-                                .value && !isInputHoverRows[i][0]
+                            formArray.at(i).get('nickname').value &&
+                            !isInputHoverRows[i][0]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 0)"
                     (mouseleave)="emitOnInputHover(false, i, 0)"
                 ></app-ta-input>
+
                 <app-ta-input-address-dropdown
                     formControlName="address"
                     [inputConfig]="{
@@ -69,18 +69,16 @@
                             offDutyLocationItemRow.valid &&
                             !isInputHoverRows[i][1],
                         blackInput:
-                            formArray.at(i).get('address')
-                                .value && !isInputHoverRows[i][1]
+                            formArray.at(i).get('address').value &&
+                            !isInputHoverRows[i][1]
                     }"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress[i]"
-                    (selectedAddress)="
-                        emitOnSelectAddress($event, 'address', i)
-                    "
+                    (selectedAddress)="emitOnSelectAddress($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
                 ></app-ta-input-address-dropdown>
             </div>
         </ng-container>
     </div>
-</form>   
+</form>
