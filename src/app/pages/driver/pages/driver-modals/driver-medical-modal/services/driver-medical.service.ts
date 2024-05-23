@@ -64,8 +64,7 @@ export class DriverMedicalService {
                             // Update Driver Data
                             driver = {
                                 ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
+                                name: driver.firstName + ' ' + driver.lastName,
                                 cdlNumber: driverInStore?.cdlNumber
                                     ? driverInStore.cdlNumber
                                     : null,

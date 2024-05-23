@@ -4,34 +4,37 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-//Models
-import { DriverListResponse, MedicalResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
-//Services
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// services
 import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-medical-modal/services/driver-medical.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 
-//Modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-//Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
-//Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// enums
+import { DriverMedicalModalStringEnum } from '@pages/driver/pages/driver-modals/driver-medical-modal/enums/driver-medical-modal-string.enum';
+
+// models
+import { EditData } from '@shared/models/edit-data.model';
 
 @Component({
     selector: 'app-driver-medical-modal',
@@ -40,16 +43,15 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaInputDropdownComponent,
         TaUploadFilesComponent,
         TaInputComponent,
         TaCustomCardComponent,
@@ -57,26 +59,26 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
     ],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
+    @Input() editData: EditData;
+
     private destroy$ = new Subject<void>();
-    @Input() editData: any;
 
     public medicalForm: UntypedFormGroup;
 
     public isFormDirty: boolean;
+    public isCardAnimationDisabled: boolean = false;
 
     public modalName: string;
 
+    // documents
     public documents: any[] = [];
-
-    public selectedDriver: any = null;
-    public labelsDrivers: any[] = [];
-    public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
-    public disableCardAnimation: boolean = false;
+    public isFileModified: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private driverService: DriverService,
         private inputService: TaInputService,
         private medicalService: DriverMedicalService,
@@ -87,24 +89,11 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getDriverById(this.editData.id);
-
-            if (this.editData.type === 'edit-medical') {
-                this.getMedicalById(this.editData.file_id);
-            } else {
-                this.startFormChanges();
-            }
-        } else {
-            this.getListOfDrivers();
-            this.medicalForm.get('driver').setValidators(Validators.required);
-        }
+        this.isAddOrEdit();
     }
 
     private createForm() {
         this.medicalForm = this.formBuilder.group({
-            driver: [null],
             issueDate: [null, Validators.required],
             expDate: [null, Validators.required],
             note: [null],
@@ -112,34 +101,49 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getDriverById(id: number) {
-        this.driverService
-            .getDriverById(id)
+    private startFormChanges() {
+        this.formService.checkFormChange(this.medicalForm);
+
+        this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    this.modalName = res.firstName.concat(' ', res.lastName);
-                    setTimeout(() => {
-                        this.disableCardAnimation = false;
-                    }, 1000);
-                },
-                error: () => {},
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                break;
+    private isAddOrEdit(): void {
+        if (this.editData) {
+            this.isCardAnimationDisabled = true;
+
+            this.getDriverById(this.editData.id);
+
+            if (
+                this.editData.type === DriverMedicalModalStringEnum.EDIT_MEDICAL
+            ) {
+                this.getMedicalById(this.editData.file_id);
+            } else {
+                this.startFormChanges();
             }
-            case 'save': {
-                // If Form not valid
+        }
+    }
+
+    public onModalAction(data: { action: string; bool: boolean }): void {
+        switch (data.action) {
+            case DriverMedicalModalStringEnum.CLOSE:
+                break;
+            case DriverMedicalModalStringEnum.SAVE:
                 if (this.medicalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.medicalForm);
+
                     return;
                 }
-                if (this.editData?.type === 'edit-medical') {
+
+                if (
+                    this.editData?.type ===
+                    DriverMedicalModalStringEnum.EDIT_MEDICAL
+                ) {
                     this.updateMedical();
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -147,6 +151,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                     });
                 } else {
                     this.addMedical();
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -155,98 +160,97 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case DriverMedicalModalStringEnum.ADD:
                 this.medicalForm
-                    .get('files')
+                    .get(DriverMedicalModalStringEnum.FILES)
                     .patchValue(JSON.stringify(event.files));
+
                 break;
-            }
-            case 'delete': {
+            case DriverMedicalModalStringEnum.DELETE:
                 this.medicalForm
-                    .get('files')
+                    .get(DriverMedicalModalStringEnum.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
 
-                this.fileModified = true;
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
+
+                this.isFileModified = true;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private updateMedical() {
-        const { issueDate, expDate, note } = this.medicalForm.value;
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-        const newData: any = {
-            id: this.editData.file_id,
-            issueDate:
-                MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
-            note: note,
-            files: documents ? documents : this.medicalForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
-        };
-
-        this.medicalService
-            .updateMedical(newData)
+    private getDriverById(id: number): void {
+        this.driverService
+            .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+            .subscribe((res) => {
+                const { firstName, lastName } = res;
+
+                this.modalName = firstName.concat(
+                    DriverMedicalModalStringEnum.EMPTY_STRING,
+                    lastName
+                );
             });
     }
 
-    private addMedical() {
+    public getMedicalById(id: number): void {
+        this.medicalService
+            .getMedicalById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const { issueDate, expDate, note, files } = res;
+
+                this.medicalForm.patchValue({
+                    issueDate:
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            issueDate
+                        ),
+                    expDate:
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            expDate
+                        ),
+                    note,
+                    files: files?.length ? JSON.stringify(files) : null,
+                });
+
+                this.documents = files;
+
+                setTimeout(() => {
+                    this.startFormChanges();
+
+                    this.isCardAnimationDisabled = false;
+                }, 1000);
+            });
+    }
+
+    private addMedical(): void {
         const { issueDate, expDate, note } = this.medicalForm.value;
+
+        // documents
         let documents = [];
+
         this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+            if (item.realFile) documents.push(item.realFile);
         });
 
-        const newData: any = {
-            driverId: this.selectedDriver
-                ? this.selectedDriver.id
-                : this.editData.id,
+        const newData = {
+            driverId: this.editData?.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
-            note: note,
-            tableActiveTab: this.editData.tableActiveTab,
+            note,
             files: documents,
         };
 
@@ -271,77 +275,44 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public getMedicalById(id: number) {
+    private updateMedical(): void {
+        const { issueDate, expDate, note } = this.medicalForm.value;
+
+        // documents
+        let documents = [];
+
+        this.documents.map((item) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+
+        const newData = {
+            id: this.editData.file_id,
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
+            note,
+            files: documents,
+            filesForDeleteIds: this.filesForDelete,
+        };
+
         this.medicalService
-            .getMedicalById(id)
+            .updateMedical(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: MedicalResponse) => {
-                    this.medicalForm.patchValue({
-                        issueDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.issueDate
-                            ),
-                        expDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.expDate
-                            ),
-                        note: res.note,
-                        files: res.files.length
-                            ? JSON.stringify(res.files)
-                            : null,
-                    });
-
-                    this.documents = res.files ? (res.files as any) : [];
-                    setTimeout(() => {
-                        this.startFormChanges();
-                        this.disableCardAnimation = false;
-                    }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'driver': {
-                if (event) {
-                    this.selectedDriver = event;
-                    this.modalName = this.selectedDriver.name;
-                } else {
-                    this.modalName = null;
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public getListOfDrivers() {
-        this.driverService
-            .getDrivers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: DriverListResponse) => {
-                    this.labelsDrivers = res.pagination.data.map((item) => {
-                        return {
-                            id: item.id,
-                            /* name: item.fullName, */
-                        };
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
                     });
                 },
-                error: () => {},
-            });
-    }
-
-    private startFormChanges() {
-        this.formService.checkFormChange(this.medicalForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
             });
     }
 
