@@ -19,6 +19,7 @@ export interface ApiApplicantMvrPostRequest {
     DontHaveMvr?: boolean;
     OnlyLicense?: boolean;
     Signature?: string;
+    IssueDate?: string;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;
     ApplicantId?: number;

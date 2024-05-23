@@ -17,6 +17,13 @@ export interface UpdateApplicantCommand {
     lastName?: string | null;
     phone?: string | null;
     email?: string | null;
+    sendInvite?: boolean;
+    isOwner?: boolean;
+    applicantSafety?: boolean;
+    applicantSafety192?: boolean;
+    truckHygiene?: boolean;
+    customAgreement?: boolean;
+    gpsTracker?: boolean;
     note?: string | null;
 }
 
