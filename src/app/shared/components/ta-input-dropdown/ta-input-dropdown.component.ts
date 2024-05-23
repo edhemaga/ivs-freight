@@ -312,6 +312,7 @@ export class TaInputDropdownComponent
     registerOnTouched(_: any): void {}
 
     ngOnInit(): void {
+        console.log('options', this.options);
         // Multiselect
         if (this.inputConfig.multiselectDropdown) {
             this.multiSelectLabel = this.inputConfig.label;

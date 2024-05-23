@@ -811,7 +811,7 @@
                             _options[0].name === 'No Results',
                         active: option.id === _activeItem?.id
                     }"
-                    class="dropdown-option load-dispatches-ttd-template"
+                    class="dropdown-option dropdown-double-column"
                 >
                     <!-- No Results -->
                     <div
@@ -1455,6 +1455,65 @@
                             }"
                         ></svg-icon>
                     </ng-container>
+                </div>
+            </div>
+
+            <!-- Double Column Template -->
+
+            <div *ngSwitchCase="'double-column-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of _options; trackBy: identity"
+                    [ngClass]="{
+                        'no-result':
+                            _options.length === 1 &&
+                            _options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned',
+                        'dropdown-double-column-option-add-new':
+                            option.name === 'ADD NEW'
+                    }"
+                    class="dropdown-option dropdown-double-column-option"
+                >
+                    <div
+                        [innerHtml]="
+                            option.ein
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-double-column-option-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-double-column-text"
+                    ></div>
+
+                    <!-- Plus Icon -->
+
+                    <svg-icon
+                        class="plus-icon"
+                        src="assets/svg/common/ic_plus.svg"
+                        [svgStyle]="{
+                            'width.px': '14',
+                            'height.px': '14'
+                        }"
+                    ></svg-icon>
                 </div>
             </div>
 
