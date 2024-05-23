@@ -17,8 +17,7 @@ export class TruckCardsModalConfig {
         },
         {
             title: 'Model',
-            key: 'truckType',
-            secondKey: 'name',
+            key: 'model',
         },
         {
             title: 'Mileage',

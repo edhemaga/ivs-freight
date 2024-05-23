@@ -1,7 +1,9 @@
 import { TruckShortResponse } from 'appcoretruckassist';
+
+//enums
 import { TruckTableStringEnum } from '@pages/truck/pages/truck-table/enum/truck-table-string.enum';
 
-export class truckFeaturesDataHelper {
+export class TruckFeaturesDataHelper {
     static truckFeaturesData(
         data: TruckShortResponse
     ): { name: string; image: string }[] {

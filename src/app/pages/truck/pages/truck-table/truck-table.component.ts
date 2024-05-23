@@ -43,6 +43,7 @@ import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enu
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
+import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
 
 // models
 import { TruckListResponse } from 'appcoretruckassist';
@@ -53,7 +54,6 @@ import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
-import { truckFeaturesDataHelper } from './utils/helpers/truck-features-data.helper';
 
 @Component({
     selector: 'app-truck-table',
@@ -709,7 +709,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAPUnit: data?.apUnit?.name
                 ? data.apUnit.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableFeatures: truckFeaturesDataHelper.truckFeaturesData(data),
+            tableFeatures: TruckFeaturesDataHelper.truckFeaturesData(data),
             tableTollDeviceTransponder: data?.tollTransponder?.name
                 ? data.tollTransponder.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,

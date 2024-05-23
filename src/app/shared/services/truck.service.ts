@@ -75,7 +75,7 @@ export class TruckService implements OnDestroy {
         search1?: string,
         search2?: string
     ): Observable<TruckListResponse> {
-        return of(null); /* this.truckService.apiTruckListGet(
+        return this.truckService.apiTruckListGet(
             active,
             truckTypes,
             pageIndex,
@@ -85,7 +85,7 @@ export class TruckService implements OnDestroy {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     public addTruck(data: TruckResponse): Observable<TruckResponse> {
@@ -222,7 +222,7 @@ export class TruckService implements OnDestroy {
     }
 
     public voidRegistration(
-        voidedReg: number,
+        voidedReg?: number,
         unVoidedReg?: number
     ): Observable<TruckResponse> {
         return this.RegistrationService.apiRegistrationVoidPost({

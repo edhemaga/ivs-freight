@@ -22,6 +22,7 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 
 @NgModule({
     declarations: [TruckTableComponent, TruckCardComponent],
@@ -46,6 +47,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         DatePipe,
         FlipCardsPipe,
         FormatDatePipe,
+        CardValuePipe,
     ],
 })
 export class TruckModule {}

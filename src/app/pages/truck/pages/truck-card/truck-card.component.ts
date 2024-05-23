@@ -16,7 +16,8 @@ import { CardDataResult } from '@shared/models/card-models/card-data-result.mode
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
-import { truckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
+import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
+import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/truck-card-icons.constants';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -34,7 +35,7 @@ export class TruckCardComponent implements OnInit, OnDestroy {
         this._viewData = value.map((v) => {
             return {
                 ...v,
-                features: truckFeaturesDataHelper.truckFeaturesData(v),
+                features: TruckFeaturesDataHelper.truckFeaturesData(v),
             };
         });
     }
@@ -50,7 +51,7 @@ export class TruckCardComponent implements OnInit, OnDestroy {
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
-
+    public truckCardImageRoutes = TruckCardIcons;
     constructor(
         private tableService: TruckassistTableService,
         private cardHelper: CardHelper,
