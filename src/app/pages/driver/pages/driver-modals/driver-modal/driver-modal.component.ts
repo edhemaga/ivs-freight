@@ -500,11 +500,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
         // save or update and close
         else if (data.action === TableStringEnum.SAVE) {
-            /*   if (this.driverForm.invalid || !this.isFormDirty) {
+            if (this.driverForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.driverForm);
 
                 return;
-            } */
+            }
 
             // update
             if (this.editData?.id) {

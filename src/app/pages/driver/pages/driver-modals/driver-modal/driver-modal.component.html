@@ -4,9 +4,11 @@
     [editData]="editData"
     [saveAndAddNew]="editData?.type !== 'edit'"
     [customClass]="'modal-container-M'"
-    [isModalValid]="true"
+    [isModalValid]="
+        driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid
+    "
     (action)="onModalAction($event)"
-    ><!--  driverForm.valid && isFormDirty && isEachOffDutyLocationRowValid -->
+>
     <div origin>
         <!-- Tabs -->
 
