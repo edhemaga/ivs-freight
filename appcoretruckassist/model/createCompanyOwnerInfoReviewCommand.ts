@@ -22,8 +22,7 @@ export interface CreateCompanyOwnerInfoReviewCommand {
     isAddressUnitValid?: boolean;
     addressMessage?: string | null;
     isAccountValid?: boolean;
-    isRoutingValid?: boolean;
-    accountRoutingMessage?: string | null;
+    accountMessage?: string | null;
     isTruckVinValid?: boolean;
     truckVinMessage?: string | null;
     isTruckModelValid?: boolean;
@@ -33,7 +32,8 @@ export interface CreateCompanyOwnerInfoReviewCommand {
     trailerVinMessage?: string | null;
     isTrailerModelValid?: boolean | null;
     isTrailerYearValid?: boolean | null;
-    trailerModelYearMessage?: string | null;
+    trailerYearMessage?: string | null;
+    trailerModelMessage?: string | null;
     applicantId?: number;
 }
 

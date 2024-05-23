@@ -12,11 +12,12 @@ export class TruckCardsModalConfig {
         },
         {
             title: 'Make',
-            key: 'truckMake.name',
+            key: 'truckMake',
+            secondKey: 'name',
         },
         {
             title: 'Model',
-            key: 'truckType.name',
+            key: 'model',
         },
         {
             title: 'Mileage',
@@ -29,13 +30,12 @@ export class TruckCardsModalConfig {
     static displayRowsBackActive: CardRows[] = [
         {
             title: 'Owner - Name',
-            key: 'owner.name',
+            key: 'owner',
+            secondKey: 'name',
         },
         {
             title: 'Owner • Commission',
             key: 'commission',
-            secondKey: 'loadDelivery.location',
-            thirdKey: 'loadDelivery.date',
         },
         {
             title: 'Licence • Expiration',
@@ -56,11 +56,13 @@ export class TruckCardsModalConfig {
         },
         {
             title: 'Make',
-            key: 'truckMake.name',
+            key: 'truckMake',
+            secondKey: 'name',
         },
         {
             title: 'Model',
-            key: 'truckType.name',
+            key: 'truckType',
+            secondKey: 'name',
         },
         {
             title: 'Mileage',
@@ -73,13 +75,12 @@ export class TruckCardsModalConfig {
     static displayRowsBackInactive: CardRows[] = [
         {
             title: 'Owner - Name',
-            key: 'owner.name',
+            key: 'owner',
+            secondKey: 'name',
         },
         {
             title: 'Owner • Commission',
             key: 'commission',
-            secondKey: 'loadDelivery.location',
-            thirdKey: 'loadDelivery.date',
         },
         {
             title: 'Licence • Expiration',

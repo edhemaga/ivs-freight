@@ -102,9 +102,9 @@ model/apiApplicantMedicalcertificatePostRequest.ts
 model/apiApplicantMedicalcertificatePostRequest1.ts
 model/apiApplicantMvrPostRequest.ts
 model/apiApplicantMvrPostRequest1.ts
+model/apiApplicantPersonalPostRequest.ts
+model/apiApplicantPersonalPostRequest1.ts
 model/apiApplicantPreviousemployerDocumentsPostRequest.ts
-model/apiApplicantSsnPostRequest.ts
-model/apiApplicantSsnPostRequest1.ts
 model/apiBrokerImportPostRequest.ts
 model/apiBrokerPostRequest.ts
 model/apiBrokerPostRequest1.ts
@@ -340,7 +340,6 @@ model/createPayrollBonusCommand.ts
 model/createPayrollCreditCommand.ts
 model/createPayrollDeductionCommand.ts
 model/createPayrollPaymentCommand.ts
-model/createPersonalInfoCommand.ts
 model/createPersonalInfoReviewCommand.ts
 model/createPreviousAddressCommand.ts
 model/createPreviousAddressReviewCommand.ts
@@ -354,7 +353,6 @@ model/createRouteCommand.ts
 model/createSevenDaysHosCommand.ts
 model/createSevenDaysHosReviewCommand.ts
 model/createSphReviewCommand.ts
-model/createSsnReviewCommand.ts
 model/createTagCommand.ts
 model/createTerminalCommand.ts
 model/createTrafficViolationCommand.ts
@@ -853,7 +851,6 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
-model/ssnFeedbackResponse.ts
 model/stateResponse.ts
 model/statusSetCompanyUserCommand.ts
 model/statusSetMultipleBrokerCommand.ts
@@ -1021,7 +1018,6 @@ model/updateParkingSlotCommand.ts
 model/updatePayrollBonusCommand.ts
 model/updatePayrollCreditCommand.ts
 model/updatePayrollDeductionCommand.ts
-model/updatePersonalInfoCommand.ts
 model/updatePersonalInfoReviewCommand.ts
 model/updatePreviousAddressCommand.ts
 model/updatePreviousAddressReviewCommand.ts
@@ -1033,7 +1029,6 @@ model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateSevenDaysHosReviewCommand.ts
 model/updateSphCommand.ts
-model/updateSsnReviewCommand.ts
 model/updateStopCommand.ts
 model/updateTableConfigCommand.ts
 model/updateTerminalCommand.ts
