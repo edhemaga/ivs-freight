@@ -89,6 +89,7 @@ import {
     BankResponse,
     CheckOwnerSsnEinResponse,
     CreateResponse,
+    DriverModalFuelCardResponse,
     DriverModalOwnerResponse,
     DriverResponse,
     EnumValue,
@@ -171,10 +172,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public payTypeDropdownList: EnumValue[] = [];
     public banksDropdownList: BankResponse[] = [];
     public ownersDropdownList: DriverModalOwnerResponse[] = [];
+    public fuelCardsDropdownList: DriverModalFuelCardResponse[] = [];
 
     public selectedPayType: EnumValue;
     public selectedBank: BankResponse;
     public selectedOwner: CheckOwnerSsnEinResponse;
+    public selectedFuelCard: DriverModalFuelCardResponse;
 
     public selectedAddress: AddressEntity;
 
@@ -626,8 +629,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string): void {
-        console.log('event', event);
-
         switch (action) {
             case DriverModalStringEnum.BANK:
                 this.selectedBank = event;
@@ -1638,6 +1639,27 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.banksDropdownList = banks;
                     this.payTypeDropdownList = payTypes;
                     this.ownersDropdownList = owners;
+                    this.fuelCardsDropdownList = [
+                        {
+                            id: 1,
+                            number: '7083052138884341234',
+                            brand: 'WEX EFS',
+                            account: 'AngeloTrotter123',
+                        },
+                        {
+                            id: 2,
+                            number: '70830521388843412345',
+                            brand: 'WEX EFS',
+                            account: 'AngeloTrotter1234',
+                        },
+                        ,
+                        {
+                            id: 3,
+                            number: '70830521388843412346',
+                            brand: 'WEX EFS',
+                            account: 'AngeloTrotter12345',
+                        },
+                    ];
 
                     this.tags = tags;
 
@@ -1731,8 +1753,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             ...form
         } = this.driverForm.value;
-
-        console.log('...form', form);
 
         const {
             convertedDate,
@@ -1853,8 +1873,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
         };
-
-        console.log('newData', newData);
 
         this.driverService
             .addDriver(newData)
@@ -2085,6 +2103,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 .find((tab) => tab.checked);
 
             if (activeOwnerTab) this.onOwnerTabChange(activeOwnerTab);
+
+            this.selectedOwner = this.ownersDropdownList?.find(
+                (companyOwner) => companyOwner.id === owner.id
+            );
         }
 
         setTimeout(() => {
@@ -2145,8 +2167,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             ...form
         } = this.driverForm.value;
-
-        console.log('...form', form);
 
         const {
             convertedDate,
@@ -2268,8 +2288,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
         };
-
-        console.log('newData', newData);
 
         this.driverService
             .updateDriver(newData)

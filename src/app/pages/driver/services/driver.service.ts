@@ -120,27 +120,6 @@ export class DriverService {
     public addDriver(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        // const user = JSON.parse(localStorage.getItem('user'));
-        // console.log('user', user);
-        // /* 'Content-Type': 'multipart/form-data', */
-        // const httpOptions = {
-        //     headers: new HttpHeaders({
-        //         Authorization: `Bearer ${user.refreshToken}`,
-        //     }),
-        // };
-
-        // return this.http
-        //     .post<any>(
-        //         'https://api-dev.carriera.io/api/driver',
-        //         data,
-        //         httpOptions
-        //     )
-        //     .pipe(
-        //         tap((res) => {
-        //             console.log('res', res);
-        //         })
-        //     );
-
         return this.driverService.apiDriverPost().pipe(
             tap((res) => {
                 this.getDriverById(res.id).subscribe({
