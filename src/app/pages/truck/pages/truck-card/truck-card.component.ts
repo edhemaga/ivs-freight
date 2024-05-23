@@ -17,6 +17,8 @@ import { CardDataResult } from '@shared/models/card-models/card-data-result.mode
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
+
+// constants
 import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/truck-card-icons.constants';
 
 // services
