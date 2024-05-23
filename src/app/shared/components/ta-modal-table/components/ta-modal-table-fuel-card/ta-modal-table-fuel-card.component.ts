@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
@@ -9,68 +9,76 @@ import {
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// components
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-// models
-import { AddressEntity } from 'appcoretruckassist';
+// components
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
+// models
+import { DriverModalFuelCardResponse } from 'appcoretruckassist';
+
 @Component({
-    selector: 'app-ta-modal-tabel-off-duty-location',
-    templateUrl: './ta-modal-tabel-off-duty-location.component.html',
-    styleUrls: ['./ta-modal-tabel-off-duty-location.component.scss'],
-    standalone: true,
+    selector: 'app-ta-modal-table-fuel-card',
     imports: [
         // modules
         CommonModule,
-        AngularSvgIconModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
 
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-        TaCheckboxComponent,
-        TaInputAddressDropdownComponent,
 
         // pipes
         TrackByPropertyPipe,
     ],
+    templateUrl: './ta-modal-table-fuel-card.component.html',
+    styleUrls: ['./ta-modal-table-fuel-card.component.scss'],
+    standalone: true,
 })
-export class TaModalTabelOffDutyLocationComponent {
+export class TaModalTableFuelCardComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() selectedAddress: AddressEntity[] = [];
+    @Input() selectedFuelCard: DriverModalFuelCardResponse[] = [];
+    @Input() fuelCardOptions: DriverModalFuelCardResponse[] = [];
 
-    @Output() onSelectAddress: EventEmitter<{
-        address: {
-            address: AddressEntity;
-            valid: boolean;
-        };
-        index: number;
+    @Output() onSelectDropdown: EventEmitter<{
+        dropdownEvent: DriverModalFuelCardResponse;
+        action: string;
+        index?: number;
     }> = new EventEmitter();
+
     @Output() deleteFormArrayRowClick: EventEmitter<number> =
         new EventEmitter();
+
     @Output() onInputHover: EventEmitter<{
         isHovering: boolean;
         isInputHoverRowIndex: number;
         inputIndex: number;
     }> = new EventEmitter();
 
+    constructor() {}
+
     get formArray() {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
-    constructor() {}
+    public emitOnSelectDropdown(
+        dropdownEvent: DriverModalFuelCardResponse,
+        index: number
+    ): void {
+        this.onSelectDropdown.emit({
+            dropdownEvent,
+            action: TaModalTableStringEnum.FUEL_CARD_TYPE,
+            index,
+        });
+    }
 
     public emitDeleteFormArrayRowClick(index: number): void {
         this.deleteFormArrayRowClick.emit(index);
@@ -85,19 +93,6 @@ export class TaModalTabelOffDutyLocationComponent {
             isHovering,
             isInputHoverRowIndex,
             inputIndex,
-        });
-    }
-
-    public emitOnSelectAddress(
-        address: {
-            address: AddressEntity;
-            valid: boolean;
-        },
-        index: number
-    ): void {
-        this.onSelectAddress.emit({
-            address,
-            index,
         });
     }
 }

@@ -1,17 +1,15 @@
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-} from '@angular/core';
-import { ReactiveFormsModule, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
+    ReactiveFormsModule,
+    UntypedFormArray,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 //modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
@@ -39,13 +37,12 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-        TaCheckboxComponent,
 
         //pipes
         TrackByPropertyPipe,
     ],
 })
-export class TaModalTableContactComponent{
+export class TaModalTableContactComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];

@@ -48,7 +48,6 @@ import {
     addressValidation,
     bankValidation,
     firstNameValidation,
-    fuelCardValidation,
     lastNameValidation,
     name2_24Validation,
     perStopValidation,
@@ -172,12 +171,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public payTypeDropdownList: EnumValue[] = [];
     public banksDropdownList: BankResponse[] = [];
     public ownersDropdownList: DriverModalOwnerResponse[] = [];
-    public fuelCardsDropdownList: DriverModalFuelCardResponse[] = [];
 
     public selectedPayType: EnumValue;
     public selectedBank: BankResponse;
     public selectedOwner: CheckOwnerSsnEinResponse;
-    public selectedFuelCard: DriverModalFuelCardResponse;
 
     public selectedAddress: AddressEntity;
 
@@ -191,9 +188,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // items
     public isOffDutyLocationRowCreated: boolean = false;
     public isEachOffDutyLocationRowValid: boolean = true;
+    public isFuelCardRowCreated: boolean = false;
+    public isEachFuelCardRowValid: boolean = true;
 
     public offDutyLocationItems: OffDutyLocationResponse[] = [];
     public updatedOffDutyLocationItems: OffDutyLocationResponse[] = [];
+    public fuelCardItems: DriverModalFuelCardResponse[] = [];
+    public updatedFuelCardItems: DriverModalFuelCardResponse[] = [];
 
     // documents
     public dropZoneConfig: DropZoneConfig;
@@ -313,7 +314,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             twic: [false],
             twicExpDate: [null],
             mvrExpiration: [null, Validators.required],
-            fuelCard: [null, [...fuelCardValidation]],
+            fuelCardItems: [null],
 
             mailNotificationGeneral: [true],
             pushNotificationGeneral: [true],
@@ -963,22 +964,48 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.changeDetector.detectChanges();
     }
 
-    public handleModalTableValueEmit(
-        modalTableDataValue: OffDutyLocationResponse[]
-    ): void {
-        this.offDutyLocationItems = modalTableDataValue;
+    public addFuelCard(): void {
+        if (!this.isEachFuelCardRowValid) return;
 
-        this.driverForm
-            .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
-            .patchValue(JSON.stringify(this.offDutyLocationItems));
+        this.isFuelCardRowCreated = true;
+
+        setTimeout(() => {
+            this.isFuelCardRowCreated = false;
+        }, 400);
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: OffDutyLocationResponse[],
+        type: string
+    ): void {
+        if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
+            this.offDutyLocationItems = modalTableDataValue;
+
+            this.driverForm
+                .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
+                .patchValue(JSON.stringify(this.offDutyLocationItems));
+        } else {
+            this.fuelCardItems = modalTableDataValue;
+
+            this.driverForm
+                .get(DriverModalStringEnum.FUEL_CARD_ITEMS)
+                .patchValue(JSON.stringify(this.fuelCardItems));
+        }
 
         this.changeDetector.detectChanges();
     }
 
     public handleModalTableValidStatusEmit(
-        isEachOffDutyLocationRowValid: boolean
+        isEachRowValid: boolean,
+        type: string
     ): void {
-        this.isEachOffDutyLocationRowValid = isEachOffDutyLocationRowValid;
+        if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
+            this.isEachOffDutyLocationRowValid = isEachRowValid;
+        } else {
+            this.isEachFuelCardRowValid = isEachRowValid;
+        }
     }
 
     public handleSliderValueChange(
@@ -1507,6 +1534,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? teamDriver
                 : false;
 
+        const convertedFuelCards = this.fuelCardItems.map(
+            (fuelCard) => fuelCard.id
+        );
+
         // twic
         const conditionalTwicExpDate = twic
             ? MethodsCalculationsHelper.convertDateToBackend(twicExpDate)
@@ -1534,6 +1565,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             conditionalTeamDriver,
             convertedDocuments,
             convertedTagsArray,
+            convertedFuelCards,
             conditionalTwicExpDate,
         };
     }
@@ -1616,7 +1648,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .getDriverDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: GetDriverModalResponse) => {
-                console.log('DROPDOWN data', data);
                 if (data) {
                     const {
                         banks,
@@ -1639,27 +1670,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     this.banksDropdownList = banks;
                     this.payTypeDropdownList = payTypes;
                     this.ownersDropdownList = owners;
-                    this.fuelCardsDropdownList = [
-                        {
-                            id: 1,
-                            number: '7083052138884341234',
-                            brand: 'WEX EFS',
-                            account: 'AngeloTrotter123',
-                        },
-                        {
-                            id: 2,
-                            number: '70830521388843412345',
-                            brand: 'WEX EFS',
-                            account: 'AngeloTrotter1234',
-                        },
-                        ,
-                        {
-                            id: 3,
-                            number: '70830521388843412346',
-                            brand: 'WEX EFS',
-                            account: 'AngeloTrotter12345',
-                        },
-                    ];
 
                     this.tags = tags;
 
@@ -1763,6 +1773,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             convertedDocuments,
             convertedTagsArray,
             conditionalTwicExpDate,
+            convertedFuelCards,
         } = this.createAddOrUpdateDriverProperties(
             dateOfBirth,
             addressUnit,
@@ -1859,6 +1870,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: convertedDocuments,
             tags: convertedTagsArray,
 
+            fuelCardIds: convertedFuelCards,
             twic,
             twicExpDate: conditionalTwicExpDate,
 
@@ -1912,7 +1924,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private editDriverById(editData: DriverResponse): void {
-        console.log('editData', editData);
         const {
             firstName,
             lastName,

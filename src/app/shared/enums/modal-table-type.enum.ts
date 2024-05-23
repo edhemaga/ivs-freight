@@ -7,4 +7,5 @@ export enum ModalTableTypeEnum {
     PM_TRUCK = 'PM_TRUCK',
     PM_TRAILER = 'PM_TRAILER',
     OFF_DUTY_LOCATION = 'OFF_DUTY_LOCATION',
+    FUEL_CARD = 'FUEL_CARD',
 }

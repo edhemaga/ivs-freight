@@ -53,10 +53,18 @@ export class ModalTableConstants {
         'ADDRESS, CITY, STATE ZIP',
     ];
 
+    static FUEL_CARD_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'CARD NO',
+        'PROVIDER',
+        'ACCOUNT',
+    ];
+
     static IS_INPUT_HOVER_ROW_PHONE: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_ORDER: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_CONTACT: boolean[] = [false, false, false, false];
     static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_FUEL_CARD: boolean[] = [false];
 }

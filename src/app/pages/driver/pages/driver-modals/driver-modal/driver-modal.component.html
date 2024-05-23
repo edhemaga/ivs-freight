@@ -211,8 +211,7 @@
                                                         'Company Name'
                                                     ],
                                                     customClass:
-                                                        'dropdown-double-column',
-                                                    isRequired: true
+                                                        'dropdown-double-column'
                                                 },
                                                 dropdownWidthClass: 'w-col-616'
                                             }"
@@ -905,7 +904,7 @@
                             [subText]="
                                 'Driver can disable GPS tracking. Parking location included.'
                             "
-                            [isCardOpen]="offDutyLocationItems?.length > 0"
+                            [isCardOpen]="offDutyLocationItems?.length"
                             [disabledCard]="!offDutyLocationItems?.length"
                             [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
@@ -921,10 +920,16 @@
                                 [isNewRowCreated]="isOffDutyLocationRowCreated"
                                 [modalTableData]="updatedOffDutyLocationItems"
                                 (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
+                                    handleModalTableValueEmit(
+                                        $event,
+                                        'off-duty-location'
+                                    )
                                 "
                                 (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
+                                    handleModalTableValidStatusEmit(
+                                        $event,
+                                        'off-duty-location'
+                                    )
                                 "
                             ></app-ta-modal-table>
                         </app-ta-custom-card>
@@ -1044,7 +1049,42 @@
 
                         <div class="driver-cards-mvr">
                             <app-ta-custom-card
-                                [cardName]="'Cards & MVR Exp.'"
+                                [hasCounter]="fuelCardItems?.length"
+                                [cardName]="'Fuel Card'"
+                                [headerSvgEnabled]="true"
+                                [hasActionSvg]="true"
+                                [isCardOpen]="fuelCardItems?.length"
+                                [disabledCard]="!fuelCardItems?.length"
+                                [disableAnimation]="isCardAnimationDisabled"
+                                [animationMarginParams]="{
+                                    marginTop: '10px',
+                                    marginBottom: '12px'
+                                }"
+                                (onActionEvent)="addFuelCard($event)"
+                            >
+                                <app-ta-modal-table
+                                    [tableType]="modalTableTypeEnum.FUEL_CARD"
+                                    [isNewRowCreated]="isFuelCardRowCreated"
+                                    [modalTableData]="updatedFuelCardItems"
+                                    (modalTableValueEmitter)="
+                                        handleModalTableValueEmit(
+                                            $event,
+                                            'fuel card'
+                                        )
+                                    "
+                                    (modalTableValidStatusEmitter)="
+                                        handleModalTableValidStatusEmit(
+                                            $event,
+                                            'fuel card'
+                                        )
+                                    "
+                                ></app-ta-modal-table>
+                            </app-ta-custom-card>
+
+                            <!-- Twic Card -->
+
+                            <app-ta-custom-card
+                                [cardName]="'Twic Card & MVR Exp.'"
                                 [hasArrow]="false"
                                 [disabledCard]="true"
                                 [isCardOpen]="true"
@@ -1073,17 +1113,6 @@
                                             customClass: 'datetimeclass'
                                         }"
                                     ></app-ta-input>
-
-                                    <!--  <app-ta-input
-                                        formControlName="fuelCard"
-                                        [inputConfig]="{
-                                            name: 'fuel-card',
-                                            type: 'text',
-                                            label: 'Fuel Card #',
-                                            minLength: 10,
-                                            maxLength: 19
-                                        }"
-                                    ></app-ta-input> -->
 
                                     <app-ta-input
                                         formControlName="mvrExpiration"

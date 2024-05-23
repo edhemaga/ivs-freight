@@ -34,6 +34,7 @@ export enum DriverModalStringEnum {
     ACCOUNT = 'account',
     AVATAR = 'avatar',
     OWNER = 'owner',
+    FUEL_CARD_ITEMS = 'fuelCardItems',
 
     PER_MILE = 'Per Mile',
     COMMISSION = 'Commission',
@@ -41,6 +42,7 @@ export enum DriverModalStringEnum {
 
     PAY_TYPE = 'paytype',
     BANK = 'bank',
+    OFF_DUTY_LOCATION = 'off-duty-location',
 
     BASIC = 'Basic',
     ADDITIONAL = 'Additional',

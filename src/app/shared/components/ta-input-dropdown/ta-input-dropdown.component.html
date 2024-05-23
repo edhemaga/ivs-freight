@@ -1517,6 +1517,77 @@
                 </div>
             </div>
 
+            <!-- Triple Column Template -->
+
+            <div *ngSwitchCase="'triple-column-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of _options; trackBy: identity"
+                    [ngClass]="{
+                        'no-result':
+                            _options.length === 1 &&
+                            _options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        'dropdown-triple-column-option-add-new':
+                            option.name === 'ADD NEW'
+                    }"
+                    class="dropdown-option dropdown-triple-column-option"
+                >
+                    <div
+                        [innerHtml]="
+                            option.number
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-option-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.brand
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.account
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-text"
+                    ></div>
+
+                    <!-- Plus Icon -->
+
+                    <svg-icon
+                        class="plus-icon"
+                        src="assets/svg/common/ic_plus.svg"
+                        [svgStyle]="{
+                            'width.px': '14',
+                            'height.px': '14'
+                        }"
+                    ></svg-icon>
+                </div>
+            </div>
+
             <!--------------------------- Default Template - Render Only Text --------------------------->
 
             <div *ngSwitchDefault>
