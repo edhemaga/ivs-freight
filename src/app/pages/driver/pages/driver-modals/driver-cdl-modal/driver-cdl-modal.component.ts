@@ -13,8 +13,8 @@ import { Subject, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Services
-import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
@@ -50,6 +50,7 @@ import {
     StateResponse,
 } from 'appcoretruckassist';
 import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-cdl-modal/models/extended-state-response.model';
+import { EditData } from '@shared/models/edit-data.model';
 
 @Component({
     selector: 'app-driver-cdl-modal',
@@ -75,7 +76,7 @@ import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-
     ],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    @Input() editData: EditData;
 
     private destroy$ = new Subject<void>();
 

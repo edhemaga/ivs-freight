@@ -17,8 +17,8 @@ import {
 } from 'appcoretruckassist';
 
 //Services
-import { DriverService } from '@pages/driver/services/driver.service';
-import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';

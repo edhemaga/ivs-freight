@@ -6,17 +6,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 //Components
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DropDownService } from '@shared/services/drop-down.service';
-import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
+import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 
 //Store
@@ -576,7 +576,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
             case 'DrugAlcohol': {
                 this.modalService.openModal(
-                    DriverDrugAlcoholModalComponent,
+                    DriverDrugAlcoholTestModalComponent,
                     { size: 'small' },
                     { id: this.driverId, type: 'new-drug' }
                 );

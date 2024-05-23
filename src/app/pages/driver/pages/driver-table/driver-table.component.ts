@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -13,7 +13,7 @@ import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/
 
 // services
 import { ModalService } from '@shared/services/modal.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ApplicantService } from '@shared/services/applicant.service';
 import { AddressService } from '@shared/services/address.service';
@@ -1413,7 +1413,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.NEW_DRUG) {
             this.modalService.openModal(
-                DriverDrugAlcoholModalComponent,
+                DriverDrugAlcoholTestModalComponent,
                 {
                     size: TableStringEnum.SMALL,
                 },

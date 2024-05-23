@@ -11,25 +11,8 @@
         [formGroup]="drugForm"
         class="form-container form-container-without-mb"
     >
-        <div *ngIf="!editData" class="row first-row">
-            <div class="col-12">
-                <app-ta-input-dropdown
-                    formControlName="driver"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Driver',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-456',
-                        autoFocus: !editData
-                    }"
-                    [options]="labelsDrivers"
-                    [activeItem]="selectedDriver"
-                    (selectedItem)="onSelectDropdown($event, 'driver')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
+        <!-- Issue Date, Type -->
+
         <div class="row">
             <div class="col-6">
                 <app-ta-input
@@ -46,6 +29,7 @@
                     }"
                 ></app-ta-input>
             </div>
+
             <div class="col-6">
                 <app-ta-input-dropdown
                     formControlName="testType"
@@ -57,12 +41,14 @@
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-228'
                     }"
-                    [options]="testTypes"
+                    [options]="testTypesDropdownList"
                     [activeItem]="selectedTestType"
                     (selectedItem)="onSelectDropdown($event, 'test')"
                 ></app-ta-input-dropdown>
             </div>
         </div>
+
+        <!-- Reason, Results -->
 
         <div class="row last-row">
             <div class="col-6">
@@ -74,14 +60,14 @@
                         label: 'Reason',
                         isRequired: true,
                         isDropdown: true,
-                        isDisabled: !drugForm.get('testType').value,
                         dropdownWidthClass: 'w-col-216'
                     }"
-                    [options]="reasons"
-                    [activeItem]="selectedReasonType"
+                    [options]="testReasonsDropdownList"
+                    [activeItem]="selectedTestReason"
                     (selectedItem)="onSelectDropdown($event, 'reason')"
                 ></app-ta-input-dropdown>
             </div>
+
             <div class="col-6">
                 <app-ta-input-dropdown
                     formControlName="result"
@@ -93,28 +79,33 @@
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-228'
                     }"
-                    [options]="testResults"
+                    [options]="testResultsDropdownList"
                     [activeItem]="selectedTestResult"
                     (selectedItem)="onSelectDropdown($event, 'result')"
                 ></app-ta-input-dropdown>
             </div>
         </div>
 
+        <!-- Documents -->
+
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
+                [hasCounter]="documents.length"
                 [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
-                [isCardOpen]="documents.length > 0"
+                [disableAnimation]="isCardAnimationDisabled"
+                [isCardOpen]="documents.length"
             >
                 <app-ta-upload-files
                     [files]="documents"
                     [showDropzone]="true"
-                    (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"
+                    (onFileEvent)="onFilesEvent($event)"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>
+
+        <!-- Note -->
+
         <app-ta-input-note
             formControlName="note"
             [isVisibleNote]="

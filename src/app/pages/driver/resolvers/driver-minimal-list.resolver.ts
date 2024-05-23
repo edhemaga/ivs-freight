@@ -4,7 +4,7 @@ import { Resolve } from '@angular/router';
 import { Observable, of, catchError, tap } from 'rxjs';
 
 // services
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 
 // store
 import {

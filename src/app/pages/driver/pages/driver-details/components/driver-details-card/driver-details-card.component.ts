@@ -28,18 +28,18 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 //Services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
-import { DriverMedicalService } from '@pages/driver/services/driver-medical.service';
-import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
-import { DriverTestService } from '@pages/driver/services/driver-test.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
+import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-medical-modal/services/driver-medical.service';
+import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
+import { DriverDrugAlcoholTestService } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/services/driver-drug-alcohol-test.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 
 //Components
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
@@ -162,7 +162,7 @@ export class DriverDetailsCardComponent
         private cdlService: DriverCdlService,
         private medicalService: DriverMedicalService,
         private mvrService: DriverMvrService,
-        private testService: DriverTestService,
+        private testService: DriverDrugAlcoholTestService,
         private driverService: DriverService,
         private confirmationService: ConfirmationService,
         private dropDownService: DropDownService
@@ -577,7 +577,7 @@ export class DriverDetailsCardComponent
                 break;
             case DriverDetailsCardStringEnum.DRUG_ALCOHOL:
                 this.modalService.openModal(
-                    DriverDrugAlcoholModalComponent,
+                    DriverDrugAlcoholTestModalComponent,
                     { size: DriverDetailsCardStringEnum.SMALL },
                     {
                         id: this.driver.id,

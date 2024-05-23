@@ -38,7 +38,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 
 // constants
 import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';

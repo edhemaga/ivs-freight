@@ -4,7 +4,7 @@ import { Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { FormDataService } from '@shared/services/form-data.service';
 
 // store

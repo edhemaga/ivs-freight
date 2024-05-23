@@ -33,7 +33,7 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
-import { DriverService } from '@pages/driver/services/driver.service';
+import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
