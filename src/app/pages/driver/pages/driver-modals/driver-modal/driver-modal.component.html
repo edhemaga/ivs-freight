@@ -121,7 +121,7 @@
                                     maxLength: 11
                                 }"
                                 (blurInput)="validateSsn()"
-                                (clearInputEvent)="validateSsn($event, true)"
+                                (clear)="validateSsn($event, true)"
                             ></app-ta-input>
                         </div>
 
@@ -196,45 +196,36 @@
                                     }"
                                 >
                                     <div class="row">
-                                        <div class="col-4">
-                                            <app-ta-input
-                                                formControlName="ein"
-                                                [inputConfig]="{
-                                                    name: 'EIN',
-                                                    type: 'text',
-                                                    label: 'EIN #',
-                                                    isRequired: true,
-                                                    mask: '00-0000000',
-                                                    maxLength: 10,
-                                                    loadingSpinner: {
-                                                        size: 'small',
-                                                        color: 'white',
-                                                        isLoading:
-                                                            isOwnerEinLoading
-                                                    }
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
-
-                                        <div class="col-8">
-                                            <app-ta-input
-                                                formControlName="bussinesName"
-                                                [inputConfig]="{
-                                                    name: 'Business Name',
-                                                    type: 'text',
-                                                    label: 'Company Name',
-                                                    isRequired: !!selectedOwner,
-                                                    textTransform: 'uppercase',
-                                                    isDisabled: !!(
-                                                        !driverForm.get('ein')
-                                                            .value ||
-                                                        selectedOwner
-                                                    ),
-                                                    minLength: 2,
-                                                    maxLength: 64
-                                                }"
-                                            ></app-ta-input>
-                                        </div>
+                                        <app-ta-input-dropdown
+                                            formControlName="owner"
+                                            [template]="
+                                                'double-column-template'
+                                            "
+                                            [inputConfig]="{
+                                                name: 'Input Dropdown',
+                                                type: 'text',
+                                                isDropdown: true,
+                                                multipleLabel: {
+                                                    labels: [
+                                                        'Ein',
+                                                        'Company Name'
+                                                    ],
+                                                    customClass:
+                                                        'dropdown-double-column'
+                                                },
+                                                dropdownWidthClass: 'w-col-616'
+                                            }"
+                                            [options]="ownersDropdownList"
+                                            [activeItem]="selectedOwner"
+                                            [canOpenModal]="true"
+                                            [canAddNew]="true"
+                                            (selectedItem)="
+                                                onSelectDropdown(
+                                                    $event,
+                                                    'owner'
+                                                )
+                                            "
+                                        ></app-ta-input-dropdown>
                                     </div>
                                 </div>
                             </ng-container>
@@ -913,7 +904,7 @@
                             [subText]="
                                 'Driver can disable GPS tracking. Parking location included.'
                             "
-                            [isCardOpen]="offDutyLocationItems?.length > 0"
+                            [isCardOpen]="offDutyLocationItems?.length"
                             [disabledCard]="!offDutyLocationItems?.length"
                             [disableAnimation]="isCardAnimationDisabled"
                             [animationMarginParams]="{
@@ -929,10 +920,16 @@
                                 [isNewRowCreated]="isOffDutyLocationRowCreated"
                                 [modalTableData]="updatedOffDutyLocationItems"
                                 (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
+                                    handleModalTableValueEmit(
+                                        $event,
+                                        'off-duty-location'
+                                    )
                                 "
                                 (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
+                                    handleModalTableValidStatusEmit(
+                                        $event,
+                                        'off-duty-location'
+                                    )
                                 "
                             ></app-ta-modal-table>
                         </app-ta-custom-card>
@@ -1052,7 +1049,42 @@
 
                         <div class="driver-cards-mvr">
                             <app-ta-custom-card
-                                [cardName]="'Cards & MVR Exp.'"
+                                [hasCounter]="fuelCardItems?.length"
+                                [cardName]="'Fuel Card'"
+                                [headerSvgEnabled]="true"
+                                [hasActionSvg]="true"
+                                [isCardOpen]="fuelCardItems?.length"
+                                [disabledCard]="!fuelCardItems?.length"
+                                [disableAnimation]="isCardAnimationDisabled"
+                                [animationMarginParams]="{
+                                    marginTop: '10px',
+                                    marginBottom: '12px'
+                                }"
+                                (onActionEvent)="addFuelCard($event)"
+                            >
+                                <app-ta-modal-table
+                                    [tableType]="modalTableTypeEnum.FUEL_CARD"
+                                    [isNewRowCreated]="isFuelCardRowCreated"
+                                    [modalTableData]="updatedFuelCardItems"
+                                    (modalTableValueEmitter)="
+                                        handleModalTableValueEmit(
+                                            $event,
+                                            'fuel card'
+                                        )
+                                    "
+                                    (modalTableValidStatusEmitter)="
+                                        handleModalTableValidStatusEmit(
+                                            $event,
+                                            'fuel card'
+                                        )
+                                    "
+                                ></app-ta-modal-table>
+                            </app-ta-custom-card>
+
+                            <!-- Twic Card -->
+
+                            <app-ta-custom-card
+                                [cardName]="'Twic Card & MVR Exp.'"
                                 [hasArrow]="false"
                                 [disabledCard]="true"
                                 [isCardOpen]="true"
@@ -1062,7 +1094,7 @@
                                 >
                                     <app-ta-checkbox
                                         formControlName="twic"
-                                        [label]="'TWIC'"
+                                        [label]="'TWIC Card'"
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
 
@@ -1072,24 +1104,13 @@
                                             name: 'datepicker',
                                             type: 'text',
                                             isDropdown: true,
-                                            label: 'Twic Exp.',
+                                            label: 'TWIC Exp.',
                                             placeholderIcon: 'date',
                                             isRequired:
                                                 driverForm.get('twic').value,
                                             isDisabled:
                                                 !driverForm.get('twic').value,
                                             customClass: 'datetimeclass'
-                                        }"
-                                    ></app-ta-input>
-
-                                    <app-ta-input
-                                        formControlName="fuelCard"
-                                        [inputConfig]="{
-                                            name: 'fuel-card',
-                                            type: 'text',
-                                            label: 'Fuel Card #',
-                                            minLength: 10,
-                                            maxLength: 19
                                         }"
                                     ></app-ta-input>
 

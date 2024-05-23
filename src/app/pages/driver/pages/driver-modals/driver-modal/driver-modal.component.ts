@@ -47,9 +47,7 @@ import {
     addressUnitValidation,
     addressValidation,
     bankValidation,
-    einNumberRegex,
     firstNameValidation,
-    fuelCardValidation,
     lastNameValidation,
     name2_24Validation,
     perStopValidation,
@@ -74,6 +72,7 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -89,6 +88,8 @@ import {
     BankResponse,
     CheckOwnerSsnEinResponse,
     CreateResponse,
+    DriverModalFuelCardResponse,
+    DriverModalOwnerResponse,
     DriverResponse,
     EnumValue,
     GetDriverModalResponse,
@@ -159,9 +160,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isCardAnimationDisabled: boolean = false;
     public animationObject: AnimationObject;
 
-    // spinner
-    public isOwnerEinLoading: boolean = false;
-
     // tabs
     public mainTabs: Tabs[] = [];
     public ownerTabs: Tabs[] = [];
@@ -172,6 +170,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // dropdowns
     public payTypeDropdownList: EnumValue[] = [];
     public banksDropdownList: BankResponse[] = [];
+    public ownersDropdownList: DriverModalOwnerResponse[] = [];
 
     public selectedPayType: EnumValue;
     public selectedBank: BankResponse;
@@ -189,9 +188,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // items
     public isOffDutyLocationRowCreated: boolean = false;
     public isEachOffDutyLocationRowValid: boolean = true;
+    public isFuelCardRowCreated: boolean = false;
+    public isEachFuelCardRowValid: boolean = true;
 
     public offDutyLocationItems: OffDutyLocationResponse[] = [];
     public updatedOffDutyLocationItems: OffDutyLocationResponse[] = [];
+    public fuelCardItems: DriverModalFuelCardResponse[] = [];
+    public updatedFuelCardItems: DriverModalFuelCardResponse[] = [];
 
     // documents
     public dropZoneConfig: DropZoneConfig;
@@ -264,8 +267,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner: [false],
             ownerId: [null],
             ownerType: [DriverModalStringEnum.SOLE_PROPRIETOR],
-            ein: [null, einNumberRegex],
-            bussinesName: [null],
+            owner: [null],
 
             payrollType: [DriverModalStringEnum.COMPANY_DRIVER],
             useCarrieraAch: [false],
@@ -312,7 +314,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             twic: [false],
             twicExpDate: [null],
             mvrExpiration: [null, Validators.required],
-            fuelCard: [null, [...fuelCardValidation]],
+            fuelCardItems: [null],
 
             mailNotificationGeneral: [true],
             pushNotificationGeneral: [true],
@@ -594,29 +596,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 event.name === DriverModalStringEnum.COMPANY
             ) {
                 this.inputService.changeValidators(
-                    this.driverForm.get(DriverModalStringEnum.EIN),
-                    true,
-                    [einNumberRegex],
-                    false
+                    this.driverForm.get(DriverModalStringEnum.OWNER)
                 );
-
-                this.einNumberChange();
             } else {
                 this.inputService.changeValidators(
-                    this.driverForm.get(DriverModalStringEnum.EIN),
-                    false,
-                    [],
+                    this.driverForm.get(DriverModalStringEnum.OWNER),
                     false
                 );
             }
-        }
 
-        this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
-            return {
-                ...ownerTab,
-                checked: ownerTab.id === event.id,
-            };
-        });
+            this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
+                return {
+                    ...ownerTab,
+                    checked: ownerTab.id === event.id,
+                };
+            });
+        }
     }
 
     public onPayrolltTabChange(event: Tabs): void {
@@ -634,7 +629,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropdown(event: EnumValue, action: string): void {
+    public onSelectDropdown(event: any, action: string): void {
         switch (action) {
             case DriverModalStringEnum.BANK:
                 this.selectedBank = event;
@@ -651,12 +646,20 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 this.onSelectPayTypeDropdown(event);
 
                 break;
+            case DriverModalStringEnum.OWNER:
+                if (event?.canOpenModal)
+                    this.modalService.openModal(OwnerModalComponent, {
+                        size: DriverModalStringEnum.SMALL,
+                    });
+                else this.selectedOwner = event;
+
+                break;
             default:
                 break;
         }
     }
 
-    private onSelectPayTypeDropdown(event: any): void {
+    private onSelectPayTypeDropdown(event: EnumValue): void {
         const requiredFields = [
             DriverModalStringEnum.SOLO_EMPTY_MILE,
             DriverModalStringEnum.SOLO_LOADED_MILE,
@@ -961,22 +964,48 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         this.changeDetector.detectChanges();
     }
 
-    public handleModalTableValueEmit(
-        modalTableDataValue: OffDutyLocationResponse[]
-    ): void {
-        this.offDutyLocationItems = modalTableDataValue;
+    public addFuelCard(): void {
+        if (!this.isEachFuelCardRowValid) return;
 
-        this.driverForm
-            .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
-            .patchValue(JSON.stringify(this.offDutyLocationItems));
+        this.isFuelCardRowCreated = true;
+
+        setTimeout(() => {
+            this.isFuelCardRowCreated = false;
+        }, 400);
+
+        this.changeDetector.detectChanges();
+    }
+
+    public handleModalTableValueEmit(
+        modalTableDataValue: OffDutyLocationResponse[],
+        type: string
+    ): void {
+        if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
+            this.offDutyLocationItems = modalTableDataValue;
+
+            this.driverForm
+                .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)
+                .patchValue(JSON.stringify(this.offDutyLocationItems));
+        } else {
+            this.fuelCardItems = modalTableDataValue;
+
+            this.driverForm
+                .get(DriverModalStringEnum.FUEL_CARD_ITEMS)
+                .patchValue(JSON.stringify(this.fuelCardItems));
+        }
 
         this.changeDetector.detectChanges();
     }
 
     public handleModalTableValidStatusEmit(
-        isEachOffDutyLocationRowValid: boolean
+        isEachRowValid: boolean,
+        type: string
     ): void {
-        this.isEachOffDutyLocationRowValid = isEachOffDutyLocationRowValid;
+        if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
+            this.isEachOffDutyLocationRowValid = isEachRowValid;
+        } else {
+            this.isEachFuelCardRowValid = isEachRowValid;
+        }
     }
 
     public handleSliderValueChange(
@@ -1142,41 +1171,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             };
     }
 
-    private einNumberChange(): void {
-        this.driverForm
-            .get(DriverModalStringEnum.EIN)
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value?.length === 10) {
-                    this.isOwnerEinLoading = true;
-
-                    this.driverService
-                        .checkOwnerEinNumber(value.toString())
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (res: CheckOwnerSsnEinResponse) => {
-                                this.selectedOwner = res?.name ? res : null;
-
-                                this.isOwnerEinLoading = false;
-
-                                if (this.selectedOwner?.name) {
-                                    this.driverForm
-                                        .get(
-                                            DriverModalStringEnum.BUSSINES_NAME
-                                        )
-                                        .patchValue(this.selectedOwner.name);
-                                }
-                            },
-                            error: () => {},
-                        });
-                } else {
-                    this.driverForm
-                        .get(DriverModalStringEnum.BUSSINES_NAME)
-                        .patchValue(null);
-                }
-            });
-    }
-
     public validateMiles(): void {
         if (
             [
@@ -1293,41 +1287,37 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public validateSsn(event: any, isClear: boolean): void {
-        const ssn = this.driverForm.get(DriverModalStringEnum.SSN).value;
+        const ssnControl = this.driverForm.get(DriverModalStringEnum.SSN);
         const isOwnerControl = this.driverForm.get(
             DriverModalStringEnum.IS_OWNER
         );
 
         if (isClear && this.isOwnerAlreadyAddedAsSoleProprietor) {
             this.isOwnerAlreadyAddedAsSoleProprietor = false;
-
             isOwnerControl.patchValue(false);
-
             return;
         }
 
-        this.driverService
-            .validateDriverSsn(ssn)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((ssnData) => {
-                const ssnControl = this.driverForm.get(
-                    DriverModalStringEnum.SSN
-                );
+        if (ssnControl.value)
+            this.driverService
+                .validateDriverSsn(ssnControl.value)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((ssnData) => {
+                    if (this.isOwnerAlreadyAddedAsSoleProprietor) {
+                        this.isOwnerAlreadyAddedAsSoleProprietor = false;
+                        isOwnerControl.patchValue(false);
+                    }
 
-                if (this.isOwnerAlreadyAddedAsSoleProprietor) {
-                    this.isOwnerAlreadyAddedAsSoleProprietor = false;
-
-                    isOwnerControl.patchValue(false);
-                }
-
-                if (ssnData?.driverExists && ssnControl.valid) {
-                    ssnControl.setErrors({ ssnAlreadyExist: true });
-                } else if (ssnData?.soleProprietorExists && ssnControl.valid) {
-                    isOwnerControl.patchValue(ssnData.soleProprietorExists);
-
-                    this.isOwnerAlreadyAddedAsSoleProprietor = true;
-                }
-            });
+                    if (ssnData?.driverExists && ssnControl.valid) {
+                        ssnControl.setErrors({ ssnAlreadyExist: true });
+                    } else if (
+                        ssnData?.soleProprietorExists &&
+                        ssnControl.valid
+                    ) {
+                        isOwnerControl.patchValue(ssnData.soleProprietorExists);
+                        this.isOwnerAlreadyAddedAsSoleProprietor = true;
+                    }
+                });
     }
 
     private createAddOrUpdateDriverPayrollProperties(
@@ -1506,7 +1496,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         addressUnit: string,
         isOwner: boolean,
         ownerType: string,
-        ein: string,
         soloDriver: boolean,
         teamDriver: boolean,
         twic: boolean,
@@ -1535,12 +1524,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? null
                 : this.selectedOwner?.id || null;
 
-        // ein
-        const conditionalEin =
-            !isOwner || ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
-                ? null
-                : ein;
-
         // payroll
         const conditionalSoloDriver =
             this.fleetType === DriverModalStringEnum.COMBINED
@@ -1550,6 +1533,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.fleetType === DriverModalStringEnum.COMBINED
                 ? teamDriver
                 : false;
+
+        const convertedFuelCards = this.fuelCardItems.map(
+            (fuelCard) => fuelCard.id
+        );
 
         // twic
         const conditionalTwicExpDate = twic
@@ -1574,11 +1561,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             convertedDate,
             conditionalOwnerType,
             conditionalOwnerId,
-            conditionalEin,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
             convertedTagsArray,
+            convertedFuelCards,
             conditionalTwicExpDate,
         };
     }
@@ -1661,11 +1648,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             .getDriverDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe((data: GetDriverModalResponse) => {
-                console.log('DROPDOWN data', data);
                 if (data) {
                     const {
                         banks,
                         payTypes,
+                        owners,
                         tags,
                         fleetType,
                         loadedAndEmptySameRate,
@@ -1682,6 +1669,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
                     this.banksDropdownList = banks;
                     this.payTypeDropdownList = payTypes;
+                    this.ownersDropdownList = owners;
 
                     this.tags = tags;
 
@@ -1739,7 +1727,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit,
             isOwner,
             ownerType,
-            ein,
             twic,
             twicExpDate,
             mailNotificationGeneral,
@@ -1777,24 +1764,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        console.log('...form', form);
-
         const {
             convertedDate,
             conditionalOwnerType,
             conditionalOwnerId,
-            conditionalEin,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
             convertedTagsArray,
             conditionalTwicExpDate,
+            convertedFuelCards,
         } = this.createAddOrUpdateDriverProperties(
             dateOfBirth,
             addressUnit,
             isOwner,
             ownerType,
-            ein,
             soloDriver,
             teamDriver,
             twic,
@@ -1846,7 +1830,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType: conditionalOwnerType,
             ownerId: conditionalOwnerId,
-            ein: conditionalEin,
 
             driverType: conditionalDriverType,
 
@@ -1887,6 +1870,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: convertedDocuments,
             tags: convertedTagsArray,
 
+            fuelCardIds: convertedFuelCards,
             twic,
             twicExpDate: conditionalTwicExpDate,
 
@@ -1901,8 +1885,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
         };
-
-        console.log('newData', newData);
 
         this.driverService
             .addDriver(newData)
@@ -1942,7 +1924,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private editDriverById(editData: DriverResponse): void {
-        console.log('editData', editData);
         const {
             firstName,
             lastName,
@@ -2051,20 +2032,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         : owner?.ownerType?.name
                     : null
                 : null,
-            ein: owner
-                ? owner?.ownerType?.name.includes(
-                      DriverModalStringEnum.PROPRIETOR
-                  )
-                    ? null
-                    : owner?.ssnEin
-                : null,
-            bussinesName: owner
-                ? owner?.ownerType?.name.includes(
-                      DriverModalStringEnum.PROPRIETOR
-                  )
-                    ? null
-                    : owner?.name
-                : null,
 
             useCarrieraAch,
             payType: payType?.name,
@@ -2137,9 +2104,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
         // owner
         if (owner) {
-            if (this.driverForm.get(DriverModalStringEnum.EIN).value)
-                this.einNumberChange();
-
             const activeOwnerTab = this.ownerTabs
                 .map((tab) => {
                     return {
@@ -2150,6 +2114,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 .find((tab) => tab.checked);
 
             if (activeOwnerTab) this.onOwnerTabChange(activeOwnerTab);
+
+            this.selectedOwner = this.ownersDropdownList?.find(
+                (companyOwner) => companyOwner.id === owner.id
+            );
         }
 
         setTimeout(() => {
@@ -2174,7 +2142,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit,
             isOwner,
             ownerType,
-            ein,
             twic,
             twicExpDate,
             mailNotificationGeneral,
@@ -2212,13 +2179,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             ...form
         } = this.driverForm.value;
 
-        console.log('...form', form);
-
         const {
             convertedDate,
             conditionalOwnerType,
             conditionalOwnerId,
-            conditionalEin,
             conditionalSoloDriver,
             conditionalTeamDriver,
             convertedDocuments,
@@ -2229,7 +2193,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit,
             isOwner,
             ownerType,
-            ein,
             soloDriver,
             teamDriver,
             twic,
@@ -2282,7 +2245,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner,
             ownerType: conditionalOwnerType,
             ownerId: conditionalOwnerId,
-            ein: conditionalEin,
 
             driverType: conditionalDriverType,
 
@@ -2337,8 +2299,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 smsNotification: smsNotificationPayroll,
             },
         };
-
-        console.log('newData', newData);
 
         this.driverService
             .updateDriver(newData)

@@ -11,7 +11,6 @@ export enum DriverModalStringEnum {
     OWNER_TYPE = 'ownerType',
     SSN = 'ssn',
     EMAIL = 'email',
-    EIN = 'ein',
     MVR_EXPIRATION = 'mvrExpiration',
     SOLO_DRIVER = 'soloDriver',
     SOLO_EMPTY_MILE = 'soloEmptyMile',
@@ -34,7 +33,8 @@ export enum DriverModalStringEnum {
     ROUTING = 'routing',
     ACCOUNT = 'account',
     AVATAR = 'avatar',
-    BUSSINES_NAME = 'bussinesName',
+    OWNER = 'owner',
+    FUEL_CARD_ITEMS = 'fuelCardItems',
 
     PER_MILE = 'Per Mile',
     COMMISSION = 'Commission',
@@ -42,6 +42,7 @@ export enum DriverModalStringEnum {
 
     PAY_TYPE = 'paytype',
     BANK = 'bank',
+    OFF_DUTY_LOCATION = 'off-duty-location',
 
     BASIC = 'Basic',
     ADDITIONAL = 'Additional',
@@ -68,6 +69,7 @@ export enum DriverModalStringEnum {
     TAG = 'tag',
     TAGS = 'tags',
 
+    SMALL = 'small',
     MEDIUM = 'medium',
 
     ANIMATION_TWO_TABS_CLASS = '.animation-two-tabs',

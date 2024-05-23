@@ -137,6 +137,44 @@
                     }
                 }
 
+                // Double Column
+                &.dropdown-double-column-option {
+                    display: grid;
+                    grid-template-columns: 118px 470px;
+                    grid-gap: 4px;
+
+                    &-add-new {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                    }
+
+                    &-text {
+                        color: $white;
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+                }
+
+                // Triple Column
+                &.dropdown-triple-column-option {
+                    display: grid;
+                    grid-template-columns: 216px 138px 206px;
+                    grid-gap: 4px;
+
+                    &-add-new {
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-end;
+                    }
+
+                    &-text {
+                        color: $white;
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+                }
+
                 // This class is for moving with keyboard
                 &.dropdown-option-hovered {
                     background: $ta-black;
@@ -195,7 +233,7 @@
                 }
 
                 &.add-new {
-                    padding: 4.5px 4px;
+                    padding: 4.5px 4px 0 0;
                     font-size: 11px;
                     font-weight: 700;
                     color: $ta-blue-19;

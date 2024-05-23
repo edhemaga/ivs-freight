@@ -6,27 +6,27 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//components
+// components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
-//enums
+// enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-//models
-import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
-import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
+// models
+import { AddressEntity } from 'appcoretruckassist';
 
-//pipes
+// pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 @Component({
-    selector: 'app-ta-modal-table-repair',
-    templateUrl: './ta-modal-table-repair.component.html',
-    styleUrls: ['./ta-modal-table-repair.component.scss'],
+    selector: 'app-ta-modal-table-off-duty-location',
+    templateUrl: './ta-modal-table-off-duty-location.component.html',
+    styleUrls: ['./ta-modal-table-off-duty-location.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -37,24 +37,24 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
+        TaInputAddressDropdownComponent,
 
-        //pipes
+        // pipes
         TrackByPropertyPipe,
     ],
 })
-export class TaModalTableRepairComponent {
+export class TaModalTableOffDutyLocationComponent {
     @Input() modalTableForm: UntypedFormGroup;
     @Input() arrayName: TaModalTableStringEnum;
     @Input() isInputHoverRows: boolean[][];
-    @Input() isRepairOrderTable: boolean;
-    @Input() subTotals: RepairSubtotal[];
-    @Input() selectedTruckTrailerRepairPm: [] = [];
-    @Input() truckTrailerRepairPmOptions: [] = [];
+    @Input() selectedAddress: AddressEntity[] = [];
 
-    @Output() onSelectDropdown: EventEmitter<{
-        dropdownEvent: ModalTableDropdownOption;
-        action: string;
-        index?: number;
+    @Output() onSelectAddress: EventEmitter<{
+        address: {
+            address: AddressEntity;
+            valid: boolean;
+        };
+        index: number;
     }> = new EventEmitter();
     @Output() deleteFormArrayRowClick: EventEmitter<number> =
         new EventEmitter();
@@ -86,13 +86,15 @@ export class TaModalTableRepairComponent {
         });
     }
 
-    public emitOnSelectDropdown(
-        dropdownEvent: ModalTableDropdownOption,
-        index?: number
+    public emitOnSelectAddress(
+        address: {
+            address: AddressEntity;
+            valid: boolean;
+        },
+        index: number
     ): void {
-        this.onSelectDropdown.emit({
-            dropdownEvent,
-            action: TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE,
+        this.onSelectAddress.emit({
+            address,
             index,
         });
     }

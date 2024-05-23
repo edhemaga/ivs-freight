@@ -30,13 +30,15 @@ import { TaModalTableEmailComponent } from '@shared/components/ta-modal-table/co
 import { TaModalTableRepairComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-repair/ta-modal-table-repair.component';
 import { TaModalTableContactComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-contact/ta-modal-table-contact.component';
 import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-pm/ta-modal-table-pm.component';
-import { TaModalTabelOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-tabel-off-duty-location/ta-modal-tabel-off-duty-location.component';
+import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-off-duty-location/ta-modal-table-off-duty-location.component';
+import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { RepairService } from '@shared/services/repair.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // constants
 import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/ta-modal-table.constants';
@@ -70,7 +72,9 @@ import {
     CreateContactEmailCommand,
     CreateContactPhoneCommand,
     DepartmentResponse,
+    DriverModalFuelCardResponse,
     EnumValue,
+    GetDriverModalResponse,
     OffDutyLocationResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
@@ -98,7 +102,8 @@ import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
         TaModalTableRepairComponent,
         TaModalTableContactComponent,
         TaModalTablePmComponent,
-        TaModalTabelOffDutyLocationComponent,
+        TaModalTableOffDutyLocationComponent,
+        TaModalTableFuelCardComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -117,7 +122,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | ContactEmailResponse[]
         | RepairItemResponse[]
         | PMTableData[]
-        | OffDutyLocationResponse[] = [];
+        | OffDutyLocationResponse[]
+        | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
 
     @Output() modalTableValueEmitter = new EventEmitter<
@@ -161,6 +167,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     // off duty location table
     public selectedAddress: AddressEntity[] = [];
 
+    // fuel card table
+    public selectedFuelCard: DriverModalFuelCardResponse[] = [];
+    public fuelCardOptions: DriverModalFuelCardResponse[] = [];
+
     // enums
     public taModalTableStringEnum = TaModalTableStringEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
@@ -172,7 +182,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         private inputService: TaInputService,
         private contactService: ContactsService,
         private repairService: RepairService,
-        private pmService: PmService
+        private pmService: PmService,
+        private driverService: DriverService
     ) {}
 
     ngOnInit(): void {
@@ -258,6 +269,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         return this.tableType === ModalTableTypeEnum.OFF_DUTY_LOCATION;
     }
 
+    get isFuelCardTable() {
+        return this.tableType === ModalTableTypeEnum.FUEL_CARD;
+    }
+
     public trackByIdentity = (_: number, item: string): string => item;
 
     private createForm(): void {
@@ -269,6 +284,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             contactTableItems: this.formBuilder.array([]),
             pmTableItems: this.formBuilder.array([]),
             offDutyLocationTableItems: this.formBuilder.array([]),
+            fuelCardTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -310,7 +326,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case TaModalTableStringEnum.PM_TRUCK_TRAILER_REPAIR_TYPE:
                 this.selectedTruckTrailerRepairPm[index] = dropdownEvent;
 
-                this.getModalTableDataValue();
                 break;
             case TaModalTableStringEnum.PM_TRUCK_TYPE:
                 this.handleDropdownPmType(
@@ -318,6 +333,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     index,
                     TableStringEnum.PM_DEFAULT_MILEAGE
                 );
+
                 break;
             case TaModalTableStringEnum.PM_TRAILER_TYPE:
                 this.handleDropdownPmType(
@@ -325,6 +341,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     index,
                     TableStringEnum.PM_DEFAULT_MONTHS
                 );
+
+                break;
+            case TaModalTableStringEnum.FUEL_CARD_TYPE:
+                this.selectedFuelCard[index] = dropdownEvent;
+
                 break;
             default:
                 break;
@@ -357,13 +378,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         switch (this.tableType) {
             case ModalTableTypeEnum.EMAIL:
             case ModalTableTypeEnum.PHONE:
-                this.contactService
-                    .getCompanyContactModal()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((res) => {
-                        this.contactPhoneTypeOptions = res.contactPhoneType;
-                        this.contactEmailTypeOptions = res.contactEmailType;
-                    });
+                this.getPhoneEmailDropdownList();
 
                 break;
             case ModalTableTypeEnum.REPAIR_BILL:
@@ -372,86 +387,125 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case ModalTableTypeEnum.CONTACT:
-                this.repairService
-                    .getRepairShopModalDropdowns()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe((res) => {
-                        this.repairDepartmentOptions = res.departments;
-                    });
+                this.getContactDropdownList();
 
                 break;
             case ModalTableTypeEnum.PM_TRUCK:
-                this.pmService
-                    .getPMTruckDropdown()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res) => {
-                            const pmDropdownList: ModalTableDropdownOption[] = [
-                                {
-                                    id: 7655,
-                                    name: TableStringEnum.ADD_NEW_3,
-                                    logoName: null,
-                                    folder: TableStringEnum.COMMON,
-                                    subFolder: TableStringEnum.REPAIR_PM,
-                                    mileage: TableStringEnum.PM_DEFAULT_MILEAGE,
-                                },
-                            ];
-
-                            res.map((pmTruck, index) => {
-                                pmDropdownList.push({
-                                    id: index + 1,
-                                    name: pmTruck.title,
-                                    logoName: pmTruck.logoName,
-                                    folder: TableStringEnum.COMMON,
-                                    subFolder: TableStringEnum.REPAIR_PM,
-                                    mileage:
-                                        MethodsCalculationsHelper.convertNumberInThousandSep(
-                                            pmTruck.mileage
-                                        ),
-                                });
-                            });
-
-                            this.pmTruckOptions = pmDropdownList;
-                        },
-                    });
+                this.getPmTruckDropdownList();
 
                 break;
             case ModalTableTypeEnum.PM_TRAILER:
-                this.pmService
-                    .getPMTrailerDropdown()
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (res) => {
-                            const pmDropdownList: ModalTableDropdownOption[] = [
-                                {
-                                    id: 7655,
-                                    name: TableStringEnum.ADD_NEW_3,
-                                    logoName: null,
-                                    folder: TableStringEnum.COMMON,
-                                    subFolder: TableStringEnum.REPAIR_PM,
-                                    mileage: '6',
-                                },
-                            ];
+                this.getPmTrailerDropdownList();
 
-                            res.map((pmTrailer, index) => {
-                                pmDropdownList.push({
-                                    id: index + 1,
-                                    name: pmTrailer.title,
-                                    logoName: pmTrailer.logoName,
-                                    folder: TableStringEnum.COMMON,
-                                    subFolder: TableStringEnum.REPAIR_PM,
-                                    mileage: pmTrailer.months.toString(),
-                                });
-                            });
-
-                            this.pmTrailerOptions = pmDropdownList;
-                        },
-                    });
+                break;
+            case ModalTableTypeEnum.FUEL_CARD:
+                this.getFuelCardDropdownList();
 
                 break;
             default:
                 break;
         }
+    }
+
+    private getPhoneEmailDropdownList(): void {
+        this.contactService
+            .getCompanyContactModal()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.contactPhoneTypeOptions = res.contactPhoneType;
+                this.contactEmailTypeOptions = res.contactEmailType;
+            });
+    }
+
+    private getContactDropdownList(): void {
+        this.repairService
+            .getRepairShopModalDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.repairDepartmentOptions = res.departments;
+            });
+    }
+
+    private getPmTruckDropdownList(): void {
+        this.pmService
+            .getPMTruckDropdown()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const pmDropdownList: ModalTableDropdownOption[] = [
+                        {
+                            id: 7655,
+                            name: TableStringEnum.ADD_NEW_3,
+                            logoName: null,
+                            folder: TableStringEnum.COMMON,
+                            subFolder: TableStringEnum.REPAIR_PM,
+                            mileage: TableStringEnum.PM_DEFAULT_MILEAGE,
+                        },
+                    ];
+
+                    res.map((pmTruck, index) => {
+                        pmDropdownList.push({
+                            id: index + 1,
+                            name: pmTruck.title,
+                            logoName: pmTruck.logoName,
+                            folder: TableStringEnum.COMMON,
+                            subFolder: TableStringEnum.REPAIR_PM,
+                            mileage:
+                                MethodsCalculationsHelper.convertNumberInThousandSep(
+                                    pmTruck.mileage
+                                ),
+                        });
+                    });
+
+                    this.pmTruckOptions = pmDropdownList;
+                },
+            });
+    }
+
+    private getPmTrailerDropdownList(): void {
+        this.pmService
+            .getPMTrailerDropdown()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const pmDropdownList: ModalTableDropdownOption[] = [
+                        {
+                            id: 7655,
+                            name: TableStringEnum.ADD_NEW_3,
+                            logoName: null,
+                            folder: TableStringEnum.COMMON,
+                            subFolder: TableStringEnum.REPAIR_PM,
+                            mileage: '6',
+                        },
+                    ];
+
+                    res.map((pmTrailer, index) => {
+                        pmDropdownList.push({
+                            id: index + 1,
+                            name: pmTrailer.title,
+                            logoName: pmTrailer.logoName,
+                            folder: TableStringEnum.COMMON,
+                            subFolder: TableStringEnum.REPAIR_PM,
+                            mileage: pmTrailer.months.toString(),
+                        });
+                    });
+
+                    this.pmTrailerOptions = pmDropdownList;
+                },
+            });
+    }
+
+    private getFuelCardDropdownList(): void {
+        this.driverService
+            .getDriverDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((data: GetDriverModalResponse) => {
+                if (data) {
+                    const { fuelCards } = data;
+
+                    this.fuelCardOptions = fuelCards;
+                }
+            });
     }
 
     private getConstantData(): void {
@@ -495,6 +549,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 this.modalTableHeaders =
                     ModalTableConstants.OFF_DUTY_LOCATION_TABLE_HEADER_ITEMS;
 
+                break;
+            case ModalTableTypeEnum.FUEL_CARD:
+                this.modalTableHeaders =
+                    ModalTableConstants.FUEL_CARD_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -573,6 +633,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case ModalTableTypeEnum.FUEL_CARD:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.FUEL_CARD_TABLE_ITEMS
                 ) as UntypedFormArray;
             default:
                 break;
@@ -679,6 +743,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case ModalTableTypeEnum.FUEL_CARD:
+                newFormArrayRow = this.formBuilder.group({
+                    card: [null, [Validators.required]],
+                });
+
+                break;
             default:
                 break;
         }
@@ -708,6 +778,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 this.selectedAddress.splice(index, 1);
+
+                break;
+            case ModalTableTypeEnum.FUEL_CARD:
+                this.selectedFuelCard.splice(index, 1);
 
                 break;
             default:
@@ -747,6 +821,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 isInputHoverRow =
                     ModalTableConstants.IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION;
+
+                break;
+            case ModalTableTypeEnum.FUEL_CARD:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_FUEL_CARD;
 
                 break;
         }

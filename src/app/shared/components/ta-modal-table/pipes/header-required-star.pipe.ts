@@ -13,7 +13,8 @@ export class HeaderRequiredStarPipe implements PipeTransform {
         isContactTable: boolean,
         isPMTruckTable: boolean,
         isPMTrailerTable: boolean,
-        isOffDutyLocationTable: boolean
+        isOffDutyLocationTable: boolean,
+        isFuelCardTable: boolean
     ): boolean {
         return this.setRequiredStar(
             headerItemIndex,
@@ -23,7 +24,8 @@ export class HeaderRequiredStarPipe implements PipeTransform {
             isContactTable,
             isPMTruckTable,
             isPMTrailerTable,
-            isOffDutyLocationTable
+            isOffDutyLocationTable,
+            isFuelCardTable
         );
     }
 
@@ -35,10 +37,11 @@ export class HeaderRequiredStarPipe implements PipeTransform {
         isContactTable: boolean,
         isPMTruckTable: boolean,
         isPMTrailerTable: boolean,
-        isOffDutyLocationTable: boolean
+        isOffDutyLocationTable: boolean,
+        isFuelCardTable: boolean
     ): boolean {
         return (
-            (i === 1 && (isPhoneTable || isEmailTable)) ||
+            (i === 1 && (isPhoneTable || isEmailTable || isFuelCardTable)) ||
             ((i === 1 || i === 3 || i === 4) && isDescriptionTable) ||
             ((i === 1 || i === 2 || i === 3 || i === 5) && isContactTable) ||
             ((i === 2 || i === 3) && (isPMTruckTable || isPMTrailerTable)) ||
