@@ -4,12 +4,13 @@ import {
     Validators,
 } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-//Models
-import { CdlResponse, GetCdlModalResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //Services
 import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
@@ -18,10 +19,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 
-//Modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-//Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -30,12 +28,28 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
-//Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// validations
 import {
     cdlCANADAValidation,
     cdlUSValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
+// enums
+import { DriverCdlModalStringEnum } from '@pages/driver/pages/driver-modals/driver-cdl-modal/enums/driver-cdl-modal-string.enum';
+
+// models
+import {
+    CdlEndorsementResponse,
+    CdlResponse,
+    CdlRestrictionResponse,
+    EnumValue,
+    GetCdlModalResponse,
+    StateResponse,
+} from 'appcoretruckassist';
+import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-cdl-modal/models/extended-state-response.model';
 
 @Component({
     selector: 'app-driver-cdl-modal',
@@ -61,37 +75,38 @@ import {
     ],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
     @Input() editData: any;
+
+    private destroy$ = new Subject<void>();
 
     public cdlForm: UntypedFormGroup;
 
-    public modalName: string = null;
-
-    public classTypes: any[] = [];
-
-    public stateTypes: any[] = [];
-    public endorsements: any[] = [];
-    public restrictions: any[] = [];
-
-    public selectedRestrictions: any[] = [];
-    public selectedEndorsments: any[] = [];
-    public selectedClassType: any = null;
-
-    public selectedStateType: any = null;
-    public selectedCountryType: string = 'US';
-
-    public documents: any[] = [];
-
     public isFormDirty: boolean;
+    public isCardAnimationDisabled: boolean = false;
 
-    fileModified: boolean = false;
+    public modalName: string;
+
+    // dropdowns
+    public stateDropdownList: StateResponse[] = [];
+    public classDropdownList: EnumValue[] = [];
+    public restrictionsDropdownList: CdlRestrictionResponse[] = [];
+    public endorsementsDropdownList: CdlEndorsementResponse[] = [];
+
+    public selectedCountry: string;
+    public selectedState: ExtendedStateResponse;
+    public selectedClass: EnumValue;
+    public selectedRestrictions: CdlRestrictionResponse[] = [];
+    public selectedEndorsments: CdlEndorsementResponse[] = [];
+
+    // documents
+    public documents: any[] = [];
     public filesForDelete: any[] = [];
-
-    public disableCardAnimation: boolean = false;
+    public isFileModified: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private driverService: DriverService,
         private cdlService: DriverCdlService,
         private inputService: TaInputService,
@@ -100,26 +115,20 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.getCdlDropdowns();
         this.createForm();
+
+        this.getCdlDropdowns();
+
         this.getDriverById(this.editData.id);
     }
 
     private createForm() {
-        const cdlCountryTypeValidation =
-            this.selectedCountryType === 'US'
-                ? cdlUSValidation
-                : cdlCANADAValidation;
-
         this.cdlForm = this.formBuilder.group({
-            cdlNumber: [
-                null,
-                [Validators.required, ...cdlCountryTypeValidation],
-            ],
+            stateId: [null, Validators.required],
+            cdlNumber: [null, [Validators.required]],
+            classType: [null, Validators.required],
             issueDate: [null, Validators.required],
             expDate: [null, Validators.required],
-            classType: [null, Validators.required],
-            stateId: [null, Validators.required],
             restrictions: [null],
             restrictionsHelper: [null],
             endorsements: [null],
@@ -129,130 +138,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save': {
-                if (this.cdlForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.cdlForm);
-                    return;
-                }
-
-                if (this.editData.type === 'edit-licence') {
-                    this.updateCdl();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addCdl();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'class': {
-                this.selectedClassType = event;
-                break;
-            }
-            case 'state': {
-                this.selectedStateType = event;
-                break;
-            }
-            case 'restrictions': {
-                this.selectedRestrictions = event;
-
-                this.cdlForm
-                    .get('restrictionsHelper')
-                    .setValue(
-                        this.selectedRestrictions.length
-                            ? JSON.stringify(this.selectedRestrictions)
-                            : null
-                    );
-
-                break;
-            }
-            case 'endorsments': {
-                this.selectedEndorsments = event;
-
-                this.cdlForm
-                    .get('endorsementsHelper')
-                    .setValue(
-                        this.selectedEndorsments.length
-                            ? JSON.stringify(this.selectedEndorsments)
-                            : null
-                    );
-
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    private getCdlDropdowns() {
-        this.cdlService
-            .getCdlDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: GetCdlModalResponse) => {
-                    this.selectedCountryType = res.country?.name;
-                    this.stateTypes = res.states.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.stateShortName,
-                            stateName: item.stateName,
-                        };
-                    });
-                    this.classTypes = res.classTypes;
-                    this.endorsements = res.endorsements.map((item) => {
-                        return {
-                            ...item,
-                            name: item.code
-                                .concat(' ', '-')
-                                .concat(' ', item.description),
-                        };
-                    });
-                    this.restrictions = res.restrictions.map((item) => {
-                        return {
-                            ...item,
-                            name: item.code
-                                .concat(' ', '-')
-                                .concat(' ', item.description),
-                        };
-                    });
-
-                    if (this.editData.type === 'edit-licence') {
-                        this.disableCardAnimation = true;
-                        this.getCdlById(this.editData.file_id);
-                    } else if (this.editData.type === 'renew-licence') {
-                        this.disableCardAnimation = true;
-                        this.populateCdlFormOnRenew(this.editData.renewData.id);
-                    } else {
-                        this.startFormChanges();
-                    }
-                },
-                error: () => {},
-            });
-    }
-
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.cdlForm);
+
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
@@ -260,19 +148,427 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getDriverById(id: number) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
+        switch (data.action) {
+            case DriverCdlModalStringEnum.CLOSE:
+                break;
+            case DriverCdlModalStringEnum.SAVE:
+                if (this.cdlForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.cdlForm);
+                    return;
+                }
+
+                if (
+                    this.editData.type === DriverCdlModalStringEnum.EDIT_LICENCE
+                ) {
+                    this.updateCdl();
+
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                } else {
+                    this.addCdl();
+
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: false,
+                    });
+                }
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public onSelectDropdown(event: any, action: string): void {
+        switch (action) {
+            case DriverCdlModalStringEnum.CLASS:
+                this.selectedClass = event;
+
+                break;
+            case DriverCdlModalStringEnum.STATE:
+                this.selectedState = event;
+
+                break;
+            case DriverCdlModalStringEnum.RESTRICTIONS:
+                this.selectedRestrictions = event;
+
+                this.cdlForm
+                    .get(DriverCdlModalStringEnum.RESTRICTIONS_HELPER)
+                    .setValue(
+                        this.selectedRestrictions.length
+                            ? JSON.stringify(this.selectedRestrictions)
+                            : null
+                    );
+
+                break;
+            case DriverCdlModalStringEnum.ENDORSEMENTS:
+                this.selectedEndorsments = event;
+
+                this.cdlForm
+                    .get(DriverCdlModalStringEnum.ENDORSEMENTS_HELPER)
+                    .setValue(
+                        this.selectedEndorsments.length
+                            ? JSON.stringify(this.selectedEndorsments)
+                            : null
+                    );
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public onFilesEvent(event: any): void {
+        this.documents = event.files;
+
+        switch (event.action) {
+            case DriverCdlModalStringEnum.ADD:
+                this.cdlForm
+                    .get(DriverCdlModalStringEnum.FILES)
+                    .patchValue(JSON.stringify(event.files));
+
+                break;
+            case DriverCdlModalStringEnum.DELETE:
+                this.cdlForm
+                    .get(DriverCdlModalStringEnum.FILES)
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
+
+                this.isFileModified = true;
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private getCdlDropdowns(): void {
+        this.cdlService
+            .getCdlDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: GetCdlModalResponse) => {
+                const {
+                    country,
+                    states,
+                    classTypes,
+                    restrictions,
+                    endorsements,
+                } = res;
+
+                // country
+                this.selectedCountry = country?.name;
+
+                // state
+                this.stateDropdownList = states?.map((item) => {
+                    return {
+                        id: item.id,
+                        name: item.stateShortName,
+                        stateName: item.stateName,
+                    };
+                });
+
+                // class
+                this.classDropdownList = classTypes;
+
+                // restrictions & endorsements
+                this.restrictionsDropdownList = restrictions?.map((item) => {
+                    return {
+                        ...item,
+                        name: item.code
+                            .concat(' ', '-')
+                            .concat(' ', item.description),
+                    };
+                });
+
+                this.endorsementsDropdownList = endorsements?.map((item) => {
+                    return {
+                        ...item,
+                        name: item.code
+                            .concat(' ', '-')
+                            .concat(' ', item.description),
+                    };
+                });
+
+                // cdl number validations
+                const validators =
+                    this.selectedCountry === DriverCdlModalStringEnum.US
+                        ? cdlUSValidation
+                        : cdlCANADAValidation;
+
+                this.inputService.changeValidators(
+                    this.cdlForm.get(DriverCdlModalStringEnum.CDL_NUMBER),
+                    true,
+                    [...validators]
+                );
+
+                if (
+                    this.editData.type === DriverCdlModalStringEnum.EDIT_LICENCE
+                ) {
+                    this.isCardAnimationDisabled = true;
+
+                    this.getCdlById(this.editData.file_id);
+                } else if (
+                    this.editData.type ===
+                    DriverCdlModalStringEnum.RENEW_LICENCE
+                ) {
+                    this.isCardAnimationDisabled = true;
+
+                    this.populateCdlFormOnRenew(this.editData.renewData.id);
+                } else {
+                    this.startFormChanges();
+                }
+            });
+    }
+
+    private getDriverById(id: number): void {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const { firstName, lastName } = res;
+
+                this.modalName = firstName.concat(
+                    DriverCdlModalStringEnum.EMPTY_STRING,
+                    lastName
+                );
+            });
+    }
+
+    public getCdlById(id: number): void {
+        this.cdlService
+            .getCdlById(id)
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: any) => {
-                    this.modalName = res.firstName.concat(' ', res.lastName);
+                next: (res: CdlResponse) => {
+                    const {
+                        cdlNumber,
+                        issueDate,
+                        expDate,
+                        classType,
+                        state,
+                        cdlRestrictions,
+                        cdlEndorsements,
+                        files,
+                        note,
+                    } = res;
+
+                    // state
+                    this.selectedState = {
+                        ...state,
+                        name: state?.stateShortName,
+                    };
+
+                    // class
+                    this.selectedClass = classType;
+
+                    // restrictions & endorsements
+                    this.selectedRestrictions = cdlRestrictions.map((item) => {
+                        return {
+                            ...item,
+                            name: item.code
+                                .concat(' ', '-')
+                                .concat(' ', item.description),
+                        };
+                    });
+
+                    this.selectedEndorsments = cdlEndorsements.map((item) => {
+                        return {
+                            ...item,
+                            name: item.code
+                                .concat(' ', '-')
+                                .concat(' ', item.description),
+                        };
+                    });
+
+                    // documents
+                    this.documents = files ?? [];
+
+                    // patch form
+                    this.cdlForm.patchValue({
+                        cdlNumber,
+                        issueDate: issueDate
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  issueDate
+                              )
+                            : null,
+                        expDate: expDate
+                            ? MethodsCalculationsHelper.convertDateFromBackend(
+                                  expDate
+                              )
+                            : expDate,
+                        classType: classType?.name,
+                        stateId: state?.stateShortName,
+                        restrictionsHelper: cdlRestrictions?.length
+                            ? JSON.stringify(cdlRestrictions)
+                            : null,
+                        endorsementsHelper: cdlEndorsements?.length
+                            ? JSON.stringify(cdlEndorsements)
+                            : null,
+                        files: files?.length ? JSON.stringify(files) : null,
+                        note,
+                    });
+
+                    setTimeout(() => {
+                        this.isCardAnimationDisabled = false;
+
+                        this.startFormChanges();
+                    }, 1000);
                 },
                 error: () => {},
             });
     }
 
-    public populateCdlFormOnRenew(id: any) {
+    public addCdl(): void {
+        const {
+            // eslint-disable-next-line no-unused-vars
+            endorsementsHelper, // eslint-disable-next-line no-unused-vars
+            restrictionsHelper, // eslint-disable-next-line no-unused-vars
+            files, // eslint-disable-next-line no-unused-vars
+            stateId,
+            issueDate,
+            expDate,
+            ...form
+        } = this.cdlForm.value;
+
+        // documents
+        let documents = [];
+
+        this.documents.map((item) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+
+        const newData = {
+            ...form,
+
+            driverId: this.editData?.id,
+            stateId: this.selectedState.id,
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
+            restrictions: this.selectedRestrictions
+                ? this.selectedRestrictions.map((item) => item.id)
+                : [],
+            endorsements: this.selectedEndorsments
+                ? this.selectedEndorsments.map((item) => item.id)
+                : [],
+            files: documents,
+        };
+
+        if (this.editData.type === DriverCdlModalStringEnum.RENEW_LICENCE) {
+            const { driverId, ...renewData } = newData;
+
+            this.cdlService
+                .renewCdlUpdate({
+                    ...renewData,
+                    id: this.editData.renewData.id,
+                })
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    },
+                    error: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
+                    },
+                });
+        } else {
+            this.cdlService
+                .addCdl(newData)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: true,
+                            close: true,
+                        });
+                    },
+                    error: () => {
+                        this.modalService.setModalSpinner({
+                            action: null,
+                            status: false,
+                            close: false,
+                        });
+                    },
+                });
+        }
+    }
+
+    public updateCdl(): void {
+        const {
+            // eslint-disable-next-line no-unused-vars
+            endorsementsHelper, // eslint-disable-next-line no-unused-vars
+            restrictionsHelper, // eslint-disable-next-line no-unused-vars
+            files, // eslint-disable-next-line no-unused-vars
+            stateId,
+            issueDate,
+            expDate,
+            ...form
+        } = this.cdlForm.value;
+
+        // documents
+        let documents = [];
+
+        this.documents.map((item) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+
+        const newData = {
+            ...form,
+
+            id: this.editData.file_id,
+            stateId: this.selectedState.id,
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
+            restrictions: this.selectedRestrictions
+                ? this.selectedRestrictions.map((item) => item.id)
+                : [],
+            endorsements: this.selectedEndorsments
+                ? this.selectedEndorsments.map((item) => item.id)
+                : [],
+            files: documents,
+            filesForDeleteIds: this.filesForDelete,
+        };
+
+        this.cdlService
+            .updateCdl(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
+    public populateCdlFormOnRenew(id: any): void {
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
@@ -322,247 +618,18 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         }
                     );
 
-                    this.selectedClassType = res.classType;
-                    this.selectedStateType = {
+                    this.selectedClass = res.classType;
+                    this.selectedState = {
                         ...res.state,
                         name: res.state.stateShortName,
                     };
                     setTimeout(() => {
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                         this.startFormChanges();
                     }, 1000);
                 },
                 error: () => {},
             });
-    }
-
-    public getCdlById(id: number) {
-        this.cdlService
-            .getCdlById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: CdlResponse) => {
-                    this.cdlForm.patchValue({
-                        cdlNumber: res.cdlNumber,
-                        issueDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.issueDate
-                            ),
-                        expDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.expDate
-                            ),
-                        classType: res.classType.name,
-                        stateId: res.state.stateShortName,
-                        restrictions: null,
-                        restrictionsHelper: res.cdlRestrictions.length
-                            ? JSON.stringify(res.cdlRestrictions)
-                            : null,
-                        endorsements: null,
-                        endorsementsHelper: res.cdlEndorsements.length
-                            ? JSON.stringify(res.cdlEndorsements)
-                            : null,
-                        note: res.note,
-                        files: res.files.length
-                            ? JSON.stringify(res.files)
-                            : null,
-                    });
-
-                    this.documents = res.files ? (res.files as any) : [];
-
-                    this.selectedEndorsments = res.cdlEndorsements.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                name: item.code
-                                    .concat(' ', '-')
-                                    .concat(' ', item.description),
-                            };
-                        }
-                    );
-
-                    this.selectedRestrictions = res.cdlRestrictions.map(
-                        (item) => {
-                            return {
-                                ...item,
-                                name: item.code
-                                    .concat(' ', '-')
-                                    .concat(' ', item.description),
-                            };
-                        }
-                    );
-
-                    this.selectedClassType = res.classType;
-                    this.selectedStateType = {
-                        ...res.state,
-                        name: res.state.stateShortName,
-                    };
-                    setTimeout(() => {
-                        this.disableCardAnimation = false;
-                        this.startFormChanges();
-                    }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    public updateCdl() {
-        const {
-            issueDate,
-            expDate,
-            note,
-            endorsementsHelper,
-            restrictionsHelper,
-        } = this.cdlForm.value;
-        const newData: any = {
-            id: this.editData.file_id,
-            ...this.cdlForm.value,
-            issueDate:
-                MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
-            classType: this.selectedClassType
-                ? this.selectedClassType.name
-                : null,
-            stateId: this.selectedStateType ? this.selectedStateType.id : null,
-            restrictions: this.selectedRestrictions
-                ? this.selectedRestrictions.map((item) => item.id)
-                : [],
-            endorsements: this.selectedEndorsments
-                ? this.selectedEndorsments.map((item) => item.id)
-                : [],
-            note: note,
-            files: this.documents[0]?.realFile
-                ? [this.documents[0]?.realFile]
-                : this.cdlForm.value.files,
-            filesForDeleteIds: this.filesForDelete,
-        };
-
-        this.cdlService
-            .updateCdl(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public addCdl() {
-        const {
-            issueDate,
-            expDate,
-            note,
-            endorsementsHelper,
-            restrictionsHelper,
-        } = this.cdlForm.value;
-
-        const newData: any = {
-            driverId: this.editData.id,
-            ...this.cdlForm.value,
-            issueDate:
-                MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
-            classType: this.selectedClassType
-                ? this.selectedClassType.name
-                : null,
-            stateId: this.selectedStateType ? this.selectedStateType.id : null,
-            restrictions: this.selectedRestrictions
-                ? this.selectedRestrictions.map((item) => item.id)
-                : [],
-            endorsements: this.selectedEndorsments
-                ? this.selectedEndorsments.map((item) => item.id)
-                : [],
-            note: note,
-            tableActiveTab: this.editData?.tableActiveTab
-                ? this.editData.tableActiveTab
-                : null,
-            files: [this.documents[0]?.realFile],
-        };
-
-        if (this.editData.type === 'renew-licence') {
-            const { driverId, ...renewData } = newData;
-            this.cdlService
-                .renewCdlUpdate({
-                    ...renewData,
-                    id: this.editData.renewData.id,
-                })
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    },
-                    error: () => {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: false,
-                            close: false,
-                        });
-                    },
-                });
-        } else {
-            this.cdlService
-                .addCdl(newData)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: () => {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    },
-                    error: () => {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: false,
-                            close: false,
-                        });
-                    },
-                });
-        }
-    }
-
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.cdlForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.cdlForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
-                this.fileModified = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
     }
 
     ngOnDestroy(): void {
