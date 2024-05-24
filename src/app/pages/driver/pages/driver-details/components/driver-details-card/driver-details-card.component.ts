@@ -32,7 +32,7 @@ import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-m
 import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-medical-modal/services/driver-medical.service';
 import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
 import { DriverDrugAlcoholTestService } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/services/driver-drug-alcohol-test.service';
-import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DropDownService } from '@shared/services/drop-down.service';

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 // services
-import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 

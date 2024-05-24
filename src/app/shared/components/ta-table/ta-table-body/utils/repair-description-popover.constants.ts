@@ -1,4 +1,4 @@
-export class RepairDescriptionPopoverConstant {
+export class RepairDescriptionPopoverConstants {
     static descriptionItems = [
         { title: '#', className: 'number-title' },
         { title: 'DESCRIPTION', className: 'item-title' },

@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-medical-modal/services/driver-medical.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';

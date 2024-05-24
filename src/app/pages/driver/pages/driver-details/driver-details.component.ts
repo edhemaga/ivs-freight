@@ -11,7 +11,7 @@ import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/drive
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
-import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';

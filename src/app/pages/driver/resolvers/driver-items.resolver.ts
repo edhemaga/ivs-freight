@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
-import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // store
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
