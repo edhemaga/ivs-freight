@@ -38,7 +38,7 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
@@ -211,9 +211,12 @@ export class NavigationModalsComponent {
                 break;
             }
             case 'test': {
-                this.modalService.openModal(DriverDrugAlcoholModalComponent, {
-                    size: 'small',
-                });
+                this.modalService.openModal(
+                    DriverDrugAlcoholTestModalComponent,
+                    {
+                        size: 'small',
+                    }
+                );
                 break;
             }
             case 'medical': {

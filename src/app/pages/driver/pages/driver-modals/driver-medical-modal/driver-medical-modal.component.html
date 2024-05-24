@@ -13,26 +13,9 @@
         [formGroup]="medicalForm"
         class="form-container form-container-without-mb"
     >
-        <div *ngIf="!editData" class="row first-row">
-            <div class="col-12">
-                <app-ta-input-dropdown
-                    formControlName="driver"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Driver',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-456',
-                        autoFocus: !editData
-                    }"
-                    [options]="labelsDrivers"
-                    [activeItem]="selectedDriver"
-                    (selectedItem)="onSelectDropdown($event, 'driver')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-        <div class="row last-row" [ngClass]="{ 'first-row': editData }">
+        <!-- Issue Date, Expiration Date -->
+
+        <div class="row last-row">
             <div class="col-6">
                 <app-ta-input
                     formControlName="issueDate"
@@ -48,13 +31,14 @@
                     }"
                 ></app-ta-input>
             </div>
+
             <div class="col-6">
                 <app-ta-input
                     formControlName="expDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
-                        label: 'Exp. Date',
+                        label: 'Expiration Date',
                         isDropdown: true,
                         placeholderIcon: 'date',
                         isRequired: true,
@@ -63,21 +47,26 @@
                 ></app-ta-input>
             </div>
         </div>
+
+        <!-- Documents -->
+
         <div class="ta-card-body-overflow-none">
             <app-ta-custom-card
-                [hasCounter]="documents.length ? documents.length : 0"
+                [hasCounter]="documents.length"
                 [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
-                [isCardOpen]="documents.length > 0"
+                [disableAnimation]="isCardAnimationDisabled"
+                [isCardOpen]="documents.length"
             >
                 <app-ta-upload-files
                     [files]="documents"
                     [showDropzone]="true"
-                    (onFileEvent)="onFilesEvent($event)"
                     [customClassName]="'modals'"
+                    (onFileEvent)="onFilesEvent($event)"
                 ></app-ta-upload-files>
             </app-ta-custom-card>
         </div>
+
+        <!-- Note -->
 
         <app-ta-input-note
             formControlName="note"

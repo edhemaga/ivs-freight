@@ -1,4 +1,3 @@
-/* Table Body */
 @import 'src/theme/variables';
 
 table.truckassist-table-body-style {
@@ -479,7 +478,7 @@ table.truckassist-table-body-style {
                                     border-radius: 1px;
                                 }
                             }
-                            
+
                             .inv-aging-group-border {
                                 width: 1px;
                                 height: 100%;
@@ -499,8 +498,9 @@ table.truckassist-table-body-style {
 
                             &.invoice-popover-open {
                                 background: $ta-black-2;
-                                
-                                .total-amount-text, .main-group {
+
+                                .total-amount-text,
+                                .main-group {
                                     color: $white;
                                 }
                             }

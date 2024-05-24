@@ -18,10 +18,10 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
-import { DriverCdlService } from '@pages/driver/services/driver-cdl.service';
-import { DriverMedicalService } from '@pages/driver/services/driver-medical.service';
-import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
-import { DriverTestService } from '@pages/driver/services/driver-test.service';
+import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
+import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-medical-modal/services/driver-medical.service';
+import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
+import { DriverDrugAlcoholTestService } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/services/driver-drug-alcohol-test.service';
 
 //Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -112,7 +112,7 @@ export class DriverDetailsItemComponent
         private cdlService: DriverCdlService,
         private medicalService: DriverMedicalService,
         private mvrService: DriverMvrService,
-        private testService: DriverTestService,
+        private testService: DriverDrugAlcoholTestService,
         private confirmationService: ConfirmationService,
         private tableService: TruckassistTableService,
         private dropDownService: DropDownService,

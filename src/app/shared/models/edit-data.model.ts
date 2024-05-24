@@ -17,4 +17,6 @@ export interface EditData {
     id: number;
     shopId?: number;
     isFinishOrder?: number;
+    file_id?: number;
+    renewData?: any;
 }

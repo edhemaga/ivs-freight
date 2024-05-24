@@ -460,8 +460,8 @@ export function getDriverColumnsDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Phone',
-            field: 'tableEmergContact',
+            title: 'Phone ',
+            field: 'tableEmergContactPhone',
             name: 'Phone',
             groupName: 'Emerg. Contact ',
             sortName: 'emergencyContactPhone',

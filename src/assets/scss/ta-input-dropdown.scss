@@ -147,6 +147,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: flex-end;
+                        padding-left: 0 !important;
                     }
 
                     &-text {
@@ -166,6 +167,7 @@
                         display: flex;
                         align-items: center;
                         justify-content: flex-end;
+                        padding-left: 0 !important;
                     }
 
                     &-text {
@@ -233,7 +235,7 @@
                 }
 
                 &.add-new {
-                    padding: 4.5px 4px 0 0;
+                    padding: 4.5px 4px;
                     font-size: 11px;
                     font-weight: 700;
                     color: $ta-blue-19;
