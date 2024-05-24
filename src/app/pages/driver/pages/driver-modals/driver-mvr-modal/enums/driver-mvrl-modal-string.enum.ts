@@ -1,5 +1,6 @@
 export enum DriverMVrModalStringEnum {
     EDIT_MVR = 'edit-mvr',
+    SMALL = 'small',
 
     MVR_ID = 'cdlId',
 

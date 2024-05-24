@@ -30,6 +30,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
@@ -82,6 +83,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
 
+    private isAddNewCdl: boolean = false;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -97,6 +100,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.createForm();
 
         this.isAddOrEdit();
+
+        this.isNewCdlAdded();
     }
 
     private createForm(): void {
@@ -129,6 +134,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             if (this.editData.type === DriverMVrModalStringEnum.EDIT_MVR)
                 this.getMVRById(this.editData.file_id);
         }
+    }
+
+    private isNewCdlAdded(): void {
+        if (this.isAddNewCdl) this.getMvrDropdowns(this.editData.id);
     }
 
     public onModalAction(data: { action: string; bool: boolean }): void {
@@ -166,8 +175,16 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropdown(event: ExtendedCdlMinimalResponse): void {
-        this.selectedCdl = event;
+    public onSelectDropdown(event: any): void {
+        if (event?.canOpenModal) {
+            this.isAddNewCdl = true;
+
+            this.modalService.openModal(
+                DriverCdlModalComponent,
+                { size: DriverMVrModalStringEnum.SMALL },
+                { id: this.editData?.id }
+            );
+        } else this.selectedCdl = event;
     }
 
     public onFilesEvent(event: any): void {
@@ -218,6 +235,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         .get(DriverMVrModalStringEnum.MVR_ID)
                         .patchValue(this.selectedCdl.name);
                 }
+
+                if (this.isAddNewCdl) this.isAddNewCdl = false;
 
                 this.startFormChanges();
             });
@@ -271,20 +290,21 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     private addMVR(): void {
         const { issueDate, note } = this.mvrForm.value;
+
+        // documents
         let documents = [];
+
         this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+            if (item.realFile) documents.push(item.realFile);
         });
 
-        const newData: any = {
-            driverId: this.editData.id,
+        const newData = {
+            driverId: this.editData?.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
-            note: note,
             files: documents,
+            note,
         };
 
         this.mvrService
@@ -310,15 +330,16 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     private updateMVR(): void {
         const { issueDate, note } = this.mvrForm.value;
+
+        // documents
         let documents = [];
+
         this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+            if (item.realFile) documents.push(item.realFile);
         });
-        const newData: any = {
-            driverId: this.editData.id,
-            id: this.editData.file_id,
+
+        const newData = {
+            id: this.editData?.file_id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,

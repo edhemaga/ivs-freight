@@ -1,17 +1,14 @@
 import { MvrService } from 'appcoretruckassist';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { Observable, tap, Subject } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
-// Models
-import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
-
-// Services
+// services
 import { DriverService } from '@pages/driver/pages/driver-modals/driver-modal/services/driver.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
 
-// Store
+// store
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
@@ -19,90 +16,88 @@ import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driv
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
+// models
+import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
+
 @Injectable({
     providedIn: 'root',
 })
-export class DriverMvrService implements OnDestroy {
-    private destroy$ = new Subject<void>();
-
+export class DriverMvrService {
     constructor(
+        // services
         private mvrService: MvrService,
         private driverService: DriverService,
+        private tableService: TruckassistTableService,
+        private formDataService: FormDataService,
+
+        // store
         private driverActiveStore: DriversActiveStore,
         private driverActiveQuery: DriversActiveQuery,
         private driverInactiveStore: DriversInactiveStore,
         private driverInactiveQuery: DriversInactiveQuery,
-        private tableService: TruckassistTableService,
         private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore,
-        private formDataService: FormDataService
+        private dlStore: DriversDetailsListStore
     ) {}
 
     // Add Mvr
     public addMvr(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.mvrService.apiMvrPost().pipe(
             tap(() => {
                 if (data?.driverId) {
-                    let driverById = this.driverService
-                        .getDriverById(data.driverId)
-                        .subscribe({
-                            next: (driver: any) => {
-                                let driverInStore = null;
+                    this.driverService.getDriverById(data.driverId).subscribe({
+                        next: (driver: any) => {
+                            let driverInStore = null;
 
-                                // Get Driver From Store
-                                if (data.tableActiveTab === 'active') {
-                                    driverInStore =
-                                        this.driverActiveQuery.getEntity(
-                                            data.driverId
-                                        );
-                                } else if (data.tableActiveTab === 'inactive') {
-                                    driverInStore =
-                                        this.driverInactiveQuery.getEntity(
-                                            data.driverId
-                                        );
-                                }
-
-                                // Update Driver Data
-                                driver = {
-                                    ...driver,
-                                    fullName:
-                                        driver.firstName +
-                                        ' ' +
-                                        driver.lastName,
-                                    cdlNumber: driverInStore?.cdlNumber
-                                        ? driverInStore.cdlNumber
-                                        : null,
-                                    fileCount: driver?.filesCountForList
-                                        ? driver.filesCountForList
-                                        : 0,
-                                };
-
-                                // Update Driver Store
-                                if (data.tableActiveTab === 'active') {
-                                    this.driverActiveStore.remove(
-                                        ({ id }) => id === data.driverId
+                            // Get Driver From Store
+                            if (data.tableActiveTab === 'active') {
+                                driverInStore =
+                                    this.driverActiveQuery.getEntity(
+                                        data.driverId
                                     );
-
-                                    this.driverActiveStore.add(driver);
-                                } else if (data.tableActiveTab === 'inactive') {
-                                    this.driverInactiveStore.remove(
-                                        ({ id }) => id === data.driverId
+                            } else if (data.tableActiveTab === 'inactive') {
+                                driverInStore =
+                                    this.driverInactiveQuery.getEntity(
+                                        data.driverId
                                     );
+                            }
 
-                                    this.driverInactiveStore.add(driver);
-                                }
+                            // Update Driver Data
+                            driver = {
+                                ...driver,
+                                name: driver.firstName + ' ' + driver.lastName,
+                                cdlNumber: driverInStore?.cdlNumber
+                                    ? driverInStore.cdlNumber
+                                    : null,
+                                fileCount: driver?.filesCountForList
+                                    ? driver.filesCountForList
+                                    : 0,
+                            };
 
-                                // Send Update Data To Table
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update',
-                                    data: driver,
-                                    id: driver.id,
-                                });
+                            // Update Driver Store
+                            if (data.tableActiveTab === 'active') {
+                                this.driverActiveStore.remove(
+                                    ({ id }) => id === data.driverId
+                                );
 
-                                driverById.unsubscribe();
-                            },
-                        });
+                                this.driverActiveStore.add(driver);
+                            } else if (data.tableActiveTab === 'inactive') {
+                                this.driverInactiveStore.remove(
+                                    ({ id }) => id === data.driverId
+                                );
+
+                                this.driverInactiveStore.add(driver);
+                            }
+
+                            // Send Update Data To Table
+                            this.tableService.sendActionAnimation({
+                                animation: 'update',
+                                data: driver,
+                                id: driver.id,
+                            });
+                        },
+                    });
                 }
             })
         );
@@ -143,6 +138,7 @@ export class DriverMvrService implements OnDestroy {
 
     public updateMvr(data: any): Observable<object> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.mvrService.apiMvrPut().pipe(
             tap((res: any) => {
                 let driverId = this.driverItemStore.getValue().ids[0];
@@ -150,7 +146,7 @@ export class DriverMvrService implements OnDestroy {
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
                 let newData = driverData[driverId];
 
-                let mvrApi = this.mvrService.apiMvrIdGet(res.id).subscribe({
+                this.mvrService.apiMvrIdGet(res.id).subscribe({
                     next: (resp: any) => {
                         newData.mvrs.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
@@ -166,8 +162,6 @@ export class DriverMvrService implements OnDestroy {
 
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-
-                        mvrApi.unsubscribe();
                     },
                 });
             })
@@ -176,9 +170,5 @@ export class DriverMvrService implements OnDestroy {
 
     public getMvrModal(driverId: number): Observable<GetMvrModalResponse> {
         return this.mvrService.apiMvrModalDriverIdGet(driverId);
-    }
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }
