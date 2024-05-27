@@ -1,0 +1,96 @@
+<ng-container
+    *ngFor="
+        let department of departmentContacts;
+        let i = index;
+        trackBy: identity
+    "
+>
+    <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [hasDivider]="false"
+        [cardName]="department.name"
+        [hasCounter]="department.contacts.length ?? 0"
+        [isCardOpen]="true"
+        [animationMarginParams]="{
+            marginTop: '0px',
+            marginBottom: '10px'
+        }"
+        class="shipper-contact-container"
+        [customClass]="'detailsPadding'"
+    >
+        <ng-container
+            *ngFor="
+                let shipperContact of department.contacts;
+                trackBy: identity
+            "
+        >
+            <div class="parking-template-data">
+                <div
+                    class="parking-template-item parking-template-email parking-name"
+                >
+                    <span class="parking-template-name">{{
+                        shipperContact?.fullName
+                    }}</span>
+                    <div class="svg-wrapper">
+                        <span
+                            ngbTooltip
+                            mainTooltip="Edit"
+                            position="top"
+                            tooltipBackground="#6C6C6C"
+                        >
+                            <svg-icon
+                                src="ic_pen.svg"
+                                class="svg-icon-edit"
+                                (click)="editContact()"
+                            ></svg-icon>
+                        </span>
+                        <span
+                            ngbTooltip
+                            mainTooltip="Delete"
+                            position="top"
+                            tooltipBackground="#6C6C6C"
+                        >
+                            <svg-icon
+                                src="assets/svg/common/ic_trash.svg"
+                                class="svg-icon-trash"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </div>
+                <div
+                    class="parking-template-item"
+                    *ngIf="shipperContact?.phone"
+                >
+                    <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                    <span class="parking-template-text d-flex"
+                        ><app-ta-copy
+                            [copyValue]="
+                                shipperContact?.phoneExt
+                                    ? [
+                                          shipperContact?.phone | formatPhoneP,
+                                          ' x' + shipperContact?.phoneExt
+                                      ]
+                                    : (shipperContact?.phone | formatPhoneP)
+                            "
+                            [arrayText]="shipperContact?.phoneExt ?? false"
+                        >
+                        </app-ta-copy>
+                    </span>
+                </div>
+                <div
+                    class="parking-template-item parking-template-email"
+                    *ngIf="shipperContact?.email"
+                >
+                    <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                    <span class="parking-template-text"
+                        ><app-ta-copy [copyValue]="shipperContact?.email">
+                        </app-ta-copy
+                    ></span>
+                </div>
+            </div>
+        </ng-container>
+    </app-ta-custom-card>
+    <ng-container *ngIf="i !== departmentContacts.length - 1">
+        <div class="divider"></div>
+    </ng-container>
+</ng-container>

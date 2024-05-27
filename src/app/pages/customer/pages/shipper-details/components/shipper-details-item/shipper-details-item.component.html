@@ -1,10 +1,10 @@
-<div class="repair-component" >
-    <div 
+<div class="repair-component">
+    <div
         *ngFor="let shipperData of shipper; trackBy: identity"
-        class="repair-component" 
+        class="repair-component"
         [class.contactGridHolder]="shipperData.nameDefault === 'Contact'"
         [class.reviewGridHolder]="shipperData.nameDefault === 'Review'"
-        >
+    >
         <div [ngSwitch]="shipperData?.template">
             <div *ngSwitchCase="'general'">
                 <app-shipper-details-card [shipper]="shipperData?.data">
@@ -25,181 +25,116 @@
                         <span class="repaier-headers">WAIT</span>
                     </div>
                     <div class="divider"></div>
-                    <div
-                        class="repair-items-wrapper"
+                    <ng-container
                         *ngFor="
-                            let loads of shipperData.data.loadStops;
+                            let loadStop of shipperData.data.loadStops;
                             trackBy: identity
                         "
                     >
-                        <div class="repair-items">
-                            <div class="items-header">
-                                <div class="icon-svg-repair">
-                                    <svg-icon
-                                        class="arrow-ri"
-                                        *ngIf="loads?.stopType?.name === 'Pickup'"
-                                        src="assets/svg/common/ic_arrow-right-line.svg"
-                                    ></svg-icon>
-                                    <svg-icon
-                                        class="arrow-le"
-                                        *ngIf="
-                                            loads?.stopType?.name === 'Delivery'
-                                        "
-                                        src="assets/svg/common/ic_arrow-line-left.svg"
-                                    ></svg-icon>
-                                    <span class="unit">{{
-                                        loads?.load?.id
-                                    }}</span>
+                        <ng-container
+                            *ngFor="
+                                let stop of loadStop.stops;
+                                trackBy: identity
+                            "
+                        >
+                            <div class="repair-items-wrapper">
+                                <div class="repair-items">
+                                    <div class="items-header">
+                                        <div class="icon-svg-repair">
+                                            <svg-icon
+                                                class="arrow-ri"
+                                                *ngIf="
+                                                    stop?.stopType?.name ===
+                                                    'Pickup'
+                                                "
+                                                src="assets/svg/common/ic_arrow-right-line.svg"
+                                            ></svg-icon>
+                                            <svg-icon
+                                                class="arrow-le"
+                                                *ngIf="
+                                                    stop?.stopType?.name ===
+                                                    'Delivery'
+                                                "
+                                                src="assets/svg/common/ic_arrow-line-left.svg"
+                                            ></svg-icon>
+                                            <span class="unit">{{
+                                                stop?.load?.id
+                                            }}</span>
+                                        </div>
+                                        <span class="date">
+                                            {{
+                                                stop?.load?.dispatch.driver
+                                                    ?.firstName.length > 6
+                                                    ? stop?.load?.dispatch
+                                                          .driver
+                                                          ?.firstName[0] + '.'
+                                                    : stop?.load?.dispatch
+                                                          .driver?.firstName
+                                            }}
+                                            {{
+                                                stop?.load?.dispatch.driver
+                                                    ?.lastName
+                                            }}
+                                        </span>
+                                        <span class="date">{{
+                                            stop?.load?.dispatch.truck
+                                                ?.truckNumber
+                                        }}</span>
+                                        <span class="date">{{
+                                            stop?.load?.dispatch.trailer
+                                                ?.trailerNumber
+                                        }}</span>
+                                        <div class="time-date">
+                                            <span class="date">{{
+                                                stop?.arrive | formatDateP
+                                            }}</span>
+                                            <span class="time">{{
+                                                stop?.arrive | formatTime
+                                            }}</span>
+                                        </div>
+                                        <div class="time-date">
+                                            <span class="date">{{
+                                                stop?.depart | formatDateP
+                                            }}</span>
+                                            <span class="time">{{
+                                                stop?.depart | formatTime
+                                            }}</span>
+                                        </div>
+                                        <span class="wait-time">
+                                            <span
+                                                class="hours"
+                                                *ngIf="stop?.wait?.days > 0"
+                                                >{{ stop?.wait?.days }} d</span
+                                            >
+                                            <span
+                                                class="hours"
+                                                *ngIf="stop?.wait?.hours > 0"
+                                                >{{ stop?.wait?.hours }} h</span
+                                            >
+                                            <span
+                                                class="hours"
+                                                *ngIf="
+                                                    stop?.wait?.hours <= 0 &&
+                                                    stop?.wait?.days <= 0
+                                                "
+                                            >
+                                                {{ stop?.wait?.minutes }} min
+                                            </span>
+                                        </span>
+                                    </div>
                                 </div>
-                                <span class="date"
-                                    >{{
-                                        loads?.load?.dispatch.driver?.firstName
-                                            .length > 6
-                                            ? loads?.load?.dispatch.driver
-                                                  ?.firstName[0] + '.'
-                                            : loads?.load?.dispatch.driver
-                                                  ?.firstName
-                                    }}
-                                    {{
-                                        loads?.load?.dispatch.driver?.lastName
-                                    }}</span
-                                >
-                                <span class="date">{{
-                                    loads?.load?.dispatch.truck?.truckNumber
-                                }}</span>
-                                <span class="date">{{
-                                    loads?.load?.dispatch.trailer?.trailerNumber
-                                }}</span>
-                                <div class="time-date">
-                                    <span class="date">{{
-                                        loads?.arrive | formatDateP
-                                    }}</span>
-                                    <span class="time">
-                                        {{ loads?.arrive | formatTime }}</span
-                                    >
-                                </div>
-                                <div class="time-date">
-                                    <span class="date">{{
-                                        loads?.depart | formatDateP
-                                    }}</span>
-                                    <span class="time">
-                                        {{ loads?.depart | formatTime }}</span
-                                    >
-                                </div>
-                                <span class="wait-time"
-                                    ><span
-                                        class="hours"
-                                        *ngIf="loads?.wait?.days > 0"
-                                        >{{ loads?.wait?.days }} d
-                                    </span>
-                                    <span
-                                        class="hours"
-                                        *ngIf="loads?.wait?.hours > 0"
-                                        >{{ loads?.wait?.hours }} h</span
-                                    >
-                                    <span
-                                        class="hours"
-                                        *ngIf="
-                                            loads?.wait?.hours <= 0 &&
-                                            loads?.wait?.days <= 0
-                                        "
-                                        >{{ loads?.wait?.minutes }} min</span
-                                    >
-                                </span>
+                                <div class="divider"></div>
                             </div>
-                        </div>
-                        <div class="divider"></div>
-                    </div>
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
-                    <app-ta-custom-card
-                        *ngFor="
-                            let shipperContact of shipperContacts;
-                            trackBy: identity
-                        "
-                        [bodyTemplate]="'card'"
-                        [hasDivider]="false"
-                        [cardName]="shipperContact.department.name"
-                        [isCardOpen]="true"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '10px'
-                        }"
-                        class="shipper-contact-container"
-                        [customClass]="'detailsPadding'" 
-                    >
-                        <div
-                            *ngIf="shipperContact"
-                            class="parking-template-data"
-                        >
-                            <div
-                                class="parking-template-item parking-template-email parking-name"
-                            >
-                                <span class="parking-template-name">{{
-                                    shipperContact?.fullName
-                                }}</span>
-                                <div class="svg-wrapper">
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Edit"
-                                        position="top"
-                                        tooltipBackground="#6C6C6C"
-                                    >
-                                        <svg-icon
-                                            src="ic_pen.svg"
-                                            class="svg-icon-edit"
-                                        ></svg-icon>
-                                    </span>
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Delete"
-                                        position="top"
-                                        tooltipBackground="#6C6C6C"
-                                    >
-                                        <svg-icon
-                                            src="assets/svg/common/ic_trash.svg"
-                                            class="svg-icon-trash"
-                                        ></svg-icon>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="parking-template-item" *ngIf="shipperContact?.phone">
-                                <svg-icon
-                                    src="assets/svg/common/ic_phone.svg"
-                                ></svg-icon>
-                                <span class="parking-template-text">{{
-                                    shipperContact?.phone | formatPhoneP
-                                }}</span>
-                            </div>
-                            <div class="parking-template-item" *ngIf="shipperContact?.phoneExt">
-                                <div class="parking-template-item">
-                                    <svg-icon
-                                        src="assets/svg/common/ic_phone-extension.svg"
-                                    ></svg-icon>
-                                    <span class="parking-template-text">{{
-                                        shipperContact?.phoneExt
-                                    }}</span>
-                                </div>
-                            </div>
-                            <div
-                                class="parking-template-item parking-template-email"
-                                *ngIf="shipperContact?.email"
-                            >
-                                <svg-icon
-                                    src="assets/svg/common/ic_email.svg"
-                                ></svg-icon>
-                                <span class="parking-template-text">{{
-                                    shipperContact?.email
-                                }}</span>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                    </app-ta-custom-card>
+                    <app-ta-contacts-card [departmentContacts]="departmentContacts"></app-ta-contacts-card>
                 </div>
             </div>
-            <div *ngSwitchCase="'review'">
+            <!--<div *ngSwitchCase="'review'">
                 <div class="likes-count-container">
                     <div class="likes-item">
                         <div class="ic-counter">
@@ -247,7 +182,7 @@
                         (changeReviewsEvent)="changeReviewsEvent($event)"
                     ></app-ta-user-review>
                 </div>
-            </div>
+            </div> this is not going into this sprint -->
         </div>
     </div>
 </div>
