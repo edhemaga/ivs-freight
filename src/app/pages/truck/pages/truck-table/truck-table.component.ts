@@ -726,7 +726,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST: TableStringEnum.NA,
+            tableLicencePlateDetailST: data.registrationState
+                ? data.registrationState
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays

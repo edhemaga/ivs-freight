@@ -284,14 +284,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             subName: TruckDetailsEnum.TITLE_2,
                             actionName: TruckDetailsEnum.TITLE_2,
                         },
-                        {
-                            subName: TruckDetailsEnum.LEASE_RENT,
-                            actionName: TruckDetailsEnum.LEASE_RENT,
-                        },
                     ],
-                },
-                {
-                    title: TruckDetailsEnum.BORDER,
                 },
                 {
                     title: TruckDetailsEnum.BORDER,

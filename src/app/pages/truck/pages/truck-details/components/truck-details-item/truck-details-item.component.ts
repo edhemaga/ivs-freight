@@ -120,8 +120,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             }
         });
         if (changes.truck?.currentValue != changes.truck?.previousValue) {
-            //this.truck = changes.truck?.currentValue;
-            //his.initTableOptions();
+            this.initTableOptions();
         }
     }
 
@@ -157,6 +156,11 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                                 )
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe();
+                        case TruckDetailsEnum.ACTIVATE:
+                            this.truckService
+                                .voidRegistration(null, res.data.id)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
 
                         default: {
                             break;
@@ -176,15 +180,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         objects: TruckDetailsConfigData[]
     ): boolean {
         const currentDate = moment().valueOf();
-
-        return objects.some((object) => {
-            if (object.voidedOn) {
-                const voidedOnDate = moment(object.voidedOn).valueOf();
-                return voidedOnDate >= currentDate;
-            } else {
-                const expDate = moment(object.expDate).valueOf();
-                return expDate >= currentDate;
-            }
+        return objects.every((object) => {
+            const expDate = moment(object.expDate).valueOf();
+            const isExpiredOrVoided = expDate < currentDate || object.voidedOn;
+            return isExpiredOrVoided;
         });
     }
     /**Function for dots in cards */
@@ -268,16 +267,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: TableStringEnum.VIEW_DETAILS_2,
-                    name: TableStringEnum.VIEW_DETAILS,
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: TableStringEnum.VIEW_DETAILS,
-                    show: true,
-                },
-                {
-                    title: TruckDetailsEnum.BORDER,
-                },
-                {
                     title: TableStringEnum.DELETE_2,
                     name: TableStringEnum.DELETE_ITEM,
                     type: TableStringEnum.DRIVER,
@@ -305,6 +294,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     public optionsEvent(file: any, data: any, action: string) {
         data = this.truck[0]?.data;
+
         const name = DropActionNameHelper.dropActionNameTrailerTruck(
             file,
             action

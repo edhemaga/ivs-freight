@@ -112,11 +112,13 @@ export class DropDownService {
             }
             case 'activate':
                 {
+                    let registrationData = data.registrations.find(
+                        (registration) => registration.id === dropDownData.id
+                    );
                     const mappedEvent = {
                         ...event,
                         data: {
-                            ...data,
-                            number: data.licensePlate,
+                            ...registrationData,
                         },
                     };
                     this.modalService.openModal(

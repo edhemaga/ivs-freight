@@ -88,6 +88,20 @@
                                     </app-ta-progress-expiration>
                                 </div>
                             </div>
+                            <ng-container *ngIf="isVoidActive && reg.voidedOn">
+                                <div
+                                    class="void-button"
+                                    (click)="
+                                        optionsEvent(
+                                            { id: reg.id, type: 'activate' },
+                                            trucks.data,
+                                            'registration'
+                                        )
+                                    "
+                                >
+                                    <p class="ta-font-bold">Activate</p>
+                                </div>
+                            </ng-container>
                         </div>
 
                         <div
