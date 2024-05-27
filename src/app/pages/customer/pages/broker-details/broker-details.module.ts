@@ -26,6 +26,7 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 @NgModule({
     declarations: [
@@ -58,6 +59,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         FormatCurrencyPipe,
         FormatEinPipe,
         FormatDatePipe,
+        FormatPhonePipe,
     ],
 })
 export class BrokerDetailsModule {}

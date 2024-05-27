@@ -268,7 +268,7 @@ export function getBrokerColumnDefinition() {
             linkField: null,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'progressCredit',
             title: 'Avail Credit',
             field: 'tablePaymentDetailAvailCredit',
             name: 'Available Credit',

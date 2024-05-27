@@ -4143,6 +4143,58 @@
                                         </div>
                                     </ng-container>
 
+                                    <!-- CREDIT PROGRESS COLUMN -->
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'progressCredit'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.expirationCreditText
+                                                "
+                                            >
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    [mainTooltip]="'View Credit'"
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                >
+                                                    <app-ta-progres-bar
+                                                        [percents]="
+                                                            row[column.field]
+                                                                .percentage
+                                                        "
+                                                        [text]="
+                                                            row[column.field]
+                                                                .expirationCreditText
+                                                        "
+                                                        [data]="row"
+                                                        [columnField]="
+                                                            column.field
+                                                        "
+                                                        [hasPopover]="true"
+                                                        [isTable]="true"
+                                                        [type]="'credit'"
+                                                    ></app-ta-progres-bar>
+                                                </span>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- APPLICANT PROGRESS COLUMN -->
                                     <ng-container
                                         *ngIf="

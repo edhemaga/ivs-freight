@@ -186,6 +186,13 @@ export interface PmTrailerProgressData {
     totalValueText: string;
 }
 
+export interface CreditProgressData {
+    expirationCredit?: number;
+    expirationCreditText?: string;
+    percentage: number;
+    totalValueText: string;
+}
+
 export interface tableDropdownContent {
     content: DropdownItem[];
     hasContent: boolean;

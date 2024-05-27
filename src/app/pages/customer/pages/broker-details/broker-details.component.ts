@@ -23,6 +23,9 @@ import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 // Models
 import { BrokerResponse } from 'appcoretruckassist';
 
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-broker-details',
     templateUrl: './broker-details.component.html',
@@ -82,42 +85,41 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'broker') {
+                        case TableStringEnum.DELETE:
+                            if (res.template === TableStringEnum.BROKER) {
                                 this.deleteBrokerById(res.id);
                             }
                             break;
-                        }
-                        case 'info': {
+
+                        case TableStringEnum.INFO:
                             if (
-                                res.template === 'broker' &&
-                                res.subType === 'ban list'
+                                res.template === TableStringEnum.BROKER &&
+                                res.subType === TableStringEnum.BAN_LIST
                             ) {
                                 this.moveRemoveBrokerToBan(res.id);
                             }
                             if (
-                                res.template === 'broker' &&
-                                res.subType === 'dnu'
+                                res.template === TableStringEnum.BROKER &&
+                                res.subType === TableStringEnum.DNU
                             ) {
                                 this.moveRemoveBrokerToDnu(res.id);
                             }
                             break;
-                        }
-                        case 'activate':
-                        case 'deactivate': {
+
+                        case TableStringEnum.ACTIVATE:
+                        case TableStringEnum.DEACTIVATE:
                             this.changeBrokerStatus(res?.id);
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 },
             });
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.animation) {
+                if (res?.animation) {
                     this.brokerInitConfig(res.data);
                     this.cdRef.detectChanges();
                 }
@@ -134,15 +136,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                             this.brokerInitConfig(res);
                             this.newBrokerId = res.id;
                             this.router.navigate([
-                                `/customer/${res.id}/broker-details`,
+                                `/list/customer/${res.id}/broker-details`,
                             ]);
                             this.cdRef.detectChanges();
                         },
                     });
                 } else {
-                    //query = this.brokerService.getBrokerById(id);
                     this.newBrokerId = id;
-                    this.router.navigate([`/customer/${id}/broker-details`]);
+                    this.router.navigate([
+                        `/list/customer/${id}/broker-details`,
+                    ]);
                     this.cdRef.detectChanges();
                 }
             });
