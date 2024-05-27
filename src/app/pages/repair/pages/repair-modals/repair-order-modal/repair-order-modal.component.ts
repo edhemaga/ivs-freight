@@ -95,6 +95,7 @@ import { ExtendedTruckMinimalResponse } from '@pages/repair/pages/repair-modals/
 import { ExtendedTrailerMinimalResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-trailer-minimal-response.model';
 import { ExtendedServiceTypeResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-service-type-response.model';
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-modals/repair-order-modal/models/extended-repair-shop-response.model';
+import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models/add-update-repair-properties.model';
 
 @Component({
     selector: 'app-repair-order-modal',
@@ -197,6 +198,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     public tags: TagResponse[] = [];
 
+    // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     constructor(
@@ -859,6 +861,81 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    private createAddOrUpdateRepairProperties(
+        date: string,
+        unitType: string
+    ): AddUpdateRepairProperties {
+        // date
+        const convertedDate =
+            MethodsCalculationsHelper.convertDateToBackend(date);
+
+        // truck & trailer id
+        const conditionaTruckId =
+            unitType === RepairOrderModalStringEnum.TRUCK
+                ? this.selectedUnit.id
+                : null;
+        const conditionaTrailerId =
+            unitType === RepairOrderModalStringEnum.TRAILER
+                ? this.selectedUnit.id
+                : null;
+
+        // repair shop id
+        const conditionaRepairShopId = this.selectedRepairShop?.id ?? null;
+
+        // service types
+        const convertedServiceTypes = this.services.map((item) => {
+            return {
+                serviceType: item.serviceType,
+                active: item.active,
+                isSelected: item.isSelected,
+            };
+        });
+
+        // items
+        const convertedItems = this.repairItems.map(
+            ({
+                description,
+                price,
+                quantity,
+                subtotal,
+                pmTruck: { id: pmTruckId } = {},
+                pmTrailer: { id: pmTrailerId } = {},
+            }) => ({
+                description,
+                ...(this.selectedHeaderTab === 1 && { price }),
+                quantity,
+                ...(this.selectedHeaderTab === 1 && { subtotal }),
+                pmTruckId,
+                pmTrailerId,
+            })
+        );
+
+        // documents
+        const convertedDocuments = [];
+        const convertedTagsArray = [];
+
+        this.documents.map((item) => {
+            if (item.tagId?.length)
+                convertedTagsArray.push({
+                    fileName: item.realFile.name,
+                    tagIds: item.tagId,
+                });
+
+            if (item.realFile) convertedDocuments.push(item.realFile);
+        });
+
+        return {
+            convertedDate,
+            conditionaTruckId,
+            conditionaTrailerId,
+            conditionaRepairShopId,
+            convertedServiceTypes,
+            convertedItems,
+            convertedDocuments,
+            convertedTagsArray,
+        };
+    }
+
     public getDrivers(): void {
         const formatedDate = moment(
             this.repairOrderForm.get(RepairOrderModalStringEnum.DATE).value,
@@ -1046,55 +1123,20 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             servicesHelper, // eslint-disable-next-line no-unused-vars
             total, // eslint-disable-next-line no-unused-vars
             unit,
+            unitType,
             ...form
         } = this.repairOrderForm.value;
 
-        let documents = [];
-        let tagsArray = [];
-
-        // date
-        const convertedDate =
-            MethodsCalculationsHelper.convertDateToBackend(date);
-
-        // truck & trailer id
-        const truckId =
-            this.repairOrderForm.get(RepairOrderModalStringEnum.UNIT_TYPE)
-                .value === RepairOrderModalStringEnum.TRUCK
-                ? this.selectedUnit.id
-                : null;
-        const trailerId =
-            this.repairOrderForm.get(RepairOrderModalStringEnum.UNIT_TYPE)
-                .value === RepairOrderModalStringEnum.TRAILER
-                ? this.selectedUnit.id
-                : null;
-
-        // repair shop id
-        const repairShopId = this.selectedRepairShop?.id ?? null;
-
-        // service types
-        const serviceTypes = this.services.map((item) => {
-            return {
-                serviceType: item.serviceType,
-                active: item.active,
-                isSelected: item.isSelected,
-            };
-        });
-
-        // documents
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
-
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        // tags
-        if (!tagsArray.length) tagsArray = null;
+        const {
+            convertedDate,
+            conditionaTruckId,
+            conditionaTrailerId,
+            conditionaRepairShopId,
+            convertedServiceTypes,
+            convertedItems,
+            convertedDocuments,
+            convertedTagsArray,
+        } = this.createAddOrUpdateRepairProperties(date, unitType);
 
         let newData = null;
 
@@ -1103,33 +1145,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 ...form,
                 orderNumber,
                 repairType: RepairOrderModalStringEnum.ORDER,
-                truckId,
-                trailerId,
+                unitType,
+                truckId: conditionaTruckId,
+                trailerId: conditionaTrailerId,
                 date: convertedDate,
-                repairShopId,
-                serviceTypes,
-                items: this.repairItems.map(
-                    ({
-                        description,
-                        quantity,
-                        pmTruck: { id: pmTruckId } = {},
-                        pmTrailer: { id: pmTrailerId } = {},
-                    }) => ({
-                        description,
-                        quantity,
-                        pmTruckId,
-                        pmTrailerId,
-                    })
-                ),
-                files: documents,
-                tags: tagsArray,
+                repairShopId: conditionaRepairShopId,
+                serviceTypes: convertedServiceTypes,
+                items: convertedItems,
+                files: convertedDocuments,
+                tags: convertedTagsArray,
             };
         } else {
             newData = {
                 ...form,
                 repairType: RepairOrderModalStringEnum.BILL,
-                truckId,
-                trailerId,
+                unitType,
+                truckId: conditionaTruckId,
+                trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
                     ? MethodsCalculationsHelper.convertThousanSepInNumber(
@@ -1138,28 +1170,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     : null,
                 date: convertedDate,
                 invoice,
-                repairShopId,
+                repairShopId: conditionaRepairShopId,
                 total: this.total,
-                serviceTypes,
-                items: this.repairItems.map(
-                    ({
-                        description,
-                        price,
-                        quantity,
-                        subtotal,
-                        pmTruck: { id: pmTruckId } = {},
-                        pmTrailer: { id: pmTrailerId } = {},
-                    }) => ({
-                        description,
-                        price,
-                        quantity,
-                        subtotal,
-                        pmTruckId,
-                        pmTrailerId,
-                    })
-                ),
-                files: documents,
-                tags: tagsArray,
+                serviceTypes: convertedServiceTypes,
+                items: convertedItems,
+                files: convertedDocuments,
+                tags: convertedTagsArray,
                 payType: this.selectedPayType?.id ?? null,
                 datePaid: datePaid
                     ? MethodsCalculationsHelper.convertDateToBackend(datePaid)
@@ -1370,55 +1386,20 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             servicesHelper, // eslint-disable-next-line no-unused-vars
             total, // eslint-disable-next-line no-unused-vars
             unit,
+            unitType,
             ...form
         } = this.repairOrderForm.value;
 
-        let documents = [];
-        let tagsArray = [];
-
-        // date
-        const convertedDate =
-            MethodsCalculationsHelper.convertDateToBackend(date);
-
-        // truck & trailer id
-        const truckId =
-            this.repairOrderForm.get(RepairOrderModalStringEnum.UNIT_TYPE)
-                .value === RepairOrderModalStringEnum.TRUCK
-                ? this.selectedUnit.id
-                : null;
-        const trailerId =
-            this.repairOrderForm.get(RepairOrderModalStringEnum.UNIT_TYPE)
-                .value === RepairOrderModalStringEnum.TRAILER
-                ? this.selectedUnit.id
-                : null;
-
-        // repair shop id
-        const repairShopId = this.selectedRepairShop?.id ?? null;
-
-        // service types
-        const serviceTypes = this.services.map((item) => {
-            return {
-                serviceType: item.serviceType,
-                active: item.active,
-                isSelected: item.isSelected,
-            };
-        });
-
-        // documents
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
-
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        // tags
-        if (!tagsArray.length) tagsArray = null;
+        const {
+            convertedDate,
+            conditionaTruckId,
+            conditionaTrailerId,
+            conditionaRepairShopId,
+            convertedServiceTypes,
+            convertedItems,
+            convertedDocuments,
+            convertedTagsArray,
+        } = this.createAddOrUpdateRepairProperties(date, unitType);
 
         let newData = null;
 
@@ -1428,26 +1409,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 orderNumber,
                 repairType: RepairOrderModalStringEnum.ORDER,
-                truckId,
-                trailerId,
+                truckId: conditionaTruckId,
+                trailerId: conditionaTrailerId,
                 date: convertedDate,
-                repairShopId,
-                serviceTypes,
-                items: this.repairItems.map(
-                    ({
-                        description,
-                        quantity,
-                        pmTruck: { id: pmTruckId } = {},
-                        pmTrailer: { id: pmTrailerId } = {},
-                    }) => ({
-                        description,
-                        quantity,
-                        pmTruckId,
-                        pmTrailerId,
-                    })
-                ),
-                files: documents,
-                tags: tagsArray,
+                repairShopId: conditionaRepairShopId,
+                serviceTypes: convertedServiceTypes,
+                items: convertedItems,
+                files: convertedDocuments,
+                tags: convertedTagsArray,
             };
         } else {
             newData = {
@@ -1455,8 +1424,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 id,
                 finishOrder: this.isFinishOrder,
                 repairType: RepairOrderModalStringEnum.BILL,
-                truckId,
-                trailerId,
+                truckId: conditionaTruckId,
+                trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
                     ? MethodsCalculationsHelper.convertThousanSepInNumber(
@@ -1465,28 +1434,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     : null,
                 date: convertedDate,
                 invoice,
-                repairShopId,
+                repairShopId: conditionaRepairShopId,
                 total: this.total,
-                serviceTypes,
-                items: this.repairItems.map(
-                    ({
-                        description,
-                        price,
-                        quantity,
-                        subtotal,
-                        pmTruck: { id: pmTruckId } = {},
-                        pmTrailer: { id: pmTrailerId } = {},
-                    }) => ({
-                        description,
-                        price,
-                        quantity,
-                        subtotal,
-                        pmTruckId,
-                        pmTrailerId,
-                    })
-                ),
-                files: documents,
-                tags: tagsArray,
+                serviceTypes: convertedServiceTypes,
+                items: convertedItems,
+                files: convertedDocuments,
+                tags: convertedTagsArray,
                 payType: this.selectedPayType?.id ?? null,
                 datePaid: datePaid
                     ? MethodsCalculationsHelper.convertDateToBackend(datePaid)

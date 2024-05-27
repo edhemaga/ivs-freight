@@ -222,7 +222,7 @@ export class TruckService implements OnDestroy {
     }
 
     public voidRegistration(
-        voidedReg: number,
+        voidedReg?: number,
         unVoidedReg?: number
     ): Observable<TruckResponse> {
         return this.RegistrationService.apiRegistrationVoidPost({

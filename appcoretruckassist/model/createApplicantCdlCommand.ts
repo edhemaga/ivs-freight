@@ -21,5 +21,6 @@ export interface CreateApplicantCdlCommand {
     expDate?: string;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;
+    files?: Array<Blob> | null;
 }
 

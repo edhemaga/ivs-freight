@@ -73,6 +73,14 @@
                 padding-left: 6px;
             }
         }
+
+        &.fuel-card-table-header {
+            grid-template-columns: 26px 220px 138px 220px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
+        }
     }
 
     .subtotal {

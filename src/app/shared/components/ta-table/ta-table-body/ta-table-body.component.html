@@ -2063,18 +2063,12 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <div
-                                            *ngIf="row[column.field]"
-                                            class="table-state"
-                                            [innerHtml]="
+                                        <app-ta-state-image-text
+                                            [stateAbbreviation]="
                                                 row[column.field]
-                                                    ? (row[column.field]
-                                                      | tableHighlightSearchText
-                                                          : this
-                                                                .chipsForHighlight)
-                                                    : ''
                                             "
-                                        ></div>
+                                        >
+                                        </app-ta-state-image-text>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -4028,18 +4022,12 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <div
-                                            *ngIf="row[column.field]"
-                                            class="table-state"
-                                            [innerHtml]="
+                                        <app-ta-state-image-text
+                                            [stateAbbreviation]="
                                                 row[column.field]
-                                                    ? (row[column.field]
-                                                      | tableHighlightSearchText
-                                                          : this
-                                                                .chipsForHighlight)
-                                                    : ''
                                             "
-                                        ></div>
+                                        >
+                                        </app-ta-state-image-text>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->

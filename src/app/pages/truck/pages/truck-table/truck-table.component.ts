@@ -38,15 +38,15 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
-import { TruckTableStringEnum } from '@pages/truck/pages/truck-table/enum/truck-table-string.enum';
 
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 import { getTruckColumnDefinition } from '@shared/utils/settings/table-settings/truck-columns';
+import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
 
 // models
-import { TruckListResponse, TruckShortResponse } from 'appcoretruckassist';
+import { TruckListResponse } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
@@ -612,61 +612,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return TooltipColorsStringEnum.BROWN;
         }
     }
-    private featuresData(
-        data: TruckShortResponse
-    ): { name: string; image: string }[] {
-        const tableFeaturesArray: { name: string; image: string }[] = [];
-        if (data?.doubleBunk) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.DOUBLE_BANK,
-                image: TruckTableStringEnum.DOUBLE_BANK_IMG,
-            });
-        }
 
-        if (data?.refrigerator) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.REFRIGERATOR,
-                image: TruckTableStringEnum.REFRIGERATOR_IMG,
-            });
-        }
-
-        if (data?.dcInverter) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.DC_INVERTER,
-                image: TruckTableStringEnum.DC_INVERTER_IMG,
-            });
-        }
-
-        if (data?.blower) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.BLOWER,
-                image: TruckTableStringEnum.BLOWER_IMG,
-            });
-        }
-
-        if (data?.pto) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.PTO,
-                image: TruckTableStringEnum.PTO_IMG,
-            });
-        }
-
-        if (data?.headacheRack) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.HEADACHE_RACK,
-                image: TruckTableStringEnum.HEADACHE_RACK_IMG,
-            });
-        }
-
-        if (data?.dashCam) {
-            tableFeaturesArray.push({
-                name: TruckTableStringEnum.DASH_CAM,
-                image: TruckTableStringEnum.DASH_CAM_IMG,
-            });
-        }
-        console.log(tableFeaturesArray);
-        return tableFeaturesArray;
-    }
     // TODO any type
     private mapTruckData(data: any): void {
         return {
@@ -763,7 +709,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableAPUnit: data?.apUnit?.name
                 ? data.apUnit.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableFeatures: this.featuresData(data),
+            tableFeatures: TruckFeaturesDataHelper.truckFeaturesData(data),
             tableTollDeviceTransponder: data?.tollTransponder?.name
                 ? data.tollTransponder.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1017,6 +963,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
+                this.backFilterQuery = JSON.parse(
+                    JSON.stringify(
+                        TableDropdownComponentConstants.BACK_FILTER_QUERY
+                    )
+                );
             });
     }
 

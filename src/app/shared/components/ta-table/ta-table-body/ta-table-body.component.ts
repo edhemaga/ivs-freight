@@ -84,7 +84,8 @@ import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-bod
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 // constants
-import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constant';
+import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
+import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 
 @Titles()
 @Component({
@@ -113,6 +114,7 @@ import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta
         TaAppTooltipV2Component,
         TaProgresBarComponent,
         TaInputDropdownContactsComponent,
+        TaStateImageTextComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
@@ -195,7 +197,7 @@ export class TaTableBodyComponent
 
     public companyUser: SignInResponse;
     public popoverDescriptionItems: { title: string; className: string }[] =
-        RepairDescriptionPopoverConstant.descriptionItems;
+        RepairDescriptionPopoverConstants.descriptionItems;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
