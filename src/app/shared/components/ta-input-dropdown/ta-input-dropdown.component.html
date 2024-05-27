@@ -174,7 +174,8 @@
     >
         <div [ngSwitch]="_template">
             <!--------------------------- SVG Template (Render svgs or text if svgs doesn't exist ) --------------------------->
-            <div *ngSwitchCase="'svg-template'">
+
+            <ng-container *ngSwitchCase="'svg-template'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -210,9 +211,11 @@
                         "
                     ></div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Svg Text Template (display flex) --------------------------->
-            <div *ngSwitchCase="'svgtext-template'">
+
+            <ng-container *ngSwitchCase="'svgtext-template'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -342,10 +345,11 @@
                         ></svg-icon>
                     </ng-container>
                 </div>
-            </div>
+            </ng-container>
+
             <!-------------------------------------------Dispatch dropdown-------------------------------------------->
 
-            <div *ngSwitchCase="'svgtext-dispatch-template'">
+            <ng-container *ngSwitchCase="'svgtext-dispatch-template'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -455,10 +459,11 @@
                         class="svgtext-template-text additional-text"
                     ></div>
                 </div>
-            </div>
+            </ng-container>
 
             <!--------------------------- Details template (truck, trailer... details-pages)  --------------------------->
-            <div *ngSwitchCase="'details-template'">
+
+            <ng-container *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -513,9 +518,11 @@
                         ></svg-icon>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
-            <div *ngSwitchCase="'groups'">
+
+            <ng-container *ngSwitchCase="'groups'">
                 <div
                     *ngFor="
                         let option of _options;
@@ -565,9 +572,11 @@
                         ></div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Multiselect Template --------------------------->
-            <div *ngSwitchCase="'multiselect'">
+
+            <ng-container *ngSwitchCase="'multiselect'">
                 <div
                     (click)="onMultiselectSelect(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -592,9 +601,11 @@
                     }"
                     class="dropdown-option"
                 ></div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Labels Template --------------------------->
-            <div *ngSwitchCase="'labels'">
+
+            <ng-container *ngSwitchCase="'labels'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -673,9 +684,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Dispatch Template --------------------------->
-            <div *ngSwitchCase="'dispatch'">
+
+            <ng-container *ngSwitchCase="'dispatch'">
                 <div
                     (click)="onActiveItem(option)"
                     (mouseleave)="hoveredOption = -1"
@@ -714,9 +727,11 @@
                     }"
                     class="dropdown-option"
                 ></div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Load Dispatcher Template (user avatar + user name) --------------------------->
-            <div *ngSwitchCase="'load-dispatcher'">
+
+            <ng-container *ngSwitchCase="'load-dispatcher'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -777,9 +792,11 @@
                         "
                     ></div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Load Combine Truck-Trailer-Driver Template --------------------------->
-            <div *ngSwitchCase="'load-dispatches-ttd'">
+
+            <ng-container *ngSwitchCase="'load-dispatches-ttd'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="
@@ -794,7 +811,7 @@
                             _options[0].name === 'No Results',
                         active: option.id === _activeItem?.id
                     }"
-                    class="dropdown-option load-dispatches-ttd-template"
+                    class="dropdown-option dropdown-double-column"
                 >
                     <!-- No Results -->
                     <div
@@ -970,9 +987,11 @@
                         {{ option?.payType }}
                     </span>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Load Broker Template --------------------------->
-            <div *ngSwitchCase="'load-broker'">
+
+            <ng-container *ngSwitchCase="'load-broker'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="
@@ -1061,10 +1080,11 @@
                         {{ option.loadsCount }}
                     </div>
                 </div>
-            </div>
+            </ng-container>
 
             <!--------------------------- Load Broker Contact Template --------------------------->
-            <div *ngSwitchCase="'load-broker-contact'">
+
+            <ng-container *ngSwitchCase="'load-broker-contact'">
                 <div
                     *ngFor="
                         let option of _options;
@@ -1141,10 +1161,11 @@
                         ></div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
 
             <!--------------------------- Load Shipper Template --------------------------->
-            <div *ngSwitchCase="'load-shipper'">
+
+            <ng-container *ngSwitchCase="'load-shipper'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="
@@ -1210,9 +1231,11 @@
                         {{ option.loadsCount }}
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Template Text - Counter --------------------------->
-            <div *ngSwitchCase="'text-counter'">
+
+            <ng-container *ngSwitchCase="'text-counter'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -1253,9 +1276,11 @@
                     >
                     </span>
                 </div>
-            </div>
+            </ng-container>
+
             <!--------------------------- Fuel Franchise Template --------------------------->
-            <div *ngSwitchCase="'fuel-franchise'">
+
+            <ng-container *ngSwitchCase="'fuel-franchise'">
                 <div
                     *ngFor="let option of _options; trackBy: identity"
                     [ngClass]="{
@@ -1362,9 +1387,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
             <!-- Double Text Template -->
-            <div *ngSwitchCase="'double-text-template'">
+
+            <ng-container *ngSwitchCase="'double-text-template'">
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -1429,9 +1456,141 @@
                         ></svg-icon>
                     </ng-container>
                 </div>
-            </div>
+            </ng-container>
+
+            <!-- Double Column Template -->
+
+            <ng-container *ngSwitchCase="'double-column-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of _options; trackBy: identity"
+                    [ngClass]="{
+                        'no-result':
+                            _options.length === 1 &&
+                            _options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        'all-assigned':
+                            option.name.toLowerCase() === 'all assigned',
+                        'dropdown-double-column-option-add-new':
+                            option.name === 'ADD NEW'
+                    }"
+                    class="dropdown-option dropdown-double-column-option"
+                >
+                    <div
+                        [innerHtml]="
+                            option.ein
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-double-column-option-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-double-column-text"
+                    ></div>
+
+                    <!-- Plus Icon -->
+
+                    <svg-icon
+                        class="plus-icon"
+                        src="assets/svg/common/ic_plus.svg"
+                        [svgStyle]="{
+                            'width.px': '14',
+                            'height.px': '14'
+                        }"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
+            <!-- Triple Column Template -->
+
+            <ng-container *ngSwitchCase="'triple-column-template'">
+                <div
+                    (click)="onActiveItem(option)"
+                    *ngFor="let option of _options; trackBy: identity"
+                    [ngClass]="{
+                        'no-result':
+                            _options.length === 1 &&
+                            _options[0].name === 'No Results',
+                        'add-new': option.name === 'ADD NEW',
+                        'dropdown-triple-column-option-add-new':
+                            option.name === 'ADD NEW'
+                    }"
+                    class="dropdown-option dropdown-triple-column-option"
+                >
+                    <div
+                        [innerHtml]="
+                            option.number
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-option-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.brand
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-text"
+                    ></div>
+
+                    <div
+                        [innerHtml]="
+                            option.account
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
+                        class="dropdown-triple-column-text"
+                    ></div>
+
+                    <!-- Plus Icon -->
+
+                    <svg-icon
+                        class="plus-icon"
+                        src="assets/svg/common/ic_plus.svg"
+                        [svgStyle]="{
+                            'width.px': '14',
+                            'height.px': '14'
+                        }"
+                    ></svg-icon>
+                </div>
+            </ng-container>
+
             <!--------------------------- Default Template - Render Only Text --------------------------->
-            <div *ngSwitchDefault>
+
+            <ng-container *ngSwitchDefault>
                 <div
                     (click)="onActiveItem(option)"
                     *ngFor="let option of _options; trackBy: identity"
@@ -1457,11 +1616,11 @@
                                 ? _activeItem?.duplicateId
                                 : _activeItem?.id),
                         'active-repair-truck-trailer': option?.status === 1,
-                        routing_dropdown: inputConfig.name == 'RoutingAddress'
+                        routing_dropdown: inputConfig.name === 'RoutingAddress'
                     }"
                     class="dropdown-option"
                 ></div>
-            </div>
+            </ng-container>
         </div>
     </div>
 </ng-template>

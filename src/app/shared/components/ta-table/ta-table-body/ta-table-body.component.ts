@@ -50,6 +50,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
+import { TaContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -67,6 +68,8 @@ import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-tab
 import { TableTextCountPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-text-count.pipe';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -81,7 +84,8 @@ import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-bod
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 
 // constants
-import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constant';
+import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
+import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 
 @Titles()
 @Component({
@@ -109,12 +113,16 @@ import { RepairDescriptionPopoverConstant } from '@shared/components/ta-table/ta
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
         TaProgresBarComponent,
+        TaContactsComponent,
+        TaStateImageTextComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
         TableTextCountPipe,
         TableDescriptionTextPipe,
         ContactPhoneEmailIconPipe,
+        FormatCurrencyPipe,
+        ThousandToShortFormatPipe,
     ],
     providers: [
         {
@@ -166,6 +174,10 @@ export class TaTableBodyComponent
     activeDescriptionDropdown: number = -1;
     descriptionTooltip: any;
     descriptionPopoverOpen: number = -1;
+    invoiceAgingTooltip: any;
+    invoiceDropdownActive: number = -1;
+    invoiceDropdownType: string = null;
+    invoiceDropdownData: any;
     pageHeight: number = window.innerHeight;
     activeAttachment: number = -1;
     activeMedia: number = -1;
@@ -185,7 +197,7 @@ export class TaTableBodyComponent
 
     public companyUser: SignInResponse;
     public popoverDescriptionItems: { title: string; className: string }[] =
-        RepairDescriptionPopoverConstant.descriptionItems;
+        RepairDescriptionPopoverConstants.descriptionItems;
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -788,6 +800,25 @@ export class TaTableBodyComponent
         }
     }
 
+    // Show Invoice Aging Dropdown
+    public onShowInvoiceAgingDropdown(
+        tooltip: any,
+        row: any,
+        column: any
+    ): void {
+        this.invoiceAgingTooltip = tooltip;
+
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+
+        this.invoiceDropdownActive = tooltip.isOpen() ? row.id : -1;
+        this.invoiceDropdownType = tooltip.isOpen() ? column.field : null;
+        this.invoiceDropdownData = row[column.field];
+    }
+
     // Dropdown Actions
     onDropAction(action: any) {
         // To Unselect All Selected Rows
@@ -924,6 +955,32 @@ export class TaTableBodyComponent
         });
     }
 
+    // Contacts dropdown actions
+    public onAddContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.ADD_CONTACT,
+        });
+    }
+
+    public onEditContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.EDIT_CONTACT,
+        });
+    }
+
+    public onDeleteContact(row: any): void {
+        this.bodyActions.emit({
+            id: row.id,
+            data: row,
+            type: TableStringEnum.DELTETE_CONTACT,
+        });
+    }
+
+    // Label actions
     public onSaveLabel(
         data: { data: { name: string; action: string } },
         index: number

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LocationType } from './locationType';
 import { ShipperContactCommand } from './shipperContactCommand';
 
 
@@ -39,6 +40,7 @@ export interface ApiShipperPostRequest {
     Note?: string;
     Longitude?: number;
     Latitude?: number;
+    LocationType?: LocationType;
     ShipperContacts?: Array<ShipperContactCommand>;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;

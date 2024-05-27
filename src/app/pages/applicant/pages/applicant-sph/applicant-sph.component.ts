@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -13,6 +14,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // components
 import { ApplicantSphModalComponent } from '@pages/applicant/pages/applicant-sph/components/applicant-sph-modal/applicant-sph-modal.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -32,19 +34,37 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import {
     ApplicantResponse,
     CreateSphReviewCommand,
+    PersonalInfoFeedbackResponse,
     SphFeedbackResponse,
     UpdateSphCommand,
 } from 'appcoretruckassist';
+
+// modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
 
 @Component({
     selector: 'app-sph',
     templateUrl: './applicant-sph.component.html',
     styleUrls: ['./applicant-sph.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+        ApplicantSphModalComponent,
+        ApplicantCardComponent,
+    ],
 })
 export class ApplicantSphComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 
@@ -57,7 +77,8 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
 
-    public applicantCardInfo: any;
+    public applicantCardInfo: PersonalInfoFeedbackResponse;
+    public companyName: string;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -100,14 +121,16 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                     const personalInfo = res.personalInfo;
 
                     this.applicantCardInfo = {
-                        name: personalInfo?.fullName,
+                        fullName: personalInfo?.fullName,
                         ssn: personalInfo?.ssn,
-                        dob: MethodsCalculationsHelper.convertDateFromBackend(
+                        doB: MethodsCalculationsHelper.convertDateFromBackend(
                             personalInfo?.doB
                         ),
                     };
 
                     this.applicantId = res.id;
+
+                    this.companyName = res.companyInfo.name;
 
                     if (res.sph) {
                         this.patchStepValues(res.sph);
@@ -204,7 +227,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
         const saveData: UpdateSphCommand = {
             applicantId: this.applicantId,
             authorize: isTested,
-            hasReadAndUnderstood,
             signature:
                 this.selectedMode === SelectedMode.APPLICANT
                     ? this.signature
@@ -226,8 +248,6 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
                                 sph: {
                                     ...store.applicant.sph,
                                     authorize: saveData.authorize,
-                                    hasReadAndUnderstood:
-                                        saveData.hasReadAndUnderstood,
                                     signature: saveData.signature,
                                 },
                             },

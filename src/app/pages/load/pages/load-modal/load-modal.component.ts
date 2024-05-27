@@ -3280,7 +3280,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillingTypes;
 
                     if (this.editData)
-                        this.populateLoadModalData(this.editData.data);
+                        this.populateLoadModalData(
+                            this.editData.data as LoadResponse
+                        );
 
                     // stop items
                     this.stopItemDropdownLists = {

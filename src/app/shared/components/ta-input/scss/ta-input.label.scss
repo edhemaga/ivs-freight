@@ -163,6 +163,28 @@
         }
     }
 
+    &.dropdown-double-column {
+        & > * {
+            display: grid;
+            grid-template-columns: 118px 1fr;
+            align-items: center;
+            -moz-column-gap: 4px;
+            grid-column-gap: 4px;
+            column-gap: 4px;
+        }
+    }
+
+    &.dropdown-triple-column {
+        & > * {
+            display: grid;
+            grid-template-columns: 220px 138px 220px;
+            align-items: center;
+            -moz-column-gap: 4px;
+            grid-column-gap: 4px;
+            column-gap: 4px;
+        }
+    }
+
     // Load Broker
     &.load-broker {
         .load-broker {

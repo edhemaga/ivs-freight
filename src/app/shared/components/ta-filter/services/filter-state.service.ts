@@ -21,7 +21,7 @@ import {
     RepairTruckFilterListResponse,
     PMTrailerListResponse,
     PMTruckListResponse,
-    DispatcherFilterListResponse,
+    /*  DispatcherFilterListResponse, */
 } from 'appcoretruckassist';
 
 // services
@@ -157,7 +157,7 @@ export class FilterStateService implements OnDestroy {
             .apiLoadDispatcherFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (data: DispatcherFilterListResponse) => {
+                next: (data /* : DispatcherFilterListResponse */) => {
                     this.tableService.sendActionAnimation({
                         animation: 'dispatch-data-update',
                         data: data,
@@ -198,8 +198,7 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getTruckData() {
-        const truckList = this.truckService
-            .apiTruckFilterGet()
+        const truckList = this.TruckTypeService.apiTrucktypeFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

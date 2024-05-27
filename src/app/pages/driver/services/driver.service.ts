@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
+
+import { Observable, of, tap } from 'rxjs';
 
 // models
-import { DriverService as DriverBackendService } from 'appcoretruckassist';
+import {
+    CheckDriverBySsnResponse,
+    DriverService as DriverBackendService,
+} from 'appcoretruckassist';
 import {
     CheckOwnerSsnEinResponse,
     DriverListResponse,
@@ -44,25 +48,27 @@ export class DriverService {
     public currentIndex: number;
     public driversList: any;
     public driverId: number;
-    private destroy$ = new Subject<void>();
 
     constructor(
+        // services
         private driverService: DriverBackendService,
-        private driversActiveQuery: DriversActiveQuery,
-        private driverActiveStore: DriversActiveStore,
-        private driversInactiveQuery: DriversInactiveQuery,
-        private driverInactiveStore: DriversInactiveStore,
-        private driverMinimimalListStore: DriversMinimalListStore,
         private cdlService: CdlService,
         private ownerService: OwnerService,
-        private driverMinimalQuery: DriversMinimalListQuery,
-        private tableService: TruckassistTableService,
-        private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore,
         private formDataService: FormDataService,
         private MedicalService: MedicalService,
         private MvrService: MvrService,
-        private TestService: TestService
+        private TestService: TestService,
+        private tableService: TruckassistTableService,
+
+        // store
+        private driversActiveQuery: DriversActiveQuery,
+        private driverMinimalQuery: DriversMinimalListQuery,
+        private driversInactiveQuery: DriversInactiveQuery,
+        private driverInactiveStore: DriversInactiveStore,
+        private driverMinimimalListStore: DriversMinimalListStore,
+        private driverActiveStore: DriversActiveStore,
+        private driverItemStore: DriversItemStore,
+        private dlStore: DriversDetailsListStore
     ) {}
 
     // Get Driver Minimal List
@@ -107,51 +113,46 @@ export class DriverService {
         );
     }
 
-    /* Observable<CreateDriverResponse> */
     // Create Driver
     public addDriver(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.driverService.apiDriverPost().pipe(
-            tap((res: any) => {
-                const subDriver = this.getDriverById(res.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                            };
+            tap((res) => {
+                this.getDriverById(res.id).subscribe({
+                    next: (driver: any) => {
+                        driver = {
+                            ...driver,
+                            name: driver.firstName + ' ' + driver.lastName,
+                        };
 
-                            this.driverActiveStore.add(driver);
-                            this.driverMinimimalListStore.add(driver);
+                        this.driverActiveStore.add(driver);
+                        this.driverMinimimalListStore.add(driver);
 
-                            const driverCount = JSON.parse(
-                                localStorage.getItem(
-                                    TableStringEnum.DRIVER_TABLE_COUNT
-                                )
-                            );
+                        const driverCount = JSON.parse(
+                            localStorage.getItem(
+                                TableStringEnum.DRIVER_TABLE_COUNT
+                            )
+                        );
 
-                            driverCount.active++;
+                        driverCount.active++;
 
-                            localStorage.setItem(
-                                TableStringEnum.DRIVER_TABLE_COUNT,
-                                JSON.stringify({
-                                    applicant: driverCount.applicant,
-                                    active: driverCount.active,
-                                    inactive: driverCount.inactive,
-                                })
-                            );
+                        localStorage.setItem(
+                            TableStringEnum.DRIVER_TABLE_COUNT,
+                            JSON.stringify({
+                                applicant: driverCount.applicant,
+                                active: driverCount.active,
+                                inactive: driverCount.inactive,
+                            })
+                        );
 
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.ADD,
-                                data: driver,
-                                id: driver.id,
-                            });
-
-                            subDriver.unsubscribe();
-                        },
-                    });
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.ADD,
+                            data: driver,
+                            id: driver.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -193,18 +194,15 @@ export class DriverService {
                     })
                 );
 
-                const driverSub = this.getDriverById(this.driverId, true)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            this.tableService.sendActionAnimation({
-                                animation: TableStringEnum.DELETE,
-                                data: driver,
-                                id: driver.id,
-                            });
-                            driverSub.unsubscribe();
-                        },
-                    });
+                this.getDriverById(this.driverId, true).subscribe({
+                    next: (driver: any) => {
+                        this.tableService.sendActionAnimation({
+                            animation: TableStringEnum.DELETE,
+                            data: driver,
+                            id: driver.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -296,51 +294,45 @@ export class DriverService {
             tap(() => {
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
+
                 let newData = driverData[data.id];
 
-                const subDriver = this.getDriverById(data.id)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: (driver: any) => {
-                            this.driverActiveStore.remove(
-                                ({ id }) => id === data.id
-                            );
-                            this.driverMinimimalListStore.remove(
-                                ({ id }) => id === data.id
-                            );
-                            this.driverItemStore.remove(
-                                ({ id }) => id === data.id
-                            );
+                this.getDriverById(data.id).subscribe({
+                    next: (driver: any) => {
+                        this.driverActiveStore.remove(
+                            ({ id }) => id === data.id
+                        );
+                        this.driverMinimimalListStore.remove(
+                            ({ id }) => id === data.id
+                        );
+                        this.driverItemStore.remove(({ id }) => id === data.id);
 
-                            driver = {
-                                ...driver,
-                                fullName:
-                                    driver.firstName + ' ' + driver.lastName,
-                                cdls: newData?.cdls ? newData.cdls : null,
-                                medicals: newData?.medicals
-                                    ? newData.medicals
-                                    : null,
-                                mvrs: newData?.mvrs ? newData.mvrs : null,
-                                tests: newData?.tests ? newData.tests : null,
-                                fileCount: driver?.filesCountForList
-                                    ? driver.filesCountForList
-                                    : 0,
-                            };
+                        driver = {
+                            ...driver,
+                            name: driver.firstName + ' ' + driver.lastName,
+                            cdls: newData?.cdls ? newData.cdls : null,
+                            medicals: newData?.medicals
+                                ? newData.medicals
+                                : null,
+                            mvrs: newData?.mvrs ? newData.mvrs : null,
+                            tests: newData?.tests ? newData.tests : null,
+                            fileCount: driver?.filesCountForList
+                                ? driver.filesCountForList
+                                : 0,
+                        };
 
-                            this.driverActiveStore.add(driver);
-                            this.driverItemStore.add(driver);
-                            this.driverMinimimalListStore.add(driver);
-                            this.dlStore.update(driver.id, driver);
+                        this.driverActiveStore.add(driver);
+                        this.driverItemStore.add(driver);
+                        this.driverMinimimalListStore.add(driver);
+                        this.dlStore.update(driver.id, driver);
 
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driver.id,
-                            });
-
-                            subDriver.unsubscribe();
-                        },
-                    });
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: driver,
+                            id: driver.id,
+                        });
+                    },
+                });
             })
         );
     }
@@ -351,7 +343,6 @@ export class DriverService {
     ): Observable<DriverResponse> {
         this.driverMinimalQuery
             .selectAll()
-            .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.driversList = item));
         if (getIndex) {
             this.currentIndex = this.driversList.findIndex(
@@ -449,33 +440,23 @@ export class DriverService {
                         })
                     );
 
-                    const subDriver = this.getDriverById(driverId)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (driver: any) => {
-                                driver = {
-                                    ...driver,
-                                    fullName:
-                                        driver.firstName +
-                                        ' ' +
-                                        driver.lastName,
-                                };
-                                this.dlStore.update(driver.id, {
-                                    status: driver.status,
-                                });
-                                this.tableService.sendActionAnimation({
-                                    animation: 'update-status',
-                                    data: driver,
-                                    id: driver.id,
-                                });
-                                subDriver.unsubscribe();
-                            },
-                        });
-                    /* Send Info For Table To Do Action Animation */
-                    // this.tableService.sendActionAnimation({
-                    //   animation: 'update-status',
-                    //   id: driverId,
-                    // });
+                    this.getDriverById(driverId).subscribe({
+                        next: (driver: any) => {
+                            driver = {
+                                ...driver,
+                                fullName:
+                                    driver.firstName + ' ' + driver.lastName,
+                            };
+                            this.dlStore.update(driver.id, {
+                                status: driver.status,
+                            });
+                            this.tableService.sendActionAnimation({
+                                animation: 'update-status',
+                                data: driver,
+                                id: driver.id,
+                            });
+                        },
+                    });
                 })
             );
     }
@@ -501,5 +482,15 @@ export class DriverService {
         chartType: number
     ): Observable<DriverPayrollResponse> {
         return this.driverService.apiDriverPayrollGet(id, chartType);
+    }
+
+    public validateDriverEmail(email: string): Observable<boolean> {
+        return this.driverService.apiDriverCheckEmailEmailGet(email);
+    }
+
+    public validateDriverSsn(
+        ssn: string
+    ): Observable<CheckDriverBySsnResponse> {
+        return this.driverService.apiDriverCheckSsnSsnGet(ssn);
     }
 }

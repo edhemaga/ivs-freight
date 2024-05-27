@@ -10,7 +10,6 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 //components
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
@@ -38,7 +37,6 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-        TaCheckboxComponent,
 
         //pipes
         TrackByPropertyPipe,

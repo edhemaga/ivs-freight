@@ -15,6 +15,7 @@ import { ApplicationStatus } from './applicationStatus';
 export interface ApplicantShortResponse { 
     id?: number;
     name?: string | null;
+    isOwner?: boolean;
     invitedDate?: string | null;
     acceptedDate?: string | null;
     archivedDate?: string | null;

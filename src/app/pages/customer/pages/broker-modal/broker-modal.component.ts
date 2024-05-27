@@ -273,7 +273,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             creditType: ['Unlimited'], // Custom | Unlimited
             creditLimit: [null, creditLimitValidation],
             availableCredit: [null],
-            payTerm: [null, [Validators.required]],
+            payTerm: [null],
             note: [null],
             ban: [null],
             dnu: [null],

@@ -11,8 +11,10 @@
  */
 import { BankResponse } from './bankResponse';
 import { TagResponse } from './tagResponse';
+import { DriverModalFuelCardResponse } from './driverModalFuelCardResponse';
 import { EnumValue } from './enumValue';
 import { FleetType } from './fleetType';
+import { DriverModalOwnerResponse } from './driverModalOwnerResponse';
 import { PerMileEntity } from './perMileEntity';
 
 
@@ -28,8 +30,11 @@ export interface GetDriverModalResponse {
     perMileTeam?: number | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;
-    soloFlatRate?: number | null;
-    teamFlatRate?: number | null;
+    flatRateSolo?: number | null;
+    flatRateTeam?: number | null;
     tags?: Array<TagResponse> | null;
+    driverTypes?: Array<EnumValue> | null;
+    owners?: Array<DriverModalOwnerResponse> | null;
+    fuelCards?: Array<DriverModalFuelCardResponse> | null;
 }
 

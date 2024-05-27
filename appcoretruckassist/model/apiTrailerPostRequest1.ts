@@ -29,6 +29,7 @@ export interface ApiTrailerPostRequest1 {
     Suspension?: number;
     TireSizeId?: number;
     DoorType?: number;
+    Liftgate?: boolean;
     ReeferUnit?: number;
     EmptyWeight?: number;
     Mileage?: number;

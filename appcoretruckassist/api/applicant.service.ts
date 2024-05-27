@@ -79,9 +79,9 @@ import { CreateMedicalCertificateReviewCommand } from '../model/createMedicalCer
 // @ts-ignore
 import { CreateMvrAuthReviewCommand } from '../model/createMvrAuthReviewCommand';
 // @ts-ignore
-import { CreatePersonalInfoCommand } from '../model/createPersonalInfoCommand';
-// @ts-ignore
 import { CreatePersonalInfoReviewCommand } from '../model/createPersonalInfoReviewCommand';
+// @ts-ignore
+import { CreatePreviousAddressCommand } from '../model/createPreviousAddressCommand';
 // @ts-ignore
 import { CreatePreviousEmployerAccidentHistoryCommand } from '../model/createPreviousEmployerAccidentHistoryCommand';
 // @ts-ignore
@@ -96,8 +96,6 @@ import { CreateSevenDaysHosCommand } from '../model/createSevenDaysHosCommand';
 import { CreateSevenDaysHosReviewCommand } from '../model/createSevenDaysHosReviewCommand';
 // @ts-ignore
 import { CreateSphReviewCommand } from '../model/createSphReviewCommand';
-// @ts-ignore
-import { CreateSsnReviewCommand } from '../model/createSsnReviewCommand';
 // @ts-ignore
 import { CreateTrafficViolationCommand } from '../model/createTrafficViolationCommand';
 // @ts-ignore
@@ -185,9 +183,9 @@ import { UpdateMedicalCertificateReviewCommand } from '../model/updateMedicalCer
 // @ts-ignore
 import { UpdateMvrAuthReviewCommand } from '../model/updateMvrAuthReviewCommand';
 // @ts-ignore
-import { UpdatePersonalInfoCommand } from '../model/updatePersonalInfoCommand';
-// @ts-ignore
 import { UpdatePersonalInfoReviewCommand } from '../model/updatePersonalInfoReviewCommand';
+// @ts-ignore
+import { UpdatePreviousAddressCommand } from '../model/updatePreviousAddressCommand';
 // @ts-ignore
 import { UpdatePreviousEmployerAccidentHistoryCommand } from '../model/updatePreviousEmployerAccidentHistoryCommand';
 // @ts-ignore
@@ -200,8 +198,6 @@ import { UpdateSevenDaysHosCommand } from '../model/updateSevenDaysHosCommand';
 import { UpdateSevenDaysHosReviewCommand } from '../model/updateSevenDaysHosReviewCommand';
 // @ts-ignore
 import { UpdateSphCommand } from '../model/updateSphCommand';
-// @ts-ignore
-import { UpdateSsnReviewCommand } from '../model/updateSsnReviewCommand';
 // @ts-ignore
 import { UpdateTrafficViolationCommand } from '../model/updateTrafficViolationCommand';
 // @ts-ignore
@@ -4762,15 +4758,16 @@ export class ApplicantService {
      * @param dontHaveMvr 
      * @param onlyLicense 
      * @param signature 
+     * @param issueDate 
      * @param files 
      * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPost(isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -4837,6 +4834,9 @@ export class ApplicantService {
         if (signature !== undefined) {
             localVarFormParams = localVarFormParams.append('Signature', <any>signature) as any || localVarFormParams;
         }
+        if (issueDate !== undefined) {
+            localVarFormParams = localVarFormParams.append('IssueDate', <any>issueDate) as any || localVarFormParams;
+        }
         if (files) {
             files.forEach((element) => {
                 localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
@@ -4879,16 +4879,17 @@ export class ApplicantService {
      * @param dontHaveMvr 
      * @param onlyLicense 
      * @param signature 
+     * @param issueDate 
      * @param files 
      * @param filesForDeleteIds 
      * @param applicantId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiApplicantMvrPut(id?: number, isEmployee?: boolean, isPeriodicallyObtained?: boolean, isInformationCorrect?: boolean, dontHaveMvr?: boolean, onlyLicense?: boolean, signature?: string, issueDate?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -4957,6 +4958,9 @@ export class ApplicantService {
         }
         if (signature !== undefined) {
             localVarFormParams = localVarFormParams.append('Signature', <any>signature) as any || localVarFormParams;
+        }
+        if (issueDate !== undefined) {
+            localVarFormParams = localVarFormParams.append('IssueDate', <any>issueDate) as any || localVarFormParams;
         }
         if (files) {
             files.forEach((element) => {
@@ -5580,14 +5584,47 @@ export class ApplicantService {
     }
 
     /**
-     * @param createPersonalInfoCommand 
+     * @param firstName 
+     * @param lastName 
+     * @param phone 
+     * @param doB 
+     * @param isAgreed 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param ssn 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param uSCitizen 
+     * @param legalWork 
+     * @param anotherName 
+     * @param anotherNameDescription 
+     * @param inMilitary 
+     * @param inMilitaryDescription 
+     * @param felony 
+     * @param felonyDescription 
+     * @param misdemeanor 
+     * @param misdemeanorDescription 
+     * @param drunkDriving 
+     * @param drunkDrivingDescription 
+     * @param applicantId 
+     * @param files 
+     * @param previousAddresses 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPersonalPost(createPersonalInfoCommand?: CreatePersonalInfoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiApplicantPersonalPost(createPersonalInfoCommand?: CreatePersonalInfoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantPersonalPost(createPersonalInfoCommand?: CreatePersonalInfoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantPersonalPost(createPersonalInfoCommand?: CreatePersonalInfoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantPersonalPost(firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, applicantId?: number, files?: Array<Blob>, previousAddresses?: Array<CreatePreviousAddressCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
+    public apiApplicantPersonalPost(firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, applicantId?: number, files?: Array<Blob>, previousAddresses?: Array<CreatePreviousAddressCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
+    public apiApplicantPersonalPost(firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, applicantId?: number, files?: Array<Blob>, previousAddresses?: Array<CreatePreviousAddressCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiApplicantPersonalPost(firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, applicantId?: number, files?: Array<Blob>, previousAddresses?: Array<CreatePreviousAddressCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -5617,16 +5654,130 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (firstName !== undefined) {
+            localVarFormParams = localVarFormParams.append('FirstName', <any>firstName) as any || localVarFormParams;
+        }
+        if (lastName !== undefined) {
+            localVarFormParams = localVarFormParams.append('LastName', <any>lastName) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (doB !== undefined) {
+            localVarFormParams = localVarFormParams.append('DoB', <any>doB) as any || localVarFormParams;
+        }
+        if (isAgreed !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsAgreed', <any>isAgreed) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (ssn !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (accountNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('AccountNumber', <any>accountNumber) as any || localVarFormParams;
+        }
+        if (routingNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('RoutingNumber', <any>routingNumber) as any || localVarFormParams;
+        }
+        if (uSCitizen !== undefined) {
+            localVarFormParams = localVarFormParams.append('USCitizen', <any>uSCitizen) as any || localVarFormParams;
+        }
+        if (legalWork !== undefined) {
+            localVarFormParams = localVarFormParams.append('LegalWork', <any>legalWork) as any || localVarFormParams;
+        }
+        if (anotherName !== undefined) {
+            localVarFormParams = localVarFormParams.append('AnotherName', <any>anotherName) as any || localVarFormParams;
+        }
+        if (anotherNameDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('AnotherNameDescription', <any>anotherNameDescription) as any || localVarFormParams;
+        }
+        if (inMilitary !== undefined) {
+            localVarFormParams = localVarFormParams.append('InMilitary', <any>inMilitary) as any || localVarFormParams;
+        }
+        if (inMilitaryDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('InMilitaryDescription', <any>inMilitaryDescription) as any || localVarFormParams;
+        }
+        if (felony !== undefined) {
+            localVarFormParams = localVarFormParams.append('Felony', <any>felony) as any || localVarFormParams;
+        }
+        if (felonyDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('FelonyDescription', <any>felonyDescription) as any || localVarFormParams;
+        }
+        if (misdemeanor !== undefined) {
+            localVarFormParams = localVarFormParams.append('Misdemeanor', <any>misdemeanor) as any || localVarFormParams;
+        }
+        if (misdemeanorDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('MisdemeanorDescription', <any>misdemeanorDescription) as any || localVarFormParams;
+        }
+        if (drunkDriving !== undefined) {
+            localVarFormParams = localVarFormParams.append('DrunkDriving', <any>drunkDriving) as any || localVarFormParams;
+        }
+        if (drunkDrivingDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('DrunkDrivingDescription', <any>drunkDrivingDescription) as any || localVarFormParams;
+        }
+        if (applicantId !== undefined) {
+            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (previousAddresses) {
+            previousAddresses.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('PreviousAddresses', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -5644,7 +5795,7 @@ export class ApplicantService {
         return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createPersonalInfoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -5655,14 +5806,48 @@ export class ApplicantService {
     }
 
     /**
-     * @param updatePersonalInfoCommand 
+     * @param id 
+     * @param firstName 
+     * @param lastName 
+     * @param phone 
+     * @param doB 
+     * @param isAgreed 
+     * @param addressCity 
+     * @param addressState 
+     * @param addressCounty 
+     * @param addressAddress 
+     * @param addressStreet 
+     * @param addressStreetNumber 
+     * @param addressCountry 
+     * @param addressZipCode 
+     * @param addressStateShortName 
+     * @param addressAddressUnit 
+     * @param ssn 
+     * @param bankId 
+     * @param accountNumber 
+     * @param routingNumber 
+     * @param uSCitizen 
+     * @param legalWork 
+     * @param anotherName 
+     * @param anotherNameDescription 
+     * @param inMilitary 
+     * @param inMilitaryDescription 
+     * @param felony 
+     * @param felonyDescription 
+     * @param misdemeanor 
+     * @param misdemeanorDescription 
+     * @param drunkDriving 
+     * @param drunkDrivingDescription 
+     * @param files 
+     * @param filesForDeleteIds 
+     * @param previousAddresses 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantPersonalPut(updatePersonalInfoCommand?: UpdatePersonalInfoCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiApplicantPersonalPut(updatePersonalInfoCommand?: UpdatePersonalInfoCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiApplicantPersonalPut(updatePersonalInfoCommand?: UpdatePersonalInfoCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiApplicantPersonalPut(updatePersonalInfoCommand?: UpdatePersonalInfoCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiApplicantPersonalPut(id?: number, firstName?: string, lastName?: string, phone?: string, doB?: string, isAgreed?: boolean, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, ssn?: string, bankId?: number, accountNumber?: string, routingNumber?: string, uSCitizen?: boolean, legalWork?: boolean, anotherName?: boolean, anotherNameDescription?: string, inMilitary?: boolean, inMilitaryDescription?: string, felony?: boolean, felonyDescription?: string, misdemeanor?: boolean, misdemeanorDescription?: string, drunkDriving?: boolean, drunkDrivingDescription?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, previousAddresses?: Array<UpdatePreviousAddressCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -5692,16 +5877,135 @@ export class ApplicantService {
             localVarHttpContext = new HttpContext();
         }
 
-
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let localVarFormParams: { append(param: string, value: any): any; };
+        let localVarUseForm = false;
+        let localVarConvertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        localVarUseForm = canConsumeForm;
+        if (localVarUseForm) {
+            localVarFormParams = new FormData();
+        } else {
+            localVarFormParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (id !== undefined) {
+            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
+        }
+        if (firstName !== undefined) {
+            localVarFormParams = localVarFormParams.append('FirstName', <any>firstName) as any || localVarFormParams;
+        }
+        if (lastName !== undefined) {
+            localVarFormParams = localVarFormParams.append('LastName', <any>lastName) as any || localVarFormParams;
+        }
+        if (phone !== undefined) {
+            localVarFormParams = localVarFormParams.append('Phone', <any>phone) as any || localVarFormParams;
+        }
+        if (doB !== undefined) {
+            localVarFormParams = localVarFormParams.append('DoB', <any>doB) as any || localVarFormParams;
+        }
+        if (isAgreed !== undefined) {
+            localVarFormParams = localVarFormParams.append('IsAgreed', <any>isAgreed) as any || localVarFormParams;
+        }
+        if (addressCity !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.City', <any>addressCity) as any || localVarFormParams;
+        }
+        if (addressState !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.State', <any>addressState) as any || localVarFormParams;
+        }
+        if (addressCounty !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.County', <any>addressCounty) as any || localVarFormParams;
+        }
+        if (addressAddress !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Address', <any>addressAddress) as any || localVarFormParams;
+        }
+        if (addressStreet !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Street', <any>addressStreet) as any || localVarFormParams;
+        }
+        if (addressStreetNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StreetNumber', <any>addressStreetNumber) as any || localVarFormParams;
+        }
+        if (addressCountry !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.Country', <any>addressCountry) as any || localVarFormParams;
+        }
+        if (addressZipCode !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.ZipCode', <any>addressZipCode) as any || localVarFormParams;
+        }
+        if (addressStateShortName !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.StateShortName', <any>addressStateShortName) as any || localVarFormParams;
+        }
+        if (addressAddressUnit !== undefined) {
+            localVarFormParams = localVarFormParams.append('Address.AddressUnit', <any>addressAddressUnit) as any || localVarFormParams;
+        }
+        if (ssn !== undefined) {
+            localVarFormParams = localVarFormParams.append('Ssn', <any>ssn) as any || localVarFormParams;
+        }
+        if (bankId !== undefined) {
+            localVarFormParams = localVarFormParams.append('BankId', <any>bankId) as any || localVarFormParams;
+        }
+        if (accountNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('AccountNumber', <any>accountNumber) as any || localVarFormParams;
+        }
+        if (routingNumber !== undefined) {
+            localVarFormParams = localVarFormParams.append('RoutingNumber', <any>routingNumber) as any || localVarFormParams;
+        }
+        if (uSCitizen !== undefined) {
+            localVarFormParams = localVarFormParams.append('USCitizen', <any>uSCitizen) as any || localVarFormParams;
+        }
+        if (legalWork !== undefined) {
+            localVarFormParams = localVarFormParams.append('LegalWork', <any>legalWork) as any || localVarFormParams;
+        }
+        if (anotherName !== undefined) {
+            localVarFormParams = localVarFormParams.append('AnotherName', <any>anotherName) as any || localVarFormParams;
+        }
+        if (anotherNameDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('AnotherNameDescription', <any>anotherNameDescription) as any || localVarFormParams;
+        }
+        if (inMilitary !== undefined) {
+            localVarFormParams = localVarFormParams.append('InMilitary', <any>inMilitary) as any || localVarFormParams;
+        }
+        if (inMilitaryDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('InMilitaryDescription', <any>inMilitaryDescription) as any || localVarFormParams;
+        }
+        if (felony !== undefined) {
+            localVarFormParams = localVarFormParams.append('Felony', <any>felony) as any || localVarFormParams;
+        }
+        if (felonyDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('FelonyDescription', <any>felonyDescription) as any || localVarFormParams;
+        }
+        if (misdemeanor !== undefined) {
+            localVarFormParams = localVarFormParams.append('Misdemeanor', <any>misdemeanor) as any || localVarFormParams;
+        }
+        if (misdemeanorDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('MisdemeanorDescription', <any>misdemeanorDescription) as any || localVarFormParams;
+        }
+        if (drunkDriving !== undefined) {
+            localVarFormParams = localVarFormParams.append('DrunkDriving', <any>drunkDriving) as any || localVarFormParams;
+        }
+        if (drunkDrivingDescription !== undefined) {
+            localVarFormParams = localVarFormParams.append('DrunkDrivingDescription', <any>drunkDrivingDescription) as any || localVarFormParams;
+        }
+        if (files) {
+            files.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (filesForDeleteIds) {
+            filesForDeleteIds.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
+            })
+        }
+        if (previousAddresses) {
+            previousAddresses.forEach((element) => {
+                localVarFormParams = localVarFormParams.append('PreviousAddresses', <any>element) as any || localVarFormParams;
+            })
         }
 
         let responseType_: 'text' | 'json' | 'blob' = 'json';
@@ -5719,7 +6023,7 @@ export class ApplicantService {
         return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: updatePersonalInfoCommand,
+                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -7278,416 +7582,6 @@ export class ApplicantService {
             {
                 context: localVarHttpContext,
                 body: createSphReviewCommand,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantSsnIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MvrAuthFeedbackResponse>;
-    public apiApplicantSsnIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MvrAuthFeedbackResponse>>;
-    public apiApplicantSsnIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MvrAuthFeedbackResponse>>;
-    public apiApplicantSsnIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiApplicantSsnIdGet.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/applicant/ssn/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
-        return this.httpClient.request<MvrAuthFeedbackResponse>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param files 
-     * @param applicantId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantSsnPost(files?: Array<Blob>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'multipart/form-data'
-        ];
-
-        const canConsumeForm = this.canConsumeForm(consumes);
-
-        let localVarFormParams: { append(param: string, value: any): any; };
-        let localVarUseForm = false;
-        let localVarConvertFormParamsToString = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
-        localVarUseForm = canConsumeForm;
-        if (localVarUseForm) {
-            localVarFormParams = new FormData();
-        } else {
-            localVarFormParams = new HttpParams({encoder: this.encoder});
-        }
-
-        if (files) {
-            files.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (applicantId !== undefined) {
-            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/applicant/ssn`;
-        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param files 
-     * @param filesForDeleteIds 
-     * @param applicantId 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantSsnPut(id?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiApplicantSsnPut(id?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiApplicantSsnPut(id?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiApplicantSsnPut(id?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, applicantId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'multipart/form-data'
-        ];
-
-        const canConsumeForm = this.canConsumeForm(consumes);
-
-        let localVarFormParams: { append(param: string, value: any): any; };
-        let localVarUseForm = false;
-        let localVarConvertFormParamsToString = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
-        localVarUseForm = canConsumeForm;
-        if (localVarUseForm) {
-            localVarFormParams = new FormData();
-        } else {
-            localVarFormParams = new HttpParams({encoder: this.encoder});
-        }
-
-        if (id !== undefined) {
-            localVarFormParams = localVarFormParams.append('Id', <any>id) as any || localVarFormParams;
-        }
-        if (files) {
-            files.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('Files', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (filesForDeleteIds) {
-            filesForDeleteIds.forEach((element) => {
-                localVarFormParams = localVarFormParams.append('FilesForDeleteIds', <any>element) as any || localVarFormParams;
-            })
-        }
-        if (applicantId !== undefined) {
-            localVarFormParams = localVarFormParams.append('ApplicantId', <any>applicantId) as any || localVarFormParams;
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/applicant/ssn`;
-        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param createSsnReviewCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
-    public apiApplicantSsnReviewPost(createSsnReviewCommand?: CreateSsnReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/applicant/ssn/review`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: createSsnReviewCommand,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param updateSsnReviewCommand 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiApplicantSsnReviewPut(updateSsnReviewCommand?: UpdateSsnReviewCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiApplicantSsnReviewPut(updateSsnReviewCommand?: UpdateSsnReviewCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiApplicantSsnReviewPut(updateSsnReviewCommand?: UpdateSsnReviewCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
-    public apiApplicantSsnReviewPut(updateSsnReviewCommand?: UpdateSsnReviewCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/applicant/ssn/review`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                body: updateSsnReviewCommand,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

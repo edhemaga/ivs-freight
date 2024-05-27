@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OwnerType } from './ownerType';
 import { AddressEntity } from './addressEntity';
 
 
 export interface CreateCompanyOwnerInfoCommand { 
+    ownerType?: OwnerType;
     businessName?: string | null;
     ein?: string | null;
     phone?: string | null;

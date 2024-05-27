@@ -1,32 +1,26 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormGroup,
 } from '@angular/forms';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//components
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+// components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
-//enums
+// enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/ta-modal-table-string.enum';
 
-//models
+// models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { EnumValue } from 'appcoretruckassist';
 
-//pipes
+// pipes
 import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 @Component({
@@ -43,9 +37,8 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
-        TaCheckboxComponent,
 
-        //pipes
+        // pipes
         TrackByPropertyPipe,
     ],
 })

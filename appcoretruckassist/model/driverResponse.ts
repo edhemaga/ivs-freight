@@ -38,7 +38,8 @@ export interface DriverResponse {
     bank?: BankResponse;
     account?: string | null;
     routing?: string | null;
-    useTruckAssistAch?: boolean;
+    useCarrieraAch?: boolean;
+    driverType?: EnumValue;
     payType?: EnumValue;
     solo?: PerMileEntity;
     team?: PerMileEntity;
@@ -49,9 +50,11 @@ export interface DriverResponse {
     perMileTeam?: number | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
-    soloFlatRate?: number | null;
-    teamFlatRate?: number | null;
+    flatRateSolo?: number | null;
+    flatRateTeam?: number | null;
     hired?: string | null;
+    isOpenPayrollShared?: boolean | null;
+    isPayrollCalculated?: boolean | null;
     avatar?: string | null;
     twic?: boolean;
     twicExpDate?: string | null;

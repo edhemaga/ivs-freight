@@ -7,6 +7,7 @@ import {
     LoadResponse,
     PoBoxEntity,
     ReviewResponse,
+    ShipperContactResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
@@ -71,10 +72,57 @@ export interface MappedShipperBroker {
     tablePaymentDetailCreditLimit?: string;
     tablePaymentDetailTerm?: string;
     tablePaymentDetailDTP?: string;
-    tablePaymentDetailInvAgeing?: {
-        bfb: string;
-        dnu: string;
-        amount: string;
+    tablePaidInvAging?: {
+        id?: number;
+        mcNumber?: string | null;
+        ein?: string | null;
+        payTerm?: EnumValue;
+        creditType?: EnumValue;
+        creditLimit?: number | null;
+        availableCredit?: number | null;
+        percentage?: number | null;
+        totalDebt?: number | null;
+        totalPaid?: number | null;
+        averageRate?: number | null;
+        highestRate?: number | null;
+        lowestRate?: number | null;
+        invoiceAgeingGroup?: InvoiceAgeingResponse;
+        invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+        invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+        invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+        invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+        daysToPay?: number | null;
+        miles?: number | null;
+        pricePerMile?: number | null;
+        revenue?: number | null;
+        invoiceAgeing?: number;
+        tablePayTerm?: EnumValue;
+    };
+    tableUnpaidInvAging?: {
+        id?: number;
+        mcNumber?: string | null;
+        ein?: string | null;
+        payTerm?: EnumValue;
+        creditType?: EnumValue;
+        creditLimit?: number | null;
+        availableCredit?: number | null;
+        percentage?: number | null;
+        totalDebt?: number | null;
+        totalPaid?: number | null;
+        averageRate?: number | null;
+        highestRate?: number | null;
+        lowestRate?: number | null;
+        invoiceAgeingGroup?: InvoiceAgeingResponse;
+        invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+        invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+        invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+        invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+        daysToPay?: number | null;
+        miles?: number | null;
+        pricePerMile?: number | null;
+        revenue?: number | null;
+        invoiceAgeing?: number;
+        tablePayTerm?: EnumValue;
     };
     tableRaiting?: {
         id: 1;
@@ -92,7 +140,7 @@ export interface MappedShipperBroker {
         comment: string;
         edited: boolean;
     };
-    tableContact?: number;
+    tableContactData?: ShipperContactResponse[] | BrokerContactResponse[];
     tableAdded?: string;
     tableEdited?: string;
     tableDropdownContent?: {
