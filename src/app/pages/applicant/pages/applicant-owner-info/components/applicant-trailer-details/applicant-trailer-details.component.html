@@ -1,0 +1,288 @@
+<div [formGroup]="formGroup">
+    <!-- TYPE, LENGTH, YEAR, VIN -->
+    <div class="d-flex line-container">
+        <div class="group trailer-type-group">
+            <app-ta-input-dropdown
+                formControlName="trailerType"
+                [template]="'svgtext-template'"
+                [inputConfig]="trailerTypeInputConfig"
+                [options]="dropdownOptions.trailerType"
+                [activeItem]="
+                    selectedTrailerType
+                "
+                (selectedItem)="
+                    emitInputSelect(
+                        $event,
+                        inputSwitchActions.TRAILER_TYPE
+                    )
+                "
+            ></app-ta-input-dropdown>
+        </div>
+
+        <div class="group trailer-length-group">
+            <app-ta-input-dropdown
+                formControlName="trailerLength"
+                [inputConfig]="trailerLengthInputConfig"
+                [options]="dropdownOptions.trailerLengthType"
+                [activeItem]="
+                    selectedTrailerLength
+                "
+                (selectedItem)="
+                    emitInputSelect(
+                        $event,
+                        inputSwitchActions.TRAILER_LENGTH
+                    )
+                "
+            ></app-ta-input-dropdown>
+        </div>
+
+        <div class="group trailer-year-group">
+            <app-ta-input
+                formControlName="trailerYear"
+                [inputConfig]="trailerYearInputConfig"
+            ></app-ta-input>
+        </div>
+
+        <div class="group trailer-vin-group">
+            <app-ta-input
+                formControlName="trailerVin"
+                [inputConfig]="trailerVinInputConfig"
+            ></app-ta-input>
+        </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+        <ng-container
+            *ngIf="
+                selectedMode !==
+                'APPLICANT_MODE'
+            "
+        >
+            <div
+                class="review-feedback-container"
+            >
+                <app-applicant-review-feedback
+                    formControlName="seventhRowReview"
+                    [displayAnnotationButton]="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                        openAnnotationArray[6]
+                            .displayAnnotationButton
+                    "
+                    [displayAnnotationTextArea]="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                        openAnnotationArray[6]
+                            .displayAnnotationTextArea
+                    "
+                    [lineIndex]="6"
+                    [isFeedback]="
+                        selectedMode ===
+                        'FEEDBACK_MODE'
+                    "
+                    [feedbackText]="
+                        selectedMode ===
+                            'FEEDBACK_MODE' &&
+                        stepFeedbackValues?.trailerVinMessage
+                    "
+                    (annotationBtnClickEvent)="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                            getAnnotationBtnClickValue(
+                                $event
+                            )
+                    "
+                ></app-applicant-review-feedback>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- TRAILER MAKE, MODEL -->
+
+    <div class="d-flex line-container">
+        <div class="group trailer-make-group">
+            <app-ta-input-dropdown
+                formControlName="trailerMake"
+                [template]="'svg-template'"
+                [inputConfig]="trailerMakeInputConfig"
+                [options]="dropdownOptions.trailerMakeType"
+                [activeItem]="
+                    selectedTrailerMake
+                "
+                (selectedItem)="
+                    emitInputSelect(
+                        $event,
+                        inputSwitchActions.TRAILER_MAKE
+                    )
+                "
+            ></app-ta-input-dropdown>
+        </div>
+
+        <div class="group trailer-model-group">
+            <app-ta-input
+                formControlName="trailerModel"
+                [inputConfig]="trailerModelInputConfig"
+            ></app-ta-input>
+        </div>
+
+        <div class="group trailer-color-group">
+            <app-ta-input-dropdown
+                formControlName="trailerColor"
+                [template]="'svgtext-template'"
+                [inputConfig]="trailerColorInputConfig"
+                [options]="dropdownOptions.colorType"
+                [activeItem]="
+                    selectedTrailerColor
+                "
+                (selectedItem)="
+                    emitInputSelect(
+                        $event,
+                        inputSwitchActions.TRAILER_COLOR
+                    )
+                "
+            ></app-ta-input-dropdown>
+        </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+        <ng-container
+            *ngIf="
+                selectedMode !==
+                'APPLICANT_MODE'
+            "
+        >
+            <div
+                class="review-feedback-container"
+            >
+                <app-applicant-review-feedback
+                    formControlName="eightRowReview"
+                    [displayAnnotationButton]="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                        openAnnotationArray[7]
+                            .displayAnnotationButton
+                    "
+                    [displayAnnotationTextArea]="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                        openAnnotationArray[7]
+                            .displayAnnotationTextArea
+                    "
+                    [lineIndex]="7"
+                    [isFeedback]="
+                        selectedMode ===
+                        'FEEDBACK_MODE'
+                    "
+                    [feedbackText]="
+                        selectedMode ===
+                            'FEEDBACK_MODE' &&
+                        stepFeedbackValues?.trailerModelMessage
+                    "
+                    (annotationBtnClickEvent)="
+                        selectedMode ===
+                            'REVIEW_MODE' &&
+                            getAnnotationBtnClickValue(
+                                $event
+                            )
+                    "
+                ></app-applicant-review-feedback>
+            </div>
+        </ng-container>
+    </div>
+
+    <!-- TRAILER LICENCE AND INSPECTION  --> 
+
+    <div class="truck-documents d-flex">
+        <div class="truck-licence">
+            <div class="divider divider-truck"></div>
+            <div
+                class="d-flex align-self-start add-truck-container"
+            >
+                <p class="m-0 ta-font-extra-bold">
+                    Trailer Licence
+                </p>
+            </div>
+            <div
+                class="d-flex flex-column files-container"
+            >
+                <div class="d-flex align-items-center files-header">
+                    <!-- documents count deo -->
+                </div>
+
+                <div
+                    class="line-container"
+                    [ngStyle]="{
+                        width:
+                            selectedMode === 'REVIEW_MODE'
+                                ? 'fit-content'
+                                : '100%'
+                    }"
+                >
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'small'"
+                        [showDropzone]="
+                            selectedMode === 'APPLICANT_MODE'
+                        "
+                        [isRequired]="!documents.length"
+                        [showRequired]="displayDocumentsRequiredNote"
+                        [isReview]="selectedMode === 'REVIEW_MODE'"
+                        [reviewMode]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            'REVIEW_MODE'
+                        "
+                        [dropzoneColumn]="true"
+                        (onFileEvent)="emitOnFilesAction($event)"
+                    ></app-ta-upload-files>
+
+                    <!-- REVIEW AND FEEDBACK -->
+
+                </div>
+            </div>
+        </div>
+        <div class="truck-inspection">
+            <div class="divider divider-truck"></div>
+            <div
+                class="d-flex align-self-start add-truck-container"
+            >
+                <p class="m-0 ta-font-extra-bold">
+                    Trailer FHWA Inspection
+                </p>
+            </div>
+            <div
+                class="d-flex flex-column files-container"
+            >
+                <div class="d-flex align-items-center files-header">
+                    <!-- Documents count deo izbrisan -->
+                </div>
+
+                <div
+                    class="line-container"
+                    [ngStyle]="{
+                        width:
+                            selectedMode === 'REVIEW_MODE'
+                                ? 'fit-content'
+                                : '100%'
+                    }"
+                >
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'small'"
+                        [showDropzone]="
+                            selectedMode === 'APPLICANT_MODE'
+                        "
+                        [isRequired]="!documents.length"
+                        [showRequired]="displayDocumentsRequiredNote"
+                        [isReview]="selectedMode === 'REVIEW_MODE'"
+                        [reviewMode]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            'REVIEW_MODE'
+                        "
+                        [dropzoneColumn]="true"
+                        (onFileEvent)="emitOnFilesAction($event)"
+                    ></app-ta-upload-files>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

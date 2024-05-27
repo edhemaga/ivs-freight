@@ -59,7 +59,6 @@ export class ApplicantSignaturePadComponent
 
     public applicantSvgRoutes = ApplicantSvgRoutes;
 
-
     constructor(public imageBase64Service: ImageBase64Service) {}
 
     get isSignautrePadEmpty() {
