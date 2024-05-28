@@ -23,10 +23,7 @@ export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
         private tableService: TruckassistTableService
     ) {}
     resolve(): Observable<any> {
-        return forkJoin([
-            this.trailerService.getTrailers(1, 1, 25),
-            this.tableService.getTableConfig(9),
-        ]).pipe(
+        return forkJoin([this.trailerService.getTrailers(1, null, 1, 25)]).pipe(
             tap(([trailerPagination, tableConfig]) => {
                 localStorage.setItem(
                     'trailerTableCount',

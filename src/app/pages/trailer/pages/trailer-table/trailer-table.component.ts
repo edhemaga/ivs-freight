@@ -14,6 +14,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { TrailerService } from '@shared/services/trailer.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -50,10 +51,11 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
-import { TraillerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
 import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-trailer-table',
@@ -106,7 +108,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private router: Router,
         private thousandSeparator: ThousandSeparatorPipe,
         private confirmationService: ConfirmationService,
-        private trailerInactiveStore: TrailerInactiveStore
+        private trailerInactiveStore: TrailerInactiveStore,
+        private confirmationActivationService: ConfirmationActivationService
     ) {}
 
     ngOnInit(): void {
@@ -166,14 +169,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             this.deleteTrailerById(res.id);
                             break;
                         }
-                        case TableStringEnum.ACTIVATE: {
-                            this.changeTrailerStatus(res.id);
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            this.changeTrailerStatus(res.id);
-                            break;
-                        }
                         case TableStringEnum.MULTIPLE_DELETE: {
                             this.multipleDeleteTrailers(res.array);
                             break;
@@ -183,6 +178,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 },
+            });
+
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (!res.array) {
+                        this.changeTrailerStatus(res.data.id);
+                    } else {
+                        res.array.map((e) => {
+                            this.changeTrailerStatus(e.id);
+                        });
+                    }
+                }
             });
     }
 
@@ -535,7 +544,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTrailerData(data: TraillerData): TrailerMapped {
+    private mapTrailerData(data: any): TrailerMapped {
         return {
             ...data,
             isSelected: false,
@@ -571,9 +580,18 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelLength: data?.trailerLength?.name
                 ? DataFilterHelper.getLengthNumber(data?.trailerLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: TableStringEnum.NA,
-            tableTruck: TableStringEnum.NA,
-            tableTruckType: TableStringEnum.NA,
+            tableDriver: data.assignedTo?.driver
+                ? data.assignedTo?.driver?.firstName +
+                  data.assignedTo?.driver?.lastName
+                    ? data.assignedTo?.driver?.lastName
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruck: data.assignedTo?.truck
+                ? data.assignedTo?.truck?.truckNumber
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruckType: data.assignedTo?.truck?.truckType
+                ? data.assignedTo?.truck?.truckType.name
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableOwner: data?.owner?.name
                 ? data.owner.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -581,7 +599,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? this.thousandSeparator.transform(data.emptyWeight) +
                   TableStringEnum.POUNDS_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWeightVolume: data.volume ?? TableStringEnum.NA,
+            tableWeightVolume:
+                data.volume ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAxle: data?.axles
                 ? data?.axles
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -606,7 +625,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableLicencePlateDetailNumber: data?.licensePlate
                 ? data.licensePlate
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST: TableStringEnum.NA,
+            tableLicencePlateDetailST: data.registrationState
+                ? data.registrationState.stateShortName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -640,19 +661,33 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: TableStringEnum.NA,
-            tableTitleST: TableStringEnum.NA,
-            tableTitlePurchase: TableStringEnum.NA,
-            tableTitleIssued: TableStringEnum.NA,
-            tablePurchaseDate: data.purchaseDate
+            tableTitleNumber: data.title?.number
+                ? data.title.number
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitle: data.title?.state
+                ? data.title.state.stateShortName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitlePurchase: data.title?.purchaseDate
                 ? this.datePipe.transform(
-                      data.purchaseDate,
+                      data.title?.purchaseDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleIssued: data.title?.issueDate
+                ? this.datePipe.transform(
+                      data.title.issueDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tablePurchasePrice: data?.purchasePrice
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.purchasePrice)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePurchaseDate: data.purchaseDate
+                ? this.datePipe.transform(
+                      data.purchaseDate,
+                      TableStringEnum.DATE_FORMAT
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTerminated: TableStringEnum.NA,
             tableAdded: data.createdAt
@@ -723,32 +758,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         title: TableStringEnum.ADD_INSPECTION_2,
                         name: TableStringEnum.ADD_INSPECTION,
                     },
-                ],
-                hasBorder: true,
-            },
-            {
-                title: TableStringEnum.SHARE_2,
-                name: TableStringEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.PRINT_2,
-                name: TableStringEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
 
-                svgClass: TableStringEnum.REGULAR,
+                    {
+                        title: TableStringEnum.TITLE,
+                        name: TableStringEnum.ADD_TITLE,
+                    },
+                ],
                 hasBorder: true,
             },
             {
@@ -816,6 +831,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private trailerBackFilter(
         filter: {
             active: number;
+            trailerTypeIds?: number[];
             pageIndex: number;
             pageSize: number;
             companyId: number | undefined;
@@ -829,6 +845,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.trailerService
             .getTrailers(
                 filter.active,
+                filter.trailerTypeIds,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -877,7 +894,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 !this.inactiveTabClicked
             ) {
                 this.trailerService
-                    .getTrailers(0, 1, 25)
+                    .getTrailers(0, null, 1, 25)
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((trailerPagination) => {
                         this.trailerInactiveStore.set(
@@ -906,20 +923,24 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 number: data.trailerNumber,
                                 avatar: `assets/svg/common/trailers/${data?.trailerType?.logoName}`,
                             },
+                            modalTitle: ' Unit ' + data?.trailerNumber,
+                            modalSecondTitle: data?.vin,
                         });
                     }
                 });
             });
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
                     template: TableStringEnum.TRAILER_2,
+                    subType: TableStringEnum.TRAILERS,
                     type: status
                         ? TableStringEnum.DEACTIVATE
                         : TableStringEnum.ACTIVATE,
+                    tableType: TableStringEnum.TRAILER_2,
                     svg: true,
                 }
             );
@@ -973,7 +994,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: TableStringEnum.EDIT,
+                        type: TableStringEnum.ADD,
                         disableButton: true,
                         tabSelected: this.selectedTab,
                     }
@@ -1004,17 +1025,33 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
                 break;
             }
+            case TableStringEnum.ADD_TITLE: {
+                this.modalService.openModal(
+                    TtTitleModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        ...event,
+                        modal: TableStringEnum.TRAILER_2,
+                        tabSelected: this.selectedTab,
+                    }
+                );
+                break;
+            }
             case TableStringEnum.ACTIVATE_ITEM: {
                 this.modalService.openModal(
-                    ConfirmationModalComponent,
+                    ConfirmationActivationModalComponent,
                     { size: TableStringEnum.SMALL },
                     {
                         ...mappedEvent,
                         template: TableStringEnum.TRAILER_2,
+                        subType: TableStringEnum.TRAILER_2,
                         type:
                             event.data.status === 1
                                 ? TableStringEnum.DEACTIVATE
                                 : TableStringEnum.ACTIVATE,
+                        tableType: TableStringEnum.TRAILER_2,
+                        modalTitle: ' Unit ' + mappedEvent?.data?.number,
+                        modalSecondTitle: mappedEvent?.data?.vin,
                         svg: true,
                     }
                 );

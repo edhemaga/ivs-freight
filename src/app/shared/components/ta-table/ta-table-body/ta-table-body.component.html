@@ -2063,12 +2063,16 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <app-ta-state-image-text
-                                            [stateAbbreviation]="
-                                                row[column.field]
-                                            "
+                                        <ng-container
+                                            *ngIf="row[column.field] !== ''"
                                         >
-                                        </app-ta-state-image-text>
+                                            <app-ta-state-image-text
+                                                [stateAbbreviation]="
+                                                    row[column.field]
+                                                "
+                                            >
+                                            </app-ta-state-image-text>
+                                        </ng-container>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -4022,12 +4026,16 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <app-ta-state-image-text
-                                            [stateAbbreviation]="
-                                                row[column.field]
-                                            "
+                                        <ng-container
+                                            *ngIf="row[column.field] !== ''"
                                         >
-                                        </app-ta-state-image-text>
+                                            <app-ta-state-image-text
+                                                [stateAbbreviation]="
+                                                    row[column.field]
+                                                "
+                                            >
+                                            </app-ta-state-image-text>
+                                        </ng-container>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->

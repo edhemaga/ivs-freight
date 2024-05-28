@@ -43,6 +43,16 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === ' MODEL' ||
                     tableHeadTitle === 'MODEL ');
 
+            const trailerTableColumnsCondition =
+                gridNameTitle === 'Trailer' &&
+                (tableHeadTitle === 'EMPTY' ||
+                    tableHeadTitle === 'FHWA Inspection ' ||
+                    tableHeadTitle === 'DRIVER' ||
+                    tableHeadTitle === 'NUMBER  ' ||
+                    tableHeadTitle === ' NUMBER' ||
+                    tableHeadTitle === 'PRICE' ||
+                    tableHeadTitle === 'TYPE ' ||
+                    tableHeadTitle === 'TERM');
             const repairTableColumnsCondition =
                 gridNameTitle === 'Repair' &&
                 (tableHeadTitle === 'NAME   ' ||
@@ -59,7 +69,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 driverTableColumnsCondition ||
                 truckTableColumnsCondition ||
                 repairTableColumnsCondition ||
-                brokerTableColumnsCondition
+                brokerTableColumnsCondition ||
+                trailerTableColumnsCondition
             ) {
                 return true;
             }
@@ -112,7 +123,16 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== 'FRONT' &&
                     tableHeadTitle !== ' MODEL' &&
                     tableHeadTitle !== 'MODEL ');
-
+            const TrailerTableColumnsCondition =
+                gridNameTitle !== 'Trailer' ||
+                (tableHeadTitle !== 'EMPTY' &&
+                    tableHeadTitle !== 'FHWA Inspection ' &&
+                    tableHeadTitle !== 'DRIVER' &&
+                    tableHeadTitle !== 'NUMBER  ' &&
+                    tableHeadTitle !== 'PRICE' &&
+                    tableHeadTitle !== ' NUMBER' &&
+                    tableHeadTitle !== 'TYPE ' &&
+                    tableHeadTitle !== 'TERM');
             return (
                 contactsTableColumnsCondition &&
                 pmTableColumnsCondition &&
@@ -120,7 +140,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 repairTableColumnsCondition &&
                 brokerTableColumnsCondition &&
                 truckTableColumnsCondition &&
-                repairTableColumnsCondition
+                repairTableColumnsCondition &&
+                TrailerTableColumnsCondition
             );
         }
     }

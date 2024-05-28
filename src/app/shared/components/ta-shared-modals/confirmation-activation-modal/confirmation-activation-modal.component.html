@@ -58,7 +58,8 @@
                                 <div
                                     class="m-0 ta-font-bold"
                                     [class.limit-text]="
-                                        editData.template !== 'truck'
+                                        editData.template !== 'truck' &&
+                                        editData.template !== 'trailer'
                                     "
                                     [class.shorter-text]="
                                         editData?.type === 'open'
@@ -66,19 +67,7 @@
                                 >
                                     {{ editData.modalTitle }}
                                 </div>
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                        editData?.type === 'deactivate'
-                                    "
-                                >
-                                    <svg-icon
-                                        class="d-flex ms-1"
-                                        [src]="
-                                            'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                        "
-                                    ></svg-icon>
-                                </ng-container>
+
                                 <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
@@ -87,7 +76,13 @@
                                 ></ng-container>
                             </div>
 
-                            <div class="m-0 text-2 limit-text">
+                            <div
+                                class="m-0 text-2"
+                                [class.limit-text]="
+                                    editData.template !== 'truck' &&
+                                    editData.template !== 'trailer'
+                                "
+                            >
                                 {{ editData.modalSecondTitle }}
                             </div>
                         </div>
@@ -108,9 +103,10 @@
                             <div>
                                 <div class="d-flex align-items-center">
                                     <div
-                                        class="m-0 ta-font-bold limit-text"
+                                        class="m-0 ta-font-bold"
                                         [class.limit-text]="
-                                            editData.template !== 'truck'
+                                            editData.template !== 'truck' &&
+                                            editData.template !== 'trailer'
                                         "
                                         [class.shorter-text]="
                                             editData?.type === 'open'
@@ -118,19 +114,7 @@
                                     >
                                         {{ item.modalTitle }}
                                     </div>
-                                    <ng-container
-                                        *ngIf="
-                                            editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate'
-                                        "
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            [src]="
-                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                            "
-                                        ></svg-icon>
-                                    </ng-container>
+
                                     <ng-container
                                         *ngIf="editData?.type === 'open'"
                                     >
@@ -140,7 +124,13 @@
                                         ></svg-icon
                                     ></ng-container>
                                 </div>
-                                <div class="m-0 text-2 limit-text">
+                                <div
+                                    class="m-0 text-2"
+                                    [class.limit-text]="
+                                        editData.template !== 'truck' &&
+                                        editData.template !== 'trailer'
+                                    "
+                                >
                                     {{ item.modalSecondTitle }}
                                 </div>
                             </div>
