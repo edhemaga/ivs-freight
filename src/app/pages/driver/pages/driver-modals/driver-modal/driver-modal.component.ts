@@ -532,21 +532,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
         // delete
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
-            const mappedEvent = {
-                ...this.editData,
-                data: {
-                    ...this.editData.data /* 
-                    name: this.editData.data?.fullName , */,
-                },
-            };
-
             this.ngbActiveModal.close();
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
-                    ...mappedEvent,
+                    ...this.editData,
                     template: TableStringEnum.DRIVER,
                     type: TableStringEnum.DELETE,
                     image: true,

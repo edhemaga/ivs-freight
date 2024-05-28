@@ -183,25 +183,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    switch (res.type) {
-                        case TableStringEnum.DELETE: {
-                            if (res.template === TableStringEnum.DRIVER) {
-                                this.deleteDriverById(res.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.MULTIPLE_DELETE: {
-                            this.multipleDeleteDrivers(res.array);
+            .subscribe((res) => {
+                switch (res.type) {
+                    case TableStringEnum.DELETE:
+                        this.deleteDriverById(res.id);
 
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
+                        break;
+
+                    case TableStringEnum.MULTIPLE_DELETE:
+                        this.multipleDeleteDrivers(res.array);
+
+                        break;
+                    default:
+                        break;
+                }
             });
     }
 
@@ -1612,14 +1607,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // This function gets called but service deleteDriverList is commented out so it will not delete any drivers
-    private multipleDeleteDrivers(response: DriverResponse[]): void {
+    private multipleDeleteDrivers(driverIds: number[]): void {
+        console.log('driverIds', driverIds);
+
         this.driverService
-            .deleteDriverList(response)
+            .deleteDriverList(driverIds)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((driver) => {
-                    response.map((id) => {
+                    driverIds.map((id) => {
                         if (driver.id === id) {
                             driver.actionAnimation =
                                 TableStringEnum.DELETE_MULTIPLE;
