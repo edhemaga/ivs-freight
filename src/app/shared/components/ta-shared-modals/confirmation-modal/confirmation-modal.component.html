@@ -12,7 +12,8 @@
             : editData?.type === 'multiple delete' &&
               editData?.template !== 'repair' &&
               editData?.template !== 'repair_shop' &&
-              editData?.template !== 'truck'
+              editData?.template !== 'truck' &&
+              editData?.template !== 'driver'
             ? 'Delete'
             : editData?.template === 'void'
             ? ' Void Registration '
@@ -35,6 +36,8 @@
             ? 'Delete Title'
             : editData?.template === 'truck'
             ? 'Delete Truck'
+            : editData?.template === 'driver'
+            ? 'Delete Driver'
             : ' Confirmation'
     "
     [editName]="
@@ -937,9 +940,7 @@
                                 <p class="m-0 confirmation-text-1 large-text-1">
                                     {{ item?.data?.name }}
 
-                                    <ng-container
-                                        *ngIf="!editData?.data?.status"
-                                    >
+                                    <ng-container *ngIf="!item?.data?.status">
                                         <span class="inactive-icon-holder">
                                             <svg-icon
                                                 [src]="

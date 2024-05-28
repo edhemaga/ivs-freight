@@ -11,7 +11,7 @@
  */
 
 
-export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'CheckedInRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded';
+export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'CheckedInRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded' | 'Loading' | 'Offloading' | 'Break' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery' | 'CheckedInPickupRepair' | 'CheckedInDeliveryRepair';
 
 export const DispatchStatus = {
     Off: 'Off' as DispatchStatus,
@@ -27,6 +27,15 @@ export const DispatchStatus = {
     CheckedIn: 'CheckedIn' as DispatchStatus,
     Loaded: 'Loaded' as DispatchStatus,
     Empty: 'Empty' as DispatchStatus,
-    Offloaded: 'Offloaded' as DispatchStatus
+    Offloaded: 'Offloaded' as DispatchStatus,
+    Loading: 'Loading' as DispatchStatus,
+    Offloading: 'Offloading' as DispatchStatus,
+    Break: 'Break' as DispatchStatus,
+    ArrivedPickup: 'ArrivedPickup' as DispatchStatus,
+    ArrivedDelivery: 'ArrivedDelivery' as DispatchStatus,
+    CheckedInPickup: 'CheckedInPickup' as DispatchStatus,
+    CheckedInDelivery: 'CheckedInDelivery' as DispatchStatus,
+    CheckedInPickupRepair: 'CheckedInPickupRepair' as DispatchStatus,
+    CheckedInDeliveryRepair: 'CheckedInDeliveryRepair' as DispatchStatus
 };
 

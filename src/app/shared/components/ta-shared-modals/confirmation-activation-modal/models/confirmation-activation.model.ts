@@ -8,4 +8,5 @@ export interface ConfirmationActivation {
     subTypeStatus: string;
     data: any;
     array?: any[];
+    id: number;
 }

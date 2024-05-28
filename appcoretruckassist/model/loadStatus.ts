@@ -11,7 +11,7 @@
  */
 
 
-export type LoadStatus = 'Booked' | 'Assigned' | 'Unassigned' | 'Loaded' | 'Offloaded' | 'CheckedIn' | 'Dispatched' | 'Invoiced' | 'InvoicedFactoring' | 'InvoicedHold' | 'Delivered' | 'LoadCancelled' | 'Paid' | 'PaidFactoring' | 'RevisedPaidFactoring' | 'ShortPaid' | 'ShortPaidFactoring' | 'RevisedShortPaidFactoring' | 'Claim' | 'ClaimFactoring' | 'RevisedClaimFactoring' | 'Unpaid' | 'UnpaidFactoring' | 'RevisedUnpaidFactoring' | 'Tonu' | 'TonuInvoiced' | 'TonuInvoicedFactoring' | 'TonuPaid' | 'TonuPaidFactoring' | 'TonuClaim' | 'TonuClaimFactoring' | 'TonuShortPaid' | 'TonuShortPaidFactoring' | 'TonuUnpaid' | 'TonuUnpaidFactoring' | 'Hold' | 'HoldFactoring' | 'Revised' | 'RevisedFactoring' | 'RevisedPaid' | 'RevisedClaim' | 'RevisedShortPaid' | 'RevisedUnpaid' | 'Cancelled' | 'Split';
+export type LoadStatus = 'Booked' | 'Assigned' | 'Unassigned' | 'Loaded' | 'Offloaded' | 'CheckedIn' | 'Dispatched' | 'Invoiced' | 'InvoicedFactoring' | 'InvoicedHold' | 'Delivered' | 'LoadCancelled' | 'Paid' | 'PaidFactoring' | 'RevisedPaidFactoring' | 'ShortPaid' | 'ShortPaidFactoring' | 'RevisedShortPaidFactoring' | 'Claim' | 'ClaimFactoring' | 'RevisedClaimFactoring' | 'Unpaid' | 'UnpaidFactoring' | 'RevisedUnpaidFactoring' | 'Tonu' | 'TonuInvoiced' | 'TonuInvoicedFactoring' | 'TonuPaid' | 'TonuPaidFactoring' | 'TonuClaim' | 'TonuClaimFactoring' | 'TonuShortPaid' | 'TonuShortPaidFactoring' | 'TonuUnpaid' | 'TonuUnpaidFactoring' | 'Hold' | 'HoldFactoring' | 'Revised' | 'RevisedFactoring' | 'RevisedPaid' | 'RevisedClaim' | 'RevisedShortPaid' | 'RevisedUnpaid' | 'Cancelled' | 'Split' | 'Loading' | 'Offloading' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery';
 
 export const LoadStatus = {
     Booked: 'Booked' as LoadStatus,
@@ -58,6 +58,12 @@ export const LoadStatus = {
     RevisedShortPaid: 'RevisedShortPaid' as LoadStatus,
     RevisedUnpaid: 'RevisedUnpaid' as LoadStatus,
     Cancelled: 'Cancelled' as LoadStatus,
-    Split: 'Split' as LoadStatus
+    Split: 'Split' as LoadStatus,
+    Loading: 'Loading' as LoadStatus,
+    Offloading: 'Offloading' as LoadStatus,
+    ArrivedPickup: 'ArrivedPickup' as LoadStatus,
+    ArrivedDelivery: 'ArrivedDelivery' as LoadStatus,
+    CheckedInPickup: 'CheckedInPickup' as LoadStatus,
+    CheckedInDelivery: 'CheckedInDelivery' as LoadStatus
 };
 

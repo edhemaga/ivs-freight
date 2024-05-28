@@ -18,7 +18,7 @@
             height: auto;
             border-radius: 3px;
             background: $ta-black-2;
-            padding: 4px;
+            padding: 4px !important;
             margin-top: -5px;
             right: -4px;
 
@@ -1209,7 +1209,8 @@
             border-radius: 3px;
 
             .contacts-dropdown-header {
-                p, span {
+                p,
+                span {
                     font-size: 11px;
                     line-height: 14px;
                 }

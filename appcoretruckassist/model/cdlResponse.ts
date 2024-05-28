@@ -31,5 +31,7 @@ export interface CdlResponse {
     createdAt?: string;
     updatedAt?: string;
     files?: Array<FileResponse> | null;
+    expirationDays?: number | null;
+    percentage?: number | null;
 }
 

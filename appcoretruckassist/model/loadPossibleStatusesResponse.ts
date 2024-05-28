@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { LoadStatusResponse } from './loadStatusResponse';
 
 
 export interface LoadPossibleStatusesResponse { 
-    possibleStatuses?: Array<EnumValue> | null;
-    previousStatus?: EnumValue;
+    possibleStatuses?: Array<LoadStatusResponse> | null;
+    previousStatus?: LoadStatusResponse;
 }
 

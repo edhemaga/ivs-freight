@@ -12,6 +12,7 @@
 import { ShipperContactShortResponse } from './shipperContactShortResponse';
 import { LoadStopItemResponse } from './loadStopItemResponse';
 import { EnumValue } from './enumValue';
+import { LoadStatusHistoryResponse } from './loadStatusHistoryResponse';
 import { ShipperShortResponse } from './shipperShortResponse';
 
 
@@ -36,5 +37,6 @@ export interface LoadStopResponse {
     legHours?: number | null;
     legMinutes?: number | null;
     shape?: string | null;
+    statusHistory?: Array<LoadStatusHistoryResponse> | null;
 }
 

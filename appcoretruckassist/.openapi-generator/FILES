@@ -395,6 +395,14 @@ model/dispatchStatusResponse.ts
 model/dispatcherFilterResponse.ts
 model/dispatcherIntervalResponse.ts
 model/driverAccidentResponse.ts
+model/driverDetailsBankResponse.ts
+model/driverDetailsDispatchResponse.ts
+model/driverDetailsEmergencyContactResponse.ts
+model/driverDetailsFuelCardResponse.ts
+model/driverDetailsNotificationResponse.ts
+model/driverDetailsOffDutyLocationResponse.ts
+model/driverDetailsOwnerResponse.ts
+model/driverDetailsPayrollResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
@@ -402,11 +410,13 @@ model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
 model/driverIntervalResponse.ts
 model/driverListBankResponse.ts
+model/driverListCdlCodeDescriptionResponse.ts
 model/driverListCdlResponse.ts
 model/driverListEmergencyContactResponse.ts
 model/driverListFuelCardResponse.ts
 model/driverListItemResponse.ts
 model/driverListItemResponsePagination.ts
+model/driverListMedicalResponse.ts
 model/driverListMvrResponse.ts
 model/driverListNotificationResponse.ts
 model/driverListOffDutyLocationResponse.ts
@@ -570,7 +580,9 @@ model/loadResponsePagination.ts
 model/loadShipperDetailsResponse.ts
 model/loadShortResponse.ts
 model/loadStatus.ts
+model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
+model/loadStatusResponse.ts
 model/loadStatusType.ts
 model/loadStopCommand.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
@@ -629,7 +641,6 @@ model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
-model/offDutyLocationResponse.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
@@ -795,6 +806,7 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
+model/revertLoadStatusCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts

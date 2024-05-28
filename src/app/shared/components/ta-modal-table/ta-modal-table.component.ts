@@ -53,7 +53,6 @@ import {
     descriptionValidation,
     phoneExtension,
     phoneFaxRegex,
-    nicknameValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
@@ -75,7 +74,7 @@ import {
     DriverModalFuelCardResponse,
     EnumValue,
     GetDriverModalResponse,
-    OffDutyLocationResponse,
+    DriverDetailsOffDutyLocationResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -122,7 +121,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         | ContactEmailResponse[]
         | RepairItemResponse[]
         | PMTableData[]
-        | OffDutyLocationResponse[]
+        | DriverDetailsOffDutyLocationResponse[]
         | DriverModalFuelCardResponse[] = [];
     @Input() dropdownData?: TruckTrailerPmDropdownLists;
 
@@ -588,7 +587,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.isOffDutyLocationTable) {
             modalTableDataValue = modalTableDataValue.map(
-                (itemRow: OffDutyLocationResponse, index: number) => {
+                (
+                    itemRow: DriverDetailsOffDutyLocationResponse,
+                    index: number
+                ) => {
                     return {
                         ...itemRow,
                         address:
@@ -735,10 +737,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 newFormArrayRow = this.formBuilder.group({
-                    nickname: [
-                        null,
-                        [Validators.required, ...nicknameValidation],
-                    ],
+                    nickname: [null, [Validators.required]],
                     address: [null, [Validators.required]],
                 });
 
@@ -849,7 +848,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             | ContactEmailResponse
             | RepairItemResponse
             | PMTableData
-            | OffDutyLocationResponse
+            | DriverDetailsOffDutyLocationResponse
         )[]
     ): void {
         modalTableData.forEach((data, i) => {
@@ -1001,7 +1000,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private handleOffDutyLocationData(
-        offDutyLocationData: OffDutyLocationResponse,
+        offDutyLocationData: DriverDetailsOffDutyLocationResponse,
         index: number
     ): void {
         const formGroup = this.getFormArray().at(index);
