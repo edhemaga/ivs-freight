@@ -360,7 +360,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'password-account',
             title: 'Account ',
             field: 'tableBankDetailAccount',
             name: 'Account ',

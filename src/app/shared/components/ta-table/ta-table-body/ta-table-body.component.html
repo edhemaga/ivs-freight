@@ -2063,12 +2063,14 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <app-ta-state-image-text
-                                            [stateAbbreviation]="
-                                                row[column.field]
-                                            "
-                                        >
-                                        </app-ta-state-image-text>
+                                        <ng-container *ngIf="row[column.field]">
+                                            <app-ta-state-image-text
+                                                [stateAbbreviation]="
+                                                    row[column.field]
+                                                "
+                                            >
+                                            </app-ta-state-image-text>
+                                        </ng-container>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -2382,6 +2384,31 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- PASSWORD ACCOUNT COLUMN -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'password-account'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <app-ta-password-account-hidden-characters
+                                                [passwordOrAccount]="
+                                                    row[column.field]
+                                                "
+                                            ></app-ta-password-account-hidden-characters>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
@@ -4022,12 +4049,14 @@
                                         }"
                                         class="td-content"
                                     >
-                                        <app-ta-state-image-text
-                                            [stateAbbreviation]="
-                                                row[column.field]
-                                            "
-                                        >
-                                        </app-ta-state-image-text>
+                                        <ng-container *ngIf="row[column.field]">
+                                            <app-ta-state-image-text
+                                                [stateAbbreviation]="
+                                                    row[column.field]
+                                                "
+                                            >
+                                            </app-ta-state-image-text>
+                                        </ng-container>
                                     </div>
 
                                     <!-- PROGRESS COLUMN -->
@@ -4307,6 +4336,31 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- PASSWORD ACCOUNT COLUMN -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'password-account'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <app-ta-password-account-hidden-characters
+                                                [passwordOrAccount]="
+                                                    row[column.field]
+                                                "
+                                            ></app-ta-password-account-hidden-characters>
+                                        </div>
+                                    </ng-container>
                                 </td>
                             </ng-container>
                         </div>
