@@ -9,15 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverListOwnerResponse } from './driverListOwnerResponse';
 import { DriverListNotificationResponse } from './driverListNotificationResponse';
 import { DriverListEmergencyContactResponse } from './driverListEmergencyContactResponse';
-import { DriverListMvrResponse } from './driverListMvrResponse';
 import { EnumValue } from './enumValue';
 import { DriverListOffDutyLocationResponse } from './driverListOffDutyLocationResponse';
+import { DriverListFuelCardResponse } from './driverListFuelCardResponse';
+import { DriverListMedicalResponse } from './driverListMedicalResponse';
+import { DriverListOwnerResponse } from './driverListOwnerResponse';
+import { DriverListMvrResponse } from './driverListMvrResponse';
 import { DriverListBankResponse } from './driverListBankResponse';
 import { DriverListPayrollResponse } from './driverListPayrollResponse';
-import { DriverListFuelCardResponse } from './driverListFuelCardResponse';
 import { DriverListTestResponse } from './driverListTestResponse';
 import { DriverListCdlResponse } from './driverListCdlResponse';
 import { AddressEntity } from './addressEntity';
@@ -43,12 +44,11 @@ export interface DriverListItemResponse {
     bank?: DriverListBankResponse;
     offDutyLocations?: Array<DriverListOffDutyLocationResponse> | null;
     emergencyContact?: DriverListEmergencyContactResponse;
-    twicExpirationDays?: number | null;
+    twicExpirationDate?: string | null;
     fuelCards?: Array<DriverListFuelCardResponse> | null;
     cdl?: DriverListCdlResponse;
     test?: DriverListTestResponse;
-    medicalExpirationDays?: number | null;
-    medicalPercentage?: number | null;
+    medical?: DriverListMedicalResponse;
     mvr?: DriverListMvrResponse;
     general?: DriverListNotificationResponse;
     payroll?: DriverListNotificationResponse;

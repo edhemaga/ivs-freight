@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface LoadStatusHistoryResponse { 
-    id?: number;
-    status?: EnumValue;
-    statusString?: string | null;
-    stopOrder?: number | null;
-    dateTimeFrom?: string | null;
-    dateTimeTo?: string | null;
-    wait?: { [key: string]: number; } | null;
-    updatedAt?: string;
+export interface DriverListCdlCodeDescriptionResponse { 
+    code?: string | null;
+    description?: string | null;
 }
 

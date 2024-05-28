@@ -12,14 +12,9 @@
 import { EnumValue } from './enumValue';
 
 
-export interface LoadStatusHistoryResponse { 
-    id?: number;
-    status?: EnumValue;
+export interface LoadStatusResponse { 
+    statusValue?: EnumValue;
     statusString?: string | null;
-    stopOrder?: number | null;
-    dateTimeFrom?: string | null;
-    dateTimeTo?: string | null;
-    wait?: { [key: string]: number; } | null;
-    updatedAt?: string;
+    statusCheckInNumber?: string | null;
 }
 

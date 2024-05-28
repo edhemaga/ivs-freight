@@ -19,6 +19,7 @@ import { BrokerShortResponse } from './brokerShortResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
 import { LoadStopResponse } from './loadStopResponse';
@@ -32,7 +33,7 @@ export interface LoadResponse {
     type?: EnumValue;
     loadNumber?: string | null;
     statusType?: EnumValue;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number; } | null;
     dispatcher?: CompanyUserShortResponse;
     company?: CompanyShortResponse;

@@ -402,11 +402,13 @@ model/driverFilterResponsePagination.ts
 model/driverForgotPasswordCommand.ts
 model/driverIntervalResponse.ts
 model/driverListBankResponse.ts
+model/driverListCdlCodeDescriptionResponse.ts
 model/driverListCdlResponse.ts
 model/driverListEmergencyContactResponse.ts
 model/driverListFuelCardResponse.ts
 model/driverListItemResponse.ts
 model/driverListItemResponsePagination.ts
+model/driverListMedicalResponse.ts
 model/driverListMvrResponse.ts
 model/driverListNotificationResponse.ts
 model/driverListOffDutyLocationResponse.ts
@@ -570,7 +572,9 @@ model/loadResponsePagination.ts
 model/loadShipperDetailsResponse.ts
 model/loadShortResponse.ts
 model/loadStatus.ts
+model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
+model/loadStatusResponse.ts
 model/loadStatusType.ts
 model/loadStopCommand.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts

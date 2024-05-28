@@ -53,7 +53,6 @@ import {
     descriptionValidation,
     phoneExtension,
     phoneFaxRegex,
-    nicknameValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // helpers
@@ -735,10 +734,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
                 newFormArrayRow = this.formBuilder.group({
-                    nickname: [
-                        null,
-                        [Validators.required, ...nicknameValidation],
-                    ],
+                    nickname: [null, [Validators.required]],
                     address: [null, [Validators.required]],
                 });
 

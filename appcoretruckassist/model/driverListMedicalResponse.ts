@@ -9,14 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DriverListCdlCodeDescriptionResponse } from './driverListCdlCodeDescriptionResponse';
 
 
-export interface DriverListCdlResponse { 
-    number?: string | null;
-    state?: string | null;
-    endorsements?: Array<DriverListCdlCodeDescriptionResponse> | null;
-    restrictions?: Array<DriverListCdlCodeDescriptionResponse> | null;
+export interface DriverListMedicalResponse { 
     expirationDays?: number | null;
     percentage?: number | null;
 }

@@ -726,13 +726,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             driverType,
             payType,
             bank,
+            offDutyLocations,
             emergencyContact,
-            twicExpirationDays,
+            twicExpirationDate,
             fuelCardNumber,
             cdl,
             test,
-            medicalExpirationDays,
-            medicalPercentage,
+            medical,
             mvr,
             general,
             payroll,
@@ -769,36 +769,54 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableBankDetailBankName: bank?.name,
             tableBankDetailRouting: bank?.routing,
             tableBankDetailAccount: bank?.account,
+            tableOffDutyLocation: offDutyLocations?.map(
+                (offDutyLocation) => offDutyLocation.nickname
+            ),
             tableEmergContactName: emergencyContact?.name,
             tableEmergContactRelation: emergencyContact?.relationship,
             tableEmergContactPhone: emergencyContact?.phone,
-            tableTwicExp: twicExpirationDays,
+            tableTwicExp: twicExpirationDate
+                ? MethodsCalculationsHelper.convertDateFromBackend(
+                      twicExpirationDate
+                  )
+                : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
             tableCdlDetailState: cdl?.state,
-            tableCdlDetailRestriction: cdl?.restrictionDescription,
-            tableCdlDetailEndorsment: cdl?.endorsementDescription,
+            tableCdlDetailRestriction: cdl?.restrictions?.map(
+                (restriction) => restriction.code
+            ),
+            tableCdlDetailEndorsment: cdl?.endorsements?.map(
+                (endorsement) => endorsement.code
+            ),
+            tableCdlDetailExpiration: {
+                expirationDays: cdl?.expirationDays ?? null,
+                expirationDaysText: cdl?.expirationDays
+                    ? this.thousandSeparator.transform(cdl?.expirationDays)
+                    : null,
+                percentage: cdl?.percentage ? 100 - cdl?.percentage : null,
+            },
             tableTestDetailsIssued:
                 MethodsCalculationsHelper.convertDateFromBackend(test?.date),
             tableTestDetailsType: test?.type,
             tableTestDetailsReason: test?.reason,
             tableTestDetailsResult: test?.result,
             tableMedicalData: {
-                expirationDays: medicalExpirationDays ?? null,
-                expirationDaysText: medicalExpirationDays
-                    ? this.thousandSeparator.transform(medicalExpirationDays)
+                expirationDays: medical?.expirationDays ?? null,
+                expirationDaysText: medical?.expirationDays
+                    ? this.thousandSeparator.transform(medical?.expirationDays)
                     : null,
-                percentage: medicalPercentage ? 100 - medicalPercentage : null,
+                percentage: medical?.percentage
+                    ? 100 - medical?.percentage
+                    : null,
             },
-            tableMvrDetailsRenewalTerm: 5,
+            tableMvrDetailsRenewalTerm: mvr?.expiration,
             tableMvrDetailsExpiration: {
-                expirationDays: mvr?.mvrExpirationDays ?? null,
-                expirationDaysText: mvr?.mvrExpirationDays
-                    ? this.thousandSeparator.transform(mvr?.mvrExpirationDays)
+                expirationDays: mvr?.expirationDays ?? null,
+                expirationDaysText: mvr?.expirationDays
+                    ? this.thousandSeparator.transform(mvr?.expirationDays)
                     : null,
-                percentage: mvr?.mvrPercentage
-                    ? 100 - mvr?.mvrPercentage
-                    : null,
+                percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
             tabelNotificationGeneral: `${
                 general?.mail

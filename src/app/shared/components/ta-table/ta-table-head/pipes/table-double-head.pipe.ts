@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class TableDoubleHeadPipe implements PipeTransform {
     transform(column: any, tableData: any, isOuterCondition: boolean): boolean {
         const { gridNameTitle } = tableData;
-        const { tableHeadTitle, groupName } = column;
+        const { tableHeadTitle } = column;
 
         if (isOuterCondition) {
             const contactsTableColumnsCondition =
@@ -24,7 +24,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === 'GENERAL' ||
                     tableHeadTitle === 'TRUCK' ||
                     tableHeadTitle === 'NAME  ' ||
-                    tableHeadTitle === 'TERM');
+                    tableHeadTitle === 'TERM ');
 
             const truckTableColumnsCondition =
                 gridNameTitle === 'Truck' &&
@@ -83,7 +83,7 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== 'GENERAL' &&
                     tableHeadTitle !== 'TRUCK' &&
                     tableHeadTitle !== 'NAME  ' &&
-                    tableHeadTitle !== 'TERM');
+                    tableHeadTitle !== 'TERM ');
 
             const repairTableColumnsCondition =
                 gridNameTitle !== 'Repair' ||
