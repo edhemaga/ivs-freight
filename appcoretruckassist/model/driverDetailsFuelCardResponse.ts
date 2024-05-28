@@ -9,20 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 
 
-export interface MvrResponse { 
+export interface DriverDetailsFuelCardResponse { 
     id?: number;
-    issueDate?: string;
-    expDate?: string;
-    cdlId?: number;
-    cdlNumber?: string | null;
-    note?: string | null;
-    files?: Array<FileResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
-    expirationDays?: number | null;
-    percentage?: number | null;
+    number?: string | null;
+    brand?: string | null;
+    account?: string | null;
 }
 

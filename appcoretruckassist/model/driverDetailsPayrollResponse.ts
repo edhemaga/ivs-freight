@@ -9,18 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 
 
-export interface MedicalResponse { 
-    id?: number;
-    note?: string | null;
-    issueDate?: string;
-    expDate?: string;
-    files?: Array<FileResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
-    expirationDays?: number | null;
-    percentage?: number | null;
+export interface DriverDetailsPayrollResponse { 
+    emptyMile?: number | null;
+    loadedMile?: number | null;
+    perStop?: number | null;
+    commission?: number | null;
+    flatRate?: number | null;
 }
 

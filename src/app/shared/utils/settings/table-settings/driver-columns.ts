@@ -1,4 +1,13 @@
-export function getDriverColumnsDefinition() {
+// helpers
+import { DriverColumnsHelper } from '@shared/utils/helpers/settings-helpers/driver-columns.helper';
+
+// models
+import { DriverResponse } from 'appcoretruckassist';
+
+export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
+    const payrollColumns =
+        DriverColumnsHelper.getDriverPayrollColumns(tableData);
+
     return [
         {
             ngTemplate: 'checkbox',
@@ -306,7 +315,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
             class: 'custom-font',
         },
-        /* PAY DETAIL, LOGIC FOR DIFFERENT PAY TYPES - SORT INDEX FUNCTION, INDEX 12 - 21 */
+        ...payrollColumns,
         {
             ngTemplate: 'text',
             title: 'Name ',

@@ -395,6 +395,14 @@ model/dispatchStatusResponse.ts
 model/dispatcherFilterResponse.ts
 model/dispatcherIntervalResponse.ts
 model/driverAccidentResponse.ts
+model/driverDetailsBankResponse.ts
+model/driverDetailsDispatchResponse.ts
+model/driverDetailsEmergencyContactResponse.ts
+model/driverDetailsFuelCardResponse.ts
+model/driverDetailsNotificationResponse.ts
+model/driverDetailsOffDutyLocationResponse.ts
+model/driverDetailsOwnerResponse.ts
+model/driverDetailsPayrollResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
@@ -633,7 +641,6 @@ model/multipleChangeTruckStatusCommand.ts
 model/mvrAuthFeedbackResponse.ts
 model/mvrResponse.ts
 model/notificationEntity.ts
-model/offDutyLocationResponse.ts
 model/ownerDetailsResponse.ts
 model/ownerHistoryResponse.ts
 model/ownerIntervalResponse.ts
@@ -799,6 +806,7 @@ model/repairedVehicleResponse.ts
 model/repairedVehicleResponsePagination.ts
 model/resendInviteCommand.ts
 model/resendSignUpCompanyOrUserCommand.ts
+model/revertLoadStatusCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts

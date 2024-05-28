@@ -54,10 +54,12 @@ export interface LoadResponse {
     tonuRate?: number | null;
     driverRate?: number | null;
     additionalBillingRatesTotal?: number | null;
+    billingCount?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalResponse> | null;
     totalRate?: number;
     totalAdjustedRate?: number | null;
     advancePay?: number | null;
+    paymentCount?: number | null;
     pays?: Array<LoadPaymentPayResponse> | null;
     statusHistory?: Array<LoadStatusHistoryResponse> | null;
     commentsCount?: number;
@@ -67,6 +69,7 @@ export interface LoadResponse {
     loadedMiles?: number;
     emptyMiles?: number;
     totalMiles?: number;
+    leftMiles?: number | null;
     totalTimeDays?: number;
     totalTimeHours?: number;
     paidDate?: string | null;

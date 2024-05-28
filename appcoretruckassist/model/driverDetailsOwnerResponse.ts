@@ -9,18 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { AddressEntity } from './addressEntity';
 
 
-export interface MedicalResponse { 
-    id?: number;
-    note?: string | null;
-    issueDate?: string;
-    expDate?: string;
-    files?: Array<FileResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
-    expirationDays?: number | null;
-    percentage?: number | null;
+export interface DriverDetailsOwnerResponse { 
+    id?: number | null;
+    type?: string | null;
+    name?: string | null;
+    ssnEin?: string | null;
+    address?: AddressEntity;
+    email?: string | null;
+    phone?: string | null;
 }
 

@@ -9,20 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { AddressEntity } from './addressEntity';
 
 
-export interface MvrResponse { 
+export interface DriverDetailsOffDutyLocationResponse { 
     id?: number;
-    issueDate?: string;
-    expDate?: string;
-    cdlId?: number;
-    cdlNumber?: string | null;
-    note?: string | null;
-    files?: Array<FileResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
-    expirationDays?: number | null;
-    percentage?: number | null;
+    nickname?: string | null;
+    address?: AddressEntity;
 }
 

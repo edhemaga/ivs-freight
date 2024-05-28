@@ -144,13 +144,19 @@
                                 class="m-0 ta-font-extra-bold th-title-double-subtitle"
                             >
                                 {{
-                                    column.tableHeadTitle | tableDoubleHeadText
+                                    column
+                                        | tableDoubleHeadText
+                                            : tableHeadRowsData?.tableData[0]
                                 }}
                             </p>
 
-                            <p class="m-0 ta-font-bold th-title">
-                                {{ column.tableHeadTitle }}
-
+                            <p
+                                class="m-0 ta-font-bold th-title"
+                                [innerHTML]="
+                                    column.tableHeadTitle
+                                        | tableDoubleHeadPayroll
+                                "
+                            >
                                 <span
                                     class="th-title-double-subtitle-additional"
                                 >
@@ -202,9 +208,10 @@
                                         .gridNameTitle
                                     | tableHeadBorder : column.tableHeadTitle
                             }"
-                        >
-                            {{ column.tableHeadTitle }}
-                        </div>
+                            [innerHTML]="
+                                column.tableHeadTitle | tableDoubleHeadPayroll
+                            "
+                        ></div>
                     </ng-container>
                 </ng-container>
             </ng-template>
