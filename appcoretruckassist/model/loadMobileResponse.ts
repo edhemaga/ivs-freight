@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { LoadStopShortResponse } from './loadStopShortResponse';
 
@@ -18,7 +18,7 @@ export interface LoadMobileResponse {
     id?: number;
     loadNumber?: string | null;
     referenceNumber?: string | null;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     broker?: BrokerShortResponse;
     pickup?: LoadStopShortResponse;
     delivery?: LoadStopShortResponse;

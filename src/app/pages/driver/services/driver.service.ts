@@ -251,41 +251,36 @@ export class DriverService {
         );
     }
 
-    public deleteDriverList(
-        driversToDelete: DriverResponse[]
-    ): Observable<DriverResponse> {
-        // let deleteOnBack = driversToDelete.map((driver: any) => {
-        //   return driver.id;
-        // });
+    public deleteDriverList(ids: number[]): Observable<DriverResponse> {
+        console.log('ids', ids);
 
-        // return this.driverService.apiDriverListDelete({ ids: deleteOnBack }).pipe(
-        //   tap(() => {
-        //     let storeDrivers = this.driversActiveQuery.getAll();
+        return this.driverService.apiDriverListDelete(ids).pipe(
+            tap(() => {
+                let storeDrivers = this.driversActiveQuery.getAll();
 
-        //     storeDrivers.map((driver: any) => {
-        //       deleteOnBack.map((d) => {
-        //         if (d === driver.id) {
-        //           this.driverActiveStore.remove(({ id }) => id === driver.id);
-        //         }
-        //       });
-        //     });
+                storeDrivers.map((driver) => {
+                    ids.map((driverId) => {
+                        if (driverId === driver.id) {
+                            this.driverActiveStore.remove(
+                                ({ id }) => id === driver.id
+                            );
+                        }
+                    });
+                });
 
-        //     alert('Proveri jel sljaka driver count update');
+                const driverCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.DRIVER_TABLE_COUNT)
+                );
 
-        //     const driverCount = JSON.parse(
-        //       localStorage.getItem(TableStringEnum.DRIVER_TABLE_COUNT)
-        //     );
-
-        //     localStorage.setItem(
-        //       TableStringEnum.DRIVER_TABLE_COUNT,
-        //       JSON.stringify({
-        //         active: storeDrivers.length,
-        //         inactive: driverCount.inactive,
-        //       })
-        //     );
-        //   })
-        // );
-        return of(null);
+                localStorage.setItem(
+                    TableStringEnum.DRIVER_TABLE_COUNT,
+                    JSON.stringify({
+                        active: storeDrivers.length,
+                        inactive: driverCount.inactive,
+                    })
+                );
+            })
+        );
     }
 
     public updateDriver(data: any): Observable<object> {

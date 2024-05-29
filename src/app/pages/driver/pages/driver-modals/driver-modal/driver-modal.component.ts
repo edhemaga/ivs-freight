@@ -73,6 +73,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -93,7 +94,7 @@ import {
     DriverResponse,
     EnumValue,
     GetDriverModalResponse,
-    OffDutyLocationResponse,
+    DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
 } from 'appcoretruckassist';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
@@ -191,8 +192,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public isFuelCardRowCreated: boolean = false;
     public isEachFuelCardRowValid: boolean = true;
 
-    public offDutyLocationItems: OffDutyLocationResponse[] = [];
-    public updatedOffDutyLocationItems: OffDutyLocationResponse[] = [];
+    public offDutyLocationItems: DriverDetailsOffDutyLocationResponse[] = [];
+    public updatedOffDutyLocationItems: DriverDetailsOffDutyLocationResponse[] =
+        [];
     public fuelCardItems: DriverModalFuelCardResponse[] = [];
     public updatedFuelCardItems: DriverModalFuelCardResponse[] = [];
 
@@ -456,27 +458,27 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         if (data.action === TableStringEnum.CLOSE) return;
 
-        if (data.action === TableStringEnum.DEACTIVATE && this.editData) {
+        if (data.action === TableStringEnum.DEACTIVATE) {
             const mappedEvent = {
                 ...this.editData,
                 data: {
-                    ...this.editData.data /* 
-                    name: this.editData.data?.fullName, */,
+                    ...this.editData.data,
                 },
             };
 
             this.ngbActiveModal.close();
 
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: TableStringEnum.DRIVER,
+                    subType: TableStringEnum.DRIVER_1,
                     type: data.bool
                         ? TableStringEnum.DEACTIVATE
                         : TableStringEnum.ACTIVATE,
-                    image: true,
+                    template: TableStringEnum.DRIVER_1,
+                    tableType: TableStringEnum.DRIVER,
                 }
             );
         }
@@ -530,21 +532,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         }
         // delete
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
-            const mappedEvent = {
-                ...this.editData,
-                data: {
-                    ...this.editData.data /* 
-                    name: this.editData.data?.fullName , */,
-                },
-            };
-
             this.ngbActiveModal.close();
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
-                    ...mappedEvent,
+                    ...this.editData,
                     template: TableStringEnum.DRIVER,
                     type: TableStringEnum.DELETE,
                     image: true,
@@ -977,7 +971,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     public handleModalTableValueEmit(
-        modalTableDataValue: OffDutyLocationResponse[],
+        modalTableDataValue: DriverDetailsOffDutyLocationResponse[],
         type: string
     ): void {
         if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
@@ -1936,38 +1930,27 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             owner,
 
             driverType,
-            useCarrieraAch,
+            /*    useCarrieraAch, */
             fleetType,
             payType,
             soloDriver,
             teamDriver,
             solo,
-            perMileSolo,
             team,
-            perMileTeam,
-            commissionSolo,
-            commissionTeam,
-            flatRateSolo,
-            flatRateTeam,
 
             isOpenPayrollShared,
             isPayrollCalculated,
 
             bank,
-            account,
-            routing,
 
             offDutyLocations,
-            emergencyContactName,
-            emergencyContactPhone,
-            emergencyContactRelationship,
+            emergencyContact,
             files,
             note,
 
             avatar,
             twic,
             twicExpDate,
-            fuelCard,
             mvrExpiration,
             general,
             payroll,
@@ -2023,17 +2006,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             isOwner: !!owner,
             ownerId: owner?.id ?? null,
             ownerType: owner
-                ? owner.ownerType?.name
-                    ? owner?.ownerType?.name.includes(
-                          DriverModalStringEnum.PROPRIETOR
-                      )
-                        ? DriverModalStringEnum.SOLE_SPACE +
-                          owner?.ownerType?.name
-                        : owner?.ownerType?.name
+                ? owner.type
+                    ? owner?.type.includes(DriverModalStringEnum.PROPRIETOR)
+                        ? DriverModalStringEnum.SOLE_SPACE + owner?.type
+                        : owner?.type
                     : null
                 : null,
 
-            useCarrieraAch,
+            /* useCarrieraAch, */
             payType: payType?.name,
             soloDriver,
             teamDriver,
@@ -2048,7 +2028,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       solo?.perStop
                   )
                 : null,
-            perMileSolo: perMileSolo ? String(perMileSolo) : perMileSolo,
+            /*  perMileSolo: perMileSolo ? String(perMileSolo) : perMileSolo, */
             teamEmptyMile: team?.emptyMile
                 ? String(team?.emptyMile)
                 : team?.emptyMile,
@@ -2060,30 +2040,30 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       team?.perStop
                   )
                 : null,
-            perMileTeam: perMileTeam ? String(perMileTeam) : perMileTeam,
-            commissionSolo,
-            commissionTeam,
+            /*  perMileTeam: perMileTeam ? String(perMileTeam) : perMileTeam, */
+            commissionSolo: solo?.commission,
+            commissionTeam: team?.commission,
             driverCommission:
                 this.fleetType === DriverModalStringEnum.SOLO
-                    ? commissionSolo
+                    ? solo?.commission
                     : this.fleetType === DriverModalStringEnum.TEAM
-                    ? commissionTeam
+                    ? team?.commission
                     : null,
-            flatRateSolo,
-            flatRateTeam,
+            flatRateSolo: solo?.flatRate,
+            flatRateTeam: team?.flatRate,
 
             isOpenPayrollShared,
             isPayrollCalculated,
 
             bankId: bank?.name ?? null,
-            account,
-            routing,
+            account: bank?.account,
+            routing: bank?.routing,
             offDutyLocationItems: JSON.stringify(
                 this.updatedOffDutyLocationItems
             ),
-            emergencyContactName,
-            emergencyContactPhone,
-            emergencyContactRelationship,
+            emergencyContactName: emergencyContact?.name,
+            emergencyContactPhone: emergencyContact?.phone,
+            emergencyContactRelationship: emergencyContact?.relationship,
             files: files?.length ? JSON.stringify(files) : null,
             note,
 
@@ -2092,14 +2072,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             twicExpDate: twicExpDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(twicExpDate)
                 : null,
-            fuelCard,
             mvrExpiration,
-            mailNotificationGeneral: general?.mailNotification,
-            pushNotificationGeneral: general?.pushNotification,
-            smsNotificationGeneral: general?.smsNotification,
-            mailNotificationPayroll: payroll?.mailNotification,
-            pushNotificationPayroll: payroll?.pushNotification,
-            smsNotificationPayroll: payroll?.smsNotification,
+            mailNotificationGeneral: general?.mail,
+            pushNotificationGeneral: general?.push,
+            smsNotificationGeneral: general?.sms,
+            mailNotificationPayroll: payroll?.mail,
+            pushNotificationPayroll: payroll?.push,
+            smsNotificationPayroll: payroll?.sms,
         });
 
         // owner
@@ -2108,7 +2087,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 .map((tab) => {
                     return {
                         ...tab,
-                        checked: owner?.ownerType.name === tab.name,
+                        checked: owner?.type === tab.name,
                     };
                 })
                 .find((tab) => tab.checked);

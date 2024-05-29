@@ -18,6 +18,7 @@ import { EnumValue } from './enumValue';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { HazardousMaterialResponse } from './hazardousMaterialResponse';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { ShipperContactGroupResponse } from './shipperContactGroupResponse';
 import { BrokerLoadModalResponse } from './brokerLoadModalResponse';
 import { BrokerContactGroupResponse } from './brokerContactGroupResponse';
@@ -54,7 +55,7 @@ export interface LoadModalResponse {
     stackable?: Array<EnumValue> | null;
     driverAssist?: Array<EnumValue> | null;
     hazardousMaterials?: Array<HazardousMaterialResponse> | null;
-    loadPossibleNextStatuses?: Array<EnumValue> | null;
+    loadPossibleNextStatuses?: Array<LoadStatusResponse> | null;
     tags?: Array<TagResponse> | null;
 }
 
