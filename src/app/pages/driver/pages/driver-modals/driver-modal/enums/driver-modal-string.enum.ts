@@ -35,6 +35,8 @@ export enum DriverModalStringEnum {
     AVATAR = 'avatar',
     OWNER = 'owner',
     FUEL_CARD_ITEMS = 'fuelCardItems',
+    IS_PAYROLL_SHARED = 'isOpenPayrollShared',
+    IS_PAYROLL_CALCULATED = 'isPayrollCalculated',
 
     PER_MILE = 'Per Mile',
     COMMISSION = 'Commission',
