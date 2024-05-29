@@ -1,9 +1,19 @@
 import { DriverResponse } from 'appcoretruckassist';
 
 export class DriverColumnsHelper {
+    static isCombinedFleetType: boolean = false;
+
     static getDriverPayrollColumns(tableData: DriverResponse[]) {
         const soloPayrollProperties: string[] = [];
         const teamPayrollProperties: string[] = [];
+
+        // set combined or solo/team columns
+        this.isCombinedFleetType = tableData?.some(
+            (driver) => driver.fleetType?.name === 'Combined'
+        );
+
+        console.log('tableData', tableData);
+        console.log('this.isCombinedFleetType', this.isCombinedFleetType);
 
         tableData.forEach((driver) => {
             const { solo, team } = driver;
@@ -87,6 +97,7 @@ export class DriverColumnsHelper {
         teamPayroll: string[]
     ): string[] {
         const order = [
+            'perMile',
             'emptyMile',
             'loadedMile',
             'perStop',
@@ -144,57 +155,39 @@ export class DriverColumnsHelper {
     static createPayrollTitleProperties(property: string): string {
         let conditionalProperty: string;
 
+        switch (true) {
+            case property.includes('empty'):
+                conditionalProperty = 'EMPTY';
+
+                break;
+            case property.includes('loaded'):
+                conditionalProperty = 'LOADED';
+
+                break;
+            case property.includes('Stop'):
+                conditionalProperty = 'STOP';
+
+                break;
+            case property.includes('perMile'):
+                conditionalProperty = 'MILE';
+
+                break;
+            case property.includes('flat'):
+                conditionalProperty = 'FLAT RATE';
+
+                break;
+            case property.includes('commission'):
+                conditionalProperty = 'COMM';
+
+                break;
+            default:
+                break;
+        }
+
         if (property.includes('Solo')) {
-            switch (true) {
-                case property.includes('empty'):
-                    conditionalProperty = 'EMPTY (s)';
-
-                    break;
-                case property.includes('loaded'):
-                    conditionalProperty = 'LOADED (s)';
-
-                    break;
-                case property.includes('Stop'):
-                    conditionalProperty = 'STOP (s)';
-
-                    break;
-                case property.includes('flat'):
-                    conditionalProperty = 'FLAT RATE (s)';
-
-                    break;
-                case property.includes('commission'):
-                    conditionalProperty = 'COMM (s)';
-
-                    break;
-                default:
-                    break;
-            }
+            conditionalProperty += this.isCombinedFleetType ? ' (s)' : '';
         } else {
-            switch (true) {
-                case property.includes('empty'):
-                    conditionalProperty = 'EMPTY (t)';
-
-                    break;
-                case property.includes('loaded'):
-                    conditionalProperty = 'LOADED (t)';
-
-                    break;
-                case property.includes('Stop'):
-                    conditionalProperty = 'STOP (t)';
-
-                    break;
-                case property.includes('flat'):
-                    conditionalProperty = 'FLAT RATE (t)';
-
-                    break;
-                case property.includes('commission'):
-                    conditionalProperty = 'COMM (t)';
-
-                    break;
-
-                default:
-                    break;
-            }
+            conditionalProperty += this.isCombinedFleetType ? ' (t)' : '';
         }
 
         return conditionalProperty;
@@ -223,7 +216,9 @@ export class DriverColumnsHelper {
             char.toUpperCase()
         );
 
-        return `${capitalizedType} - ${soloOrTeam}`;
+        return `${capitalizedType}${
+            this.isCombinedFleetType ? ` - ${soloOrTeam}` : ''
+        }`;
     }
 
     static createPayrollWidthProperties(property: string): number {
