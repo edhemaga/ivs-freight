@@ -13,9 +13,8 @@ import { EnumValue } from './enumValue';
 
 
 export interface GetTestModalResponse { 
-    drugTestReasons?: Array<EnumValue> | null;
-    alcoholTestReasons?: Array<EnumValue> | null;
-    testTypes?: Array<EnumValue> | null;
-    testResults?: Array<EnumValue> | null;
+    reasons?: Array<EnumValue> | null;
+    types?: Array<EnumValue> | null;
+    results?: Array<EnumValue> | null;
 }
 
