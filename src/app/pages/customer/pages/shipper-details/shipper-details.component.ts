@@ -292,6 +292,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             openedTab: event,
         };
         setTimeout(() => {
+            console.log(this.shipperObject, 'shipperobj')
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 this.shipperObject,

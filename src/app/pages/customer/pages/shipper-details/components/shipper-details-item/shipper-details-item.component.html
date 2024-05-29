@@ -131,7 +131,7 @@
             </div>
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
-                    <app-ta-contacts-card [departmentContacts]="departmentContacts"></app-ta-contacts-card>
+                    <app-ta-contacts-card [departmentContacts]="departmentContacts" [parentId]="shipper[0].data.id"></app-ta-contacts-card>
                 </div>
             </div>
             <!--<div *ngSwitchCase="'review'">

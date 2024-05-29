@@ -37,11 +37,11 @@
                             mainTooltip="Edit"
                             position="top"
                             tooltipBackground="#6C6C6C"
+                            (click)="editContact()"
                         >
                             <svg-icon
                                 src="ic_pen.svg"
                                 class="svg-icon-edit"
-                                (click)="editContact()"
                             ></svg-icon>
                         </span>
                         <span
@@ -49,6 +49,7 @@
                             mainTooltip="Delete"
                             position="top"
                             tooltipBackground="#6C6C6C"
+                            (click)="deleteContactModal()"
                         >
                             <svg-icon
                                 src="assets/svg/common/ic_trash.svg"
