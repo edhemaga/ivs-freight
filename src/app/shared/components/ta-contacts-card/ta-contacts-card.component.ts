@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -11,6 +10,8 @@ import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 
 //Pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+
+//Models
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
 
 //Services
@@ -20,6 +21,9 @@ import { ModalService } from '@shared/services/modal.service';
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-modal/confirmation-modal.component';
+
+//Constants
+import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-routes';
 
 @Component({
     selector: 'app-ta-contacts-card',
@@ -40,10 +44,12 @@ import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-mod
         FormatPhonePipe,
     ],
 })
-export class TaContactsCardComponent implements OnDestroy {
+
+export class TaContactsCardComponent {
     @Input() public departmentContacts: DepartmentContacts[];
     @Input() public parentId: number;
-    private destroy$ = new Subject<void>();
+
+    public contactsImageRoutes = ContactsCardSvgRoutes;
 
     constructor(private dropDownService: DropDownService, private modalService: ModalService) {}
 
@@ -78,10 +84,5 @@ export class TaContactsCardComponent implements OnDestroy {
                 svg: true,
             }
         );
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

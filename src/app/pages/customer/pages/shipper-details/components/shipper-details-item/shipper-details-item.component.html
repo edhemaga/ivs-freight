@@ -41,22 +41,32 @@
                                 <div class="repair-items">
                                     <div class="items-header">
                                         <div class="icon-svg-repair">
-                                            <svg-icon
-                                                class="arrow-ri"
+                                            <ng-container
                                                 *ngIf="
                                                     stop?.stopType?.name ===
                                                     'Pickup'
                                                 "
-                                                src="assets/svg/common/ic_arrow-right-line.svg"
-                                            ></svg-icon>
-                                            <svg-icon
-                                                class="arrow-le"
+                                            >
+                                                <svg-icon
+                                                    class="arrow-ri"
+                                                    src="{{
+                                                        shipperImageRoutes.arrowRight
+                                                    }}"
+                                                ></svg-icon
+                                            ></ng-container>
+                                            <ng-container
                                                 *ngIf="
                                                     stop?.stopType?.name ===
                                                     'Delivery'
                                                 "
-                                                src="assets/svg/common/ic_arrow-line-left.svg"
-                                            ></svg-icon>
+                                            >
+                                                <svg-icon
+                                                    class="arrow-le"
+                                                    src="{{
+                                                        shipperImageRoutes.arrowLeft
+                                                    }}"
+                                                ></svg-icon>
+                                            </ng-container>
                                             <span class="unit">{{
                                                 stop?.load?.id
                                             }}</span>
@@ -101,25 +111,37 @@
                                             }}</span>
                                         </div>
                                         <span class="wait-time">
-                                            <span
-                                                class="hours"
+                                            <ng-container
                                                 *ngIf="stop?.wait?.days > 0"
-                                                >{{ stop?.wait?.days }} d</span
                                             >
-                                            <span
-                                                class="hours"
+                                                <span class="hours"
+                                                    >{{
+                                                        stop?.wait?.days
+                                                    }}
+                                                    d</span
+                                                >
+                                            </ng-container>
+                                            <ng-container
                                                 *ngIf="stop?.wait?.hours > 0"
-                                                >{{ stop?.wait?.hours }} h</span
                                             >
-                                            <span
-                                                class="hours"
+                                                <span class="hours"
+                                                    >{{
+                                                        stop?.wait?.hours
+                                                    }}
+                                                    h</span
+                                                >
+                                            </ng-container>
+                                            <ng-container
                                                 *ngIf="
                                                     stop?.wait?.hours <= 0 &&
                                                     stop?.wait?.days <= 0
                                                 "
                                             >
-                                                {{ stop?.wait?.minutes }} min
-                                            </span>
+                                                <span class="hours">
+                                                    {{ stop?.wait?.minutes }}
+                                                    min
+                                                </span>
+                                            </ng-container>
                                         </span>
                                     </div>
                                 </div>
@@ -131,7 +153,10 @@
             </div>
             <div *ngSwitchCase="'contact'" class="contact">
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
-                    <app-ta-contacts-card [departmentContacts]="departmentContacts" [parentId]="shipper[0].data.id"></app-ta-contacts-card>
+                    <app-ta-contacts-card
+                        [departmentContacts]="departmentContacts"
+                        [parentId]="shipper[0].data.id"
+                    ></app-ta-contacts-card>
                 </div>
             </div>
             <!--<div *ngSwitchCase="'review'">

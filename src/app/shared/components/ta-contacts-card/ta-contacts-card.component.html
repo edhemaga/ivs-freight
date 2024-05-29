@@ -40,7 +40,7 @@
                             (click)="editContact()"
                         >
                             <svg-icon
-                                src="ic_pen.svg"
+                                src="{{ contactsImageRoutes.edit }}"
                                 class="svg-icon-edit"
                             ></svg-icon>
                         </span>
@@ -52,42 +52,45 @@
                             (click)="deleteContactModal()"
                         >
                             <svg-icon
-                                src="assets/svg/common/ic_trash.svg"
+                                src="{{ contactsImageRoutes.delete }}"
                                 class="svg-icon-trash"
                             ></svg-icon>
                         </span>
                     </div>
                 </div>
-                <div
-                    class="parking-template-item"
-                    *ngIf="shipperContact?.phone"
-                >
-                    <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-                    <span class="parking-template-text d-flex"
-                        ><app-ta-copy
-                            [copyValue]="
-                                shipperContact?.phoneExt
-                                    ? [
-                                          shipperContact?.phone | formatPhoneP,
-                                          ' x' + shipperContact?.phoneExt
-                                      ]
-                                    : (shipperContact?.phone | formatPhoneP)
-                            "
-                            [arrayText]="shipperContact?.phoneExt ?? false"
-                        >
-                        </app-ta-copy>
-                    </span>
-                </div>
-                <div
-                    class="parking-template-item parking-template-email"
-                    *ngIf="shipperContact?.email"
-                >
-                    <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-                    <span class="parking-template-text"
-                        ><app-ta-copy [copyValue]="shipperContact?.email">
-                        </app-ta-copy
-                    ></span>
-                </div>
+                <ng-container *ngIf="shipperContact?.phone">
+                    <div class="parking-template-item">
+                        <svg-icon
+                            src="{{ contactsImageRoutes.phone }}"
+                        ></svg-icon>
+                        <span class="parking-template-text d-flex"
+                            ><app-ta-copy
+                                [copyValue]="
+                                    shipperContact?.phoneExt
+                                        ? [
+                                              shipperContact?.phone
+                                                  | formatPhoneP,
+                                              ' x' + shipperContact?.phoneExt
+                                          ]
+                                        : (shipperContact?.phone | formatPhoneP)
+                                "
+                                [arrayText]="shipperContact?.phoneExt ?? false"
+                            >
+                            </app-ta-copy>
+                        </span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="shipperContact?.email">
+                    <div class="parking-template-item parking-template-email">
+                        <svg-icon
+                            src="{{ contactsImageRoutes.email }}"
+                        ></svg-icon>
+                        <span class="parking-template-text"
+                            ><app-ta-copy [copyValue]="shipperContact?.email">
+                            </app-ta-copy
+                        ></span>
+                    </div>
+                </ng-container>
             </div>
         </ng-container>
     </app-ta-custom-card>

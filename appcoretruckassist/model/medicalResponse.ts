@@ -20,5 +20,7 @@ export interface MedicalResponse {
     files?: Array<FileResponse> | null;
     createdAt?: string;
     updatedAt?: string;
+    expirationDays?: number | null;
+    percentage?: number | null;
 }
 
