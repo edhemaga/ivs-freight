@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 //Modules
 import { CommonModule } from '@angular/common';
@@ -11,7 +10,12 @@ import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 
 //Pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+
+//Models
 import { DepartmentContacts } from '@shared/models/department-contacts.model';
+
+//Constants
+import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-routes';
 
 @Component({
     selector: 'app-ta-contacts-card',
@@ -32,18 +36,14 @@ import { DepartmentContacts } from '@shared/models/department-contacts.model';
         FormatPhonePipe,
     ],
 })
-export class TaContactsCardComponent implements OnDestroy {
+export class TaContactsCardComponent {
     @Input() departmentContacts: DepartmentContacts[];
-    private destroy$ = new Subject<void>();
+
+    public contactsImageRoutes = ContactsCardSvgRoutes;
 
     constructor() {}
 
     public identity(index: number, item: DepartmentContacts): number {
         return item.id;
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
     }
 }

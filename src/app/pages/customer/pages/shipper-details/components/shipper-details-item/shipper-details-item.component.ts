@@ -22,6 +22,9 @@ import { Titles } from '@core/decorators/titles.decorator';
 // Services
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
+//Constants
+import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes/shipper-details-item-svg-routes';
+
 @Titles()
 @Component({
     selector: 'app-shipper-details-item',
@@ -36,6 +39,10 @@ export class ShipperDetailsItemComponent implements OnChanges {
     public shipperDislike: number;
     public reviewsRepair: any = []; //leave this any, it's not going into this spring
     public departmentContacts: DepartmentContacts[];
+
+    //Images
+    public shipperImageRoutes = ShipperDetailsItemSvgRoutes;
+
     private destroy$ = new Subject<void>();
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
