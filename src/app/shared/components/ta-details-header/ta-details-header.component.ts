@@ -77,6 +77,8 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() moneyFilter: boolean = false;
     @Input() brokerLoadDrop: boolean = false;
 
+    public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
+    public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
     public up: boolean = false;
     public down: boolean = false;
     public dropOpened: boolean = false;
