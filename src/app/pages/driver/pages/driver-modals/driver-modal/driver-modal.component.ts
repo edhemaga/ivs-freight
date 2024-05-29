@@ -1918,6 +1918,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private editDriverById(editData: DriverResponse): void {
+        console.log('editData', editData);
         const {
             firstName,
             lastName,
