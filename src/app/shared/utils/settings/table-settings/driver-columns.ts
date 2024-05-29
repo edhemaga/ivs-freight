@@ -1,4 +1,13 @@
-export function getDriverColumnsDefinition() {
+// helpers
+import { DriverColumnsHelper } from '@shared/utils/helpers/settings-helpers/driver-columns.helper';
+
+// models
+import { DriverResponse } from 'appcoretruckassist';
+
+export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
+    const payrollColumns =
+        DriverColumnsHelper.getDriverPayrollColumns(tableData);
+
     return [
         {
             ngTemplate: 'checkbox',
@@ -306,7 +315,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
             class: 'custom-font',
         },
-        /* PAY DETAIL, LOGIC FOR DIFFERENT PAY TYPES - SORT INDEX FUNCTION, INDEX 12 - 21 */
+        ...payrollColumns,
         {
             ngTemplate: 'text',
             title: 'Name ',
@@ -360,7 +369,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'password-account',
             title: 'Account ',
             field: 'tableBankDetailAccount',
             name: 'Account ',
@@ -385,7 +394,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'description',
             title: 'Off Duty Location',
             field: 'tableOffDutyLocation',
             name: 'Off-Duty Location',
@@ -485,14 +494,14 @@ export function getDriverColumnsDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'TWIC Expiration',
+            title: 'TWIC Exp',
             field: 'tableTwicExp',
             name: 'TWIC Expiration',
             sortName: 'twicExpDate',
             hidden: true,
             isPined: false,
-            width: 150,
-            minWidth: 150,
+            width: 88,
+            minWidth: 88,
             filter: '',
             isNumeric: true,
             index: 29,
@@ -834,8 +843,8 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'progress',
-            title: 'Term',
+            ngTemplate: 'text',
+            title: 'Term ',
             field: 'tableMvrDetailsRenewalTerm',
             name: 'Renewal Term',
             sortName: '',

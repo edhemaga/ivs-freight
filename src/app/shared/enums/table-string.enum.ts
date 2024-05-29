@@ -387,6 +387,9 @@ export enum TableStringEnum {
     DEACTIVATE = 'deactivate',
     DEACTIVATE_2 = 'Deactivate',
 
+    DEACTIVATE_MULTIPLE = 'deactivate-multiple',
+    ACTIVATE_MULTIPLE = 'activate-multiple',
+
     ACTIVATE = 'activate',
     ACTIVATE_2 = 'Activate',
     ACTIVE = 'active',

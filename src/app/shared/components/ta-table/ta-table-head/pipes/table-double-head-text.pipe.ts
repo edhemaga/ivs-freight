@@ -1,8 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
+1;
 @Pipe({ name: 'tableDoubleHeadText', standalone: true })
 export class TableDoubleHeadTextPipe implements PipeTransform {
-    transform(tableHeadTitle: string): string {
+    transform(column: any, tableData: any): string {
+        const { tableHeadTitle, index } = column;
+        const { gridNameTitle } = tableData;
+
         return tableHeadTitle === 'PRIMARY '
             ? 'PHONE'
             : tableHeadTitle === 'PRIMARY'
@@ -65,6 +68,8 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? 'BILLING'
             : tableHeadTitle === 'EMPTY'
             ? 'WEIGHT'
+            : gridNameTitle === 'Driver' && index === 12
+            ? 'PAY'
             : 'MVR';
     }
 }

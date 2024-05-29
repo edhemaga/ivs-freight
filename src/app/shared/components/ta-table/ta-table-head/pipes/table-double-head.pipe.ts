@@ -3,8 +3,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'tableDoubleHead', standalone: true })
 export class TableDoubleHeadPipe implements PipeTransform {
     transform(column: any, tableData: any, isOuterCondition: boolean): boolean {
+        const { tableHeadTitle, index } = column;
         const { gridNameTitle } = tableData;
-        const { tableHeadTitle, groupName } = column;
 
         if (isOuterCondition) {
             const contactsTableColumnsCondition =
@@ -24,7 +24,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle === 'GENERAL' ||
                     tableHeadTitle === 'TRUCK' ||
                     tableHeadTitle === 'NAME  ' ||
-                    tableHeadTitle === 'TERM');
+                    tableHeadTitle === 'TERM ' ||
+                    index === 12);
 
             const truckTableColumnsCondition =
                 gridNameTitle === 'Truck' &&
@@ -94,7 +95,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== 'GENERAL' &&
                     tableHeadTitle !== 'TRUCK' &&
                     tableHeadTitle !== 'NAME  ' &&
-                    tableHeadTitle !== 'TERM');
+                    tableHeadTitle !== 'TERM ' &&
+                    index !== 12);
 
             const repairTableColumnsCondition =
                 gridNameTitle !== 'Repair' ||

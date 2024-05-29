@@ -214,11 +214,11 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             .getTestDropdowns()
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                const { testTypes, drugTestReasons, testResults } = res;
+                const { types, reasons, results } = res;
 
-                this.testTypesDropdownList = testTypes;
-                this.testReasonsDropdownList = drugTestReasons;
-                this.testResultsDropdownList = testResults;
+                this.testTypesDropdownList = types;
+                this.testReasonsDropdownList = reasons;
+                this.testResultsDropdownList = results;
 
                 if (this.editData) {
                     this.startFormChanges();

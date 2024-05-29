@@ -32,7 +32,6 @@ export interface LoadStopItemCommand {
     secure?: Secure;
     tarp?: number | null;
     stackable?: YesNoEnum;
-    driverAssist?: YesNoEnum;
     hazardousMaterialId?: number | null;
 }
 
