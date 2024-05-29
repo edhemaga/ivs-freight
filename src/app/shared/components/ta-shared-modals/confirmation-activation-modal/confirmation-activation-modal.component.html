@@ -121,32 +121,12 @@
                                     {{ editData.modalTitle }}
                                 </div>
 
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate' ||
-                                            editData?.type ===
-                                                'deactivate-multiple';
-                                        else open
-                                    "
-                                >
+                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                    "
-                                    ></svg-icon>
-                                </ng-container>
-
-                                <ng-template #open>
-                                    <ng-container
-                                        *ngIf="editData?.type === 'open'"
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
-                                        ></svg-icon
-                                    ></ng-container>
-                                </ng-template>
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
                             </div>
 
                             <div
@@ -227,32 +207,12 @@
                                     {{ editData?.modalTitle }}
                                 </div>
 
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate' ||
-                                            editData?.type ===
-                                                'deactivate-multiple';
-                                        else open
-                                    "
-                                >
+                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                    "
-                                    ></svg-icon>
-                                </ng-container>
-
-                                <ng-template #open>
-                                    <ng-container
-                                        *ngIf="editData?.type === 'open'"
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
-                                        ></svg-icon
-                                    ></ng-container>
-                                </ng-template>
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
                             </div>
 
                             <div

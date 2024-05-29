@@ -8,6 +8,8 @@ import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-mod
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -54,8 +56,6 @@ import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-ta
 import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
     selector: 'app-trailer-table',
@@ -544,7 +544,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTrailerData(data: any): TrailerMapped {
+    private mapTrailerData(data: TrailerMapped): TrailerMapped {
         return {
             ...data,
             isSelected: false,
@@ -565,18 +565,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.SVG,
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER
             ),
-            tableMake: data?.trailerMake?.name
-                ? data.trailerMake.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableModel: data?.model
-                ? data?.model
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableColor: data?.color?.code
-                ? data.color.code
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            colorName: data?.color?.name
-                ? data.color.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableMake:
+                data?.trailerMake?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableModel: data?.model ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableColor:
+                data?.color?.code ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            colorName:
+                data?.color?.name ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tabelLength: data?.trailerLength?.name
                 ? DataFilterHelper.getLengthNumber(data?.trailerLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -586,48 +582,44 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? data.assignedTo?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruck: data.assignedTo?.truck
-                ? data.assignedTo?.truck?.truckNumber
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruckType: data.assignedTo?.truck?.truckType
-                ? data.assignedTo?.truck?.truckType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOwner: data?.owner?.name
-                ? data.owner.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruck:
+                data.assignedTo?.truck?.truckNumber ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruckType:
+                data.assignedTo?.truck?.truckType?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableOwner:
+                data?.owner?.name ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) +
                   TableStringEnum.POUNDS_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableWeightVolume:
                 data.volume ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAxle: data?.axles
-                ? data?.axles
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableSuspension: data?.suspension?.name
-                ? data.suspension.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTireSize: data?.tireSize?.name
-                ? data.tireSize.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableReeferUnit: data?.reeferUnit?.name
-                ? data.reeferUnit.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDoorType: data?.doorType?.name
-                ? data.doorType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableInsPolicy: data?.insurancePolicy
-                ? data.insurancePolicy
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAxle: data?.axles ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableSuspension:
+                data?.suspension?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTireSize:
+                data?.tireSize?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableReeferUnit:
+                data?.reeferUnit?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDoorType:
+                data?.doorType?.name ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableInsPolicy:
+                data?.insurancePolicy ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailNumber: data?.licensePlate
-                ? data.licensePlate
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST: data.registrationState
-                ? data.registrationState.stateShortName
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailNumber:
+                data?.licensePlate ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailST:
+                data.registrationState?.stateShortName ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -661,12 +653,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber: data.title?.number
-                ? data.title.number
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitle: data.title?.state
-                ? data.title.state.stateShortName
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleNumber:
+                data.title?.number ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleST:
+                data.title?.state?.stateShortName ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTitlePurchase: data.title?.purchaseDate
                 ? this.datePipe.transform(
                       data.title?.purchaseDate,
