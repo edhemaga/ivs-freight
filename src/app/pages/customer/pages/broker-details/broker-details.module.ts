@@ -24,6 +24,7 @@ import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdo
 import { TaProgressInvoicesComponent } from '@shared/components/ta-progress-invoices/ta-progress-invoices.component';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
@@ -60,6 +61,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         TaProgressInvoicesComponent,
         TaUserReviewComponent,
         TaCounterComponent,
+        TaContactsCardComponent,
 
         // Pipes
         FormatCurrencyPipe,

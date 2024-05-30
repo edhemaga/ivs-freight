@@ -17,7 +17,15 @@ import { Titles } from '@core/decorators/titles.decorator';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 // Models
-import { BrokerResponse, UpdateReviewCommand } from 'appcoretruckassist';
+import {
+    BrokerContactResponse,
+    BrokerResponse,
+    UpdateReviewCommand,
+} from 'appcoretruckassist';
+import { DepartmentContacts } from '@shared/models/department-contacts.model';
+import { BrokerRatingReview } from '@pages/customer/pages/broker-details/models/broker-rating-review.model';
+import { BrokerLoadStop } from '../../models/broker-load-stop.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // Enums
 import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
@@ -32,14 +40,15 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 })
 export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     private destroy$ = new Subject<void>();
-    @Input() brokerData: BrokerResponse | any;
-    public brokerContacts: any;
+    @Input() brokerData: BrokerResponse;
+    public brokerContacts: BrokerContactResponse[];
     public brokerLikes: number;
     public brokerDislike: number;
-    public reviewsRepair: any = [];
-    public dotsData: any;
-    public stopsDataPickup: any;
-    public stopsDataDelivery: any;
+    public reviewsRepair: BrokerRatingReview[] = [];
+    public dotsData: DropdownItem[];
+    public stopsDataPickup: BrokerLoadStop[];
+    public stopsDataDelivery: BrokerLoadStop[];
+    public departmentContacts: DepartmentContacts[];
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
 
@@ -55,6 +64,8 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                 changes.brokerData.currentValue[0].data.downCount;
             this.getReviews(changes.brokerData.currentValue[0].data);
             this.getStops(changes.brokerData.currentValue[0].data);
+
+            this.orderContacts();
         }
     }
     ngOnInit(): void {
@@ -116,70 +127,56 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
 
     /**Function for dots in cards */
     public initTableOptions(): void {
-        this.dotsData = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
+        this.dotsData = [
+            {
+                title: TableStringEnum.EDIT_2,
+                name: TableStringEnum.EDIT,
+                svg: BrokerDetailsSvgRoutes.editIcon,
+                show: true,
+                iconName: TableStringEnum.EDIT,
             },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
+            {
+                title: TableStringEnum.BORDER,
             },
-            actions: [
-                {
-                    title: TableStringEnum.EDIT_2,
-                    name: TableStringEnum.EDIT,
-                    svg: BrokerDetailsSvgRoutes.editIcon,
-                    show: true,
-                    iconName: TableStringEnum.EDIT,
-                },
-                {
-                    title: TableStringEnum.BORDER,
-                },
-                {
-                    title: TableStringEnum.VIEW_DETAILS_2,
-                    name: TableStringEnum.VIEW_DETAILS,
-                    svg: BrokerDetailsSvgRoutes.hazardousInfoIcon,
-                    iconName: TableStringEnum.VIEW_DETAILS,
-                    show: true,
-                },
-                {
-                    title: TableStringEnum.BORDER,
-                },
-                {
-                    title: TableStringEnum.SHARE_2,
-                    name: TableStringEnum.SHARE,
-                    svg: BrokerDetailsSvgRoutes.shareIcon,
-                    iconName: TableStringEnum.SHARE,
-                    show: true,
-                },
-                {
-                    title: TableStringEnum.PRINT_2,
-                    name: TableStringEnum.PRINT,
-                    svg: BrokerDetailsSvgRoutes.printIcon,
-                    iconName: TableStringEnum.PRINT,
-                    show: true,
-                },
-                {
-                    title: TableStringEnum.BORDER,
-                },
-                {
-                    title: TableStringEnum.DELETE_2,
-                    name: TableStringEnum.DELETE_ITEM,
-                    type: TableStringEnum.DRIVER,
-                    text: BrokerDetailsStringEnum.DELETE_DRIVER_TEXT,
-                    svg: BrokerDetailsSvgRoutes.deleteIcon,
-                    iconName: TableStringEnum.DELETE,
-                    danger: true,
-                    show: true,
-                    redIcon: true,
-                },
-            ],
-            export: true,
-        };
+            {
+                title: TableStringEnum.VIEW_DETAILS_2,
+                name: TableStringEnum.VIEW_DETAILS,
+                svg: BrokerDetailsSvgRoutes.hazardousInfoIcon,
+                iconName: TableStringEnum.VIEW_DETAILS,
+                show: true,
+            },
+            {
+                title: TableStringEnum.BORDER,
+            },
+            {
+                title: TableStringEnum.SHARE_2,
+                name: TableStringEnum.SHARE,
+                svg: BrokerDetailsSvgRoutes.shareIcon,
+                iconName: TableStringEnum.SHARE,
+                show: true,
+            },
+            {
+                title: TableStringEnum.PRINT_2,
+                name: TableStringEnum.PRINT,
+                svg: BrokerDetailsSvgRoutes.printIcon,
+                iconName: TableStringEnum.PRINT,
+                show: true,
+            },
+            {
+                title: TableStringEnum.BORDER,
+            },
+            {
+                title: TableStringEnum.DELETE_2,
+                name: TableStringEnum.DELETE_ITEM,
+                type: TableStringEnum.DRIVER,
+                text: BrokerDetailsStringEnum.DELETE_DRIVER_TEXT,
+                svg: BrokerDetailsSvgRoutes.deleteIcon,
+                iconName: TableStringEnum.DELETE,
+                danger: true,
+                show: true,
+                redIcon: true,
+            },
+        ];
     }
 
     public changeReviewsEvent(reviews: ReviewComment): void {
@@ -219,5 +216,29 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                 next: () => {},
                 error: () => {},
             });
+    }
+
+    private orderContacts(): void {
+        this.departmentContacts = [];
+        this.brokerContacts.forEach((contact) => {
+            const departmentName = contact.department.name;
+
+            let department = this.departmentContacts.find(
+                (dep) => dep.name === departmentName
+            );
+
+            if (!department) {
+                department = { name: departmentName, contacts: [] };
+                this.departmentContacts.push(department);
+            }
+
+            const contactData = {
+                ...contact,
+                fullName: contact.contactName,
+                phoneExt: contact.extensionPhone,
+            };
+
+            department.contacts.push(contactData);
+        });
     }
 }

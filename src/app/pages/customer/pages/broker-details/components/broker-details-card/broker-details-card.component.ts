@@ -221,7 +221,7 @@ export class BrokerDetailsCardComponent
         else this.inoviceAgingData = data?.brokerPaidInvoiceAgeing;
     }
 
-    public getBrokerDropdown(): BrokerDropdown | void {
+    public getBrokerDropdown(): void {
         this.brokerDropdowns = this.brokerQuery.getAll().map((item) => {
             return {
                 id: item.id,
@@ -232,7 +232,7 @@ export class BrokerDetailsCardComponent
         });
     }
     
-    public onSelectBroker(event: { id: number }): BrokerResponse | void {
+    public onSelectBroker(event: { id: number }): void {
         if (event && event.id !== this.broker.id) {
             this.brokerList = this.brokerQuery.getAll().map((item) => {
                 return {

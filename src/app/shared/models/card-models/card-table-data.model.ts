@@ -219,6 +219,12 @@ export interface DropdownItem {
     isDisabled?: boolean;
     tableListDropdownContentStyle?: { [key: string]: any };
     insideDropdownContent?: InsideDropdownContent[];
+    svg?: string;
+    show?: boolean;
+    iconName?: string;
+    type?: string;
+    danger?: boolean;
+    redIcon?: boolean;
 }
 
 interface InsideDropdownContent {

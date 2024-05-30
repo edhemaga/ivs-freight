@@ -6,10 +6,26 @@ app-broker-details-single {
         right: -10px;
     }
 }
+
+app-broker-details-item {
+    .header-content {
+        margin-left: 10px !important;
+    }
+
+    .divider {
+        margin-left: 6px;
+        width: calc(100% - 12px);
+    }
+    
+    .ta-card-header {
+        margin-right: 10px !important;
+    }
+}
+
 .contact-wrapper {
     background-color: $color-white;
     border-radius: 3px;
-    padding: 1px 6px;
+    padding: 4px 2px;
     width: 340px;
     height: fit-content;
 }
