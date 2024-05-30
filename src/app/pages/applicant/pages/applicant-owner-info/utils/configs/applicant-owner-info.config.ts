@@ -1,11 +1,10 @@
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+// enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 
-interface OwnerInfoConfigOptions {
-    selectedMode: string;
-    stepFeedbackValues?: any;
-    isBankSelected?: boolean;
-}
+// models
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { OwnerInfoConfigOptions } from '@pages/applicant/pages/applicant-owner-info/models/owner-info-config-options.model';
+
 
 export class BusinessDetailsConfig {
     static getBusinessNameInputConfig(config: OwnerInfoConfigOptions): ITaInput {

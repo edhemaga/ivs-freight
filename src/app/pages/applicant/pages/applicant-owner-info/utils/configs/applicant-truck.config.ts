@@ -1,19 +1,9 @@
+// enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import {
-    TruckTypeResponse,
-    TruckMakeResponse,
-    ColorResponse,
-} from 'appcoretruckassist';
 
-export interface TruckConfigOptions {
-    selectedMode: string;
-    selectedTruckType?: TruckTypeResponse;
-    selectedTruckMake?: TruckMakeResponse;
-    selectedTruckColor?: ColorResponse;
-    stepFeedbackValues?: any;
-    loadingTruckVinDecoder?: boolean;
-}
+// models
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { TruckConfigOptions } from '@pages/applicant/pages/applicant-owner-info/models/truck-config-options.model';
 
 export class ApplicantTruckConfig {
     static getTruckTypeConfig(options: TruckConfigOptions): ITaInput {
