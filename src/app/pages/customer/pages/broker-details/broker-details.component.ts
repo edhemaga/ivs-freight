@@ -130,8 +130,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             (broker) => broker.id === data.id
         );
         this.initTableOptions(data);
-        //calling api every time data is loaded
-        //this.getBrokerById(data.id);
 
         this.businessOpen = data?.status ? true : false;
 
@@ -160,12 +158,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 nameDefault: BrokerDetailsStringEnum.LOAD,
                 template: BrokerDetailsStringEnum.LOAD_2,
                 icon: true,
-                hasArrowDown: true,
+                hasArrowDown: false,
                 length: data?.loadStops?.loads?.data?.length ?? 0,
                 hasCost: true,
-                hide: false,
-                hasArrow: true,
-                brokerLoadDrop: true,
+                hide: true,
+                hasArrow: false,
+                brokerLoadDrop: false,
                 customText: BrokerDetailsStringEnum.REVENUE,
                 total: totalCost,
                 icons: [
@@ -273,6 +271,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     show: true,
                     blueIcon: true,
                     iconName: BrokerDetailsStringEnum.IC_PLUS,
+                    hide: true,
                 },
                 {
                     title: TableStringEnum.ADD_CONTRACT_2,
@@ -314,6 +313,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: TableStringEnum.BORDER,
+                    hide: true,
                 },
                 {
                     title: TableStringEnum.SHARE_2,
@@ -321,6 +321,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: BrokerDetailsSvgRoutes.shareIcon,
                     show: true,
                     iconName: TableStringEnum.SHARE,
+                    hide: true,
                 },
                 {
                     title: TableStringEnum.PRINT_2,
@@ -328,6 +329,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                     svg: BrokerDetailsSvgRoutes.printIcon,
                     show: true,
                     iconName: TableStringEnum.PRINT,
+                    hide: true,
                 },
                 {
                     title: TableStringEnum.BORDER,

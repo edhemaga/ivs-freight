@@ -45,7 +45,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     public brokerLikes: number;
     public brokerDislike: number;
     public reviewsRepair: BrokerRatingReview[] = [];
-    public dotsData: DropdownItem[];
+    public loadActions: DropdownItem[];
     public stopsDataPickup: BrokerLoadStop[];
     public stopsDataDelivery: BrokerLoadStop[];
     public departmentContacts: DepartmentContacts[];
@@ -127,7 +127,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
 
     /**Function for dots in cards */
     public initTableOptions(): void {
-        this.dotsData = [
+        this.loadActions = [
             {
                 title: TableStringEnum.EDIT_2,
                 name: TableStringEnum.EDIT,
