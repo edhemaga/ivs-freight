@@ -29,6 +29,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
@@ -198,7 +199,7 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -206,6 +207,10 @@ export class ApplicantSphComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/psp-authorization/${this.applicantId}`]);
         }
     }
 
