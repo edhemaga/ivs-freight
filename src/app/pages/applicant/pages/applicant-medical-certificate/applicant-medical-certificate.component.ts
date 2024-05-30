@@ -23,6 +23,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
@@ -34,6 +35,7 @@ import {
 //components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
 //modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
@@ -53,6 +55,7 @@ import { SharedModule } from '@shared/shared.module';
         // components
         TaInputComponent,
         TaUploadFilesComponent,
+        TaCounterComponent
     ],
 
 })
@@ -361,7 +364,7 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -369,6 +372,10 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/owner-info/${this.applicantId}`]);
         }
     }
 

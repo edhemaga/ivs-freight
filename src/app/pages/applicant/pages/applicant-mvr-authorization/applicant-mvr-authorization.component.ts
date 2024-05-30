@@ -25,6 +25,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
@@ -41,6 +42,7 @@ import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -57,6 +59,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
         TaInputComponent,
         TaUploadFilesComponent,
         TaCheckboxComponent,
+        TaCounterComponent,
     ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
@@ -88,18 +91,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
 
-    public issueDateInputConfig = {
-        name: 'datepicker',
-        type: 'text',
-        label: 'Issue date',
-        isDropdown: true,
-        placeholderIcon: 'date',
-        isRequired: true,
-        customClass: 'datetimeclass',
-        isDisabled: this.selectedMode === 'REVIEW_MODE',
-        incorrectInput: this.selectedMode === 'REVIEW_MODE',
-    };
-
     public openAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
@@ -125,6 +116,20 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private route: ActivatedRoute
     ) {}
+
+    get issueDateInputConfig() {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue date',
+            isDropdown: true,
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass',
+            isDisabled: this.selectedMode === SelectedMode.REVIEW,
+            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
+        };
+    }
 
     ngOnInit(): void {
         this.getQueryParams();
@@ -473,7 +478,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -481,6 +486,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/medical-certificate/${this.applicantId}`]);
         }
     }
 

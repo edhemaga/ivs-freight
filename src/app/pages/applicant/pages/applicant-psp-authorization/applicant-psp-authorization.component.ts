@@ -25,6 +25,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { PspAuthorizationFormFields } from '@pages/applicant/pages/applicant-psp-authorization/enums/psp-authorization-form-fields.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
@@ -248,7 +249,7 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -256,6 +257,10 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/mvr-authorization/${this.applicantId}`]);
         }
     }
 

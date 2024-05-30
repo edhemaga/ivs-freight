@@ -131,7 +131,7 @@
 
         .truck-documents {
             gap: 10px;
-            
+
             .divider-truck {
                 width: 303px;
             }
@@ -151,7 +151,14 @@
 
         .add-truck-container,
         .add-trailer-container {
-            margin: 8px 0 28px 4px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .add-truck-container,
+        .add-trailer-container,
+        .add-trailer-row {
+            margin: 8px 0 12px 4px;
 
             p {
                 font-size: 14px;
@@ -234,6 +241,76 @@
             width: 210px;
         }
     }
+
+    .add-trailer-row {
+        margin: 12px 0;
+
+        .delete-btn-container {
+            width: 26px;
+            height: 26px;
+            border-radius: 2px;
+            padding: 4px;
+            transition: background 0.2s ease-in-out;
+
+            &:hover {
+                background: $white;
+
+                .delete-icon {
+                    svg {
+                        path {
+                            fill: $ta-black;
+                        }
+                    }
+                }
+            }
+
+            .delete-icon {
+                cursor: pointer;
+
+                svg {
+                    path {
+                        fill: $bw5;
+                        transition: fill 0.2s ease-in-out;
+                    }
+                }
+            }
+        }
+
+        .add-trailer-btn {
+            height: 26px;
+            padding: 4px;
+            border: none;
+            outline: none;
+            border-radius: 2px;
+            background: $bw2;
+            transition: background 0.2s ease-in-out;
+
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            p {
+                position: relative;
+                top: 1px;
+                line-height: 18px;
+                font-size: 14px;
+                color: $ta-black;
+                padding: 0 4px;
+
+                transition: color 0.2s ease-in-out;
+            }
+
+            &:hover {
+                background: $ta-black;
+
+                p {
+                    color: $white;
+                }
+            }
+        }
+        // }
+    }
 }
 
 .next-btn-container {
@@ -242,4 +319,12 @@
     bottom: 50%;
     transform: translate(0, -50%);
     right: 42px;
+}
+
+.back-btn-container {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    left: 42px;
 }
