@@ -111,7 +111,8 @@
                                 <div
                                     class="m-0 ta-font-bold"
                                     [class.limit-text]="
-                                        editData.template !== 'truck'
+                                        editData.template !== 'truck' &&
+                                        editData.template !== 'trailer'
                                     "
                                     [class.shorter-text]="
                                         editData?.type === 'open'
@@ -120,35 +121,21 @@
                                     {{ editData.modalTitle }}
                                 </div>
 
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate' ||
-                                            editData?.type ===
-                                                'deactivate-multiple';
-                                        else open
-                                    "
-                                >
+                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                    "
-                                    ></svg-icon>
-                                </ng-container>
-
-                                <ng-template #open>
-                                    <ng-container
-                                        *ngIf="editData?.type === 'open'"
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
-                                        ></svg-icon
-                                    ></ng-container>
-                                </ng-template>
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
                             </div>
 
-                            <div class="m-0 text-2 limit-text">
+                            <div
+                                class="m-0 text-2"
+                                [class.limit-text]="
+                                    editData.template !== 'truck' &&
+                                    editData.template !== 'trailer'
+                                "
+                            >
                                 {{ editData.modalSecondTitle }}
                             </div>
                         </ng-template>
@@ -220,35 +207,21 @@
                                     {{ editData?.modalTitle }}
                                 </div>
 
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate' ||
-                                            editData?.type ===
-                                                'deactivate-multiple';
-                                        else open
-                                    "
-                                >
+                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                    "
-                                    ></svg-icon>
-                                </ng-container>
-
-                                <ng-template #open>
-                                    <ng-container
-                                        *ngIf="editData?.type === 'open'"
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
-                                        ></svg-icon
-                                    ></ng-container>
-                                </ng-template>
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
                             </div>
 
-                            <div class="m-0 text-2 limit-text">
+                            <div
+                                class="m-0 text-2"
+                                [class.limit-text]="
+                                    editData.template !== 'truck' &&
+                                    editData.template !== 'trailer'
+                                "
+                            >
                                 {{ editData?.modalSecondTitle }}
                             </div>
                         </ng-template>
