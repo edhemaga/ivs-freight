@@ -20,7 +20,7 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
 
 //Models
-import { BrokerResponse } from 'appcoretruckassist';
+import { BrokerResponse, InvoiceAgeingResponse } from 'appcoretruckassist';
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
@@ -109,6 +109,30 @@ export class BrokerDetailsCardComponent
         chartType: 1,
     };
 
+    // Invoice Aging Tabs
+    public invoiceAgingTabs: TabOptions[] = [
+        {
+            id: 1,
+            name: 'UNPAID',
+            checked: true,
+        },
+        {
+            id: 2,
+            name: 'PAID',
+            checked: false,
+        },
+    ];
+    public invoiceAgingSelectedTab: number = 1;
+    public inoviceAgingData: {
+        totalPaid?: number;
+        totalDebt?: number;
+        invoiceAgeingGroup?: InvoiceAgeingResponse;
+        invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+        invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+        invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+        invoiceAgeingGroupFour?: InvoiceAgeingResponse;
+    };
+
     private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     private destroy$ = new Subject<void>();
 
@@ -131,6 +155,7 @@ export class BrokerDetailsCardComponent
 
         this.updateCharts(changes.broker?.currentValue.id);
     }
+
     ngOnInit(): void {
         this.tabsButton();
 
@@ -139,6 +164,7 @@ export class BrokerDetailsCardComponent
         );
         this.brokerIndex = currentIndex;
     }
+
     public tabsButton(): void {
         this.tabsBroker = [
             {
@@ -189,6 +215,10 @@ export class BrokerDetailsCardComponent
             data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupFour?.countInvoice;
         this.invoiceAgeingCounter =
             firstGroup + secondGroup + threeGroup + fourGroup;
+
+        if (this.invoiceAgingSelectedTab === 1)
+            this.inoviceAgingData = data?.brokerUnpaidInvoiceAgeing;
+        else this.inoviceAgingData = data?.brokerPaidInvoiceAgeing;
     }
 
     public getBrokerDropdown(): BrokerDropdown | void {
@@ -201,6 +231,7 @@ export class BrokerDetailsCardComponent
             };
         });
     }
+    
     public onSelectBroker(event: { id: number }): BrokerResponse | void {
         if (event && event.id !== this.broker.id) {
             this.brokerList = this.brokerQuery.getAll().map((item) => {
@@ -516,6 +547,21 @@ export class BrokerDetailsCardComponent
         this.getPaymentChartData(id, this.paymentCall.chartType, false);
 
         this.getInvoiceChartData(id, this.invoiceCall.chartType, false);
+    }
+
+    public changeInvoiceAgingTab(event: { id: number }): void {
+        this.invoiceAgingSelectedTab = event.id;
+
+        this.invoiceAgingTabs = this.invoiceAgingTabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === event.id,
+            };
+        });
+
+        if (event.id === 1)
+            this.inoviceAgingData = this.broker.brokerUnpaidInvoiceAgeing;
+        else this.inoviceAgingData = this.broker.brokerPaidInvoiceAgeing;
     }
 
     ngOnDestroy(): void {

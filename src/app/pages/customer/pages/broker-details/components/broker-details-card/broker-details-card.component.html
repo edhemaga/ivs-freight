@@ -10,7 +10,7 @@
         "
         [tooltipPrevious]="!brokerIndex ? '' : 'Previous Broker'"
         [searchInputName]="'Search Broker'"
-        [dateChecked]="'5 days ago'"
+        [dateChecked]="broker?.updatedAt | formatDateP"
         [options]="brokerDropdowns"
         [currentName]="broker.businessName"
         (selectValue)="onSelectBroker($event)"
@@ -81,35 +81,38 @@
         [ngClass]="{ 'bind-heigth': !templateCard }"
     >
         <div class="repair-cards">
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="false"
-                [cardName]="'Additional Info'"
-                [isCardOpen]="true"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px'
-                }"
-                [customClass]="'detailsPadding'"
-            >
-                <div class="additional-template-broker-data">
-                    <div class="addition-template-item">
-                        <span class="header">EIN</span>
-                        <span class="value">{{
-                            broker?.ein | formatEinP
-                        }}</span>
+            <ng-container *ngIf="broker?.ein || broker?.mcNumber">
+                <app-ta-custom-card
+                    [bodyTemplate]="'card'"
+                    [hasDivider]="false"
+                    [cardName]="'Additional Info'"
+                    [isCardOpen]="true"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '10px'
+                    }"
+                    [customClass]="'detailsPadding'"
+                >
+                    <div class="additional-template-broker-data">
+                        <div class="addition-template-item">
+                            <span class="header ta-font-bold">EIN</span>
+                            <span class="value">{{
+                                broker?.ein | formatEinP
+                            }}</span>
+                        </div>
+                        <div class="addition-template-item">
+                            <span class="header ta-font-bold">MC</span>
+                            <span class="value">{{ broker?.mcNumber }}</span>
+                        </div>
                     </div>
-                    <div class="addition-template-item">
-                        <span class="header">MC</span>
-                        <span class="value">{{ broker?.mcNumber }}</span>
-                    </div>
-                </div>
-            </app-ta-custom-card>
+                </app-ta-custom-card>
+            </ng-container>
+
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="true"
                 [hasCounter]="20"
-                [cardName]="'Paid Invoice'"
+                [cardName]="'Invoice'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
@@ -174,6 +177,91 @@
                     </app-ta-chart>
                 </div>
             </app-ta-custom-card>
+
+            <app-ta-custom-card
+                [bodyTemplate]="'card'"
+                [hasDivider]="true"
+                [cardName]="'Terms and Credit'"
+                [isCardOpen]="true"
+                [animationMarginParams]="{
+                    marginTop: '0px',
+                    marginBottom: '10px'
+                }"
+                [customClass]="'detailsPadding'"
+            >
+                <ng-container *ngIf="broker?.availableCredit">
+                    <div class="invoice-ageing-template">
+                        <div class="invoice-ageing-template-item">
+                            <span class="header-name ta-font-bold mb-1"
+                                >Available Credit</span
+                            >
+                            <div class="credit-perctange">
+                                <span class="value-ageing ta-font-medium">{{
+                                    broker?.availableCredit | formatCurrency
+                                }}</span>
+                                <div class="percntage-broker ta-font-medium">
+                                    {{ getPercntageOfPaid.toFixed(0) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="broker.availableCredit">
+                    <div
+                        class="table-progress-bar-container my-2"
+                        [ngClass]="{
+                            'bg-expired-container':
+                                !getPercntageOfPaid.toFixed(0),
+                            'bg-sliver-container':
+                                getPercntageOfPaid.toFixed(0) >= 50 &&
+                                getPercntageOfPaid.toFixed(0) < 100,
+                            'bg-orange-container':
+                                getPercntageOfPaid.toFixed(0) >= 20 &&
+                                getPercntageOfPaid.toFixed(0) < 50,
+                            'bg-danger-container':
+                                getPercntageOfPaid.toFixed(0) > 0 &&
+                                getPercntageOfPaid.toFixed(0) < 20,
+                            'bg-inactive-container':
+                                getPercntageOfPaid.toFixed(0) === 100
+                        }"
+                    >
+                        <div
+                            [ngClass]="{
+                                'bg-progress-sliver':
+                                    getPercntageOfPaid.toFixed(0) >= 50 &&
+                                    getPercntageOfPaid.toFixed(0) <= 100,
+                                'bg-progress-orange':
+                                    getPercntageOfPaid.toFixed(0) >= 20 &&
+                                    getPercntageOfPaid.toFixed(0) < 50,
+                                'bg-progress-danger':
+                                    getPercntageOfPaid.toFixed(0) > 0 &&
+                                    getPercntageOfPaid.toFixed(0) < 20
+                            }"
+                            [ngStyle]="{
+                                width: getPercntageOfPaid.toFixed(0) + '%'
+                            }"
+                            class="table-progress-bar bg-progress-danger"
+                        ></div>
+                    </div>
+                </ng-container>
+                <div class="additional-template-broker-data">
+                    <div class="addition-template-item">
+                        <span class="header ta-font-bold mb-1"
+                            >Total Credit</span
+                        >
+                        <span class="value">{{
+                            broker.creditType.name === 'Unlimited'
+                                ? 'Unlimited'
+                                : (broker?.creditLimit | formatCurrency)
+                        }}</span>
+                    </div>
+                    <div class="addition-template-item">
+                        <span class="header ta-font-bold mb-1">Pay Term</span>
+                        <span class="value">{{ broker?.payTerm?.name }}</span>
+                    </div>
+                </div>
+            </app-ta-custom-card>
+
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="true"
@@ -191,11 +279,25 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="invoice-ageing-template">
+                <app-ta-tab-switch
+                    [tabs]="invoiceAgingTabs"
+                    (switchClicked)="changeInvoiceAgingTab($event)"
+                    [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
+
+                <div class="invoice-ageing-template my-2">
                     <div class="invoice-ageing-template-item">
-                        <span class="header-name">Total Debt</span>
-                        <span class="value-ageing">{{
-                            broker?.totalDebt | formatCurrency
+                        <span class="header-name ta-font-bold">{{
+                            invoiceAgingSelectedTab === 1
+                                ? 'Total Debt'
+                                : 'Total Paid'
+                        }}</span>
+                        <span class="value-ageing ta-font-medium">{{
+                            (invoiceAgingSelectedTab === 1
+                                ? inoviceAgingData?.totalPaid
+                                : inoviceAgingData?.totalDebt
+                            ) | formatCurrency
                         }}</span>
                     </div>
                     <ng-container *ngIf="broker?.payTerm?.name === 'Unlimited'">
@@ -203,159 +305,145 @@
                             Avg.
                             <span class="avg-days-invoice"
                                 >{{
-                                    broker?.invoiceAgeingGroup?.averageDays
+                                    inoviceAgingData?.invoiceAgeingGroup
+                                        ?.averageDays ?? 0
                                 }}
                                 Days</span
                             >
                         </div>
                     </ng-container>
                 </div>
-                <ng-container
-                    *ngIf="
-                        broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupOne
-                    "
-                >
-                    <app-ta-progress-invoices
-                        [invoiceDays]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupOne?.periodOfDays
-                        "
-                        [invoiceCounter]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupOne?.countInvoice
-                        "
-                        [invoiceTotal]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupOne?.totalSum
-                        "
-                        [template]="'light-blue'"
-                    >
-                    </app-ta-progress-invoices>
-                </ng-container>
 
-                <ng-container
-                    *ngIf="
-                        broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupTwo
-                    "
-                >
-                    <app-ta-progress-invoices
-                        [invoiceDays]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupTwo?.periodOfDays
+                <div class="w-100 d-flex flex-column gap-2">
+                    <ng-container
+                        *ngIf="
+                            broker?.payTerm?.name !== 'Unlimited' &&
+                            inoviceAgingData?.invoiceAgeingGroupOne
                         "
-                        [invoiceCounter]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupTwo?.countInvoice
-                        "
-                        [invoiceTotal]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupTwo?.totalSum
-                        "
-                        [template]="'mid-blue'"
                     >
-                    </app-ta-progress-invoices>
-                </ng-container>
-                <ng-container
-                    *ngIf="
-                        broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupThree
-                    "
-                >
-                    <app-ta-progress-invoices
-                        [invoiceDays]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupThree?.periodOfDays
-                        "
-                        [invoiceCounter]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupThree?.countInvoice
-                        "
-                        [invoiceTotal]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupThree?.totalSum
-                        "
-                        [template]="'dark-blue'"
-                    >
-                    </app-ta-progress-invoices>
-                </ng-container>
-                <ng-container
-                    *ngIf="
-                        broker?.payTerm?.name !== 'Unlimited' &&
-                        broker?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupFour
-                    "
-                >
-                    <app-ta-progress-invoices
-                        [invoiceDays]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupFour?.periodOfDays
-                        "
-                        [invoiceCounter]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupFour?.countInvoice
-                        "
-                        [invoiceTotal]="
-                            broker?.brokerPaidInvoiceAgeing
-                                ?.invoiceAgeingGroupFour?.totalSum
-                        "
-                        [template]="'danger'"
-                    >
-                    </app-ta-progress-invoices>
-                </ng-container>
-            </app-ta-custom-card>
-
-            <app-ta-custom-card
-                [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [cardName]="'Terms and Credit'"
-                [isCardOpen]="true"
-                [animationMarginParams]="{
-                    marginTop: '0px',
-                    marginBottom: '10px'
-                }"
-                [customClass]="'detailsPadding'"
-            >
-                <ng-container *ngIf="broker?.availableCredit">
-                    <div class="invoice-ageing-template">
-                        <div class="invoice-ageing-template-item">
-                            <span class="header-name">Available Credit</span>
-                            <div class="credit-perctange">
-                                <span class="value-ageing">{{
-                                    broker?.availableCredit | formatCurrency
-                                }}</span>
-                                <div class="percntage-broker">
-                                    {{ getPercntageOfPaid.toFixed(0) }}%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-                <ng-container *ngIf="broker.availableCredit">
-                    <div class="progress-container">
-                        <app-ta-currency-progress-bar
-                            [template]="'broker-credit'"
-                            [totalAmount]="broker.creditLimit"
-                            [paidSoFarAmount]="broker.totalDebt"
+                        <app-ta-progress-invoices
+                            [invoiceDays]="
+                                inoviceAgingData?.invoiceAgeingGroupOne
+                                    ?.periodOfDays
+                            "
+                            [invoiceCounter]="
+                                inoviceAgingData?.invoiceAgeingGroupOne
+                                    ?.countInvoice
+                            "
+                            [invoiceTotal]="
+                                inoviceAgingData?.invoiceAgeingGroupOne
+                                    ?.totalSum
+                            "
+                            [invoicePercentage]="
+                                inoviceAgingData?.invoiceAgeingGroupOne
+                                    ?.percentage
+                            "
+                            [template]="'light-blue'"
+                            [type]="
+                                invoiceAgingSelectedTab === 1
+                                    ? 'unpaid'
+                                    : 'paid'
+                            "
                         >
-                        </app-ta-currency-progress-bar>
-                    </div>
-                </ng-container>
-                <div class="additional-template-broker-data">
-                    <div class="addition-template-item">
-                        <span class="header">Credit</span>
-                        <span class="value charts-value">{{
-                            broker.creditType.name === 'Unlimited'
-                                ? 'Unlimited'
-                                : (broker?.creditLimit | formatCurrency)
-                        }}</span>
-                    </div>
-                    <div class="addition-template-item">
-                        <span class="header">Pay Term</span>
-                        <span class="value charts-value">{{
-                            broker?.payTerm?.name
-                        }}</span>
-                    </div>
+                        </app-ta-progress-invoices>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            broker?.payTerm?.name !== 'Unlimited' &&
+                            inoviceAgingData?.invoiceAgeingGroupTwo
+                        "
+                    >
+                        <app-ta-progress-invoices
+                            [invoiceDays]="
+                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                    ?.periodOfDays
+                            "
+                            [invoiceCounter]="
+                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                    ?.countInvoice
+                            "
+                            [invoiceTotal]="
+                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                    ?.totalSum
+                            "
+                            [invoicePercentage]="
+                                inoviceAgingData?.invoiceAgeingGroupTwo
+                                    ?.percentage
+                            "
+                            [template]="'mid-blue'"
+                            [type]="
+                                invoiceAgingSelectedTab === 1
+                                    ? 'unpaid'
+                                    : 'paid'
+                            "
+                        >
+                        </app-ta-progress-invoices>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            broker?.payTerm?.name !== 'Unlimited' &&
+                            inoviceAgingData?.invoiceAgeingGroupThree
+                        "
+                    >
+                        <app-ta-progress-invoices
+                            [invoiceDays]="
+                                inoviceAgingData?.invoiceAgeingGroupThree
+                                    ?.periodOfDays
+                            "
+                            [invoiceCounter]="
+                                inoviceAgingData?.invoiceAgeingGroupThree
+                                    ?.countInvoice
+                            "
+                            [invoiceTotal]="
+                                inoviceAgingData?.invoiceAgeingGroupThree
+                                    ?.totalSum
+                            "
+                            [invoicePercentage]="
+                                inoviceAgingData?.invoiceAgeingGroupThree
+                                    ?.percentage
+                            "
+                            [template]="'dark-blue'"
+                            [type]="
+                                invoiceAgingSelectedTab === 1
+                                    ? 'unpaid'
+                                    : 'paid'
+                            "
+                        >
+                        </app-ta-progress-invoices>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            broker?.payTerm?.name !== 'Unlimited' &&
+                            inoviceAgingData?.invoiceAgeingGroupFour
+                        "
+                    >
+                        <app-ta-progress-invoices
+                            [invoiceDays]="
+                                inoviceAgingData?.invoiceAgeingGroupFour
+                                    ?.periodOfDays
+                            "
+                            [invoiceCounter]="
+                                inoviceAgingData?.invoiceAgeingGroupFour
+                                    ?.countInvoice
+                            "
+                            [invoiceTotal]="
+                                inoviceAgingData?.invoiceAgeingGroupFour
+                                    ?.totalSum
+                            "
+                            [invoicePercentage]="
+                                inoviceAgingData?.invoiceAgeingGroupFour
+                                    ?.percentage
+                            "
+                            [template]="'danger'"
+                            [type]="
+                                invoiceAgingSelectedTab === 1
+                                    ? 'unpaid'
+                                    : 'paid'
+                            "
+                        >
+                        </app-ta-progress-invoices>
+                    </ng-container>
                 </div>
             </app-ta-custom-card>
 

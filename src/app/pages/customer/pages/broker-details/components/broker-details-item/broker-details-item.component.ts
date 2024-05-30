@@ -19,6 +19,11 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 // Models
 import { BrokerResponse, UpdateReviewCommand } from 'appcoretruckassist';
 
+// Enums
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Titles()
 @Component({
     selector: 'app-broker-details-item',
@@ -61,16 +66,12 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
         return item.id;
     }
 
-    public getStops(data: BrokerResponse | any) {
+    public getStops(data: BrokerResponse | any): void {
         let datas;
 
-        console.log('getStops data', data);
-
-        // loads doesn't exist in BrokerResponse
-        
         data?.loadStops?.loads?.data?.map((item) => {
             datas = item.stops.map((itemStop) => {
-                if (itemStop.stopType.name === 'Pickup') {
+                if (itemStop.stopType.name === BrokerDetailsStringEnum.PICKUP) {
                     return {
                         date: itemStop.dateFrom,
                         stopOrder: itemStop.stopOrder,
@@ -79,7 +80,9 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                             itemStop.shipper.address.stateShortName,
                     };
                 }
-                if (itemStop.stopType.name === 'Delivery') {
+                if (
+                    itemStop.stopType.name === BrokerDetailsStringEnum.DELIVERY
+                ) {
                     return {
                         date: itemStop.dateFrom,
                         stopOrder: itemStop.stopOrder,
@@ -93,7 +96,8 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             this.stopsDataDelivery = datas[1];
         });
     }
-    public getReviews(reviewsData: BrokerResponse) {
+
+    public getReviews(reviewsData: BrokerResponse): void {
         this.reviewsRepair = reviewsData.ratingReviews.map((item) => {
             return {
                 ...item,
@@ -101,10 +105,11 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                     ...item.companyUser,
                     avatar: item.companyUser.avatar
                         ? item.companyUser.avatar
-                        : 'assets/svg/common/ic_profile.svg',
+                        : BrokerDetailsSvgRoutes.profileIcon,
                 },
                 commentContent: item.comment,
-                rating: item.thumb, // - item.ratingFromTheReviewer doesn't exist in response
+                rating: item.thumb,
+                id: item.reviewId ? item.reviewId : item.ratingId,
             };
         });
     }
@@ -125,49 +130,49 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    svg: BrokerDetailsSvgRoutes.editIcon,
                     show: true,
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
-                    show: true,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
+                    title: TableStringEnum.VIEW_DETAILS_2,
+                    name: TableStringEnum.VIEW_DETAILS,
+                    svg: BrokerDetailsSvgRoutes.hazardousInfoIcon,
+                    iconName: TableStringEnum.VIEW_DETAILS,
                     show: true,
                 },
                 {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
+                    title: TableStringEnum.BORDER,
+                },
+                {
+                    title: TableStringEnum.SHARE_2,
+                    name: TableStringEnum.SHARE,
+                    svg: BrokerDetailsSvgRoutes.shareIcon,
+                    iconName: TableStringEnum.SHARE,
                     show: true,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.PRINT_2,
+                    name: TableStringEnum.PRINT,
+                    svg: BrokerDetailsSvgRoutes.printIcon,
+                    iconName: TableStringEnum.PRINT,
+                    show: true,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash.svg',
-                    iconName: 'delete',
+                    title: TableStringEnum.BORDER,
+                },
+                {
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
+                    text: BrokerDetailsStringEnum.DELETE_DRIVER_TEXT,
+                    svg: BrokerDetailsSvgRoutes.deleteIcon,
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -176,27 +181,23 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             export: true,
         };
     }
-    public changeReviewsEvent(reviews: ReviewComment) {
+
+    public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete': {
+            case TableStringEnum.DELETE:
                 this.deleteReview(reviews);
                 break;
-            }
-            case 'add': {
-                //this.addReview(reviews);
-                break;
-            }
-            case 'update': {
+
+            case TableStringEnum.UPDATE:
                 this.updateReview(reviews);
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
-    private updateReview(reviews: ReviewComment) {
+    private updateReview(reviews: ReviewComment): void {
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
             comment: reviews.data.commentContent,
@@ -210,7 +211,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
+    private deleteReview(reviews: ReviewComment): void {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))

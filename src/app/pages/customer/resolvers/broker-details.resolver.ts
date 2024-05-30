@@ -40,13 +40,25 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
 
         const brokerLoads$ = this.brokerService.getBrokerLoads(ids);
 
+        const brokerPaidInvoiceAging$ =
+            this.brokerService.getBrokerInvoiceAging(ids, true);
+
+        const brokerUnpaidInvoiceAging$ =
+            this.brokerService.getBrokerInvoiceAging(ids, false);
+
         return forkJoin({
             brokerData: brokerData$,
             brokerLoads: brokerLoads$,
+            brokerPaidInvoiceAging: brokerPaidInvoiceAging$,
+            brokerUnpaidInvoiceAging: brokerUnpaidInvoiceAging$,
         }).pipe(
             tap((data) => {
                 let brokerRespone = data.brokerData;
                 brokerRespone.loadStops = data.brokerLoads;
+                brokerRespone.brokerPaidInvoiceAgeing =
+                    data.brokerPaidInvoiceAging;
+                brokerRespone.brokerUnpaidInvoiceAgeing =
+                    data.brokerUnpaidInvoiceAging;
                 this.bls.add(brokerRespone);
                 this.brokerDetailsStore.set([brokerRespone]);
             })

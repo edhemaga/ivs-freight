@@ -83,11 +83,22 @@
                                     >
                                 </div>
                                 <div class="status-wrapper-broker">
-                                    <span class="assigned">{{
-                                        loads.status.name
-                                    }}</span>
-                                    <span class="time"
-                                        ><span
+                                    <span
+                                        class="dispatch-status-text ta-font-bold"
+                                        [ngClass]="{
+                                            assigned:
+                                                loads.status.name ===
+                                                'Assigned',
+                                            dispatched:
+                                                loads.status.name ===
+                                                'Dispatched',
+                                            booked:
+                                                loads.status.name === 'Booked'
+                                        }"
+                                        >{{ loads.status.name }}</span
+                                    >
+                                    <span class="time ta-font-medium">
+                                        <span
                                             class="hours"
                                             *ngIf="
                                                 loads?.lastStatusPassed?.days >
@@ -303,35 +314,35 @@
 
             <div *ngSwitchCase="'review'">
                 <div class="likes-count-container">
-                    <div class="likes-item">
-                        <div class="ic-counter">
+                    <div class="likes-item d-flex align-items-center gap-2 p-2">
+                        <div class="ic-counter d-flex align-items-center gap-2 m-0">
                             <svg-icon
-                                class="like"
+                                class="like d-flex m-0"
                                 src="assets/svg/common/ic_dislike.svg"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
                             ></svg-icon>
-                            <app-ta-counter
-                                [countBackgroud]="'#F3F3F3'"
-                                [countColor]="'#919191'"
-                                [countHeight]="'24px'"
-                                [countWidth]="'24px'"
-                                [count]="brokerLikes"
-                            >
-                            </app-ta-counter>
+
+                            <span class="ta-font-extra-bold">{{
+                                brokerLikes
+                            }}</span>
                         </div>
                         <div class="border-vertical"></div>
-                        <div class="ic-counter">
-                            <app-ta-counter
-                                [countBackgroud]="'#F3F3F3'"
-                                [countColor]="'#919191'"
-                                [countHeight]="'24px'"
-                                [countWidth]="'24px'"
-                                [count]="brokerDislike"
-                            >
-                            </app-ta-counter>
+                        <div class="ic-counter d-flex align-items-center gap-2 m-0">
                             <svg-icon
-                                class="dislike"
+                                class="dislike d-flex m-0"
                                 src="assets/svg/common/ic_dislike.svg"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18
+                                }"
                             ></svg-icon>
+
+                            <span class="ta-font-extra-bold">{{
+                                brokerDislike
+                            }}</span>
                         </div>
                     </div>
                 </div>
