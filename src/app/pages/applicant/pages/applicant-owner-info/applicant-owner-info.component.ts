@@ -73,8 +73,9 @@ import {
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
 import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
-//components
+// components
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
@@ -84,10 +85,13 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { ApplicantTruckDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-truck-details/applicant-truck-details.component';
 import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-trailer-details/applicant-trailer-details.component';
 
-//modules
+// modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+
+// configs
+import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-owner-info.config';
 
 @Component({
     selector: 'app-owner-info',
@@ -327,154 +331,67 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute
     ) {}
 
-    get businessNameInputConfig() {
-        return {
-            name: 'Company Name',
-            type: 'text',
-            label: 'Business Name',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isBusinessNameValid),
-            textTransform: 'uppercase',
-            autoFocus: true,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get businessNameInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getBusinessNameInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get einInputConfig() {
-        return {
-            name: 'EIN',
-            type: 'text',
-            label: 'EIN',
-            mask: '00-0000000',
-            maxLength: 10,
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isEinValid),
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get einInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getEinInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get phoneInputConfig() {
-        return {
-            name: 'Phone',
-            type: 'text',
-            label: 'Phone',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isPhoneValid),
-            placeholderIcon: 'phone',
-            mask: '(000) 000-0000',
-            maxLength: 14,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get phoneInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getPhoneInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get emailInputConfig() {
-        return {
-            name: 'Email',
-            type: 'text',
-            label: 'Email',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isEmailValid),
-            placeholderIcon: 'email',
-            autocomplete: 'off',
-            minLength: 5,
-            maxLength: 64,
-            textTransform: 'lowercase',
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get emailInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getEmailInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get addressInputConfig() {
-        return {
-            name: 'Address',
-            type: 'text',
-            label: 'Address, City, State Zip',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isAddressValid),
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-481',
-            minLength: 12,
-            maxLength: 256,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get addressInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAddressInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get addressUnitInputConfig() {
-        return {
-            name: 'address-unit',
-            type: 'text',
-            label: 'Unit #',
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isAddressUnitValid),
-            minLength: 1,
-            maxLength: 10,
-            textTransform: 'uppercase',
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get addressUnitInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAddressUnitInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get bankInputConfig() {
-        return {
-            name: 'Input Dropdown Bank Name',
-            type: 'text',
-            label: 'Bank Name',
-            minLength: 2,
-            maxLength: 64,
-            textTransform: 'uppercase',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-202',
-            isDisabled: this.selectedMode !== SelectedMode.APPLICANT,
-        };
+    get bankInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getBankInputConfig({
+            selectedMode: this.selectedMode,
+        });
     }
 
-    get accountNumberInputConfig() {
-        return {
-            name: 'account-bank',
-            type: 'text',
-            label: 'Account number',
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isBankSelected) ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isAccountValid),
-            isRequired: this.isBankSelected,
-            maxLength: 17,
-            minLength: 5,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get accountNumberInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAccountNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get routingNumberInputConfig() {
-        return {
-            name: 'routing-bank',
-            type: 'text',
-            label: 'Routing number',
-            isDisabled:
-                this.selectedMode !== SelectedMode.APPLICANT ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isBankSelected),
-            isRequired: this.isBankSelected,
-            minLength: 9,
-            maxLength: 9,
-        };
+    get routingNumberInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getRoutingNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+        });
     }
 
     ngOnInit(): void {
@@ -2258,11 +2175,11 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         }
     }
 
-    toggleAddTrailer() {
+    public toggleAddTrailer(): void {
         this.isAddTrailerSelected = !this.isAddTrailerSelected;
     }
 
-    toggleSoleAddTrailer() {
+    public toggleSoleAddTrailer(): void {
         this.isSoleAddTrailerSelected = !this.isSoleAddTrailerSelected;
     }
 

@@ -31,6 +31,8 @@ import {
 } from 'appcoretruckassist';
 import { FileEvent } from '@shared/models/file-event.model';
 import { SelectedItemEvent } from '@pages/applicant/pages/applicant-owner-info/models/selected-item-event.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ApplicantTruckConfig } from '../../utils/configs/applicant-truck.config';
 
 @Component({
     selector: 'app-applicant-truck-details',
@@ -54,9 +56,9 @@ import { SelectedItemEvent } from '@pages/applicant/pages/applicant-owner-info/m
 export class ApplicantTruckDetailsComponent {
     @Input() formGroup: UntypedFormGroup;
     @Input() selectedMode: string;
-    @Input() selectedTruckType: TruckTypeResponse = null;
-    @Input() selectedTruckMake: TruckMakeResponse = null;
-    @Input() selectedTruckColor: ColorResponse = null;
+    @Input() selectedTruckType: TruckTypeResponse;
+    @Input() selectedTruckMake: TruckMakeResponse;
+    @Input() selectedTruckColor: ColorResponse;
     @Input() stepFeedbackValues;
     @Input() loadingTruckVinDecoder: boolean;
     @Input() dropdownOptions: ApplicantDropdownOptions;
@@ -69,125 +71,52 @@ export class ApplicantTruckDetailsComponent {
         action: string;
     }> = new EventEmitter();
 
-    inputSwitchActions = InputSwitchActions;
-    selectedModeEnum = SelectedMode;
+    public inputSwitchActions = InputSwitchActions;
+    public selectedModeEnum = SelectedMode;
 
     constructor() {}
 
-    get truckTypeInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Type',
-            isRequired: true,
-            isDropdown: true,
-            isDisabled: this.selectedMode !== SelectedMode.APPLICANT,
-            dropdownImageInput: {
-                withText: true,
-                svg: true,
-                image: false,
-                url: this.selectedTruckType?.logoName,
-                template: 'truck',
-                class: this.selectedTruckType?.name
-                    ?.trim()
-                    .replace(' ', '')
-                    .toLowerCase(),
-            },
-            dropdownWidthClass: 'w-col-364',
-            customClass: 'truck-trailer-dropdown',
-        };
+    get truckTypeInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckTypeConfig({
+            selectedMode: this.selectedMode,
+            selectedTruckType: this.selectedTruckType,
+        });
     }
 
-    get truckYearInputConfig() {
-        return {
-            name: 'Year',
-            type: 'text',
-            label: 'Year',
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTruckYearValid),
-            isRequired: true,
-            minLength: 4,
-            maxLength: 4,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get truckYearInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckYearConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get truckVinInputConfig() {
-        return {
-            name: 'vin-number',
-            type: 'text',
-            label: 'VIN',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTruckVinValid),
-            textTransform: 'uppercase',
-            maxLength: 17,
-            minLength: 5,
-            loadingSpinner: {
-                size: 'small',
-                color: 'white',
-                isLoading: this.loadingTruckVinDecoder,
-            },
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get truckVinInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckVinConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+            loadingTruckVinDecoder: this.loadingTruckVinDecoder,
+        });
     }
 
-    get truckMakeInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Make',
-            isRequired: true,
-            isDropdown: true,
-            isDisabled: this.selectedMode !== SelectedMode.APPLICANT,
-            dropdownImageInput: {
-                withText: false,
-                svg: true,
-                image: false,
-                url: this.selectedTruckMake?.logoName,
-            },
-            dropdownWidthClass: 'w-col-210',
-        };
+    get truckMakeInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckMakeConfig({
+            selectedMode: this.selectedMode,
+            selectedTruckMake: this.selectedTruckMake,
+        });
     }
 
-    get truckModelInputConfig() {
-        return {
-            name: 'truck-trailer-model',
-            type: 'text',
-            label: 'Model',
-            isRequired: true,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTruckModelValid),
-            textTransform: 'uppercase',
-            minLength: 1,
-            maxLength: 50,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get truckModelInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckModelConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get truckColorInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Color',
-            isDropdown: true,
-            isDisabled: this.selectedMode !== SelectedMode.APPLICANT,
-            dropdownImageInput: {
-                withText: true,
-                svg: true,
-                image: false,
-                url: this.selectedTruckColor?.code ? 'ic_color.svg' : null,
-                template: 'color',
-                color: this.selectedTruckColor?.code,
-            },
-            dropdownWidthClass: 'w-col-116',
-        };
+    get truckColorInputConfig(): ITaInput {
+        return ApplicantTruckConfig.getTruckColorConfig({
+            selectedMode: this.selectedMode,
+            selectedTruckColor: this.selectedTruckColor,
+        });
     }
 
     public emitInputSelect(

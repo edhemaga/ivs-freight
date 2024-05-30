@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-variable */
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicantTruckDetailsComponent } from './applicant-truck-details.component';
+import { ApplicantTruckDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-truck-details/applicant-truck-details.component';
 
 describe('ApplicantTruckDetailsComponent', () => {
     let component: ApplicantTruckDetailsComponent;

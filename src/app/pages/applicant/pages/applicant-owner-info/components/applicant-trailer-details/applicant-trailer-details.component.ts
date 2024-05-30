@@ -26,6 +26,10 @@ import {
 } from 'appcoretruckassist';
 import { FileEvent } from '@shared/models/file-event.model';
 import { SelectedItemEvent } from '@pages/applicant/pages/applicant-owner-info/models/selected-item-event.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// configs
+import { ApplicantTrailerConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-trailer.config';
 
 @Component({
     selector: 'app-applicant-trailer-details',
@@ -48,10 +52,10 @@ import { SelectedItemEvent } from '@pages/applicant/pages/applicant-owner-info/m
 export class ApplicantTrailerDetailsComponent {
     @Input() formGroup: UntypedFormGroup;
     @Input() selectedMode: string;
-    @Input() selectedTrailerType: TrailerTypeResponse = null;
-    @Input() selectedTrailerMake: TrailerMakeResponse = null;
-    @Input() selectedTrailerLength: TrailerLengthResponse = null;
-    @Input() selectedTrailerColor: ColorResponse = null;
+    @Input() selectedTrailerType: TrailerTypeResponse;
+    @Input() selectedTrailerMake: TrailerMakeResponse;
+    @Input() selectedTrailerLength: TrailerLengthResponse;
+    @Input() selectedTrailerColor: ColorResponse;
     @Input() stepFeedbackValues;
     @Input() loadingTrailerVinDecoder: boolean;
     @Input() dropdownOptions: ApplicantDropdownOptions;
@@ -65,163 +69,66 @@ export class ApplicantTrailerDetailsComponent {
         action: string;
     }> = new EventEmitter();
 
-    inputSwitchActions = InputSwitchActions;
-    selectedModeEnum = SelectedMode;
+    public inputSwitchActions = InputSwitchActions;
+    public selectedModeEnum = SelectedMode;
 
     constructor() {}
 
-    get trailerTypeInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Type',
-            isDropdown: true,
-            isDisabled:
-                this.selectedMode !== SelectedMode.APPLICANT ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected),
-            isRequired: this.isAddTrailerSelected,
-            dropdownImageInput: {
-                withText: true,
-                svg: true,
-                image: false,
-                url: this.selectedTrailerType?.logoName,
-                template: 'trailer',
-                class: ['Tanker', 'Tanker Pneumatic'].includes(
-                    this.selectedTrailerType?.name
-                )
-                    ? 'tanker'
-                    : this.selectedTrailerType?.name
-                          ?.toLowerCase()
-                          ?.includes('rgn')
-                    ? 'low-boy-rgn'
-                    : this.selectedTrailerType?.name
-                          ?.trim()
-                          .replace(' ', '')
-                          .toLowerCase(),
-            },
-            dropdownWidthClass: 'w-col-364',
-            customClass: 'truck-trailer-dropdown',
-        };
+    get trailerTypeInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerTypeConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            selectedTrailerType: this.selectedTrailerType,
+        });
     }
 
-    get trailerVinInputConfig() {
-        return {
-            name: 'vin-number',
-            type: 'text',
-            label: 'VIN',
-            textTransform: 'uppercase',
-            maxLength: 17,
-            minLength: 5,
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected) ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTrailerVinValid),
-            isRequired: this.isAddTrailerSelected,
-            loadingSpinner: {
-                size: 'small',
-                color: 'white',
-                isLoading: this.loadingTrailerVinDecoder,
-            },
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get trailerVinInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerVinConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+            loadingTrailerVinDecoder: this.loadingTrailerVinDecoder,
+        });
     }
 
-    get trailerMakeInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Make',
-            isDropdown: true,
-            isDisabled:
-                this.selectedMode !== SelectedMode.APPLICANT ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected),
-            isRequired: this.isAddTrailerSelected,
-            dropdownImageInput: {
-                withText: false,
-                svg: true,
-                image: false,
-                url: this.selectedTrailerMake?.logoName,
-            },
-            placeholder: this.selectedTrailerMake?.name,
-            dropdownWidthClass: 'w-col-302',
-        };
+    get trailerMakeInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerMakeConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            selectedTrailerMake: this.selectedTrailerMake,
+        });
     }
 
-    get trailerModelInputConfig() {
-        return {
-            name: 'truck-trailer-model',
-            type: 'text',
-            label: 'Model',
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected) ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTrailerModelValid),
-            textTransform: 'uppercase',
-            minLength: 1,
-            maxLength: 50,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get trailerModelInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerModelConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get trailerYearInputConfig() {
-        return {
-            name: 'Year',
-            type: 'text',
-            label: 'Year',
-            isDisabled:
-                this.selectedMode === SelectedMode.REVIEW ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected) ||
-                (this.selectedMode === SelectedMode.FEEDBACK &&
-                    this.stepFeedbackValues?.isTrailerYearValid),
-            isRequired: this.isAddTrailerSelected,
-            minLength: 4,
-            maxLength: 4,
-            incorrectInput: this.selectedMode === SelectedMode.REVIEW,
-        };
+    get trailerYearInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerYearConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
     }
 
-    get trailerColorInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Color',
-            isDropdown: true,
-            isDisabled:
-                this.selectedMode !== SelectedMode.APPLICANT ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected),
-            dropdownImageInput: {
-                withText: true,
-                svg: true,
-                image: false,
-                url: this.selectedTrailerColor?.code ? 'ic_color.svg' : null,
-                template: 'color',
-                color: this.selectedTrailerColor?.code,
-            },
-            dropdownWidthClass: 'w-col-216',
-        };
+    get trailerColorInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerColorConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+            selectedTrailerColor: this.selectedTrailerColor,
+        });
     }
 
-    get trailerLengthInputConfig() {
-        return {
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Length',
-            isDropdown: true,
-            isDisabled:
-                this.selectedMode !== SelectedMode.APPLICANT ||
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    !this.isAddTrailerSelected),
-            isRequired: this.isAddTrailerSelected,
-            dropdownWidthClass: 'w-col-216',
-        };
+    get trailerLengthInputConfig(): ITaInput {
+        return ApplicantTrailerConfig.getTrailerLengthConfig({
+            selectedMode: this.selectedMode,
+            isAddTrailerSelected: this.isAddTrailerSelected,
+        });
     }
 
     public emitInputSelect(
