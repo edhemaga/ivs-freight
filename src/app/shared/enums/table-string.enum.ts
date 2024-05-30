@@ -275,7 +275,7 @@ export enum TableStringEnum {
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
     ADD_TRAILER = 'add-trailer',
-
+    ADD_TITLE = 'add-title',
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
@@ -390,6 +390,9 @@ export enum TableStringEnum {
 
     DEACTIVATE = 'deactivate',
     DEACTIVATE_2 = 'Deactivate',
+
+    DEACTIVATE_MULTIPLE = 'deactivate-multiple',
+    ACTIVATE_MULTIPLE = 'activate-multiple',
 
     ACTIVATE = 'activate',
     ACTIVATE_2 = 'Activate',

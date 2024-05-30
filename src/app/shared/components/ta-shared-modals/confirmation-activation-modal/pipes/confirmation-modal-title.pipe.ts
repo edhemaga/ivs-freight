@@ -11,11 +11,18 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 export class ConfirmationModalTitlePipe implements PipeTransform {
     transform(type: string, template: string): string {
         let titleString = '';
+
         if (type === ConfirmationActivationStringEnum.OPEN) {
             titleString = ConfirmationActivationStringEnum.OPEN_TITLE;
-        } else if (type === TableStringEnum.DEACTIVATE) {
+        } else if (
+            type === TableStringEnum.DEACTIVATE ||
+            type === TableStringEnum.DEACTIVATE_MULTIPLE
+        ) {
             titleString = TableStringEnum.DEACTIVATE_2;
-        } else if (type === TableStringEnum.ACTIVATE) {
+        } else if (
+            type === TableStringEnum.ACTIVATE ||
+            type === TableStringEnum.ACTIVATE_MULTIPLE
+        ) {
             titleString = TableStringEnum.ACTIVATE_2;
         } else {
             titleString = ConfirmationActivationStringEnum.CLOSE_TITLE;

@@ -10,6 +10,7 @@ import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/d
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ApplicantModalComponent } from '@pages/applicant/pages/applicant-modal/applicant-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -19,6 +20,7 @@ import { ApplicantService } from '@shared/services/applicant.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
 import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
@@ -133,6 +135,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private tableService: TruckassistTableService,
         private driverService: DriverService,
         private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService,
         private imageBase64Service: ImageBase64Service,
 
         // store
@@ -152,7 +155,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.setTableFilter();
 
-        this.confiramtionSubscribe();
+        this.confirmationSubscribe();
+
+        this.confirmationActivationSubscribe();
 
         this.getSelectedTabTableData();
 
@@ -175,35 +180,46 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 10);
     }
 
-    private confiramtionSubscribe(): void {
+    private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    switch (res.type) {
-                        case TableStringEnum.DELETE: {
-                            if (res.template === TableStringEnum.DRIVER) {
-                                this.deleteDriverById(res.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.ACTIVATE: {
-                            this.changeDriverStatus(res.id);
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            this.changeDriverStatus(res.id);
-                            break;
-                        }
-                        case TableStringEnum.MULTIPLE_DELETE: {
-                            this.multipleDeleteDrivers(res.array);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
+            .subscribe((res) => {
+                switch (res.type) {
+                    case TableStringEnum.DELETE:
+                        this.deleteDriverById(res.id);
+
+                        break;
+
+                    case TableStringEnum.MULTIPLE_DELETE:
+                        this.multipleDeleteDrivers(res.array);
+
+                        break;
+                    default:
+                        break;
+                }
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                switch (res.type) {
+                    case TableStringEnum.ACTIVATE:
+                    case TableStringEnum.DEACTIVATE:
+                        this.changeDriverStatus(res.id);
+
+                        break;
+                    case TableStringEnum.ACTIVATE_MULTIPLE:
+                    case TableStringEnum.DEACTIVATE_MULTIPLE:
+                        res.array.forEach((driver) => {
+                            this.changeDriverStatus(driver.id);
+                        });
+
+                        break;
+                    default:
+                        break;
+                }
             });
     }
 
@@ -590,7 +606,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 isActive: this.selectedTab === TableStringEnum.APPLICANTS,
                 gridColumns: this.getGridColumns(
                     TableStringEnum.APPLICANTS,
-                    TableStringEnum.APPLICANT
+                    TableStringEnum.APPLICANT,
+                    applicantsData as DriverResponse[]
                 ),
             },
             {
@@ -605,7 +622,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 isActive: this.selectedTab === TableStringEnum.ACTIVE,
                 gridColumns: this.getGridColumns(
                     TableStringEnum.DRIVER_2,
-                    TableStringEnum.DRIVER
+                    TableStringEnum.DRIVER,
+                    driverActiveData as DriverResponse[]
                 ),
             },
             {
@@ -620,7 +638,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(
                     TableStringEnum.DRIVER_2,
-                    TableStringEnum.DRIVER
+                    TableStringEnum.DRIVER,
+                    driverInactiveData as DriverResponse[]
                 ),
             },
         ];
@@ -654,19 +673,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private getGridColumns(activeTab: string, configType: string): void {
+    private getGridColumns(
+        activeTab: string,
+        configType: string,
+        data?: DriverResponse[]
+    ): void {
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
         if (activeTab === TableStringEnum.APPLICANTS)
-            return tableColumnsConfig
-                ? tableColumnsConfig
-                : getDriverApplicantColumnsDefinition();
+            return tableColumnsConfig ?? getDriverApplicantColumnsDefinition();
 
-        return tableColumnsConfig
-            ? tableColumnsConfig
-            : getDriverColumnsDefinition();
+        return tableColumnsConfig ?? getDriverColumnsDefinition(data);
     }
 
     private setDriverData(tableData: CardTableData): void {
@@ -715,6 +734,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private mapDriverData(data: any): any {
         const {
             id,
+            status,
             owner,
             name,
             avatar,
@@ -724,15 +744,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             email,
             address,
             driverType,
+            solo,
+            team,
             payType,
             bank,
+            offDutyLocations,
             emergencyContact,
-            twicExpirationDays,
+            twicExpirationDate,
             fuelCardNumber,
             cdl,
             test,
-            medicalExpirationDays,
-            medicalPercentage,
+            medical,
             mvr,
             general,
             payroll,
@@ -747,6 +769,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return {
             id,
+            status,
             isSelected: false,
             isOwner: !!owner,
             textShortName: this.nameInitialsPipe.transform(name),
@@ -766,39 +789,84 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableOwnerDetailsEin: owner?.ein,
             tableDriverType: driverType?.name,
             tablePayrollDetailType: payType?.name,
+
+            emptyMileSolo:
+                solo?.emptyMile &&
+                TableStringEnum.DOLLAR_SIGN + solo?.emptyMile,
+            loadedMileSolo:
+                solo?.loadedMile &&
+                TableStringEnum.DOLLAR_SIGN + solo?.loadedMile,
+            perStopSolo:
+                solo?.perStop && TableStringEnum.DOLLAR_SIGN + solo?.perStop,
+            flatRateSolo:
+                solo?.flatRate && TableStringEnum.DOLLAR_SIGN + solo?.flatRate,
+            commissionSolo:
+                solo?.commission && solo?.commission + TableStringEnum.PERCENTS,
+
+            emptyMileTeam:
+                team?.emptyMile &&
+                TableStringEnum.DOLLAR_SIGN + team?.emptyMile,
+            loadedMileTeam:
+                team?.loadedMile &&
+                TableStringEnum.DOLLAR_SIGN + team?.loadedMile,
+            perStopTeam:
+                team?.perStop && TableStringEnum.DOLLAR_SIGN + team?.perStop,
+            flatRateTeam:
+                team?.flatRate && TableStringEnum.DOLLAR_SIGN + team?.flatRate,
+            commissionTeam:
+                team?.commission && team?.commission + TableStringEnum.PERCENTS,
+
             tableBankDetailBankName: bank?.name,
             tableBankDetailRouting: bank?.routing,
             tableBankDetailAccount: bank?.account,
+            tableOffDutyLocation: offDutyLocations?.map(
+                (offDutyLocation) => offDutyLocation.nickname
+            ),
             tableEmergContactName: emergencyContact?.name,
             tableEmergContactRelation: emergencyContact?.relationship,
             tableEmergContactPhone: emergencyContact?.phone,
-            tableTwicExp: twicExpirationDays,
+            tableTwicExp: twicExpirationDate
+                ? MethodsCalculationsHelper.convertDateFromBackend(
+                      twicExpirationDate
+                  )
+                : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
             tableCdlDetailState: cdl?.state,
-            tableCdlDetailRestriction: cdl?.restrictionDescription,
-            tableCdlDetailEndorsment: cdl?.endorsementDescription,
+            tableCdlDetailRestriction: cdl?.restrictions?.map(
+                (restriction) => restriction.code
+            ),
+            tableCdlDetailEndorsment: cdl?.endorsements?.map(
+                (endorsement) => endorsement.code
+            ),
+            tableCdlDetailExpiration: {
+                expirationDays: cdl?.expirationDays ?? null,
+                expirationDaysText: cdl?.expirationDays
+                    ? this.thousandSeparator.transform(cdl?.expirationDays)
+                    : null,
+                percentage: cdl?.percentage ? 100 - cdl?.percentage : null,
+            },
             tableTestDetailsIssued:
                 MethodsCalculationsHelper.convertDateFromBackend(test?.date),
             tableTestDetailsType: test?.type,
             tableTestDetailsReason: test?.reason,
             tableTestDetailsResult: test?.result,
             tableMedicalData: {
-                expirationDays: medicalExpirationDays ?? null,
-                expirationDaysText: medicalExpirationDays
-                    ? this.thousandSeparator.transform(medicalExpirationDays)
+                expirationDays: medical?.expirationDays ?? null,
+                expirationDaysText: medical?.expirationDays
+                    ? this.thousandSeparator.transform(medical?.expirationDays)
                     : null,
-                percentage: medicalPercentage ? 100 - medicalPercentage : null,
+                percentage: medical?.percentage
+                    ? 100 - medical?.percentage
+                    : null,
             },
-            tableMvrDetailsRenewalTerm: 5,
+            tableMvrDetailsRenewalTerm: mvr?.expiration,
             tableMvrDetailsExpiration: {
-                expirationDays: mvr?.mvrExpirationDays ?? null,
-                expirationDaysText: mvr?.mvrExpirationDays
-                    ? this.thousandSeparator.transform(mvr?.mvrExpirationDays)
+                expirationDays: mvr?.expirationDays ?? null,
+                expirationDaysText: mvr?.expirationDays
+                    ? this.thousandSeparator.transform(mvr?.expirationDays)
                     : null,
-                percentage: mvr?.mvrPercentage
-                    ? 100 - mvr?.mvrPercentage
-                    : null,
+                percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
             tabelNotificationGeneral: `${
                 general?.mail
@@ -1300,31 +1368,32 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } else if (event.action === TableStringEnum.ACTIVATE_ITEM) {
             let status = false;
             let mappedEvent = [];
+
             this.viewData.map((data) => {
                 event.tabData.data.map((element) => {
                     if (data.id === element) {
                         status = data.status;
+
                         mappedEvent.push({
                             ...data,
-                            data: {
-                                ...data,
-                                name: data?.fullName,
-                            },
+                            name: data?.fullName,
                         });
                     }
                 });
             });
+
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     data: null,
                     array: mappedEvent,
-                    template: TableStringEnum.DRIVER,
+                    subType: TableStringEnum.DRIVER_1,
                     type: status
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
-                    svg: true,
+                        ? TableStringEnum.DEACTIVATE_MULTIPLE
+                        : TableStringEnum.ACTIVATE_MULTIPLE,
+                    template: TableStringEnum.DRIVER_1,
+                    tableType: TableStringEnum.DRIVER_2,
                 }
             );
         }
@@ -1362,6 +1431,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: event.data?.fullName,
             },
         };
+
         if (event.type === TableStringEnum.SHOW_MORE) {
             if (this.selectedTab === TableStringEnum.APPLICANTS) {
                 this.applicantBackFilterQuery.applicantSpecParamsPageIndex++;
@@ -1421,16 +1491,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: TableStringEnum.DRIVER,
+                    subType: TableStringEnum.DRIVER_1,
                     type:
                         event.data.status === 1
                             ? TableStringEnum.DEACTIVATE
                             : TableStringEnum.ACTIVATE,
-                    image: true,
+                    template: TableStringEnum.DRIVER_1,
+                    tableType: TableStringEnum.DRIVER,
                 }
             );
         } else if (event.type === TableStringEnum.DELETE_ITEM) {
@@ -1453,12 +1524,22 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(
                 takeUntil(this.destroy$),
                 tap((driver) => {
+                    const selectedDriver = this.viewData.find(
+                        (driver) => driver.id === id
+                    );
+
                     const editData = {
                         data: {
                             ...driver,
+                            avatarImg: selectedDriver.avatarImg,
+                            avatarColor: selectedDriver.avatarColor,
+                            textShortName: selectedDriver.textShortName,
+                            name: selectedDriver.fullName,
+                            tableDOB: selectedDriver.tableDOB,
                         },
                         type: TableStringEnum.EDIT,
                         id,
+                        disableButton: true,
                     };
 
                     this.modalService.openModal(
@@ -1526,14 +1607,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // This function gets called but service deleteDriverList is commented out so it will not delete any drivers
-    private multipleDeleteDrivers(response: DriverResponse[]): void {
+    private multipleDeleteDrivers(driverIds: number[]): void {
+        console.log('driverIds', driverIds);
+
         this.driverService
-            .deleteDriverList(response)
+            .deleteDriverList(driverIds)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
                 this.viewData = this.viewData.map((driver) => {
-                    response.map((id) => {
+                    driverIds.map((id) => {
                         if (driver.id === id) {
                             driver.actionAnimation =
                                 TableStringEnum.DELETE_MULTIPLE;

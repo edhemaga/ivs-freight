@@ -414,6 +414,7 @@ export class TableDropdownComponentConstants {
 
     static BACK_FILTER_QUERY: TrailerBackFilterQueryInterface = {
         active: 1,
+        trailerTypeIds: [],
         pageIndex: 1,
         pageSize: 25,
         truckType: null,

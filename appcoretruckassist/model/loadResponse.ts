@@ -19,6 +19,7 @@ import { BrokerShortResponse } from './brokerShortResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { FileResponse } from './fileResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
 import { LoadStopResponse } from './loadStopResponse';
@@ -32,7 +33,7 @@ export interface LoadResponse {
     type?: EnumValue;
     loadNumber?: string | null;
     statusType?: EnumValue;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number; } | null;
     dispatcher?: CompanyUserShortResponse;
     company?: CompanyShortResponse;
@@ -53,10 +54,12 @@ export interface LoadResponse {
     tonuRate?: number | null;
     driverRate?: number | null;
     additionalBillingRatesTotal?: number | null;
+    billingCount?: number | null;
     additionalBillingRates?: Array<LoadBillingAdditionalResponse> | null;
     totalRate?: number;
     totalAdjustedRate?: number | null;
     advancePay?: number | null;
+    paymentCount?: number | null;
     pays?: Array<LoadPaymentPayResponse> | null;
     statusHistory?: Array<LoadStatusHistoryResponse> | null;
     commentsCount?: number;
@@ -66,6 +69,7 @@ export interface LoadResponse {
     loadedMiles?: number;
     emptyMiles?: number;
     totalMiles?: number;
+    leftMiles?: number | null;
     totalTimeDays?: number;
     totalTimeHours?: number;
     paidDate?: string | null;

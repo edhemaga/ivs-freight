@@ -70,6 +70,7 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -115,6 +116,7 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         TaProgresBarComponent,
         TaInputDropdownContactsComponent,
         TaStateImageTextComponent,
+        TaPasswordAccountHiddenCharactersComponent,
 
         // pipes
         TableHighlightSearchTextPipe,
