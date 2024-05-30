@@ -21,10 +21,12 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
 @NgModule({
     declarations: [
@@ -52,10 +54,12 @@ import { FormatTimePipe } from '@shared/pipes/format-time.pipe';
         TaInputNoteComponent,
         TaDetailsHeaderComponent,
         TaTabSwitchComponent,
+        TaContactsCardComponent,
 
         // Pipes
         FormatDatePipe,
         FormatTimePipe,
+        FormatPhonePipe,
     ],
     providers: [FormatDatePipe],
 })
