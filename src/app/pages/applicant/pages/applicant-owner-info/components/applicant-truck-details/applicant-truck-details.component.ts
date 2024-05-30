@@ -32,7 +32,9 @@ import {
 import { FileEvent } from '@shared/models/file-event.model';
 import { SelectedItemEvent } from '@pages/applicant/pages/applicant-owner-info/models/selected-item-event.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ApplicantTruckConfig } from '../../utils/configs/applicant-truck.config';
+
+// configs
+import { ApplicantTruckConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-truck.config';
 
 @Component({
     selector: 'app-applicant-truck-details',
