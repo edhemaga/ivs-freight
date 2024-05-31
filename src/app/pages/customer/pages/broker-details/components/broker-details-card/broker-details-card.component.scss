@@ -17,16 +17,17 @@
     display: grid;
     grid-template-columns: 150px 150px;
     column-gap: 60px;
-    //padding: 0 4px;
-    //margin-top: -6px;
+    
     .addition-template-item {
         display: flex;
         flex-direction: column;
     }
+
     .header {
         font-size: 11px;
-        font-weight: 700;
-        color: #2f2f2f;
+        line-height: 14px;
+        color: $ta-black-2;
+
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -36,11 +37,12 @@
             background: rgb(183, 183, 183, 0.2);
         }
     }
+
     .value {
         font-size: 14px;
-        font-weight: 400;
         line-height: 18px;
-        color: #2f2f2f;
+        color: $ta-black-2;
+
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -50,6 +52,7 @@
             background: rgb(183, 183, 183, 0.2);
         }
     }
+
     .charts-value {
         font-size: 18px !important;
         font-weight: 600 !important;
@@ -63,6 +66,7 @@
             background: rgb(183, 183, 183, 0.2);
         }
     }
+
     .header-svg-wrapper {
         display: flex;
         align-items: center;
@@ -83,15 +87,16 @@
     grid-template-columns: 150px 150px;
     grid-column-gap: 60px;
     column-gap: 60px;
-    //padding: 0 4px;
-    //margin-top: -6px;
+    
     .invoice-ageing-template-item {
         display: flex;
         flex-direction: column;
+
         .header-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2f2f2f;
+            font-size: 11px;
+            line-height: 14px;
+            color: $ta-black;
+
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -101,11 +106,12 @@
                 background: rgb(183, 183, 183, 0.2);
             }
         }
+        
         .value-ageing {
-            font-size: 28px;
-            font-weight: 600;
-            color: #2f2f2f;
-            line-height: 28px;
+            font-size: 18px;
+            line-height: 22px;
+            color: $ta-black-2;
+
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -153,16 +159,18 @@
         }
     }
 }
+
 .credit-perctange {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     width: 408px;
+
     .percntage-broker {
-        font-size: 18px;
-        font-weight: 600;
-        color: $color-gray-dark;
-        line-height: 16px;
+        font-size: 14px;
+        line-height: 18px;
+        color: $ta-black;
+
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -170,6 +178,111 @@
         &::selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
+        }
+    }
+}
+
+.table-progress-bar-container {
+    width: 100%;
+    height: 8px;
+    border-radius: 2px;
+    overflow: hidden;
+
+    .table-progress-bar {
+        height: 100%;
+
+        // Progress Bar
+        &.bg-progress-sliver {
+            background: $muted;
+            width: 80%;
+        }
+
+        &.bg-progress-orange {
+            background: $ta-yellow-1;
+            width: 50%;
+        }
+
+        &.bg-progress-danger {
+            background: $ta-red-10;
+            width: 20%;
+        }
+    }
+
+    // Progress Container
+    &.bg-sliver-container {
+        background: $dark-2;
+    }
+
+    &.bg-expired-container {
+        background: $ta-red;
+    }
+
+    &.bg-inactive-container {
+        background: $ta-light-grey;
+    }
+
+    &.bg-orange-container {
+        background: $ta-yellow-7;
+    }
+
+    &.bg-danger-container {
+        background: $ta-red-16;
+    }
+}
+
+.invoice-aging-content {
+    .invoice-aging-content-item {
+        .days-count {
+            width: 35%;
+            color: $white;
+
+            span {
+                color: $bw5;
+            }
+        }
+
+        .invoice-count {
+            width: 30%;
+            color: $bw5;
+            text-align: center;
+        }
+
+        .total-amount {
+            width: 35%;
+            color: $white;
+            text-align: right;
+        }
+
+        .invoice-aging-item-progress-bar-container {
+            position: relative;
+            width: 252px;
+            height: 8px;
+            border-radius: 2px;
+            background: $dark-2;
+            overflow: hidden;
+
+            .progress-bar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+
+                &.group-1 {
+                    background: $ta-blue-13;
+                }
+
+                &.group-2 {
+                    background: $ta-yellow-1;
+                }
+
+                &.group-3 {
+                    background: $ta-orange-4;
+                }
+
+                &.group-4 {
+                    background: $ta-red-10;
+                }
+            }
         }
     }
 }

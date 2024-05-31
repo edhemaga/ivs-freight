@@ -10,7 +10,7 @@ import {
     ShipperContactResponse,
     ShipperResponse,
 } from 'appcoretruckassist';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
+import { CreditProgressData, DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { LoadBroker } from '@shared/models/load-broker.model';
 import { TimeOnly } from '@pages/customer/pages/customer-table/models/time-only.model';
 
@@ -68,7 +68,7 @@ export interface MappedShipperBroker {
     tableAverageWatingTimeDelivery?: string | TimeOnly;
     tableAvailableHoursShipping?: string;
     tableAvailableHoursReceiving?: string;
-    tablePaymentDetailAvailCredit?: string;
+    tablePaymentDetailAvailCredit?: CreditProgressData;
     tablePaymentDetailCreditLimit?: string;
     tablePaymentDetailTerm?: string;
     tablePaymentDetailDTP?: string;

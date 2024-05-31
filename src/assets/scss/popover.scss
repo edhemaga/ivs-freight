@@ -369,6 +369,10 @@
                 }
             }
         }
+
+        &.credit-dropdown {
+            height: 100px;
+        }
     }
 
     @-webkit-keyframes progressAnimation {

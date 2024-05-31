@@ -21,11 +21,17 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
+import { TaProgressInvoicesComponent } from '@shared/components/ta-progress-invoices/ta-progress-invoices.component';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 
 // Pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { ProgressBarColors } from '@shared/pipes/progress-bar-colors.pipe';
 
 @NgModule({
     declarations: [
@@ -53,11 +59,17 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         TaInputNoteComponent,
         TaDetailsHeaderComponent,
         TaDetailsDropdownComponent,
+        TaProgressInvoicesComponent,
+        TaUserReviewComponent,
+        TaCounterComponent,
+        TaContactsCardComponent,
 
         // Pipes
         FormatCurrencyPipe,
         FormatEinPipe,
         FormatDatePipe,
+        FormatPhonePipe,
+        ProgressBarColors,
     ],
 })
 export class BrokerDetailsModule {}
