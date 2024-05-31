@@ -77,8 +77,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
-    public backFilterQuery: TrailerBackFilterQueryInterface =
-        TableDropdownComponentConstants.BACK_FILTER_QUERY;
+    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
+    );
 
     //Data to display from model Truck Active
     public displayRowsFrontActive: CardRows[] =
@@ -144,13 +145,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filterType) {
                     if (res.action === TableStringEnum.SET) {
-                        this.viewData = this.trailerData?.filter(
-                            (customerData) =>
-                                res.queryParams.some(
-                                    (filterData) =>
-                                        filterData === customerData.id
-                                )
-                        );
+                        if (res.action === TableStringEnum.SET) {
+                            this.backFilterQuery.trailerTypeIds =
+                                res.queryParams;
+                            this.trailerBackFilter(this.backFilterQuery);
+                        }
                     }
 
                     if (res.action === TableStringEnum.CLEAR)
@@ -862,6 +861,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
+                this.backFilterQuery = JSON.parse(
+                    JSON.stringify(
+                        TableDropdownComponentConstants.BACK_FILTER_QUERY
+                    )
+                );
             });
     }
 
@@ -985,8 +989,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: TableStringEnum.ADD,
-                        disableButton: true,
+                        type: TableStringEnum.EDIT,
                         tabSelected: this.selectedTab,
                     }
                 );

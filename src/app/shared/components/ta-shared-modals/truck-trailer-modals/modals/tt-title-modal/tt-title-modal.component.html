@@ -7,9 +7,7 @@
             : 'Truck ' + editData?.payload?.truckNumber
     "
     [isModalValid]="ttTitleForm.valid && isFormDirty"
-    [modalTitle]="
-        editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
-    "
+    [modalTitle]="editData?.type !== 'edit-title' ? 'Add Title' : 'Edit Title'"
     [specificCaseModalName]="true"
 >
     <form

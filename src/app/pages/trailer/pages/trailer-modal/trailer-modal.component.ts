@@ -134,6 +134,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         value: this.selectedTab,
         params: { height: '0px' },
     };
+    public liftgate: boolean = false;
 
     public trailerStatus: boolean = true;
     public loadingVinDecoder: boolean = false;
@@ -166,6 +167,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.getTrailerDropdowns();
         this.isCompanyOwned();
         this.vinDecoder();
+        console.log(this.editData, 'test');
     }
 
     private createForm() {
@@ -191,6 +193,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             suspension: [null],
             tireSizeId: [null],
             doorType: [null],
+            liftgate: [null],
             reeferUnit: [null],
             emptyWeight: [null, emptyWeightValidation],
             mileage: [null, mileageValidation],
@@ -415,6 +418,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
             doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
+            liftgate: this.trailerForm.get('liftgate').value ?? false,
             reeferUnit: this.selectedReeferType
                 ? this.selectedReeferType.id
                 : null,
@@ -494,7 +498,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.selectedTireSize = null;
                         this.selectedDoorType = null;
                         this.selectedReeferType = null;
-
+                        this.liftgate = false;
                         this.tabChange({ id: 1 });
 
                         this.trailerForm
@@ -601,6 +605,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     ? this.selectedReeferType.id
                     : null
                 : null,
+            liftgate: this.trailerForm.get('liftgate').value ?? false,
             emptyWeight: this.trailerForm.get('emptyWeight').value
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('emptyWeight').value
@@ -728,6 +733,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             : null,
                         model: res.model,
                         vin: res.vin,
+                        liftgate: res.liftgate ?? false,
                         colorId: res.color ? res.color.name : null,
                         year: res.year.toString(),
                         trailerLengthId: res.trailerLength

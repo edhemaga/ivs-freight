@@ -616,9 +616,6 @@
                     }
                 }
 
-                .counter-holder {
-                    display: none;
-                }
                 .selected-icon {
                     display: none;
                 }
@@ -977,7 +974,7 @@
             }
             .select-item-logo {
                 display: flex;
-                svg-icon {
+                .truck-logo-icon {
                     svg {
                         path {
                             fill: $ta-red-10;
@@ -2607,7 +2604,7 @@
     color: $ta-light-grey-6;
     background-color: $ta-light-grey-9;
     border-radius: 100%;
-
+    display: flex;
     &.activeCount {
         background-color: $ta-blue-18;
         color: $white;

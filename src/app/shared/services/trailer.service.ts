@@ -371,66 +371,64 @@ export class TrailerService implements OnDestroy {
             .apiTrailerStatusIdPut(trailerId, 'response')
             .pipe(
                 tap(() => {
+                    /* Get Table Tab Count */
+                    const trailerCount = JSON.parse(
+                        localStorage.getItem('trailerTableCount')
+                    );
+
+                    /* Get Data From Store To Update */
+                    let trailerUpdate =
+                        tabSelected === 'active'
+                            ? this.trailerActiveQuery.getAll({
+                                  filterBy: ({ id }) => id === trailerId,
+                              })
+                            : this.trailerInactiveQuery.getAll({
+                                  filterBy: ({ id }) => id === trailerId,
+                              });
+
+                    /* Remove Data From Store */
+                    tabSelected === 'active'
+                        ? this.trailerActiveStore.remove(
+                              ({ id }) => id === trailerId
+                          )
+                        : this.trailerInactiveStore.remove(
+                              ({ id }) => id === trailerId
+                          );
+
+                    /* Add Data To New Store */
+                    tabSelected === 'active'
+                        ? this.trailerInactiveStore.add({
+                              ...trailerUpdate[0],
+                              status: 1,
+                          })
+                        : this.trailerActiveStore.add({
+                              ...trailerUpdate[0],
+                              status: 0,
+                          });
+
+                    /* Update Table Tab Count */
+                    if (tabSelected === 'active') {
+                        trailerCount.active--;
+                        trailerCount.inactive++;
+                    } else if (tabSelected === 'inactive') {
+                        trailerCount.active++;
+                        trailerCount.inactive--;
+                    }
+
+                    /* Send Table Tab Count To Local Storage */
+                    localStorage.setItem(
+                        'trailerTableCount',
+                        JSON.stringify({
+                            active: trailerCount.active,
+                            inactive: trailerCount.inactive,
+                        })
+                    );
                     const subTrailer = this.getTrailerById(trailerId)
                         .pipe(takeUntil(this.destroy$))
                         .subscribe({
                             next: (trailer: any) => {
-                                /* Get Table Tab Count */
-                                const trailerCount = JSON.parse(
-                                    localStorage.getItem('trailerTableCount')
-                                );
-
-                                /* Get Data From Store To Update */
-                                let truckToUpdate =
-                                    tabSelected === 'active'
-                                        ? this.trailerActiveQuery.getAll({
-                                              filterBy: ({ id }) =>
-                                                  id === trailerId,
-                                          })
-                                        : this.trailerInactiveQuery.getAll({
-                                              filterBy: ({ id }) =>
-                                                  id === trailerId,
-                                          });
-
-                                /* Remove Data From Store */
-                                tabSelected === 'active'
-                                    ? this.trailerActiveStore.remove(
-                                          ({ id }) => id === trailerId
-                                      )
-                                    : this.trailerInactiveStore.remove(
-                                          ({ id }) => id === trailerId
-                                      );
-
-                                /* Add Data To New Store */
-                                tabSelected === 'active'
-                                    ? this.trailerActiveStore.add({
-                                          ...truckToUpdate[0],
-                                          status: 0,
-                                      })
-                                    : this.trailerInactiveStore.add({
-                                          ...truckToUpdate[0],
-                                          status: 1,
-                                      });
-
-                                /* Update Table Tab Count */
-                                if (tabSelected === 'active') {
-                                    trailerCount.active--;
-                                    trailerCount.inactive++;
-                                } else if (tabSelected === 'inactive') {
-                                    trailerCount.active++;
-                                    trailerCount.inactive--;
-                                }
-
-                                /* Send Table Tab Count To Local Storage */
-                                localStorage.setItem(
-                                    'trailerTableCount',
-                                    JSON.stringify({
-                                        active: trailerCount.active,
-                                        inactive: trailerCount.inactive,
-                                    })
-                                );
                                 this.tadl.update(trailer.id, {
-                                    status: trailer.status,
+                                    status: !trailer.status,
                                 });
                                 this.tableService.sendActionAnimation({
                                     animation: 'update-status',

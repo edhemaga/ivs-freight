@@ -9,7 +9,7 @@
     [isModalValid]="registrationForm.valid && isFormDirty"
     [modalTitle]="
         editData?.type !== 'edit-registration'
-            ? 'Add New Registration'
+            ? 'Add Registration'
             : 'Edit Registration'
     "
     [specificCaseModalName]="true"
@@ -81,7 +81,7 @@
                 ></app-ta-input>
             </div>
             <div class="col-6">
-                <div
+                <!-- <div
                     *ngIf="!registrationExpirationDate"
                     class="d-flex align-items-center registration-expiration-container"
                 >
@@ -94,16 +94,15 @@
                     <p class="m-0 p-0 registration-action-text">
                         Add expiration date
                     </p>
-                </div>
+                </div> -->
                 <app-ta-input
-                    *ngIf="registrationExpirationDate"
                     [inputConfig]="{
                         name: 'datepicker',
                         type: 'text',
                         isDropdown: true,
                         label: 'Expiration Date',
                         placeholderIcon: 'date',
-                        isRequired: true,
+                        isRequired: !registrationExpirationDate ? false : true,
                         customClass: 'datetimeclass'
                     }"
                     formControlName="expDate"
