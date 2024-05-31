@@ -31,7 +31,7 @@
                     >
                         <svg-icon
                             class="repair-icon"
-                            src="assets/svg/common/ic_phone.svg"
+                            [src]="brokerDetailsSvgRoutes.phoneIcon"
                         ></svg-icon>
                     </span>
                     <app-ta-copy
@@ -51,7 +51,7 @@
                     >
                         <svg-icon
                             class="repair-icon"
-                            src="assets/svg/common/ic_email.svg"
+                            [src]="brokerDetailsSvgRoutes.emailIcon"
                         ></svg-icon>
                     </span>
                     <app-ta-copy
@@ -63,7 +63,7 @@
             <div class="repair-information-item address-cont">
                 <svg-icon
                     class="repair-icon"
-                    src="assets/svg/common/ic_address.svg"
+                    [src]="brokerDetailsSvgRoutes.addressIcon"
                 ></svg-icon>
                 <app-ta-copy
                     [copyValue]="
@@ -147,7 +147,7 @@
                 [cardName]="'Mileage Rate History'"
                 [isCardOpen]="false"
                 [tooltipName]="'View in Modal'"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
@@ -200,7 +200,7 @@
                                     broker?.availableCredit | formatCurrency
                                 }}</span>
                                 <div class="percntage-broker ta-font-medium">
-                                    {{ getPercntageOfPaid.toFixed(0) }}%
+                                    {{ getPercntageOfPaid }}%
                                 </div>
                             </div>
                         </div>
@@ -209,38 +209,18 @@
                 <ng-container *ngIf="broker.availableCredit">
                     <div
                         class="table-progress-bar-container my-2"
-                        [ngClass]="{
-                            'bg-expired-container':
-                                !getPercntageOfPaid.toFixed(0),
-                            'bg-sliver-container':
-                                getPercntageOfPaid.toFixed(0) >= 50 &&
-                                getPercntageOfPaid.toFixed(0) < 100,
-                            'bg-orange-container':
-                                getPercntageOfPaid.toFixed(0) >= 20 &&
-                                getPercntageOfPaid.toFixed(0) < 50,
-                            'bg-danger-container':
-                                getPercntageOfPaid.toFixed(0) > 0 &&
-                                getPercntageOfPaid.toFixed(0) < 20,
-                            'bg-inactive-container':
-                                getPercntageOfPaid.toFixed(0) === 100
-                        }"
+                        [ngClass]="
+                            getPercntageOfPaid | progressBarColors : false
+                        "
                     >
                         <div
-                            [ngClass]="{
-                                'bg-progress-sliver':
-                                    getPercntageOfPaid.toFixed(0) >= 50 &&
-                                    getPercntageOfPaid.toFixed(0) <= 100,
-                                'bg-progress-orange':
-                                    getPercntageOfPaid.toFixed(0) >= 20 &&
-                                    getPercntageOfPaid.toFixed(0) < 50,
-                                'bg-progress-danger':
-                                    getPercntageOfPaid.toFixed(0) > 0 &&
-                                    getPercntageOfPaid.toFixed(0) < 20
-                            }"
+                            class="table-progress-bar"
+                            [ngClass]="
+                                getPercntageOfPaid | progressBarColors : true
+                            "
                             [ngStyle]="{
-                                width: getPercntageOfPaid.toFixed(0) + '%'
+                                width: getPercntageOfPaid + '%'
                             }"
-                            class="table-progress-bar bg-progress-danger"
                         ></div>
                     </div>
                 </ng-container>
@@ -452,7 +432,7 @@
                 [hasDivider]="true"
                 [cardName]="'Payment History'"
                 [isCardOpen]="false"
-                [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+                [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'

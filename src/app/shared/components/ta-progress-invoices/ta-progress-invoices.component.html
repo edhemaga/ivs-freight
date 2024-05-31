@@ -1,9 +1,7 @@
 <div class="progress-text-wrapper d-flex flex-column">
     <div
         class="text-broker-wrapper d-flex align-items-center mb-2"
-        [class.disabled-text]="
-            invoiceCounter === '0' || invoicePercentage === 0
-        "
+        [class.disabled-text]="invoiceCounter === '0' || !invoicePercentage"
     >
         <span class="days">{{ invoiceDays }} days</span>
         <span class="invoice-days">

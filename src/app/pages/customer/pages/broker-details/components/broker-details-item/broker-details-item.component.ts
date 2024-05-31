@@ -29,8 +29,13 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // Enums
 import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
-import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Svg routes
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+
+// Constants
+import { BrokerLoadDropdownActionsConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-load-dropdown-actions.constants';
 
 @Titles()
 @Component({
@@ -49,6 +54,9 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     public stopsDataPickup: BrokerLoadStop[];
     public stopsDataDelivery: BrokerLoadStop[];
     public departmentContacts: DepartmentContacts[];
+
+    // Svg routes
+    public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     constructor(private reviewRatingService: ReviewsRatingService) {}
 
@@ -127,56 +135,8 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
 
     /**Function for dots in cards */
     public initTableOptions(): void {
-        this.loadActions = [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT,
-                svg: BrokerDetailsSvgRoutes.editIcon,
-                show: true,
-                iconName: TableStringEnum.EDIT,
-            },
-            {
-                title: TableStringEnum.BORDER,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svg: BrokerDetailsSvgRoutes.hazardousInfoIcon,
-                iconName: TableStringEnum.VIEW_DETAILS,
-                show: true,
-            },
-            {
-                title: TableStringEnum.BORDER,
-            },
-            {
-                title: TableStringEnum.SHARE_2,
-                name: TableStringEnum.SHARE,
-                svg: BrokerDetailsSvgRoutes.shareIcon,
-                iconName: TableStringEnum.SHARE,
-                show: true,
-            },
-            {
-                title: TableStringEnum.PRINT_2,
-                name: TableStringEnum.PRINT,
-                svg: BrokerDetailsSvgRoutes.printIcon,
-                iconName: TableStringEnum.PRINT,
-                show: true,
-            },
-            {
-                title: TableStringEnum.BORDER,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                type: TableStringEnum.DRIVER,
-                text: BrokerDetailsStringEnum.DELETE_DRIVER_TEXT,
-                svg: BrokerDetailsSvgRoutes.deleteIcon,
-                iconName: TableStringEnum.DELETE,
-                danger: true,
-                show: true,
-                redIcon: true,
-            },
-        ];
+        this.loadActions =
+            BrokerLoadDropdownActionsConstants.loadDropdownActions;
     }
 
     public changeReviewsEvent(reviews: ReviewComment): void {

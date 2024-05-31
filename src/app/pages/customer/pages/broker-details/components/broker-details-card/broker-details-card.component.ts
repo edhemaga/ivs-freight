@@ -20,7 +20,10 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { BrokerService } from '@pages/customer/services/broker.service';
 
 //Models
-import { BrokerResponse, InvoiceAgeingResponse } from 'appcoretruckassist';
+import {
+    BrokerInvoiceAgeingResponse,
+    BrokerResponse,
+} from 'appcoretruckassist';
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
@@ -41,6 +44,12 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 //Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
+
+// Svg routes
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
+
+// Constants
+import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants/broker-invoice-aging-tabs.constants';
 
 @Component({
     selector: 'app-broker-details-card',
@@ -110,31 +119,16 @@ export class BrokerDetailsCardComponent
     };
 
     // Invoice Aging Tabs
-    public invoiceAgingTabs: TabOptions[] = [
-        {
-            id: 1,
-            name: 'UNPAID',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'PAID',
-            checked: false,
-        },
-    ];
+    public invoiceAgingTabs: TabOptions[] =
+        BrokerInvoiceAgingConstants.invoiceAgingTabs;
     public invoiceAgingSelectedTab: number = 1;
-    public inoviceAgingData: {
-        totalPaid?: number;
-        totalDebt?: number;
-        invoiceAgeingGroup?: InvoiceAgeingResponse;
-        invoiceAgeingGroupOne?: InvoiceAgeingResponse;
-        invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
-        invoiceAgeingGroupThree?: InvoiceAgeingResponse;
-        invoiceAgeingGroupFour?: InvoiceAgeingResponse;
-    };
+    public inoviceAgingData: BrokerInvoiceAgeingResponse;
 
     private monthList: string[] = ChartConstants.MONTH_LIST_SHORT;
     private destroy$ = new Subject<void>();
+
+    // Svg routes
+    public brokerDetailsSvgRoutes = BrokerDetailsSvgRoutes;
 
     constructor(
         // Store
@@ -201,8 +195,9 @@ export class BrokerDetailsCardComponent
     }
 
     public getInvoiceAgeingCount(data: BrokerResponse): void {
-        this.getPercntageOfPaid =
-            (data?.availableCredit / data?.creditLimit) * 100;
+        this.getPercntageOfPaid = Math.round(
+            (data?.availableCredit / data?.creditLimit) * 100
+        );
 
         let firstGroup =
             data?.brokerPaidInvoiceAgeing?.invoiceAgeingGroupOne?.countInvoice;
@@ -231,7 +226,7 @@ export class BrokerDetailsCardComponent
             };
         });
     }
-    
+
     public onSelectBroker(event: { id: number }): void {
         if (event && event.id !== this.broker.id) {
             this.brokerList = this.brokerQuery.getAll().map((item) => {

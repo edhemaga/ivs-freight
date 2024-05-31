@@ -495,7 +495,7 @@ export class BrokerService implements OnDestroy {
             )
         );
 
-        brokerData?.ratingReviews.map((item: any) => {
+        brokerData?.ratingReviews.map((item) => {
             if (item.reviewId == data.id) {
                 item.comment = data.comment;
             }
@@ -546,7 +546,7 @@ export class BrokerService implements OnDestroy {
             JSON.stringify(this.brokerItemStore?.getValue()?.entities[brokerId])
         );
 
-        brokerData?.ratingReviews.map((item: any, index: any) => {
+        brokerData?.ratingReviews.map((item, index) => {
             if (item.reviewId) {
                 if (item.reviewId == reviewId) {
                     brokerData?.ratingReviews.splice(index, 1);

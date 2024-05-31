@@ -48,6 +48,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public newBrokerId: any = 0;
     public brokerConfData: any;
     public businessOpen: boolean;
+
     constructor(
         // Router
         private activated_route: ActivatedRoute,
@@ -437,7 +438,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerService
             .changeBrokerStatus(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
+            .subscribe();
     }
 
     private confirmationSubscribe(): void {
@@ -544,8 +545,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     }
 
     private getBrokerStoreData(): void {
-        let brokerId = this.activated_route.snapshot.params.id;
-        let brokerData = {
+        const brokerId = this.activated_route.snapshot.params.id;
+        const brokerData = {
             ...this.BrokerItemStore?.getValue()?.entities[brokerId],
         };
         this.brokerInitConfig(brokerData);

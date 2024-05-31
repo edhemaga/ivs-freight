@@ -86,7 +86,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         return Object.keys(obj).length === 0;
     }
 
-    public shipperConf(data: any): void {
+    public shipperConf(data): void {
         this.shipperConfigData = data;
         this.DetailsDataService.setNewData(data);
         this.currentIndex = this.shipperList.findIndex(
@@ -419,8 +419,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
 
     private getShipperConfig(): void {
-        let shipperId = this.activated_route.snapshot.params.id;
-        let shipperData = {
+        const shipperId = this.activated_route.snapshot.params.id;
+        const shipperData = {
             ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
         };
         this.shipperConf(shipperData);

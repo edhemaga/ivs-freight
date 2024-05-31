@@ -21,4 +21,6 @@ export enum BrokerDetailsStringEnum {
     DELETE_DRIVER_TEXT = 'Are you sure you want to delete driver(s)?',
     PICKUP = 'Pickup',
     DELIVERY = 'Delivery',
+    UNPAID = 'UNPAID',
+    PAID = 'PAID',
 }

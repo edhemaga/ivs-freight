@@ -31,6 +31,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
+import { ProgressBarColors } from '@shared/pipes/progress-bar-colors.pipe';
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         FormatEinPipe,
         FormatDatePipe,
         FormatPhonePipe,
+        ProgressBarColors,
     ],
 })
 export class BrokerDetailsModule {}
