@@ -5,18 +5,21 @@ import { Subject, take, takeUntil } from 'rxjs';
 // Services
 import { ShipperService } from '@pages/customer/services/shipper.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { NotificationService } from '@shared/services/notification.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Store
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
-import { ShipperDetailsListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.store';
 import { ShipperDetailsStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details.store';
 import { ShipperMinimalListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.query';
 import { ShipperDetailsListQuery } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-details-list-state/shipper-details-list.query';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ShipperDetailsStringEnum } from '@pages/customer/pages/shipper-details/enums/shipper-details-string.enum';
 
 @Component({
     selector: 'app-shipper-details',
@@ -45,16 +48,15 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
         // Services
         private shipperService: ShipperService,
-        private notificationService: NotificationService,
         private detailsPageService: DetailsPageService,
         private dropDownService: DropDownService,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private DetailsDataService: DetailsDataService,
+        private confirmationActivationService: ConfirmationActivationService,
 
         // Store
         private shipperMinimalStore: ShipperMinimalListStore,
-        private shipperStore: ShipperDetailsListStore,
         private shipperDetailsStore: ShipperDetailsStore,
         private shipperMinimalQuery: ShipperMinimalListQuery,
         private slq: ShipperDetailsListQuery
@@ -69,76 +71,22 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        // Confirmation Subscribe
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'shipper') {
-                                this.deleteShipperById(res?.id);
-                            }
-                            break;
-                        }
-                        case 'deactivate':
-                        case 'activate': {
-                            if (res.template === 'Shipper') {
-                                this.changeShipperStatus(res?.id);
-                            }
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
+        this.confirmationSubscribe();
+
+        this.currentActionAnimationSubscribe();
+
+        this.pageChangeSubscribe();
+
         this.initTableOptions();
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation) {
-                    this.shipperConf(res.data);
-                    this.initTableOptions();
-                    this.cdRef.detectChanges();
-                }
-            });
-        this.detailsPageService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
-                if (this.slq.hasEntity(id)) {
-                    query = this.slq.selectEntity(id).pipe(take(1));
-                } else {
-                    query = this.shipperService.getShipperById(id);
-                }
 
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: any) => {
-                        this.newShipperId = res.id;
-                        this.shipperConf(res);
-                        this.router.navigate([
-                            `/list/customer/${res.id}/shipper-details`,
-                        ]);
-                        this.cdRef.detectChanges();
-                    },
-                    error: () => {},
-                });
-            });
-
-        let shipperId = this.activated_route.snapshot.params.id;
-        let shipperData = {
-            ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
-        };
-        this.shipperConf(shipperData);
+        this.getShipperConfig();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
     }
 
-    public shipperConf(data: any) {
+    public shipperConf(data): void {
         this.shipperConfigData = data;
         this.DetailsDataService.setNewData(data);
         this.currentIndex = this.shipperList.findIndex(
@@ -147,19 +95,17 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
         this.businessOpen = data?.status ? true : false;
 
-        // calling api every time
-        //this.getShipperById(data.id);
         this.shipperConfig = [
             {
                 id: 0,
-                nameDefault: 'Shipper Detail',
-                template: 'general',
+                nameDefault: ShipperDetailsStringEnum.SHIPPER_DETAIL,
+                template: ShipperDetailsStringEnum.GENERAL,
                 data: data,
             },
             {
                 id: 1,
-                nameDefault: 'Load',
-                template: 'load',
+                nameDefault: ShipperDetailsStringEnum.LOAD,
+                template: ShipperDetailsStringEnum.LOAD_2,
                 icon: true,
                 length: data?.loadStops?.length ? data.loadStops.length : 0,
                 hide: true,
@@ -170,8 +116,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 2,
-                nameDefault: 'Contact',
-                template: 'contact',
+                nameDefault: ShipperDetailsStringEnum.CONTACT,
+                template: ShipperDetailsStringEnum.CONTACT_2,
                 length: data?.shipperContacts?.length
                     ? data.shipperContacts.length
                     : 0,
@@ -185,10 +131,10 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 3,
-                nameDefault: 'Review',
-                template: 'review',
+                nameDefault: ShipperDetailsStringEnum.REVIEW,
+                template: ShipperDetailsStringEnum.REVIEW_2,
                 length: data?.reviews?.length ? data.reviews.length : 0,
-                customText: 'Date',
+                customText: ShipperDetailsStringEnum.DATE,
                 hide: false,
                 data: data,
                 hasArrow: false,
@@ -196,7 +142,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         ];
         this.shipperId = data?.id ? data.id : null;
     }
-    public deleteShipperById(id: number) {
+
+    public deleteShipperById(id: number): void {
         let last = this.shipperList.at(-1);
         if (
             last.id ===
@@ -224,13 +171,15 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 },
             });
     }
-    public getShipperById(id: number) {
+
+    public getShipperById(id: number): void {
         this.shipperService
             .getShipperById(id, true)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.shipperObject = item));
     }
-    public onDropActions(event: any) {
+
+    public onDropActions(event: any): void {
         this.getShipperById(event.id);
         let eventType = '';
         if (
@@ -262,11 +211,11 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    public onModalAction(event: any) {
+    public onModalAction(event: any): void {
         let eventObject = {
             data: undefined,
             id: this.shipperId,
-            type: 'edit',
+            type: TableStringEnum.EDIT,
             openedTab: event,
         };
         setTimeout(() => {
@@ -274,7 +223,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 this.shipperObject,
-                'shipper'
+                TableStringEnum.SHIPPER
             );
         }, 100);
     }
@@ -320,6 +269,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 },
                 {
                     title: 'border',
+                    hide: true,
                 },
                 {
                     title: 'Share',
@@ -327,6 +277,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
                     iconName: 'share',
+                    hide: true,
                 },
                 {
                     title: 'Print',
@@ -334,6 +285,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
                     iconName: 'print',
+                    hide: true,
                 },
                 {
                     title: 'border',
@@ -354,15 +306,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                     show: true,
                     iconName: 'delete',
                 },
-
-                /*
-        {
-          title: 'Send Message',
-          name: 'dm',
-          svg: 'assets/svg/common/ic_dm.svg',
-          show: true,
-        },
-        */
             ],
             export: true,
         };
@@ -372,8 +315,94 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public changeShipperStatus(id: number) {
-        this.shipperService.changeShipperStatus(id);
+    public changeShipperStatus(id: number): void {
+        this.shipperService
+            .changeShipperStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {});
+    }
+
+    private confirmationSubscribe(): void {
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case TableStringEnum.DELETE:
+                            if (res.template === TableStringEnum.SHIPPER) {
+                                this.deleteShipperById(res?.id);
+                            }
+                            break;
+
+                        case TableStringEnum.DEACTIVATE:
+                        case TableStringEnum.ACTIVATE:
+                            if (res.template === TableStringEnum.SHIPPER) {
+                                this.changeShipperStatus(res?.id);
+                            }
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+            });
+
+        // Open / Close Business subscribe
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (res.template === TableStringEnum.INFO) {
+                        this.changeShipperStatus(res?.data?.id);
+                    }
+                }
+            });
+    }
+
+    private currentActionAnimationSubscribe(): void {
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.animation) {
+                    this.shipperConf(res.data);
+                    this.initTableOptions();
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+
+    private pageChangeSubscribe(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+                if (this.slq.hasEntity(id)) {
+                    query = this.slq.selectEntity(id).pipe(take(1));
+                } else {
+                    query = this.shipperService.getShipperById(id);
+                }
+
+                query.pipe(takeUntil(this.destroy$)).subscribe({
+                    next: (res) => {
+                        this.newShipperId = res.id;
+                        this.shipperConf(res);
+                        this.router.navigate([
+                            `/list/customer/${res.id}/shipper-details`,
+                        ]);
+                        this.cdRef.detectChanges();
+                    },
+                    error: () => {},
+                });
+            });
+    }
+
+    private getShipperConfig(): void {
+        const shipperId = this.activated_route.snapshot.params.id;
+        const shipperData = {
+            ...this.shipperDetailsStore?.getValue()?.entities[shipperId],
+        };
+        this.shipperConf(shipperData);
     }
 
     ngOnDestroy(): void {

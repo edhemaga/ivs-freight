@@ -66,6 +66,8 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? 'ADDRESS'
             : tableHeadTitle === 'CREDIT LIMIT'
             ? 'BILLING'
+            : tableHeadTitle === 'EMPTY'
+            ? 'WEIGHT'
             : gridNameTitle === 'Driver' && index === 12
             ? 'PAY'
             : 'MVR';

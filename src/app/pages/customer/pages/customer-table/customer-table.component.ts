@@ -37,7 +37,10 @@ import { ShipperState } from '@pages/customer/state/shipper-state/shipper.store'
 import { BrokerQuery } from '@pages/customer/state/broker-state/broker.query';
 import { ShipperQuery } from '@pages/customer/state/shipper-state/shipper.query';
 import { Store, select } from '@ngrx/store';
-import { selectActiveTabCards, selectInactiveTabCards } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.selectors';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.selectors';
 
 // Models
 import {
@@ -68,6 +71,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -92,7 +96,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         './customer-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe],
+    providers: [ThousandSeparatorPipe, FormatCurrencyPipe],
 })
 export class CustomerTableComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -167,6 +171,7 @@ export class CustomerTableComponent
         // Pipes
         private thousandSeparator: ThousandSeparatorPipe,
         public datePipe: DatePipe,
+        private formatCurrencyPipe: FormatCurrencyPipe,
 
         // Router
         private router: Router
@@ -1274,10 +1279,18 @@ export class CustomerTableComponent
                   ' ' +
                   data.mainPoBox.zipCode
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePaymentDetailAvailCredit: data?.availableCredit
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.availableCredit)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tablePaymentDetailAvailCredit: {
+                expirationCredit: data.availableCredit,
+                expirationCreditText: this.formatCurrencyPipe.transform(
+                    data.availableCredit
+                ),
+                totalValueText:
+                    (
+                        (+data.availableCredit / +data.creditLimit) *
+                        100
+                    ).toString() + TableStringEnum.PERCENTS,
+                percentage: (+data.availableCredit / +data.creditLimit) * 100,
+            },
             tablePaymentDetailCreditLimit: data?.creditLimit
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(data.creditLimit)
