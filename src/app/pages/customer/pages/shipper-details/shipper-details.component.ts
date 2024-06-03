@@ -163,27 +163,9 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 icon: true,
                 length: data?.loadStops?.length ? data.loadStops.length : 0,
                 hide: true,
-                hasArrow: true,
-                customText: 'Date',
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                    },
-
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_arrow-right-line.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_arrow-right-line.svg',
-                    },
-                ],
+                hasArrow: false,
+                hasSearch: true,
+                searchPlaceholder: 'Load',
                 data: data,
             },
             {
@@ -196,12 +178,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 icon: true,
                 hasArrow: false,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                    },
-                ],
+                hasSearch: true,
+                searchPlaceholder: 'Contacts',
                 customText: '',
                 data: data,
             },

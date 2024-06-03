@@ -155,10 +155,11 @@ $transition: all 0.3s ease-in-out;
         height: 18px;
         margin-bottom: 6px;
         .repaier-headers {
-            font-size: 14px;
+            font-size: 11px;
+            line-height: 14px;
             font-weight: $font-bold;
 
-            color: #2f2f2f;
+            color: $bw6-2;
             //color: $color-gray;
 
             &::-moz-selection {

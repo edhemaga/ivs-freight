@@ -169,7 +169,14 @@
                 </div>
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
-                    <span
+                    <ng-container *ngIf="hasSearch">
+                        <app-ta-search-v2
+                            [placeHolderText]="searchPlaceholder"
+                            [clearSearchValue]="clearSearchValue"
+                            (searchValueEmitter)="handleSearchValue($event)"
+                        ></app-ta-search-v2>
+                    </ng-container>
+                    <!-- <span
                         class="ic-hed"
                         *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
                     >
@@ -178,7 +185,7 @@
                             class="single-repair-icon"
                             src="{{ ic.icon }}"
                         ></svg-icon>
-                    </span>
+                    </span>-->
                     <span class="ic-hed" *ngIf="timeFilter">
                         <app-ta-filter
                             [type]="'timeFilter'"

@@ -11,6 +11,7 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
+import { TaSearchV2Component } from '../ta-search-v2/ta-search-v2.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -24,16 +25,22 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
     styleUrls: ['./ta-details-header.component.scss'],
     standalone: true,
     imports: [
+        //Modules
         CommonModule,
         FormsModule,
         NgbModule,
+        AngularSvgIconModule,
+        RouterModule,
+        NgbPopoverModule,
+
+        //Components
         TaAppTooltipComponent,
         TaDetailsDropdownComponent,
         TaCounterComponent,
-        AngularSvgIconModule,
+        TaSearchV2Component,
         TaFilterComponent,
-        RouterModule,
-        NgbPopoverModule,
+        
+        //Pipes
         FormatCurrencyPipe,
     ],
 })
@@ -76,6 +83,8 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
     @Input() brokerLoadDrop: boolean = false;
+    @Input() hasSearch: boolean = false;
+    @Input() searchPlaceholder: string;
 
     public up: boolean = false;
     public down: boolean = false;

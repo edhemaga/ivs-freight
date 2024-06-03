@@ -25,6 +25,9 @@ import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-mod
 //Constants
 import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-routes';
 
+//Modules
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
     selector: 'app-ta-contacts-card',
     templateUrl: './ta-contacts-card.component.html',
@@ -35,6 +38,7 @@ import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-rout
         //Moduless
         CommonModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         //Components
         TaCustomCardComponent,
@@ -44,14 +48,16 @@ import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-rout
         FormatPhonePipe,
     ],
 })
-
 export class TaContactsCardComponent {
     @Input() public departmentContacts: DepartmentContacts[];
     @Input() public parentId: number;
 
     public contactsImageRoutes = ContactsCardSvgRoutes;
 
-    constructor(private dropDownService: DropDownService, private modalService: ModalService) {}
+    constructor(
+        private dropDownService: DropDownService,
+        private modalService: ModalService,
+    ) {}
 
     public identity(index: number, item: DepartmentContacts): number {
         return item.id;
