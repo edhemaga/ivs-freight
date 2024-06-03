@@ -35,7 +35,7 @@ import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
-import { TaContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
+import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 
 //pipes
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
@@ -79,7 +79,7 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaTableCardDropdownActionsComponent,
         TaNoteComponent,
         TaContactsCardComponent,
-        TaContactsComponent,
+        TaInputDropdownContactsComponent,
 
         // Pipes
         FormatDatePipe,
