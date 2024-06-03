@@ -169,6 +169,7 @@ export interface CardDetails {
     pmId?: number;
     businessName?: string;
     billingAddress?: Address;
+    address?: Address;
 }
 
 export interface PmTruckProgressData {
@@ -181,6 +182,13 @@ export interface PmTruckProgressData {
 export interface PmTrailerProgressData {
     expirationDays?: number;
     expirationDaysText?: string;
+    percentage: number;
+    totalValueText: string;
+}
+
+export interface CreditProgressData {
+    expirationCredit?: number;
+    expirationCreditText?: string;
     percentage: number;
     totalValueText: string;
 }
@@ -211,6 +219,12 @@ export interface DropdownItem {
     isDisabled?: boolean;
     tableListDropdownContentStyle?: { [key: string]: any };
     insideDropdownContent?: InsideDropdownContent[];
+    svg?: string;
+    show?: boolean;
+    iconName?: string;
+    type?: string;
+    danger?: boolean;
+    redIcon?: boolean;
 }
 
 interface InsideDropdownContent {

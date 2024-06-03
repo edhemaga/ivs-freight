@@ -1,0 +1,16 @@
+<ng-container *ngIf="stateAbbreviation">
+    <div class="d-flex align-items-center state-image-text-container">
+        <svg-icon
+            class="state-icon"
+            [src]="
+                'assets/svg/common/states-abbreviation-' +
+                (isCanadaStates ? 'ca' : 'us') +
+                '/' +
+                stateAbbreviation +
+                '.svg'
+            "
+        ></svg-icon>
+
+        <p class="m-0">{{ stateAbbreviation }}</p>
+    </div>
+</ng-container>

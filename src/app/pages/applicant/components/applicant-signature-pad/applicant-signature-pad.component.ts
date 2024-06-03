@@ -11,6 +11,7 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 // signature pad
 import {
@@ -23,6 +24,7 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 @Component({
     selector: 'app-applicant-signature-pad',
@@ -51,10 +53,17 @@ export class ApplicantSignaturePadComponent
     };
 
     public signature: string;
+    public signatureImgSrcCopy: string | SafeResourceUrl = null;
 
-    public displayActionButtons: boolean = false;
+    public displayActionButtons: boolean = false
+
+    public applicantSvgRoutes = ApplicantSvgRoutes;
 
     constructor(public imageBase64Service: ImageBase64Service) {}
+
+    get isSignautrePadEmpty() {
+        return this.signaturePad?.isEmpty();
+    }
 
     ngAfterViewInit(): void {
         if (this.mode === SelectedMode.APPLICANT && this.signaturePad) {
@@ -71,6 +80,10 @@ export class ApplicantSignaturePadComponent
             this.signatureImgSrc = this.imageBase64Service.sanitizer(
                 changes.signatureImgSrc?.currentValue
             );
+
+            this.signatureImgSrcCopy = this.imageBase64Service.sanitizer(
+                changes.signatureImgSrc?.currentValue
+            );
         }
 
         if (
@@ -80,6 +93,7 @@ export class ApplicantSignaturePadComponent
             this.displayRequiredNote =
                 changes.displayRequiredNote?.currentValue;
         }
+
     }
 
     public onDrawStart(event: MouseEvent | Touch): void {
@@ -110,6 +124,7 @@ export class ApplicantSignaturePadComponent
         this.signature = this.signaturePad.toDataURL();
 
         this.signatureImgSrc = this.signature;
+        this.signatureImgSrcCopy = this.signature;
 
         this.displayActionButtons = false;
 
@@ -122,5 +137,15 @@ export class ApplicantSignaturePadComponent
         this.signatureImgSrc = null;
 
         this.signatureEmitter.emit(null);
+    }
+
+    public onUseSavedSignature(): void {
+        this.signatureImgSrc = this.signatureImgSrcCopy;
+
+        this.signature = this.signatureImgSrc;
+
+        this.displayActionButtons = false;
+
+        this.signatureEmitter.emit(this.signature);
     }
 }

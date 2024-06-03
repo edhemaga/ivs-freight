@@ -3280,7 +3280,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.additionalBillingTypes;
 
                     if (this.editData)
-                        this.populateLoadModalData(this.editData.data);
+                        this.populateLoadModalData(
+                            this.editData.data as LoadResponse
+                        );
 
                     // stop items
                     this.stopItemDropdownLists = {
@@ -3459,7 +3461,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ? this.selectedDispatcher.id
                 : null,
             dateCreated,
-            status: status.name as LoadStatus,
+            /*          status: status.name as LoadStatus, */
             dispatchId: this.selectedDispatches
                 ? this.selectedDispatches.id
                 : null,

@@ -24,6 +24,7 @@
                 height: 28px;
             }
         }
+
         &-title,
         &-middle {
             p,
@@ -54,7 +55,8 @@
                 }
             }
 
-            span, .text-2 {
+            span,
+            .text-2 {
                 font-size: 14px;
                 line-height: 18px;
                 color: $bw5;
@@ -74,9 +76,48 @@
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    
+
                     &.shorter-text {
                         max-width: 66%;
+                    }
+                }
+            }
+
+            .avatar {
+                width: 28px;
+                height: 32px;
+                object-fit: fill;
+                margin-right: 6px;
+            }
+
+            .no-avatar {
+                width: 28px;
+                height: 32px;
+                margin-right: 6px;
+
+                p {
+                    font-size: 11px;
+                    line-height: 14px;
+
+                    user-select: none;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                }
+            }
+
+            .title-container {
+                p {
+                    &:first-child {
+                        font-size: 18px;
+                        line-height: 22px;
+                        color: $ta-black;
+                    }
+
+                    &:last-child {
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: $bw5;
                     }
                 }
             }

@@ -23,6 +23,8 @@ export interface UpdateApplicantCdlCommand {
     expDate?: string;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;
+    files?: Array<Blob> | null;
+    filesForDeleteIds?: Array<number> | null;
     licenseReview?: UpdateApplicantCdlReviewCommand;
 }
 

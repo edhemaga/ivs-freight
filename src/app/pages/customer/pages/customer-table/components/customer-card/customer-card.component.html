@@ -1,6 +1,6 @@
 <div class="cards-container">
     <ng-container
-        *ngFor="let card of viewData; let i = index; trackBy: trackCard"
+        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
     >
         <div class="custom-card">
             <!-- Card splited on left and right side -->
@@ -67,192 +67,88 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    <ng-container
-                                        *ngFor="
-                                            let title of titleArray;
-                                            trackBy: trackCard
-                                        "
-                                    >
-                                        {{ title[i] }}
-                                    </ng-container>
+                                    {{ card.businessName }}
                                 </span>
                             </span>
                         </div>
                     </div>
 
                     <!-- Card body front -->
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                !isCardFlippedCheckInCards.includes(i) &&
-                                !isAllCardsFlipp
-                        }"
-                    >
-                        <!-- Card body item -->
-
+                    <div class="card-body-content flipped">
                         <ng-container
                             *ngFor="
-                                let rowsFront of cardsFront;
+                                let cardRow of displayRowsFront
+                                    | flipCards
+                                        : i
+                                        : isCardFlippedCheckInCards
+                                        : isAllCardsFlipp
+                                        : displayRowsBack;
                                 trackBy: trackCard
                             "
                         >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsFront[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
+                            <div class="one-row">
+                                <div class="item-body">
+                                    <div class="top-item-body">
+                                        {{ cardRow.title }}
                                     </div>
-
-                                    <div
-                                        #parentElement
-                                        class="bottom-item-body d-flex align-items-center"
-                                        [ngClass]="{
-                                            gap: row.title !== 'VIN No.',
-                                            'line-height': row.title === 'Fleet'
-                                        }"
+                                </div>
+                                <div
+                                    #parentElement
+                                    class="bottom-item-body d-flex align-items-center"
+                                >
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title !==
+                                                'Rating & Review' &&
+                                            cardRow.title !==
+                                                'Available Credit' &&
+                                            cardRow.title !== 'Contacts'
+                                        "
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                row.title !==
-                                                    'Rating & Review' &&
-                                                row.title !== 'Available Credit'
-                                            "
-                                        >
-                                            <span>
-                                                {{ row.key }}
-                                            </span>
-                                        </ng-container>
+                                        {{ card | cardValue : cardRow }}
+                                    </ng-container>
 
-                                        <!-- Available Credit -->
-
-                                        <ng-container
-                                            *ngIf="
-                                                row.title === 'Available Credit'
-                                            "
-                                        >
-                                            {{ row.key }}
-                                        </ng-container>
-
-                                        <!-- Rating & Review Shipper-->
-
-                                        <ng-container
-                                            *ngIf="
-                                                row.title === 'Rating & Review'
-                                            "
-                                        >
-                                            <div class="rating-holder d-flex">
-                                                <!-- <app-ta-input-dropdown-table
-                                                [data]="card.review"
-                                                [type]="'rating-shipper'"
-                                                [loggedUserCommented]="true"
-                                            >
-                                            </app-ta-input-dropdown-table> -->
-                                            </div>
-                                        </ng-container>
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </ng-container>
-                    </div>
-
-                    <!-- Card body back -->
-                    <div
-                        class="flipped"
-                        [ngClass]="{
-                            'card-body-content':
-                                isCardFlippedCheckInCards.includes(i) ||
-                                isAllCardsFlipp
-                        }"
-                    >
-                        <ng-container
-                            *ngFor="
-                                let rowsBack of cardsBack;
-                                trackBy: trackCard
-                            "
-                        >
-                            <ng-container
-                                *ngFor="
-                                    let row of rowsBack[i];
-                                    trackBy: trackCard
-                                "
-                            >
-                                <div class="one-row">
-                                    <div class="item-body">
-                                        <div class="top-item-body">
-                                            {{ row.title }}
-                                        </div>
-
+                                    <ng-container
+                                        *ngIf="cardRow.title === 'Contacts'"
+                                    >
                                         <div
-                                            class="bottom-item-body d-flex align-items-center gap"
+                                            class="contacts-holder d-flex align-items-center justify-content-center"
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    row.title !==
-                                                        'Receiving Hours' &&
-                                                    row.title !==
-                                                        'Shipping Hours' &&
-                                                    row.title !==
-                                                        'Rating & Review' &&
-                                                    row.title !== 'Revenue'
-                                                "
-                                            >
-                                                {{ row.key }}
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    row.title ===
-                                                        'Shipping Hours' ||
-                                                    row.title ===
-                                                        'Receiving Hours'
-                                                "
-                                            >
-                                                <div class="d-flex gap">
-                                                    <svg-icon
-                                                        [src]="
-                                                            'assets/svg/truckassist-table/customer/calendar.svg'
-                                                        "
-                                                    ></svg-icon>
-
-                                                    <span class="align-span">
-                                                        {{ row.key }}
-                                                    </span>
-                                                </div>
-                                            </ng-container>
-
-                                            <!-- Rating & Review -->
-                                            <ng-container
-                                                *ngIf="
-                                                    row.title ===
-                                                    'Rating & Review'
-                                                "
-                                            >
-                                                <!-- <app-ta-input-dropdown-table
-                                                [data]="card.review"
-                                                [type]="'rating-shipper'"
-                                                [loggedUserCommented]="true"
-                                            >
-                                            </app-ta-input-dropdown-table> -->
-                                            </ng-container>
-
-                                            <!-- Format revanue -->
-
-                                            <ng-container
-                                                *ngIf="row.title === 'Revenue'"
-                                            >
-                                                {{ row.key }}
-                                            </ng-container>
+                                            <svg-icon
+                                                src="/assets/svg/truckassist-table/customer/contact-column-avatar.svg"
+                                            ></svg-icon>
+                                            {{ card[cardRow.key].length }}
                                         </div>
-                                    </div>
+                                    </ng-container>
+
+                                    <!-- Available Credit -->
+
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title === 'Available Credit'
+                                        "
+                                    >
+                                        /
+                                    </ng-container>
+
+                                    <!-- Rating & Review Shipper
+
+                                    <ng-container
+                                        *ngIf="
+                                            cardRow.title === 'Rating & Review'
+                                        "
+                                    >
+                                        <div class="rating-holder d-flex">
+                                            <app-ta-input-dropdown-table
+                                    [data]="card.review"
+                                    [type]="'rating-shipper'"
+                                    [loggedUserCommented]="true"
+                                >
+                                </app-ta-input-dropdown-table>
+                                        </div>
+                                    </ng-container> this is not going into this sprint -->
                                 </div>
-                            </ng-container>
+                            </div>
                         </ng-container>
                     </div>
                 </div>
@@ -264,6 +160,7 @@
 
                         <app-ta-table-card-dropdown-actions
                             [card]="card"
+                            (bodyActions)="onCardActions($event)"
                         ></app-ta-table-card-dropdown-actions>
 
                         <!-- Note element -->
@@ -277,6 +174,11 @@
                                 [entityId]="card.id"
                                 [openedAll]="false"
                                 [parking]="false"
+                                [entityType]="
+                                    selectedTab === 'active'
+                                        ? 'Broker'
+                                        : 'Shipper'
+                                "
                             >
                             </app-ta-note>
                         </div>

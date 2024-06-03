@@ -1,4 +1,13 @@
-export function getDriverColumnsDefinition() {
+// helpers
+import { DriverColumnsHelper } from '@shared/utils/helpers/settings-helpers/driver-columns.helper';
+
+// models
+import { DriverResponse } from 'appcoretruckassist';
+
+export function getDriverColumnsDefinition(tableData: DriverResponse[]) {
+    const payrollColumns =
+        DriverColumnsHelper.getDriverPayrollColumns(tableData);
+
     return [
         {
             ngTemplate: 'checkbox',
@@ -87,7 +96,7 @@ export function getDriverColumnsDefinition() {
             sortName: 'ssn',
             hidden: false,
             isPined: false,
-            width: true,
+            width: 118,
             minWidth: 118,
             filter: '',
             isNumeric: true,
@@ -236,8 +245,8 @@ export function getDriverColumnsDefinition() {
             groupName: 'Owner Detail ',
             hidden: true,
             isPined: false,
-            width: 110,
-            minWidth: 80,
+            width: 118,
+            minWidth: 118,
             filter: '',
             isNumeric: true,
             index: 9,
@@ -287,9 +296,9 @@ export function getDriverColumnsDefinition() {
             groupName: null,
             hidden: false,
             isPined: false,
-            width: 100,
             sortName: 'payType',
-            minWidth: 62,
+            width: 100,
+            minWidth: 100,
             filter: '',
             isNumeric: true,
             isDate: true,
@@ -306,7 +315,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
             class: 'custom-font',
         },
-        /* PAY DETAIL, LOGIC FOR DIFFERENT PAY TYPES - SORT INDEX FUNCTION, INDEX 12 - 21 */
+        ...payrollColumns,
         {
             ngTemplate: 'text',
             title: 'Name ',
@@ -360,7 +369,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'password-account',
             title: 'Account ',
             field: 'tableBankDetailAccount',
             name: 'Account ',
@@ -385,7 +394,7 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'text',
+            ngTemplate: 'description',
             title: 'Off Duty Location',
             field: 'tableOffDutyLocation',
             name: 'Off-Duty Location',
@@ -460,15 +469,15 @@ export function getDriverColumnsDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'Phone',
-            field: 'tableEmergContact',
+            title: 'Phone ',
+            field: 'tableEmergContactPhone',
             name: 'Phone',
             groupName: 'Emerg. Contact ',
             sortName: 'emergencyContactPhone',
             hidden: true,
             isPined: false,
-            width: 130,
-            minWidth: 112,
+            width: 128,
+            minWidth: 128,
             filter: '',
             isNumeric: true,
             index: 28,
@@ -485,14 +494,14 @@ export function getDriverColumnsDefinition() {
         },
         {
             ngTemplate: 'text',
-            title: 'TWIC Expiration',
+            title: 'TWIC Exp',
             field: 'tableTwicExp',
             name: 'TWIC Expiration',
             sortName: 'twicExpDate',
             hidden: true,
             isPined: false,
-            width: 150,
-            minWidth: 150,
+            width: 88,
+            minWidth: 88,
             filter: '',
             isNumeric: true,
             index: 29,
@@ -834,8 +843,8 @@ export function getDriverColumnsDefinition() {
             resizable: true,
         },
         {
-            ngTemplate: 'progress',
-            title: 'Term',
+            ngTemplate: 'text',
+            title: 'Term ',
             field: 'tableMvrDetailsRenewalTerm',
             name: 'Renewal Term',
             sortName: '',

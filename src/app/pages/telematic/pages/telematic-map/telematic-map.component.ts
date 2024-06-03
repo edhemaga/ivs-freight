@@ -790,7 +790,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getTrucks() {
         this.truckService
-            .getTruckList(1, 1, 25)
+            .getTruckList(1, null, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trucks: TruckListResponse) => {
                 var unassignedTrucks = [];
@@ -828,7 +828,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
 
     getTrailers() {
         this.trailerService
-            .getTrailers(1, 1, 25)
+            .getTrailers(1, null, 1, 25)
             .pipe(takeUntil(this.destroy$))
             .subscribe((trailers: TrailerListResponse) => {
                 var unassignedTrailers = [];

@@ -598,6 +598,7 @@
             height: 28px;
             transition: all 0.2s linear;
             cursor: pointer;
+
             &:hover {
                 .count-holder {
                     display: none;
@@ -615,6 +616,9 @@
                     }
                 }
 
+                .counter-holder {
+                    display: none;
+                }
                 .selected-icon {
                     display: none;
                 }
@@ -961,7 +965,27 @@
 
         width: 90%;
         line-height: 26px;
-
+        .truck-icon {
+            display: none;
+        }
+        .select-item-logo {
+            display: none;
+        }
+        &:hover {
+            .truck-icon {
+                display: flex;
+            }
+            .select-item-logo {
+                display: flex;
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-10;
+                        }
+                    }
+                }
+            }
+        }
         span {
             width: 99%;
             text-overflow: ellipsis;

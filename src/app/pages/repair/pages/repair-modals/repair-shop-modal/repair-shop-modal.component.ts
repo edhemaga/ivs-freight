@@ -197,8 +197,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isNewContactAdded: boolean = false;
     public contactAddedCounter: number = 0;
 
+    // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-
 
     constructor(
         // Form

@@ -12,7 +12,7 @@
 
 
 export interface VoidRegistrationCommand { 
-    registrationIdToBeVoided?: number;
+    registrationIdToBeVoided?: number | null;
     registrationIdToBeUnVoided?: number | null;
 }
 

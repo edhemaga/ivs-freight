@@ -3,13 +3,14 @@
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [headerSvg]="
-        editData?.type === 'deactivate'
-            ? 'delete'
-            : editData?.type === 'activate'
+        editData?.type.includes('deactivate')
+            ? 'info2'
+            : editData?.type.includes('activate')
             ? 'hire'
             : editData?.type
     "
     [isCloseIconRemoved]="true"
+    [showCounter]="editData?.array"
     [confirmationData]="editData"
     (confirmationAction)="onModalAction($event)"
 >
@@ -22,8 +23,8 @@
         <div class="confirmation-activation-icon">
             <svg-icon
                 [src]="
-                    editData?.type === 'activate' ||
-                    editData?.type === 'deactivate'
+                    editData?.type.includes('activate') ||
+                    editData?.type.includes('deactivate')
                         ? 'assets/svg/common/confirmation/ic_confirmation_modal_button_' +
                           editData?.type +
                           '.svg'
@@ -53,12 +54,65 @@
                     class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
                 >
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
-                        <div>
+                        <ng-container
+                            *ngIf="
+                                editData?.template === 'Driver';
+                                else regularTemplate
+                            "
+                        >
+                            <div class="d-flex align-items-center">
+                                <ng-container
+                                    *ngIf="
+                                        editData?.data?.avatarImg;
+                                        else noImage
+                                    "
+                                >
+                                    <img
+                                        class="avatar"
+                                        [src]="editData.data.avatarImg"
+                                    />
+                                </ng-container>
+
+                                <ng-template #noImage>
+                                    <div
+                                        class="d-flex align-items-center justify-content-center no-avatar"
+                                        [ngStyle]="{
+                                            background:
+                                                editData?.data?.avatarColor
+                                                    ?.background
+                                        }"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-extra-bold"
+                                            [ngStyle]="{
+                                                color: editData?.data
+                                                    ?.avatarColor?.color
+                                            }"
+                                        >
+                                            {{ editData?.data?.textShortName }}
+                                        </p>
+                                    </div>
+                                </ng-template>
+
+                                <div class="d-flex flex-column title-container">
+                                    <p class="m-0 ta-font-bold">
+                                        {{ editData?.data?.name }}
+                                    </p>
+
+                                    <p class="m-0 ta-font-medium">
+                                        {{ editData?.data?.tableDOB }}
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-template #regularTemplate>
                             <div class="d-flex align-items-center">
                                 <div
                                     class="m-0 ta-font-bold"
                                     [class.limit-text]="
-                                        editData.template !== 'truck'
+                                        editData.template !== 'truck' &&
+                                        editData.template !== 'trailer'
                                     "
                                     [class.shorter-text]="
                                         editData?.type === 'open'
@@ -66,19 +120,7 @@
                                 >
                                     {{ editData.modalTitle }}
                                 </div>
-                                <ng-container
-                                    *ngIf="
-                                        editData?.type === 'activate' ||
-                                        editData?.type === 'deactivate'
-                                    "
-                                >
-                                    <svg-icon
-                                        class="d-flex ms-1"
-                                        [src]="
-                                            'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                        "
-                                    ></svg-icon>
-                                </ng-container>
+
                                 <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
@@ -87,10 +129,16 @@
                                 ></ng-container>
                             </div>
 
-                            <div class="m-0 text-2 limit-text">
+                            <div
+                                class="m-0 text-2"
+                                [class.limit-text]="
+                                    editData.template !== 'truck' &&
+                                    editData.template !== 'trailer'
+                                "
+                            >
                                 {{ editData.modalSecondTitle }}
                             </div>
-                        </div>
+                        </ng-template>
                     </ng-container>
                 </div>
 
@@ -98,53 +146,85 @@
                     <ng-container
                         *ngFor="let item of editData.array; trackBy: identity"
                     >
-                        <div class="d-flex flex-row">
-                            <ng-container *ngIf="item?.data?.avatar">
-                                <svg-icon
-                                    class="confirmation-svg m-1"
-                                    [src]="item?.data?.avatar"
-                                ></svg-icon>
-                            </ng-container>
-                            <div>
-                                <div class="d-flex align-items-center">
+                        <ng-container
+                            *ngIf="
+                                editData?.template === 'Driver';
+                                else regularTemplate
+                            "
+                        >
+                            <div class="d-flex align-items-center">
+                                <ng-container
+                                    *ngIf="item?.avatarImg; else noImage"
+                                >
+                                    <img
+                                        class="avatar"
+                                        [src]="item?.avatarImg"
+                                    />
+                                </ng-container>
+
+                                <ng-template #noImage>
                                     <div
-                                        class="m-0 ta-font-bold limit-text"
-                                        [class.limit-text]="
-                                            editData.template !== 'truck'
-                                        "
-                                        [class.shorter-text]="
-                                            editData?.type === 'open'
-                                        "
+                                        class="d-flex align-items-center justify-content-center no-avatar"
+                                        [ngStyle]="{
+                                            background:
+                                                item?.avatarColor?.background
+                                        }"
                                     >
-                                        {{ item.modalTitle }}
+                                        <p
+                                            class="m-0 ta-font-extra-bold"
+                                            [ngStyle]="{
+                                                color: item?.avatarColor?.color
+                                            }"
+                                        >
+                                            {{ item?.textShortName }}
+                                        </p>
                                     </div>
-                                    <ng-container
-                                        *ngIf="
-                                            editData?.type === 'activate' ||
-                                            editData?.type === 'deactivate'
-                                        "
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            [src]="
-                                                'assets/svg/common/confirmation/ic_confirmation_deactivate.svg'
-                                            "
-                                        ></svg-icon>
-                                    </ng-container>
-                                    <ng-container
-                                        *ngIf="editData?.type === 'open'"
-                                    >
-                                        <svg-icon
-                                            class="d-flex ms-1"
-                                            src="assets/svg/common/ic_closed_broker.svg"
-                                        ></svg-icon
-                                    ></ng-container>
-                                </div>
-                                <div class="m-0 text-2 limit-text">
-                                    {{ item.modalSecondTitle }}
+                                </ng-template>
+
+                                <div class="d-flex flex-column title-container">
+                                    <p class="m-0 ta-font-bold">
+                                        {{ item?.name }}
+                                    </p>
+
+                                    <p class="m-0 ta-font-medium">
+                                        {{ item?.tableDOB }}
+                                    </p>
                                 </div>
                             </div>
-                        </div>
+                        </ng-container>
+
+                        <ng-template #regularTemplate>
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="m-0 ta-font-bold"
+                                    [class.limit-text]="
+                                        editData?.template !== 'truck'
+                                    "
+                                    [class.shorter-text]="
+                                        editData?.type === 'open'
+                                    "
+                                >
+                                    {{ editData?.modalTitle }}
+                                </div>
+
+                                <ng-container *ngIf="editData?.type === 'open'">
+                                    <svg-icon
+                                        class="d-flex ms-1"
+                                        src="assets/svg/common/ic_closed_broker.svg"
+                                    ></svg-icon
+                                ></ng-container>
+                            </div>
+
+                            <div
+                                class="m-0 text-2"
+                                [class.limit-text]="
+                                    editData.template !== 'truck' &&
+                                    editData.template !== 'trailer'
+                                "
+                            >
+                                {{ editData?.modalSecondTitle }}
+                            </div>
+                        </ng-template>
                     </ng-container>
                 </ng-template>
             </div>
@@ -155,8 +235,17 @@
                 class="d-flex align-items-center confirmation-activation-body-subtitle"
             >
                 <p class="m-0 ta-font-medium">
-                    Are you sure you want to {{ editData?.type }} selected
-                    {{ editData.tableType }}?
+                    Are you sure you want to
+                    {{
+                        editData?.type === 'deactivate' ||
+                        editData?.type === 'deactivate-multiple'
+                            ? 'deactivate'
+                            : editData?.type === 'activate' ||
+                              editData?.type === 'activate-multiple'
+                            ? 'activate'
+                            : editData?.type
+                    }}
+                    selected {{ editData.tableType }}?
                 </p>
             </div>
         </div>

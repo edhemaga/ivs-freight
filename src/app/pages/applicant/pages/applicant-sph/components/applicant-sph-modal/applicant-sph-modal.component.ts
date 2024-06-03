@@ -2,6 +2,7 @@
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -26,10 +27,39 @@ import {
     TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+
+// modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
 @Component({
     selector: 'app-sph-modal',
     templateUrl: './applicant-sph-modal.component.html',
     styleUrls: ['./applicant-sph-modal.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+        TaInputRadiobuttonsComponent,
+        TaInputComponent,
+        TaInputAddressDropdownComponent,
+        TaInputArrowsComponent,
+        TaInputDropdownComponent,
+        TaModalComponent,
+    ],
 })
 export class ApplicantSphModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();

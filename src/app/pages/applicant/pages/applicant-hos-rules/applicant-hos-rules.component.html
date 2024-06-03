@@ -23,9 +23,7 @@
                         }"
                     >
                         <p class="m-0 ta-font-regular">
-                            <span class="ta-font-bold"
-                                >Hours of Service (HOS)</span
-                            >
+                            Hours of Service (HOS)
                             are regulations governed by the FMCSA which is the
                             abbreviation for the "Federal Motor Carrier Safety
                             Administration". The FM CSA is a division of the
@@ -87,7 +85,7 @@
                         <div
                             class="d-flex flex-column text-center justify-content-center align-items-center title-container"
                         >
-                            <h3 class="m-0 ta-font-bold">
+                            <h3 class="m-0 ta-font-extra-bold">
                                 THE SLEEPER BERTH PROVISION.
                             </h3>
                             <p class="m-0 ta-font-regular">
@@ -102,7 +100,7 @@
                         <div
                             class="d-flex flex-column text-center justify-content-center align-items-center title-container"
                         >
-                            <h3 class="m-0 ta-font-bold">
+                            <h3 class="m-0 ta-font-extra-bold">
                                 70 HOURS IN 8 DAYS RULE.
                             </h3>
                             <p class="m-0 ta-font-regular">
@@ -116,7 +114,7 @@
                         <div
                             class="d-flex flex-column text-center justify-content-center align-items-center title-container"
                         >
-                            <h3 class="m-0 ta-font-bold">
+                            <h3 class="m-0 ta-font-extra-bold">
                                 34 HOURS RECHARGE RULE.
                             </h3>
                             <p class="m-0 ta-font-regular">
@@ -151,7 +149,7 @@
                             [label]="
                                 'Please confirm that you have read and understood the content of this notice'
                             "
-                            [customClass]="'bold-12'"
+                            [customClass]="'bold-14'"
                             [disabledStillCheckMark]="
                                 selectedMode !== 'APPLICANT_MODE'
                             "
@@ -181,6 +179,17 @@
                 selectedMode === 'APPLICANT_MODE' && hosRulesForm.valid
             "
             [mode]="selectedMode"
+            (stepEvent)="onStepAction($event)"
+        ></app-applicant-next-back-btn>
+    </div>
+
+    <!-- BACK BTN -->
+
+    <div
+        class="d-flex justify-content-center align-items-center back-btn-container"
+    >
+        <app-applicant-next-back-btn
+            [backStep]="true"
             (stepEvent)="onStepAction($event)"
         ></app-applicant-next-back-btn>
     </div>

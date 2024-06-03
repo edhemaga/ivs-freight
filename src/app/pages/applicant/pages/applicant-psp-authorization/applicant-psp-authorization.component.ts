@@ -5,6 +5,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -23,24 +24,46 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { PspAuthorizationFormFields } from '@pages/applicant/pages/applicant-psp-authorization/enums/psp-authorization-form-fields.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
     ApplicantResponse,
     CreatePspAuthReviewCommand,
+    PersonalInfoFeedbackResponse,
     PspAuthFeedbackResponse,
     UpdatePspAuthCommand,
 } from 'appcoretruckassist';
+
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
 
 @Component({
     selector: 'app-psp-authorization',
     templateUrl: './applicant-psp-authorization.component.html',
     styleUrls: ['./applicant-psp-authorization.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+        ApplicantCardComponent,
+    ],
 })
 export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public selectedMode: string = SelectedMode.REVIEW;
+    public selectedMode: string = SelectedMode.APPLICANT;
 
     public isValidLoad: boolean;
 
@@ -55,7 +78,7 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
 
-    public applicantCardInfo: any;
+    public applicantCardInfo: PersonalInfoFeedbackResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -67,6 +90,30 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
         private route: ActivatedRoute
     ) {}
+
+    get isAuthorizeFormControl() {
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_AUTHORIZE
+        );
+    }
+
+    get isFurtherUnderstandFormControl() {
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_FURTHER_UNDERSTAND
+        );
+    }
+
+    get isPspReportFormControl() {
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_PSP_REPORT
+        );
+    }
+
+    get isDisclosureRegardingReportFormControl() {
+        return this.pspAuthorizationForm.get(
+            PspAuthorizationFormFields.IS_DISCLOSURE_REGARDING_REPORT
+        );
+    }
 
     ngOnInit(): void {
         this.getQueryParams();
@@ -102,9 +149,9 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
                     const personalInfo = res.personalInfo;
 
                     this.applicantCardInfo = {
-                        name: personalInfo?.fullName,
+                        fullName: personalInfo?.fullName,
                         ssn: personalInfo?.ssn,
-                        dob: MethodsCalculationsHelper.convertDateFromBackend(
+                        doB: MethodsCalculationsHelper.convertDateFromBackend(
                             personalInfo?.doB
                         ),
                     };
@@ -202,7 +249,7 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -210,6 +257,10 @@ export class ApplicantPspAuthorizationComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/mvr-authorization/${this.applicantId}`]);
         }
     }
 

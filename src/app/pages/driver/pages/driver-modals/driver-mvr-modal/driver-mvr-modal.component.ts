@@ -9,27 +9,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
-//Models
-import {
-    GetMvrModalResponse,
-    MvrResponse,
-    DriverListResponse,
-} from 'appcoretruckassist';
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//Services
+// services
 import { DriverService } from '@pages/driver/services/driver.service';
-import { DriverMvrService } from '@pages/driver/services/driver-mvr.service';
+import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 
-//Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-//Modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-//Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -37,6 +30,14 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+
+// enums
+import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
+
+// models
+import { EditData } from '@shared/models/edit-data.model';
+import { ExtendedCdlMinimalResponse } from '@pages/driver/pages/driver-modals/driver-mvr-modal/models/extended-cdl-minimal-response.model';
 
 @Component({
     selector: 'app-driver-mvr-modal',
@@ -45,13 +46,13 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // componentS
         TaAppTooltipV2Component,
         TaModalComponent,
         TaInputDropdownComponent,
@@ -62,30 +63,32 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
     ],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    @Input() editData: EditData;
+
+    private destroy$ = new Subject<void>();
 
     public mvrForm: UntypedFormGroup;
 
     public isFormDirty: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     public modalName: string;
 
+    // dropdowns
+    public cdlsDropdownList: ExtendedCdlMinimalResponse[] = [];
+    public selectedCdl: ExtendedCdlMinimalResponse;
+
+    // documents
     public documents: any[] = [];
-
-    public cdls: any[] = [];
-    public selectedCdl: any = null;
-
-    public labelsDrivers: any[] = [];
-    public selectedDriver: any = null;
-    public fileModified: boolean = false;
     public filesForDelete: any[] = [];
+    public isFileModified: boolean = false;
 
-    private destroy$ = new Subject<void>();
-
-    public disableCardAnimation: boolean = false;
+    private isAddNewCdl: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private driverService: DriverService,
         private inputService: TaInputService,
         private modalService: ModalService,
@@ -96,23 +99,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
-        if (this.editData) {
-            this.disableCardAnimation = true;
-            this.getDriverById(this.editData.id);
-            this.getModalDropdowns(this.editData.id);
+        this.isAddOrEdit();
 
-            if (this.editData.type === 'edit-mvr') {
-                this.getMVRById(this.editData.file_id);
-            }
-        } else {
-            this.getListOfDrivers();
-            this.mvrForm.get('driver').setValidators(Validators.required);
-        }
+        this.isNewCdlAdded();
     }
 
-    private createForm() {
+    private createForm(): void {
         this.mvrForm = this.formBuilder.group({
-            driver: [null],
             issueDate: [null, Validators.required],
             cdlId: [null, Validators.required],
             note: [null],
@@ -120,34 +113,47 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getDriverById(id: number) {
-        this.driverService
-            .getDriverById(id)
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.mvrForm);
+
+        this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    this.modalName = res.firstName.concat(' ', res.lastName);
-                    setTimeout(() => {
-                        this.disableCardAnimation = false;
-                    }, 1000);
-                },
-                error: () => {},
+            .subscribe((isFormChange: boolean) => {
+                this.isFormDirty = isFormChange;
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    private isAddOrEdit(): void {
+        if (this.editData) {
+            this.isCardAnimationDisabled = true;
+
+            this.getDriverById(this.editData.id);
+
+            this.getMvrDropdowns(this.editData.id);
+
+            if (this.editData.type === DriverMVrModalStringEnum.EDIT_MVR)
+                this.getMVRById(this.editData.file_id);
+        }
+    }
+
+    private isNewCdlAdded(): void {
+        if (this.isAddNewCdl) this.getMvrDropdowns(this.editData.id);
+    }
+
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case DriverMVrModalStringEnum.CLOSE:
                 break;
-            }
-            case 'save': {
-                // If Form not valid
+            case DriverMVrModalStringEnum.SAVE:
                 if (this.mvrForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.mvrForm);
+
                     return;
                 }
-                if (this.editData?.type === 'edit-mvr') {
+
+                if (this.editData?.type === DriverMVrModalStringEnum.EDIT_MVR) {
                     this.updateMVR();
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -155,6 +161,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                     });
                 } else {
                     this.addMVR();
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -163,74 +170,176 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onSelectDropdown(event: any): void {
+        if (event?.canOpenModal) {
+            this.isAddNewCdl = true;
+
+            this.modalService.openModal(
+                DriverCdlModalComponent,
+                { size: DriverMVrModalStringEnum.SMALL },
+                { id: this.editData?.id }
+            );
+        } else this.selectedCdl = event;
+    }
+
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
+
         switch (event.action) {
-            case 'add': {
+            case DriverMVrModalStringEnum.ADD:
                 this.mvrForm
-                    .get('files')
+                    .get(DriverMVrModalStringEnum.FILES)
                     .patchValue(JSON.stringify(event.files));
+
                 break;
-            }
-            case 'delete': {
+            case DriverMVrModalStringEnum.DELETE:
                 this.mvrForm
-                    .get('files')
+                    .get(DriverMVrModalStringEnum.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
 
-                this.fileModified = true;
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
+
+                this.isFileModified = true;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onSelectDropdown(event: any, action: string) {
-        switch (action) {
-            case 'cdl': {
-                this.selectedCdl = event;
-                break;
-            }
-            case 'driver': {
-                if (event) {
-                    this.selectedDriver = event;
-                    this.getModalDropdowns(this.selectedDriver.id);
-                    this.modalName = this.selectedDriver.name;
-                } else {
-                    this.modalName = null;
+    public getMvrDropdowns(id: number): void {
+        this.mvrService
+            .getMvrModal(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const { cdls } = res;
+
+                this.cdlsDropdownList = cdls.map((item) => {
+                    return {
+                        ...item,
+                        name: item.cdlNumber,
+                    };
+                });
+
+                if (this.cdlsDropdownList.length === 1) {
+                    this.selectedCdl = this.cdlsDropdownList[0];
+
+                    this.mvrForm
+                        .get(DriverMVrModalStringEnum.MVR_ID)
+                        .patchValue(this.selectedCdl.name);
                 }
-                break;
-            }
-            default: {
-                break;
-            }
-        }
+
+                if (this.isAddNewCdl) this.isAddNewCdl = false;
+
+                this.startFormChanges();
+            });
     }
 
-    private updateMVR() {
+    private getDriverById(id: number): void {
+        this.driverService
+            .getDriverById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const { firstName, lastName } = res;
+
+                this.modalName = firstName.concat(
+                    DriverMVrModalStringEnum.EMPTY_STRING,
+                    lastName
+                );
+            });
+    }
+
+    public getMVRById(id: number): void {
+        this.mvrService
+            .getMvrById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                const { cdlNumber, issueDate, note, files, cdlId } = res;
+
+                this.mvrForm.patchValue({
+                    cdlId: cdlNumber,
+                    issueDate:
+                        MethodsCalculationsHelper.convertDateFromBackend(
+                            issueDate
+                        ),
+                    note,
+                    files: files?.length ? JSON.stringify(files) : null,
+                });
+
+                this.selectedCdl = {
+                    id: cdlId,
+                    name: cdlNumber,
+                };
+
+                this.documents = files;
+
+                setTimeout(() => {
+                    this.startFormChanges();
+
+                    this.isCardAnimationDisabled = false;
+                }, 1000);
+            });
+    }
+
+    private addMVR(): void {
         const { issueDate, note } = this.mvrForm.value;
+
+        // documents
         let documents = [];
+
         this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+            if (item.realFile) documents.push(item.realFile);
         });
-        const newData: any = {
-            driverId: this.editData.id,
-            id: this.editData.file_id,
+
+        const newData = {
+            driverId: this.editData?.id,
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            cdlId: this.selectedCdl.id,
+            files: documents,
+            note,
+        };
+
+        this.mvrService
+            .addMvr(newData)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
+    private updateMVR(): void {
+        const { issueDate, note } = this.mvrForm.value;
+
+        // documents
+        let documents = [];
+
+        this.documents.map((item) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+
+        const newData = {
+            id: this.editData?.file_id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
@@ -257,130 +366,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 },
-            });
-    }
-
-    private addMVR() {
-        const { issueDate, note } = this.mvrForm.value;
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        const newData: any = {
-            driverId: this.selectedDriver
-                ? this.selectedDriver.id
-                : this.editData.id,
-            issueDate:
-                MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            cdlId: this.selectedCdl.id,
-            note: note,
-            tableActiveTab: this.editData.tableActiveTab,
-            files: documents,
-        };
-
-        this.mvrService
-            .addMvr(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    public getMVRById(id: number) {
-        this.mvrService
-            .getMvrById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: MvrResponse) => {
-                    this.mvrForm.patchValue({
-                        cdlId: res.cdlNumber,
-                        issueDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                res.issueDate
-                            ),
-                        note: res.note,
-                        files: res.files.length
-                            ? JSON.stringify(res.files)
-                            : null,
-                    });
-                    this.selectedCdl = {
-                        id: res.cdlId,
-                        name: res.cdlNumber,
-                    };
-                    this.documents = res.files ? (res.files as any) : [];
-                    setTimeout(() => {
-                        this.startFormChanges();
-                        this.disableCardAnimation = false;
-                    }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    public getModalDropdowns(id: number) {
-        this.mvrService
-            .getMvrModal(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: GetMvrModalResponse) => {
-                    this.cdls = res.cdls.map((item) => {
-                        return {
-                            ...item,
-                            name: item.cdlNumber,
-                        };
-                    });
-
-                    if (this.cdls.length === 1) {
-                        this.selectedCdl = this.cdls[0];
-                        this.mvrForm
-                            .get('cdlId')
-                            .patchValue(this.selectedCdl.name);
-                    }
-                    this.startFormChanges();
-                },
-                error: () => {},
-            });
-    }
-
-    public getListOfDrivers() {
-        this.driverService
-            .getDrivers()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: DriverListResponse) => {
-                    this.labelsDrivers = res.pagination.data.map((item) => {
-                        return {
-                            id: item.id,
-                            name: item.fullName,
-                        };
-                    });
-                },
-                error: () => {},
-            });
-    }
-
-    private startFormChanges() {
-        this.formService.checkFormChange(this.mvrForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
             });
     }
 

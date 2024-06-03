@@ -27,7 +27,9 @@ export class TaProgressInvoicesComponent implements OnInit {
     @Input() invoiceDays: string = '';
     @Input() invoiceCounter: string = '';
     @Input() invoiceTotal: string = '';
+    @Input() invoicePercentage: number;
     @Input() template: string;
+    @Input() type: string = 'unpaid'; // unpaid | paid
     constructor() {}
 
     ngOnInit(): void {}

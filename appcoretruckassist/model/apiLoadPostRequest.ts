@@ -13,6 +13,7 @@ import { LoadStopCommand } from './loadStopCommand';
 import { LoadBillingAdditionalCommand } from './loadBillingAdditionalCommand';
 import { LoadStatus } from './loadStatus';
 import { LoadPaymentPayCommand } from './loadPaymentPayCommand';
+import { LoadStatusHistoryCommand } from './loadStatusHistoryCommand';
 import { CreateTagCommand } from './createTagCommand';
 
 
@@ -74,5 +75,6 @@ export interface ApiLoadPostRequest {
     Comment_Id?: number;
     Comment_CommentContent?: string;
     DeleteComment_Id?: number;
+    StatusHistory?: Array<LoadStatusHistoryCommand>;
 }
 

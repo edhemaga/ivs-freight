@@ -80,6 +80,7 @@ export enum TableStringEnum {
 
     // Money
     DOLLAR_SIGN = '$',
+    MONEY_FILTER = 'moneyFilter',
 
     // Time formating
     DATE_FORMAT = 'MM/dd/yy',
@@ -167,8 +168,12 @@ export enum TableStringEnum {
     MOVE_TO_DNU_LIST = 'move-to-dnu-list',
     MOVE_TO_BAN_LIST_2 = 'Move to Ban List',
     REMOVE_FROM_BAN_LIST = 'Remove from Ban List',
+    REMOVE_FROM_BAN_LIST_2 = 'remove-from-ban',
     MOVE_TO_DNU_LIST_2 = 'Move to DNU List',
     REMOVE_FROM_DNU_LIST = 'Remove from DNU List',
+    REMOVE_FROM_DNU_LIST_2 = 'remove-from-dnu',
+    MOVE_TO_BAN = 'move-to-ban',
+    MOVE_TO_DNU = 'move-to-dnu',
     CLOSE_BUSINESS_2 = 'Close Business',
     OPEN_BUSINESS = 'Open Business',
     OPEN_BUSINESS_2 = 'open-business',
@@ -195,6 +200,7 @@ export enum TableStringEnum {
     BAN_LIST = 'ban list',
     SHIPPER = 'shipper',
     SHIPPER_2 = 'shippers',
+    SHIPPER_3 = 'Shipper ',
     STATE_FILTER = 'stateFilter',
     // Driver
     DRIVER = 'driver',
@@ -269,7 +275,7 @@ export enum TableStringEnum {
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
     ADD_TRAILER = 'add-trailer',
-
+    ADD_TITLE = 'add-title',
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
@@ -374,6 +380,8 @@ export enum TableStringEnum {
     // Contact
     DELTETE_CONTACT = 'delete-contact',
     CONTACT = 'contact',
+    ADD_CONTACT = 'add-contact',
+    EDIT_CONTACT = 'edit-contact',
 
     // Svg
     COMPLETE_ICON = 'complete-icon',
@@ -382,6 +390,9 @@ export enum TableStringEnum {
 
     DEACTIVATE = 'deactivate',
     DEACTIVATE_2 = 'Deactivate',
+
+    DEACTIVATE_MULTIPLE = 'deactivate-multiple',
+    ACTIVATE_MULTIPLE = 'activate-multiple',
 
     ACTIVATE = 'activate',
     ACTIVATE_2 = 'Activate',

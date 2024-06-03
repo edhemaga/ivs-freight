@@ -1,10 +1,21 @@
-<div class="progress-text-wrapper">
-    <div class="text-broker-wrapper">
+<div class="progress-text-wrapper d-flex flex-column">
+    <div
+        class="text-broker-wrapper d-flex align-items-center mb-2"
+        [class.disabled-text]="invoiceCounter === '0' || !invoicePercentage"
+    >
         <span class="days">{{ invoiceDays }} days</span>
-        <span class="invoice-days"
-            >{{ invoiceCounter }} <span class="inv">Inv.</span></span
-        >
-        <span class="cost-total-ageing"
+        <span class="invoice-days">
+            <ng-container *ngIf="type === 'unpaid'; else paidTemplate">
+                {{ invoiceCounter }}
+                <span class="inv">Inv.</span>
+            </ng-container>
+
+            <ng-template #paidTemplate>
+                {{ invoicePercentage }}
+                <span class="inv">%</span>
+            </ng-template>
+        </span>
+        <span class="cost-total-ageing text-right ta-font-medium"
             >{{ invoiceTotal | formatCurrency }}
         </span>
     </div>
@@ -13,22 +24,34 @@
             *ngSwitchCase="'light-blue'"
             class="app-progress-invoices light-blue-inv"
         >
-            <div class="inside-progress inside-progress-light-blue"></div>
+            <div
+                class="inside-progress inside-progress-light-blue"
+                [ngStyle]="{ width: invoicePercentage + '%' }"
+            ></div>
         </div>
         <div
             *ngSwitchCase="'mid-blue'"
             class="app-progress-invoices mid-orange-inv"
         >
-            <div class="inside-progress inside-progress-mid-orange"></div>
+            <div
+                class="inside-progress inside-progress-mid-orange"
+                [ngStyle]="{ width: invoicePercentage + '%' }"
+            ></div>
         </div>
         <div
             *ngSwitchCase="'dark-blue'"
             class="app-progress-invoices dark-orange-inv"
         >
-            <div class="inside-progress inside-progress-dark-orange"></div>
+            <div
+                class="inside-progress inside-progress-dark-orange"
+                [ngStyle]="{ width: invoicePercentage + '%' }"
+            ></div>
         </div>
         <div *ngSwitchCase="'danger'" class="app-progress-invoices danger-inv">
-            <div class="inside-progress inside-progress-danger-broker"></div>
+            <div
+                class="inside-progress inside-progress-danger-broker"
+                [ngStyle]="{ width: invoicePercentage + '%' }"
+            ></div>
         </div>
     </div>
 </div>

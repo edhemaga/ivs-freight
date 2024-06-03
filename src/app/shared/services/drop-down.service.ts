@@ -6,7 +6,7 @@ import { ModalService } from '@shared/services/modal.service';
 
 // components
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '@pages/driver/pages/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
+import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
@@ -24,10 +24,14 @@ import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-mod
 import { SettingsParkingModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/settings-parking-modal.component';
 import { SettingsRepairshopModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -205,7 +209,7 @@ export class DropDownService {
 
             case 'edit-drug': {
                 this.modalService.openModal(
-                    DriverDrugAlcoholModalComponent,
+                    DriverDrugAlcoholTestModalComponent,
                     { size: 'small' },
                     {
                         file_id: dropDownData.id,
@@ -522,17 +526,20 @@ export class DropDownService {
         name?: string
     ) {
         const mappedEvent = {
-            ...dataObject,
+            id: dataObject?.id,
             data: {
                 ...dataObject,
                 name: dataObject?.businessName,
             },
         };
 
-        if (event.type === 'edit' && name === 'shipper') {
+        if (
+            event.type === TableStringEnum.EDIT &&
+            name === TableStringEnum.SHIPPER
+        ) {
             this.modalService.openModal(
                 ShipperModalComponent,
-                { size: 'small' },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
                     disableButton: true,
@@ -540,111 +547,106 @@ export class DropDownService {
                 }
             );
         }
-        if (event.type === 'edit' && name === 'broker') {
+        if (
+            event.type === TableStringEnum.EDIT &&
+            name === TableStringEnum.BROKER
+        ) {
             this.modalService.openModal(
                 BrokerModalComponent,
-                { size: 'small' },
+                { size: TableStringEnum.SMALL },
                 {
                     ...event,
                     disableButton: true,
                     id: event.id,
                 }
             );
-        } else if (event.type === 'delete-item') {
+        } else if (event.type === TableStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: name === 'shipper' ? 'shipper' : 'broker',
-                    type: 'delete',
-                    image: false,
-                }
-            );
-        } else if (event.type === 'move-to-ban') {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'broker',
-                    subType: 'ban list',
-                    subTypeStatus: 'move',
-                    type: 'info',
-                    image: false,
-                }
-            );
-        } else if (event.type === 'remove-from-ban') {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'broker',
-                    subType: 'ban list',
-                    subTypeStatus: 'remove',
-                    type: 'info',
-                    image: false,
-                }
-            );
-        } else if (event.type === 'move-to-dnu') {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'broker',
-                    subType: 'dnu',
-                    subTypeStatus: 'move',
-                    type: 'info',
-                    image: false,
-                }
-            );
-        } else if (event.type === 'remove-from-dnu') {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    ...mappedEvent,
-                    template: 'broker',
-                    subType: 'dnu',
-                    subTypeStatus: 'remove',
-                    type: 'info',
-                    image: false,
+                    template:
+                        name === TableStringEnum.SHIPPER
+                            ? TableStringEnum.SHIPPER
+                            : TableStringEnum.BROKER,
+                    type: TableStringEnum.DELETE,
+                    svg: true,
+                    modalHeaderTitle:
+                        name === TableStringEnum.BROKER
+                            ? ConfirmationModalStringEnum.DELETE_BROKER
+                            : ConfirmationModalStringEnum.DELETE_SHIPPER,
                 }
             );
         } else if (
-            (event.type == 'close-business' || event.type == 'open-business') &&
-            name == 'shipper'
+            event.type === TableStringEnum.MOVE_TO_BAN ||
+            event.type === TableStringEnum.REMOVE_FROM_BAN_LIST_2
         ) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
+                ConfirmationMoveModalComponent,
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'Shipper',
-                    type:
-                        event.type == 'open-business'
-                            ? 'activate'
-                            : 'deactivate',
-                    image: false,
+                    type: !dataObject.ban
+                        ? TableStringEnum.MOVE
+                        : TableStringEnum.REMOVE,
+                    template: TableStringEnum.BROKER,
+                    subType: TableStringEnum.BAN,
+                    tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
+                    modalTitle: dataObject.businessName,
+                    modalSecondTitle:
+                        dataObject?.billingAddress?.address ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
         } else if (
-            (event.type == 'close-business' || event.type == 'open-business') &&
-            name == 'broker'
+            event.type === TableStringEnum.MOVE_TO_DNU ||
+            event.type === TableStringEnum.REMOVE_FROM_DNU_LIST_2
         ) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
+                ConfirmationMoveModalComponent,
+                { size: TableStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'Broker',
-                    type:
-                        event.type == 'open-business'
-                            ? 'activate'
-                            : 'deactivate',
-                    image: false,
+                    type: !dataObject.dnu
+                        ? TableStringEnum.MOVE
+                        : TableStringEnum.REMOVE,
+                    template: TableStringEnum.BROKER,
+                    subType: TableStringEnum.DNU,
+                    tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
+                    modalTitle: dataObject.businessName,
+                    modalSecondTitle:
+                        dataObject?.billingAddress?.address ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                }
+            );
+        } else if (
+            event.type === TableStringEnum.CLOSE_BUSINESS ||
+            event.type === TableStringEnum.OPEN_BUSINESS_2
+        ) {
+            this.modalService.openModal(
+                ConfirmationActivationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    type: dataObject.status
+                        ? TableStringEnum.CLOSE
+                        : TableStringEnum.OPEN,
+                    template: TableStringEnum.INFO,
+                    subType:
+                        name === TableStringEnum.BROKER
+                            ? TableStringEnum.BROKER_2
+                            : TableStringEnum.SHIPPER_3,
+                    subTypeStatus: TableStringEnum.BUSINESS,
+                    tableType:
+                        name === TableStringEnum.BROKER
+                            ? ConfirmationActivationStringEnum.BROKER_TEXT
+                            : ConfirmationActivationStringEnum.SHIPPER_TEXT,
+                    modalTitle: dataObject.businessName,
+                    modalSecondTitle:
+                        dataObject?.address?.address ??
+                        dataObject?.billingAddress?.address ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 }
             );
         }

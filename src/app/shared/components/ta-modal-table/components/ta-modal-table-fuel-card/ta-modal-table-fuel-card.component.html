@@ -1,0 +1,66 @@
+<form [formGroup]="modalTableForm" class="table-body">
+    <div class="d-flex flex-column fuel-card-table-container">
+        <ng-container
+            formArrayName="fuelCardTableItems"
+            *ngFor="
+                let fuelCardItemsRow of formArray.controls;
+                let i = index;
+                trackBy: '' | trackByProperty
+            "
+        >
+            <div
+                class="align-items-center table-item"
+                [ngClass]="{ valid: fuelCardItemsRow.valid }"
+                [formGroupName]="i"
+            >
+                <!-- Number & Delete -->
+
+                <div
+                    class="d-flex justify-content-center align-items-center table-item-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+
+                    <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
+                        [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                        }"
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    ></svg-icon>
+                </div>
+
+                <!-- Fuel Card -->
+
+                <app-ta-input-dropdown
+                    formControlName="card"
+                    [template]="'triple-column-template'"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        isDropdown: true,
+                        placeholderInsteadOfLabel: true,
+                        hideRequiredCheck: true,
+                        hideErrorMessage: true,
+                        isInputBackgroundRemoved:
+                            fuelCardItemsRow.valid && !isInputHoverRows[i][0],
+                        blackInput:
+                            formArray.at(i).get('card').value &&
+                            !isInputHoverRows[i][0],
+                        multipleLabel: {
+                            labels: ['Card No.', 'Provider', 'Account'],
+                            customClass: 'dropdown-triple-column'
+                        },
+                        dropdownWidthClass: 'w-col-590'
+                    }"
+                    [options]="fuelCardOptions"
+                    [activeItem]="selectedFuelCard[i]"
+                    (selectedItem)="emitOnSelectDropdown($event, i)"
+                    (mouseenter)="emitOnInputHover(true, i, 0)"
+                    (mouseleave)="emitOnInputHover(false, i, 0)"
+                ></app-ta-input-dropdown>
+            </div>
+        </ng-container>
+    </div>
+</form>

@@ -11,6 +11,7 @@
  */
 import { FileResponse } from './fileResponse';
 import { RatingReviewResponse } from './ratingReviewResponse';
+import { EnumValue } from './enumValue';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
 
@@ -22,6 +23,7 @@ export interface ShipperResponse {
     phoneExt?: string | null;
     email?: string | null;
     address?: AddressEntity;
+    locationType?: EnumValue;
     longitude?: number | null;
     latitude?: number | null;
     receivingAppointment?: boolean;
@@ -44,6 +46,7 @@ export interface ShipperResponse {
     rating?: number;
     pickups?: number;
     deliveries?: number;
+    totalPickupDelivery?: number;
     avgPickupTimeInMin?: number | null;
     avgDeliveryTimeInMin?: number | null;
     files?: Array<FileResponse> | null;

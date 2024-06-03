@@ -34,9 +34,17 @@ import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropd
 import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 
+import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
+
 //pipes
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { CardValuePipe } from '@shared/pipes/card-value.pipe';
+
+//store
+import { StoreModule } from '@ngrx/store';
+import { customerCardModalReducer } from '@pages/customer/pages/customer-table/components/customer-card-modal/state/customer-card-modal.reducer';
 
 @NgModule({
     declarations: [
@@ -69,10 +77,16 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         TaInputDropdownTableComponent,
         TaTableCardDropdownActionsComponent,
         TaNoteComponent,
+        TaContactsCardComponent,
 
         // Pipes
         FormatDatePipe,
         FormatEinPipe,
+        FlipCardsPipe,
+        CardValuePipe,
+
+        //Store
+        StoreModule.forFeature('customerCardData', customerCardModalReducer),
     ],
 })
 export class CustomerModule {}

@@ -18,10 +18,12 @@ export interface MvrAuthFeedbackResponse {
     isPeriodicallyObtained?: boolean;
     isInformationCorrect?: boolean;
     dontHaveMvr?: boolean;
+    issueDate?: string;
     onlyLicense?: boolean;
     signature?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
+    filesReviewMessage?: string | null;
     files?: Array<ApplicantFileResponse> | null;
     applicantId?: number;
 }

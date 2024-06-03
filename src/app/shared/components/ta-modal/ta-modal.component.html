@@ -644,7 +644,10 @@
                                     'shipper',
                                     'registration',
                                     'title',
-                                    'inspection'
+                                    'inspection',
+                                    'trailer',
+                                    'Driver',
+                                    'driver'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -688,32 +691,34 @@
 
                     <!-- Activate -->
 
-                    <ng-container *ngIf="confirmationData?.type === 'activate'">
+                    <ng-container
+                        *ngIf="
+                            confirmationData?.type === 'activate' ||
+                            confirmationData?.type === 'activate-multiple'
+                        "
+                    >
                         <button
                             (click)="onAction('activate')"
                             class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn valid modal-confirmation-btn"
                             type="button"
                         >
-                            Activate
-                            {{
-                                confirmationData?.template
-                                    .substring(0, 1)
-                                    .toUpperCase() +
-                                    confirmationData?.template.substring(1)
-                            }}
+                            Yes
                         </button>
                     </ng-container>
 
                     <!-- Deactivate -->
                     <ng-container
-                        *ngIf="confirmationData?.type === 'deactivate'"
+                        *ngIf="
+                            confirmationData?.type === 'deactivate' ||
+                            confirmationData?.type === 'deactivate-multiple'
+                        "
                     >
                         <button
                             (click)="onAction('deactivate')"
                             class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                             type="button"
                         >
-                            Deactivate {{ confirmationData?.template }}
+                            Yes
                         </button>
                     </ng-container>
 

@@ -1,0 +1,125 @@
+<app-ta-modal
+    [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
+    [editData]="editData"
+    [editName]="modalName"
+    [isModalValid]="drugForm.valid && isFormDirty"
+    [specificCaseModalName]="true"
+    (action)="onModalAction($event)"
+>
+    <form
+        origin
+        [formGroup]="drugForm"
+        class="form-container form-container-without-mb"
+    >
+        <!-- Issue Date, Type -->
+
+        <div class="row">
+            <div class="col-6">
+                <app-ta-input
+                    formControlName="testingDate"
+                    [inputConfig]="{
+                        name: 'datepicker',
+                        type: 'text',
+                        label: 'Issue Date',
+                        isDropdown: true,
+                        placeholderIcon: 'date',
+                        isRequired: true,
+                        customClass: 'datetimeclass',
+                        autoFocus: editData && editData?.type !== 'edit-drug'
+                    }"
+                ></app-ta-input>
+            </div>
+
+            <div class="col-6">
+                <app-ta-input-dropdown
+                    formControlName="testType"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Type',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-228'
+                    }"
+                    [options]="testTypesDropdownList"
+                    [activeItem]="selectedTestType"
+                    (selectedItem)="onSelectDropdown($event, 'test')"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+
+        <!-- Reason, Results -->
+
+        <div class="row last-row">
+            <div class="col-6">
+                <app-ta-input-dropdown
+                    formControlName="testReasonId"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Reason',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-216'
+                    }"
+                    [options]="testReasonsDropdownList"
+                    [activeItem]="selectedTestReason"
+                    (selectedItem)="onSelectDropdown($event, 'reason')"
+                ></app-ta-input-dropdown>
+            </div>
+
+            <div class="col-6">
+                <app-ta-input-dropdown
+                    formControlName="result"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Results',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-228'
+                    }"
+                    [options]="testResultsDropdownList"
+                    [activeItem]="selectedTestResult"
+                    (selectedItem)="onSelectDropdown($event, 'result')"
+                ></app-ta-input-dropdown>
+            </div>
+        </div>
+
+        <!-- Documents -->
+
+        <div class="ta-card-body-overflow-none">
+            <app-ta-custom-card
+                [hasCounter]="documents.length"
+                [cardName]="'Document'"
+                [disableAnimation]="isCardAnimationDisabled"
+                [isCardOpen]="documents.length"
+            >
+                <app-ta-upload-files
+                    [files]="documents"
+                    [showDropzone]="true"
+                    [customClassName]="'modals'"
+                    (onFileEvent)="onFilesEvent($event)"
+                ></app-ta-upload-files>
+            </app-ta-custom-card>
+        </div>
+
+        <!-- Note -->
+
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                drugForm.get('note').value &&
+                drugForm.get('note').value != 'null'
+                    ? drugForm.get('note').value
+                    : false
+            "
+            [note]="
+                drugForm.get('note').value &&
+                drugForm.get('note').value != 'null'
+                    ? drugForm.get('note').value
+                    : ''
+            "
+        ></app-ta-input-note>
+    </form>
+</app-ta-modal>

@@ -47,6 +47,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // constants
 import { DirectiveConstants } from '@shared/components/ta-filter/utils/constants/directive.constants';
 import { FilterConfigConstants } from '@shared/components/ta-filter/utils/constants/filter-config.constants';
+import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
 
 // animations
 import { areaLeftSideAnimation } from '@shared/components/ta-filter/animations/area-left-side.animation';
@@ -816,7 +817,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'truck-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/trucks/' + type.logoName;
+                                FilterIconRoutes.truckSVG + type.logoName;
                             return type;
                         });
 
@@ -826,7 +827,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'trailer-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/trailers/' + type.logoName;
+                                FilterIconRoutes.trailerSVG + type.logoName;
                             return type;
                         });
                         this.trailerTypeArray = newData;
@@ -835,7 +836,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     if (res?.animation === 'repair-category-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
-                                'assets/svg/common/category/' + type.logo;
+                                FilterIconRoutes.categorySVG + type.logo;
                             return type;
                         });
                         this.categoryRepairArray = newData;
@@ -873,7 +874,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             const newData = res.data.pmTrucks.map(
                                 (type: any) => {
                                     type['icon'] =
-                                        'assets/svg/common/repair-pm/' +
+                                        FilterIconRoutes.repairPmSVG +
                                         type.logoName;
                                     type['name'] = type.title;
 
@@ -895,7 +896,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             const newData = res.data.pmTrailer.map(
                                 (type: any) => {
                                     type['icon'] =
-                                        'assets/svg/common/repair-pm/' +
+                                        FilterIconRoutes.repairPmSVG +
                                         type.logoName;
                                     type['name'] = type.title;
 
@@ -928,12 +929,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 return type;
                             });
                         } else {
-                            newData = res.data?.pagination?.data.map(
-                                (type: any) => {
-                                    type['name'] = type.truckNumber;
-                                    return type;
-                                }
-                            );
+                            newData = res.data?.map((type: any) => {
+                                type['name'] = type.truckType.name;
+                                type['logo'] =
+                                    FilterIconRoutes.truckSVG +
+                                    type.truckType.logoName;
+                                return type;
+                            });
                         }
                         this.truckArray = newData;
                     }
@@ -1126,9 +1128,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
             } else {
-                this.truckArray.map((item) => {
-                    if (item.id === id) {
-                        item.isSelected = false;
+                this.truckArray.map((truck) => {
+                    if (truck.truckType.id === item?.truckType.id) {
+                        truck.isSelected = false;
                     }
                 });
             }
@@ -1755,6 +1757,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 if (this.type === 'pmFilter' || this.isRepairFilter) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
+                    });
+                } else if (this.type === 'truckFilter') {
+                    this.filterActiveArray.map((data) => {
+                        selectedUsersIdArray.push(data.truckType.id);
                     });
                 } else {
                     this.filterActiveArray.map((data) => {

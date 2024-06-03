@@ -1,3 +1,9 @@
+import {
+    DispatchShortResponse,
+    StateResponse,
+    TitleResponse,
+} from 'appcoretruckassist';
+
 export interface TraillerData {
     axles: string;
 
@@ -10,6 +16,9 @@ export interface TraillerData {
 
     companyOwned: boolean;
     createdAt: string;
+    assignedTo?: DispatchShortResponse;
+    registrationState?: StateResponse;
+    title?: TitleResponse;
 
     doorType: {
         name: string;

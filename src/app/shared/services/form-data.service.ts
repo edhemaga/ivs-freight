@@ -58,6 +58,8 @@ export class FormDataService {
                     insideData &&
                         this.formData.append(`${item[0]}.${it[0]}`, insideData);
                 });
+            } else if (typeof item[1] === 'boolean') {
+                this.formData.append(item[0], item[1] ? 'true' : 'false');
             } else {
                 if (item[0] && item[1]) this.formData.append(item[0], item[1]);
             }

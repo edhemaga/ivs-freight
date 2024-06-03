@@ -1,26 +1,28 @@
 <div class="repair-details-container">
     <div *ngFor="let item of shipperConfig; trackBy: identity">
-        <app-ta-details-header
-            [route]="'/list/customer'"
-            [tooltipHeaderName]="'Back to Shipper List'"
-            [headerText]="item.nameDefault"
-            [counterData]="item.length"
-            [hasIcon]="item.icon"
-            [options]="shipperDrop"
-            [hidePlus]="item.hide"
-            [customText]="item.customText"
-            [statusInactive]="item.hide"
-            [arrayIcons]="item.icons"
-            [optionsId]="shipperId"
-            (dropActions)="onDropActions($event)"
-            [hasDateArrow]="item.hasArrow"
-            [hasDateNav]="false"
-            [mainData]="item"
-            (openModalAction)="onModalAction($event)"
-            [businessOpen]="businessOpen"
-            [showClosedBadge]="true"
-        >
-        </app-ta-details-header>
+        <ng-container *ngIf="item.nameDefault !== 'Review'">
+            <app-ta-details-header
+                [route]="'/list/customer'"
+                [tooltipHeaderName]="'Back to Shipper List'"
+                [headerText]="item.nameDefault"
+                [counterData]="item.length"
+                [hasIcon]="item.icon"
+                [options]="shipperDrop"
+                [hidePlus]="item.hide"
+                [customText]="item.customText"
+                [statusInactive]="item.hide"
+                [arrayIcons]="item.icons"
+                [optionsId]="shipperId"
+                (dropActions)="onDropActions($event)"
+                [hasDateArrow]="item.hasArrow"
+                [hasDateNav]="false"
+                [mainData]="item"
+                (openModalAction)="onModalAction($event)"
+                [businessOpen]="businessOpen"
+                [showClosedBadge]="true"
+            >
+            </app-ta-details-header>
+        </ng-container>
     </div>
 
     <app-shipper-details-item [shipper]="shipperConfig">

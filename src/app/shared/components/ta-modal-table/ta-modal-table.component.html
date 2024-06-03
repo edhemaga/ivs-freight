@@ -10,7 +10,8 @@
             'repair-order-table-header': isRepairOrderTable,
             'contact-table-header': isContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
-            'off-duty-location-table-header': isOffDutyLocationTable
+            'off-duty-location-table-header': isOffDutyLocationTable,
+            'fuel-card-table-header': isFuelCardTable
         }"
     >
         <ng-container
@@ -24,7 +25,8 @@
                 class="d-flex align-items-center table-header-box"
                 [ngClass]="{
                     'justify-content-center': i === 0,
-                    'repair-bill-header': (isRepairBillTable || isRepairOrderTable) && i !== 0,
+                    'repair-bill-header':
+                        (isRepairBillTable || isRepairOrderTable) && i !== 0,
                     'justify-content-end subtotal': i === 5,
                     'first-item': i === 0 && isContactTable
                 }"
@@ -63,11 +65,12 @@
                             | setHeaderRequiredStar
                                 : isPhoneTable
                                 : isEmailTable
-                                : (isRepairBillTable || isRepairOrderTable)
+                                : isRepairBillTable || isRepairOrderTable
                                 : isContactTable
                                 : isPMTruckTable
                                 : isPMTrailerTable
                                 : isOffDutyLocationTable
+                                : isFuelCardTable
                     "
                 >
                     <span class="m-0 ta-font-bold">*</span>
@@ -111,7 +114,7 @@
                 [
                     modalTableTypeEnum.REPAIR_BILL,
                     modalTableTypeEnum.REPAIR_ORDER
-                ] | multiSwitchCase: tableType
+                ] | multiSwitchCase : tableType
             "
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS"
@@ -140,10 +143,8 @@
 
         <app-ta-modal-table-pm
             *ngSwitchCase="
-                [
-                    modalTableTypeEnum.PM_TRUCK,
-                    modalTableTypeEnum.PM_TRAILER
-                ] | multiSwitchCase: tableType
+                [modalTableTypeEnum.PM_TRUCK, modalTableTypeEnum.PM_TRAILER]
+                    | multiSwitchCase : tableType
             "
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.PM_TABLE_ITEMS"
@@ -159,7 +160,7 @@
         >
         </app-ta-modal-table-pm>
 
-        <app-ta-modal-tabel-off-duty-location
+        <app-ta-modal-table-off-duty-location
             *ngSwitchCase="modalTableTypeEnum.OFF_DUTY_LOCATION"
             [modalTableForm]="modalTableForm"
             [arrayName]="taModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS"
@@ -169,9 +170,19 @@
             (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
             (onInputHover)="handleInputHover($event)"
         >
-        </app-ta-modal-tabel-off-duty-location>
+        </app-ta-modal-table-off-duty-location>
 
+        <app-ta-modal-table-fuel-card
+            *ngSwitchCase="modalTableTypeEnum.FUEL_CARD"
+            [modalTableForm]="modalTableForm"
+            [arrayName]="taModalTableStringEnum.FUEL_CARD_TABLE_ITEMS"
+            [isInputHoverRows]="isInputHoverRows"
+            [selectedFuelCard]="selectedFuelCard"
+            [fuelCardOptions]="fuelCardOptions"
+            (onSelectDropdown)="onSelectDropdown($event)"
+            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            (onInputHover)="handleInputHover($event)"
+        >
+        </app-ta-modal-table-fuel-card>
     </ng-container>
-
-
 </div>
