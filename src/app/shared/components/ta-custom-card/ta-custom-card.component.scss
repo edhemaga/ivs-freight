@@ -96,10 +96,16 @@
                 position: relative;
                 bottom: 1px;
 
+                svg {
+                    path {
+                        fill: $bw5;
+                    }
+                }
+
                 &:hover {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $ta-black;
                         }
                     }
                 }

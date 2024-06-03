@@ -1,5 +1,5 @@
 <div class="details-container-items">
-    <div
+    <ng-container
         *ngFor="
             let item of driverDetailsConfig;
             let i = index;
@@ -22,7 +22,8 @@
             (openModalAction)="onModalAction($event)"
         >
         </app-ta-details-header>
-    </div>
+    </ng-container>
+
     <div class="driver-details-container">
         <app-driver-details-item
             [drivers]="driverDetailsConfig"

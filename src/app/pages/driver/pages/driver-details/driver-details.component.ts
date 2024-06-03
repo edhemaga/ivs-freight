@@ -1,15 +1,21 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, take, takeUntil } from 'rxjs';
-import moment from 'moment';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-//Components
+import { Subject, take, takeUntil } from 'rxjs';
+
+// moment
+import moment from 'moment';
+
+// components
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { DriverDetailsItemComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/driver-details-item.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 
-//Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
@@ -19,7 +25,7 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 
-//Store
+// store
 import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
@@ -29,9 +35,19 @@ import { DriversItemStore } from '@pages/driver/state/driver-details-state/drive
     selector: 'app-driver-details',
     templateUrl: './driver-details.component.html',
     styleUrls: ['./driver-details.component.scss'],
-    providers: [DetailsPageService],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+
+        // components
+        DriverDetailsItemComponent,
+        TaDetailsHeaderComponent,
+    ],
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     public driverDetailsConfig: any[] = [];
     public dataTest: any;
     public statusDriver: boolean;
@@ -51,23 +67,30 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     public isActiveCdl: boolean;
     public dataCdl: any;
     public cdlActiveId: number;
-    private destroy$ = new Subject<void>();
+
     private newDriverId: number;
+
     constructor(
+        private cdRef: ChangeDetectorRef,
+
+        // router
+        private router: Router,
         private activated_route: ActivatedRoute,
+
+        // services
         private modalService: ModalService,
         private driverService: DriverService,
-        private router: Router,
         private detailsPageDriverService: DetailsPageService,
-        private cdRef: ChangeDetectorRef,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
+        private dropDownService: DropDownService,
+        private DetailsDataService: DetailsDataService,
+        private cdlService: DriverCdlService,
+
+        // store
         private driverMinimimalListStore: DriversMinimalListStore,
         private driverMinimalQuery: DriversMinimalListQuery,
-        private dropDownService: DropDownService,
         private driverDQuery: DriversDetailsListQuery,
-        private cdlService: DriverCdlService,
-        private DetailsDataService: DetailsDataService,
         private DriversItemStore: DriversItemStore
     ) {
         let storeData$ = this.DriversItemStore._select((state) => state);

@@ -91,7 +91,8 @@ export class TruckassistTableService {
         | DriverResponse[]
         | BrokerResponse[]
     >([]);
-    public currentBussinessSelectedRows = this.bussinessSelectedRows.asObservable();
+    public currentBussinessSelectedRows =
+        this.bussinessSelectedRows.asObservable();
 
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
@@ -219,7 +220,7 @@ export class TruckassistTableService {
     public sendDnuListSelectedRows(dnuListSelectedRows) {
         this.dnuSelectedRows.next(dnuListSelectedRows);
     }
-    
+
     /* Open/Close Bussiness Selected Rows */
     public sendBussinessSelectedRows(bussinessListSelectedRows) {
         this.bussinessSelectedRows.next(bussinessListSelectedRows);

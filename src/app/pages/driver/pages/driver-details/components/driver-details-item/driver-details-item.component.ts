@@ -9,11 +9,18 @@ import {
     Input,
     SimpleChanges,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import moment from 'moment';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
-//Services
+// decorators
+import { Titles } from '@core/decorators/titles.decorator';
+
+// moment
+import moment from 'moment';
+
+// services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -23,26 +30,24 @@ import { DriverMedicalService } from '@pages/driver/pages/driver-modals/driver-m
 import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
 import { DriverDrugAlcoholTestService } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/services/driver-drug-alcohol-test.service';
 
-//Components
+// components
+import { DriverDetailsCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/driver-details-card.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 
-//Models
+// models
 import { GetMvrModalResponse } from 'appcoretruckassist';
 
-//Animations
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
+// animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { cardAnimation } from '@shared/animations/card.animation';
 
-//Helpers
+// helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
-import { Titles } from '@core/decorators/titles.decorator';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Titles()
@@ -53,27 +58,21 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
     encapsulation: ViewEncapsulation.None,
     animations: [
         cardComponentAnimation('showHideCardBody'),
-        trigger('cardAnimation', [
-            state('in', style({ opacity: 1, 'max-height': '0px' })),
-            transition(':enter', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 0, 'max-height': '0px' }),
-                        style({ opacity: 1, 'max-height': '600px' }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 1, 'max-height': '600px' }),
-                        style({ opacity: 0, 'max-height': '0px' }),
-                    ])
-                ),
-            ]),
-        ]),
+        cardAnimation('cardAnimation'),
+    ],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        ReactiveFormsModule,
+
+        // components
+        DriverDetailsCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
     ],
 })
 export class DriverDetailsItemComponent
@@ -132,6 +131,7 @@ export class DriverDetailsItemComponent
     }
 
     ngOnInit(): void {
+        console.log('drivers', this.drivers);
         this.getExpireDate();
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1

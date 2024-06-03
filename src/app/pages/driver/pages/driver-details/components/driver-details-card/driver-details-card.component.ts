@@ -9,23 +9,30 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // moment
 import moment from 'moment';
 
-//Pipes
+// pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
-//Animations
+// animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
-//Helpers
+// helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
-//Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
@@ -36,24 +43,40 @@ import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DropDownService } from '@shared/services/drop-down.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
-//Components
+// components
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholTestModalComponent } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/driver-drug-alcohol-test-modal.component';
 import { DriverMedicalModalComponent } from '@pages/driver/pages/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 
-//Store
+// constants
+import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
+import { DriverDetailsCard } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/constants/driver-details-card.constants';
+
+// store
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 
-//Enums
+// enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 import { DriverImagesStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-images-string.enum';
 import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
 
-//Models
+// models
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
@@ -68,13 +91,9 @@ import {
     MvrResponse,
     TestResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { DriverDropdown } from '@pages/driver/pages/driver-details/components/driver-details-card/models/driver-dropdown.model';
 import { DriverDateInfo } from '@pages/driver/models/driver-date-info.model';
-
-//Constants
-import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
-import { DriverDetailsCard } from '@pages/driver/pages/driver-details/components/driver-details-card/utils/constants/driver-details-card.constants';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -83,6 +102,31 @@ import { DriverDetailsCard } from '@pages/driver/pages/driver-details/components
     encapsulation: ViewEncapsulation.None,
     animations: [cardComponentAnimation('showHideCardBody')],
     providers: [SumArraysPipe],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        NgbModule,
+        SharedModule,
+        ReactiveFormsModule,
+
+        // components
+        TaAppTooltipV2Component,
+        TaTabSwitchComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+        TaDetailsHeaderCardComponent,
+        TaChartComponent,
+
+        // pipes
+        FormatDatePipe,
+    ],
 })
 export class DriverDetailsCardComponent
     implements OnInit, OnDestroy, OnChanges
@@ -151,13 +195,59 @@ export class DriverDetailsCardComponent
 
     private destroy$ = new Subject<void>();
 
+    //////////////////
+
+    public employmentHistoryData = [
+        {
+            percents: 25,
+            isEmployed: true,
+            isDeactivated: false,
+            startDate: '10 September, 2021',
+            endDate: '04 January, 2023',
+            yearsOfService: 2,
+            daysOfService: 103,
+        },
+        {
+            percents: 25,
+            isEmployed: false,
+            isDeactivated: true,
+            startDate: '10 September, 2021',
+            endDate: '04 January, 2023',
+            yearsOfService: 3,
+            daysOfService: 103,
+        },
+        {
+            percents: 25,
+            isEmployed: true,
+            isDeactivated: false,
+            startDate: '10 September, 2021',
+            endDate: '04 January, 2023',
+            yearsOfService: 4,
+            daysOfService: 103,
+        },
+        {
+            percents: 25,
+            isEmployed: false,
+            isDeactivated: true,
+            startDate: '10 September, 2021',
+            endDate: '04 January, 2023',
+            yearsOfService: 5,
+            daysOfService: 103,
+        },
+    ];
+
+    public progressBarHoverIndex = -1;
+
     constructor(
+        private cdRef: ChangeDetectorRef,
+
+        // pipes
+        private sumArr: SumArraysPipe,
+
+        // services
         private modalService: ModalService,
         private detailsPageDriverSer: DetailsPageService,
-        private sumArr: SumArraysPipe,
-        private cdRef: ChangeDetectorRef,
         private tableService: TruckassistTableService,
-        private driverMinimalQuery: DriversMinimalListQuery,
         public imageBase64Service: ImageBase64Service,
         private cdlService: DriverCdlService,
         private medicalService: DriverMedicalService,
@@ -165,8 +255,12 @@ export class DriverDetailsCardComponent
         private testService: DriverDrugAlcoholTestService,
         private driverService: DriverService,
         private confirmationService: ConfirmationService,
-        private dropDownService: DropDownService
+        private dropDownService: DropDownService,
+
+        // store
+        private driverMinimalQuery: DriversMinimalListQuery
     ) {}
+
     ngOnChanges(changes: SimpleChanges) {
         if (
             !changes?.driver?.firstChange &&
@@ -203,6 +297,7 @@ export class DriverDetailsCardComponent
     }
 
     ngOnInit(): void {
+        console.log('driver', this.driver);
         this.getDriverById(this.driver.id);
         this.note.patchValue(this.driver.note);
 

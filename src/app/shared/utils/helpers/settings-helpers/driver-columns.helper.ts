@@ -12,9 +12,6 @@ export class DriverColumnsHelper {
             (driver) => driver.fleetType?.name === 'Combined'
         );
 
-        console.log('tableData', tableData);
-        console.log('this.isCombinedFleetType', this.isCombinedFleetType);
-
         tableData.forEach((driver) => {
             const { solo, team } = driver;
 
@@ -184,11 +181,11 @@ export class DriverColumnsHelper {
                 break;
         }
 
-        if (property.includes('Solo')) {
-            conditionalProperty += this.isCombinedFleetType ? ' (s)' : '';
-        } else {
-            conditionalProperty += this.isCombinedFleetType ? ' (t)' : '';
-        }
+        conditionalProperty += this.isCombinedFleetType
+            ? property.includes('Solo')
+                ? ' (s)'
+                : ' (t)'
+            : '';
 
         return conditionalProperty;
     }

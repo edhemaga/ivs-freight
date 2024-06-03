@@ -1,40 +1,36 @@
 <ng-container *ngIf="driver">
-    <div class="cards-item-wrapper-1">
+    <div class="cards-item-wrapper-1 driver-details-card">
+        <!-- Details Header Card -->
+
         <app-ta-details-header-card
             [ngClass]="{
-                disabedPreviousArrow:
-                    currentDriverIndex === 0 || currentDriverIndex === -1,
+                disabedPreviousArrow: [0, -1].includes(currentDriverIndex),
                 disableNextArrow: currentDriverIndex === driversList.length - 1
             }"
             [tooltipNext]="
-                currentDriverIndex === driversList.length - 1
-                    ? ''
-                    : 'Next Driver'
+                currentDriverIndex === driversList.length - 1 ? '' : 'Next'
             "
             [tooltipPrevious]="
-                currentDriverIndex === 0 || currentDriverIndex === -1
-                    ? ''
-                    : 'Previous Driver'
+                [0, -1].includes(currentDriverIndex) ? '' : 'Previous'
             "
-            [searchName]="'Driver is Owner'"
             [cardDetailsDate]="driver.hired | formatDateP"
             [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
-            [statusInactive]="driver.status"
             [options]="driversDropdowns"
             [sortOptions]="'active-drivers'"
             [searchInputName]="'Search Driver'"
-            (selectValue)="onSelectedDriver($event)"
-            (changeEvent)="onChangeDriver($event)"
             [hasArrow]="hideArrow"
             [optionsDrop]="dropData"
-            [haveDropSVG]="true"
             [currentName]="driver.firstName + ' ' + driver.lastName"
+            (selectValue)="onSelectedDriver($event)"
+            (changeEvent)="onChangeDriver($event)"
             (dropActions)="onDriverActions($event)"
         >
-            <div class="driver-container">
+            <div class="driver-info-container">
                 <div class="driver-personal">
-                    <div class="driver-avatar">
-                        <ng-container *ngIf="driver?.avatar">
+                    <!-- Avatar -->
+
+                    <div class="d-flex justify-content-center driver-avatar">
+                        <ng-container *ngIf="driver?.avatar; else noAvatar">
                             <img
                                 class="driver-avatar-svg"
                                 [src]="
@@ -43,46 +39,80 @@
                                 alt="driver-image"
                             />
                         </ng-container>
-                        <ng-container *ngIf="!driver?.avatar">
+
+                        <ng-template #noAvatar>
                             <app-ta-profile-images
-                                [indx]="0"
+                                [indx]="currentDriverIndex"
                                 [size]="'large'"
                                 [type]="'driver'"
                             ></app-ta-profile-images>
-                        </ng-container>
+                        </ng-template>
                     </div>
-                    <div class="driver-information">
-                        <div class="information-item">
-                            <svg-icon
-                                class="information-svg"
-                                src="assets/svg/common/ic_ssn.svg"
-                            ></svg-icon>
+
+                    <!-- Info -->
+
+                    <div
+                        class="d-flex flex-column justify-content-center driver-information"
+                    >
+                        <div class="d-flex align-items-center information-item">
+                            <div
+                                ngbTooltip
+                                position="bottom"
+                                [tooltipBackground]="'#424242'"
+                                [mainTooltip]="'SSN Number'"
+                            >
+                                <svg-icon
+                                    class="information-svg"
+                                    src="assets/svg/common/ic_ssn.svg"
+                                ></svg-icon>
+                            </div>
+
                             <app-ta-copy
                                 [textFontSize]="'18px'"
+                                [textFontWeight]="'600'"
+                                [textColor]="'#424242'"
                                 [copyValue]="driver?.ssn"
                                 [textColor]="'#2f2f2f'"
                             >
                             </app-ta-copy>
                         </div>
-                        <div class="information-item">
-                            <svg-icon
-                                class="information-svg"
-                                src="assets/svg/common/ic_phone.svg"
-                            ></svg-icon>
+
+                        <div class="d-flex align-items-center information-item">
+                            <div
+                                ngbTooltip
+                                position="bottom"
+                                [tooltipBackground]="'#424242'"
+                                [mainTooltip]="'Phone'"
+                            >
+                                <svg-icon
+                                    class="information-svg"
+                                    src="assets/svg/common/ic_phone.svg"
+                                ></svg-icon>
+                            </div>
+
                             <app-ta-copy
                                 [copyValue]="driver?.phone"
-                                [textColor]="'#2f2f2f'"
+                                [textColor]="'#424242'"
                             >
                             </app-ta-copy>
                         </div>
-                        <div class="information-item">
-                            <svg-icon
-                                class="information-svg"
-                                src="assets/svg/common/ic_email.svg"
-                            ></svg-icon>
+
+                        <div class="d-flex align-items-center information-item">
+                            <div
+                                ngbTooltip
+                                position="bottom"
+                                [tooltipBackground]="'#424242'"
+                                [mainTooltip]="'Email'"
+                            >
+                                <svg-icon
+                                    class="information-svg"
+                                    src="assets/svg/common/ic_email.svg"
+                                ></svg-icon>
+                            </div>
+
                             <app-ta-copy
                                 [copyValue]="driver?.email"
-                                [textColor]="'#2f2f2f'"
+                                [textColor]="'#424242'"
                             >
                             </app-ta-copy>
                         </div>
@@ -90,39 +120,38 @@
                 </div>
             </div>
         </app-ta-details-header-card>
-        <div
-            class="wrapper-additional-cards"
-            [ngClass]="{ 'bind-heigth': !templateCard }"
-        >
+
+        <!-- Additional Cards -->
+
+        <div class="additional-cards-container">
             <div class="details-cards">
-                <!-- assignedTo -->
+                <!-- Assigned To Card-->
+
                 <app-ta-custom-card
-                    [cardName]="
-                        driver.status === 1
-                            ? 'Assigned To'
-                            : 'View Dispatch History'
-                    "
+                    [cardName]="'Assigned To'"
                     [hasDivider]="false"
-                    [tooltipName]="'Dispatch History'"
                     [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
                     [isCardOpen]="true"
                     [bodyTemplate]="'card'"
-                    class="first-custom-card"
-                    [customClass]="'detailsPadding'"
                 >
-                    <div class="assignTo">
-                        <ng-container *ngIf="driver?.assignedTo?.truck?.id">
-                            <div class="assignTo-item first">
+                    <div class="assign-to">
+                        <ng-container
+                            *ngIf="
+                                driver?.assignedTo?.truck?.id;
+                                else noTruckAssigned
+                            "
+                        >
+                            <div class="assign-to-item">
                                 <div class="icon-text-wrapper-cmp">
                                     <span
-                                        tooltipBackground="#6c6c6c"
                                         ngbTooltip
                                         mainTooltip="Semi Truck"
-                                        position="top"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
                                         class="semi-tooltip typeDetails"
                                     >
                                         <svg-icon
-                                            class="assignTo-vehicle"
+                                            class="assign-to-vehicle"
                                             [src]="
                                                 'assets/svg/common/trucks/' +
                                                 driver.assignedTo.truck
@@ -131,17 +160,17 @@
                                         >
                                         </svg-icon>
                                     </span>
-                                    <span class="assignTo-value">{{
+
+                                    <span class="assign-to-value">{{
                                         driver.assignedTo.truck.truckNumber
                                     }}</span>
                                 </div>
 
                                 <span
-                                    tooltipBackground="#6c6c6c"
                                     ngbTooltip
-                                    mainTooltip="View in Modal"
-                                    position="top"
-                                    style="margin-left: 40px"
+                                    mainTooltip="View Details"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
                                 >
                                     <svg-icon
                                         class="open-modal-icon"
@@ -150,26 +179,33 @@
                                 </span>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="!driver?.assignedTo?.truck?.id">
-                            <div class="assignTo-item first">
+
+                        <ng-template #noTruckAssigned>
+                            <div class="assign-to-item">
                                 <span
-                                    class="assignTo-value inactive-assignTo-value"
+                                    class="assign-to-value inactive-assign-to-value"
                                     >No Truck</span
                                 >
                             </div>
-                        </ng-container>
-                        <ng-container *ngIf="driver?.assignedTo?.trailer?.id">
-                            <div class="assignTo-item second">
+                        </ng-template>
+
+                        <ng-container
+                            *ngIf="
+                                driver?.assignedTo?.trailer?.id;
+                                else noTrailerAssigned
+                            "
+                        >
+                            <div class="assign-to-item">
                                 <div class="icon-text-wrapper-cmp">
                                     <span
-                                        tooltipBackground="#6c6c6c"
                                         ngbTooltip
                                         mainTooltip="Container"
-                                        position="top"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
                                         class="semi-tooltip typeDetails"
                                     >
                                         <svg-icon
-                                            class="assignTo-vehicle"
+                                            class="assign-to-vehicle"
                                             [src]="
                                                 'assets/svg/common/trailers/' +
                                                 driver.assignedTo.trailer
@@ -177,8 +213,9 @@
                                             "
                                         ></svg-icon>
                                     </span>
+
                                     <span
-                                        class="assignTo-value container-value"
+                                        class="assign-to-value container-value"
                                     >
                                         {{
                                             driver?.assignedTo?.trailer
@@ -186,12 +223,12 @@
                                         }}
                                     </span>
                                 </div>
+
                                 <span
-                                    style="margin-left: 33px"
-                                    tooltipBackground="#6c6c6c"
                                     ngbTooltip
-                                    mainTooltip="View in Modal"
-                                    position="top"
+                                    mainTooltip="View Details"
+                                    tooltipBackground="#424242"
+                                    position="bottom"
                                 >
                                     <svg-icon
                                         class="open-modal-icon2"
@@ -200,71 +237,335 @@
                                 </span>
                             </div>
                         </ng-container>
-                        <ng-container *ngIf="!driver?.assignedTo?.trailer?.id">
-                            <div class="assignTo-item first">
+
+                        <ng-template #noTrailerAssigned>
+                            <div class="assign-to-item">
                                 <span
-                                    class="assignTo-value inactive-assignTo-value"
+                                    class="assign-to-value inactive-assign-to-value"
                                     >No Trailer</span
                                 >
                             </div>
-                        </ng-container>
+                        </ng-template>
                     </div>
                 </app-ta-custom-card>
 
-                <!-- Additional info -->
+                <!-- Additional Info Card -->
+
                 <app-ta-custom-card
-                    class="item-cards"
-                    [bodyTemplate]="'card'"
                     [cardName]="'Additional info'"
-                    [isCardOpen]="false"
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '4x'
                     }"
-                    [customClass]="'detailsPadding'"
                 >
-                    <div class="additional-container">
-                        <div class="addres-wrapper">
-                            <div class="addres-name">Address</div>
-                            <div class="addres-value-icon">
-                                <div class="addres-value">
-                                    {{ driver.address.address }}
+                    <div
+                        class="d-flex flex-column justify-content-center additional-info-container"
+                    >
+                        <div
+                            class="d-flex flex-column justify-content-center additional-info-box"
+                        >
+                            <p class="m-0 ta-font-bold">Address</p>
+
+                            <p class="m-0">{{ driver.address.address }}</p>
+                        </div>
+
+                        <div
+                            class="align-items-center additional-info-grid-container"
+                        >
+                            <!-- <ng-container *ngFor="let info of additionalInfo">
+                                <div class="d-flex flex-column justify-content-center additional-info-box">
+                                    <p class="m-0 ta-font-bold">{{ info.title }}</p>
+                                    <p class="m-0">{{ info.content }}</p>
                                 </div>
-                                <span
-                                    tooltipBackground="#6c6c6c"
-                                    ngbTooltip
-                                    mainTooltip="Open in Places"
-                                    position="top"
+                            </ng-container> -->
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+
+                <!-- Employment History Card-->
+
+                <app-ta-custom-card
+                    [cardName]="'Employment History'"
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <div class="employment-history-container">
+                        <!-- Years of Service -->
+
+                        <div
+                            class="d-flex flex-column justify-content-center years-of-service-container"
+                            [ngClass]="{
+                                'hover-container': progressBarHoverIndex !== -1
+                            }"
+                        >
+                            <div
+                                class="d-flex align-items-center justify-content-between"
+                            >
+                                <span class="ta-font-bold">{{
+                                    progressBarHoverIndex !== -1
+                                        ? employmentHistoryData[
+                                              progressBarHoverIndex
+                                          ].startDate +
+                                          ' - ' +
+                                          employmentHistoryData[
+                                              progressBarHoverIndex
+                                          ].endDate
+                                        : ' Years of Service'
+                                }}</span>
+
+                                <div
+                                    class="d-flex align-items-center employed-deactivated-container"
                                 >
-                                    <svg-icon
-                                        class="address-icon"
-                                        src="assets/svg/common/ic_address.svg"
-                                    >
-                                    </svg-icon>
-                                </span>
+                                    <p class="m-0 ta-font-medium">
+                                        {{
+                                            employmentHistoryData[
+                                                progressBarHoverIndex
+                                            ]?.isEmployed
+                                                ? 'Employed'
+                                                : 'Deactivated'
+                                        }}
+                                    </p>
+
+                                    <div
+                                        class="circle"
+                                        [ngStyle]="{
+                                            background: employmentHistoryData[
+                                                progressBarHoverIndex
+                                            ]?.isEmployed
+                                                ? '#6692F1'
+                                                : '#BED0F9'
+                                        }"
+                                    ></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center">
+                                <ng-container *ngIf="yearsService">
+                                    <p class="m-0 ta-font-medium">
+                                        {{
+                                            progressBarHoverIndex !== -1
+                                                ? employmentHistoryData[
+                                                      progressBarHoverIndex
+                                                  ].yearsOfService
+                                                : yearsService
+                                        }}
+                                        {{
+                                            yearsService > 1 ? 'years' : 'year'
+                                        }}
+                                    </p>
+                                </ng-container>
+
+                                <ng-container *ngIf="daysService">
+                                    <p class="m-0 ta-font-medium">
+                                        {{
+                                            progressBarHoverIndex !== -1
+                                                ? employmentHistoryData[
+                                                      progressBarHoverIndex
+                                                  ].daysOfService
+                                                : daysService
+                                        }}
+                                        {{ daysService > 1 ? 'days' : 'day' }}
+                                    </p>
+                                </ng-container>
                             </div>
                         </div>
-                        <div class="addres-wrapper addres-second">
-                            <div class="addres-name">Date of Birth</div>
-                            <div class="addres-value">
-                                {{ driver.dateOfBirth | formatDateP }}
+
+                        <!-- Progress Bar -->
+
+                        <div
+                            class="d-flex flex-column employment-progress-container"
+                        >
+                            <div class="d-flex justify-content-between">
+                                <p class="m-0">07/10/22</p>
+
+                                <p class="m-0">Today</p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center employment-progress-bar"
+                            >
+                                <ng-container
+                                    *ngFor="
+                                        let progressBox of employmentHistoryData;
+                                        let i = index;
+                                        trackBy: identity
+                                    "
+                                >
+                                    <div
+                                        class="employment-progress-bar-box"
+                                        [ngStyle]="{
+                                            width: progressBox.percents + '%',
+                                            background: progressBox.isEmployed
+                                                ? '#6692F1'
+                                                : '#E9EFFD'
+                                        }"
+                                        (mouseenter)="progressBarHoverIndex = i"
+                                        (mouseleave)="
+                                            progressBarHoverIndex = -1
+                                        "
+                                    ></div>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <!-- List -->
+
+                        <div class="d-flex flex-column employment-history-list">
+                            <div
+                                class="align-items-center employment-history-list-header"
+                            >
+                                <p class="m-0 ta-font-bold">STATUS</p>
+                                <p class="m-0 ta-font-bold">FROM - TO</p>
+                                <p class="m-0 ta-font-bold">DURATION</p>
+                            </div>
+
+                            <ng-container
+                                *ngFor="
+                                    let progressInfo of employmentHistoryData;
+                                    let i = index;
+                                    trackBy: identity
+                                "
+                            >
+                                <div
+                                    class="align-items-center employment-history-list-item"
+                                    [ngClass]="{
+                                        'hover-container':
+                                            i === progressBarHoverIndex
+                                    }"
+                                >
+                                    <div
+                                        class="d-flex align-items-center status-box"
+                                    >
+                                        <div
+                                            class="circle"
+                                            [ngStyle]="{
+                                                background:
+                                                    progressInfo.isEmployed
+                                                        ? '#6692F1'
+                                                        : '#BED0F9'
+                                            }"
+                                        ></div>
+
+                                        <p class="m-0 ta-font-semi-bold">
+                                            {{
+                                                progressInfo.isEmployed
+                                                    ? 'Employed'
+                                                    : 'Deactivated'
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0">07/21/24 - 07/21/24</p>
+                                    </div>
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-end"
+                                    >
+                                        <p class="m-0">
+                                            {{ progressInfo.yearsOfService }} y
+                                            {{ progressInfo.daysOfService }} d
+                                        </p>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+
+                <!-- Owner Info Card-->
+
+                <app-ta-custom-card
+                    [cardName]="'Owner Info'"
+                    [isCardOpen]="!!driver.owner"
+                    [bodyTemplate]="'card'"
+                    [hasArrow]="!driver.owner"
+                    [disabledCard]="!driver.owner"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <div class="owner-info-container">
+                        <div class="align-items-center owner-info-top">
+                            <div
+                                class="d-flex flex-column justify-content-center owner-info-top-item"
+                            >
+                                <p class="m-0 ta-font-bold">Company</p>
+
+                                <p class="m-0 ta-font-medium">
+                                    KSKA FREIGHT, INC
+                                </p>
+                            </div>
+
+                            <div
+                                class="d-flex flex-column justify-content-center owner-info-top-item"
+                            >
+                                <p class="m-0 ta-font-bold">EIN</p>
+
+                                <p class="m-0 ta-font-medium">12-3456789</p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center owner-info-bottom"
+                        >
+                            <div
+                                class="d-flex align-items-center owner-info-bottom-item"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_phone.svg"
+                                ></svg-icon>
+
+                                <p class="m-0">(123) 456-7890</p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center owner-info-bottom-item"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_email.svg"
+                                ></svg-icon>
+
+                                <p class="m-0">asd@asd.com</p>
+                            </div>
+
+                            <div
+                                class="d-flex align-items-center owner-info-bottom-item"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_location.svg"
+                                ></svg-icon>
+
+                                <p class="m-0">
+                                    5462 N East River Rd apt 611, Chicago, IL
+                                    60656, USA
+                                </p>
                             </div>
                         </div>
                     </div>
                 </app-ta-custom-card>
 
                 <!-- Off Duty Location-->
+
                 <ng-container *ngIf="driver.offDutyLocations.length">
                     <app-ta-custom-card
                         [hasCounter]="driver.offDutyLocations.length"
                         [cardName]="'Off Duty Location'"
                         [isCardOpen]="false"
-                        [bodyTemplate]="'card'"
                         [animationMarginParams]="{
                             marginTop: '0px',
                             marginBottom: '0px'
                         }"
-                        class="item-cards"
                         [customClass]="'detailsPadding'"
                     >
                         <ng-container *ngIf="driver.offDutyLocations === ''">
@@ -316,317 +617,6 @@
                     </app-ta-custom-card>
                 </ng-container>
 
-                <!-- Employment history-->
-                <app-ta-custom-card
-                    [cardName]="'Employment History'"
-                    [isCardOpen]="false"
-                    class="item-cards"
-                    [bodyTemplate]="'card'"
-                    [animationMarginParams]="{
-                        marginTop: '0px',
-                        marginBottom: '10px'
-                    }"
-                    [customClass]="'detailsPadding'"
-                >
-                    <div class="employment-history-container">
-                        <div class="years-of-service">
-                            <div class="items-wrapper">
-                                <div class="service-years-name">
-                                    Years of Service
-                                </div>
-                                <div class="service-year-value">
-                                    <ng-container *ngIf="yearsService">
-                                        <span
-                                            >{{ yearsService }}
-                                            {{
-                                                yearsService > 1
-                                                    ? 'years'
-                                                    : 'year'
-                                            }}</span
-                                        >
-                                    </ng-container>
-                                    <span
-                                        >{{ daysService }}
-                                        {{
-                                            daysService > 1 ? 'days' : 'day'
-                                        }}</span
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <ng-container *ngIf="deactivatePeriod">
-                                <div class="progress-employment-history">
-                                    <ng-container *ngIf="showTooltip">
-                                        <div class="employment-tooltip">
-                                            <div class="emp-tooltip">
-                                                <div class="emp-tooltip-value">
-                                                    <p class="emp-duration">
-                                                        {{
-                                                            tooltipFormatStartDate
-                                                        }}
-                                                        -
-                                                        <span>{{
-                                                            tooltipData.endDate
-                                                                ? tooltipFormatEndDate
-                                                                : 'Today'
-                                                        }}</span>
-                                                    </p>
-                                                    <div class="emp-text-icon">
-                                                        <p>
-                                                            {{
-                                                                tooltipData.isDeactivate
-                                                                    ? 'Deactivated '
-                                                                    : 'Employed'
-                                                            }}
-                                                        </p>
-                                                        <svg-icon
-                                                            class="svg-blue"
-                                                            src="{{
-                                                                tooltipData.isDeactivate
-                                                                    ? 'assets/svg/common/ic_circle_light_blue.svg'
-                                                                    : '  assets/svg/common/round_blue.svg'
-                                                            }}"
-                                                        ></svg-icon>
-                                                    </div>
-                                                </div>
-                                                <p class="year-working">
-                                                    {{
-                                                        tooltipData.duration
-                                                            .Years
-                                                    }}
-                                                    {{
-                                                        tooltipData.duration
-                                                            .Years > 1
-                                                            ? 'years'
-                                                            : 'year'
-                                                    }}
-                                                    {{
-                                                        tooltipData.duration
-                                                            .Days
-                                                    }}
-                                                    {{
-                                                        tooltipData.duration
-                                                            .Days > 1
-                                                            ? 'days'
-                                                            : 'day'
-                                                    }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-
-                                    <div class="progress-driver">
-                                        <ng-container
-                                            *ngFor="
-                                                let dat of dataProggress;
-                                                trackBy: identity
-                                            "
-                                        >
-                                            <div
-                                                (mouseover)="mouseEnter(dat)"
-                                                (mouseleave)="
-                                                    showTooltip = false
-                                                "
-                                                [ngStyle]="{
-                                                    'background-color':
-                                                        dat.isDeactivate ===
-                                                        true
-                                                            ? '#d4dff4'
-                                                            : '#6d82c8',
-                                                    width:
-                                                        dat.activePercentage +
-                                                        '%'
-                                                }"
-                                                [ngClass]="{
-                                                    emp:
-                                                        dat.isDeactivate ===
-                                                        false,
-                                                    unp:
-                                                        dat.isDeactivate ===
-                                                        true
-                                                }"
-                                            ></div>
-                                        </ng-container>
-                                    </div>
-                                    <ng-container *ngIf="!showMoreEmployment">
-                                        <div class="year-employer">
-                                            <p>{{ firstDate }}</p>
-                                            <p>
-                                                {{
-                                                    !lastDate === 'Invalid Date'
-                                                        ? lastDate
-                                                        : 'Today'
-                                                }}
-                                            </p>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                            <div
-                                [@showHideCardBody]="
-                                    showMoreEmployment ? 'true' : 'false'
-                                "
-                                class="status-container"
-                            >
-                                <div class="status-header">
-                                    <div class="status-item">
-                                        <p class="p-status">STATUS</p>
-                                    </div>
-                                    <div class="status-item">
-                                        <p class="p-status">FROM - TO</p>
-                                    </div>
-                                    <div class="status-item">
-                                        <p class="p-status">DURATION</p>
-                                    </div>
-                                </div>
-                                <div class="divider"></div>
-                                <div class="status-items">
-                                    <ng-container
-                                        *ngFor="
-                                            let empH of dataProggress;
-                                            trackBy: identity
-                                        "
-                                    >
-                                        <div class="item-wrapper">
-                                            <div class="svg-text">
-                                                <svg-icon
-                                                    class="svg-blue"
-                                                    src="{{
-                                                        empH.isDeactivate
-                                                            ? 'assets/svg/common/ic_circle_light_blue.svg'
-                                                            : '  assets/svg/common/round_blue.svg'
-                                                    }}"
-                                                ></svg-icon>
-                                                <p class="employment">
-                                                    {{
-                                                        empH.isDeactivate
-                                                            ? 'Deactivated '
-                                                            : 'Employed'
-                                                    }}
-                                                </p>
-                                            </div>
-                                            <p class="date-from-to">
-                                                {{
-                                                    empH.startDate | formatDateP
-                                                }}
-                                                -
-                                                <ng-container
-                                                    *ngIf="empH.endDate"
-                                                >
-                                                    <span>{{
-                                                        empH.endDate
-                                                            | formatDateP
-                                                    }}</span>
-                                                </ng-container>
-                                                <ng-container
-                                                    *ngIf="!empH.endDate"
-                                                >
-                                                    <span>Today</span>
-                                                </ng-container>
-                                            </p>
-                                            <ng-container *ngIf="empH.duration">
-                                                <p class="duration">
-                                                    {{ empH.duration.Years }} y
-                                                    {{ empH.duration.Days }} d
-                                                </p>
-                                            </ng-container>
-                                            <div
-                                                class="divider-employment"
-                                            ></div>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </div>
-                            <ng-container *ngIf="deactivatePeriod">
-                                <span
-                                    tooltipBackground="#6c6c6c"
-                                    ngbTooltip
-                                    [mainTooltip]="
-                                        showMoreEmployment
-                                            ? 'Show Less'
-                                            : 'Show More'
-                                    "
-                                    position="top"
-                                >
-                                    <svg-icon
-                                        [ngClass]="{
-                                            'transform-arrow':
-                                                showMoreEmployment
-                                        }"
-                                        (click)="
-                                            showMoreEmployment =
-                                                !showMoreEmployment
-                                        "
-                                        class="arrow-down-employment"
-                                        src="assets/svg/common/fill_arrow_down.svg"
-                                    ></svg-icon>
-                                </span>
-                            </ng-container>
-                        </div>
-                    </div>
-                </app-ta-custom-card>
-
-                <!-- Owner Details-->
-                <ng-container *ngIf="driver.owner">
-                    <app-ta-custom-card
-                        class="item-cards"
-                        [bodyTemplate]="'card'"
-                        [cardName]="
-                            driver.owner
-                                ? 'Owner Details'
-                                : 'Owner - Sole Proprietor'
-                        "
-                        [isCardOpen]="driver.owner ? true : false"
-                        [hasArrow]="driver.owner ? true : false"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '10px'
-                        }"
-                        [customClass]="'detailsPadding'"
-                    >
-                        <ng-container *ngIf="driver.owner">
-                            <div class="purchase-template">
-                                <div class="purchase-template-item">
-                                    <div class="purchase-template-item-name">
-                                        Company
-                                    </div>
-                                    <div class="purchase-icon-copy">
-                                        <div
-                                            class="purchase-template-item-value owner-name"
-                                        >
-                                            {{ driver.owner.name }}
-                                        </div>
-                                        <span
-                                            tooltipBackground="#6c6c6c"
-                                            ngbTooltip
-                                            mainTooltip="View in Modal"
-                                            position="top"
-                                        >
-                                            <svg-icon
-                                                class="card-icon"
-                                                src="assets/svg/common/arrow_top_right.svg"
-                                            ></svg-icon>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="purchase-template-item second-name">
-                                    <div class="purchase-template-item-name">
-                                        EIN
-                                    </div>
-                                    <div class="purchase-icon-copy">
-                                        <app-ta-copy
-                                            [copyValue]="driver.owner.ssnEin"
-                                            [textColor]="'#2f2f2f'"
-                                        >
-                                        </app-ta-copy>
-                                    </div>
-                                </div>
-                            </div>
-                        </ng-container>
-                    </app-ta-custom-card>
-                </ng-container>
-
                 <!-- Commission Pay-->
                 <ng-container
                     *ngIf="
@@ -636,7 +626,6 @@
                     "
                 >
                     <app-ta-custom-card
-                        class="item-cards"
                         [bodyTemplate]="'card'"
                         [cardName]="
                             driver.commissionSolo
@@ -748,7 +737,6 @@
                     [cardName]="'Payroll'"
                     [tooltipName]="'View in Modal'"
                     [isCardOpen]="true"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                     [animationMarginParams]="{
@@ -791,7 +779,6 @@
                     "
                     [cardName]="'Bank Info'"
                     [isCardOpen]="false"
-                    class="item-cards"
                     [customClassHeaderSvg]="true"
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
@@ -835,7 +822,6 @@
                 <app-ta-custom-card
                     [cardName]="'Emergency Contact'"
                     [isCardOpen]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
@@ -887,12 +873,13 @@
                         </div>
                     </ng-container>
                 </app-ta-custom-card>
+
+                <!-- Files -->
                 <ng-container *ngIf="driver?.files.length">
                     <app-ta-custom-card
                         [cardName]="'Document'"
                         [isCardOpen]="false"
                         [hasCounter]="driver?.files?.length ?? 0"
-                        class="item-cards"
                         [bodyTemplate]="'card'"
                         [animationMarginParams]="{
                             marginTop: '0px',
@@ -936,6 +923,7 @@
                     </div>
                 </div>
             </div>
+
             <ng-container *ngIf="templateCard">
                 <div>
                     <div class="custom-card-single">
@@ -943,7 +931,6 @@
                             [cardName]="'CDL'"
                             [isCardOpen]="false"
                             [hasDivider]="false"
-                            class="item-cards"
                             [bodyTemplate]="'card'"
                             [hasCounter]="driver.cdls.length"
                             [hasPlusHeader]="true"
@@ -1336,7 +1323,6 @@
                             [cardName]="'Drug & Alcohol'"
                             [isCardOpen]="false"
                             [hasDivider]="false"
-                            class="item-cards"
                             [bodyTemplate]="'card'"
                             [hasCounter]="driver.tests.length"
                             [hasPlusHeader]="true"
@@ -1484,7 +1470,6 @@
                             [cardName]="'Medical'"
                             [isCardOpen]="false"
                             [hasDivider]="false"
-                            class="item-cards"
                             [bodyTemplate]="'card'"
                             [hasCounter]="driver.medicals.length"
                             [hasPlusHeader]="true"
@@ -1657,7 +1642,6 @@
                             [cardName]="'MVR'"
                             [isCardOpen]="false"
                             [hasDivider]="false"
-                            class="item-cards"
                             [bodyTemplate]="'card'"
                             [hasCounter]="driver.mvrs.length"
                             [hasPlusHeader]="true"

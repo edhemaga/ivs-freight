@@ -118,20 +118,20 @@
                 }"
                 class="first-custom-card"
             >
-                <div class="assignTo">
+                <div class="assign-to">
                     <div
-                        class="assignTo-item first"
+                        class="assign-to-item first"
                         *ngIf="trailer?.assignedTo?.truck?.id"
                     >
                         <svg-icon
-                            class="assignTo-vehicle backImage"
+                            class="assign-to-vehicle backImage"
                             [src]="
                                 'assets/svg/common/trucks/' +
                                 trailer.assignedTo.truck.truckType.logoName
                             "
                         >
                         </svg-icon>
-                        <p class="assignTo-value no-truck">
+                        <p class="assign-to-value no-truck">
                             {{ trailer.assignedTo.truck.truckNumber }}
                         </p>
                         <span
@@ -148,24 +148,24 @@
                         </span>
                     </div>
                     <div
-                        class="assignTo-item second"
+                        class="assign-to-item second"
                         *ngIf="!trailer?.assignedTo?.truck?.id"
                     >
                         <p
-                            class="assignTo-value no-truck inactive-assignTo-value"
+                            class="assign-to-value no-truck inactive-assign-to-value"
                         >
                             No truck
                         </p>
                     </div>
                     <div
-                        class="assignTo-item second"
+                        class="assign-to-item second"
                         *ngIf="trailer?.assignedTo?.driver?.id"
                     >
-                        <svg-icon class="assignTo-vehicle"></svg-icon>
+                        <svg-icon class="assign-to-vehicle"></svg-icon>
 
                         <svg-icon
                             *ngIf="!trailer.assignedTo.driver.avatar"
-                            class="assignTo-vehicle"
+                            class="assign-to-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
                         <img
@@ -179,7 +179,7 @@
                             alt="driver-image"
                         />
 
-                        <p class="assignTo-value no-truck">
+                        <p class="assign-to-value no-truck">
                             {{ trailer?.assignedTo?.driver?.firstName }}
                             {{ trailer?.assignedTo?.driver?.lastName }}
                         </p>
@@ -197,11 +197,11 @@
                         </span>
                     </div>
                     <div
-                        class="assignTo-item second"
+                        class="assign-to-item second"
                         *ngIf="!trailer?.assignedTo?.driver?.id"
                     >
                         <p
-                            class="assignTo-value no-truck inactive-assignTo-value"
+                            class="assign-to-value no-truck inactive-assign-to-value"
                         >
                             No Driver
                         </p>
@@ -388,7 +388,6 @@
                 [hasCounter]="
                     trailer?.files?.length ? trailer?.files.length : 0
                 "
-                class="item-cards"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
             >
@@ -430,7 +429,6 @@
                     [cardName]="'Registration'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.registrations.length"
                     [hasPlusHeader]="true"
@@ -532,7 +530,6 @@
                     [cardName]="'FHWA Inspection'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [cardDocumentCounter]="1"
                     [hasCounter]="trailer.inspections.length"
@@ -612,7 +609,6 @@
                     [cardName]="'Title'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasCounter]="trailer.titles.length"
                     [hasPlusHeader]="true"
@@ -717,7 +713,6 @@
                     [cardName]="'Lease / Purchase'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"

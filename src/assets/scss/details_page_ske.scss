@@ -135,14 +135,14 @@ p {
         }
     }
 }
-.assignTo {
+.assign-to {
     position: relative;
     left: -3px;
     display: grid;
     grid-template-columns: 204px 204px;
     column-gap: 12px;
     padding: 0 0px;
-    .assignTo-vehicle {
+    .assign-to-vehicle {
         svg {
             width: 55px;
             height: 20px;
@@ -159,7 +159,7 @@ p {
         }
     }
     .first {
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             svg {
                 display: flex;
                 align-items: center;
@@ -188,7 +188,7 @@ p {
             position: relative;
             top: 1px;
         }
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             svg {
                 display: flex;
             }
@@ -211,12 +211,12 @@ p {
             }
         }
     }
-    .assignTo-item {
-        background-color: $color-white-dark;
-        border-radius: 3px;
-        width: 100%;
+    .assign-to-item {
+        background-color: $ta-light-grey-5;
+        border-radius: 2px;
         display: flex;
         align-items: center;
+
         .icon-text-wrapper-cmp {
             display: flex;
             align-items: center;
@@ -243,7 +243,7 @@ p {
         .open-modal-icon2 {
             display: none;
         }
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             margin-right: 6px;
             position: relative;
             bottom: 0px;
@@ -253,25 +253,29 @@ p {
             }
         }
 
-        .assignTo-value {
-            font-size: $font-size18;
+        .assign-to-value {
+            font-size: $font-size14;
             font-weight: $font-medium;
-            color: $color-gray-dark;
-            line-height: 16px;
-            padding-left: 12px;
+            color: $ta-black;
+            line-height: 18px;
+            padding: 4px 6px;
+
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
 
-            &.inactive-assignTo-value {
-                padding-left: 6px;
-                color: #2f2f2f;
-                line-height: 34px;
+            &.inactive-assign-to-value {
+                color: $ta-light-grey-2;
+
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
             }
         }
         p {
@@ -1760,14 +1764,6 @@ p {
         }
     }
 
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 137px 70px !important;
-            }
-        }
-    }
-
     app-shipper-details,
     app-broker-details {
         .details-header-wrapper {
@@ -1809,7 +1805,7 @@ p {
         grid-template-columns: 110px 120px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 185px 185px;
     }
 
@@ -1897,7 +1893,7 @@ p {
         grid-template-columns: 308px 53px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 175px 175px;
     }
 
@@ -1951,14 +1947,6 @@ p {
 
     .mileage-template {
         grid-template-columns: 112px 112px 111px;
-    }
-
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 114px 70px !important;
-            }
-        }
     }
 
     app-shipper-details-card {
@@ -2048,7 +2036,7 @@ p {
         grid-template-columns: 290px 53px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 162px 162px;
     }
 
@@ -2070,14 +2058,6 @@ p {
         .status-container {
             .item-wrapper {
                 grid-template-columns: 85px 91px 70px !important;
-            }
-        }
-    }
-
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 95px 70px !important;
             }
         }
     }

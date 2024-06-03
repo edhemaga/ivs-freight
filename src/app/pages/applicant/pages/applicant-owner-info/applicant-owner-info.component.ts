@@ -69,7 +69,7 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
 //components
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';

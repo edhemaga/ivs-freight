@@ -1,118 +1,348 @@
-.driver-container {
-    margin-left: 12px;
-    margin-right: 12px;
-    .driver-personal {
-        display: grid;
-        grid-template-columns: 74px 280px;
-        -moz-column-gap: 22px;
-        column-gap: 22px;
-        margin-top: 12px;
+@import 'src/theme/variables.scss';
 
-        .driver-avatar {
-            display: flex;
-            flex-direction: column;
-            position: relative;
+.driver-details-card {
+    // driver info card
+    .driver-info-container {
+        margin-left: 12px;
+        margin-right: 12px;
 
-            .driver-avatar-svg {
-                height: 82px;
-                width: 74px;
-                border-radius: 2px;
-                -o-object-fit: fill;
-                object-fit: fill;
-                user-select: none;
+        .driver-personal {
+            display: grid;
+            grid-template-columns: 74px 330px;
+            margin-top: 12px;
+            column-gap: 12px;
+            -moz-column-gap: 12px;
+
+            .driver-avatar {
+                .driver-avatar-svg {
+                    width: 74px;
+                    height: 82px;
+                    border-radius: 2px;
+
+                    object-fit: fill;
+                    -o-object-fit: fill;
+                }
             }
 
-            .driver-avatar-owner {
-                position: absolute;
-                right: -8px;
-                bottom: 2px;
+            .driver-information {
+                .information-item {
+                    margin-bottom: 4px;
+                    cursor: pointer;
+
+                    .information-svg {
+                        position: relative;
+                        bottom: 2px;
+                        line-height: 0;
+                        margin-right: 4px;
+
+                        svg {
+                            path {
+                                transition: fill 0.2s ease-in;
+                            }
+                        }
+
+                        &:hover {
+                            svg {
+                                path {
+                                    fill: $bw6-2;
+                                }
+                            }
+                        }
+                    }
+
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                }
             }
         }
     }
 
-    .driver-information {
-        display: flex;
-        height: 80px;
-        margin-top: 2px;
-        flex-direction: column;
+    // additional cards
+    .additional-cards-container {
+        // additional info card
+        .additional-info-container {
+            .additional-info-box {
+                p:nth-child(1) {
+                    font-size: 11px;
+                    color: $ta-black;
 
-        // Ovveride email information-item
-        .information-item-email {
-            margin: 7px 0px;
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+
+                p:nth-child(2) {
+                    font-size: 14px;
+                    color: $ta-black-2;
+
+                    &::-moz-selection {
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+                }
+            }
+
+            .additional-info-grid-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-row-gap: 8px;
+                margin-top: 8px;
+            }
         }
 
-        .information-item {
-            display: flex;
-            align-items: center;
-            height: 18px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            .card-icon {
-                display: none;
-                position: relative;
-                margin-left: 6px;
-                bottom: 1px;
-                height: 18px;
-                svg {
-                    &:hover {
-                        path {
-                            fill: #6c6c6c;
+        // employment history card
+        .employment-history-container {
+            .years-of-service-container {
+                margin: 0 -5px 0 -4px;
+                padding: 6px 7px 4px 6px;
+                border-radius: 2px;
+                background: transparent;
+                transition: background 0.3s ease-in;
+
+                &.hover-container {
+                    background: $bw2;
+
+                    .employed-deactivated-container {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+
+                span,
+                p {
+                    color: $ta-black;
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+
+                span {
+                    font-size: 11px;
+                    line-height: 14px;
+                    margin-bottom: 2px;
+                }
+
+                p {
+                    font-size: 18px;
+                    line-height: 22px;
+                    margin-right: 4px !important;
+                }
+
+                .employed-deactivated-container {
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: opacity 0.2s ease-in;
+
+                    p {
+                        font-size: 11px;
+                        line-height: 14px;
+                        margin-right: 4px !important;
+                    }
+
+                    .circle {
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+
+            .employment-progress-container {
+                padding: 4px 0;
+                margin-bottom: 8px;
+
+                p {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $ta-black-2;
+
+                    &::-moz-selection {
+                        color: $ta-black-2;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black-2;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+
+                .employment-progress-bar {
+                    margin-top: 6px;
+                    height: 8px;
+                    border-radius: 2px;
+
+                    &-box {
+                        height: 8px;
+
+                        &:first-child {
+                            border-top-left-radius: 2px;
+                            border-bottom-left-radius: 2px;
+                        }
+
+                        &:last-child {
+                            border-top-right-radius: 2px;
+                            border-bottom-right-radius: 2px;
                         }
                     }
                 }
             }
-            .information-value {
-                font-size: 14px;
-                font-weight: 400;
-                color: #6c6c6c;
-                line-height: 17px;
-                width: fit-content;
-                &::-moz-selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
+
+            .employment-history-list {
+                &-header {
+                    display: grid;
+                    grid-template-columns: repeat(3, 133px);
+                    grid-gap: 12px;
+                    margin-bottom: 8px;
+
+                    p {
+                        font-size: 11px;
+                        line-height: 14px;
+                        color: $bw6-2;
+
+                        user-select: none;
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+
+                        &:last-child {
+                            text-align: right;
+                        }
+                    }
                 }
-                &::selection {
-                    color: #6c6c6c;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &:hover {
-                    color: #3c3c3c;
+
+                &-item {
+                    display: grid;
+                    grid-template-columns: repeat(3, 133px);
+                    grid-gap: 12px;
+                    margin: 0 -5px 4px -4px;
+                    padding: 6px 7px 4px 6px;
+                    border-radius: 2px;
+                    background: transparent;
+                    transition: background 0.2s ease-in;
+
+                    &.hover-container {
+                        background: $bw2;
+
+                        .employed-deactivated-container {
+                            opacity: 1;
+                            visibility: visible;
+                        }
+                    }
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+                        color: $ta-black-2;
+
+                        &::-moz-selection {
+                            color: $ta-black-2;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black-2;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
+
+                    .status-box {
+                        .circle {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            margin-right: 4px;
+                        }
+                    }
                 }
             }
-            .ssn {
-                font-size: 18px !important;
+        }
+
+        // owner info card
+        .owner-info-container {
+            .owner-info-top {
+                display: grid;
+                grid-template-columns: repeat(2, 202px);
+                grid-gap: 12px;
+                margin-bottom: 8px;
+
+                &-item {
+                    p {
+                        color: $ta-black;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &:first-child {
+                            font-size: 11px;
+                            line-height: 14px;
+                        }
+
+                        &:last-child {
+                            font-size: 18px;
+                            line-height: 22px;
+                        }
+                    }
+                }
             }
 
-            .information-svg {
-                margin-right: 6px;
-                svg {
-                    display: flex;
-                }
-            }
+            .owner-info-bottom {
+                &-item {
+                    padding: 2px 0;
 
-            .information-email-value {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-            }
+                    .icon {
+                        margin-right: 4px;
+                        position: relative;
+                        bottom: 1px;
+                    }
 
-            .information-address-svg {
-                position: relative;
-                bottom: 11px;
-                left: 2px;
-                margin-right: 10px;
-            }
-            &:hover {
-                .card-icon {
-                    display: flex;
-                }
-                .information-value {
-                    color: #3c3c3c;
+                    p {
+                        font-size: 14px;
+                        line-height: 18px;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+///////////////////////////////////////////
+
 .custom-card-single {
     background-color: #ffffff;
     border-radius: 3px;
@@ -124,67 +354,14 @@
     margin-top: 8px;
 }
 
-.bind-heigth {
-    max-height: fit-content !important;
-}
-
-.wrapper-additional-cards {
-    max-height: calc(77vh - 74px);
-    min-height: calc(20vh - 10px);
-    display: grid;
-    -ms-overflow-style: none; /* for Internet Explorer, Edge */
-    scrollbar-width: none; /* for Firefox */
-    overflow-y: scroll;
-    &::-webkit-scrollbar {
-        display: none;
-    }
-    .card-footer-cmp {
-        padding-bottom: 0 !important;
-    }
-}
-.cards-item-wrapper-1 {
-    overflow: hidden;
-    //height: calc(100vh - 62px);
-}
-.details-cards {
-    background-color: #ffffff;
-    width: 440px;
-    padding: 9px 6px;
-}
 .owner-name {
     text-transform: uppercase;
-}
-.tooltip-copy {
-    width: 12%;
-}
-.tooltip-ein {
-    width: 17%;
-}
-
-.inactive-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 16px;
-    background-color: #f3f3f3;
-    border-radius: 2px;
-    font-size: 11px;
-    font-weight: 800;
-    position: relative;
-    left: 77px;
-    color: #424242;
-    width: 60px;
-    height: 18px;
 }
 
 .activate-button-card {
     width: 398px !important;
 }
 
-.container-value {
-    margin-left: 6px;
-    line-height: 20px !important;
-}
 .commsion-solo {
     font-size: 18px !important;
     font-weight: 500 !important;

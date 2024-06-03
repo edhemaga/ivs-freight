@@ -26,7 +26,7 @@ import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
 //Constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
