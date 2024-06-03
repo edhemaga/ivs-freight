@@ -61,7 +61,7 @@ import { DropdownContactsSvgRoutes } from '@shared/components/ta-input-dropdown-
         TaAppTooltipV2Component,
     ],
 })
-export class TaContactsComponent implements OnInit {
+export class TaInputDropdownContactsComponent implements OnInit {
     public _contactsData: ContactData[] = [];
 
     @Input() set contactsData(value) {

@@ -11,7 +11,8 @@
     (hidden)="progressDropdownActive = -1"
     (click)="
         data[columnField]?.expirationDaysText ||
-        data[columnField]?.expirationMilesText
+        data[columnField]?.expirationMilesText ||
+        data[columnField]?.expirationCreditText
             ? toggleProgressDropdown(ngbProgress)
             : {}
     "
@@ -52,6 +53,10 @@
                 {{ text | thousandToShortFormatPipe }}
                 mi to go
             </ng-container>
+
+            <ng-container *ngIf="type === 'credit'">
+                {{ text }}
+            </ng-container>
         </span>
     </ng-container>
     <ng-container *ngIf="percents === 0 && percents !== null && text !== '/'">
@@ -68,6 +73,10 @@
                 {{ text | thousandToShortFormatPipe }}
                 mi over
             </ng-container>
+
+            <ng-container *ngIf="type === 'credit'">
+                {{ text }}
+            </ng-container>
         </span>
     </ng-container>
     <ng-container *ngIf="text === '/'">
@@ -77,7 +86,10 @@
 
 <!-- MILES PROGRESS POPOVER -->
 <ng-template #milesProgressPopover>
-    <div class="progress-dropdown">
+    <div
+        class="progress-dropdown"
+        [ngClass]="{ 'credit-dropdown': type === 'credit' }"
+    >
         <div class="progress-header">
             <div class="progress-title">
                 <ng-container
@@ -113,6 +125,15 @@
                         <span> days ago</span>
                     </ng-container>
                 </ng-container>
+                <ng-container
+                    *ngIf="progressDropdownData.column.expirationCreditText"
+                >
+                    {{
+                        progressDropdownData.column.expirationCredit
+                            ? progressDropdownData.column.expirationCreditText
+                            : 0
+                    }}
+                </ng-container>
             </div>
             <div class="progress-total">
                 {{ progressDropdownData.column.totalValueText }}
@@ -141,40 +162,70 @@
             ></div>
         </div>
         <div class="progress-dropdown-body">
-            <div class="progress-dual-info-container d-flex align-items-center">
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Last Serviced</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.lastService ?? '/' }}
+            <ng-container *ngIf="type === 'days' || type === 'miles'">
+                <div
+                    class="progress-dual-info-container d-flex align-items-center"
+                >
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Last Serviced</div>
+                        <div class="progress-info-text">
+                            {{ progressDropdownData.row.lastService ?? '/' }}
+                        </div>
+                    </div>
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Odometer</div>
+                        <div class="progress-info-text">
+                            {{ progressDropdownData.row.textOdometer ?? '/' }}
+                        </div>
                     </div>
                 </div>
                 <div class="progress-info-container">
-                    <div class="progress-info-title">Odometer</div>
+                    <div class="progress-info-title">Repair Shop</div>
                     <div class="progress-info-text">
-                        {{ progressDropdownData.row.textOdometer ?? '/' }}
+                        {{ progressDropdownData.row.textRepairShop ?? '/' }}
                     </div>
                 </div>
-            </div>
-            <div class="progress-info-container">
-                <div class="progress-info-title">Repair Shop</div>
-                <div class="progress-info-text">
-                    {{ progressDropdownData.row.textRepairShop ?? '/' }}
-                </div>
-            </div>
-            <div class="progress-dual-info-container d-flex align-items-center">
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Invoice</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.textInv ?? '/' }}
+                <div
+                    class="progress-dual-info-container d-flex align-items-center"
+                >
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Invoice</div>
+                        <div class="progress-info-text">
+                            {{ progressDropdownData.row.textInv ?? '/' }}
+                        </div>
+                    </div>
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Cost</div>
+                        <div class="progress-info-text">
+                            {{ progressDropdownData.row.cost ?? '/' }}
+                        </div>
                     </div>
                 </div>
-                <div class="progress-info-container">
-                    <div class="progress-info-title">Cost</div>
-                    <div class="progress-info-text">
-                        {{ progressDropdownData.row.cost ?? '/' }}
+            </ng-container>
+
+            <ng-container *ngIf="type === 'credit'">
+                <div
+                    class="progress-dual-info-container d-flex align-items-center"
+                >
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Total Credit</div>
+                        <div class="progress-info-text">
+                            {{
+                                progressDropdownData.row.creditLimit
+                                    ? (progressDropdownData.row.creditLimit
+                                      | formatCurrency)
+                                    : '/'
+                            }}
+                        </div>
+                    </div>
+                    <div class="progress-info-container">
+                        <div class="progress-info-title">Pay Term</div>
+                        <div class="progress-info-text">
+                            {{ progressDropdownData.row.payTerm?.name ?? '/' }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
         </div>
     </div>
 </ng-template>

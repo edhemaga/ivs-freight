@@ -6,10 +6,26 @@ app-broker-details-single {
         right: -10px;
     }
 }
+
+app-broker-details-item {
+    .header-content {
+        margin-left: 10px !important;
+    }
+
+    .divider {
+        margin-left: 6px;
+        width: calc(100% - 12px);
+    }
+    
+    .ta-card-header {
+        margin-right: 10px !important;
+    }
+}
+
 .contact-wrapper {
     background-color: $color-white;
     border-radius: 3px;
-    padding: 1px 6px;
+    padding: 4px 2px;
     width: 340px;
     height: fit-content;
 }
@@ -138,26 +154,71 @@ app-broker-details-single {
                 align-items: center;
                 height: 48px;
                 width: 110px;
-                // margin-top: 8px;
-                // margin-bottom: 8px;
-                .assigned {
-                    font-size: 12px;
-                    font-weight: 900;
-                    color: #6c6c6c;
+
+                .dispatch-status-text {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $bw6-2;
                     text-transform: uppercase;
-                    &::-moz-selection {
-                        color: #6c6c6c;
-                        background: rgb(108, 108, 108, 0.2);
+
+                    &.assigned {
+                        color: $ta-green-1;
+
+                        &::-moz-selection {
+                            color: $ta-green-1;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $ta-green-1;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
                     }
-                    &::selection {
-                        color: #6c6c6c;
-                        background: rgb(108, 108, 108, 0.2);
+
+                    &.dispatched {
+                        color: $ta-blue-13;
+
+                        &::-moz-selection {
+                            color: $ta-blue-13;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $ta-blue-13;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    &.loaded {
+                        color: $ta-green-2;
+
+                        &::-moz-selection {
+                            color: $ta-green-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $ta-green-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    }
+
+                    &.booked {
+                        color: $ta-light-grey-2;
+
+                        &::-moz-selection {
+                            color: $ta-green-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                        &::selection {
+                            color: $ta-green-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
                     }
                 }
+
                 .time {
                     font-size: 11px;
-                    font-weight: 700;
+                    line-height: 14px;
                     color: #919191;
+
                     &::-moz-selection {
                         color: #6c6c6c;
                         background: rgb(108, 108, 108, 0.2);
@@ -314,5 +375,23 @@ app-broker-details-single {
     &::selection {
         color: #6c6c6c;
         background: rgb(108, 108, 108, 0.2);
+    }
+}
+
+.likes-count-container {
+    min-height: 34px;
+
+    .likes-item {
+        .ic-counter {
+            svg-icon {
+                position: static;
+            }
+
+            span {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw5;
+            }
+        }
     }
 }

@@ -50,7 +50,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { TaContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
+import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -114,7 +114,7 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
         TaProgresBarComponent,
-        TaContactsComponent,
+        TaInputDropdownContactsComponent,
         TaStateImageTextComponent,
         TaPasswordAccountHiddenCharactersComponent,
 
