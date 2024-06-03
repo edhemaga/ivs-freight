@@ -28,6 +28,7 @@ import { SettingsTerminalModalComponent } from '@pages/settings/pages/settings-m
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import moment from 'moment';
 
 @Injectable({
     providedIn: 'root',
@@ -85,15 +86,25 @@ export class DropDownService {
                 let voidData = data.registrations.find(
                     (registration) => registration.id === dropDownData.id
                 );
+                const isVoided = data.registrations.find(
+                    (registration) => registration.voidedOn
+                );
                 let cdlsArray = data.registrations.map((registration) => {
-                    if (registration.voidedOn) {
-                        return {
-                            id: registration.id,
-                            name: registration.licensePlate,
-                        };
+                    const currentDate = moment().valueOf();
+
+                    const expDate = moment(registration.expDate).valueOf();
+                    if (isVoided) {
+                        if (expDate > currentDate && !registration.voidedOn) {
+                            return {
+                                id: registration.id,
+                                name: registration.licensePlate,
+                            };
+                        }
                     }
                 });
-                cdlsArray = cdlsArray.filter((item) => item);
+                cdlsArray = cdlsArray?.length
+                    ? cdlsArray.filter((item) => item)
+                    : [];
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },

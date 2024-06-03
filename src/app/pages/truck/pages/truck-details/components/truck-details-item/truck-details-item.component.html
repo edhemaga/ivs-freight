@@ -92,8 +92,8 @@
                                 <div
                                     class="void-button"
                                     (click)="
-                                        optionsEvent(
-                                            { id: reg.id, type: 'activate' },
+                                        chechVoidStatus(
+                                            reg.id,
                                             trucks.data,
                                             'registration'
                                         )

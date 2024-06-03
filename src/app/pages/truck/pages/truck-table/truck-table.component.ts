@@ -635,21 +635,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tabelLength: data?.truckLength?.name
                 ? DataFilterHelper.getLengthNumber(data?.truckLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textMake: data?.truckMake?.name
-                ? data.truckMake.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textModel: data?.model
-                ? data.model
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textYear: data.year
-                ? data.year
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableColor: data?.color?.code
-                ? data.color.code
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            colorName: data?.color?.name
-                ? data.color.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textMake: data?.truckMake?.name,
+            textModel: data?.model,
+            textYear: data.year,
+            tableColor: data?.color?.code,
+            colorName: data?.color?.name,
             tableDriver: data.driver
                 ? data.driverAvatar
                     ? data.driverAvatar + data.driver
@@ -657,77 +647,40 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTrailer:
                 data.trailerNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelOwnerDetailsName: data?.owner?.name
-                ? data.owner.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tabelOwnerDetailsName: data?.owner?.name,
             tabelOwnerDetailsComm: data?.commission
                 ? data.commission + TableStringEnum.PERCENTS
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textWeightGross: data?.truckGrossWeight?.name
-                ? data.truckGrossWeight.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textWeightGross: data?.truckGrossWeight?.name,
             textWeightEmpty: data?.emptyWeight
                 ? this.thousandSeparator.transform(data.emptyWeight) +
                   TableStringEnum.POUNDS_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelEngineModel: data?.truckEngineModel?.name
-                ? data.truckEngineModel.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelEngineOilType: data?.engineOilType?.name
-                ? data.engineOilType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionModel: data?.transmissionModel
-                ? data.transmissionModel
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionShifter: data?.shifter?.name
-                ? data.shifter.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionRatio: data?.gearRatio?.name
-                ? data.gearRatio.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelFuelDetailsFuelType: data?.fuelType?.name
-                ? data.fuelType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tabelEngineModel: data?.truckEngineModel?.name,
+            tabelEngineOilType: data?.engineOilType?.name,
+            tabelTransmissionModel: data?.transmissionModel,
+            tabelTransmissionShifter: data?.shifter?.name,
+            tabelTransmissionRatio: data?.gearRatio?.name,
+            tabelFuelDetailsFuelType: data?.fuelType?.name,
             tabelFuelDetailsTank: data?.fuelTankSize
                 ? this.thousandSeparator.transform(data.fuelTankSize)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelAxle: data?.axles
-                ? data.axles
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelBrakes: data?.brakes?.name
-                ? data.brakes.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTireSize: data?.tireSize?.name
-                ? data.tireSize.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWheelCompositionFront: data?.frontWheels?.name
-                ? data.frontWheels.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWheelCompositionRear: data?.rearWheels?.name
-                ? data.rearWheels.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAPUnit: data?.apUnit?.name
-                ? data.apUnit.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tabelAxle: data?.axles,
+            tabelBrakes: data?.brakes?.name,
+            tableTireSize: data?.tireSize?.name,
+            tableWheelCompositionFront: data?.frontWheels?.name,
+            tableWheelCompositionRear: data?.rearWheels?.name,
+            tableAPUnit: data?.apUnit?.name,
             tableFeatures: TruckFeaturesDataHelper.truckFeaturesData(data),
-            tableTollDeviceTransponder: data?.tollTransponder?.name
-                ? data.tollTransponder.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTollDeviceNo: data?.tollTransponderDeviceNo
-                ? data.tollTransponderDeviceNo
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableInsPolicy: data?.insurancePolicy
-                ? data.insurancePolicy
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTollDeviceTransponder: data?.tollTransponder?.name,
+            tableTollDeviceNo: data?.tollTransponderDeviceNo,
+            tableInsPolicy: data?.insurancePolicy,
             tableMileage: data?.mileage
                 ? this.thousandSeparator.transform(data.mileage) +
                   TableStringEnum.MILES_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailNumber:
-                data?.licensePlate ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST:
-                data.registrationState ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailNumber: data?.licensePlate,
+            tableLicencePlateDetailST: data.registrationState,
             tableLicencePlateDetailExpiration: {
                 expirationDays: data?.registrationExpirationDays
                     ? data.registrationExpirationDays
@@ -761,10 +714,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         ? 100 - data.inspectionPercentage
                         : null,
             },
-            tableTitleNumber:
-                data.titleNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitleST:
-                data.titleState ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTitleNumber: data.titleNumber,
+            tableTitleST: data.titleState,
             tableTitleIssued: data.titleIssueDate
                 ? this.datePipe.transform(
                       data.titlePurchaseDate,
