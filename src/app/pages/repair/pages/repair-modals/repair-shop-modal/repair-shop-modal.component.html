@@ -1,15 +1,7 @@
 <app-ta-modal
     (action)="onModalAction($event)"
-    [editData]="editData"
-    [editName]="repairShopName"
-    [specificCaseModalName]="editData?.type !== 'edit' && repairShopName"
-    [isModalValid]="repairShopForm.valid && isFormDirty"
-    [modalTitle]="
-        editData?.type !== 'edit' && !(editData?.canOpenModal && editData?.id)
-            ? 'Add Repair Shop'
-            : 'Edit Repair Shop'
-    "
-    [saveAndAddNew]="editData?.type !== 'edit'"
+    [modalTitle]="modalTitle"
+    [saveAndAddNew]="false"
 >
     <div origin>
         <app-ta-tab-switch
@@ -21,14 +13,12 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{
-                'tab-2': selectedTab !== 1
-            }"
+            [ngClass]="{ 'tab-2': selectedTab === 2 }"
             class="form-container form-container-without-mb"
         >
             <div
                 [@animationTabsModal]="animationObject"
-                class="animation-three-tabs"
+                [class]="animationTabClass"
             >
                 <!-- Details Tab -->
                 <div *ngIf="selectedTab === 1" class="m-tab">
@@ -41,34 +31,26 @@
                                     label: 'Shop Name',
                                     isRequired: true,
                                     textTransform: 'uppercase',
-                                    autoFocus:
-                                        editData?.type !== 'edit' &&
-                                        !(
-                                            editData?.canOpenModal &&
-                                            editData?.id
-                                        ),
                                     minLength: 2,
                                     maxLength: 64
                                 }"
                                 formControlName="name"
                             ></app-ta-input>
                         </div>
+
                         <div class="col-1">
                             <div
-                                [mainTooltip]="
-                                    isRepairShopFavourite
-                                        ? 'Remove'
-                                        : 'Mark as Favourite'
-                                "
+                                [mainTooltip]="favoriteLabel"
                                 ngbTooltip
                                 position="bottom"
                                 tooltipBackground="#424242"
-                                customClass="mt-2"
                             >
                                 <svg-icon
-                                    (click)="favouriteRepairShop()"
-                                    [class.active]="isRepairShopFavourite"
-                                    class="repair-shop-star"
+                                    (click)="addShopToFavorite()"
+                                    [class.repair-shop__favorite-active]="
+                                        isFavorite
+                                    "
+                                    class="repair-shop__favorite"
                                     src="assets/svg/common/ic_star.svg"
                                 ></svg-icon>
                             </div>
@@ -135,6 +117,7 @@
                             ></app-ta-input>
                         </div>
                     </div>
+
                     <div class="row last-row">
                         <div class="col-10">
                             <app-ta-input-address-dropdown
@@ -179,32 +162,12 @@
                         [disabledCard]="true"
                     >
                         <div class="col-12 service-types">
-                            <app-ta-input-dropdown
-                                formControlName="shopServiceType"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Shop Type',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    dropdownImageInput: {
-                                        withText: true,
-                                        svg: true,
-                                        image: false,
-                                        url: isSelectedRepairType?.url,
-                                        template: 'truck',
-                                        class: isSelectedRepairType?.name
-                                            ?.trim()
-                                            .replace(' ', '')
-                                            .toLowerCase()
-                                    },
-                                    dropdownWidthClass:
-                                        'w-col-456 truck-trailer-dropdown',
-                                    customClass: 'truck-trailer-dropdown'
-                                }"
-                                [activeItem]="isSelectedRepairType"
-                                [options]="repairTypes"
-                            ></app-ta-input-dropdown>
+                            <app-ta-tab-switch
+                                (switchClicked)="repairTypeTabChange($event)"
+                                [tabs]="repairTypes"
+                                [type]="'type2-modal-popup'"
+                            >
+                            </app-ta-tab-switch>
                         </div>
 
                         <div class="repair-shop-services">
@@ -248,108 +211,6 @@
                             [isCardOpen]="isOpenHoursHidden"
                             [disabledCard]="true"
                         >
-                            <div
-                                class="common-open-hours-table-modal"
-                                formArrayName="openHours"
-                            >
-                                <div class="common-table-body">
-                                    <div
-                                        *ngFor="
-                                            let openHour of openHours.controls;
-                                            let ind = index
-                                        "
-                                    >
-                                        <div
-                                            *ngIf="
-                                                ind === 0 ||
-                                                ind ===
-                                                    openHours.controls.length -
-                                                        1 ||
-                                                ind ===
-                                                    openHours.controls.length -
-                                                        2 ||
-                                                isDaysVisible
-                                            "
-                                            [formGroupName]="ind"
-                                            class="common-table-card"
-                                        >
-                                            <!-- Switch for all days -->
-                                            <div
-                                                *ngIf="ind === 0"
-                                                class="time-picker-all-days"
-                                            >
-                                                <svg-icon
-                                                    (click)="toggleDays()"
-                                                    [ngClass]="{
-                                                        rotate: isDaysVisible
-                                                    }"
-                                                    class="time-picker-all-days-btn"
-                                                    src="assets/svg/common/ic_arrow_down_updated.svg"
-                                                ></svg-icon>
-                                                <span
-                                                    class="time-picker-all-days-title"
-                                                >
-                                                    {{
-                                                        openHour.get('dayLabel')
-                                                            .value
-                                                    }}
-                                                </span>
-                                            </div>
-
-                                            <!-- Other Days Check -->
-                                            <app-ta-checkbox
-                                                (formArrayAction)="
-                                                    openHourDayAction(
-                                                        $event,
-                                                        ind
-                                                    )
-                                                "
-                                                *ngIf="ind !== 0"
-                                                [customClass]="'medium'"
-                                                [label]="
-                                                    openHour.get('dayLabel')
-                                                        .value
-                                                "
-                                                [name]="
-                                                    openHour.get('dayLabel')
-                                                        .value
-                                                "
-                                                formControlName="isDay"
-                                            ></app-ta-checkbox>
-
-                                            <!-- Time Picker -->
-                                            <app-ta-input
-                                                *ngIf="
-                                                    openHour.get('isDay').value
-                                                "
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
-                                                formControlName="startTime"
-                                            ></app-ta-input>
-                                            <app-ta-input
-                                                *ngIf="
-                                                    openHour.get('isDay').value
-                                                "
-                                                [inputConfig]="{
-                                                    name: 'timepicker',
-                                                    type: 'text',
-                                                    placeholderIcon: 'time',
-                                                    customClass:
-                                                        'datetimeclass',
-                                                    hideClear: true
-                                                }"
-                                                formControlName="endTime"
-                                            ></app-ta-input>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </app-ta-custom-card>
                     </div>
 
@@ -369,7 +230,7 @@
                             <app-ta-input-dropdown
                                 (saveItem)="onSaveNewBank($event)"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'bank')
+                                    onBankChange($event, 'bank')
                                 "
                                 [activeItem]="selectedBank"
                                 [canAddNew]="true"
@@ -383,10 +244,11 @@
                                     isDropdown: true,
                                     dropdownWidthClass: 'w-col-163'
                                 }"
-                                [options]="labelsBank"
+                                [options]="banks"
                                 [template]="'svg-template'"
                                 formControlName="bankId"
                             ></app-ta-input-dropdown>
+
                             <app-ta-input
                                 [inputConfig]="{
                                     name: 'routing-bank',
@@ -399,6 +261,7 @@
                                 }"
                                 formControlName="routing"
                             ></app-ta-input>
+
                             <app-ta-input
                                 [inputConfig]="{
                                     name: 'account-bank',
@@ -448,193 +311,9 @@
                         formControlName="note"
                     ></app-ta-input-note>
                 </div>
-                <!-- Contact Tab -->
                 <div *ngIf="selectedTab === 2" class="m-tab">
-                    <app-ta-custom-card
-                        (onActionEvent)="addContact()"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '5px'
-                        }"
-                        [cardName]="'Contact'"
-                        [disableAnimation]="disableCardAnimation"
-                        [disabledCard]="!contactAddedCounter"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                        [hasArrow]="false"
-                        [hasCounter]="contactAddedCounter"
-                        [hasScrollBody]="contactAddedCounter > 10"
-                        [isCardOpen]="contactAddedCounter"
-                        [isCommentData]="true"
-                    >
-                        <div
-                            (scroll)="onScrollingContacts($event)"
-                            class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
-                        >
-                            <app-ta-modal-table
-                                [tableType]="modalTableTypeEnum.CONTACT"
-                                [isNewRowCreated]="isNewContactAdded"
-                                (modalTableValueEmitter)="
-                                    handleModalTableValueEmit($event)
-                                "
-                                (modalTableValidStatusEmitter)="
-                                    handleModalTableValidStatusEmit($event)
-                                "
-                            >
-                            </app-ta-modal-table>
-
-                            <!--  <div class="common-fake-table-body">
-                                <div
-                                    *ngFor="
-                                        let contact of contacts.controls;
-                                        let ind = index
-                                    "
-                                >
-                                    <div
-                                        [formGroupName]="ind"
-                                        class="common-fake-table-card"
-                                    >
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                id: 'Full Name' + ind,
-                                                name: 'Full Name',
-                                                type: 'text',
-                                                minLength: 2,
-                                                maxLength: 32,
-                                                textTransform: 'capitalize',
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            formControlName="fullName"
-                                        ></app-ta-input>
-                                        <app-ta-input-dropdown
-                                            (selectedItem)="
-                                                onSelectDropdown(
-                                                    $event,
-                                                    'contact-department',
-                                                    ind
-                                                )
-                                            "
-                                            [activeItem]="
-                                                selectedContractDepartmentFormArray[
-                                                    ind
-                                                ]
-                                            "
-                                            [inputConfig]="{
-                                                id: 'Input Dropdown' + ind,
-                                                name: 'Input Dropdown Department',
-                                                type: 'text',
-                                                textTransform: 'capitalize',
-                                                isDropdown: true,
-                                                dropdownWidthClass: 'w-col-120',
-                                                minLength: 2,
-                                                maxLength: 36,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            [options]="labelsDepartments"
-                                            formControlName="departmentId"
-                                        ></app-ta-input-dropdown>
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                id: 'Phone' + ind,
-                                                name: 'Phone',
-                                                type: 'text',
-                                                mask: '(000) 000-0000',
-                                                maxLength: 14,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            formControlName="phone"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                id: 'Phone Extension' + ind,
-                                                name: 'phone-extension',
-                                                type: 'text',
-                                                minLength: 1,
-                                                maxLength: 8,
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            formControlName="phoneExt"
-                                        ></app-ta-input>
-                                        <app-ta-input
-                                            [inputConfig]="{
-                                                id: 'Email' + ind,
-                                                name: 'Email',
-                                                type: 'text',
-                                                minLength: 5,
-                                                maxLength: 64,
-                                                textTransform: 'lowercase',
-                                                hideRequiredCheck: true,
-                                                hideErrorMessage: true
-                                            }"
-                                            formControlName="email"
-                                        ></app-ta-input>
-                                        <div
-                                            [ngClass]="{
-                                                scrolling:
-                                                    isContactCardsScrolling
-                                            }"
-                                            class="common-fake-table-delete"
-                                            mainTooltip="Delete"
-                                            ngbTooltip
-                                            position="top"
-                                            tooltipBackground="#EF5350"
-                                        >
-                                            <svg-icon
-                                                (click)="removeContacts(ind)"
-                                                src="assets/svg/common/ic_trash.svg"
-                                            ></svg-icon>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </app-ta-custom-card>
-
-                    <ng-container *ngIf="!contactAddedCounter">
-                        <svg-icon
-                            class="d-flex"
-                            [src]="'assets/svg/no-results.svg'"
-                        ></svg-icon>
-                    </ng-container>
                 </div>
-
-                <!-- Review Tab -->
-                <div *ngIf="selectedTab === 3" class="m-tab">
-                    <app-ta-custom-card
-                        (onActionEvent)="createReview()"
-                        [animationMarginParams]="{
-                            marginTop: '10px',
-                            marginBottom: '12px'
-                        }"
-                        [cardName]="'Review'"
-                        [disableAnimation]="disableCardAnimation"
-                        [disableMultipleReviews]="disableOneMoreReview"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-                        [hasArrow]="false"
-                        [hasBodyData]="reviews.length > 0"
-                        [hasCounter]="reviews.length ? reviews.length : 0"
-                        [hasLikeDislike]="true"
-                        [hasScrollBody]="reviews.length > 6"
-                        [isCardOpen]="true"
-                        [isCommentData]="true"
-                    >
-                        <div *ngIf="!reviews.length" class="no-review-broker">
-                            <svg-icon
-                                class="no-review-svg"
-                                src="assets/svg/common/ic_no_review.svg"
-                            ></svg-icon>
-                        </div>
-                        <app-ta-user-review
-                            (changeReviewsEvent)="changeReviewsEvent($event)"
-                            *ngIf="reviews.length"
-                            [isNewReview]="reviews[0].isNewReview"
-                            [reviewData]="reviews"
-                        ></app-ta-user-review>
-                    </app-ta-custom-card>
-                </div>
+                <div *ngIf="selectedTab === 3" class="m-tab"></div>
             </div>
         </form>
     </div>
