@@ -33,9 +33,16 @@ export interface PmTableColumns {
     tableHeadTitle?: string;
     isAction?: boolean;
     imageHover?: TableBodyColumnsImageHover | null;
+    link?: LinkObject;
 }
 
 interface SvgDimensionsData {
     width: number;
     height: number;
+}
+
+interface LinkObject {
+    doesNotHaveRout?: boolean;
+    routerLinkStart?: string;
+    routerLinkEnd?: string;
 }
