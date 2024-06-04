@@ -11,7 +11,7 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
-import { TaSearchV2Component } from '../ta-search-v2/ta-search-v2.component';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';

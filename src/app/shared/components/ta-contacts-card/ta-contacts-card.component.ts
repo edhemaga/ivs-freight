@@ -7,6 +7,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 //Components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
@@ -20,7 +21,6 @@ import { ModalService } from '@shared/services/modal.service';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalComponent } from '../ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 //Constants
 import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-routes';
