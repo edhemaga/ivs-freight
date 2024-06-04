@@ -1,0 +1,23 @@
+.action_buttons {
+    width: 18px;
+    height: 18px;
+    border-radius: 1px;
+
+    svg-icon {
+        width: 14px;
+        height: 14px;
+
+        svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    &:hover {
+        background-color: #91919133;
+
+        &.delete {
+            background-color: #F4BEBE;
+        }
+    }
+}

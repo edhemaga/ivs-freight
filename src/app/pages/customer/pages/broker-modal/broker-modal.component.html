@@ -600,12 +600,13 @@
                 </div>
                 <!-------------------------------- Review Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 3 && editData">
+                    <!-- Disabled rating for now  -->
                     <app-ta-custom-card
                         [hasCounter]="reviews.length ? reviews.length : 0"
                         [cardName]="'Review'"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasArrow]="false"
-                        [hasLikeDislike]="true"
+                        [hasLikeDislike]="false"
                         [isCardOpen]="true"
                         [isCommentData]="true"
                         [hasBodyData]="reviews.length > 0"

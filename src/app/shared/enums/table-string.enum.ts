@@ -380,6 +380,7 @@ export enum TableStringEnum {
     // Contact
     DELTETE_CONTACT = 'delete-contact',
     CONTACT = 'contact',
+    CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
     EDIT_CONTACT = 'edit-contact',
 
