@@ -118,6 +118,12 @@ export class GeolocationService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -173,13 +179,14 @@ export class GeolocationService {
      * @param text 
      * @param layers 
      * @param closedBorders 
+     * @param apiKey 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AddressListResponse>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AddressListResponse>>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AddressListResponse>>;
-    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, apiKey?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AddressListResponse>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, apiKey?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AddressListResponse>>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, apiKey?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AddressListResponse>>;
+    public apiGeolocationAutocompleteGet(text?: string, layers?: Array<AutocompleteSearchLayer>, closedBorders?: boolean, apiKey?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (text !== undefined && text !== null) {
@@ -196,10 +203,20 @@ export class GeolocationService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>closedBorders, 'ClosedBorders');
         }
+        if (apiKey !== undefined && apiKey !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>apiKey, 'ApiKey');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -282,6 +299,12 @@ export class GeolocationService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -336,13 +359,14 @@ export class GeolocationService {
     /**
      * @param address 
      * @param layer 
+     * @param apiKey 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LongLat>;
-    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LongLat>>;
-    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LongLat>>;
-    public apiGeolocationLonglatGet(address?: string, layer?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiGeolocationLonglatGet(address?: string, layer?: string, apiKey?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LongLat>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, apiKey?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LongLat>>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, apiKey?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LongLat>>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, apiKey?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (address !== undefined && address !== null) {
@@ -353,10 +377,20 @@ export class GeolocationService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>layer, 'Layer');
         }
+        if (apiKey !== undefined && apiKey !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>apiKey, 'ApiKey');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
