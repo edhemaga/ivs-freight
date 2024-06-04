@@ -165,7 +165,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 hide: true,
                 hasArrow: false,
                 brokerLoadDrop: false,
-                customText: BrokerDetailsStringEnum.REVENUE,
+                customText: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 total: totalCost,
                 icons: [
                     {
