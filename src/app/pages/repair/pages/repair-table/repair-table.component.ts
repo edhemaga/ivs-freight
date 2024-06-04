@@ -808,6 +808,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
+                inactive: true
             },
         ];
 

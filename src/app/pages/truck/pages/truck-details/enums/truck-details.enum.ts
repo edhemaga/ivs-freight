@@ -14,6 +14,7 @@ export enum TruckDetailsEnum {
 
     VOID = 'Void',
     VOID_2 = 'void',
+    ACTIVATE = 'activate',
 
     LEASE_RENT = 'Lease / Rent',
     DEACTIVATE_ITEM = 'deactivate-item',

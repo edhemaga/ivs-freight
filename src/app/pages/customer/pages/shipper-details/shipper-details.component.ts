@@ -111,7 +111,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: true,
                 hasArrow: false,
                 hasSearch: true,
-                searchPlaceholder: 'Load',
+                searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
             },
             {
@@ -125,8 +125,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 icon: true,
                 hasArrow: false,
                 hasSearch: true,
-                searchPlaceholder: 'Contacts',
-                customText: '',
+                searchPlaceholder: ShipperDetailsStringEnum.CONTACTS,
                 data: data,
             },
             {
@@ -181,13 +180,14 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
     public onDropActions(event: any): void {
         this.getShipperById(event.id);
-        let eventType = '';
+
+        let eventType = TableStringEnum.EMPTY_STRING_PLACEHOLDER;
         if (
-            event.type == 'Contact' ||
-            event.type == 'edit' ||
-            event.type == 'Review'
+            event.type == TableStringEnum.CONTRACT ||
+            event.type == TableStringEnum.EDIT ||
+            event.type == TableStringEnum.REVIEW
         ) {
-            eventType = 'edit';
+            eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
@@ -206,7 +206,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 shipperData,
-                'shipper'
+                TableStringEnum.SHIPPER
             );
         }, 100);
     }
@@ -237,74 +237,74 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             },
             config: {
                 showSort: true,
-                sortBy: '',
-                sortDirection: '',
+                sortBy: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                sortDirection: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 disabledColumns: [0],
                 minWidth: 60,
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Add Contact',
-                    name: 'Contact',
+                    title: TableStringEnum.ADD_CONTRACT_2,
+                    name: TableStringEnum.CONTRACT,
                     svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
                     show: true,
-                    iconName: 'add-contact',
+                    iconName: TableStringEnum.ADD_CONTRACT,
                 },
                 {
-                    title: 'Write Review',
-                    name: 'Review',
+                    title: TableStringEnum.WRITE_REVIEW_2,
+                    name: TableStringEnum.REVIEW,
                     svg: 'assets/svg/common/review-pen.svg',
                     show: true,
-                    iconName: 'write-review',
+                    iconName: TableStringEnum.WRITE_REVIEW,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                     hide: true,
                 },
                 {
-                    title: 'Share',
-                    name: 'share',
+                    title: TableStringEnum.SHARE_2,
+                    name: TableStringEnum.SHARE,
                     svg: 'assets/svg/common/share-icon.svg',
                     show: true,
-                    iconName: 'share',
+                    iconName: TableStringEnum.SHARE,
                     hide: true,
                 },
                 {
-                    title: 'Print',
-                    name: 'print',
+                    title: TableStringEnum.PRINT_2,
+                    name: TableStringEnum.PRINT,
                     svg: 'assets/svg/common/ic_fax.svg',
                     show: true,
-                    iconName: 'print',
+                    iconName: TableStringEnum.PRINT,
                     hide: true,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Close Business',
-                    name: 'close-business',
+                    title: TableStringEnum.CLOSE_BUSINESS_2,
+                    name: TableStringEnum.CLOSE_BUSINESS,
                     svg: 'assets/svg/common/close-business-icon.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'close-business',
+                    iconName: TableStringEnum.CLOSE_BUSINESS,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                 },
             ],
             export: true,

@@ -142,6 +142,10 @@ export class DropActionNameHelper {
         if (any.type === 'void') {
             dropAction = 'void';
         }
+        if (any.type === 'activate') {
+            dropAction = 'activate';
+        }
+
         return dropAction;
     }
 }

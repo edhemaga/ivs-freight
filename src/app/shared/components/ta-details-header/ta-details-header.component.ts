@@ -86,6 +86,8 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() hasSearch: boolean = false;
     @Input() searchPlaceholder: string;
 
+    public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
+    public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
     public up: boolean = false;
     public down: boolean = false;
     public dropOpened: boolean = false;
