@@ -1,5 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
@@ -7,7 +6,11 @@ import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 // models
-import { AddressListResponse, AddressResponse } from 'appcoretruckassist';
+import {
+    AddressListResponse,
+    AddressResponse,
+    AutocompleteSearchLayer,
+} from 'appcoretruckassist';
 
 // services
 import { GeolocationService } from 'appcoretruckassist';
@@ -18,10 +21,7 @@ import { GeolocationService } from 'appcoretruckassist';
 export class AddressService implements OnDestroy {
     private destroy$ = new Subject<void>();
 
-    constructor(
-        private geoService: GeolocationService,
-        private http: HttpClient
-    ) {}
+    constructor(private geoService: GeolocationService) {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
@@ -30,23 +30,15 @@ export class AddressService implements OnDestroy {
 
     public getAddresses(
         text: string,
-        layers: string[],
+        layers: AutocompleteSearchLayer[],
         closedBorder: boolean
     ): Observable<AddressListResponse> {
-        const headers = {
-            'x-api-key': environment.GOOGLE_AUTOCOMPLETE_KEY,
-        };
-
-        const url = `${environment.API_ENDPOINT}/api/geolocation/autocomplete`;
-
-        return this.http.get<AddressListResponse>(url, {
-            headers,
-            params: {
-                text,
-                layers,
-                closedBorder,
-            },
-        });
+        return this.geoService.apiGeolocationAutocompleteGet(
+            text,
+            layers,
+            closedBorder,
+            environment.GOOGLE_AUTOCOMPLETE_KEY
+        );
     }
 
     public getAddressInfo(address: string): Observable<AddressResponse> {
