@@ -16,7 +16,9 @@
               editData?.template !== 'driver'
             ? 'Delete'
             : editData?.template === 'void'
-            ? ' Void Registration '
+            ? editData.type === 'activate'
+                ? 'Activate Registration'
+                : ' Void Registration '
             : editData?.type?.substring(0, 1).toUpperCase() +
                   editData?.type?.substring(1) +
                   editData?.template ===
@@ -65,8 +67,8 @@
     [headerSvg]="
         editData?.type === 'multiple delete'
             ? 'delete'
-            : editData?.template === 'truck'
-            ? editData?.type
+            : editData?.template === 'void'
+            ? 'hire'
             : editData?.type
     "
     [confirmationData]="editData"
@@ -1250,13 +1252,30 @@
                 ></svg-icon>
             </ng-container>
             <ng-container *ngIf="editData?.type !== 'void'">
-                <svg-icon
-                    [src]="confirmationImageRoutes.confirmationTrashSvg"
-                    [svgStyle]="{
-                        'width.px': '90',
-                        'height.px': '90'
-                    }"
-                ></svg-icon>
+                <ng-container
+                    *ngIf="
+                        editData?.type === 'activate' &&
+                            editData?.template === 'void';
+                        else trasgSvg
+                    "
+                >
+                    <svg-icon
+                        [src]="confirmationImageRoutes.confirmationActiveButton"
+                        [svgStyle]="{
+                            'width.px': '90',
+                            'height.px': '90'
+                        }"
+                    ></svg-icon>
+                </ng-container>
+                <ng-template #trasgSvg>
+                    <svg-icon
+                        [src]="confirmationImageRoutes.confirmationTrashSvg"
+                        [svgStyle]="{
+                            'width.px': '90',
+                            'height.px': '90'
+                        }"
+                    ></svg-icon>
+                </ng-template>
             </ng-container>
         </div>
     </div>

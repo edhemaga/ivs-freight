@@ -31,6 +31,9 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
+//enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-tt-registration-modal',
     templateUrl: './tt-registration-modal.component.html',
@@ -72,7 +75,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    public logoStateRoutes: string = 'assets/svg/common/states/ic_';
+    public logoStateRoutes: string = TableStringEnum.ASSETS_SVG_COMMON_STATES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
