@@ -52,6 +52,7 @@ import { InputAddressLayersStringEnum } from '@shared/components/ta-input-addres
 import { AddressData } from '@shared/components/ta-input-address-dropdown/models/address-data.model';
 import { AddressList } from '@shared/components/ta-input-address-dropdown/models/address-list.model';
 import { CommandsHandler } from '@shared/components/ta-input-address-dropdown/models/commands-handler.model';
+import { AutocompleteSearchLayer } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-input-address-dropdown',
@@ -125,7 +126,7 @@ export class TaInputAddressDropdownComponent
 
     //Address data
     public addresList: AddressList[];
-    private searchLayers: string[];
+    private searchLayers: AutocompleteSearchLayer[];
     public currentAddressData: AddressData;
 
     //Confg
