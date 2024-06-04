@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,15 +18,20 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
     providers: [NameInitialsPipe],
     standalone: true,
     imports: [
+        // modules
         CommonModule,
         FormsModule,
-        TaAppTooltipV2Component,
-        NgbModule,
-        NameInitialsPipe,
         ReactiveFormsModule,
+        NgbModule,
+
+        // components
+        TaAppTooltipV2Component,
+
+        // pipes
+        NameInitialsPipe,
     ],
 })
-export class TaProfileImagesComponent implements OnInit {
+export class TaProfileImagesComponent implements OnChanges {
     textColors: string[] = [
         '#6D82C7',
         '#4DB6A2',
@@ -79,7 +84,27 @@ export class TaProfileImagesComponent implements OnInit {
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
 
+    public profileImageColor: string;
+    public profileImageBackgroundColor: string;
+
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.indx) {
+            this.getProfileImageColors();
+        }
+    }
+
+    public getProfileImageColors(): void {
+        this.profileImageColor = this.imageColor[this.indx];
+        this.profileImageBackgroundColor = this.backgroundColors[this.indx];
+
+        if (this.indx > 11) {
+            const randomIndex = Math.floor(Math.random() * 12);
+
+            this.profileImageColor = this.imageColor[randomIndex];
+            this.profileImageBackgroundColor =
+                this.backgroundColors[randomIndex];
+        }
+    }
 }

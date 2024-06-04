@@ -722,7 +722,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : soloFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -738,7 +738,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : teamFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -753,7 +753,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? [soloFields[0], teamFields[0]]
                 : [...soloFields.slice(1), ...teamFields.slice(1)];
 
-            fields.forEach((field, index) => {
+            fields.forEach((field) => {
                 if (
                     (field
                         .toLowerCase()
@@ -764,7 +764,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get(DriverModalStringEnum.SOLO_DRIVER)
                             .value)
                 ) {
-                    if (index < 6)
+                    if (!field.includes(DriverModalStringEnum.PER_STOP))
                         this.inputService.changeValidators(
                             this.driverForm.get(field)
                         );
@@ -1929,7 +1929,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     private editDriverById(editData: DriverResponse): void {
-        console.log('editData', editData);
         const {
             firstName,
             lastName,

@@ -25,6 +25,12 @@ import moment from 'moment';
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { DriverPayTypesCardNamePipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-card-name.pipe';
+import { DriverPayTypesCardSubtextPipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-card-subtext.pipe';
+import { DriverPayTypesBoxTitlePipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-box-title.pipe';
+import { DriverPayTypesBoxSecondTitlePipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-box-second-title.pipe';
+import { DriverPayTypesBoxValuePipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-box-value.pipe';
+import { DriverPayTypesBoxSecondValuePipe } from '@pages/driver/pages/driver-details/components/driver-details-card/pipes/driver-pay-types-box-second-value.pipe';
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -126,6 +132,12 @@ import { DriverDateInfo } from '@pages/driver/models/driver-date-info.model';
 
         // pipes
         FormatDatePipe,
+        DriverPayTypesCardNamePipe,
+        DriverPayTypesCardSubtextPipe,
+        DriverPayTypesBoxTitlePipe,
+        DriverPayTypesBoxSecondTitlePipe,
+        DriverPayTypesBoxValuePipe,
+        DriverPayTypesBoxSecondValuePipe,
     ],
 })
 export class DriverDetailsCardComponent
@@ -237,6 +249,8 @@ export class DriverDetailsCardComponent
     ];
 
     public progressBarHoverIndex = -1;
+
+    public isPayTypesCardOpen: boolean = true;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -424,6 +438,11 @@ export class DriverDetailsCardComponent
             },
         ];
     }
+
+    public handlePayTypesCardOpen(isOpen: boolean): void {
+        this.isPayTypesCardOpen = isOpen;
+    }
+
     /**Function for toggle page in cards */
     public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];

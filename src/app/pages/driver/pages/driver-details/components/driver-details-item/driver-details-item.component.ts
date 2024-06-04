@@ -131,7 +131,6 @@ export class DriverDetailsItemComponent
     }
 
     ngOnInit(): void {
-        console.log('drivers', this.drivers);
         this.getExpireDate();
         this.activeCdl = this.drivers[0].data.cdls.filter(
             (item) => item.status === 1

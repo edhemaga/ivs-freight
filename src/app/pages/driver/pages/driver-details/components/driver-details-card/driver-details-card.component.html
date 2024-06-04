@@ -555,6 +555,331 @@
                     </div>
                 </app-ta-custom-card>
 
+                <!-- Pay Types -->
+
+                <app-ta-custom-card
+                    [cardName]="driver.payType.name | driverPayTypesCardName"
+                    [subText]="
+                        driver.payType.name
+                            | driverPayTypesCardSubtext
+                                : driver.solo
+                                : driver.team
+                                : driver.isOpenPayrollShared
+                                : isPayTypesCardOpen
+                                : driver.fleetType.name
+                    "
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                    (onOpenCard)="handlePayTypesCardOpen($event)"
+                >
+                    <ng-container
+                        *ngIf="
+                            driver.fleetType.name !== 'Combined' ||
+                            (driver.fleetType.name === 'Combined' &&
+                                (driver.solo.emptyMile ||
+                                    driver.solo.perMile ||
+                                    driver.solo.commission ||
+                                    driver.team.commission ||
+                                    driver.solo.flatRate ||
+                                    driver.team.flatRate))
+                        "
+                    >
+                        <div
+                            class="pay-types-container pay-types-container-double-column"
+                            [ngClass]="{
+                                'pay-types-container-triple-column':
+                                    driver.solo.perStop || driver.team.perStop
+                            }"
+                        >
+                            <!-- First Column -->
+
+                            <ng-container
+                                *ngIf="
+                                    driver.payType.name === 'Per Mile' ||
+                                    (driver.payType.name === 'Commission' &&
+                                        driver.solo.commission) ||
+                                    (driver.payType.name === 'Flat Rate' &&
+                                        driver.solo.flatRate)
+                                "
+                            >
+                                <div
+                                    class="d-flex flex-column justify-content-center pay-type-box"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{
+                                            driver.payType.name
+                                                | driverPayTypesBoxTitle
+                                                    : driver.fleetType.name
+                                                    : driver.solo
+                                        }}
+                                    </p>
+
+                                    <span>
+                                        {{
+                                            driver.payType.name
+                                                | driverPayTypesBoxValue
+                                                    : driver.fleetType.name
+                                                    : driver.solo
+                                                    : driver.team
+                                        }}
+                                    </span>
+                                </div>
+                            </ng-container>
+
+                            <!-- Second Column -->
+
+                            <ng-container
+                                *ngIf="
+                                    (driver.payType.name === 'Per Mile' &&
+                                        !driver.solo.perMile) ||
+                                    (driver.payType.name === 'Commission' &&
+                                        driver.team.commission) ||
+                                    (driver.payType.name === 'Flat Rate' &&
+                                        driver.team.flatRate)
+                                "
+                            >
+                                <div
+                                    class="d-flex flex-column justify-content-center pay-type-box"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{
+                                            driver.payType.name
+                                                | driverPayTypesBoxSecondTitle
+                                                    : driver.fleetType.name
+                                        }}
+                                    </p>
+
+                                    <span>
+                                        {{
+                                            driver.payType.name
+                                                | driverPayTypesBoxSecondValue
+                                                    : driver.solo
+                                                    : driver.team
+                                        }}
+                                    </span>
+                                </div>
+                            </ng-container>
+
+                            <!-- Third Column -->
+
+                            <ng-container
+                                *ngIf="
+                                    (driver.fleetType.name === 'Combined' &&
+                                        driver.solo.perStop) ||
+                                    (driver.fleetType.name !== 'Combined' &&
+                                        (driver.solo.perStop ||
+                                            driver.team.perStop))
+                                "
+                            >
+                                <div
+                                    class="d-flex flex-column justify-content-center pay-type-box"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        {{
+                                            driver.fleetType.name === 'Combined'
+                                                ? 'Per Stop (Solo)'
+                                                : 'Per Stop'
+                                        }}
+                                    </p>
+
+                                    <span>
+                                        ${{
+                                            driver.solo.perStop ??
+                                                driver.team.perStop
+                                        }}
+                                    </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                    <!-- Combined -->
+
+                    <ng-container
+                        *ngIf="
+                            (driver.fleetType.name === 'Combined' &&
+                                driver.team.emptyMile) ||
+                            driver.team.perMile
+                        "
+                    >
+                        <div
+                            class="pay-types-container pay-types-container-double-column"
+                            [ngClass]="{
+                                'pay-types-container-triple-column':
+                                    driver.team.perStop
+                            }"
+                        >
+                            <!-- First Column -->
+
+                            <div
+                                class="d-flex flex-column justify-content-center pay-type-box"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    {{
+                                        driver.team.perMile
+                                            ? 'Per Mile (Team)'
+                                            : 'Empty (Team)'
+                                    }}
+                                </p>
+
+                                <span>
+                                    ${{
+                                        driver.team.perMile ??
+                                            driver.team.emptyMile
+                                    }}
+                                </span>
+                            </div>
+
+                            <!-- Second Column -->
+
+                            <ng-container *ngIf="!driver.team.perMile">
+                                <div
+                                    class="d-flex flex-column justify-content-center pay-type-box"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        Loaded (Team)
+                                    </p>
+
+                                    <span> ${{ driver.team.loadedMile }} </span>
+                                </div>
+                            </ng-container>
+
+                            <!-- Third Column -->
+
+                            <ng-container *ngIf="driver.team.perStop">
+                                <div
+                                    class="d-flex flex-column justify-content-center pay-type-box"
+                                >
+                                    <p class="m-0 ta-font-bold">
+                                        Per Stop (Team)
+                                    </p>
+
+                                    <span> ${{ driver.team.perStop }} </span>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </app-ta-custom-card>
+
+                <!-- Commission Pay-->
+                <!-- <ng-container
+                           *ngIf="
+                               driver?.commissionSolo ||
+                               driver?.solo?.loadedMile ||
+                               driver?.team?.loadedMile
+                           "
+                       >
+                           <app-ta-custom-card
+                               [bodyTemplate]="'card'"
+                               [cardName]="
+                                   driver.commissionSolo
+                                       ? 'Commission Pay'
+                                       : 'Mileage Pay'
+                               "
+                               [isCardOpen]="true"
+                               [animationMarginParams]="{
+                                   marginTop: '0px',
+                                   marginBottom: '10px'
+                               }"
+                               [customClass]="'detailsPadding'"
+                           >
+                               <ng-container *ngIf="driver?.commissionSolo">
+                                   <div class="purchase-template">
+                                       <div class="purchase-template-item">
+                                           <div class="purchase-template-item-name">
+                                               Solo
+                                           </div>
+                                           <div
+                                               class="purchase-template-item-value commsion-solo"
+                                           >
+                                               {{ driver.commissionSolo }}%
+                                           </div>
+                                       </div>
+       
+                                       <div
+                                           class="purchase-template-item second-name"
+                                           *ngIf="driver?.commissionTeam"
+                                       >
+                                           <div class="purchase-template-item-name">
+                                               Team
+                                           </div>
+                                           <div
+                                               class="purchase-template-item-value commsion-solo"
+                                           >
+                                               {{ driver.commissionTeam }}%
+                                           </div>
+                                       </div>
+                                   </div>
+                               </ng-container>
+                               <div class="mileage-template">
+                                   <ng-container *ngIf="driver?.solo?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Empty (Solo)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.solo.emptyMile }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="driver?.solo?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Loaded (Solo)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.solo.loadedMile }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="driver?.solo?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Per Stop (Solo)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.solo.perStop }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="driver?.team?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Empty (Team)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.team.emptyMile }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="driver?.team?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Loaded (Team)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.team.loadedMile }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                                   <ng-container *ngIf="driver?.team?.loadedMile">
+                                       <div class="mileage-template-item">
+                                           <div class="mileage-template-item-name">
+                                               Per Stop (Team)
+                                           </div>
+                                           <div class="mileage-template-item-value">
+                                               ${{ driver.team.perStop }}
+                                           </div>
+                                       </div>
+                                   </ng-container>
+                               </div>
+                           </app-ta-custom-card>
+                       </ng-container>
+ -->
                 <!-- Off Duty Location-->
 
                 <ng-container *ngIf="driver.offDutyLocations.length">
@@ -614,121 +939,6 @@
                                 </ng-container>
                             </div>
                         </ng-container>
-                    </app-ta-custom-card>
-                </ng-container>
-
-                <!-- Commission Pay-->
-                <ng-container
-                    *ngIf="
-                        driver?.commissionSolo ||
-                        driver?.solo?.loadedMile ||
-                        driver?.team?.loadedMile
-                    "
-                >
-                    <app-ta-custom-card
-                        [bodyTemplate]="'card'"
-                        [cardName]="
-                            driver.commissionSolo
-                                ? 'Commission Pay'
-                                : 'Mileage Pay'
-                        "
-                        [isCardOpen]="true"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '10px'
-                        }"
-                        [customClass]="'detailsPadding'"
-                    >
-                        <ng-container *ngIf="driver?.commissionSolo">
-                            <div class="purchase-template">
-                                <div class="purchase-template-item">
-                                    <div class="purchase-template-item-name">
-                                        Solo
-                                    </div>
-                                    <div
-                                        class="purchase-template-item-value commsion-solo"
-                                    >
-                                        {{ driver.commissionSolo }}%
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="purchase-template-item second-name"
-                                    *ngIf="driver?.commissionTeam"
-                                >
-                                    <div class="purchase-template-item-name">
-                                        Team
-                                    </div>
-                                    <div
-                                        class="purchase-template-item-value commsion-solo"
-                                    >
-                                        {{ driver.commissionTeam }}%
-                                    </div>
-                                </div>
-                            </div>
-                        </ng-container>
-                        <div class="mileage-template">
-                            <ng-container *ngIf="driver?.solo?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Empty (Solo)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.solo.emptyMile }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="driver?.solo?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Loaded (Solo)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.solo.loadedMile }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="driver?.solo?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Per Stop (Solo)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.solo.perStop }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="driver?.team?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Empty (Team)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.team.emptyMile }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="driver?.team?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Loaded (Team)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.team.loadedMile }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                            <ng-container *ngIf="driver?.team?.loadedMile">
-                                <div class="mileage-template-item">
-                                    <div class="mileage-template-item-name">
-                                        Per Stop (Team)
-                                    </div>
-                                    <div class="mileage-template-item-value">
-                                        ${{ driver.team.perStop }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </div>
                     </app-ta-custom-card>
                 </ng-container>
 
