@@ -323,13 +323,15 @@
                                             MVR Document
                                         </p>
                                     </div>
-                                    <div
-                                    class="d-flex align-items-center justify-content-center counter-container"
-                                >
-                                    <p class="m-0 ta-font-extra-bold">
-                                        {{ documents?.length }}
-                                    </p>
-                                </div>
+                                    <app-ta-counter
+                                        [count]="documents?.length"
+                                        [countBackground]="'#6C6C6C'"
+                                        [countColor]="'#ffffff'"
+                                        [countHeight]="'18px'"
+                                        [countWidth]="'18px'"
+                                        [countBorderRadius]="'50%'"
+                                        [marginLeft]="'4px'"
+                                    ></app-ta-counter>
                                 </div>
 
                                 <div
@@ -474,4 +476,16 @@
             (stepEvent)="onStepAction($event)"
         ></app-applicant-next-back-btn>
     </div>
+    
+    <!-- BACK BTN -->
+
+    <div
+        class="d-flex justify-content-center align-items-center back-btn-container"
+        >
+        <app-applicant-next-back-btn
+            [backStep]="true"
+            (stepEvent)="onStepAction($event)"
+        ></app-applicant-next-back-btn>
+    </div>
+    
 </ng-container>

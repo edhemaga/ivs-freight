@@ -9,7 +9,8 @@ export class TableDoubleHeadHeightPipe implements PipeTransform {
             gridNameTitle === 'Truck' ||
             gridNameTitle === 'Repair' ||
             gridNameTitle === 'Driver' ||
-            gridNameTitle === 'Customer'
+            gridNameTitle === 'Customer' ||
+            gridNameTitle === 'Trailer'
         );
     }
 }

@@ -39,6 +39,7 @@ const routes: Routes = [
             broker: BrokerDetailsResolver,
             brokerMinimal: BrokerMinimalListResolver,
         },
+        data: { title: 'Broker detail' },
     },
     {
         path: 'card',

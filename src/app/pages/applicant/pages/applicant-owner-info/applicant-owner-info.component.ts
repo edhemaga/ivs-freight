@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import {
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -32,7 +32,6 @@ import {
     bankValidation,
     einNumberRegex,
     phoneFaxRegex,
-    routingBankValidation,
     truckTrailerModelValidation,
     vinNumberValidation,
     yearValidation,
@@ -53,6 +52,8 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { FilesActions } from '@pages/applicant/enums/files-actions.enum';
+import { OwnerInfoTabEnum } from '@pages/applicant/pages/applicant-owner-info/enums/owner-info-tab.enum';
+import { StepAction } from '@pages/applicant/enums/step-action.enum';
 
 // models
 import {
@@ -70,30 +71,37 @@ import {
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
-//components
+// components
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { ApplicantTruckDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-truck-details/applicant-truck-details.component';
+import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applicant-owner-info/components/applicant-trailer-details/applicant-trailer-details.component';
 
-//modules
+// modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+
+// configs
+import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-owner-info.config';
 
 @Component({
     selector: 'app-owner-info',
     templateUrl: './applicant-owner-info.component.html',
     styleUrls: ['./applicant-owner-info.component.scss'],
     standalone: true,
+    encapsulation: ViewEncapsulation.None,
     imports: [
         // modules
         CommonModule,
         SharedModule,
-        // ApplicantOwnerInfoRoutingModule,
         ApplicantModule,
 
         // components
@@ -103,6 +111,8 @@ import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg
         TaInputDropdownComponent,
         TaTabSwitchComponent,
         TaUploadFilesComponent,
+        ApplicantTruckDetailsComponent,
+        ApplicantTrailerDetailsComponent,
     ],
 })
 export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
@@ -120,12 +130,13 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public ownerInfoCompanyId: number;
 
     public ownerInfoForm: UntypedFormGroup;
+    public ownerInfoSoleForm: UntypedFormGroup;
 
     public stepValues: any;
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
-    public selectedTab: number = 2;
+    public selectedTab: number = OwnerInfoTabEnum.SOLE_PROPRIETOR;
     public selectedAddress: AddressEntity;
     public selectedBank: any = null;
     public selectedTruckType: TruckTypeResponse = null;
@@ -151,6 +162,16 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     public trailerType: TrailerTypeResponse[] = [];
     public trailerMakeType: any[] = [];
     public trailerLengthType: TrailerLengthResponse[] = [];
+
+    public dropdownOptions: ApplicantDropdownOptions = {
+        banksDropdownList: [],
+        truckType: [],
+        truckMakeType: [],
+        colorType: [],
+        trailerType: [],
+        trailerMakeType: [],
+        trailerLengthType: [],
+    };
 
     public isBankSelected: boolean = false;
     public isAddTrailerSelected: boolean = false;
@@ -290,10 +311,12 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     ];
     public hasIncorrectFields: boolean = false;
 
-    public stepFeedbackValues: any;
+    public stepFeedbackValues!: any;
     public isFeedbackValueUpdated: boolean = false;
 
     public applicantSvgRoutes = ApplicantSvgRoutes;
+    public ownerInfoTabEnum = OwnerInfoTabEnum;
+    public selectedModeEnum = SelectedMode;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -306,6 +329,69 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute
     ) {}
+
+    get businessNameInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getBusinessNameInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get einInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getEinInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get phoneInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getPhoneInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get emailInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getEmailInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get addressInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAddressInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get addressUnitInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAddressUnitInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get bankInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getBankInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
+
+    get accountNumberInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getAccountNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get routingNumberInputConfig(): ITaInput {
+        return BusinessDetailsConfig.getRoutingNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+        });
+    }
 
     ngOnInit(): void {
         this.getQueryParams();
@@ -393,6 +479,29 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             soleFifthRowReview: [null],
 
             files: [null, Validators.required],
+        });
+
+        this.ownerInfoSoleForm = this.formBuilder.group({
+            truckType: [null, Validators.required],
+            truckVin: [null, [Validators.required, ...vinNumberValidation]],
+            truckMake: [null, Validators.required],
+            truckModel: [
+                null,
+                [Validators.required, ...truckTrailerModelValidation],
+            ],
+            truckYear: [
+                null,
+                [Validators.required, ...yearValidation, yearValidRegex],
+            ],
+            truckColor: [null],
+            addTrailer: [false],
+            trailerType: [null],
+            trailerVin: [null],
+            trailerMake: [null],
+            trailerModel: [null, truckTrailerModelValidation],
+            trailerYear: [null],
+            trailerColor: [null],
+            trailerLength: [null],
         });
 
         this.inputService.customInputValidator(
@@ -679,7 +788,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             'soleTruckYear',
         ];
 
-        if (this.selectedTab === 1) {
+        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
             const {
                 soleTruckType,
                 soleTruckVin,
@@ -752,7 +861,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             }
         }
 
-        if (this.selectedTab === 2) {
+        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
             const {
                 truckType,
                 truckVin,
@@ -856,59 +965,72 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 this.onBankSelected();
 
                 break;
+
+            default:
+                break;
+        }
+    }
+
+    public handleInputSelectTruckTrailer(event: {
+        inputSelectEvent: any;
+        action: string;
+    }): void {
+        const { inputSelectEvent, action } = event;
+
+        switch (action) {
             case InputSwitchActions.TRUCK_TYPE:
-                if (this.selectedTab === 1) {
-                    this.selectedTruckType = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTruckType = inputSelectEvent;
                 } else {
-                    this.selectedSoleTruckType = event;
+                    this.selectedSoleTruckType = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRUCK_MAKE:
-                if (this.selectedTab === 1) {
-                    this.selectedTruckMake = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTruckMake = inputSelectEvent;
                 } else {
-                    this.selectedSoleTruckMake = event;
+                    this.selectedSoleTruckMake = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRUCK_COLOR:
-                if (this.selectedTab === 1) {
-                    this.selectedTruckColor = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTruckColor = inputSelectEvent;
                 } else {
-                    this.selectedSoleTruckColor = event;
+                    this.selectedSoleTruckColor = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRAILER_TYPE:
-                if (this.selectedTab === 1) {
-                    this.selectedTrailerType = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTrailerType = inputSelectEvent;
                 } else {
-                    this.selectedSoleTrailerType = event;
+                    this.selectedSoleTrailerType = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRAILER_MAKE:
-                if (this.selectedTab === 1) {
-                    this.selectedTrailerMake = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTrailerMake = inputSelectEvent;
                 } else {
-                    this.selectedSoleTrailerMake = event;
+                    this.selectedSoleTrailerMake = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRAILER_COLOR:
-                if (this.selectedTab === 1) {
-                    this.selectedTrailerColor = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTrailerColor = inputSelectEvent;
                 } else {
-                    this.selectedSoleTrailerColor = event;
+                    this.selectedSoleTrailerColor = inputSelectEvent;
                 }
 
                 break;
             case InputSwitchActions.TRAILER_LENGTH: {
-                if (this.selectedTab === 1) {
-                    this.selectedTrailerLength = event;
+                if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
+                    this.selectedTrailerLength = inputSelectEvent;
                 } else {
-                    this.selectedSoleTrailerLength = event;
+                    this.selectedSoleTrailerLength = inputSelectEvent;
                 }
 
                 break;
@@ -950,7 +1072,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     private vinDecoder(): void {
-        if (this.selectedTab === 1) {
+        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
             this.ownerInfoForm
                 .get('truckVin')
                 .valueChanges.pipe(
@@ -1038,7 +1160,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 });
         }
 
-        if (this.selectedTab === 2) {
+        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
             this.ownerInfoForm
                 .get('soleTruckVin')
                 .valueChanges.pipe(
@@ -1129,7 +1251,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     private onAddTrailerSelected(): void {
-        if (this.selectedTab === 1) {
+        if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
             this.ownerInfoForm
                 .get('addTrailer')
                 .valueChanges.pipe(takeUntil(this.destroy$))
@@ -1252,7 +1374,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 });
         }
 
-        if (this.selectedTab === 2) {
+        if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
             this.ownerInfoForm
                 .get('soleAddTrailer')
                 .valueChanges.pipe(takeUntil(this.destroy$))
@@ -1381,6 +1503,35 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         this.applicantQuery.applicantDropdownLists$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: ApplicantModalResponse) => {
+                this.dropdownOptions = {
+                    banksDropdownList: res.banks,
+                    truckType: res.truckTypes.map((item) => {
+                        return {
+                            ...item,
+                            folder: 'common',
+                            subFolder: 'trucks',
+                        };
+                    }),
+                    truckMakeType: res.truckMakes,
+                    colorType: res.colors.map((item) => {
+                        return {
+                            ...item,
+                            folder: 'common',
+                            subFolder: 'colors',
+                            logoName: 'ic_color.svg',
+                        };
+                    }),
+                    trailerType: res.trailerTypes.map((item) => {
+                        return {
+                            ...item,
+                            folder: 'common',
+                            subFolder: 'trailers',
+                        };
+                    }),
+                    trailerMakeType: res.trailerMakes,
+                    trailerLengthType: res.trailerLenghts,
+                };
+
                 this.banksDropdownList = res.banks;
 
                 this.truckType = res.truckTypes.map((item) => {
@@ -1422,7 +1573,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         lineIndex: number
     ): void {
         const selectedInputsLine =
-            this.selectedTab === 1
+            this.selectedTab === OwnerInfoTabEnum.COMPANY
                 ? this.openAnnotationArray.find(
                       (item) => item.lineIndex === lineIndex
                   )
@@ -1451,7 +1602,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
 
-            if (this.selectedTab === 1) {
+            if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
                 switch (lineIndex) {
                     case 0:
                         if (!isAnyInputInLineIncorrect) {
@@ -1520,7 +1671,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 }
             }
 
-            if (this.selectedTab === 2) {
+            if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
                 switch (lineIndex) {
                     case 0:
                         this.ownerInfoForm
@@ -1562,7 +1713,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         }
 
         const inputFieldsArray =
-            this.selectedTab === 1
+            this.selectedTab === OwnerInfoTabEnum.COMPANY
                 ? JSON.stringify(
                       this.openAnnotationArray
                           .filter((item) => Object.keys(item).length !== 0)
@@ -1583,7 +1734,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
 
     public getAnnotationBtnClickValue(event: any): void {
         if (event.type === 'open') {
-            if (this.selectedTab === 1) {
+            if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
                 this.openAnnotationArray[
                     event.lineIndex
                 ].displayAnnotationButton = false;
@@ -1592,7 +1743,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 ].displayAnnotationTextArea = true;
             }
 
-            if (this.selectedTab === 2) {
+            if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
                 this.openSoleAnnotationArray[
                     event.lineIndex
                 ].displayAnnotationButton = false;
@@ -1601,7 +1752,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 ].displayAnnotationTextArea = true;
             }
         } else {
-            if (this.selectedTab === 1) {
+            if (this.selectedTab === OwnerInfoTabEnum.COMPANY) {
                 this.openAnnotationArray[
                     event.lineIndex
                 ].displayAnnotationButton = true;
@@ -1610,7 +1761,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
                 ].displayAnnotationTextArea = false;
             }
 
-            if (this.selectedTab === 2) {
+            if (this.selectedTab === OwnerInfoTabEnum.SOLE_PROPRIETOR) {
                 this.openSoleAnnotationArray[
                     event.lineIndex
                 ].displayAnnotationButton = true;
@@ -1726,7 +1877,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
     }
 
     public onStepAction(event: any): void {
-        if (event.action === 'next-step') {
+        if (event.action === StepAction.NEXT_STEP) {
             if (this.selectedMode !== SelectedMode.REVIEW) {
                 this.onSubmit();
             }
@@ -1734,6 +1885,10 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             if (this.selectedMode === SelectedMode.REVIEW) {
                 this.onSubmitReview();
             }
+        }
+
+        if (event.action === StepAction.BACK_STEP) {
+            this.router.navigate([`/application/${this.applicantId}/11`]);
         }
     }
 
@@ -2019,8 +2174,12 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
         }
     }
 
-    toggleAddTrailer() {
+    public toggleAddTrailer(): void {
         this.isAddTrailerSelected = !this.isAddTrailerSelected;
+    }
+
+    public toggleSoleAddTrailer(): void {
+        this.isSoleAddTrailerSelected = !this.isSoleAddTrailerSelected;
     }
 
     ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-@import 'src/theme/variables';
+@import '/src/theme/variables.scss';
 
 app-truck-details-card {
     :root {
@@ -32,13 +32,18 @@ app-truck-details-card {
                 svg {
                     width: 14px;
                     height: 14px;
+                    path {
+                        fill: $muted;
+                    }
                 }
                 display: flex;
                 font-size: 11px;
+                font-weight: 700;
+                color: $ta-black;
                 .hide-feature {
                     svg {
                         path {
-                            fill: $ta-light-grey-6;
+                            fill: $bw-9;
                         }
                     }
                     text-decoration: line-through;
@@ -391,7 +396,7 @@ app-truck-details-card {
     font-size: 11px;
     font-weight: 700;
     line-height: 14px;
-
+    color: $ta-black;
     .first,
     .second {
         flex-grow: 1;
