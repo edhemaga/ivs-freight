@@ -284,7 +284,7 @@
                             [hasCounter]="
                                 documents.length ? documents.length : 0
                             "
-                            [isCardOpen]="documents.length > 0"
+                            [isCardOpen]="true"
                         >
                             <app-ta-upload-files
                                 (onFileEvent)="onFilesEvent($event)"
@@ -312,6 +312,39 @@
                     ></app-ta-input-note>
                 </div>
                 <div *ngIf="selectedTab === 2" class="m-tab">
+                    <app-ta-custom-card
+                        (onActionEvent)="addContact()"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '5px'
+                        }"
+                        [cardName]="'Contact'"
+                        [disableAnimation]="disableCardAnimation"
+                        [disabledCard]="!contactAddedCounter"
+                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasArrow]="false"
+                        [hasCounter]="contactAddedCounter"
+                        [hasScrollBody]="contactAddedCounter > 10"
+                        [isCardOpen]="contactAddedCounter"
+                        [isCommentData]="true"
+                    >
+                        <div
+                            (scroll)="onScrollingContacts($event)"
+                            class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
+                        >
+                            <app-ta-modal-table
+                                [tableType]="modalTableTypeEnum.CONTACT"
+                                [isNewRowCreated]="isNewContactAdded"
+                                (modalTableValueEmitter)="
+                                    handleModalTableValueEmit($event)
+                                "
+                                (modalTableValidStatusEmitter)="
+                                    handleModalTableValidStatusEmit($event)
+                                "
+                            >
+                            </app-ta-modal-table>
+                        </div>
+                    </app-ta-custom-card>
                 </div>
                 <div *ngIf="selectedTab === 3" class="m-tab"></div>
             </div>

@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     Input,
     OnDestroy,
@@ -76,6 +77,9 @@ import { mapServices } from './utils/helper';
 import { OpenHours, RepairShopModalService } from './models/edit-data.model';
 import moment from 'moment';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 export type OpenHourFormGroup = FormGroup<{
     isDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
@@ -109,7 +113,8 @@ export type OpenHourFormGroup = FormGroup<{
         TaCustomCardComponent,
         TaInputDropdownComponent,
         TaInputNoteComponent,
-
+        TaModalTableComponent,
+        TaUploadFileComponent,
         // Pipes
         ActiveItemsPipe,
     ],
@@ -134,10 +139,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     services: RepairShopModalService[] = [];
 
     public repairTypes: EnumValue[] = [];
+
+    // Contact tab
+    public modalTableTypeEnum = ModalTableTypeEnum;
+    public contactAddedCounter: number = 0;
+    isNewContactAdded: boolean;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
-        private bankVerificationService: BankVerificationService
+        private bankVerificationService: BankVerificationService,
+        private cdr: ChangeDetectorRef
     ) {}
 
     ngOnInit() {
@@ -165,6 +177,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.initializeServices();
+
+        this.repairShopForm.valueChanges.subscribe(v => console.log(v))
     }
 
     public onModalAction(e: any) {}
@@ -309,6 +323,28 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    // TODO: Check this code 
+    // Contact tab
+    public addContact(): void {
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        this.contactAddedCounter = modalTableDataValue.length;
+
+        this.repairShopForm.get('contacts').patchValue(modalTableDataValue);
+
+        this.cdr.detectChanges();
+    }
+    public handleModalTableValidStatusEmit(validStatus: boolean): void {
+        this.repairShopForm.setErrors({ invalid: !validStatus });
+    }
+        
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
