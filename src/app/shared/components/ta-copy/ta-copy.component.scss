@@ -125,4 +125,9 @@
 
 .boldVinSpan {
     font-weight: 700;
+
+    &.contactType {
+        color: $bw5;
+        font-weight: 400;
+    }
 }
