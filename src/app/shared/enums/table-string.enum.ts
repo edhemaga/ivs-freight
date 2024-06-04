@@ -515,4 +515,7 @@ export enum TableStringEnum {
 
     // Border
     BORDER = 'border',
+
+    // States
+    ASSETS_SVG_COMMON_STATES = 'assets/svg/common/states/ic_',
 }
