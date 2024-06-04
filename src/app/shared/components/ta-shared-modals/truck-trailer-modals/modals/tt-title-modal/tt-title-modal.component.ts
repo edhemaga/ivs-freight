@@ -29,6 +29,9 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
+//enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
 @Component({
     selector: 'app-tt-title-modal',
     templateUrl: './tt-title-modal.component.html',
@@ -67,6 +70,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
     public disableCardAnimation: boolean = false;
 
     private destroy$ = new Subject<void>();
+
+    public logoStateRoutes: string = TableStringEnum.ASSETS_SVG_COMMON_STATES;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -297,8 +302,17 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
                     this.stateTypes = res.states.map((item) => {
                         return {
                             id: item.id,
-                            name: item.stateShortName,
+                            name:
+                                item.stateShortName +
+                                ' (' +
+                                item.stateName +
+                                ')',
                             stateName: item.stateName,
+                            folder: 'common',
+                            subFolder: 'states',
+                            logoName:
+                                item.stateName.toLowerCase().replace(' ', '_') +
+                                '.svg',
                         };
                     });
 

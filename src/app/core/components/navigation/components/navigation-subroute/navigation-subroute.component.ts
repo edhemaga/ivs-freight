@@ -77,6 +77,7 @@ export class NavigationSubrouteComponent implements OnChanges {
         }
     }
     public openLinkInNewWindow(route) {
+        if( route.constuction ) return;
         window.open(route, '_blank');
     }
     public isActiveRouteOnReload(route: string): boolean {

@@ -30,6 +30,7 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import moment from 'moment';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
@@ -89,15 +90,25 @@ export class DropDownService {
                 let voidData = data.registrations.find(
                     (registration) => registration.id === dropDownData.id
                 );
+                const isVoided = data.registrations.find(
+                    (registration) => registration.voidedOn
+                );
                 let cdlsArray = data.registrations.map((registration) => {
-                    if (registration.voidedOn) {
-                        return {
-                            id: registration.id,
-                            name: registration.licensePlate,
-                        };
+                    const currentDate = moment().valueOf();
+
+                    const expDate = moment(registration.expDate).valueOf();
+                    if (isVoided) {
+                        if (expDate > currentDate && !registration.voidedOn) {
+                            return {
+                                id: registration.id,
+                                name: registration.licensePlate,
+                            };
+                        }
                     }
                 });
-                cdlsArray = cdlsArray.filter((item) => item);
+                cdlsArray = cdlsArray?.length
+                    ? cdlsArray.filter((item) => item)
+                    : [];
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -116,11 +127,13 @@ export class DropDownService {
             }
             case 'activate':
                 {
+                    let registrationData = data.registrations.find(
+                        (registration) => registration.id === dropDownData.id
+                    );
                     const mappedEvent = {
                         ...event,
                         data: {
-                            ...data,
-                            number: data.licensePlate,
+                            ...registrationData,
                         },
                     };
                     this.modalService.openModal(

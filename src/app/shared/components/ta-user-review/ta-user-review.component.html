@@ -32,6 +32,10 @@
                 <div class="ta-user-name-rating">
                     <p class="ta-user-fullname">
                         {{ data.companyUser.fullName }}
+                        
+                        <ng-container *ngIf="data.isItCurrentCompanyUser">
+                            <span class="current-user">(Me)</span>
+                        </ng-container>
                     </p>
                     <svg-icon
                         *ngIf="data.rating && !data.isEditMode"

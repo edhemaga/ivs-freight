@@ -380,6 +380,7 @@ export enum TableStringEnum {
     // Contact
     DELTETE_CONTACT = 'delete-contact',
     CONTACT = 'contact',
+    CONTACT_2 = 'Contact',
     ADD_CONTACT = 'add-contact',
     EDIT_CONTACT = 'edit-contact',
 
@@ -515,4 +516,7 @@ export enum TableStringEnum {
 
     // Border
     BORDER = 'border',
+
+    // States
+    ASSETS_SVG_COMMON_STATES = 'assets/svg/common/states/ic_',
 }

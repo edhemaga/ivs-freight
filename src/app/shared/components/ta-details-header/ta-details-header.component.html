@@ -112,10 +112,22 @@
                     </app-ta-counter>
                     -->
                     <ng-container *ngIf="danger || !counterData">
-                        <svg-icon
-                            class="danger-svg"
-                            src="assets/svg/common/ic_danger.svg"
-                        ></svg-icon>
+                        <div
+                            ngbTooltip
+                            [mainTooltip]="
+                                headerText === 'Registration'
+                                    ? 'No Active Registration'
+                                    : 'None Active'
+                            "
+                            tooltipBackground="#424242"
+                            position="bottom"
+                            class="danger-popover"
+                        >
+                            <svg-icon
+                                class="danger-svg"
+                                [src]="icDangerSvgIcon"
+                            ></svg-icon>
+                        </div>
                     </ng-container>
                     <div class="header-text-arrow-down">
                         <p
@@ -169,6 +181,13 @@
                 </div>
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
+                    <ng-container *ngIf="hasSearch">
+                        <app-ta-search-v2
+                            [placeHolderText]="searchPlaceholder"
+                            [clearSearchValue]="clearSearchValue"
+                            (searchValueEmitter)="handleSearchValue($event)"
+                        ></app-ta-search-v2>
+                    </ng-container>
                     <!-- <span
                         class="ic-hed"
                         *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
@@ -178,7 +197,7 @@
                             class="single-repair-icon"
                             src="{{ ic.icon }}"
                         ></svg-icon>
-                    </span> -->
+                    </span>-->
                     <span class="ic-hed" *ngIf="timeFilter">
                         <app-ta-filter
                             [type]="'timeFilter'"
@@ -282,13 +301,19 @@
                         <svg-icon [src]="'assets/svg/common/ic_documents.svg'">
                         </svg-icon>
                     </div>
-                    <div class="border-line-left"></div>
-                    <svg-icon
-                        class="icon-plus-header"
-                        (click)="openModal(headerText)"
-                        src="assets/svg/common/ic_plus.svg"
+                    <div
+                        ngbTooltip
+                        [mainTooltip]="'Add New'"
+                        tooltipBackground="#424242"
+                        position="bottom"
                     >
-                    </svg-icon>
+                        <svg-icon
+                            class="icon-plus-header"
+                            (click)="openModal(headerText)"
+                            [src]="icPlusSvgIcon"
+                        >
+                        </svg-icon>
+                    </div>
                 </div>
             </div>
         </div>

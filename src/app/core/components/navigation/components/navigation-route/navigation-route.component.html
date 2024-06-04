@@ -19,7 +19,10 @@
     }"
     (mouseenter)="onNavItemHover(true); showToolTip = true"
     (mouseleave)="onNavItemHover(false); showToolTip = false"
-    (click)="onRouteAction(route.id); routeWithSubRoutesClick(route.arrow)"
+    (click)="
+        onRouteAction(route.id, route.construction);
+        routeWithSubRoutesClick(route.arrow)
+    "
 >
     <div
         class="tooltip-right"
