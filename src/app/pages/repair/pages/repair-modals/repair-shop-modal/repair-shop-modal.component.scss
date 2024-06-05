@@ -27,75 +27,52 @@
     margin: 10px 0 15px 0;
 }
 
-// .custom-bank-row {
-//     margin-bottom: 22px !important;
-// }
-
-// // TODO:
-.open-hours-card-repair-shop {
-    ::ng-deep .content-holder {
-        margin: 0px !important;
-    }
-}
-
-.time-picker-all-days {
-    display: flex;
+.timeline__card {
+    grid-template-columns: 1fr repeat(2, 140px);
+    padding: 0 10px;
+    border-radius: 2px;
+    display: grid;
+    grid-template-rows: 34px;
     align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    margin-bottom: 2px;
+    position: relative;
 
-    &-btn {
-        position: relative;
-        right: 2px;
-        cursor: pointer;
-
-        svg {
-            transform: rotate(0deg);
-            transition: all 0.3s ease-in-out;
-            path {
-                fill: #919191;
-            }
-        }
-
-        &.rotate {
-            svg {
-                transform: rotate(180deg);
-                transition: all 0.3s ease-in-out;
-                path {
-                    fill: #3074d3;
-                }
-            }
-        }
+    &-range {
+        font-size: 11px;
+        line-height: 14px;
+        color: $muted;
+        text-transform: uppercase;
     }
 
-    &-title {
+    &-label {
         cursor: pointer;
-        color: #2f2f2f;
+        color: $ta-black-2;
         font-weight: 500;
         font-size: 14px;
         line-height: 14px;
         -webkit-user-select: none;
         user-select: none;
     }
-}
 
-.common-open-hours-table-modal {
-    overflow-x: scroll;
-    scrollbar-width: none !important;
-    margin-bottom: 0px;
+    &-hover {
+        transition: background-color 0.3s ease-in-out;
+        &:hover {
+            background-color: $ta-light-grey-5;
 
-    .common-table-body {
-        .common-table-card {
-            grid-template-columns: 1fr repeat(2, 140px);
-            padding: 0 10px;
-            border-radius: 2px;
-            display: grid;
-            grid-template-rows: 34px;
-            align-items: center;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-            row-gap: 2px;
-            margin-bottom: 2px;
-            background-color: #f7f7f7;
-            position: relative;
+            .input-custom-group .date_time_holder {
+                background-color: $ta-light-grey-5;
+            }
+        }
+    }
+
+    .input-custom-group .date_time_holder {
+        transition: background-color 0.3s ease-in-out;
+        background-color: $white;
+        color: $ta-black-2;
+        &:hover {
+            background-color: #e2ecf9;
         }
     }
 }

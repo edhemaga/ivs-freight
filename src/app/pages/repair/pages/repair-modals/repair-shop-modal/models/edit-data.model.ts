@@ -85,3 +85,19 @@ export  interface CreateShopModel {
     files?: Array<Blob>;
     shopServiceType?: number;
 }
+
+export enum RepairShopModalStringEnum {
+    OPEN_HOURS = 'openHours',
+    START_TIME = 'startTime',
+    END_TIME = 'endTime',
+    IS_WORKING_DAY = 'isWorkingDay',
+    OPEN_ALWAYS = 'openAlways',
+    PINNED = 'pinned',
+    SELECTED_ADDRESS = 'selectedAddress',
+    LONGITUDE = 'longitude',
+    LATITUDE = 'latitude',
+    SHOP_SERVICE_TYPE = 'shopServiceType',
+    BANK_ID = 'bankId',
+    FILES = 'files',
+    CONTACTS = 'contacts'
+}
