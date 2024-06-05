@@ -9,16 +9,16 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-    FormArray,
     FormControl,
     FormGroup,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // moment
 
@@ -48,7 +48,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //Enums
-import { RepairShopModalEnum } from './enums/repair-shop-modal.enum';
+import {
+    ActionTypesEnum,
+    OpenWorkingHours,
+    RepairShopModalEnum,
+} from './enums/repair-shop-modal.enum';
 import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
 import {
     repairShopValidation,
@@ -73,15 +77,19 @@ import {
 import { RepairService } from '@shared/services/repair.service';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { mapServices } from './utils/helper';
-import { OpenHours, RepairShopModalService } from './models/edit-data.model';
-import moment from 'moment';
+import { createOpenHour, mapServices } from './utils/helper';
+import {
+    RepairShopModalAction,
+    RepairShopModalService,
+} from './models/edit-data.model';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 export type OpenHourFormGroup = FormGroup<{
-    isDay: FormControl<boolean>;
+    isWorkingDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
     dayLabel: FormControl<string>;
     startTime: FormControl<string | null | Date>;
@@ -109,12 +117,13 @@ export type OpenHourFormGroup = FormGroup<{
         TaModalComponent,
         TaTabSwitchComponent,
         TaInputComponent,
-        TaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaInputDropdownComponent,
+        TaInputAddressDropdownComponent,
         TaInputNoteComponent,
+        TaCheckboxComponent,
+        TaUploadFilesComponent,
         TaModalTableComponent,
-        TaUploadFileComponent,
         // Pipes
         ActiveItemsPipe,
     ],
@@ -144,12 +153,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public contactAddedCounter: number = 0;
     isNewContactAdded: boolean;
+    isDaysVisible: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
         private bankVerificationService: BankVerificationService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private modalService: ModalService
     ) {}
 
     ngOnInit() {
@@ -177,14 +188,81 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.initializeServices();
+        this.initWorkingHours();
 
-        this.repairShopForm.valueChanges.subscribe(v => console.log(v))
+        this.repairShopForm.valueChanges.subscribe((v) => console.log(v));
+    }
+    // Open hours
+    public isOpenHoursHidden: boolean = false;
+    public timeFormat = 'HH:mm:ss';
+    public openHoursDays = RepairShopConstants.OPEN_HOUR_DAYS;
+    public get openHours(): UntypedFormArray {
+        return this.repairShopForm.get('openHours') as UntypedFormArray;
     }
 
-    public onModalAction(e: any) {}
+    patchWorkingDayTime(item: any, startTime: Date, endTime: Date): void {
+        item.get('startTime')?.patchValue(startTime);
+        item.get('endTime')?.patchValue(endTime);
+    }
 
+    private initWorkingHours() {
+        RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
+            this.openHours.push(createOpenHour(day, this.formBuilder))
+        );
+    }
+
+    public toggleDays() {
+        this.isDaysVisible = !this.isDaysVisible;
+    }
+
+    public addNewWorkingDays(index: number) {
+        const newWorkingDay = this.openHours.at(index);
+        const isShopOpen = newWorkingDay.get('startTime').value === null;
+        const startTime = isShopOpen
+            ? this.convertTime(OpenWorkingHours.EIGHTAM)
+            : null;
+
+        const endTime = isShopOpen
+            ? this.convertTime(OpenWorkingHours.FIVEPM)
+            : null;
+
+        this.patchWorkingDayTime(newWorkingDay, startTime, endTime);
+    }
+
+    public toggle247WorkingHours() {
+        this.openAlways.patchValue(!this.isOpenAllDay);
+
+        const startTime = this.convertTime(
+            this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.EIGHTAM
+        );
+        const endTime = this.convertTime(
+            this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.FIVEPM
+        );
+
+        this.openHours.controls.forEach((item) => {
+            if (item.get('isWorkingDay')?.value) {
+                this.patchWorkingDayTime(item, startTime, endTime);
+            }
+        });
+    }
+
+    get openAlways() {
+        return this.repairShopForm.get('openAlways');
+    }
+
+    get isOpenAllDay() {
+        return !!this.openAlways.value;
+    }
+
+    public convertTime(time: string) {
+        return MethodsCalculationsHelper.convertTimeFromBackend(time);
+    }
     get modalTitle(): string {
-        console.log('setting up title');
+        // console.log('setting up title');
         return this.isEditMode
             ? RepairShopModalEnum.MODAL_TITLE_EDIT
             : RepairShopModalEnum.MODAL_TITLE_ADD;
@@ -255,15 +333,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         service.active = !service.active;
     }
 
-    // Open hours
-    public isOpenHoursHidden: boolean = false;
-    public timeFormat = 'HH:mm:ss';
-    public get openHours(): FormArray<OpenHourFormGroup> {
-        return this.repairShopForm.get(
-            'openHours'
-        ) as FormArray<OpenHourFormGroup>;
-    }
-
     // You can add bank manully if there is no option in dropdown
     public onSaveNewBank(bank: { data: { name: string } }) {
         this.bankVerificationService
@@ -275,7 +344,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         id: res.id,
                         name: bank.data.name,
                     };
-                    this.repairShopForm.get('bankId').patchValue(newBank.id);
+                    this.onBankChange({ id: newBank.id });
                     this.banks = [...this.banks, newBank];
                 },
                 error: () => {},
@@ -284,12 +353,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // New bank selected or field is cleared
     public onBankChange(event: BankResponse | null) {
-        this.repairShopForm.get('bankId').patchValue(event?.id ?? null);
+        console.log(event);
+        this.bankForm.patchValue(event?.id ?? null);
     }
 
     // Set bank field as required
     get isBankSelected() {
-        return !!this.repairShopForm.get('bankId').value;
+        return !!this.bankForm.value;
+    }
+
+    get bankForm() {
+        return this.repairShopForm.get('bankId');
     }
 
     // Documents
@@ -324,7 +398,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    // TODO: Check this code 
+    // TODO: Check this code
     // Contact tab
     public addContact(): void {
         this.isNewContactAdded = true;
@@ -343,7 +417,42 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
         this.repairShopForm.setErrors({ invalid: !validStatus });
     }
-        
+
+    public addRepairShop() {
+        console.log('Trying to add addRepairShop');
+    }
+
+    public onModalAction(data: RepairShopModalAction) {
+        // console.log(data.action);
+        // TODO:
+        if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
+            if (!this.isModalValidToSubmit) {
+                // this.inputService.markInvalid(this.repairShopForm);
+                return;
+            }
+            this.addRepairShop();
+            this.setModalSpinner(data.action, true, false);
+        }
+    }
+
+    private setModalSpinner(
+        action:
+            | null
+            | ActionTypesEnum.SAVE_AND_ADD_NEW
+            | ActionTypesEnum.DELETE,
+        status: boolean,
+        close: boolean
+    ) {
+        this.modalService.setModalSpinner({
+            action,
+            status,
+            close,
+        });
+    }
+
+    get isModalValidToSubmit() {
+        return this.repairShopForm.valid && this.repairShopForm.dirty;
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

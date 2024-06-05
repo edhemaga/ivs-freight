@@ -1,7 +1,14 @@
-import { RepairShopResponse } from "appcoretruckassist";
-import { RepairShopModalService } from "../models/edit-data.model";
+import { RepairShopResponse } from 'appcoretruckassist';
+import { OpenHours, RepairShopModalService } from '../models/edit-data.model';
+import {
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
-export function mapServices(res: RepairShopResponse, setAsInactive: boolean): RepairShopModalService[] {
+export function mapServices(
+    res: RepairShopResponse,
+    setAsInactive: boolean
+): RepairShopModalService[] {
     // TODO: TYPE
     return res.serviceTypes.map((item) => {
         return {
@@ -12,3 +19,16 @@ export function mapServices(res: RepairShopResponse, setAsInactive: boolean): Re
         };
     });
 }
+
+export function createOpenHour(
+    day: OpenHours,
+    formBuilder: UntypedFormBuilder
+): UntypedFormGroup {
+    return formBuilder.group({
+        isWorkingDay: [day.isWorkingDay],
+        dayLabel: [day.dayLabel],
+        startTime: [day.startTime],
+        endTime: [day.endTime],
+    });
+}
+

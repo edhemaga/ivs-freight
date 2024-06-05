@@ -1,7 +1,8 @@
 <app-ta-modal
     (action)="onModalAction($event)"
     [modalTitle]="modalTitle"
-    [saveAndAddNew]="false"
+    [saveAndAddNew]="!isEditMode"
+    [isModalValid]="isModalValidToSubmit"
 >
     <div origin>
         <app-ta-tab-switch
@@ -200,17 +201,117 @@
                     <!-- Open Hours -->
                     <div class="open-hours-card-repair-shop">
                         <app-ta-custom-card
-                            (onActionEvent)="active24Hours($event)"
+                            (onActionEvent)="toggle247WorkingHours($event)"
                             [cardName]="'Work Hours'"
                             [disableAnimation]="disableCardAnimation"
                             [has24Hours]="true"
                             [hasBodyData]="true"
-                            [is24Hours]="
-                                !!repairShopForm.get('openAlways').value
-                            "
-                            [isCardOpen]="isOpenHoursHidden"
+                            [is24Hours]="isOpenAllDay"
+                            [isCardOpen]="true"
                             [disabledCard]="true"
                         >
+                            <div
+                                class="common-open-hours-table-modal"
+                                formArrayName="openHours"
+                            >
+                                <div class="common-table-body">
+                                    <div
+                                        *ngFor="
+                                            let openHour of openHours.controls;
+                                            let ind = index
+                                        "
+                                    >
+                                        <div
+                                            *ngIf="
+                                                ind === 0 ||
+                                                ind ===
+                                                    openHours.controls.length -
+                                                        1 ||
+                                                ind ===
+                                                    openHours.controls.length -
+                                                        2 ||
+                                                isDaysVisible
+                                            "
+                                            [formGroupName]="ind"
+                                            class="common-table-card"
+                                        >
+                                            <!-- Switch for all days -->
+                                            <div
+                                                *ngIf="ind === 0"
+                                                class="time-picker-all-days"
+                                                (click)="toggleDays()"
+                                            >
+                                                <svg-icon
+                                                    [class.rotate]="
+                                                        isDaysVisible
+                                                    "
+                                                    class="time-picker-all-days-btn"
+                                                    src="assets/svg/common/ic_arrow_down_updated.svg"
+                                                ></svg-icon>
+                                                <span
+                                                    class="time-picker-all-days-title"
+                                                >
+                                                    {{
+                                                        openHour.get('dayLabel')
+                                                            .value
+                                                    }}
+                                                </span>
+                                            </div>
+
+                                            <!-- Other Days Check -->
+                                            <!-- Hide checkbox for MON - FRI label -->
+                                            <app-ta-checkbox
+                                                (formArrayAction)="
+                                                    addNewWorkingDays(ind)
+                                                "
+                                                *ngIf="ind !== 0"
+                                                [customClass]="'medium'"
+                                                [label]="
+                                                    openHour.get('dayLabel')
+                                                        .value
+                                                "
+                                                [name]="
+                                                    openHour.get('dayLabel')
+                                                        .value
+                                                "
+                                                formControlName="isWorkingDay"
+                                            ></app-ta-checkbox>
+
+                                            <!-- Time Picker -->
+                                            <app-ta-input
+                                                *ngIf="
+                                                    openHour.get('isWorkingDay')
+                                                        .value
+                                                "
+                                                [inputConfig]="{
+                                                    name: 'timepicker',
+                                                    type: 'text',
+                                                    placeholderIcon: 'time',
+                                                    customClass:
+                                                        'datetimeclass',
+                                                    hideClear: true
+                                                }"
+                                                formControlName="startTime"
+                                            ></app-ta-input>
+                                            <app-ta-input
+                                                *ngIf="
+                                                    openHour.get('isWorkingDay')
+                                                        .value
+                                                "
+                                                [inputConfig]="{
+                                                    name: 'timepicker',
+                                                    type: 'text',
+                                                    placeholderIcon: 'time',
+                                                    customClass:
+                                                        'datetimeclass',
+                                                    hideClear: true
+                                                }"
+                                                formControlName="endTime"
+                                            ></app-ta-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </app-ta-custom-card>
                     </div>
 
@@ -229,9 +330,7 @@
                         >
                             <app-ta-input-dropdown
                                 (saveItem)="onSaveNewBank($event)"
-                                (selectedItem)="
-                                    onBankChange($event, 'bank')
-                                "
+                                (selectedItem)="onBankChange($event)"
                                 [activeItem]="selectedBank"
                                 [canAddNew]="true"
                                 [inputConfig]="{

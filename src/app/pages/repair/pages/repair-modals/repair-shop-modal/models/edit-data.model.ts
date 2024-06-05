@@ -13,6 +13,10 @@ export interface RepairShopModalEditData {
     openedTab: string;
 }
 
+export interface RepairShopModalAction {
+    action: ActionTypesEnum.CLOSE | ActionTypesEnum.SAVE_AND_ADD_NEW;
+}
+
 export type EditDataType = EditDataKey.REPAIR_MODAL;
 
 export type OpenHoursValue =
@@ -28,11 +32,12 @@ export type ActionTypes =
     | ActionTypesEnum.SAVE_AND_ADD_NEW;
 
 export interface OpenHours {
-    day: string;
-    isDay: boolean;
+    dayLabel: string;
+    isWorkingDay: boolean;
+    // This is not needed yet on creating shop 
     dayOfWeek: number;
-    startTime: string | null;
-    endTime: string | null;
+    startTime: Date | null;
+    endTime: Date | null;
 }
 
 export interface RepairShopModalService {
