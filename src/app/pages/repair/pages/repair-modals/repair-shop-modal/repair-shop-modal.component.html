@@ -14,7 +14,7 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{ 'tab-2': selectedTab === 2 }"
+            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTRACT }"
             class="form-container form-container-without-mb"
         >
             <div
@@ -22,7 +22,10 @@
                 [class]="animationTabClass"
             >
                 <!-- Details Tab -->
-                <div *ngIf="selectedTab === 1" class="m-tab">
+                <div
+                    *ngIf="selectedTab === TableStringEnum.DETAILS"
+                    class="m-tab"
+                >
                     <div class="row">
                         <div class="col-11">
                             <app-ta-input
@@ -123,7 +126,6 @@
                         <div class="col-10">
                             <app-ta-input-address-dropdown
                                 (selectedAddress)="onHandleAddress($event)"
-                                [activeAddress]="selectedAddress"
                                 [inputConfig]="{
                                     name: 'Address',
                                     type: 'text',
@@ -393,7 +395,7 @@
                         formControlName="note"
                     ></app-ta-input-note>
                 </div>
-                <div *ngIf="selectedTab === 2" class="m-tab">
+                <div *ngIf="selectedTab === TableStringEnum.CONTRACT" class="m-tab">
                     <app-ta-custom-card
                         (onActionEvent)="addContact()"
                         [animationMarginParams]="{
@@ -428,7 +430,7 @@
                         </div>
                     </app-ta-custom-card>
                 </div>
-                <div *ngIf="selectedTab === 3" class="m-tab"></div>
+                <div *ngIf="selectedTab === TableStringEnum.REVIEW" class="m-tab"></div>
             </div>
         </form>
     </div>

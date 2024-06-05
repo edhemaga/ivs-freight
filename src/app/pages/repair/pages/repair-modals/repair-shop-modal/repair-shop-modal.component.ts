@@ -53,7 +53,10 @@ import {
     OpenWorkingHours,
     RepairShopModalEnum,
 } from './enums/repair-shop-modal.enum';
-import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
+import {
+    RepairShopConstants,
+    RepairShopModalStringEnum,
+} from './utils/constants/repair-shop-modal.constants';
 import {
     repairShopValidation,
     phoneFaxRegex,
@@ -77,11 +80,13 @@ import {
 import { RepairService } from '@shared/services/repair.service';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { createOpenHour, generateShopModel, mapServices } from './utils/helper';
+import { createOpenHour, mapServices } from './utils/helper';
 import {
+    OpenedTab,
     RepairShopModalAction,
     RepairShopModalService,
-    RepairShopModalStringEnum,
+    RepairShopTabs,
+    RepeairShopModalInput,
 } from './models/edit-data.model';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
@@ -89,6 +94,7 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 export type OpenHourFormGroup = FormGroup<{
     isWorkingDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
@@ -130,9 +136,10 @@ export type OpenHourFormGroup = FormGroup<{
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
-    // Tab
-    public tabs = RepairShopConstants.TABS(true);
-    selectedTab = 1;
+    // TODO: Check open tab it can be review or details
+    public tabs: RepairShopTabs[];
+    TableStringEnum = TableStringEnum;
+    selectedTab: OpenedTab = TableStringEnum.DETAILS;
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
@@ -142,10 +149,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     public RepairShopModalEnum = RepairShopModalEnum;
     public repairShopForm: UntypedFormGroup;
-    // TODO: add type
-    @Input() isEditMode: boolean;
     banks: BankResponse[];
-    public selectedAddress: AddressEntity = null;
     public longitude: number;
     public latitude: number;
     services: RepairShopModalService[] = [];
@@ -156,6 +160,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     isNewContactAdded: boolean;
     isDaysVisible: boolean;
     public isPhoneExtExist: boolean = false;
+    @Input() editData: null | RepeairShopModalInput;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -165,43 +170,87 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.repairShopForm = this.formBuilder.group({
-            name: [null, [Validators.required, ...repairShopValidation]],
-            pinned: [null],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            phoneExt: [null, [...phoneExtension]],
-            email: [null],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            openHours: this.formBuilder.array([]),
-            openHoursSameAllDays: [null],
-            startTimeAllDays: [null],
-            endTimeAllDays: [null],
-            openAlways: [false],
-            bankId: [null, [...bankValidation]],
-            routing: [null, routingBankValidation],
-            account: [null, accountBankValidation],
-            note: [null],
-            contacts: [null],
-            files: [null],
-            servicesHelper: [null],
-            shopServiceType: [null, Validators.required],
-            longitude: [null],
-            latitude: [null],
-            selectedAddress: [null],
-        });
-
+        this.initTabs();
+        this.generateForm();
         this.initializeServices();
         this.initWorkingHours();
-
+        console.log(this.editData);
         this.repairShopForm.valueChanges.subscribe((v) => console.log(v));
+    }
+
+    initTabs() {
+        if (this.editData) this.selectedTab = this.editData.openedTab;
+        this.tabs = RepairShopConstants.TABS(
+            !this.isEditMode,
+            this.selectedTab
+        );
+    }
+
+    get isEditMode() {
+        return this.editData?.data;
+    }
+
+    private generateForm() {
+        this.repairShopForm = this.formBuilder.group({
+            name: [
+                this.editData?.data?.name ?? null,
+                [Validators.required, ...repairShopValidation],
+            ],
+            pinned: [this.editData?.data?.pinned ?? null],
+            phone: [
+                this.editData?.data?.phone ?? null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            phoneExt: [
+                this.editData?.data?.phoneExt ?? null,
+                [...phoneExtension],
+            ],
+            email: [this.editData?.data?.email ?? null],
+            address: [
+                this.editData?.data?.address.address ?? null,
+                [Validators.required, ...addressValidation],
+            ],
+            addressUnit: [
+                this.editData?.data?.address.addressUnit ?? null,
+                [...addressUnitValidation],
+            ],
+            openHours: this.formBuilder.array([]),
+            openHoursSameAllDays: [
+                this.editData?.data?.openHoursSameAllDays ?? null,
+            ],
+            startTimeAllDays: [this.editData?.data?.startTimeAllDays ?? null],
+            endTimeAllDays: [this.editData?.data?.endTimeAllDays ?? null],
+            openAlways: [this.editData?.data?.openAlways ?? false],
+            bankId: [this.editData?.data?.bankId ?? null, [...bankValidation]],
+            routing: [
+                this.editData?.data?.routing ?? null,
+                routingBankValidation,
+            ],
+            account: [
+                this.editData?.data?.account ?? null,
+                accountBankValidation,
+            ],
+            note: [this.editData?.data?.note ?? null],
+            contacts: [this.editData?.data?.contacts ?? null],
+            files: [this.editData?.data?.files ?? null],
+            // servicesHelper: [this.editData?.data?.servicesHelper ?? null],
+            shopServiceType: [
+                this.editData?.data?.shopServiceType ?? null,
+                Validators.required,
+            ],
+            longitude: [this.editData?.data?.longitude ?? null],
+            latitude: [this.editData?.data?.latitude ?? null],
+            selectedAddress: [this.editData?.data?.address.address ?? null],
+        });
     }
     // Open hours
     public isOpenHoursHidden: boolean = false;
     public timeFormat = 'HH:mm:ss';
     public openHoursDays = RepairShopConstants.OPEN_HOUR_DAYS;
     public get openHours(): UntypedFormArray {
-        return this.repairShopForm.get(RepairShopModalStringEnum.OPEN_HOURS) as UntypedFormArray;
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.OPEN_HOURS
+        ) as UntypedFormArray;
     }
 
     patchWorkingDayTime(item: any, startTime: Date, endTime: Date): void {
@@ -221,7 +270,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public addNewWorkingDays(index: number) {
         const newWorkingDay = this.openHours.at(index);
-        const isShopOpen = newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value === null;
+        const isShopOpen =
+            newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value ===
+            null;
         const startTime = isShopOpen
             ? this.convertTime(OpenWorkingHours.EIGHTAM)
             : null;
@@ -272,7 +323,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             : RepairShopModalEnum.MODAL_TITLE_ADD;
     }
 
-    public tabChange(selectedTab: { id: number }): void {
+    public tabChange(selectedTab: RepairShopTabs): void {
         this.selectedTab = selectedTab.id;
         let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
 
@@ -292,7 +343,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     get favoriteField() {
-       return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
+        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
     }
 
     get favoriteLabel() {
@@ -311,7 +362,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         if (event.valid) {
             this.repairShopForm
                 .get(RepairShopModalStringEnum.SELECTED_ADDRESS)
-                .patchValue(event.address);
+                .patchValue(event.address.address);
             this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
@@ -321,7 +372,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
     // TODO:
-   
 
     // Service tab
     private initializeServices() {
@@ -338,7 +388,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public repairTypeTabChange(repairType: EnumValue) {
-        this.repairShopForm.get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE).patchValue(repairType.id);
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+            .patchValue(repairType.id);
     }
 
     public activeRepairService(service: RepairShopModalService) {
@@ -382,7 +434,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     // Documents
     public documents: any[] = [];
     public onFilesEvent(event: any) {
-        this.repairShopForm.get(RepairShopModalStringEnum.FILES).patchValue(event.files);
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.FILES)
+            .patchValue(event.files);
     }
 
     // TODO: Check this code
@@ -397,7 +451,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public handleModalTableValueEmit(modalTableDataValue): void {
         this.contactAddedCounter = modalTableDataValue.length;
 
-        this.repairShopForm.get(RepairShopModalStringEnum.CONTACTS).patchValue(modalTableDataValue);
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.CONTACTS)
+            .patchValue(modalTableDataValue);
 
         this.cdr.detectChanges();
     }
@@ -405,7 +461,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm.setErrors({ invalid: !validStatus });
     }
 
-    public addRepairShop() {
+    public addNewRepairShop() {
         console.log('Trying to add addRepairShop');
         const newShop = {
             ...this.repairShopForm.value,
@@ -444,8 +500,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 // this.inputService.markInvalid(this.repairShopForm);
                 return;
             }
-            this.addRepairShop();
+            this.addNewRepairShop();
             this.setModalSpinner(data.action, true, false);
+            return;
+        }
+
+        if (data.action === ActionTypesEnum.SAVE) {
+            // Call update shop here
         }
     }
 

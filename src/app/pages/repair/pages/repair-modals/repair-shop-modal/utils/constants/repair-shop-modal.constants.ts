@@ -1,4 +1,3 @@
-import { Tabs } from '@shared/models/tabs.model';
 import {
     OpenHourDays,
     OpenWorkingHours,
@@ -6,6 +5,31 @@ import {
     WorkingHoursType,
 } from '../../enums/repair-shop-modal.enum';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { OpenedTab, RepairShopTabs } from '../../models/edit-data.model';
+
+const startTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    OpenWorkingHours.EIGHTAM
+);
+const endTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    OpenWorkingHours.FIVEAM
+);
+
+export enum RepairShopModalStringEnum {
+    OPEN_HOURS = 'openHours',
+    START_TIME = 'startTime',
+    END_TIME = 'endTime',
+    IS_WORKING_DAY = 'isWorkingDay',
+    OPEN_ALWAYS = 'openAlways',
+    PINNED = 'pinned',
+    SELECTED_ADDRESS = 'selectedAddress',
+    LONGITUDE = 'longitude',
+    LATITUDE = 'latitude',
+    SHOP_SERVICE_TYPE = 'shopServiceType',
+    BANK_ID = 'bankId',
+    FILES = 'files',
+    CONTACTS = 'contacts'
+}
 
 export class RepairShopConstants {
     static OPEN_HOUR_DAYS: WorkingHoursType = [
@@ -24,67 +48,43 @@ export class RepairShopConstants {
             dayLabel: OpenHourDays.MON_FRI,
             dayOfWeek: -1,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Monday,
             dayOfWeek: 1,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Tuesday,
             dayOfWeek: 2,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Wednesday,
             dayOfWeek: 3,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Thursday,
             dayOfWeek: 4,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Friday,
             dayOfWeek: 5,
             isWorkingDay: true,
-            startTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.EIGHTAM
-            ),
-            endTime: MethodsCalculationsHelper.convertTimeFromBackend(
-                OpenWorkingHours.FIVEAM
-            ),
+            startTime,
+            endTime,
         },
         {
             dayLabel: OpenHourDays.Saturday,
@@ -102,22 +102,22 @@ export class RepairShopConstants {
         },
     ];
 
-    static TABS(isAddMode: boolean): Tabs[] {
+    static TABS(isAddMode: boolean, openedTab: OpenedTab): RepairShopTabs[] {
         const tabs = [
             {
-                id: 1,
+                id: TableStringEnum.DETAILS as OpenedTab,
                 name: RepairShopModalEnum.TAB_TITLE_DETAILS,
-                checked: true,
+                checked: TableStringEnum.DETAILS === openedTab,
             },
             {
-                id: 2,
+                id: TableStringEnum.CONTRACT as OpenedTab,
                 name: RepairShopModalEnum.TAB_TITLE_CONTACT,
-                checked: false,
+                checked: TableStringEnum.CONTRACT === openedTab,
             },
             {
-                id: 3,
+                id: TableStringEnum.REVIEW as OpenedTab,
                 name: RepairShopModalEnum.TAB_TITLE_REVIEW,
-                checked: false,
+                checked: TableStringEnum.REVIEW === openedTab,
             },
         ];
 

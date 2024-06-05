@@ -1,21 +1,13 @@
-import { PayPeriod, DayOfWeek, RepairShopServiceTypeCommand, RepairShopOpenHoursCommand, RepairShopContactCommand } from 'appcoretruckassist';
+import { PayPeriod, DayOfWeek, RepairShopServiceTypeCommand, RepairShopOpenHoursCommand, RepairShopContactCommand, AddressEntity } from 'appcoretruckassist';
 import {
     ActionTypesEnum,
     EditDataKey,
     OpenWorkingHours,
     RepairShopModalEnum,
 } from '../enums/repair-shop-modal.enum';
-export interface RepairShopModalEditData {
-    // if you go to add new shop there is no data
-    id: number;
-    canOpenModal: boolean;
-    key: EditDataType;
-    type: RepairShopModalEnum.EDIT_ACTION | null;
-    openedTab: string;
-}
-
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 export interface RepairShopModalAction {
-    action: ActionTypesEnum.CLOSE | ActionTypesEnum.SAVE_AND_ADD_NEW;
+    action: ActionTypesEnum.CLOSE | ActionTypesEnum.SAVE_AND_ADD_NEW| ActionTypesEnum.SAVE;
 }
 
 export type EditDataType = EditDataKey.REPAIR_MODAL;
@@ -84,20 +76,26 @@ export  interface CreateShopModel {
     contacts?: Array<RepairShopContactCommand>;
     files?: Array<Blob>;
     shopServiceType?: number;
+    address?: AddressEntity;
 }
 
-export enum RepairShopModalStringEnum {
-    OPEN_HOURS = 'openHours',
-    START_TIME = 'startTime',
-    END_TIME = 'endTime',
-    IS_WORKING_DAY = 'isWorkingDay',
-    OPEN_ALWAYS = 'openAlways',
-    PINNED = 'pinned',
-    SELECTED_ADDRESS = 'selectedAddress',
-    LONGITUDE = 'longitude',
-    LATITUDE = 'latitude',
-    SHOP_SERVICE_TYPE = 'shopServiceType',
-    BANK_ID = 'bankId',
-    FILES = 'files',
-    CONTACTS = 'contacts'
+export type OpenedTab = TableStringEnum.CONTRACT
+    | TableStringEnum.REVIEW
+    | TableStringEnum.DETAILS;
+
+export interface RepairShopTabs {
+    id: OpenedTab;
+    name: string;
+    checked: boolean;
 }
+
+export interface RepeairShopModalInput {
+    openedTab: OpenedTab;
+    data: CreateShopModel;
+    id: number;
+    key: EditDataType;
+    type: RepairShopModalEnum.EDIT_ACTION | null;
+    canOpenModal: boolean;
+}
+
+
