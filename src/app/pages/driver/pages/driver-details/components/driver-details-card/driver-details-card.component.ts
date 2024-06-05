@@ -68,6 +68,7 @@ import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-comm
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
@@ -129,6 +130,7 @@ import { DriverDateInfo } from '@pages/driver/models/driver-date-info.model';
         TaCounterComponent,
         TaDetailsHeaderCardComponent,
         TaChartComponent,
+        TaPasswordAccountHiddenCharactersComponent,
 
         // pipes
         FormatDatePipe,
@@ -156,7 +158,6 @@ export class DriverDetailsCardComponent
     public mvrNote: UntypedFormControl = new UntypedFormControl();
 
     //Basic driver data
-    public isAccountVisibleDriver: boolean = false;
     public toggler: boolean[] = [];
     public dataTest: any; //leave this any
     public selectedTab: number;

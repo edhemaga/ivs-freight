@@ -698,7 +698,6 @@ p {
 
 .truck-details-wrapper {
     padding: 0px 12px;
-    //margin-left: 12px;
     .truck {
         svg {
             width: 132px;
@@ -941,46 +940,6 @@ p {
     }
 }
 
-.mileage-template {
-    display: grid;
-    grid-template-columns: 130px 130px 130px;
-    row-gap: 10px;
-    column-gap: 10px;
-    //padding: 0 2px;
-    .mileage-template-item {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        .mileage-template-item-name {
-            //color: $color-gray-dark;
-            color: #2f2f2f;
-            font-size: 11px;
-            font-weight: 700;
-            &::-moz-selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .mileage-template-item-value {
-            color: #2f2f2f;
-            font-size: 18px;
-            font-weight: 500;
-            margin-top: -3px;
-            &::-moz-selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
-}
 .owner-items {
     display: flex;
     align-items: center;
@@ -1944,10 +1903,6 @@ p {
                 grid-template-columns: 85px 86px 92px !important;
             }
         }
-    }
-
-    .mileage-template {
-        grid-template-columns: 112px 112px 111px;
     }
 
     app-shipper-details-card {

@@ -70,7 +70,6 @@
                             <app-ta-copy
                                 [textFontSize]="'18px'"
                                 [textFontWeight]="'600'"
-                                [textColor]="'#424242'"
                                 [copyValue]="driver?.ssn"
                                 [textColor]="'#2f2f2f'"
                             >
@@ -555,7 +554,7 @@
                     </div>
                 </app-ta-custom-card>
 
-                <!-- Pay Types -->
+                <!-- Pay Types Card -->
 
                 <app-ta-custom-card
                     [cardName]="driver.payType.name | driverPayTypesCardName"
@@ -765,195 +764,16 @@
                     </ng-container>
                 </app-ta-custom-card>
 
-                <!-- Commission Pay-->
-                <!-- <ng-container
-                           *ngIf="
-                               driver?.commissionSolo ||
-                               driver?.solo?.loadedMile ||
-                               driver?.team?.loadedMile
-                           "
-                       >
-                           <app-ta-custom-card
-                               [bodyTemplate]="'card'"
-                               [cardName]="
-                                   driver.commissionSolo
-                                       ? 'Commission Pay'
-                                       : 'Mileage Pay'
-                               "
-                               [isCardOpen]="true"
-                               [animationMarginParams]="{
-                                   marginTop: '0px',
-                                   marginBottom: '10px'
-                               }"
-                               [customClass]="'detailsPadding'"
-                           >
-                               <ng-container *ngIf="driver?.commissionSolo">
-                                   <div class="purchase-template">
-                                       <div class="purchase-template-item">
-                                           <div class="purchase-template-item-name">
-                                               Solo
-                                           </div>
-                                           <div
-                                               class="purchase-template-item-value commsion-solo"
-                                           >
-                                               {{ driver.commissionSolo }}%
-                                           </div>
-                                       </div>
-       
-                                       <div
-                                           class="purchase-template-item second-name"
-                                           *ngIf="driver?.commissionTeam"
-                                       >
-                                           <div class="purchase-template-item-name">
-                                               Team
-                                           </div>
-                                           <div
-                                               class="purchase-template-item-value commsion-solo"
-                                           >
-                                               {{ driver.commissionTeam }}%
-                                           </div>
-                                       </div>
-                                   </div>
-                               </ng-container>
-                               <div class="mileage-template">
-                                   <ng-container *ngIf="driver?.solo?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Empty (Solo)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.solo.emptyMile }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="driver?.solo?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Loaded (Solo)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.solo.loadedMile }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="driver?.solo?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Per Stop (Solo)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.solo.perStop }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="driver?.team?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Empty (Team)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.team.emptyMile }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="driver?.team?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Loaded (Team)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.team.loadedMile }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                                   <ng-container *ngIf="driver?.team?.loadedMile">
-                                       <div class="mileage-template-item">
-                                           <div class="mileage-template-item-name">
-                                               Per Stop (Team)
-                                           </div>
-                                           <div class="mileage-template-item-value">
-                                               ${{ driver.team.perStop }}
-                                           </div>
-                                       </div>
-                                   </ng-container>
-                               </div>
-                           </app-ta-custom-card>
-                       </ng-container>
- -->
-                <!-- Off Duty Location-->
+                <!-- Payroll Chart Card-->
 
-                <ng-container *ngIf="driver.offDutyLocations.length">
-                    <app-ta-custom-card
-                        [hasCounter]="driver.offDutyLocations.length"
-                        [cardName]="'Off Duty Location'"
-                        [isCardOpen]="false"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '0px'
-                        }"
-                        [customClass]="'detailsPadding'"
-                    >
-                        <ng-container *ngIf="driver.offDutyLocations === ''">
-                            <div class="no-data-driver-details">
-                                No Added Location
-                            </div>
-                        </ng-container>
-                        <ng-container
-                            *ngFor="
-                                let offDuty of driver.offDutyLocations;
-                                trackBy: identity
-                            "
-                        >
-                            <div class="additional-container">
-                                <ng-container *ngIf="offDuty">
-                                    <div class="addres-wrapper">
-                                        <div class="addres-name">
-                                            {{ offDuty?.nickname }}
-                                        </div>
-                                        <div class="addres-value-icon">
-                                            <div class="addres-value">
-                                                {{
-                                                    offDuty?.address?.address
-                                                        ? offDuty.address
-                                                              .address
-                                                        : ''
-                                                }}
-                                            </div>
-                                            <span
-                                                tooltipBackground="#6c6c6c"
-                                                ngbTooltip
-                                                mainTooltip="Open in Places"
-                                                position="top"
-                                            >
-                                                <svg-icon
-                                                    class="address-icon"
-                                                    src="assets/svg/common/off-duty-location-icon.svg"
-                                                >
-                                                </svg-icon>
-                                            </span>
-                                        </div>
-                                        <ng-container *ngIf="!offDuty">
-                                            <span>No Added Location</span>
-                                        </ng-container>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </ng-container>
-                    </app-ta-custom-card>
-                </ng-container>
-
-                <!-- Payroll -->
                 <app-ta-custom-card
                     [cardName]="'Payroll'"
-                    [tooltipName]="'View in Modal'"
                     [isCardOpen]="true"
                     [bodyTemplate]="'card'"
-                    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '4px'
                     }"
-                    [customClass]="'detailsPadding'"
                 >
                     <div
                         class="charts-template perfomance"
@@ -969,6 +789,7 @@
                                 </app-ta-tab-switch>
                             </div>
                         </ng-container>
+
                         <div id="chart">
                             <app-ta-chart
                                 #payrollChart
@@ -981,157 +802,214 @@
                     </div>
                 </app-ta-custom-card>
 
-                <!-- Bank Info-->
+                <!-- Bank Info Card -->
+
                 <app-ta-custom-card
-                    *ngIf="driver.account"
+                    [cardName]="'Bank Info'"
                     [hasHeaderSvg]="
                         'assets/svg/common/banks/' + driver.bank.logoName
                     "
-                    [cardName]="'Bank Info'"
-                    [isCardOpen]="false"
-                    [customClassHeaderSvg]="true"
+                    [isCardOpen]="!!driver.bank.name"
+                    [disabledCard]="!driver.bank.name"
                     [bodyTemplate]="'card'"
+                    [customClassHeaderSvg]="true"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '4px'
                     }"
-                    [customClass]="'detailsPadding'"
                 >
-                    <div class="purchase-template">
-                        <div class="purchase-template-item">
-                            <div class="purchase-template-item-name">
-                                Routing
-                            </div>
-                            <div class="purchase-icon-copy">
-                                <app-ta-copy
-                                    [copyValue]="driver?.routing"
-                                    [textColor]="'#2f2f2f'"
-                                ></app-ta-copy>
-                            </div>
+                    <div class="align-items-center bank-info-container">
+                        <div
+                            class="d-flex flex-column justify-content-center bank-info-box"
+                        >
+                            <p class="m-0 ta-font-bold">Routing</p>
+                            <span>{{ driver.bank.routing }}</span>
                         </div>
-                        <div class="purchase-template-item second-name">
-                            <div class="purchase-template-item-name">
-                                Account
-                            </div>
-                            <div class="purchase-icon-copy">
-                                <app-ta-copy
-                                    [hasEye]="true"
-                                    (showHide)="
-                                        isAccountVisibleDriver =
-                                            !isAccountVisibleDriver
-                                    "
-                                    [copyValue]="driver?.account"
-                                    [textColor]="'#2f2f2f'"
-                                >
-                                </app-ta-copy>
-                            </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center bank-info-box"
+                        >
+                            <p class="m-0 ta-font-bold">Account</p>
+
+                            <app-ta-password-account-hidden-characters
+                                [passwordOrAccount]="driver.bank.account"
+                                [isRightSideIcon]="true"
+                            ></app-ta-password-account-hidden-characters>
                         </div>
                     </div>
-                </app-ta-custom-card>
-                <!-- Emergency Contact-->
-                <app-ta-custom-card
-                    [cardName]="'Emergency Contact'"
-                    [isCardOpen]="false"
-                    [bodyTemplate]="'card'"
-                    [animationMarginParams]="{
-                        marginTop: '0px',
-                        marginBottom: '10px'
-                    }"
-                    [customClass]="'detailsPadding'"
-                >
-                    <ng-container
-                        *ngIf="
-                            !driver.emergencyContactName ||
-                            !driver.emergencyContactPhone
-                        "
-                    >
-                        <div class="no-data-driver-details">No Contact</div>
-                    </ng-container>
-                    <ng-container
-                        *ngIf="
-                            driver.emergencyContactName &&
-                            driver.emergencyContactPhone
-                        "
-                    >
-                        <div class="purchase-template">
-                            <div class="purchase-template-item">
-                                <div class="purchase-template-item-name">
-                                    {{
-                                        driver?.emergencyContactRelationship
-                                            ? driver.emergencyContactRelationship
-                                            : 'Name'
-                                    }}
-                                </div>
-                                <div class="purchase-template-item-value">
-                                    {{ driver.emergencyContactName }}
-                                </div>
-                            </div>
-                            <div class="purchase-template-item second-name">
-                                <div class="purchase-template-item-name">
-                                    Phone
-                                </div>
-                                <div class="purchase-icon-copy">
-                                    <app-ta-copy
-                                        [copyValue]="
-                                            driver.emergencyContactPhone
-                                        "
-                                        [textColor]="'#2f2f2f'"
-                                    >
-                                    </app-ta-copy>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-container>
                 </app-ta-custom-card>
 
-                <!-- Files -->
-                <ng-container *ngIf="driver?.files.length">
-                    <app-ta-custom-card
-                        [cardName]="'Document'"
-                        [isCardOpen]="false"
-                        [hasCounter]="driver?.files?.length ?? 0"
-                        [bodyTemplate]="'card'"
-                        [animationMarginParams]="{
-                            marginTop: '0px',
-                            marginBottom: '10px'
-                        }"
-                        [customClass]="'detailsPadding'"
+                <!-- Off Duty Location Card-->
+
+                <app-ta-custom-card
+                    [cardName]="'Off Duty Location'"
+                    [hasCounter]="driver.offDutyLocations.length || -1"
+                    [isCardOpen]="driver.offDutyLocations.length"
+                    [disabledCard]="!driver.offDutyLocations.length"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <div
+                        class="d-flex flex-column justify-content-center off-duty-location-container"
                     >
-                        <div
-                            class="card_files_holder"
-                            [class.active]="driver?.files?.length > 1"
+                        <ng-container
+                            *ngFor="
+                                let offDutyLocation of driver.offDutyLocations;
+                                trackBy: identity
+                            "
                         >
-                            <app-ta-upload-files
-                                [files]="driver?.files"
-                                [customClassName]="'driver-card-pdf'"
-                                [hasCarouselBottomTabs]="true"
-                                [type]="'details'"
-                                [slideWidth]="428"
-                                [reviewMode]="'REVIEW_MODE'"
-                            ></app-ta-upload-files>
-                        </div>
-                    </app-ta-custom-card>
-                </ng-container>
-                <div class="divider"></div>
-                <div class="note-details-holder">
-                    <div class="note-item">
-                        <app-ta-input-note
-                            [formControl]="note"
-                            [isVisibleDivider]="false"
-                            [isVisibleNote]="true"
-                            [isVisibleArrow]="true"
-                            [minRows]="1"
-                            [placeholder]="'Write something.'"
-                            [customClass]="'note-small'"
-                            [note]="driverObject?.note"
-                            [blankNote]="driverObject?.note ? true : false"
-                            [noteType]="'details-card'"
-                            [entityId]="driver.id"
-                            [entityType]="'Driver'"
-                        >
-                        </app-ta-input-note>
+                            <div
+                                class="d-flex flex-column justify-content-center off-duty-location-box"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    {{ offDutyLocation.nickname }}
+                                </p>
+
+                                <span>
+                                    {{ offDutyLocation.address.address }}
+                                </span>
+                            </div>
+                        </ng-container>
                     </div>
-                </div>
+                </app-ta-custom-card>
+
+                <!-- Emergency Contact Card -->
+
+                <app-ta-custom-card
+                    [cardName]="'Emergency Contact'"
+                    [isCardOpen]="!!driver.emergencyContact.name"
+                    [disabledCard]="!driver.emergencyContact.name"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <div class="align-items-center emergency-contact-container">
+                        <div
+                            class="d-flex flex-column justify-content-center emergency-contact-box"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                {{ driver.emergencyContact.relationship }}
+                            </p>
+
+                            <app-ta-copy
+                                [textFontSize]="'14px'"
+                                [copyValue]="driver.emergencyContact.name"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center emergency-contact-box"
+                        >
+                            <p class="m-0 ta-font-bold">Phone</p>
+
+                            <app-ta-copy
+                                [textFontSize]="'14px'"
+                                [copyValue]="driver.emergencyContact.phone"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+
+                <!-- Notification Card -->
+
+                <app-ta-custom-card
+                    [cardName]="'Notification'"
+                    [isCardOpen]="true"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <div class="align-items-center notification-container">
+                        <div
+                            class="d-flex flex-column justify-content-center notification-box"
+                        >
+                            <p class="m-0 ta-font-bold">General</p>
+
+                            <ng-container
+                                *ngIf="
+                                    !driver.general.mail &&
+                                        driver.general.push &&
+                                        driver.general.sms;
+                                    else hasGeneralNotification
+                                "
+                            >
+                                <span> None </span>
+                            </ng-container>
+
+                            <ng-template #hasGeneralNotification>
+                                <span>
+                                    {{ driver.general.mail ? 'Email ' : '' }}
+                                    {{ driver.general.push ? ' • ' : '' }}
+                                    {{ driver.general.push ? 'Push' : '' }}
+                                    {{ driver.general.sms ? ' • ' : '' }}
+                                    {{ driver.general.sms ? 'SMS' : '' }}
+                                </span>
+                            </ng-template>
+                        </div>
+
+                        <div
+                            class="d-flex flex-column justify-content-center notification-box"
+                        >
+                            <p class="m-0 ta-font-bold">Payroll</p>
+
+                            <span>
+                                {{ driver.payroll.mail ? 'Email ' : '' }}
+                                {{ driver.payroll.push ? ' • ' : '' }}
+                                {{ driver.payroll.push ? 'Push' : '' }}
+                                {{ driver.payroll.sms ? ' • ' : '' }}
+                                {{ driver.payroll.sms ? 'SMS' : '' }}
+                            </span>
+                        </div>
+                    </div>
+                </app-ta-custom-card>
+
+                <!-- Documents Card -->
+
+                <app-ta-custom-card
+                    [cardName]="'Document'"
+                    [hasCounter]="driver.files.length || -1"
+                    [isCardOpen]="driver.files.length"
+                    [disabledCard]="!driver.files.length"
+                    [bodyTemplate]="'card'"
+                    [animationMarginParams]="{
+                        marginTop: '0px',
+                        marginBottom: '4px'
+                    }"
+                >
+                    <app-ta-upload-files
+                        [files]="driver?.files"
+                        [customClassName]="'driver-card-pdf'"
+                        [hasCarouselBottomTabs]="true"
+                        [type]="'details'"
+                        [slideWidth]="428"
+                        [reviewMode]="'REVIEW_MODE'"
+                    ></app-ta-upload-files>
+                </app-ta-custom-card>
+
+                <!-- Note Card -->
+
+                <app-ta-input-note
+                    formControlName="note"
+                    [isVisibleNote]="
+                        driver.note && driver.note !== 'null'
+                            ? driver.note
+                            : false
+                    "
+                    [note]="
+                        driver.note && driver.note !== 'null' ? driver.note : ''
+                    "
+                ></app-ta-input-note>
             </div>
 
             <ng-container *ngIf="templateCard">
