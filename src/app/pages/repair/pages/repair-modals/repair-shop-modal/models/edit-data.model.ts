@@ -1,3 +1,4 @@
+import { PayPeriod, DayOfWeek, RepairShopServiceTypeCommand, RepairShopOpenHoursCommand, RepairShopContactCommand } from 'appcoretruckassist';
 import {
     ActionTypesEnum,
     EditDataKey,
@@ -45,4 +46,42 @@ export interface RepairShopModalService {
     serviceType: string;
     svg: string;
     active: boolean;
+}
+
+export  interface CreateShopModel {
+    name?: string;
+    phone?: string;
+    phoneExt?: string;
+    email?: string;
+    addressCity?: string;
+    addressState?: string;
+    addressCounty?: string;
+    addressAddress?: string;
+    addressStreet?: string;
+    addressStreetNumber?: string;
+    addressCountry?: string;
+    addressZipCode?: string;
+    addressStateShortName?: string;
+    addressAddressUnit?: string;
+    pinned?: boolean;
+    note?: string;
+    companyOwned?: boolean;
+    bankId?: number;
+    account?: string;
+    routing?: string;
+    rent?: number;
+    payPeriod?: PayPeriod;
+    weeklyDay?: DayOfWeek;
+    monthlyDay?: number;
+    longitude?: number;
+    latitude?: number;
+    openHoursSameAllDays?: boolean;
+    openAlways?: boolean;
+    startTimeAllDays?: string;
+    endTimeAllDays?: string;
+    serviceTypes?: Array<RepairShopServiceTypeCommand>;
+    openHours?: Array<RepairShopOpenHoursCommand>;
+    contacts?: Array<RepairShopContactCommand>;
+    files?: Array<Blob>;
+    shopServiceType?: number;
 }

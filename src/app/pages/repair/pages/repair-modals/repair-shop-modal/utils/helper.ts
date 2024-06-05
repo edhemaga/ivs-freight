@@ -1,9 +1,10 @@
 import { RepairShopResponse } from 'appcoretruckassist';
-import { OpenHours, RepairShopModalService } from '../models/edit-data.model';
 import {
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
+    CreateShopModel,
+    OpenHours,
+    RepairShopModalService,
+} from '../models/edit-data.model';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 export function mapServices(
     res: RepairShopResponse,
@@ -32,3 +33,7 @@ export function createOpenHour(
     });
 }
 
+export function generateShopModel(form: CreateShopModel): CreateShopModel {
+    console.log(form);
+    return form;
+}
