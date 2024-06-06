@@ -7,6 +7,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
 import {
     FormControl,
@@ -23,40 +24,32 @@ import { Subject, takeUntil } from 'rxjs';
 // moment
 
 // Models
+import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
+import {
+    BankResponse,
+    CreateResponse,
+    EnumValue,
+    RatingReviewResponse,
+    RepairShopModalResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist/model/models';
+import {
+    DisplayServiceTab,
+    OpenedTab,
+    RepairShopModalAction,
+    RepairShopModalService,
+    RepairShopTabs,
+    RepeairShopModalInput,
+} from './models/edit-data.model';
+import { ReviewComment } from '@shared/models/review-comment.model';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { RepairService } from '@shared/services/repair.service';
 
 // Validators
-
-// Helpers
-
-// Animation
-import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
-
-// Component
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-
-// Pipes
-import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
-
-// Modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-//Enums
-import {
-    ActionTypesEnum,
-    OpenWorkingHours,
-    RepairShopModalEnum,
-} from './enums/repair-shop-modal.enum';
-import {
-    RepairShopConstants,
-    RepairShopModalStringEnum,
-} from './utils/constants/repair-shop-modal.constants';
 import {
     repairShopValidation,
     phoneFaxRegex,
@@ -67,34 +60,47 @@ import {
     routingBankValidation,
     accountBankValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
+
+// Helpers
+import { createOpenHour, mapServices } from './utils/helper';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Animation
+import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
+
+// Component
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
-import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
-import {
-    BankResponse,
-    CreateResponse,
-    EnumValue,
-    RepairShopModalResponse,
-} from 'appcoretruckassist/model/models';
-import { RepairService } from '@shared/services/repair.service';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { createOpenHour, mapServices } from './utils/helper';
-import {
-    OpenedTab,
-    RepairShopModalAction,
-    RepairShopModalService,
-    RepairShopTabs,
-    RepeairShopModalInput,
-} from './models/edit-data.model';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+
+// Pipes
+import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
+
+// Modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+// Enums
+import {
+    ActionTypesEnum,
+    OpenWorkingHours,
+    RepairShopModalEnum,
+} from './enums/repair-shop-modal.enum';
+import {
+    RepairShopConstants,
+    RepairShopModalStringEnum,
+} from './utils/constants/repair-shop-modal.constants';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 export type OpenHourFormGroup = FormGroup<{
     isWorkingDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
@@ -131,12 +137,15 @@ export type OpenHourFormGroup = FormGroup<{
         TaCheckboxComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
+        TaUserReviewComponent,
+
         // Pipes
         ActiveItemsPipe,
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
-    // TODO: Check open tab it can be review or details
+    RepairShopModalStringEnum = RepairShopModalStringEnum;
+    @Input() editData: null | RepeairShopModalInput;
     public tabs: RepairShopTabs[];
     TableStringEnum = TableStringEnum;
     selectedTab: OpenedTab = TableStringEnum.DETAILS;
@@ -153,14 +162,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public longitude: number;
     public latitude: number;
     services: RepairShopModalService[] = [];
-    public repairTypes: EnumValue[] = [];
+    public repairTypes: DisplayServiceTab[] = [];
     // Contact tab
     public modalTableTypeEnum = ModalTableTypeEnum;
     public contactAddedCounter: number = 0;
     isNewContactAdded: boolean;
     isDaysVisible: boolean;
     public isPhoneExtExist: boolean = false;
-    @Input() editData: null | RepeairShopModalInput;
+    reviews: RatingReviewResponse[] = [];
+    repairShopName: string;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -170,12 +180,82 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.initTabs();
         this.generateForm();
         this.initializeServices();
+        this.initTabs();
         this.initWorkingHours();
-        console.log(this.editData);
         this.repairShopForm.valueChanges.subscribe((v) => console.log(v));
+        if (this.isEditMode) {
+            this.editRepairShopById(this.editData?.id);
+        }
+    }
+
+    private generateForm() {
+        this.repairShopForm = this.formBuilder.group({
+            [RepairShopModalStringEnum.NAME]: [
+                null,
+                [Validators.required, ...repairShopValidation],
+            ],
+            [RepairShopModalStringEnum.PINNED]: [null],
+            [RepairShopModalStringEnum.PHONE]: [
+                null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            [RepairShopModalStringEnum.PHONE_EXT]: [null, [...phoneExtension]],
+            [RepairShopModalStringEnum.EMAIL]: [null],
+            [RepairShopModalStringEnum.SELECTED_ADDRESS]: [
+                null,
+                [Validators.required, ...addressValidation],
+            ],
+            [RepairShopModalStringEnum.ADDRESS_UNIT]: [
+                null,
+                [...addressUnitValidation],
+            ],
+            [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
+            [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.OPEN_ALWAYS]: [false],
+            [RepairShopModalStringEnum.BANK_ID]: [null, [...bankValidation]],
+            [RepairShopModalStringEnum.ROUTING]: [null, routingBankValidation],
+            [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
+            [RepairShopModalStringEnum.NOTE]: [null],
+            [RepairShopModalStringEnum.CONTACTS]: [null],
+            [RepairShopModalStringEnum.FILES]: [null],
+            [RepairShopModalStringEnum.SERVICES_HELPER]: [null],
+            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
+                null,
+                Validators.required,
+            ],
+            [RepairShopModalStringEnum.LONGITUDE]: [null],
+            [RepairShopModalStringEnum.LATITUDE]: [null],
+        });
+
+        this.repairShopName = this.editData?.data?.name;
+    }
+
+    private initializeServices() {
+        return this.shopService
+            .getRepairShopModalDropdowns()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RepairShopModalResponse) => {
+                    this.services = mapServices(res, true);
+                    this.repairTypes = res.shopServiceTypes;
+                    if (!this.isEditMode) this.repairTypes[0].checked = true;
+                    this.banks = res.banks;
+                },
+            });
+    }
+
+    public tabChange(selectedTab: RepairShopTabs): void {
+        this.selectedTab = selectedTab.id;
+        let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
+
+        this.animationObject = {
+            value: this.selectedTab,
+            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
+        };
     }
 
     initTabs() {
@@ -190,63 +270,101 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return this.editData?.data;
     }
 
-    private generateForm() {
-        this.repairShopForm = this.formBuilder.group({
-            name: [
-                this.editData?.data?.name ?? null,
-                [Validators.required, ...repairShopValidation],
-            ],
-            pinned: [this.editData?.data?.pinned ?? null],
-            phone: [
-                this.editData?.data?.phone ?? null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            phoneExt: [
-                this.editData?.data?.phoneExt ?? null,
-                [...phoneExtension],
-            ],
-            email: [this.editData?.data?.email ?? null],
-            address: [
-                this.editData?.data?.address.address ?? null,
-                [Validators.required, ...addressValidation],
-            ],
-            addressUnit: [
-                this.editData?.data?.address.addressUnit ?? null,
-                [...addressUnitValidation],
-            ],
-            openHours: this.formBuilder.array([]),
-            openHoursSameAllDays: [
-                this.editData?.data?.openHoursSameAllDays ?? null,
-            ],
-            startTimeAllDays: [this.editData?.data?.startTimeAllDays ?? null],
-            endTimeAllDays: [this.editData?.data?.endTimeAllDays ?? null],
-            openAlways: [this.editData?.data?.openAlways ?? false],
-            bankId: [this.editData?.data?.bankId ?? null, [...bankValidation]],
-            routing: [
-                this.editData?.data?.routing ?? null,
-                routingBankValidation,
-            ],
-            account: [
-                this.editData?.data?.account ?? null,
-                accountBankValidation,
-            ],
-            note: [this.editData?.data?.note ?? null],
-            contacts: [this.editData?.data?.contacts ?? null],
-            files: [this.editData?.data?.files ?? null],
-            // servicesHelper: [this.editData?.data?.servicesHelper ?? null],
-            shopServiceType: [
-                this.editData?.data?.shopServiceType ?? null,
-                Validators.required,
-            ],
-            longitude: [this.editData?.data?.longitude ?? null],
-            latitude: [this.editData?.data?.latitude ?? null],
-            selectedAddress: [this.editData?.data?.address.address ?? null],
-        });
+    get modalTitle(): string {
+        return this.isEditMode
+            ? RepairShopModalEnum.MODAL_TITLE_EDIT
+            : RepairShopModalEnum.MODAL_TITLE_ADD;
     }
+
+    private editRepairShopById(id: number) {
+        this.shopService
+            .getRepairShopById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RepairShopResponse) => {
+                    this.repairShopForm.patchValue({
+                        [RepairShopModalStringEnum.NAME]: res.name,
+                        [RepairShopModalStringEnum.PINNED]: res.pinned,
+                        [RepairShopModalStringEnum.PHONE]: res.phone,
+                        [RepairShopModalStringEnum.PHONE_EXT]: res.phoneExt,
+                        [RepairShopModalStringEnum.EMAIL]: res.email,
+                        [RepairShopModalStringEnum.ADDRESS_UNIT]:
+                            res.address.addressUnit,
+                        // [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
+                        [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
+                            res.openHoursSameAllDays,
+                        [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
+                            res.startTimeAllDays,
+                        [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
+                            res.endTimeAllDays,
+                        [RepairShopModalStringEnum.OPEN_ALWAYS]: res.openAlways,
+                        [RepairShopModalStringEnum.BANK_ID]: res.bank?.id,
+                        [RepairShopModalStringEnum.ROUTING]: res.routing,
+                        [RepairShopModalStringEnum.ACCOUNT]: res.account,
+                        [RepairShopModalStringEnum.NOTE]: res.note,
+                        [RepairShopModalStringEnum.CONTACTS]: res.contacts,
+                        [RepairShopModalStringEnum.FILES]: res.files,
+                        [RepairShopModalStringEnum.LONGITUDE]: res.longitude,
+                        [RepairShopModalStringEnum.LATITUDE]: res.latitude,
+                    });
+                    this.isPhoneExtExist = !!res.phoneExt;
+                    this.reviews = res.ratingReviews;
+                    this.services = mapServices(res, false);
+                    this.onHandleAddress({
+                        address: res.address,
+                        valid: true,
+                        longLat: {
+                            latitude: res.latitude,
+                            longitude: res.longitude,
+                        },
+                    });
+                    this.repairTypes.forEach(
+                        (repairType) =>
+                            (repairType.checked =
+                                repairType.id === res.shopServiceType.id)
+                    );
+                },
+            });
+    }
+
+    public onHandleAddress(event: {
+        address: AddressEntity;
+        valid: boolean;
+        longLat: any;
+    }) {
+        if (event.valid) {
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.SELECTED_ADDRESS)
+                .patchValue(event.address.address);
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.LONGITUDE)
+                .patchValue(event.longLat.longitude);
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.LATITUDE)
+                .patchValue(event.longLat.latitude);
+        }
+    }
+
+    // Favorite
+    public addShopToFavorite() {
+        this.favoriteField.patchValue(!this.isFavorite);
+    }
+
+    get isFavorite() {
+        return !!this.favoriteField.value;
+    }
+
+    get favoriteField() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
+    }
+
+    get favoriteLabel() {
+        return this.isFavorite
+            ? this.RepairShopModalEnum.REMOVE_FAVORITE
+            : this.RepairShopModalEnum.ADD_FAVORITE;
+    }
+
     // Open hours
-    public isOpenHoursHidden: boolean = false;
-    public timeFormat = 'HH:mm:ss';
-    public openHoursDays = RepairShopConstants.OPEN_HOUR_DAYS;
     public get openHours(): UntypedFormArray {
         return this.repairShopForm.get(
             RepairShopModalStringEnum.OPEN_HOURS
@@ -316,77 +434,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public convertTime(time: string) {
         return MethodsCalculationsHelper.convertTimeFromBackend(time);
     }
-    get modalTitle(): string {
-        // console.log('setting up title');
-        return this.isEditMode
-            ? RepairShopModalEnum.MODAL_TITLE_EDIT
-            : RepairShopModalEnum.MODAL_TITLE_ADD;
-    }
 
-    public tabChange(selectedTab: RepairShopTabs): void {
-        this.selectedTab = selectedTab.id;
-        let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
-
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
-    }
-
-    // Favorite
-    public addShopToFavorite() {
-        this.favoriteField.patchValue(!this.isFavorite);
-    }
-
-    get isFavorite() {
-        return !!this.favoriteField.value;
-    }
-
-    get favoriteField() {
-        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
-    }
-
-    get favoriteLabel() {
-        return this.isFavorite
-            ? this.RepairShopModalEnum.REMOVE_FAVORITE
-            : this.RepairShopModalEnum.ADD_FAVORITE;
-    }
-
-    // TODO:
-    // Address starts here
-    public onHandleAddress(event: {
-        address: AddressEntity;
-        valid: boolean;
-        longLat: any;
-    }) {
-        if (event.valid) {
-            this.repairShopForm
-                .get(RepairShopModalStringEnum.SELECTED_ADDRESS)
-                .patchValue(event.address.address);
-            this.repairShopForm
-                .get(RepairShopModalStringEnum.LONGITUDE)
-                .patchValue(event.longLat.longitude);
-            this.repairShopForm
-                .get(RepairShopModalStringEnum.LATITUDE)
-                .patchValue(event.longLat.latitude);
-        }
-    }
-    // TODO:
-
-    // Service tab
-    private initializeServices() {
-        return this.shopService
-            .getRepairShopModalDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: RepairShopModalResponse) => {
-                    this.services = mapServices(res, true);
-                    this.repairTypes = res.shopServiceTypes;
-                    this.banks = res.banks;
-                },
-            });
-    }
-
+    // Services
     public repairTypeTabChange(repairType: EnumValue) {
         this.repairShopForm
             .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
@@ -397,7 +446,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         service.active = !service.active;
     }
 
-    // You can add bank manully if there is no option in dropdown
+    // Bank
     public onSaveNewBank(bank: { data: { name: string } }) {
         this.bankVerificationService
             .createBank({ name: bank.data.name })
@@ -415,14 +464,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    // New bank selected or field is cleared
     public onBankChange(event: BankResponse | null) {
         // TODO: Not working when bank is selected it pass name value as id
         console.log(event);
         this.bankForm.patchValue(event?.id ?? null);
     }
 
-    // Set bank field as required
     get isBankSelected() {
         return !!this.bankForm.value;
     }
@@ -461,6 +508,27 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm.setErrors({ invalid: !validStatus });
     }
 
+    changeReviewsEvent(reviews: ReviewComment) {
+        switch (reviews.action) {
+            case 'delete': {
+                // this.deleteReview(reviews);
+                break;
+            }
+            case 'add': {
+                // this.addReview(reviews);
+                break;
+            }
+            case 'update': {
+                // this.updateReview(reviews);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+
+    // TODO:
     public addNewRepairShop() {
         console.log('Trying to add addRepairShop');
         const newShop = {

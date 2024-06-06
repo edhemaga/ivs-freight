@@ -27,6 +27,7 @@ import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.com
 import { TaPayrollStatusesComponent } from '@shared/components/ta-payroll-statuses/ta-payroll-statuses.component';
 import { TaLikeDislikeComponent } from '@shared/components/ta-like-dislike/ta-like-dislike.component';
 import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
+import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -49,6 +50,7 @@ import { TaNoteContainerComponent } from '@shared/components/ta-note-container/t
         TaPayrollStatusesComponent,
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
+        TaAppTooltipV2Component
     ],
 })
 export class TaCustomCardComponent implements OnInit {

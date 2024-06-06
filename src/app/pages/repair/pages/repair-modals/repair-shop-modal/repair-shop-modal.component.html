@@ -3,8 +3,10 @@
     [modalTitle]="modalTitle"
     [saveAndAddNew]="!isEditMode"
     [isModalValid]="isModalValidToSubmit"
+    [editName]="repairShopName"
+    [specificCaseModalName]="isEditMode"
 >
-    <div origin>
+    <div origin *ngIf="repairShopForm">
         <app-ta-tab-switch
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
@@ -38,7 +40,9 @@
                                     minLength: 2,
                                     maxLength: 64
                                 }"
-                                formControlName="name"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.NAME
+                                "
                             ></app-ta-input>
                         </div>
 
@@ -77,7 +81,9 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14
                                     }"
-                                    formControlName="phone"
+                                    [formControlName]="
+                                        RepairShopModalStringEnum.PHONE
+                                    "
                                 ></app-ta-input>
                             </div>
                             <div
@@ -103,7 +109,9 @@
                                     maxLength: 8,
                                     placeholderIcon: 'phone-extension'
                                 }"
-                                formControlName="phoneExt"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.PHONE_EXT
+                                "
                             ></app-ta-input>
                         </div>
                         <div class="email-field">
@@ -117,7 +125,9 @@
                                     maxLength: 64,
                                     textTransform: 'lowercase'
                                 }"
-                                formControlName="email"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.EMAIL
+                                "
                             ></app-ta-input>
                         </div>
                     </div>
@@ -138,7 +148,9 @@
                                     maxLength: 256
                                 }"
                                 [placeholderType]="'longAddress'"
-                                formControlName="address"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.SELECTED_ADDRESS
+                                "
                             ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-2">
@@ -151,12 +163,14 @@
                                     minLength: 1,
                                     maxLength: 10
                                 }"
-                                formControlName="addressUnit"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.ADDRESS_UNIT
+                                "
                             ></app-ta-input>
                         </div>
                     </div>
 
-                    <!-- Repair Shop Servies -->
+                    <!-- Repair Shop Services -->
                     <app-ta-custom-card
                         [cardName]="'Service'"
                         [disableAnimation]="disableCardAnimation"
@@ -211,7 +225,11 @@
                         [isCardOpen]="true"
                         [disabledCard]="true"
                     >
-                        <div formArrayName="openHours">
+                        <div
+                            [formArrayName]="
+                                RepairShopModalStringEnum.OPEN_HOURS
+                            "
+                        >
                             <div class="timeline__card">
                                 <div class="timeline__card-range ta-font-bold">
                                     Day
@@ -264,7 +282,9 @@
                                         [customClass]="'medium'"
                                         [label]="openHour.get('dayLabel').value"
                                         [name]="openHour.get('dayLabel').value"
-                                        formControlName="isWorkingDay"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.IS_WORKING_DAY
+                                        "
                                     ></app-ta-checkbox>
 
                                     <!-- Time Picker -->
@@ -279,7 +299,9 @@
                                             customClass: 'datetimeclass',
                                             hideClear: true
                                         }"
-                                        formControlName="startTime"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.START_TIME
+                                        "
                                     ></app-ta-input>
                                     <app-ta-input
                                         *ngIf="
@@ -292,7 +314,9 @@
                                             customClass: 'datetimeclass',
                                             hideClear: true
                                         }"
-                                        formControlName="endTime"
+                                        [formControlName]="
+                                            RepairShopModalStringEnum.END_TIME
+                                        "
                                     ></app-ta-input>
                                 </div>
                             </div>
@@ -307,7 +331,9 @@
                         }"
                         [cardName]="'Bank Account'"
                         [disableAnimation]="disableCardAnimation"
+                        [hasBodyData]="true"
                         [isCardOpen]="true"
+                        [disabledCard]="true"
                     >
                         <!-- This class are coming from form.scss -->
                         <div
@@ -330,7 +356,9 @@
                                 }"
                                 [options]="banks"
                                 [template]="'svg-template'"
-                                formControlName="bankId"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.BANK_ID
+                                "
                             ></app-ta-input-dropdown>
 
                             <app-ta-input
@@ -343,7 +371,9 @@
                                     minLength: 9,
                                     maxLength: 9
                                 }"
-                                formControlName="routing"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.ROUTING
+                                "
                             ></app-ta-input>
 
                             <app-ta-input
@@ -356,7 +386,9 @@
                                     maxLength: 17,
                                     minLength: 5
                                 }"
-                                formControlName="account"
+                                [formControlName]="
+                                    RepairShopModalStringEnum.ACCOUNT
+                                "
                             ></app-ta-input>
                         </div>
                     </app-ta-custom-card>
@@ -368,7 +400,7 @@
                             [hasCounter]="
                                 documents.length ? documents.length : 0
                             "
-                            [isCardOpen]="true"
+                            [isCardOpen]="documents.length"
                         >
                             <app-ta-upload-files
                                 (onFileEvent)="onFilesEvent($event)"
@@ -381,21 +413,20 @@
                     <!-- Note -->
                     <app-ta-input-note
                         [isVisibleNote]="
-                            repairShopForm.get('note').value &&
-                            repairShopForm.get('note').value != 'null'
-                                ? repairShopForm.get('note').value
-                                : false
+                            repairShopForm.get(RepairShopModalStringEnum.NOTE)
+                                .value !== null
                         "
                         [note]="
-                            repairShopForm.get('note').value &&
-                            repairShopForm.get('note').value != 'null'
-                                ? repairShopForm.get('note').value
-                                : ''
+                            repairShopForm.get(RepairShopModalStringEnum.NOTE)
+                                .value
                         "
-                        formControlName="note"
+                        [formControlName]="RepairShopModalStringEnum.NOTE"
                     ></app-ta-input-note>
                 </div>
-                <div *ngIf="selectedTab === TableStringEnum.CONTRACT" class="m-tab">
+                <div
+                    *ngIf="selectedTab === TableStringEnum.CONTRACT"
+                    class="m-tab"
+                >
                     <app-ta-custom-card
                         (onActionEvent)="addContact()"
                         [animationMarginParams]="{
@@ -429,8 +460,49 @@
                             </app-ta-modal-table>
                         </div>
                     </app-ta-custom-card>
+                    <div class="no-review-broker" *ngIf="!contactAddedCounter">
+                        <svg-icon
+                            class="no-review-svg"
+                            src="assets/svg/common/ic_no_contacts.svg"
+                        ></svg-icon>
+                    </div>
                 </div>
-                <div *ngIf="selectedTab === TableStringEnum.REVIEW" class="m-tab"></div>
+                <div
+                    *ngIf="selectedTab === TableStringEnum.REVIEW"
+                    class="m-tab"
+                >
+                    <app-ta-custom-card
+                        (onActionEvent)="createReview()"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '12px'
+                        }"
+                        [cardName]="'Review'"
+                        [disableAnimation]="disableCardAnimation"
+                        [disableMultipleReviews]="disableOneMoreReview"
+                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasArrow]="false"
+                        [hasBodyData]="reviews.length > 0"
+                        [hasCounter]="reviews.length ?? 0"
+                        [hasLikeDislike]="true"
+                        [hasScrollBody]="reviews.length > 6"
+                        [isCardOpen]="true"
+                        [isCommentData]="true"
+                    >
+                        <div *ngIf="!reviews.length" class="no-review-broker">
+                            <svg-icon
+                                class="no-review-svg"
+                                src="assets/svg/common/ic_no_review.svg"
+                            ></svg-icon>
+                        </div>
+                        <app-ta-user-review
+                            (changeReviewsEvent)="changeReviewsEvent($event)"
+                            *ngIf="reviews.length"
+                            [isNewReview]="reviews[0].isNewReview"
+                            [reviewData]="reviews"
+                        ></app-ta-user-review>
+                    </app-ta-custom-card>
+                </div>
             </div>
         </form>
     </div>

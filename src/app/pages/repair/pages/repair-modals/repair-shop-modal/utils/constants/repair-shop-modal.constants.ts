@@ -22,14 +22,27 @@ export enum RepairShopModalStringEnum {
     IS_WORKING_DAY = 'isWorkingDay',
     OPEN_ALWAYS = 'openAlways',
     PINNED = 'pinned',
-    SELECTED_ADDRESS = 'selectedAddress',
+    SELECTED_ADDRESS = 'address',
+    ADDRESS_UNIT = 'addressUnit',
     LONGITUDE = 'longitude',
     LATITUDE = 'latitude',
     SHOP_SERVICE_TYPE = 'shopServiceType',
     BANK_ID = 'bankId',
     FILES = 'files',
-    CONTACTS = 'contacts'
+    CONTACTS = 'contacts',
+    PHONE_EXT = 'phoneExt',
+    ROUTING = 'routing',
+    ACCOUNT = 'account',
+    NOTE = 'note',
+    SERVICES_HELPER = 'servicesHelper',
+    PHONE = 'phone',
+    EMAIL = 'email',
+    NAME = 'name',
+    OPEN_HOURS_SAME_ALL_DAYS = 'openHoursSameAllDays',
+    START_TIME_ALL_DAYS = 'startTimeAllDays',
+    END_TIME_ALL_DAYS = 'endTimeAllDays'
 }
+
 
 export class RepairShopConstants {
     static OPEN_HOUR_DAYS: WorkingHoursType = [

@@ -1,4 +1,4 @@
-import { PayPeriod, DayOfWeek, RepairShopServiceTypeCommand, RepairShopOpenHoursCommand, RepairShopContactCommand, AddressEntity } from 'appcoretruckassist';
+import { PayPeriod, DayOfWeek, RepairShopServiceTypeCommand, RepairShopOpenHoursCommand, RepairShopContactCommand, AddressEntity, EnumValue } from 'appcoretruckassist';
 import {
     ActionTypesEnum,
     EditDataKey,
@@ -98,4 +98,6 @@ export interface RepeairShopModalInput {
     canOpenModal: boolean;
 }
 
-
+export interface DisplayServiceTab extends EnumValue {
+    checked?: boolean;
+}
