@@ -171,6 +171,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public isPhoneExtExist: boolean = false;
     reviews: RatingReviewResponse[] = [];
     repairShopName: string;
+    selectedAddress: AddressEntity;
+    selectedBank: BankResponse = null;
+    isBankSelected: boolean;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
@@ -203,7 +206,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             ],
             [RepairShopModalStringEnum.PHONE_EXT]: [null, [...phoneExtension]],
             [RepairShopModalStringEnum.EMAIL]: [null],
-            [RepairShopModalStringEnum.SELECTED_ADDRESS]: [
+            [RepairShopModalStringEnum.ADDRESS]: [
                 null,
                 [Validators.required, ...addressValidation],
             ],
@@ -224,7 +227,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.FILES]: [null],
             [RepairShopModalStringEnum.SERVICES_HELPER]: [null],
             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
-                null,
+                this.repairTypes[0].id,
                 Validators.required,
             ],
             [RepairShopModalStringEnum.LONGITUDE]: [null],
@@ -242,7 +245,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 next: (res: RepairShopModalResponse) => {
                     this.services = mapServices(res, true);
                     this.repairTypes = res.shopServiceTypes;
-                    if (!this.isEditMode) this.repairTypes[0].checked = true;
+                    // On new shop we need to manually preselect shop otherwise form will not be valid until we click on it
+                    if (!this.isEditMode) {
+                        const firstService = this.repairTypes[0];
+                        firstService.checked = true;
+                        this.repairShopForm
+                            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+                            .patchValue(firstService.id);
+                    }
                     this.banks = res.banks;
                 },
             });
@@ -290,6 +300,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         [RepairShopModalStringEnum.EMAIL]: res.email,
                         [RepairShopModalStringEnum.ADDRESS_UNIT]:
                             res.address.addressUnit,
+                        [RepairShopModalStringEnum.ADDRESS]:
+                            res.address.address,
                         // [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
                         [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
                             res.openHoursSameAllDays,
@@ -298,45 +310,57 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
                             res.endTimeAllDays,
                         [RepairShopModalStringEnum.OPEN_ALWAYS]: res.openAlways,
-                        [RepairShopModalStringEnum.BANK_ID]: res.bank?.id,
                         [RepairShopModalStringEnum.ROUTING]: res.routing,
                         [RepairShopModalStringEnum.ACCOUNT]: res.account,
                         [RepairShopModalStringEnum.NOTE]: res.note,
                         [RepairShopModalStringEnum.CONTACTS]: res.contacts,
                         [RepairShopModalStringEnum.FILES]: res.files,
-                        [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: res.shopServiceType.id,
+                        [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
+                            res.shopServiceType.id,
                         [RepairShopModalStringEnum.LONGITUDE]: res.longitude,
                         [RepairShopModalStringEnum.LATITUDE]: res.latitude,
                     });
-                    this.isPhoneExtExist = !!res.phoneExt;
-                    this.reviews = res.ratingReviews;
-                    this.services = mapServices(res, false);
-                    this.onHandleAddress({
-                        address: res.address,
-                        valid: true,
-                        longLat: {
-                            latitude: res.latitude,
-                            longitude: res.longitude,
-                        },
-                    });
-                    this.repairTypes.forEach(
-                        (repairType) =>
-                            (repairType.checked =
-                                repairType.id === res.shopServiceType.id)
-                    );
+                    this.mapEditData(res);
                 },
             });
     }
 
-    public onHandleAddress(event: {
+    private mapEditData(res: RepairShopResponse) {
+        // This fields are custom and cannot be part of the form so we need to remap it
+        this.isPhoneExtExist = !!res.phoneExt;
+        this.reviews = res.ratingReviews;
+        this.services = mapServices(res, false);
+        this.selectedAddress = res.address;
+
+        if (res.bank) {
+            this.selectedBank =
+                this.banks.find(
+                    (bank) => bank.id === res.bank.id
+                ) ?? null;
+        }
+
+        this.onAddressChange({
+            address: res.address,
+            valid: true,
+            longLat: {
+                latitude: res.latitude,
+                longitude: res.longitude,
+            },
+        });
+
+        this.repairTypes.forEach(
+            (repairType) => (repairType.checked =
+                repairType.id === res.shopServiceType.id)
+        );
+    }
+
+    public onAddressChange(event: {
         address: AddressEntity;
         valid: boolean;
         longLat: any;
     }) {
         if (event.valid) {
-            this.repairShopForm
-                .get(RepairShopModalStringEnum.SELECTED_ADDRESS)
-                .patchValue(event.address.address);
+            this.selectedAddress = event.address;
             this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
@@ -454,29 +478,39 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: CreateResponse) => {
-                    const newBank = {
+                    this.selectedBank = {
                         id: res.id,
                         name: bank.data.name,
                     };
-                    this.onBankChange({ id: newBank.id });
-                    this.banks = [...this.banks, newBank];
+
+                    this.banks = [...this.banks, this.selectedBank];
                 },
                 error: () => {},
             });
     }
 
-    public onBankChange(event: BankResponse | null) {
-        // TODO: Not working when bank is selected it pass name value as id
-        console.log(event);
-        this.bankForm.patchValue(event?.id ?? null);
+    public onBankSelected(event: BankResponse | null) {
+        this.selectedBank = event;
+
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.BANK_ID)
+                .patchValue(null);
+
+        this.checkBankField();
     }
 
-    get isBankSelected() {
-        return !!this.bankForm.value;
-    }
+    private checkBankField(): void {
+        // This function will toggle form and field validators
+        async () => {
+            this.isBankSelected =
+                await this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : null,
 
-    get bankForm() {
-        return this.repairShopForm.get(RepairShopModalStringEnum.BANK_ID);
+                    this.repairShopForm.get(RepairShopModalStringEnum.ROUTING),
+                    this.repairShopForm.get(RepairShopModalStringEnum.ACCOUNT)
+                );
+        };
     }
 
     // Documents
@@ -542,14 +576,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (data.action === ActionTypesEnum.SAVE) {
             // Call update shop here
-            if(this.isEditMode) {
+            if (this.isEditMode) {
                 this.updateRepairShop(this.editData.id);
                 this.setModalSpinner(null, true, false);
             } else {
                 this.addNewRepairShop();
                 this.setModalSpinner(null, true, false);
             }
-            
+
             return;
         }
 
@@ -559,48 +593,49 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-        // TODO:
-        public addNewRepairShop() {
-            console.log('Trying to add addRepairShop');
-            const newShop = {
-                ...this.repairShopForm.value,
-                serviceTypes: this.services.map((item) => {
-                    return {
-                        serviceType: item.serviceType,
-                        active: item.active,
-                    };
-                }),
-                openHoursSameAllDays: !this.isDaysVisible,
-                startTimeAllDays: !this.isDaysVisible,
-                endTimeAllDays: !this.isDaysVisible
-                    ? this.openHours.value.at(0).endTime
-                    : null,
-            };
-            console.log(newShop);
-            // this.shopService
-            //     .addRepairShop(generateShopModel(newShop))
-            //     .pipe(takeUntil(this.destroy$))
-            //     .subscribe({
-            //         next: () => {
-            //             // TODO:?
-            //             console.log("Save new shop");
-            //         },
-            //         error: () => {
-            //             this.setModalSpinner(null, false, false);
-            //         },
-            //     });
-        }
-
-    updateRepairShop(id: number) {
+    // TODO:
+    public addNewRepairShop() {
+        console.log('Trying to add addRepairShop');
+        const newShop = {
+            ...this.repairShopForm.value,
+            serviceTypes: this.services.map((item) => {
+                return {
+                    serviceType: item.serviceType,
+                    active: item.active,
+                };
+            }),
+            openHoursSameAllDays: !this.isDaysVisible,
+            startTimeAllDays: !this.isDaysVisible,
+            endTimeAllDays: !this.isDaysVisible
+                ? this.openHours.value.at(0).endTime
+                : null,
+        };
+        console.log(newShop);
+        // this.shopService
+        //     .addRepairShop(generateShopModel(newShop))
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe({
+        //         next: () => {
+        //             // TODO:?
+        //             console.log("Save new shop");
+        //         },
+        //         error: () => {
+        //             this.setModalSpinner(null, false, false);
+        //         },
+        //     });
     }
+
+    updateRepairShop(id: number) {}
 
     private deleteRepairShopById(id: number) {
         this.shopService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () =>   this.setModalSpinner(ActionTypesEnum.DELETE, true, true),
-                error: () =>  this.setModalSpinner(ActionTypesEnum.DELETE, false, false) 
+                next: () =>
+                    this.setModalSpinner(ActionTypesEnum.DELETE, true, true),
+                error: () =>
+                    this.setModalSpinner(ActionTypesEnum.DELETE, false, false),
             });
     }
 

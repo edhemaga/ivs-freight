@@ -22,7 +22,7 @@ export enum RepairShopModalStringEnum {
     IS_WORKING_DAY = 'isWorkingDay',
     OPEN_ALWAYS = 'openAlways',
     PINNED = 'pinned',
-    SELECTED_ADDRESS = 'address',
+    ADDRESS = 'address',
     ADDRESS_UNIT = 'addressUnit',
     LONGITUDE = 'longitude',
     LATITUDE = 'latitude',

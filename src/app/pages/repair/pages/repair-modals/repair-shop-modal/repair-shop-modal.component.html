@@ -136,7 +136,8 @@
                     <div class="row last-row">
                         <div class="col-10">
                             <app-ta-input-address-dropdown
-                                (selectedAddress)="onHandleAddress($event)"
+                                (selectedAddress)="onAddressChange($event)"
+                                [activeAddress]="selectedAddress"
                                 [inputConfig]="{
                                     name: 'Address',
                                     type: 'text',
@@ -150,7 +151,7 @@
                                 }"
                                 [placeholderType]="'longAddress'"
                                 [formControlName]="
-                                    RepairShopModalStringEnum.SELECTED_ADDRESS
+                                    RepairShopModalStringEnum.ADDRESS
                                 "
                             ></app-ta-input-address-dropdown>
                         </div>
@@ -342,7 +343,7 @@
                         >
                             <app-ta-input-dropdown
                                 (saveItem)="onSaveNewBank($event)"
-                                (selectedItem)="onBankChange($event)"
+                                (selectedItem)="onBankSelected($event)"
                                 [activeItem]="selectedBank"
                                 [canAddNew]="true"
                                 [inputConfig]="{
