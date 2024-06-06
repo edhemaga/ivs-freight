@@ -436,7 +436,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         address: AddressEntity,
         personalInfoReview: ApplicantPersonalInfoReviewResponse
     ): void {
-        debugger;
         this.updatedPreviousAddressesItems[0] = address;
         if (!previousAddresses) return;
 
@@ -1414,7 +1413,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        debugger;
         let mappedPreviousAddresses = previousAddresses.map(
             (previousAddress) => {
                 return {
