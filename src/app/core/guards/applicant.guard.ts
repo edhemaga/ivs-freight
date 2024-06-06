@@ -12,13 +12,13 @@ export class ApplicantGuard implements CanActivate {
     ) {}
 
     canActivate() {
-        // this.applicantQuery.applicant$.subscribe((value) => {
-        //     if (!value) {
-        //         this.router.navigate(['/website']);
+        this.applicantQuery.applicant$.subscribe((value) => {
+            if (!value) {
+                this.router.navigate(['/website']);
 
-        //         return false;
-        //     }
-        // });
+                return false;
+            }
+        });
 
         return true;
     }
