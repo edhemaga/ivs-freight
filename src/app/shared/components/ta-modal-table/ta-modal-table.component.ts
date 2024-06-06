@@ -598,7 +598,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         if (this.isOffDutyLocationTable || this.isPreviousAddressesTable) {
-            console.log('pre modalTableDataValue: ', modalTableDataValue);
             modalTableDataValue = modalTableDataValue.map(
                 (
                     itemRow: DriverDetailsOffDutyLocationResponse,
@@ -612,7 +611,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     };
                 }
             );
-            console.log('posle modalTableDataValue: ', modalTableDataValue);
         }
 
         this.modalTableValueEmitter.emit(modalTableDataValue);
