@@ -57,7 +57,7 @@
     <ng-container *ngIf="personalInfoForm.get('isAgreement').value">
         <div class="d-flex justify-content-center form-section">
             <form [formGroup]="personalInfoForm">
-                <!-- FIRST NAME, LAST NAME -->
+                <!-- FIRST NAME, LAST NAME, DOB -->
 
                 <div class="d-flex form-input-container line-container">
                     <div class="group first-name-group">
@@ -109,6 +109,30 @@
                         ></app-ta-input>
                     </div>
 
+                    <div class="group date-group">
+                        <app-ta-input
+                            formControlName="dateOfBirth"
+                            [inputConfig]="{
+                                name: 'datepicker',
+                                type: 'text',
+                                label: 'DOB',
+                                isDropdown: true,
+                                placeholderIcon: 'date',
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                                isDisabled:
+                                    selectedMode === 'REVIEW_MODE' ||
+                                    (selectedMode === 'FEEDBACK_MODE' &&
+                                        stepFeedbackValues?.isDoBValid),
+                                incorrectInput: selectedMode === 'REVIEW_MODE'
+                            }"
+                            [incorrectValue]="
+                                openAnnotationArray[0].lineInputs[2]
+                            "
+                            (incorrectEvent)="incorrectInput($event, 2, 0)"
+                        ></app-ta-input>
+                    </div>
+
                     <!-- REVIEW AND FEEDBACK -->
 
                     <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
@@ -140,33 +164,9 @@
                     </ng-container>
                 </div>
 
-                <!--  DOB, SSN, PHONE-->
+                <!--  SSN, PHONE, EMAIL -->
 
                 <div class="d-flex form-input-container line-container">
-                    <div class="group date-group">
-                        <app-ta-input
-                            formControlName="dateOfBirth"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                label: 'DOB',
-                                isDropdown: true,
-                                placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass: 'datetimeclass',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isDoBValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
-                            [incorrectValue]="
-                                openAnnotationArray[0].lineInputs[2]
-                            "
-                            (incorrectEvent)="incorrectInput($event, 2, 0)"
-                        ></app-ta-input>
-                    </div>
-
                     <div class="group ssn-group">
                         <app-ta-input
                             formControlName="ssn"
@@ -214,6 +214,22 @@
                         ></app-ta-input>
                     </div>
 
+                    <div class="group email-group">
+                        <app-ta-input
+                            formControlName="email"
+                            [inputConfig]="{
+                                name: 'Email',
+                                type: 'text',
+                                label: 'Email',
+                                isRequired: true,
+                                placeholderIcon: 'email',
+                                minLength: 5,
+                                maxLength: 64,
+                                textTransform: 'lowercase'
+                            }"
+                        ></app-ta-input>
+                    </div>
+
                     <!-- REVIEW AND FEEDBACK -->
 
                     <ng-container *ngIf="selectedMode !== 'APPLICANT_MODE'">
@@ -249,769 +265,45 @@
 
                 <div
                     class="d-flex flex-column justify-content-center previous-addresses"
-                    formArrayName="previousAddresses"
                 >
-                    <div class="d-flex flex-column justify-content-center">
-                        <ng-container
-                            *ngFor="
-                                let address of previousAddresses?.controls;
-                                let i = index;
-                                let last = last;
-                                let first = first;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <div
-                                class="d-flex flex-column justify-content-center dets-container"
-                                [ngStyle]="{
-                                    'margin-top':
-                                        (isEditingArray[i]?.isEditing &&
-                                            isEditingMiddlePositionAddress &&
-                                            i !== 0) ||
-                                        (isEditingArray[i]?.isEditing &&
-                                            isEditingMiddlePositionAddress &&
-                                            last)
-                                            ? '36px'
-                                            : '0',
-                                    'margin-bottom':
-                                        isEditingArray[i]?.isEditing &&
-                                        isEditingMiddlePositionAddress &&
-                                        !last
-                                            ? '22px'
-                                            : isEditingArray[i]?.isEditing &&
-                                              !isEditingMiddlePositionAddress &&
-                                              first &&
-                                              previousAddresses?.controls
-                                                  .length > 1
-                                            ? '22px'
-                                            : '2px'
-                                }"
-                            >
-                                <ng-container
-                                    *ngIf="
-                                        (previousAddresses.controls.length >
-                                            1 &&
-                                            helperIndex !== 0 &&
-                                            i === 0) ||
-                                        (helperIndex === 0 &&
-                                            i === 1 &&
-                                            previousAddresses.at(1).value
-                                                .address)
-                                    "
-                                >
-                                    <div
-                                        class="d-flex align-items-center title-container"
-                                    >
-                                        <div class="address-title-container">
-                                            <p class="m-0 ta-font-bold">
-                                                Address, City, State Zip
-                                                <span>*</span>
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="address-unit-title-container"
-                                        >
-                                            <p class="m-0 ta-font-bold">
-                                                Unit #
-                                            </p>
-                                        </div>
-                                    </div></ng-container
-                                >
-
-                                <ng-container
-                                    *ngIf="
-                                        (previousAddresses.at(i).value
-                                            .address &&
-                                            !isEditingArray[i]?.isEditing) ||
-                                        (!previousAddresses.at(i).value
-                                            .address &&
-                                            isEditingArray[i]?.isEditing) ||
-                                        (previousAddresses.at(i).value
-                                            .address &&
-                                            isEditingArray[i]?.isEditing)
-                                    "
-                                >
-                                    <div
-                                        class="d-flex align-items-center"
-                                        [formGroupName]="i"
-                                        [ngStyle]="{
-                                            'margin-top':
-                                                previousAddresses?.controls
-                                                    .length > 1 &&
-                                                last &&
-                                                isEditingArray[i].isEditing &&
-                                                !isLastInputDeleted
-                                                    ? '32px'
-                                                    : '0'
-                                        }"
-                                    >
-                                        <div
-                                            class="d-flex align-items-center right-container line-container"
-                                            [ngStyle]="{
-                                                'background-color':
-                                                    isEditingArray[i]?.isEditing
-                                                        ? '#ffffff'
-                                                        : '#F3F3F3',
-                                                padding: isEditingArray[i]
-                                                    ?.isEditing
-                                                    ? '0'
-                                                    : '4px 6px'
-                                            }"
-                                        >
-                                            <ng-container
-                                                *ngIf="
-                                                    isEditingArray[i]?.isEditing
-                                                "
-                                            >
-                                                <div
-                                                    class="d-flex align-items-center input-container"
-                                                >
-                                                    <div
-                                                        class="d-flex align-items-center"
-                                                    >
-                                                        <div
-                                                            class="address-container"
-                                                            [ngStyle]="{
-                                                                width:
-                                                                    previousAddresses
-                                                                        .controls
-                                                                        .length ===
-                                                                        1 ||
-                                                                    (isEditingArray[
-                                                                        i
-                                                                    ]
-                                                                        ?.isEditing &&
-                                                                        !isEditingArray[
-                                                                            i
-                                                                        ]
-                                                                            ?.isEditingAddress &&
-                                                                        isEditingArray[
-                                                                            i
-                                                                        ]
-                                                                            ?.isFirstAddress &&
-                                                                        previousAddresses
-                                                                            .controls
-                                                                            .length ===
-                                                                            1)
-                                                                        ? '480px'
-                                                                        : isEditingArray[
-                                                                              i
-                                                                          ]
-                                                                              ?.isEditing &&
-                                                                          !isEditingArray[
-                                                                              i
-                                                                          ]
-                                                                              ?.isEditingAddress &&
-                                                                          !isLastInputDeleted &&
-                                                                          !isEditingArray[
-                                                                              i
-                                                                          ]
-                                                                              ?.isFirstAddress
-                                                                        ? '442px'
-                                                                        : '412px'
-                                                            }"
-                                                        >
-                                                            <app-ta-input-address-dropdown
-                                                                formControlName="address"
-                                                                [inputConfig]="{
-                                                                    name: 'Address',
-                                                                    type: 'text',
-                                                                    label: 'Address, City, State Zip',
-                                                                    isRequired: true,
-                                                                    placeholderIcon:
-                                                                        'address',
-                                                                    textTransform:
-                                                                        'capitalize',
-                                                                    dropdownWidthClass:
-                                                                        isEditingArray[
-                                                                            i
-                                                                        ]
-                                                                            ?.isEditing &&
-                                                                        !isEditingArray[
-                                                                            i
-                                                                        ]
-                                                                            ?.isEditingAddress &&
-                                                                        !isLastInputDeleted &&
-                                                                        !isEditingArray[
-                                                                            i
-                                                                        ]
-                                                                            ?.isFirstAddress
-                                                                            ? 'w-col-442'
-                                                                            : isEditingArray[
-                                                                                  i
-                                                                              ]
-                                                                                  ?.isEditing &&
-                                                                              !isEditingArray[
-                                                                                  i
-                                                                              ]
-                                                                                  ?.isEditingAddress &&
-                                                                              isEditingArray[
-                                                                                  i
-                                                                              ]
-                                                                                  ?.isFirstAddress &&
-                                                                              previousAddresses
-                                                                                  .controls
-                                                                                  .length ===
-                                                                                  1
-                                                                            ? 'w-col-480'
-                                                                            : 'w-col-412',
-                                                                    minLength: 6,
-                                                                    maxLength: 256,
-                                                                    isDisabled:
-                                                                        selectedMode ===
-                                                                            'REVIEW_MODE' ||
-                                                                        (selectedMode ===
-                                                                            'FEEDBACK_MODE' &&
-                                                                            i ===
-                                                                                previousAddresses
-                                                                                    .controls
-                                                                                    .length -
-                                                                                    1 &&
-                                                                            stepFeedbackValues?.isAddressValid),
-                                                                    incorrectInput:
-                                                                        selectedMode ===
-                                                                        'REVIEW_MODE'
-                                                                }"
-                                                                [placeholderType]="
-                                                                    'longAddress'
-                                                                "
-                                                                [incorrectValue]="
-                                                                    openAnnotationArray[6]
-                                                                        .lineInputs
-                                                                        ? openAnnotationArray[6]
-                                                                              .lineInputs[0]
-                                                                        : openAnnotationArray[5]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[5]
-                                                                              .lineInputs[0]
-                                                                        : openAnnotationArray[4]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[4]
-                                                                              .lineInputs[0]
-                                                                        : openAnnotationArray[3]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[3]
-                                                                              .lineInputs[0]
-                                                                        : openAnnotationArray[2]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[2]
-                                                                              .lineInputs[0]
-                                                                        : false
-                                                                "
-                                                                (incorrectEvent)="
-                                                                    incorrectInput(
-                                                                        $event,
-                                                                        0,
-                                                                        i + 2
-                                                                    )
-                                                                "
-                                                                (selectedAddress)="
-                                                                    handleInputSelect(
-                                                                        $event,
-                                                                        'PREVIOUS-ADDRESS',
-                                                                        i
-                                                                    )
-                                                                "
-                                                            ></app-ta-input-address-dropdown>
-                                                        </div>
-
-                                                        <div
-                                                            class="address-unit-container"
-                                                        >
-                                                            <app-ta-input
-                                                                formControlName="addressUnit"
-                                                                [inputConfig]="{
-                                                                    name: 'address-unit',
-                                                                    type: 'text',
-                                                                    label: 'Unit No.',
-                                                                    minLength: 1,
-                                                                    maxLength: 10,
-                                                                    textTransform:
-                                                                        'uppercase',
-                                                                    isDisabled:
-                                                                        selectedMode ===
-                                                                            'REVIEW_MODE' ||
-                                                                        (selectedMode ===
-                                                                            'FEEDBACK_MODE' &&
-                                                                            i ===
-                                                                                previousAddresses
-                                                                                    .controls
-                                                                                    .length -
-                                                                                    1 &&
-                                                                            stepFeedbackValues?.isAddressUnitValid),
-                                                                    incorrectInput:
-                                                                        selectedMode ===
-                                                                        'REVIEW_MODE'
-                                                                }"
-                                                                [incorrectValue]="
-                                                                    openAnnotationArray[6]
-                                                                        .lineInputs
-                                                                        ? openAnnotationArray[6]
-                                                                              .lineInputs[1]
-                                                                        : openAnnotationArray[5]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[5]
-                                                                              .lineInputs[1]
-                                                                        : openAnnotationArray[4]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[4]
-                                                                              .lineInputs[1]
-                                                                        : openAnnotationArray[3]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[3]
-                                                                              .lineInputs[1]
-                                                                        : openAnnotationArray[2]
-                                                                              .lineInputs
-                                                                        ? openAnnotationArray[2]
-                                                                              .lineInputs[1]
-                                                                        : false
-                                                                "
-                                                                (incorrectEvent)="
-                                                                    incorrectInput(
-                                                                        $event,
-                                                                        1,
-                                                                        i + 2
-                                                                    )
-                                                                "
-                                                            ></app-ta-input>
-                                                        </div>
-
-                                                        <ng-container
-                                                            *ngIf="
-                                                                isEditingArray[
-                                                                    i
-                                                                ]?.isEditing &&
-                                                                isEditingArray[
-                                                                    i
-                                                                ]
-                                                                    ?.isEditingAddress
-                                                            "
-                                                        >
-                                                            <div
-                                                                class="d-flex align-items-center justify-content-center confirm-cancel-btn-container"
-                                                            >
-                                                                <div
-                                                                    ngbTooltip
-                                                                    mainTooltip="Confirm"
-                                                                    tooltipBackground="#536BC2"
-                                                                    position="top"
-                                                                >
-                                                                    <svg-icon
-                                                                        class="confirm-icon"
-                                                                        src="assets/svg/ic_spec-confirm.svg"
-                                                                        [svgStyle]="{
-                                                                            'width.px': 26,
-                                                                            'height.px': 26
-                                                                        }"
-                                                                        (click)="
-                                                                            onConfirmEditedNewAddress(
-                                                                                i
-                                                                            )
-                                                                        "
-                                                                    ></svg-icon>
-                                                                </div>
-
-                                                                <div
-                                                                    ngbTooltip
-                                                                    mainTooltip="Cancel"
-                                                                    tooltipBackground="#6C6C6C"
-                                                                    position="top"
-                                                                >
-                                                                    <svg-icon
-                                                                        class="cancel-icon"
-                                                                        src="assets/svg/ic_x.svg"
-                                                                        [svgStyle]="{
-                                                                            'width.px': 26,
-                                                                            'height.px': 26
-                                                                        }"
-                                                                        (click)="
-                                                                            onCancelEditingNewAddress(
-                                                                                i
-                                                                            )
-                                                                        "
-                                                                    ></svg-icon>
-                                                                </div>
-                                                            </div>
-                                                        </ng-container>
-
-                                                        <ng-container
-                                                            *ngIf="
-                                                                previousAddresses
-                                                                    ?.controls
-                                                                    .length !==
-                                                                    1 &&
-                                                                isEditingArray[
-                                                                    i
-                                                                ]?.isEditing &&
-                                                                !isEditingArray[
-                                                                    i
-                                                                ]
-                                                                    ?.isEditingAddress &&
-                                                                !isLastInputDeleted &&
-                                                                !isEditingArray[
-                                                                    i
-                                                                ].isFirstAddress
-                                                            "
-                                                        >
-                                                            <div
-                                                                class="d-flex align-items-center justify-content-center delete-btn-container"
-                                                                [ngClass]="{
-                                                                    disabled:
-                                                                        selectedMode !==
-                                                                        'APPLICANT_MODE'
-                                                                }"
-                                                            >
-                                                                <div
-                                                                    ngbTooltip
-                                                                    mainTooltip="Delete"
-                                                                    tooltipBackground="#EF5350"
-                                                                    position="top"
-                                                                >
-                                                                    <svg-icon
-                                                                        class="delete-icon"
-                                                                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                                                        [svgStyle]="{
-                                                                            'width.px': 18,
-                                                                            'height.px': 18
-                                                                        }"
-                                                                        (click)="
-                                                                            onRemoveNewAddress(
-                                                                                i
-                                                                            )
-                                                                        "
-                                                                    ></svg-icon>
-                                                                </div>
-                                                            </div>
-                                                        </ng-container>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-
-                                            <div
-                                                class="d-flex align-items-center info-btn-container"
-                                            >
-                                                <ng-container
-                                                    *ngIf="
-                                                        !isEditingArray[i]
-                                                            ?.isEditing &&
-                                                        !isEditingArray[i]
-                                                            ?.isEditingAddress
-                                                    "
-                                                >
-                                                    <div
-                                                        class="d-flex align-items-center info-container"
-                                                    >
-                                                        <div
-                                                            class="d-flex align-items-center text-truncate address-container"
-                                                        >
-                                                            <svg-icon
-                                                                class="address-icon"
-                                                                src="assets/svg/common/ic_address.svg"
-                                                                [svgStyle]="{
-                                                                    'width.px': 18,
-                                                                    'height.px': 18
-                                                                }"
-                                                            ></svg-icon>
-
-                                                            <div
-                                                                class="d-flex pipe"
-                                                            ></div>
-
-                                                            <p
-                                                                class="m-0 ta-font-regular"
-                                                            >
-                                                                {{
-                                                                    address
-                                                                        .value
-                                                                        ?.address
-                                                                }}
-                                                            </p>
-                                                        </div>
-
-                                                        <div
-                                                            class="d-flex align-items-center address-unit-container"
-                                                        >
-                                                            <p
-                                                                class="d-inline-block text-truncate m-0 ta-font-regular"
-                                                                style="
-                                                                    max-width: 300px;
-                                                                "
-                                                            >
-                                                                {{
-                                                                    address
-                                                                        .value
-                                                                        ?.addressUnit
-                                                                }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </ng-container>
-
-                                                <ng-container
-                                                    *ngIf="
-                                                        !isEditingArray[i]
-                                                            ?.isEditing
-                                                    "
-                                                >
-                                                    <div
-                                                        class="d-flex align-items-center btn-container"
-                                                        [ngClass]="{
-                                                            active:
-                                                                selectedMode ===
-                                                                'REVIEW_MODE'
-                                                        }"
-                                                        [ngStyle]="{
-                                                            'margin-left':
-                                                                selectedMode ===
-                                                                'APPLICANT_MODE'
-                                                                    ? '26px'
-                                                                    : selectedMode ===
-                                                                      'FEEDBACK_MODE'
-                                                                    ? '48px'
-                                                                    : '5px'
-                                                        }"
-                                                    >
-                                                        <ng-container
-                                                            *ngIf="
-                                                                selectedMode ===
-                                                                    'APPLICANT_MODE' ||
-                                                                (selectedMode ===
-                                                                    'FEEDBACK_MODE' &&
-                                                                    !stepFeedbackValues
-                                                                        .previousAddressesReview[
-                                                                        i
-                                                                    ]
-                                                                        .isPreviousAddressValid)
-                                                            "
-                                                        >
-                                                            <div
-                                                                ngbTooltip
-                                                                mainTooltip="Edit"
-                                                                tooltipBackground="#6C6C6C"
-                                                                position="top"
-                                                            >
-                                                                <svg-icon
-                                                                    class="edit-icon"
-                                                                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                                                    [svgStyle]="{
-                                                                        'width.px': 18,
-                                                                        'height.px': 18
-                                                                    }"
-                                                                    (click)="
-                                                                        onEditNewAddress(
-                                                                            i
-                                                                        )
-                                                                    "
-                                                                ></svg-icon>
-                                                            </div>
-                                                        </ng-container>
-
-                                                        <ng-container
-                                                            *ngIf="
-                                                                selectedMode ===
-                                                                'APPLICANT_MODE'
-                                                            "
-                                                        >
-                                                            <div
-                                                                ngbTooltip
-                                                                mainTooltip="Delete"
-                                                                tooltipBackground="#EF5350"
-                                                                position="top"
-                                                            >
-                                                                <svg-icon
-                                                                    class="delete-icon"
-                                                                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                                                                    [svgStyle]="{
-                                                                        'width.px': 18,
-                                                                        'height.px': 18
-                                                                    }"
-                                                                    (click)="
-                                                                        onRemoveNewAddress(
-                                                                            i
-                                                                        )
-                                                                    "
-                                                                ></svg-icon>
-                                                            </div>
-                                                        </ng-container>
-
-                                                        <ng-container
-                                                            *ngIf="
-                                                                selectedMode ===
-                                                                'REVIEW_MODE'
-                                                            "
-                                                        >
-                                                            <div>
-                                                                <div
-                                                                    class="review-icon-box"
-                                                                    ngbTooltip
-                                                                    mainTooltip="Mark Incorrect"
-                                                                    tooltipBackground="#F44336"
-                                                                    position="top"
-                                                                >
-                                                                    <svg-icon
-                                                                        class="review-icon"
-                                                                        [ngClass]="{
-                                                                            active:
-                                                                                openAnnotationArray[
-                                                                                    i +
-                                                                                        2
-                                                                                ]
-                                                                                    .displayAnnotationButton ||
-                                                                                openAnnotationArray[
-                                                                                    i +
-                                                                                        2
-                                                                                ]
-                                                                                    .displayAnnotationTextArea
-                                                                        }"
-                                                                        src="assets/svg/ic_x.svg"
-                                                                        [svgStyle]="{
-                                                                            'width.px': 18,
-                                                                            'height.px': 18
-                                                                        }"
-                                                                        (click)="
-                                                                            incorrectInput(
-                                                                                $event,
-                                                                                0,
-                                                                                i +
-                                                                                    2,
-                                                                                'card'
-                                                                            )
-                                                                        "
-                                                                    ></svg-icon>
-                                                                </div>
-                                                            </div>
-                                                        </ng-container>
-                                                    </div>
-                                                </ng-container>
-                                            </div>
-
-                                            <!-- REVIEW AND FEEDBACK -->
-
-                                            <ng-container
-                                                *ngIf="
-                                                    selectedMode !==
-                                                    'APPLICANT_MODE'
-                                                "
-                                            >
-                                                <div
-                                                    class="d-flex review-feedback-container"
-                                                >
-                                                    <app-applicant-review-feedback
-                                                        [formControlName]="
-                                                            'cardReview' +
-                                                            (i + 1)
-                                                        "
-                                                        [displayAnnotationButton]="
-                                                            selectedMode ===
-                                                                'REVIEW_MODE' &&
-                                                            openAnnotationArray[
-                                                                i + 2
-                                                            ]
-                                                                .displayAnnotationButton
-                                                        "
-                                                        [displayAnnotationTextArea]="
-                                                            selectedMode ===
-                                                                'REVIEW_MODE' &&
-                                                            openAnnotationArray[
-                                                                i + 2
-                                                            ]
-                                                                .displayAnnotationTextArea
-                                                        "
-                                                        [lineIndex]="i + 2"
-                                                        [isFeedback]="
-                                                            selectedMode ===
-                                                            'FEEDBACK_MODE'
-                                                        "
-                                                        [feedbackText]="
-                                                            selectedMode ===
-                                                                'FEEDBACK_MODE' &&
-                                                            i ===
-                                                                previousAddresses
-                                                                    ?.controls
-                                                                    .length -
-                                                                    1
-                                                                ? stepFeedbackValues?.addressMessage
-                                                                : i === 3
-                                                                ? stepFeedbackValues
-                                                                      ?.previousAddressesReview[3]
-                                                                      ?.previousAddressMessage
-                                                                : i === 2
-                                                                ? stepFeedbackValues
-                                                                      ?.previousAddressesReview[2]
-                                                                      ?.previousAddressMessage
-                                                                : i === 1
-                                                                ? stepFeedbackValues
-                                                                      ?.previousAddressesReview[1]
-                                                                      ?.previousAddressMessage
-                                                                : i === 0
-                                                                ? stepFeedbackValues
-                                                                      ?.previousAddressesReview[0]
-                                                                      ?.previousAddressMessage
-                                                                : null
-                                                        "
-                                                        [cardsLength]="
-                                                            previousAddresses
-                                                                ?.controls
-                                                                .length
-                                                        "
-                                                        [cardsType]="
-                                                            'addresses'
-                                                        "
-                                                        [cardIndex]="i + 2"
-                                                        (annotationBtnClickEvent)="
-                                                            selectedMode ===
-                                                                'REVIEW_MODE' &&
-                                                                getAnnotationBtnClickValue(
-                                                                    $event
-                                                                )
-                                                        "
-                                                    ></app-applicant-review-feedback>
-                                                </div>
-                                            </ng-container>
-                                        </div></div
-                                ></ng-container>
-                            </div>
-                        </ng-container>
-                    </div>
-
-                    <ng-container
-                        *ngIf="
-                            selectedMode === 'APPLICANT_MODE' &&
-                            previousAddresses.controls?.length < 5
+                    <app-ta-custom-card
+                        [hasCounter]="previousAddressesItems?.length"
+                        [cardName]="'Address'"
+                        [headerSvgEnabled]="true"
+                        [hasArrow]="false"
+                        [stayOpen]="true"
+                        [subText]="
+                            'Add previous addresses for the past 3 years. First one is primary.'
                         "
+                        [isCardOpen]="true"
+                        [disabledCard]="true"
+                        [disableAnimation]="false"
+                        [animationMarginParams]="{
+                            marginTop: '10px',
+                            marginBottom: '12px'
+                        }"
+                        (onActionEvent)="addPreviousAddress($event)"
                     >
-                        <div
-                            class="d-flex flex-column justify-content-center align-items-center previous-address-btn-container"
-                        >
-                            <h5 class="m-0 ta-font-bold previous-address-title">
-                                Add previous addresses for the past 3 years?
-                            </h5>
-
-                            <app-applicant-add-save-btn
-                                [addBtn]="true"
-                                [btnText]="'Add Address'"
-                                [disabledValue]="
-                                    !isLastAddedPreviousAddressValid &&
-                                    !isLastInputDeleted
-                                "
-                                (clickValueEmitter)="onGetBtnClickValue($event)"
-                            ></app-applicant-add-save-btn>
-                        </div>
-                    </ng-container>
+                        <app-ta-modal-table
+                            [tableType]="
+                                modalTableTypeEnum.PREVIOUS_ADDRESSES
+                            "
+                            [isNewRowCreated]="isPreviousAddressesRowCreated"
+                            [modalTableData]="updatedPreviousAddressesItems"
+                            (modalTableValueEmitter)="
+                                handleModalTableValueEmit($event)
+                            "
+                            (modalTableValidStatusEmitter)="
+                                handleModalTableValidStatusEmit($event)
+                            "
+                        ></app-ta-modal-table>
+                    </app-ta-custom-card>
                 </div>
 
                 <!-- BANK NAME, ACCOUNT NUMBER, ROUTING NUMBER -->
 
                 <div
                     class="d-flex form-input-container line-container"
-                    [ngStyle]="{
-                        'margin-top':
-                            selectedMode !== 'APPLICANT_MODE' ||
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                previousAddresses.controls.length === 5)
-                                ? '32px'
-                                : 0
-                    }"
                 >
                     <div class="group bank-group">
                         <app-ta-input-dropdown
@@ -1073,8 +365,8 @@
                                         !isBankSelected) ||
                                     selectedMode !== 'APPLICANT_MODE',
                                 isRequired: isBankSelected,
-                                minLength: 9,
-                                maxLength: 9
+                                maxLength: 17,
+                                minLength: 5
                             }"
                         ></app-ta-input>
                     </div>
@@ -1260,10 +552,7 @@
                                                     selectedMode ===
                                                     'REVIEW_MODE'
                                             }"
-                                            [incorrectValue]="
-                                                openAnnotationArray[i + 9]
-                                                    .lineInputs[0]
-                                            "
+
                                             (incorrectEvent)="
                                                 incorrectInput($event, 0, i + 9)
                                             "
@@ -1329,36 +618,40 @@
                     ></ng-container>
                 </div>
 
+                <div class="divider"></div>
+
                 <!-- FILES SECTION -->
 
                 <div
                     class="d-flex flex-column align-items-center files-section"
                 >
-                    <h4
-                        class="m-0 text-center ta-font-bold"
-                        [ngStyle]="{
-                            color:
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? '#919191'
-                                    : '#2F2F2F'
-                        }"
-                    >
-                        Please upload your SSN Card
-                    </h4>
-
                     <!-- FILES CONTAINER -->
 
                     <div class="d-flex flex-column files-container">
-                        <div
-                            class="d-flex align-items-center justify-content-center files-header"
-                        >
-                            <p class="m-0 ta-font-bold">SSN Card</p>
-
-                            <div
-                                class="d-flex align-items-center justify-content-center counter-container"
-                            >
-                                <p class="m-0 ta-font-extra-bold">
-                                    {{ documents.length }}
+                        <div class="d-flex aling-items-center header-content">
+                            <!-- Name -->
+                
+                            <span class="header-text ta-font-extra-bold">
+                                SSN Card
+                            </span>
+                
+                            <!-- Counter -->
+                
+                            <app-ta-counter
+                                [count]="documents.length"
+                                [countBackground]="'#6C6C6C'"
+                                [countColor]="'#ffffff'"
+                                [countHeight]="'18px'"
+                                [countWidth]="'18px'"
+                                [countBorderRadius]="'50%'"
+                                [marginLeft]="'4px'"
+                            ></app-ta-counter>
+                
+                            <!-- Sub Text -->
+                
+                            <div class="d-flex align-items-center subtext-container">
+                                <p class="m-0 ta-font-medium">
+                                    Please upload a photo of the front side of your SSN for identity verification.
                                 </p>
                             </div>
                         </div>
@@ -1377,6 +670,14 @@
                                     selectedMode === 'REVIEW_MODE' &&
                                     'REVIEW_MODE'
                                 "
+                                [dropZoneConfig]="{
+                                    dropZoneType: 'image',
+                                    dropZoneSvg: 'assets/svg/common/drag-image-dropzone.svg',
+                                    dropZoneAvailableFiles:
+                                        'application/pdf, image/png, image/jpeg, image/jpg',
+                                    multiple: true,
+                                    globalDropZone: false
+                                }"
                                 (onFileEvent)="onFilesAction($event)"
                             ></app-ta-upload-files>
 

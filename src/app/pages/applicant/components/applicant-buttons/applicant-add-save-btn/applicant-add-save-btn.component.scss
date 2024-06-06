@@ -66,4 +66,38 @@
             background: $ta-blue-5;
         }
     }
+
+    &.small {
+        height: 26px;
+        padding: 4px;
+        border: none;
+        outline: none;
+        border-radius: 2px;
+        background: $bw2;
+        transition: background 0.2s ease-in-out;
+
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+
+        p {
+            position: relative;
+            top: 1px;
+            line-height: 18px;
+            font-size: 14px;
+            color: $ta-black;
+            padding: 0 4px;
+
+            transition: color 0.2s ease-in-out;
+        }
+
+        &:hover {
+            background: $ta-black;
+
+            p {
+                color: $white;
+            }
+        }
+    }
 }

@@ -28,10 +28,7 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import {
-    DropZoneConfig,
-    TaUploadDropzoneComponent,
-} from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
 
@@ -42,6 +39,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { LogoSliderPipe } from '@shared/components/ta-logo-change/pipes/logo-slider.pipe';
 
 // models
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
