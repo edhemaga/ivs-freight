@@ -304,6 +304,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         [RepairShopModalStringEnum.NOTE]: res.note,
                         [RepairShopModalStringEnum.CONTACTS]: res.contacts,
                         [RepairShopModalStringEnum.FILES]: res.files,
+                        [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: res.shopServiceType.id,
                         [RepairShopModalStringEnum.LONGITUDE]: res.longitude,
                         [RepairShopModalStringEnum.LATITUDE]: res.latitude,
                     });
@@ -528,41 +529,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    // TODO:
-    public addNewRepairShop() {
-        console.log('Trying to add addRepairShop');
-        const newShop = {
-            ...this.repairShopForm.value,
-            serviceTypes: this.services.map((item) => {
-                return {
-                    serviceType: item.serviceType,
-                    active: item.active,
-                };
-            }),
-            openHoursSameAllDays: !this.isDaysVisible,
-            startTimeAllDays: !this.isDaysVisible,
-            endTimeAllDays: !this.isDaysVisible
-                ? this.openHours.value.at(0).endTime
-                : null,
-        };
-        console.log(newShop);
-        // this.shopService
-        //     .addRepairShop(generateShopModel(newShop))
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe({
-        //         next: () => {
-        //             // TODO:?
-        //             console.log("Save new shop");
-        //         },
-        //         error: () => {
-        //             this.setModalSpinner(null, false, false);
-        //         },
-        //     });
-    }
-
     public onModalAction(data: RepairShopModalAction) {
-        // console.log(data.action);
-        // TODO:
         if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
             if (!this.isModalValidToSubmit) {
                 // this.inputService.markInvalid(this.repairShopForm);
@@ -575,7 +542,66 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (data.action === ActionTypesEnum.SAVE) {
             // Call update shop here
+            if(this.isEditMode) {
+                this.updateRepairShop(this.editData.id);
+                this.setModalSpinner(null, true, false);
+            } else {
+                this.addNewRepairShop();
+                this.setModalSpinner(null, true, false);
+            }
+            
+            return;
         }
+
+        if (data.action === ActionTypesEnum.DELETE) {
+            this.deleteRepairShopById(this.editData.id);
+            this.setModalSpinner(ActionTypesEnum.DELETE, true, false);
+        }
+    }
+
+        // TODO:
+        public addNewRepairShop() {
+            console.log('Trying to add addRepairShop');
+            const newShop = {
+                ...this.repairShopForm.value,
+                serviceTypes: this.services.map((item) => {
+                    return {
+                        serviceType: item.serviceType,
+                        active: item.active,
+                    };
+                }),
+                openHoursSameAllDays: !this.isDaysVisible,
+                startTimeAllDays: !this.isDaysVisible,
+                endTimeAllDays: !this.isDaysVisible
+                    ? this.openHours.value.at(0).endTime
+                    : null,
+            };
+            console.log(newShop);
+            // this.shopService
+            //     .addRepairShop(generateShopModel(newShop))
+            //     .pipe(takeUntil(this.destroy$))
+            //     .subscribe({
+            //         next: () => {
+            //             // TODO:?
+            //             console.log("Save new shop");
+            //         },
+            //         error: () => {
+            //             this.setModalSpinner(null, false, false);
+            //         },
+            //     });
+        }
+
+    updateRepairShop(id: number) {
+    }
+
+    private deleteRepairShopById(id: number) {
+        this.shopService
+            .deleteRepairShopById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () =>   this.setModalSpinner(ActionTypesEnum.DELETE, true, true),
+                error: () =>  this.setModalSpinner(ActionTypesEnum.DELETE, false, false) 
+            });
     }
 
     private setModalSpinner(

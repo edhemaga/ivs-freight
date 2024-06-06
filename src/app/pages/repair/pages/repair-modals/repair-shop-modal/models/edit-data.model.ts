@@ -7,7 +7,7 @@ import {
 } from '../enums/repair-shop-modal.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 export interface RepairShopModalAction {
-    action: ActionTypesEnum.CLOSE | ActionTypesEnum.SAVE_AND_ADD_NEW| ActionTypesEnum.SAVE;
+    action: ActionTypesEnum.CLOSE | ActionTypesEnum.SAVE_AND_ADD_NEW| ActionTypesEnum.SAVE | ActionTypesEnum.DELETE;
 }
 
 export type EditDataType = EditDataKey.REPAIR_MODAL;
