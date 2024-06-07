@@ -692,7 +692,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columns = tableData.gridColumns;
 
         if (tableData.data.length) {
-            console.log('tableData.data', tableData.data);
             this.viewData = tableData.data.map((data: any) => {
                 return this.selectedTab === TableStringEnum.APPLICANTS
                     ? this.mapApplicantsData(data)

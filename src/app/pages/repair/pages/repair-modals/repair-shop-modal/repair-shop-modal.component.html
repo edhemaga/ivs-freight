@@ -3,9 +3,10 @@
     [modalTitle]="modalTitle"
     [saveAndAddNew]="!isEditMode"
     [isModalValid]="isModalValidToSubmit"
-    [editName]="repairShopName"
+    [editName]="tabTitle"
     [specificCaseModalName]="isEditMode"
     [editData]="editData"
+    [editDate]="!!editData"
 >
     <div origin *ngIf="repairShopForm">
         <app-ta-tab-switch
@@ -67,7 +68,7 @@
                     </div>
 
                     <div
-                        [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+                        [ngClass]="{ 'active-phone-ext': showPhoneExt }"
                         class="phone-ext-email-small-modal phone-ext-email-small-modal-my-32"
                     >
                         <div class="phone-extension">
@@ -88,8 +89,8 @@
                                 ></app-ta-input>
                             </div>
                             <div
-                                (click)="isPhoneExtExist = !isPhoneExtExist"
-                                *ngIf="!isPhoneExtExist"
+                                (click)="showPhoneExt = !showPhoneExt"
+                                *ngIf="!showPhoneExt"
                                 class="extension-field"
                                 mainTooltip="Add Extension"
                                 ngbTooltip
@@ -101,7 +102,7 @@
                                 ></svg-icon>
                             </div>
                             <app-ta-input
-                                *ngIf="isPhoneExtExist"
+                                *ngIf="showPhoneExt"
                                 [inputConfig]="{
                                     name: 'phone-extension',
                                     type: 'text',
@@ -266,7 +267,8 @@
                                         (click)="toggleDays()"
                                     >
                                         <svg-icon
-                                            [class.rotate]="isDaysVisible"
+                                        class="timeline__card-icon"
+                                            [class.timeline__card-icon-rotate]="isDaysVisible"
                                             src="assets/svg/common/ic_arrow_down_updated.svg"
                                         ></svg-icon>
                                         <span class="timeline__card-label">

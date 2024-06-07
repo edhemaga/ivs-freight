@@ -56,6 +56,21 @@
         user-select: none;
     }
 
+    &-icon {
+        svg {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        &-rotate {
+            svg {
+                transform: rotate(180deg);
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+    }
+
     &-hover {
         transition: background-color 0.3s ease-in-out;
         &:hover {
@@ -73,6 +88,11 @@
         color: $ta-black-2;
         &:hover {
             background-color: #e2ecf9;
+        }
+
+        &:focus,
+        &:active {
+            background-color: $ta-blue-15;
         }
     }
 }
