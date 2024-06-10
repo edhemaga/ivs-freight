@@ -60,14 +60,14 @@ export interface CreateShopModel {
     email: string;
     pinned: boolean;
     note: string;
-    companyOwned: boolean;
+    // companyOwned: boolean;
     bankId: number;
     account: string;
     routing: string;
-    rent: number;
-    payPeriod: PayPeriod;
-    weeklyDay: DayOfWeek;
-    monthlyDay: number;
+    // rent: number;
+    // payPeriod: PayPeriod;
+    // weeklyDay: DayOfWeek;
+    // monthlyDay: number;
     longitude: number;
     latitude: number;
     openHoursSameAllDays: boolean;
@@ -75,7 +75,7 @@ export interface CreateShopModel {
     startTimeAllDays: string;
     endTimeAllDays: string;
     serviceTypes: Array<RepairShopServiceTypeCommand>;
-    openHours: Array<RepairShopOpenHoursCommand>;
+    // openHours: Array<RepairShopOpenHoursCommand>;
     contacts: Array<RepairShopContactCommand>;
     files: Array<Blob>;
     shopServiceType: number;

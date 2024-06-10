@@ -26,6 +26,7 @@ import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
     BankResponse,
     CreateResponse,
+    DepartmentResponse,
     EnumValue,
     RepairShopResponse,
     ServiceType,
@@ -194,6 +195,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     //TODO:
     contacts = [];
     isRequestInProgress: boolean;
+    departments: DepartmentResponse[];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -269,6 +271,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                     this.services = mapServices(dropdowns, true);
                     this.repairTypes = dropdowns.shopServiceTypes;
                     this.banks = dropdowns.banks;
+                    this.departments = dropdowns.departments;
 
                     if (repairShop) {
                         this.repairShopForm.patchValue({
@@ -633,15 +636,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openAlways: this.getFromFieldValue(
                 RepairShopModalStringEnum.OPEN_ALWAYS
             ),
-            contacts: this.getFromFieldValue(
-                RepairShopModalStringEnum.CONTACTS
-            ),
+            contacts: [],
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            // TODO: Check meaning of this fields since we are not showing them on FE
-            companyOwned: false,
-            rent: 1,
+            
             // TODO: HOURS NOT DONE yet
             openHoursSameAllDays: !this.isDaysVisible,
             startTimeAllDays: !this.isDaysVisible
@@ -650,10 +649,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             endTimeAllDays: !this.isDaysVisible
                 ? this.openHours.value.at(0).endTime
                 : null,
-            weeklyDay: null,
-            monthlyDay: null,
-            openHours: [],
-            payPeriod: 'Weekly',
+            // weeklyDay: null,
+            // monthlyDay: null,
+            // openHours: [],
+            // payPeriod: 'Weekly',
+            // TODO: Check meaning of this fields since we are not showing them on FE
+            // companyOwned: false,
+            // rent: 1,
         };
         console.log(repairModel);
         return repairModel;
