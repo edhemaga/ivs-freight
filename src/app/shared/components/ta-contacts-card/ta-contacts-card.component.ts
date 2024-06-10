@@ -23,7 +23,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 //Constants
-import { ContactsCardSvgRoutes } from './utils/svg-routes/contacts-card-svg-routes';
+import { ContactsCardSvgRoutes } from '@shared/components/ta-contacts-card/utils/svg-routes/contacts-card-svg-routes';
 
 //Modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
