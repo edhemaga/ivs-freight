@@ -55,6 +55,7 @@ export interface DriverResponse {
     files?: Array<FileResponse> | null;
     filesCountForList?: number | null;
     note?: string | null;
+    useCarrieraAch?: boolean;
     hiredAt?: string | null;
     terminatedAt?: string | null;
     createdAt?: string;

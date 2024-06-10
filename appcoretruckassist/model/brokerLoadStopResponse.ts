@@ -9,10 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperLoadStopsResponsePagination } from './shipperLoadStopsResponsePagination';
+import { EnumValue } from './enumValue';
+import { ShipperShortResponse } from './shipperShortResponse';
 
 
-export interface ShipperLoadsResponse { 
-    loads?: ShipperLoadStopsResponsePagination;
+export interface BrokerLoadStopResponse { 
+    id?: number;
+    stopType?: EnumValue;
+    shipper?: ShipperShortResponse;
+    dateFrom?: string;
+    dateTo?: string | null;
 }
 

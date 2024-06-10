@@ -9,10 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperLoadStopsResponsePagination } from './shipperLoadStopsResponsePagination';
 
 
-export interface ShipperLoadsResponse { 
-    loads?: ShipperLoadStopsResponsePagination;
+export interface BillingInfo { 
+    payTermName?: string | null;
+    ageUnpaid?: number | null;
+    agePaid?: number | null;
+    rpm?: number;
+    rate?: number | null;
+    paid?: number | null;
+    due?: number | null;
 }
 

@@ -9,10 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperLoadStopsResponsePagination } from './shipperLoadStopsResponsePagination';
+import { LoadDriverInfo } from './loadDriverInfo';
 
 
-export interface ShipperLoadsResponse { 
-    loads?: ShipperLoadStopsResponsePagination;
+export interface ShipperLoadStopsResponse { 
+    loadNumber?: string | null;
+    driver?: LoadDriverInfo;
+    arrive?: string | null;
+    depart?: string | null;
+    wait?: { [key: string]: number; } | null;
 }
 

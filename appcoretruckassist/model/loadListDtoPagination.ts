@@ -9,10 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ShipperLoadStopsResponsePagination } from './shipperLoadStopsResponsePagination';
+import { LoadListDto } from './loadListDto';
 
 
-export interface ShipperLoadsResponse { 
-    loads?: ShipperLoadStopsResponsePagination;
+export interface LoadListDtoPagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<LoadListDto> | null;
 }
 
