@@ -21,6 +21,16 @@
             }
         }
     }
+
+    // Override tabs to match figma design
+    &__main-tabs {
+        .tab-switch-name {
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            line-height: 18px;
+            text-transform: none !important;
+        }
+    }
 }
 
 .service-types {
@@ -44,6 +54,7 @@
         line-height: 14px;
         color: $muted;
         text-transform: uppercase;
+        padding-left: 32px;
     }
 
     &-label {

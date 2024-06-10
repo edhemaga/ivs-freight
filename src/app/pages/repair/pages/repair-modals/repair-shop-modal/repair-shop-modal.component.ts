@@ -205,9 +205,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
+        this.initTabs();
         this.initializeServices();
         this.generateForm();
-        this.initTabs();
         this.initWorkingHours();
         if (this.isEditMode) {
             this.editRepairShopById(this.editData?.id);

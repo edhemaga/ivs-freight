@@ -13,6 +13,7 @@
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
             [type]="'type2-modal-popup'"
+            class="repair-shop__main-tabs"
         >
         </app-ta-tab-switch>
 
@@ -161,7 +162,7 @@
                                 [inputConfig]="{
                                     name: 'address-unit',
                                     type: 'text',
-                                    label: 'Unit #',
+                                    label: 'Unit No.',
                                     textTransform: 'uppercase',
                                     minLength: 1,
                                     maxLength: 10
@@ -369,7 +370,7 @@
                                 [inputConfig]="{
                                     name: 'routing-bank',
                                     type: 'text',
-                                    label: 'Routing #',
+                                    label: 'Routing',
                                     isDisabled: !isBankSelected,
                                     isRequired: isBankSelected,
                                     minLength: 9,
@@ -384,7 +385,7 @@
                                 [inputConfig]="{
                                     name: 'account-bank',
                                     type: 'text',
-                                    label: 'Account #',
+                                    label: 'Account',
                                     isDisabled: !isBankSelected,
                                     isRequired: isBankSelected,
                                     maxLength: 17,
