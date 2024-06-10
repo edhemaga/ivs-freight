@@ -32,8 +32,3 @@ export function createOpenHour(
         endTime: [day.endTime],
     });
 }
-
-export function generateShopModel(form: CreateShopModel): CreateShopModel {
-    console.log(form);
-    return form;
-}

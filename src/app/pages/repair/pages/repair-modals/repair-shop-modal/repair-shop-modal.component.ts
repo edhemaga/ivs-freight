@@ -28,8 +28,10 @@ import {
     CreateResponse,
     EnumValue,
     RepairShopResponse,
+    ServiceType,
 } from 'appcoretruckassist/model/models';
 import {
+    CreateShopModel,
     DisplayServiceTab,
     OpenedTab,
     RepairShopModalAction,
@@ -191,8 +193,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     reviews: RepairShopRatingReviewModal[] = [];
     //TODO:
     contacts = [];
-    // TODO: Add type to this
-    public documents = [];
     isRequestInProgress: boolean;
 
     constructor(
@@ -242,7 +242,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
             [RepairShopModalStringEnum.NOTE]: [null],
             [RepairShopModalStringEnum.CONTACTS]: [[]],
-            [RepairShopModalStringEnum.FILES]: [null],
+            [RepairShopModalStringEnum.FILES]: [[]],
             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
                 null,
                 Validators.required,
@@ -252,6 +252,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.tabTitle = this.editData?.data?.name;
+        this.repairShopForm.valueChanges.subscribe((s) => console.log(s));
     }
 
     // Inside your component
@@ -551,7 +552,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.documents = event.files;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.FILES)
+            .patchValue(event.files);
+    }
+
+    get documents() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.FILES).value;
     }
 
     public onModalAction(data: RepairShopModalAction) {
@@ -581,29 +588,72 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    getFromFieldValue(keyName: string) {
+        const field = this.repairShopForm.get(keyName);
+
+        if (field) {
+            return field.value;
+        }
+
+        return null;
+    }
+
     generateShopRequest() {
-        const repairModel = {
-            ...this.repairShopForm.value,
+        const repairModel: CreateShopModel = {
+            name: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
+            phone: this.getFromFieldValue(RepairShopModalStringEnum.PHONE),
+            email: this.getFromFieldValue(RepairShopModalStringEnum.EMAIL),
+            phoneExt: this.getFromFieldValue(
+                RepairShopModalStringEnum.PHONE_EXT
+            ),
             address: {
                 ...this.selectedAddress,
-                addressUnit: this.repairShopForm.get(
+                addressUnit: this.getFromFieldValue(
                     RepairShopModalStringEnum.ADDRESS_UNIT
-                ).value,
+                ),
             },
             serviceTypes: this.services.map((item) => {
                 return {
-                    serviceType: item.serviceType,
+                    serviceType: item.serviceType as ServiceType,
                     active: item.active,
                 };
             }),
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: this.getFromFieldValue(RepairShopModalStringEnum.FILES),
+            pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
+            note: this.getFromFieldValue(RepairShopModalStringEnum.NOTE),
+            account: this.getFromFieldValue(RepairShopModalStringEnum.ACCOUNT),
+            routing: this.getFromFieldValue(RepairShopModalStringEnum.ROUTING),
+            latitude: this.getFromFieldValue(
+                RepairShopModalStringEnum.LATITUDE
+            ),
+            longitude: this.getFromFieldValue(
+                RepairShopModalStringEnum.LONGITUDE
+            ),
+            openAlways: this.getFromFieldValue(
+                RepairShopModalStringEnum.OPEN_ALWAYS
+            ),
+            contacts: this.getFromFieldValue(
+                RepairShopModalStringEnum.CONTACTS
+            ),
+            shopServiceType: this.getFromFieldValue(
+                RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+            ),
+            // TODO: Check meaning of this fields since we are not showing them on FE
+            companyOwned: false,
+            rent: 1,
+            // TODO: HOURS NOT DONE yet
             openHoursSameAllDays: !this.isDaysVisible,
-            startTimeAllDays: !this.isDaysVisible,
+            startTimeAllDays: !this.isDaysVisible
+                ? this.openHours.value.at(0).startTime
+                : null,
             endTimeAllDays: !this.isDaysVisible
                 ? this.openHours.value.at(0).endTime
                 : null,
-            bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: this.documents,
-            contacts: [],
+            weeklyDay: null,
+            monthlyDay: null,
+            openHours: [],
+            payPeriod: 'Weekly',
         };
         console.log(repairModel);
         return repairModel;
@@ -690,7 +740,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .get(RepairShopModalStringEnum.CONTACTS)
             .patchValue(modalTableDataValue);
 
-        console.log(modalTableDataValue)
+        console.log(modalTableDataValue);
 
         this.cdr.detectChanges();
     }
