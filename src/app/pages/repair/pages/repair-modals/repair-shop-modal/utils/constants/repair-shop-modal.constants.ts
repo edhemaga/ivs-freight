@@ -34,15 +34,13 @@ export enum RepairShopModalStringEnum {
     ROUTING = 'routing',
     ACCOUNT = 'account',
     NOTE = 'note',
-    SERVICES_HELPER = 'servicesHelper',
     PHONE = 'phone',
     EMAIL = 'email',
     NAME = 'name',
     OPEN_HOURS_SAME_ALL_DAYS = 'openHoursSameAllDays',
     START_TIME_ALL_DAYS = 'startTimeAllDays',
-    END_TIME_ALL_DAYS = 'endTimeAllDays'
+    END_TIME_ALL_DAYS = 'endTimeAllDays',
 }
-
 
 export class RepairShopConstants {
     static OPEN_HOUR_DAYS: WorkingHoursType = [

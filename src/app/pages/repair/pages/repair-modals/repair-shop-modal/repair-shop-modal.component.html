@@ -219,6 +219,7 @@
                         </div>
                     </app-ta-custom-card>
                     <!-- Open Hours -->
+                     <!-- isCardOpen: Close card since backend not working now neither does frontend-->
                     <app-ta-custom-card
                         (onActionEvent)="toggle247WorkingHours($event)"
                         [cardName]="'Work Hours'"
@@ -226,7 +227,7 @@
                         [has24Hours]="true"
                         [hasBodyData]="true"
                         [is24Hours]="isOpenAllDay"
-                        [isCardOpen]="true"
+                        [isCardOpen]="false" 
                         [disabledCard]="true"
                     >
                         <div
@@ -268,8 +269,10 @@
                                         (click)="toggleDays()"
                                     >
                                         <svg-icon
-                                        class="timeline__card-icon"
-                                            [class.timeline__card-icon-rotate]="isDaysVisible"
+                                            class="timeline__card-icon"
+                                            [class.timeline__card-icon-rotate]="
+                                                isDaysVisible
+                                            "
                                             src="assets/svg/common/ic_arrow_down_updated.svg"
                                         ></svg-icon>
                                         <span class="timeline__card-label">

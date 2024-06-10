@@ -19,9 +19,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-
-// moment
+import { Subject, forkJoin, of, takeUntil } from 'rxjs';
 
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
@@ -29,8 +27,6 @@ import {
     BankResponse,
     CreateResponse,
     EnumValue,
-    RatingReviewResponse,
-    RepairShopModalResponse,
     RepairShopResponse,
 } from 'appcoretruckassist/model/models';
 import {
@@ -38,6 +34,7 @@ import {
     OpenedTab,
     RepairShopModalAction,
     RepairShopModalService,
+    RepairShopRatingReviewModal,
     RepairShopTabs,
     RepeairShopModalInput,
 } from './models/edit-data.model';
@@ -48,6 +45,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
+import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 
 // Validators
 import {
@@ -169,8 +167,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public animationTabClass = 'animation-three-tabs';
 
     // Address
-    public longitude: number;
-    public latitude: number;
     public selectedAddress: AddressEntity;
 
     // Subject
@@ -192,16 +188,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public showPhoneExt: boolean = false;
 
     // Reviews
-    reviews: RatingReviewResponse[] = [];
+    reviews: RepairShopRatingReviewModal[] = [];
+    //TODO:
+    contacts = [];
     // TODO: Add type to this
     public documents = [];
+    isRequestInProgress: boolean;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private shopService: RepairService,
         private bankVerificationService: BankVerificationService,
         private cdr: ChangeDetectorRef,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private taLikeDislikeService: TaLikeDislikeService
     ) {}
 
     ngOnInit() {
@@ -209,9 +209,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.initializeServices();
         this.generateForm();
         this.initWorkingHours();
-        if (this.isEditMode) {
-            this.editRepairShopById(this.editData?.id);
-        }
     }
 
     private generateForm() {
@@ -244,9 +241,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             [RepairShopModalStringEnum.ROUTING]: [null, routingBankValidation],
             [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
             [RepairShopModalStringEnum.NOTE]: [null],
-            [RepairShopModalStringEnum.CONTACTS]: [null],
+            [RepairShopModalStringEnum.CONTACTS]: [[]],
             [RepairShopModalStringEnum.FILES]: [null],
-            [RepairShopModalStringEnum.SERVICES_HELPER]: [null],
             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
                 null,
                 Validators.required,
@@ -258,25 +254,97 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.tabTitle = this.editData?.data?.name;
     }
 
+    // Inside your component
     private initializeServices() {
-        return this.shopService
-            .getRepairShopModalDropdowns()
+        return forkJoin({
+            dropdowns: this.shopService.getRepairShopModalDropdowns(),
+            repairShop: this.isEditMode
+                ? this.shopService.getRepairShopById(this.editData?.id)
+                : of(null),
+        })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: RepairShopModalResponse) => {
-                    this.services = mapServices(res, true);
-                    this.repairTypes = res.shopServiceTypes;
-                    // On new shop we need to manually preselect shop otherwise form will not be valid until we click on it
-                    if (!this.isEditMode) {
-                        const firstService = this.repairTypes[0];
-                        firstService.checked = true;
-                        this.repairShopForm
-                            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
-                            .patchValue(firstService.id);
+                next: ({ dropdowns, repairShop }) => {
+                    this.services = mapServices(dropdowns, true);
+                    this.repairTypes = dropdowns.shopServiceTypes;
+                    this.banks = dropdowns.banks;
+
+                    if (repairShop) {
+                        this.repairShopForm.patchValue({
+                            [RepairShopModalStringEnum.NAME]: repairShop.name,
+                            [RepairShopModalStringEnum.PINNED]:
+                                repairShop.pinned,
+                            [RepairShopModalStringEnum.PHONE]: repairShop.phone,
+                            [RepairShopModalStringEnum.PHONE_EXT]:
+                                repairShop.phoneExt,
+                            [RepairShopModalStringEnum.EMAIL]: repairShop.email,
+                            [RepairShopModalStringEnum.ADDRESS_UNIT]:
+                                repairShop.address.addressUnit,
+                            [RepairShopModalStringEnum.ADDRESS]:
+                                repairShop.address.address,
+                            [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
+                                repairShop.openHoursSameAllDays,
+                            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
+                                repairShop.startTimeAllDays,
+                            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
+                                repairShop.endTimeAllDays,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
+                                repairShop.openAlways,
+                            [RepairShopModalStringEnum.ROUTING]:
+                                repairShop.routing,
+                            [RepairShopModalStringEnum.ACCOUNT]:
+                                repairShop.account,
+                            [RepairShopModalStringEnum.NOTE]: repairShop.note,
+                            [RepairShopModalStringEnum.CONTACTS]:
+                                repairShop.contacts,
+                            [RepairShopModalStringEnum.FILES]: repairShop.files,
+                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
+                                repairShop.shopServiceType.id,
+                            [RepairShopModalStringEnum.LONGITUDE]:
+                                repairShop.longitude,
+                            [RepairShopModalStringEnum.LATITUDE]:
+                                repairShop.latitude,
+                        });
+                        this.mapEditData(repairShop);
                     }
-                    this.banks = res.banks;
+                    this.preSelectService(repairShop?.shopServiceType);
                 },
             });
+    }
+
+    private mapEditData(res: RepairShopResponse) {
+        // This fields are custom and cannot be part of the form so we need to remap it
+        this.showPhoneExt = !!res.phoneExt;
+        this.services = mapServices(res, false);
+        this.selectedAddress = res.address;
+        this.isBankSelected = !!res.bank;
+        if (res.bank) {
+            this.selectedBank =
+                this.banks.find((bank) => bank.id === res.bank.id) ?? null;
+        }
+
+        // Patch address
+        this.onAddressChange({
+            address: res.address,
+            valid: true,
+            longLat: {
+                latitude: res.latitude,
+                longitude: res.longitude,
+            },
+        });
+
+        this.mapRatings(res);
+    }
+
+    private preSelectService(shopServiceType?: EnumValue) {
+        const service = shopServiceType ?? this.repairTypes[0];
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+            .patchValue(service.id);
+
+        this.repairTypes.forEach(
+            (repairType) => (repairType.checked = repairType.id === service.id)
+        );
     }
 
     public tabChange(selectedTab: RepairShopTabs): void {
@@ -307,70 +375,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             : RepairShopModalEnum.MODAL_TITLE_ADD;
     }
 
-    private editRepairShopById(id: number) {
-        this.shopService
-            .getRepairShopById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: RepairShopResponse) => {
-                    this.repairShopForm.patchValue({
-                        [RepairShopModalStringEnum.NAME]: res.name,
-                        [RepairShopModalStringEnum.PINNED]: res.pinned,
-                        [RepairShopModalStringEnum.PHONE]: res.phone,
-                        [RepairShopModalStringEnum.PHONE_EXT]: res.phoneExt,
-                        [RepairShopModalStringEnum.EMAIL]: res.email,
-                        [RepairShopModalStringEnum.ADDRESS_UNIT]:
-                            res.address.addressUnit,
-                        [RepairShopModalStringEnum.ADDRESS]:
-                            res.address.address,
-                        // [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
-                        [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
-                            res.openHoursSameAllDays,
-                        [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
-                            res.startTimeAllDays,
-                        [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
-                            res.endTimeAllDays,
-                        [RepairShopModalStringEnum.OPEN_ALWAYS]: res.openAlways,
-                        [RepairShopModalStringEnum.ROUTING]: res.routing,
-                        [RepairShopModalStringEnum.ACCOUNT]: res.account,
-                        [RepairShopModalStringEnum.NOTE]: res.note,
-                        [RepairShopModalStringEnum.CONTACTS]: res.contacts,
-                        [RepairShopModalStringEnum.FILES]: res.files,
-                        [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
-                            res.shopServiceType.id,
-                        [RepairShopModalStringEnum.LONGITUDE]: res.longitude,
-                        [RepairShopModalStringEnum.LATITUDE]: res.latitude,
-                    });
-                    this.mapEditData(res);
-                },
-            });
-    }
+    public mapRatings(res: RepairShopResponse) {
+        // If there is no rating and commentContent, rating will not be visible
+        this.reviews = res.ratingReviews.map((item) => ({
+            ...item,
+            commentContent: item.comment,
+            rating: item.thumb,
+        }));
 
-    private mapEditData(res: RepairShopResponse) {
-        // This fields are custom and cannot be part of the form so we need to remap it
-        this.showPhoneExt = !!res.phoneExt;
-        this.reviews = res.ratingReviews;
-        this.services = mapServices(res, false);
-        this.selectedAddress = res.address;
-        this.isBankSelected = !!res.bank;
-        if (res.bank) {
-            this.selectedBank =
-                this.banks.find((bank) => bank.id === res.bank.id) ?? null;
-        }
-
-        this.onAddressChange({
-            address: res.address,
-            valid: true,
-            longLat: {
-                latitude: res.latitude,
-                longitude: res.longitude,
-            },
+        this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: res.downCount,
+            upRatingCount: res.upCount,
+            currentCompanyUserRating: res.currentCompanyUserRating,
         });
-
-        this.repairTypes.forEach(
-            (repairType) =>
-                (repairType.checked = repairType.id === res.shopServiceType.id)
-        );
     }
 
     public onAddressChange(event: {
@@ -534,31 +551,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.repairShopForm
-            .get(RepairShopModalStringEnum.FILES)
-            .patchValue(event.files);
+        this.documents = event.files;
     }
 
-
     public onModalAction(data: RepairShopModalAction) {
+        // Prevent double click
+        if (!this.isModalValidToSubmit || this.isRequestInProgress) {
+            return;
+        }
+
+        this.isRequestInProgress = true;
         if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
-            if (!this.isModalValidToSubmit) {
-                // this.inputService.markInvalid(this.repairShopForm);
-                return;
-            }
-            this.addNewRepairShop();
-            this.setModalSpinner(data.action, true, false);
+            this.addNewRepairShop(true);
             return;
         }
 
         if (data.action === ActionTypesEnum.SAVE) {
-            // Call update shop here
             if (this.isEditMode) {
                 this.updateRepairShop(this.editData.id);
-                this.setModalSpinner(null, true, false);
             } else {
-                this.addNewRepairShop();
-                this.setModalSpinner(null, true, false);
+                this.addNewRepairShop(false);
             }
 
             return;
@@ -566,13 +578,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
         if (data.action === ActionTypesEnum.DELETE) {
             this.deleteRepairShopById(this.editData.id);
-            this.setModalSpinner(ActionTypesEnum.DELETE, true, false);
         }
     }
 
     generateShopRequest() {
-        return  {
+        const repairModel = {
             ...this.repairShopForm.value,
+            address: {
+                ...this.selectedAddress,
+                addressUnit: this.repairShopForm.get(
+                    RepairShopModalStringEnum.ADDRESS_UNIT
+                ).value,
+            },
             serviceTypes: this.services.map((item) => {
                 return {
                     serviceType: item.serviceType,
@@ -584,22 +601,24 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             endTimeAllDays: !this.isDaysVisible
                 ? this.openHours.value.at(0).endTime
                 : null,
-                bankId: this.selectedBank ? this.selectedBank.id : null,
-                files: this.documents,
-                longitude: this.longitude,
-                latitude: this.latitude,
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: this.documents,
+            contacts: [],
         };
+        console.log(repairModel);
+        return repairModel;
     }
 
     // TODO:
-    public addNewRepairShop() {
-         
+    public addNewRepairShop(addNewShop: boolean) {
         this.shopService
             .addRepairShop(this.generateShopRequest())
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, true, false);
+                    this.setModalSpinner(null, true, !addNewShop);
+                    // TODO: Test this, aslo check if files be reseted and all manully setup values
+                    if (addNewShop) this.repairShopForm.reset();
                 },
                 error: () => {
                     this.setModalSpinner(null, false, false);
@@ -609,7 +628,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     updateRepairShop(id: number) {
         this.shopService
-            .updateRepairShop({id, ...this.generateShopRequest()})
+            .updateRepairShop({ id, ...this.generateShopRequest() })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
@@ -627,7 +646,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () =>
-                    this.setModalSpinner(ActionTypesEnum.DELETE, true, true),
+                    this.setModalSpinner(ActionTypesEnum.DELETE, true, false),
                 error: () =>
                     this.setModalSpinner(ActionTypesEnum.DELETE, false, false),
             });
@@ -646,13 +665,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             status,
             close,
         });
+
+        // Wait for modal to close to prevent click while closing it
+        setTimeout(() => (this.isRequestInProgress = false), 400);
     }
 
     get isModalValidToSubmit() {
         return this.repairShopForm.valid && this.repairShopForm.dirty;
     }
 
-      // TODO: Check this code
+    // TODO: Check this code
     // Contact tab
     public addContact(): void {
         this.isNewContactAdded = true;
@@ -667,6 +689,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm
             .get(RepairShopModalStringEnum.CONTACTS)
             .patchValue(modalTableDataValue);
+
+        console.log(modalTableDataValue)
 
         this.cdr.detectChanges();
     }
