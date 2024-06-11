@@ -75,6 +75,7 @@ import {
     EnumValue,
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
+    RepairShopContactResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -697,7 +698,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.CONTACT:
                 newFormArrayRow = this.formBuilder.group({
                     fullName: [null, [Validators.required]],
-                    departmant: [null, [Validators.required]],
+                    department: [null, [Validators.required]],
                     phone: [null, [Validators.required, phoneFaxRegex]],
                     ext: [null, phoneExtension],
                     email: [null, [Validators.required]],
@@ -753,7 +754,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.isInputHoverRows = [...this.isInputHoverRows, newIsInputHoverRow];
-
         this.getFormArray().push(newFormArrayRow);
     }
 
@@ -855,6 +855,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.createFormArrayRow();
 
             switch (this.tableType) {
+                case ModalTableTypeEnum.CONTACT:
+                    this.handleContactData(data, i);
+
+                    break;
                 case ModalTableTypeEnum.PHONE:
                     this.handlePhoneData(data, i);
 
@@ -896,6 +900,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             setTimeout(() => {
                 this.calculateRepairBillSubtotal();
             }, 300);
+    }
+    handleContactData(contact: RepairShopContactResponse, i: number) {
+        const formGroup = this.getFormArray().at(i); 
+        formGroup.patchValue({
+            phone: contact.phone,
+            phoneExt: contact.phoneExt,
+            department: contact.department?.name,
+            fullName: contact.fullName,
+            email: contact.email
+        });
+
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL 
+        this.modalTableValueEmitter.emit(this.getFormArray().value);
     }
 
     private handlePhoneData(

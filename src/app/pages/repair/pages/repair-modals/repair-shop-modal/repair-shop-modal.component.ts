@@ -28,6 +28,8 @@ import {
     CreateResponse,
     DepartmentResponse,
     EnumValue,
+    RepairShopContactCommand,
+    RepairShopContactResponse,
     RepairShopResponse,
     ServiceType,
 } from 'appcoretruckassist/model/models';
@@ -196,6 +198,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     contacts = [];
     isRequestInProgress: boolean;
     departments: DepartmentResponse[];
+    isFormValid: boolean = true;
+    copyContacts: any;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -337,6 +341,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             },
         });
 
+        this.contacts = res.contacts;
         this.mapRatings(res);
     }
 
@@ -352,6 +357,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public tabChange(selectedTab: RepairShopTabs): void {
+        if (this.selectedTab === TableStringEnum.CONTACT)
+            this.contacts = this.copyContacts;
+        console.log(this.copyContacts);
         this.selectedTab = selectedTab.id;
         let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
 
@@ -636,11 +644,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             openAlways: this.getFromFieldValue(
                 RepairShopModalStringEnum.OPEN_ALWAYS
             ),
-            contacts: [],
+            contacts: this.mapContacts(),
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            
             // TODO: HOURS NOT DONE yet
             openHoursSameAllDays: !this.isDaysVisible,
             startTimeAllDays: !this.isDaysVisible
@@ -657,8 +664,20 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             // companyOwned: false,
             // rent: 1,
         };
-        console.log(repairModel);
         return repairModel;
+    }
+    mapContacts(): RepairShopContactCommand[] {
+        const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
+            RepairShopModalStringEnum.CONTACTS
+        );
+        return contacts.map((contact) => {
+            return {
+                ...contact,
+                departmentId: this.departments.find(
+                    (d) => d.name === contact.department
+                )?.id,
+            };
+        });
     }
 
     // TODO:
@@ -723,7 +742,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     get isModalValidToSubmit() {
-        return this.repairShopForm.valid && this.repairShopForm.dirty;
+        return (
+            this.repairShopForm.valid &&
+            this.repairShopForm.dirty &&
+            this.isFormValid
+        );
     }
 
     // TODO: Check this code
@@ -737,17 +760,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
     public handleModalTableValueEmit(modalTableDataValue): void {
         this.contactAddedCounter = modalTableDataValue.length;
-
-        this.repairShopForm
-            .get(RepairShopModalStringEnum.CONTACTS)
-            .patchValue(modalTableDataValue);
-
-        console.log(modalTableDataValue);
-
-        this.cdr.detectChanges();
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.CONTACTS)
+                .patchValue(modalTableDataValue);
+            this.copyContacts = modalTableDataValue;
+            this.cdr.detectChanges();
     }
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
-        this.repairShopForm.setErrors({ invalid: !validStatus });
+        this.isFormValid = validStatus;
     }
 
     changeReviewsEvent(reviews: ReviewComment) {

@@ -83,7 +83,7 @@ export interface CreateShopModel {
 }
 
 export type OpenedTab =
-    | TableStringEnum.CONTRACT
+    | TableStringEnum.CONTACT
     | TableStringEnum.REVIEW
     | TableStringEnum.DETAILS;
 
@@ -113,7 +113,7 @@ export interface RepairShopRatingReviewModal extends RatingReviewResponse {
 
 export interface RepairShopContact {
     fullName: string;
-    departmant: string;
+    department: string;
     phone: string;
     ext: string;
     email: string;

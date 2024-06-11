@@ -121,9 +121,9 @@ export class RepairShopConstants {
                 checked: TableStringEnum.DETAILS === openedTab,
             },
             {
-                id: TableStringEnum.CONTRACT as OpenedTab,
+                id: TableStringEnum.CONTACT as OpenedTab,
                 name: RepairShopModalEnum.TAB_TITLE_CONTACT,
-                checked: TableStringEnum.CONTRACT === openedTab,
+                checked: TableStringEnum.CONTACT === openedTab,
             },
             {
                 id: TableStringEnum.REVIEW as OpenedTab,

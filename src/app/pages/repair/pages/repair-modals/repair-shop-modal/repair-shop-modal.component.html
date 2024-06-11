@@ -19,7 +19,7 @@
 
         <form
             [formGroup]="repairShopForm"
-            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTRACT }"
+            [ngClass]="{ 'tab-2': selectedTab === TableStringEnum.CONTACT }"
             class="form-container form-container-without-mb"
         >
             <div
@@ -432,7 +432,7 @@
                     ></app-ta-input-note>
                 </div>
                 <div
-                    *ngIf="selectedTab === TableStringEnum.CONTRACT"
+                    *ngIf="selectedTab === TableStringEnum.CONTACT"
                     class="m-tab"
                 >
                     <app-ta-custom-card
@@ -457,6 +457,7 @@
                         >
                             <app-ta-modal-table
                                 [tableType]="modalTableTypeEnum.CONTACT"
+                                [modalTableData]="contacts"
                                 [isNewRowCreated]="isNewContactAdded"
                                 (modalTableValueEmitter)="
                                     handleModalTableValueEmit($event)
