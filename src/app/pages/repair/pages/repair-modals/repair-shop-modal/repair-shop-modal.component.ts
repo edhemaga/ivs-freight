@@ -200,6 +200,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     departments: DepartmentResponse[];
     isFormValid: boolean = true;
     copyContacts: any;
+    files: any = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -207,7 +208,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private cdr: ChangeDetectorRef,
         private modalService: ModalService,
-        private taLikeDislikeService: TaLikeDislikeService
+        private taLikeDislikeService: TaLikeDislikeService,
+        private formService: FormService
     ) {}
 
     ngOnInit() {
@@ -258,7 +260,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
 
         this.tabTitle = this.editData?.data?.name;
-        this.repairShopForm.valueChanges.subscribe((s) => console.log(s));
     }
 
     // Inside your component
@@ -305,7 +306,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
                             [RepairShopModalStringEnum.CONTACTS]:
                                 repairShop.contacts,
-                            [RepairShopModalStringEnum.FILES]: repairShop.files,
+                            // [RepairShopModalStringEnum.FILES]: repairShop.files,
                             [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
                                 repairShop.shopServiceType.id,
                             [RepairShopModalStringEnum.LONGITUDE]:
@@ -326,6 +327,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.services = mapServices(res, false);
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
+        this.files = res.files;
         if (res.bank) {
             this.selectedBank =
                 this.banks.find((bank) => bank.id === res.bank.id) ?? null;
@@ -357,9 +359,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public tabChange(selectedTab: RepairShopTabs): void {
-        if (this.selectedTab === TableStringEnum.CONTACT)
-            this.contacts = this.copyContacts;
-        console.log(this.copyContacts);
         this.selectedTab = selectedTab.id;
         let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
 
@@ -563,9 +562,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.repairShopForm
-            .get(RepairShopModalStringEnum.FILES)
-            .patchValue(event.files);
+        this.files = event;
     }
 
     get documents() {
@@ -630,7 +627,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: this.getFromFieldValue(RepairShopModalStringEnum.FILES),
+            files: this.files,
             pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
             note: this.getFromFieldValue(RepairShopModalStringEnum.NOTE),
             account: this.getFromFieldValue(RepairShopModalStringEnum.ACCOUNT),
@@ -687,9 +684,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.setModalSpinner(null, true, !addNewShop);
+                    this.setModalSpinner(null, false, !addNewShop);
                     // TODO: Test this, aslo check if files be reseted and all manully setup values
-                    if (addNewShop) this.repairShopForm.reset();
+                    if (addNewShop) {
+                        this.formService.resetForm(this.repairShopForm);
+                        this.tabChange(this.tabs[0]);
+                        this.contacts = [];
+                        this.showPhoneExt = false;
+                        this.selectedAddress = null;
+                        this.isBankSelected = null;
+                        this.files = [];
+                    }
                 },
                 error: () => {
                     this.setModalSpinner(null, false, false);
@@ -760,11 +765,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
     public handleModalTableValueEmit(modalTableDataValue): void {
         this.contactAddedCounter = modalTableDataValue.length;
-            this.repairShopForm
-                .get(RepairShopModalStringEnum.CONTACTS)
-                .patchValue(modalTableDataValue);
-            this.copyContacts = modalTableDataValue;
-            this.cdr.detectChanges();
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.CONTACTS)
+            .patchValue(modalTableDataValue);
+        this.copyContacts = modalTableDataValue;
+        this.cdr.detectChanges();
     }
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
         this.isFormValid = validStatus;

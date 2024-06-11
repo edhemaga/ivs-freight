@@ -27,8 +27,10 @@
                 [class]="animationTabClass"
             >
                 <!-- Details Tab -->
+                 <!-- Use hidden so we don't reinitilaze every field once they are set,
+                 Also for contacts, all data is lost on tab change  -->
                 <div
-                    *ngIf="selectedTab === TableStringEnum.DETAILS"
+                    [hidden]="selectedTab !== TableStringEnum.DETAILS"
                     class="m-tab"
                 >
                     <div class="row">
@@ -406,14 +408,14 @@
                             [cardName]="'Document'"
                             [disableAnimation]="disableCardAnimation"
                             [hasCounter]="
-                                documents.length ? documents.length : 0
+                                files.length ? files.length : 0
                             "
-                            [isCardOpen]="documents.length"
+                            [isCardOpen]="files.length"
                         >
                             <app-ta-upload-files
                                 (onFileEvent)="onFilesEvent($event)"
                                 [customClassName]="'modals'"
-                                [files]="documents"
+                                [files]="files"
                                 [showDropzone]="true"
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
@@ -432,7 +434,7 @@
                     ></app-ta-input-note>
                 </div>
                 <div
-                    *ngIf="selectedTab === TableStringEnum.CONTACT"
+                [hidden]="selectedTab !== TableStringEnum.CONTACT"
                     class="m-tab"
                 >
                     <app-ta-custom-card
@@ -477,7 +479,7 @@
                     </div>
                 </div>
                 <div
-                    *ngIf="selectedTab === TableStringEnum.REVIEW"
+                [hidden]="selectedTab !== TableStringEnum.REVIEW"
                     class="m-tab"
                 >
                     <app-ta-custom-card
