@@ -38,7 +38,9 @@ import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/traile
     providers: [CardHelper],
 })
 export class TrailerCardComponent implements OnInit, OnDestroy {
-    @Input() viewData: CardDetails[];
+    @Input() set viewData(value: CardDetails[]) {
+        this._viewData = value;
+    }
     @Input() selectedTab: string;
     @Input() cardTitle: string;
     @Input() displayRowsFront: CardRows[];
@@ -48,7 +50,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
     public isAllCardsFlipp: boolean = false;
 
     public isCardFlippedCheckInCards: number[] = [];
-
+    public _viewData: CardDetails[];
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
@@ -84,7 +86,7 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
 
     // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
-        this.viewData[index].isSelected = !this.viewData[index].isSelected;
+        this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
         const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
