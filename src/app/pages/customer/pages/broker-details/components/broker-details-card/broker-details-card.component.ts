@@ -103,6 +103,7 @@ export class BrokerDetailsCardComponent
     public invoiceAxes: BarChartAxes = BrokerConstants.INVOICE_CHART_AXES;
     public invoiceChartLegend: LegendAttributes[] =
         BrokerConstants.INVOICE_CHART_LEGEND;
+    public invoiceChartCount: number = 0;
 
     //Chart api calls
     public mileageCall: ChartApiCall = {
@@ -375,14 +376,18 @@ export class BrokerDetailsCardComponent
             .getInvoiceChartData(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => {
-                this.chartDataSet(
-                    this.invoiceChart,
-                    this.invoiceChartConfig,
-                    this.invoiceChartLegend,
-                    this.invoiceAxes,
-                    item,
-                    hideAnimation
-                );
+                if (item) {
+                    this.invoiceChartCount = item?.count;
+
+                    this.chartDataSet(
+                        this.invoiceChart,
+                        this.invoiceChartConfig,
+                        this.invoiceChartLegend,
+                        this.invoiceAxes,
+                        item,
+                        hideAnimation
+                    );
+                }
             });
     }
 

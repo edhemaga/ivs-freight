@@ -27,19 +27,20 @@
                                 <span class="name">DISPATCHER</span>
                                 <span class="name-bottom">DRIVER</span>
                             </div>
-                            <div class="t-head-items single-status">
+                            <div class="t-head-items single-status text-center">
                                 <span class="name">STATUS</span>
                             </div>
                             <div class="t-head-items">
                                 <span class="name">PICKUP</span>
                                 <span class="name-bottom">DELIVERY</span>
                             </div>
-                            <div class="t-head-items">
-                                <span class="name">REVENUE</span>
+                            <div class="t-head-items miles-rate">
+                                <span class="name">RATE</span>
                                 <span class="name-bottom miles-broker-name"
                                     >MILES</span
                                 >
                             </div>
+                            <div class="placeholder-column"></div>
                         </div>
                         <div class="divider"></div>
                         <div class="t-body-wrapper">
@@ -53,39 +54,42 @@
                             >
                                 <div class="t-body-broker-items">
                                     <div class="t-body-items">
-                                        <span class="load-name space-text">{{
-                                            loads?.loadNumber
-                                        }}</span>
+                                        <span
+                                            class="load-name space-text ta-font-bold"
+                                            >{{ loads?.loadNumber }}</span
+                                        >
                                         <span class="default-name">{{
                                             loads?.referenceNumber
                                         }}</span>
                                     </div>
                                     <div class="t-body-items">
                                         <span class="default-name space-text">{{
-                                            loads?.dispatch?.truck?.truckNumber
+                                            loads?.driver?.truckNumber
                                         }}</span>
                                         <span class="default-name">{{
-                                            loads?.dispatch?.trailer
-                                                ?.trailerNumber
+                                            loads?.driver?.trailerNumber
                                         }}</span>
                                     </div>
                                     <div class="t-body-items">
-                                        <span class="default-name space-text">{{
-                                            loads?.dispatcher?.fullName
-                                        }}</span>
+                                        <ng-container
+                                            *ngIf="loads?.dispatcher?.fullName"
+                                        >
+                                            <span
+                                                class="default-name space-text"
+                                                >{{
+                                                    loads?.dispatcher?.fullName
+                                                }}
+                                            </span>
+                                        </ng-container>
                                         <span class="default-name"
                                             >{{
-                                                loads?.dispatch?.driver
-                                                    ?.firstName.length > 6
-                                                    ? loads?.dispatch?.driver
+                                                loads?.driver?.firstName
+                                                    .length > 6
+                                                    ? loads?.driver
                                                           ?.firstName[0] + '.'
-                                                    : loads?.dispatch?.driver
-                                                          ?.firstName
+                                                    : loads?.driver?.firstName
                                             }}
-                                            {{
-                                                loads?.dispatch?.driver
-                                                    ?.lastName
-                                            }}</span
+                                            {{ loads?.driver?.lastName }}</span
                                         >
                                     </div>
                                     <div class="status-wrapper-broker">
@@ -146,73 +150,76 @@
                                         >
                                     </div>
                                     <div class="pickup-wrapper">
-                                        <div
-                                            *ngFor="
-                                                let stopData of loads.stops;
-                                                index as i
-                                            "
-                                        >
-                                            <div
-                                                class="pickup-item"
-                                                *ngIf="
-                                                    stopData.stopType.name ==
-                                                    'Pickup'
-                                                "
-                                            >
-                                                <div class="counter-green">
-                                                    {{ i + 1 }}
+                                        <ng-container *ngIf="loads.pickup">
+                                            <div class="pickup-item">
+                                                <div
+                                                    class="pickup-counter counter-green"
+                                                >
+                                                    1
                                                 </div>
                                                 <div class="pickup-text">
-                                                    <span class="name">
+                                                    <span
+                                                        class="name ta-font-semi-bold"
+                                                    >
                                                         {{
-                                                            stopData.shipper
+                                                            loads.pickup.shipper
                                                                 .address.city
                                                         }},
                                                         {{
-                                                            stopData.shipper
+                                                            loads.pickup.shipper
                                                                 .address
                                                                 .stateShortName
                                                         }}
                                                     </span>
-                                                    <span class="date">{{
-                                                        stopData?.dateFrom
-                                                            | formatDateP
-                                                    }}</span>
+                                                    <span
+                                                        class="date ta-font-medium"
+                                                        >{{
+                                                            loads.pickup
+                                                                ?.dateFrom
+                                                                | formatDateP
+                                                        }}</span
+                                                    >
                                                 </div>
                                             </div>
-                                            <div
-                                                class="pickup-item"
-                                                *ngIf="
-                                                    stopData.stopType.name ==
-                                                    'Delivery'
-                                                "
-                                            >
-                                                <div class="counter-red">
-                                                    {{ i + 1 }}
+                                        </ng-container>
+
+                                        <ng-container *ngIf="loads.delivery">
+                                            <div class="pickup-item">
+                                                <div
+                                                    class="pickup-counter counter-red"
+                                                >
+                                                    2
                                                 </div>
                                                 <div class="pickup-text">
-                                                    <span class="name">
+                                                    <span
+                                                        class="name ta-font-semi-bold"
+                                                    >
                                                         {{
-                                                            stopData.shipper
-                                                                .address.city
+                                                            loads.delivery
+                                                                .shipper.address
+                                                                .city
                                                         }},
                                                         {{
-                                                            stopData.shipper
-                                                                .address
+                                                            loads.delivery
+                                                                .shipper.address
                                                                 .stateShortName
                                                         }}
                                                     </span>
-                                                    <span class="date">{{
-                                                        stopData?.dateFrom
-                                                            | formatDateP
-                                                    }}</span>
+                                                    <span
+                                                        class="date ta-font-medium"
+                                                        >{{
+                                                            loads.delivery
+                                                                ?.dateFrom
+                                                                | formatDateP
+                                                        }}</span
+                                                    >
                                                 </div>
                                             </div>
-                                        </div>
+                                        </ng-container>
                                     </div>
                                     <div class="t-body-items">
                                         <span
-                                            class="load-name space-text load-total-rate"
+                                            class="load-name space-text load-total-rate ta-font-semi-bold"
                                             >{{
                                                 loads?.totalRate
                                                     | formatCurrency
@@ -232,7 +239,6 @@
                                     </app-ta-details-dropdown>
                                 </div> -->
                                 </div>
-                                <div class="divider"></div>
                             </div>
                         </div>
                     </div>
