@@ -120,3 +120,4 @@ export interface RepairShopContact {
     ext: string;
     email: string;
 }
+export type FileEventAction = 'add' | 'delete';

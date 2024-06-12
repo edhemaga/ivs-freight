@@ -7,11 +7,8 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import {
-    FormControl,
-    FormGroup,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormArray,
@@ -25,12 +22,11 @@ import { Subject, forkJoin, of, takeUntil } from 'rxjs';
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
     BankResponse,
-    BrokerResponse,
-    CreateRatingCommand,
     CreateResponse,
     CreateReviewCommand,
     DepartmentResponse,
     EnumValue,
+    FileResponse,
     RepairShopContactCommand,
     RepairShopContactResponse,
     RepairShopResponse,
@@ -48,6 +44,8 @@ import {
     RepeairShopModalInput,
 } from './models/edit-data.model';
 import { ReviewComment } from '@shared/models/review-comment.model';
+import { FileEvent } from '@shared/models/file-event.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -55,6 +53,7 @@ import { BankVerificationService } from '@shared/services/bank-verification.serv
 import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
 import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 // Validators
 import {
@@ -75,7 +74,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Component
+// Components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
@@ -87,6 +86,8 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Pipes
 import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
@@ -98,6 +99,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Enums
 import {
     ActionTypesEnum,
+    FileActionEvent,
     OpenWorkingHours,
     RepairShopModalEnum,
 } from './enums/repair-shop-modal.enum';
@@ -107,17 +109,8 @@ import {
 } from './utils/constants/repair-shop-modal.constants';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
-import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
-export type OpenHourFormGroup = FormGroup<{
-    isWorkingDay: FormControl<boolean>;
-    dayOfWeek: FormControl<number>;
-    dayLabel: FormControl<string>;
-    startTime: FormControl<string | null | Date>;
-    endTime: FormControl<string | null | Date>;
-}>;
+
 @Component({
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
@@ -198,19 +191,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     isNewContactAdded: boolean;
     isDaysVisible: boolean;
     public showPhoneExt: boolean = false;
-
     // Reviews
     public reviews: any[] = [];
-    //TODO:
     contacts = [];
     isRequestInProgress: boolean;
     departments: DepartmentResponse[];
-    isFormValid: boolean = true;
-    copyContacts: any;
-    files: any = [];
+    isContactFormValid: boolean = true;
     disableOneMoreReview: boolean;
-    public companyUser: SignInResponse = null;
+    files: UploadFile[] | FileResponse[] = [];
     public filesForDelete: any[] = [];
+    public companyUser: SignInResponse = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -573,36 +563,38 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: FileEvent): void {
         this.files = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.repairShopForm
-                    .get(RepairShopModalStringEnum.FILES)
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.repairShopForm
-                    .get(RepairShopModalStringEnum.FILES)
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
 
+        switch (event.action) {
+            case FileActionEvent.ADD:
+                this.updateFilesField(event.files);
                 break;
-            }
-            default: {
+            case FileActionEvent.DELETE:
+                this.handleDeleteEvent(event);
                 break;
-            }
+            default:
+                console.warn(`Unhandled file event action: ${event.action}`);
         }
     }
 
-    // get documents() {
-    //     return this.repairShopForm.get(RepairShopModalStringEnum.FILES).value;
-    // }
+
+
+    private updateFilesField(files: any[]): void {   
+        const filesValue = files.length ? JSON.stringify(files) : null;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.FILES)
+            .patchValue(filesValue);
+    }
+
+    private handleDeleteEvent(event: FileEvent): void {
+        this.updateFilesField(event.files);
+
+        if (event.deleteId) {
+            this.filesForDelete.push(event.deleteId);
+        }
+    }
+   
 
     public onModalAction(data: RepairShopModalAction) {
         // Prevent double click
@@ -645,14 +637,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    generateShopRequest() {
-        let documents = [];
-        this.files.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
+    generateShopRequest() {  
         const repairModel: CreateShopModel = {
             name: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
             phone: this.getFromFieldValue(RepairShopModalStringEnum.PHONE),
@@ -673,7 +658,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: documents,
+            files: this.createDocumentsForRequest(),
             filesForDeleteIds: this.filesForDelete,
             pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
             note: this.getFromFieldValue(RepairShopModalStringEnum.NOTE),
@@ -710,6 +695,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
         return repairModel;
     }
+    private createDocumentsForRequest() {
+        let documents = [];
+        this.files.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+        return documents;
+    }
+
     mapContacts(): RepairShopContactCommand[] {
         const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
             RepairShopModalStringEnum.CONTACTS
@@ -739,6 +734,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         this.selectedAddress = null;
                         this.isBankSelected = null;
                         this.files = [];
+                        this.filesForDelete = [];
                     }
                 },
                 error: () => {
@@ -795,7 +791,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return (
             this.repairShopForm.valid &&
             this.repairShopForm.dirty &&
-            this.isFormValid
+            this.isContactFormValid
         );
     }
 
@@ -841,12 +837,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.repairShopForm
             .get(RepairShopModalStringEnum.CONTACTS)
             .patchValue(modalTableDataValue);
-        this.copyContacts = modalTableDataValue;
         this.cdr.detectChanges();
     }
 
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
-        this.isFormValid = validStatus;
+        this.isContactFormValid = validStatus;
     }
 
     public changeReviewsEvent(reviews: ReviewComment) {
