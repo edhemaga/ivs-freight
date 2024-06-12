@@ -43,7 +43,7 @@ import {
     ReviewResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
-import { ShipperModalTab } from '@pages/customer/pages/shipper-modal/models/shipper-modal-tab.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 // Services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -78,6 +78,13 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+
+//Constants
+import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
+
+//Config
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -115,18 +122,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public shipperForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: ShipperModalTab[] = [
-        {
-            id: 1,
-            name: ShipperModalString.DETAILS,
-            checked: true,
-        },
-        {
-            id: 2,
-            name: ShipperModalString.CONTACT,
-            checked: false,
-        },
-    ];
+    public tabs: Tabs[] = [...ShipperModalConfiguration.shipperTabs];
 
     public animationObject = {
         value: this.selectedTab,
@@ -165,17 +161,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public shipperName: string = '';
 
-    public physicalAddressTabs: ShipperModalTab[] = [
-        {
-            id: 1,
-            name: ShipperModalString.PHYSICAL_ADDRESS,
-            checked: true,
-        },
-        {
-            id: 2,
-            name: ShipperModalString.COORDINATES,
-            checked: false,
-        },
+    public physicalAddressTabs: Tabs[] = [
+        ...ShipperModalConfiguration.physicalAddressTabs,
     ];
 
     public selectedPhysicalAddressTab: number = 1;
@@ -191,7 +178,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
-        private formService: FormService,
+        private formService: FormService
     ) {}
 
     ngOnInit() {
@@ -1137,7 +1124,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public tabPhysicalAddressChange(event: ShipperModalTab): void {
+    public tabPhysicalAddressChange(event: Tabs): void {
         this.selectedPhysicalAddressTab = event.id;
 
         this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
@@ -1155,6 +1142,26 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    get getAddressInputConfig(): ITaInput {
+        return ShipperModalConfig.getAddressInputConfig();
+    }
+
+    get getAddressUnitInputConfig(): ITaInput {
+        return ShipperModalConfig.getAddressUnitInputConfig();
+    }
+
+    get getLongitudeInputConfig(): ITaInput {
+        return ShipperModalConfig.getLongitudeInputConfig();
+    }
+
+    get getLatitudeInputConfig(): ITaInput {
+        return ShipperModalConfig.getLatitudeInputConfig();
+    }
+
+    get getCountryStateInputConfig(): ITaInput {
+        return ShipperModalConfig.getCountryStateInputConfig();
     }
 
     ngOnDestroy(): void {

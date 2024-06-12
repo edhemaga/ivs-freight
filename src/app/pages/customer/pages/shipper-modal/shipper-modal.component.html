@@ -125,17 +125,7 @@
                             <div class="col-10">
                                 <app-ta-input-address-dropdown
                                     formControlName="address"
-                                    [inputConfig]="{
-                                        name: 'Address',
-                                        type: 'text',
-                                        label: 'Address, City, State Zip',
-                                        isRequired: true,
-                                        placeholderIcon: 'address',
-                                        textTransform: 'capitalize',
-                                        dropdownWidthClass: 'w-col-510',
-                                        minLength: 6,
-                                        maxLength: 256
-                                    }"
+                                    [inputConfig]="getAddressInputConfig"
                                     [placeholderType]="'longAddress'"
                                     [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
@@ -144,14 +134,7 @@
                             <div class="col-2">
                                 <app-ta-input
                                     formControlName="addressUnit"
-                                    [inputConfig]="{
-                                        name: 'address-unit',
-                                        type: 'text',
-                                        label: 'Unit #',
-                                        textTransform: 'uppercase',
-                                        minLength: 1,
-                                        maxLength: 10
-                                    }"
+                                    [inputConfig]="getAddressUnitInputConfig"
                                 ></app-ta-input>
                             </div>
                         </ng-container>
@@ -160,46 +143,19 @@
                             <div class="col-3">
                                 <app-ta-input
                                     formControlName="longitude"
-                                    [inputConfig]="{
-                                        name: 'longitude',
-                                        type: 'text',
-                                        label: 'Longitude',
-                                        placeholderIcon: 'coordinates',
-                                        textTransform: 'uppercase',
-                                        minLength: 1,
-                                        maxLength: 10
-                                    }"
+                                    [inputConfig]="getLongitudeInputConfig"
                                 ></app-ta-input>
                             </div>
                             <div class="col-3">
                                 <app-ta-input
                                     formControlName="latitude"
-                                    [inputConfig]="{
-                                        name: 'latitude',
-                                        type: 'text',
-                                        label: 'Latitude',
-                                        placeholderIcon: 'coordinates',
-                                        textTransform: 'uppercase',
-                                        minLength: 1,
-                                        maxLength: 10
-                                    }"
+                                    [inputConfig]="getLatitudeInputConfig"
                                 ></app-ta-input>
                             </div>
                             <div class="col-6">
                                 <app-ta-input-address-dropdown
                                     formControlName="countryStateAddress"
-                                    [inputConfig]="{
-                                        name: 'countryState',
-                                        type: 'text',
-                                        label: 'County, State',
-                                        isDisabled: true,
-                                        isRequired: false,
-                                        placeholderIcon: 'address',
-                                        textTransform: 'capitalize',
-                                        dropdownWidthClass: 'w-col-297',
-                                        minLength: 6,
-                                        maxLength: 256
-                                    }"
+                                    [inputConfig]="getCountryStateInputConfig"
                                     [placeholderType]="'shortAddress'"
                                     [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
