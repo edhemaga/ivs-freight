@@ -30,13 +30,12 @@
 
             <div class="ta-user-data">
                 <div class="ta-user-name-rating">
-                    <p class="ta-font-medium">
+                    <p class="ta-user-fullname">
                         {{ data.companyUser.fullName }}
                         
                         <ng-container *ngIf="data.isItCurrentCompanyUser">
                             <span class="current-user">(Me)</span>
                         </ng-container>
-                        <span class="color-muted">•</span>
                     </p>
                     <svg-icon
                         *ngIf="data.rating && !data.isEditMode"
@@ -46,17 +45,13 @@
                             data.rating === 1 ? 'review_like' : 'dislike'
                         }}.svg"
                     ></svg-icon>
-                    <span class="color-muted">•</span>
                 </div>
-                <div class="ta-user-datetime ">
-                    <div class="ta-user-date ta-font-medium color-muted">
+                <div class="ta-user-datetime">
+                    <div class="ta-user-date">
                         {{ data.createdAt | date : 'shortDate' }}
                     </div>
-                    <div class="ta-user-time ta-font-medium color-muted">
+                    <div class="ta-user-time">
                         {{ data.updatedAt | date : 'shortTime' }}
-                    </div>
-                    <div *ngIf="data.createdAt !== data.updatedAt" class="ta-user-datetime__edited">
-                        • Edited
                     </div>
                 </div>
             </div>
@@ -65,7 +60,7 @@
         <div *ngIf="!data.prohibitEditingOthers" class="ta-user-actions">
             <div
                 ngbTooltip
-                mainTooltip="Edit Review"
+                mainTooltip="Edit"
                 position="top"
                 tooltipBackground="#424242"
                 *ngIf="!data.isEditMode"
@@ -76,7 +71,7 @@
             </div>
             <div
                 ngbTooltip
-                mainTooltip="Delete review"
+                mainTooltip="Delete"
                 position="top"
                 tooltipBackground="#EF5350"
                 *ngIf="!data.isEditMode"

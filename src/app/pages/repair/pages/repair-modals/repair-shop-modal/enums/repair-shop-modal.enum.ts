@@ -37,7 +37,7 @@ export enum OpenWorkingHours {
 }
 
 export enum EditDataKey {
-    REPAIR_MODAL = 'repair-modal'
+    REPAIR_MODAL = 'repair-modal',
 }
 
 export type WorkingHoursType = OpenHourDays[];

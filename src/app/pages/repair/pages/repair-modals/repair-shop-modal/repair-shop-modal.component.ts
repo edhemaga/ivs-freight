@@ -19,19 +19,24 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, forkJoin, of, takeUntil } from 'rxjs';
+import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
 
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
     BankResponse,
+    BrokerResponse,
+    CreateRatingCommand,
     CreateResponse,
+    CreateReviewCommand,
     DepartmentResponse,
     EnumValue,
     RepairShopContactCommand,
     RepairShopContactResponse,
     RepairShopResponse,
     ServiceType,
+    SignInResponse,
+    UpdateReviewCommand,
 } from 'appcoretruckassist/model/models';
 import {
     CreateShopModel,
@@ -50,7 +55,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
-import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
+import { LikeDislikeModel, TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 
 // Validators
 import {
@@ -106,6 +111,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 export type OpenHourFormGroup = FormGroup<{
     isWorkingDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
@@ -195,7 +201,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public showPhoneExt: boolean = false;
 
     // Reviews
-    reviews: RepairShopRatingReviewModal[] = [];
+    // reviews: RepairShopRatingReviewModal[] = [];
+    public reviews: any[] = [];
     //TODO:
     contacts = [];
     isRequestInProgress: boolean;
@@ -203,6 +210,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     isFormValid: boolean = true;
     copyContacts: any;
     files: any = [];
+    disableOneMoreReview: boolean;
+    public companyUser: SignInResponse = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -211,7 +220,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private cdr: ChangeDetectorRef,
         private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
-        private formService: FormService
+        private formService: FormService,
+        private reviewRatingService: ReviewsRatingService
     ) {}
 
     ngOnInit() {
@@ -219,6 +229,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.initializeServices();
         this.generateForm();
         this.initWorkingHours();
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
     private generateForm() {
@@ -683,7 +694,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    // TODO:
     public addNewRepairShop(addNewShop: boolean) {
         this.shopService
             .addRepairShop(this.generateShopRequest())
@@ -691,7 +701,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.setModalSpinner(null, false, !addNewShop);
-                    // TODO: Test this, aslo check if files be reseted and all manully setup values
                     if (addNewShop) {
                         this.formService.resetForm(this.repairShopForm);
                         this.tabChange(this.tabs[0]);
@@ -788,7 +797,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     }
 
-    // TODO: Check this code
     // Contact tab
     public addContact(): void {
         this.isNewContactAdded = true;
@@ -797,6 +805,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             this.isNewContactAdded = false;
         }, 400);
     }
+
     public handleModalTableValueEmit(modalTableDataValue): void {
         this.contactAddedCounter = modalTableDataValue.length;
         this.repairShopForm
@@ -805,28 +814,106 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.copyContacts = modalTableDataValue;
         this.cdr.detectChanges();
     }
+
     public handleModalTableValidStatusEmit(validStatus: boolean): void {
         this.isFormValid = validStatus;
     }
 
-    changeReviewsEvent(reviews: ReviewComment) {
+    public changeReviewsEvent(reviews: ReviewComment) {
         switch (reviews.action) {
             case 'delete': {
-                // this.deleteReview(reviews);
+                this.deleteReview(reviews);
                 break;
             }
             case 'add': {
-                // this.addReview(reviews);
+                this.addReview(reviews);
                 break;
             }
             case 'update': {
-                // this.updateReview(reviews);
+                this.updateReview(reviews);
                 break;
             }
             default: {
                 break;
             }
         }
+    }
+
+    public createReview() {
+        if (
+            this.reviews.some((item) => item.isNewReview) ||
+            this.disableOneMoreReview
+        ) {
+            return;
+        }
+
+        this.reviews.unshift({
+            companyUser: {
+                fullName: this.companyUser.firstName.concat(
+                    ' ',
+                    this.companyUser.lastName
+                ),
+                avatar: this.companyUser.avatar,
+            },
+            commentContent: '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isNewReview: true,
+        });
+    }
+
+    private addReview(reviews: ReviewComment) {
+        // 2 represent repair shop entity
+        const review: CreateReviewCommand = {
+            entityTypeReviewId: 2,
+            entityTypeId: this.editData.id,
+            comment: reviews.data.commentContent,
+        };
+
+        this.reviewRatingService
+            .addReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    this.reviews = reviews.sortData.map((item, index) => {
+                        if (index === 0) {
+                            return {
+                                ...item,
+                                id: res.id,
+                            };
+                        }
+                        return item;
+                    });
+
+                    this.disableOneMoreReview = true;
+                },
+                error: () => {},
+            });
+    }
+
+    private deleteReview(reviews: ReviewComment) {
+        this.reviews = reviews.sortData;
+        this.disableOneMoreReview = false;
+        this.reviewRatingService
+            .deleteReview(reviews.data)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private updateReview(reviews: ReviewComment) {
+        this.reviews = reviews.sortData;
+        const review: UpdateReviewCommand = {
+            id: reviews.data.id,
+            comment: reviews.data.commentContent,
+        };
+
+        this.reviewRatingService
+            .updateReview(review)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {},
+                error: () => {},
+            });
     }
 
     ngOnDestroy(): void {

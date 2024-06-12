@@ -1,38 +1,20 @@
 <div class="ta-like-dislike {{ customClass }}">
-    <div class="ta-like--action ta-like--action__like">
-        <svg-icon
-            class="ta-like-svg"
-            [ngClass]="{ liked: isTaLiked }"
-            src="assets/svg/common/ic_like.svg"
-            (click)="onAction('like', $event)"
-        ></svg-icon>
-
-        <div class="ta-like-dislike-counter like-count">
-            {{ numLikes }}
-        </div>
+    <svg-icon
+        class="ta-like-svg"
+        [ngClass]="{ liked: isTaLiked }"
+        src="assets/svg/common/ic_like.svg"
+        (click)="onAction('like', $event)"
+    ></svg-icon>
+    <div class="ta-like-dislike-counter like-count">
+        {{ numLikes }}
     </div>
-
-    <div class="ta-like--action ta-like--action__dislike">
-        <svg-icon
-            class="ta-dislike-svg"
-            [ngClass]="{ disliked: isTaDisliked }"
-            src="assets/svg/common/ic_dislike.svg"
-            (click)="onAction('dislike', $event)"
-        ></svg-icon>
-        <div class="ta-like-dislike-counter dislike-count">
-            {{ numDislikes }}
-        </div>
+    <div class="ta-like-dislike-counter dislike-count">
+        {{ numDislikes }}
     </div>
-
-    <div class="ta-like--action ta-like--action__edited">
-        <svg-icon
-            class="ta-dislike-svg"
-            [ngClass]="{ disliked: isTaDisliked }"
-            src="assets/svg/common/ic_pen.svg"
-            (click)="onAction('edit', $event)"
-        ></svg-icon>
-        <div class="ta-like-dislike-counter dislike-count">
-            {{ numDislikes }}
-        </div>
-    </div>
+    <svg-icon
+        class="ta-dislike-svg"
+        [ngClass]="{ disliked: isTaDisliked }"
+        src="assets/svg/common/ic_dislike.svg"
+        (click)="onAction('dislike', $event)"
+    ></svg-icon>
 </div>
