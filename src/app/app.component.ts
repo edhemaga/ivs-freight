@@ -29,6 +29,7 @@ import { StaticInjectorService } from '@core/decorators/titles.decorator';
 })
 export class AppComponent implements OnInit {
     public showScrollButton = false;
+    
 
     public currentPage: string = 'login';
 
