@@ -79,6 +79,7 @@ import {
 } from 'appcoretruckassist/model/models';
 import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // components
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
@@ -94,6 +95,9 @@ import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiob
 // modules
 import { SharedModule } from '@shared/shared.module';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
+
+// config
+import { Step1Config } from '@pages/applicant/pages/applicant-application/components/step1/configs/step1.config';
 
 @Component({
     selector: 'app-step1',
@@ -218,6 +222,66 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         ) as UntypedFormArray;
     }
 
+    get firstNameInputConfig(): ITaInput {
+        return Step1Config.getFirstNameInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get lastNameInputConfig(): ITaInput {
+        return Step1Config.getLastNameInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get dateOfBirthInputConfig(): ITaInput {
+        return Step1Config.getDateOfBirthInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get ssnInputConfig(): ITaInput {
+        return Step1Config.getSsnInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get phoneInputConfig(): ITaInput {
+        return Step1Config.getPhoneInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get emailInputConfig(): ITaInput {
+        return Step1Config.getEmailInputConfig();
+    }
+
+    get bankIdInputConfig(): ITaInput {
+        return Step1Config.getBankIdInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
+
+    get accountNumberInputConfig(): ITaInput {
+        return Step1Config.getAccountNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get routingNumberInputConfig(): ITaInput {
+        return Step1Config.getRoutingNumberInputConfig({
+            selectedMode: this.selectedMode,
+            isBankSelected: this.isBankSelected,
+        });
+    }
+
     public trackByIdentity = (index: number, _: any): number => index;
 
     private createForm(): void {
@@ -229,7 +293,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             ssn: [null, [Validators.required, ssnNumberRegex]],
             phone: [null, [Validators.required, phoneFaxRegex]],
             email: [null, Validators.required],
-            //previousAddresses: this.formBuilder.array([]),
             previousAddresses: [null],
 
             bankId: [null, [...bankValidation]],
@@ -1426,26 +1489,6 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         const lastActiveAddress = mappedPreviousAddresses[0].address;
         mappedPreviousAddresses.shift();
 
-        // const selectedAddresses = previousAddresses
-        //     .filter((address: AddressEntity) => address.address)
-        //     .map((address: AddressEntity) => ({
-        //         ...address,
-        //         addressUnit: address.addressUnit || null,
-        //         county: null,
-        //     }));
-
-        // const stepPreviousAddresses = this.stepValues?.previousAddresses;
-        // const storePreviousAddresses = selectedAddresses
-        //     .filter((_, index) => index !== selectedAddresses.length - 1)
-        //     .map((address: AddressEntity, index: number) => ({
-        //         ...((this.stepHasValues ||
-        //             this.selectedMode === SelectedMode.FEEDBACK) && {
-        //             id: stepPreviousAddresses[index]?.id,
-        //             previousAddressReview:
-        //                 stepPreviousAddresses[index]?.previousAddressReview,
-        //         }),
-        //         address,
-        //     }));
         const documents = this.documents
             .map(({ realFile }) => realFile)
             .filter(Boolean);

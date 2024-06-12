@@ -32,7 +32,7 @@ import { TaModalTableContactComponent } from '@shared/components/ta-modal-table/
 import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-pm/ta-modal-table-pm.component';
 import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-off-duty-location/ta-modal-table-off-duty-location.component';
 import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
-import { TaModalTablePreviousAddressesComponent } from './components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
+import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';

@@ -63,21 +63,7 @@
                     <div class="group first-name-group">
                         <app-ta-input
                             formControlName="firstName"
-                            [inputConfig]="{
-                                name: 'First Name',
-                                type: 'text',
-                                label: 'First Name',
-                                isRequired: true,
-                                minLength: 2,
-                                maxLength: 26,
-                                textTransform: 'capitalize',
-                                autoFocus: true,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isFirstNameValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="firstNameInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[0].lineInputs[0]
                             "
@@ -88,20 +74,7 @@
                     <div class="group last-name-group">
                         <app-ta-input
                             formControlName="lastName"
-                            [inputConfig]="{
-                                name: 'Last Name',
-                                type: 'text',
-                                label: 'Last Name',
-                                isRequired: true,
-                                minLength: 2,
-                                maxLength: 26,
-                                textTransform: 'capitalize',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isLastNameValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="lastNameInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[0].lineInputs[1]
                             "
@@ -112,20 +85,7 @@
                     <div class="group date-group">
                         <app-ta-input
                             formControlName="dateOfBirth"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                label: 'DOB',
-                                isDropdown: true,
-                                placeholderIcon: 'date',
-                                isRequired: true,
-                                customClass: 'datetimeclass',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isDoBValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="dateOfBirthInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[0].lineInputs[2]
                             "
@@ -170,19 +130,7 @@
                     <div class="group ssn-group">
                         <app-ta-input
                             formControlName="ssn"
-                            [inputConfig]="{
-                                name: 'SSN',
-                                type: 'text',
-                                label: 'SSN',
-                                isRequired: true,
-                                mask: '000-00-0000',
-                                maxLength: 11,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isSsnValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="ssnInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[7].lineInputs[0]
                             "
@@ -193,20 +141,7 @@
                     <div class="group phone-group">
                         <app-ta-input
                             formControlName="phone"
-                            [inputConfig]="{
-                                name: 'Phone',
-                                type: 'text',
-                                label: 'Phone',
-                                isRequired: true,
-                                placeholderIcon: 'phone',
-                                mask: '(000) 000-0000',
-                                maxLength: 14,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isPhoneValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="phoneInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[1].lineInputs[0]
                             "
@@ -217,16 +152,7 @@
                     <div class="group email-group">
                         <app-ta-input
                             formControlName="email"
-                            [inputConfig]="{
-                                name: 'Email',
-                                type: 'text',
-                                label: 'Email',
-                                isRequired: true,
-                                placeholderIcon: 'email',
-                                minLength: 5,
-                                maxLength: 64,
-                                textTransform: 'lowercase'
-                            }"
+                            [inputConfig]="emailInputConfig"
                         ></app-ta-input>
                     </div>
 
@@ -309,17 +235,7 @@
                         <app-ta-input-dropdown
                             formControlName="bankId"
                             [template]="'svg-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown Bank Name',
-                                type: 'text',
-                                label: 'Bank Name',
-                                minLength: 2,
-                                maxLength: 64,
-                                textTransform: 'uppercase',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-416',
-                                isDisabled: selectedMode !== 'APPLICANT_MODE'
-                            }"
+                            [inputConfig]="bankIdInputConfig"
                             [activeItem]="selectedBank"
                             [options]="banksDropdownList"
                             [canAddNew]="true"
@@ -331,21 +247,7 @@
                     <div class="group account-number-group">
                         <app-ta-input
                             formControlName="accountNumber"
-                            [inputConfig]="{
-                                name: 'account-bank',
-                                type: 'text',
-                                label: 'Account number',
-                                isDisabled:
-                                    (selectedMode === 'APPLICANT_MODE' &&
-                                        !isBankSelected) ||
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isAccountNumberValid),
-                                isRequired: isBankSelected,
-                                maxLength: 17,
-                                minLength: 5,
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="accountNumberInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[8].lineInputs[0]
                             "
@@ -356,18 +258,7 @@
                     <div class="group routing-number-group">
                         <app-ta-input
                             formControlName="routingNumber"
-                            [inputConfig]="{
-                                name: 'routing-bank',
-                                type: 'text',
-                                label: 'Routing number',
-                                isDisabled:
-                                    (selectedMode === 'APPLICANT_MODE' &&
-                                        !isBankSelected) ||
-                                    selectedMode !== 'APPLICANT_MODE',
-                                isRequired: isBankSelected,
-                                maxLength: 17,
-                                minLength: 5
-                            }"
+                            [inputConfig]="routingNumberInputConfig"
                         ></app-ta-input>
                     </div>
 
