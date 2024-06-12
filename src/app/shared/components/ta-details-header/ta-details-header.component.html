@@ -96,21 +96,6 @@
                     triggers="manual"
                     [autoClose]="'outside'"
                 >
-                    <!-- old design for counter -->
-                    <!--
-                    <app-ta-counter
-                        *ngIf="
-                            (!danger && counterData) ||
-                            (counterData == 0 && !hideCounter)
-                        "
-                        [countBackground]=" dropOpened ?  '#AAAAAA' : '#F3F3F3'"
-                        [countColor]="dropOpened ?  '#FFFFFF' : '#919191'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="counterData"
-                    >
-                    </app-ta-counter>
-                    -->
                     <ng-container *ngIf="danger || !counterData">
                         <div
                             ngbTooltip
@@ -181,16 +166,6 @@
                 </div>
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
-                    <!-- <span
-                        class="ic-hed"
-                        *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
-                    >
-                        <div class="border-line-left"></div>
-                        <svg-icon
-                            class="single-repair-icon"
-                            src="{{ ic.icon }}"
-                        ></svg-icon>
-                    </span> -->
                     <span class="ic-hed" *ngIf="timeFilter">
                         <app-ta-filter
                             [type]="'timeFilter'"
@@ -200,18 +175,6 @@
                         </app-ta-filter>
                         <div class="border-line-left"></div>
                     </span>
-                    <!--
-                    <span class="ic-hed" *ngIf="unitFilter">
-                        unit filter
-                        <div class="border-line-left"></div>
-                    </span>
-                    -->
-                    <!--
-                    <span class="ic-hed" *ngIf="repairOrderFilter">
-                        repairOrderFilter
-                        <div class="border-line-left"></div>
-                    </span>
-                    -->
                     <span class="ic-hed" *ngIf="pmFilter">
                         <app-ta-filter
                             [type]="'pmFilter'"
@@ -248,7 +211,6 @@
                         </app-ta-filter>
                         <div class="border-line-left"></div>
                     </span>
-                    <!-- <div class="border-line-left"></div> -->
 
                     <div *ngIf="totalCost" class="total-cost">
                         {{ totalCost | formatCurrency }}

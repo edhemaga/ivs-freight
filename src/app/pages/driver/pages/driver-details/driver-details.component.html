@@ -3,11 +3,11 @@
         *ngFor="
             let item of driverDetailsConfig;
             let i = index;
-            trackBy: identity
+            trackBy: trackByIdentity
         "
     >
         <app-ta-details-header
-            [options]="dataTest"
+            [options]="detailsDropdownOptions"
             [route]="'/list/driver'"
             [tooltipHeaderName]="'Back to List'"
             [headerText]="item.name"

@@ -1,0 +1,36 @@
+@import 'src/theme/variables.scss';
+
+.off-duty-location-container {
+    .off-duty-location-box {
+        margin-bottom: 8px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: 11px;
+            line-height: 14px;
+        }
+
+        span {
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        p,
+        span {
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+}

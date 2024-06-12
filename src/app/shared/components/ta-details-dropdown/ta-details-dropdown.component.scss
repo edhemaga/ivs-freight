@@ -238,7 +238,6 @@
 
                 &.subTypeHolder {
                     cursor: pointer !important;
-                    //background-color: #1D1D1D;
                 }
             }
 
@@ -386,6 +385,8 @@
     }
 
     .disabledAction {
+        pointer-events: none !important;
+
         .actionTitle {
             color: #6c6c6c;
         }
@@ -477,38 +478,14 @@
     background-color: #aaaaaa;
 }
 
-.bs-popover-right {
-    .dropdown-main-popover-body { 
-        //margin-left: 4px;
-    }
-}
-
-.bs-popover-top {
+.bs-popover-bottom-end {
     .dropdown-main-popover-body {
-        //margin-bottom: 4px;
-    }
-}
-
-.bs-popover-bottom {
-    .dropdown-main-popover-body {
-        //margin-top: 4px;
-    }
-}
-
-.bs-popover-left {
-    .dropdown-main-popover-body {
-        //margin-right: 4px;
-    }
-}
-
-.bs-popover-bottom-end{
-    .dropdown-main-popover-body{
         left: 4px;
     }
 }
 
-.bs-popover-start{
-    .dropdown-main-popover-body{
+.bs-popover-start {
+    .dropdown-main-popover-body {
         left: 4px;
     }
 }

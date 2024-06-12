@@ -4,8 +4,13 @@ import { ChartDefaultStringEnum } from '@shared/components/ta-chart/enums/chart-
 import { ChartImagesStringEnum } from '@shared/components/ta-chart/enums/chart-images-string.enum';
 import { ChartLegendDataStringEnum } from '@shared/components/ta-chart/enums/chart-legend-data-string.enum';
 import { ChartTypesStringEnum } from '@shared/components/ta-chart/enums/chart-types-string.enum';
+import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
 
-export class DriverDetailsCard {
+// models
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
+
+export class DriverDetailsCardConstants {
     static BAR_CHART_CONFIG = {
         dataProperties: [
             {
@@ -88,5 +93,43 @@ export class DriverDetailsCard {
             position: ChartAxisPositionEnum.BOTTOM,
             showGridLines: false,
         },
+    };
+
+    static BAR_CHART_TABS: TabOptions[] = [
+        {
+            id: 223,
+            name: ChartTabStringEnum.ONE_MONTH,
+            checked: true,
+        },
+        {
+            id: 313,
+            name: ChartTabStringEnum.THREE_MONTHS,
+            checked: false,
+        },
+        {
+            id: 412,
+            name: ChartTabStringEnum.SIX_MONTHS,
+            checked: false,
+        },
+        {
+            id: 515,
+            name: ChartTabStringEnum.ONE_YEAR,
+            checked: false,
+        },
+        {
+            id: 1210,
+            name: ChartTabStringEnum.YEAR_TO_DATE,
+            checked: false,
+        },
+        {
+            id: 1011,
+            name: ChartTabStringEnum.ALL,
+            checked: false,
+        },
+    ];
+
+    static BAR_CHART_PAYROLL_API_CALL: ChartApiCall = {
+        id: -1,
+        chartType: 1,
     };
 }

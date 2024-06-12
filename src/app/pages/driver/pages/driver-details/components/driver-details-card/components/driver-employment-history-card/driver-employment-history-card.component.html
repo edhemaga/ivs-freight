@@ -1,0 +1,176 @@
+<app-ta-custom-card
+    [cardName]="'Employment History'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4px'
+    }"
+>
+    <div class="employment-history-container">
+        <!-- Years of Service -->
+
+        <div
+            class="d-flex flex-column justify-content-center years-of-service-container"
+            [ngClass]="{
+                'hover-container': progressBarHoverIndex !== -1
+            }"
+        >
+            <div class="d-flex align-items-center justify-content-between">
+                <span class="ta-font-bold">{{
+                    progressBarHoverIndex !== -1
+                        ? employmentHistoryData[progressBarHoverIndex]
+                              .startDate +
+                          ' - ' +
+                          (employmentHistoryData[progressBarHoverIndex]
+                              .endDate ??
+                              'Today')
+                        : ' Years of Service'
+                }}</span>
+
+                <div
+                    class="d-flex align-items-center employed-deactivated-container"
+                >
+                    <p class="m-0 ta-font-medium">
+                        {{
+                            employmentHistoryData[progressBarHoverIndex]
+                                ?.isEmployed
+                                ? 'Employed'
+                                : 'Deactivated'
+                        }}
+                    </p>
+
+                    <div
+                        class="circle"
+                        [ngStyle]="{
+                            background: employmentHistoryData[
+                                progressBarHoverIndex
+                            ]?.isEmployed
+                                ? '#6692F1'
+                                : '#BED0F9'
+                        }"
+                    ></div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <ng-container *ngIf="yearsOfService">
+                    <p class="m-0 ta-font-medium">
+                        {{
+                            progressBarHoverIndex !== -1
+                                ? employmentHistoryData[progressBarHoverIndex]
+                                      .yearsOfService
+                                : yearsOfService
+                        }}
+                        {{ yearsOfService > 1 ? 'years' : 'year' }}
+                    </p>
+                </ng-container>
+
+                <ng-container *ngIf="daysOfService">
+                    <p class="m-0 ta-font-medium">
+                        {{
+                            progressBarHoverIndex !== -1
+                                ? employmentHistoryData[progressBarHoverIndex]
+                                      .daysOfService
+                                : daysOfService
+                        }}
+                        {{ daysOfService > 1 ? 'days' : 'day' }}
+                    </p>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+
+        <div class="d-flex flex-column employment-progress-container">
+            <div class="d-flex justify-content-between">
+                <p class="m-0">{{ firstEmploymentDate }}</p>
+
+                <p class="m-0">Today</p>
+            </div>
+
+            <div class="d-flex align-items-center employment-progress-bar">
+                <ng-container
+                    *ngFor="
+                        let progressBox of employmentHistoryProgressData;
+                        let i = index;
+                        trackBy: trackByIdentity
+                    "
+                >
+                    <div
+                        class="employment-progress-bar-box"
+                        [ngStyle]="{
+                            width: progressBox.percents + '%',
+                            background: progressBox.isEmployed
+                                ? '#6692F1'
+                                : '#E9EFFD'
+                        }"
+                        (mouseenter)="
+                            progressBarHoverIndex =
+                                employmentHistoryProgressData.length - i - 1
+                        "
+                        (mouseleave)="progressBarHoverIndex = -1"
+                    ></div>
+                </ng-container>
+            </div>
+        </div>
+
+        <!-- List -->
+
+        <div class="d-flex flex-column employment-history-list">
+            <div class="align-items-center employment-history-list-header">
+                <p class="m-0 ta-font-bold">STATUS</p>
+                <p class="m-0 ta-font-bold">FROM - TO</p>
+                <p class="m-0 ta-font-bold">DURATION</p>
+            </div>
+
+            <ng-container
+                *ngFor="
+                    let progressInfo of employmentHistoryData;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="align-items-center employment-history-list-item"
+                    [ngClass]="{
+                        'hover-container': i === progressBarHoverIndex
+                    }"
+                >
+                    <div class="d-flex align-items-center status-box">
+                        <div
+                            class="circle"
+                            [ngStyle]="{
+                                background: progressInfo.isEmployed
+                                    ? '#6692F1'
+                                    : '#BED0F9'
+                            }"
+                        ></div>
+
+                        <p class="m-0 ta-font-semi-bold">
+                            {{
+                                progressInfo.isEmployed
+                                    ? 'Employed'
+                                    : 'Deactivated'
+                            }}
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="m-0">
+                            {{ progressInfo.startDate }} -
+                            {{ progressInfo.endDate ?? 'Today' }}
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end">
+                        <p class="m-0">
+                            {{ progressInfo.yearsOfService }} y
+                            {{ progressInfo.daysOfService }} d
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</app-ta-custom-card>
