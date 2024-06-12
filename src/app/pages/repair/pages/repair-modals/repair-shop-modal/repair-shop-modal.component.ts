@@ -19,7 +19,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, forkJoin, of, switchMap, takeUntil } from 'rxjs';
+import { Subject, forkJoin, of, takeUntil } from 'rxjs';
 
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
@@ -44,7 +44,6 @@ import {
     OpenedTab,
     RepairShopModalAction,
     RepairShopModalService,
-    RepairShopRatingReviewModal,
     RepairShopTabs,
     RepeairShopModalInput,
 } from './models/edit-data.model';
@@ -55,7 +54,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
 import { RepairService } from '@shared/services/repair.service';
-import { LikeDislikeModel, TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
+import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 
 // Validators
 import {
@@ -201,7 +200,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public showPhoneExt: boolean = false;
 
     // Reviews
-    // reviews: RepairShopRatingReviewModal[] = [];
     public reviews: any[] = [];
     //TODO:
     contacts = [];
@@ -212,6 +210,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     files: any = [];
     disableOneMoreReview: boolean;
     public companyUser: SignInResponse = null;
+    public filesForDelete: any[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -576,11 +575,34 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any) {
         this.files = event.files;
+        switch (event.action) {
+            case 'add': {
+                this.repairShopForm
+                    .get(RepairShopModalStringEnum.FILES)
+                    .patchValue(JSON.stringify(event.files));
+                break;
+            }
+            case 'delete': {
+                this.repairShopForm
+                    .get(RepairShopModalStringEnum.FILES)
+                    .patchValue(
+                        event.files.length ? JSON.stringify(event.files) : null
+                    );
+                if (event.deleteId) {
+                    this.filesForDelete.push(event.deleteId);
+                }
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
-    get documents() {
-        return this.repairShopForm.get(RepairShopModalStringEnum.FILES).value;
-    }
+    // get documents() {
+    //     return this.repairShopForm.get(RepairShopModalStringEnum.FILES).value;
+    // }
 
     public onModalAction(data: RepairShopModalAction) {
         // Prevent double click
@@ -624,6 +646,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     generateShopRequest() {
+        let documents = [];
+        this.files.map((item) => {
+            if (item.realFile) {
+                documents.push(item.realFile);
+            }
+        });
+
         const repairModel: CreateShopModel = {
             name: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
             phone: this.getFromFieldValue(RepairShopModalStringEnum.PHONE),
@@ -644,7 +673,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 };
             }),
             bankId: this.selectedBank ? this.selectedBank.id : null,
-            files: this.files,
+            files: documents,
+            filesForDeleteIds: this.filesForDelete,
             pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
             note: this.getFromFieldValue(RepairShopModalStringEnum.NOTE),
             account: this.getFromFieldValue(RepairShopModalStringEnum.ACCOUNT),

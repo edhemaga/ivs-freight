@@ -81,6 +81,7 @@ export interface CreateShopModel {
     files: Array<Blob>;
     shopServiceType: number;
     address: AddressEntity;
+    filesForDeleteIds: string[]
 }
 
 export type OpenedTab =
