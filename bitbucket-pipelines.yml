@@ -45,7 +45,7 @@ pipelines:
           size: 2x
           name: Build
           script:
-            - npm run build:production
+            - npm run build:stage
           artifacts:
             - dist/** # Save build for next steps
       - step:
