@@ -18,7 +18,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { TrailerBodyResponse } from '../trailer-table/models/trailer-body-response.model';
+import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
 
 //Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -29,7 +29,7 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
-import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-trailer-card',

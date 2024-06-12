@@ -42,7 +42,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-import { TrailerCardsModalConfig } from '../trailer-card-modal/utils/constants/trailer-cards-modal.config';
+import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
 
 // configuration
 import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
