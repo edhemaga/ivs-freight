@@ -252,6 +252,18 @@
                                 </button>
                             </ng-container>
 
+                            <ng-container
+                                *ngIf="showCloseBusinessButton"
+                            >
+                                <button
+                                    (click)="onAction('CLOSE_BUSINESS')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                >
+                                    Close Business
+                                </button>
+                            </ng-container>
+
                             <!-- Map Settings Reset -->
 
                             <ng-container

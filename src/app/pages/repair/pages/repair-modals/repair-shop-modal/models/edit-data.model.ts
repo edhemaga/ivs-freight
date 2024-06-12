@@ -20,6 +20,7 @@ export interface RepairShopModalAction {
         | ActionTypesEnum.CLOSE
         | ActionTypesEnum.SAVE_AND_ADD_NEW
         | ActionTypesEnum.SAVE
+        | ActionTypesEnum.CLOSE_BUSINESS
         | ActionTypesEnum.DELETE;
 }
 

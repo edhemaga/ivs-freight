@@ -104,6 +104,8 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 export type OpenHourFormGroup = FormGroup<{
     isWorkingDay: FormControl<boolean>;
     dayOfWeek: FormControl<number>;
@@ -594,6 +596,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         if (data.action === ActionTypesEnum.DELETE) {
             this.deleteRepairShopById(this.editData.id);
         }
+        if(data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+            this.showCloseBusinessModal();
+        }
+
     }
 
     getFromFieldValue(keyName: string) {
@@ -752,6 +758,34 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             this.repairShopForm.dirty &&
             this.isFormValid
         );
+    }
+
+    showCloseBusinessModal() {
+        // close current modal
+        this.setModalSpinner(ActionTypesEnum.DELETE, false, true);
+
+        const data = {
+            data: this.editData
+        }
+        const mappedEvent = {
+            ...data,
+            type: TableStringEnum.CLOSE 
+        };
+        this.modalService.openModal(
+            ConfirmationActivationModalComponent,
+            { size: TableStringEnum.SMALL },
+            {
+                ...mappedEvent,
+                template: TableStringEnum.INFO,
+                subType: TableStringEnum.REPAIR_SHOP,
+                subTypeStatus: TableStringEnum.BUSINESS,
+                tableType:
+                    ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                modalTitle: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
+                modalSecondTitle: this.selectedAddress.address ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            }
+        );
+
     }
 
     // TODO: Check this code

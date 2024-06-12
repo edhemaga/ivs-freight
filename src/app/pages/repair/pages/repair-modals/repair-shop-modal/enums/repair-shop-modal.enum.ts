@@ -25,6 +25,7 @@ export enum ActionTypesEnum {
     DELETE = 'delete',
     CLOSE = 'close',
     SAVE = 'save',
+    CLOSE_BUSINESS = 'CLOSE_BUSINESS',
 }
 
 export enum OpenWorkingHours {
