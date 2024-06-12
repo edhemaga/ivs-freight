@@ -8,7 +8,7 @@
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
             'repair-order-table-header': isRepairOrderTable,
-            'contact-table-header': isContactTable,
+            'contact-table-header ': isContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable
@@ -27,7 +27,7 @@
                     'justify-content-center': i === 0,
                     'repair-bill-header':
                         (isRepairBillTable || isRepairOrderTable) && i !== 0,
-                    'justify-content-end subtotal': i === 5,
+                    'justify-content-end subtotal': i === 5 && !isContactTable,
                     'first-item': i === 0 && isContactTable
                 }"
             >

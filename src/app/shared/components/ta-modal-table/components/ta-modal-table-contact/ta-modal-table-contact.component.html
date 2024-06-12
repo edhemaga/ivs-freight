@@ -1,5 +1,5 @@
 <form [formGroup]="modalTableForm" class="table-body">
-    <div class="d-flex flex-column contact-table-container scrollable">
+    <div class="d-flex flex-column contact-table-container">
         <ng-container
             formArrayName="contactTableItems"
             *ngFor="
@@ -14,7 +14,7 @@
                 [formGroupName]="i"
             >
                 <div
-                    class="d-flex justify-content-center align-items-center table-item-number"
+                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
                 >
                     <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
@@ -29,7 +29,7 @@
                     ></svg-icon>
                 </div>
 
-                <div class="gradient-border-container">
+                <div class="gradient-border-container contact-pinned contact-name">
                     <app-ta-input
                         formControlName="fullName"
                         [inputConfig]="{

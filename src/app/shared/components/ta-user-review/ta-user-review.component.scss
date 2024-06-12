@@ -39,7 +39,7 @@
 
             .ta-user-data {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
 
                 .ta-user-name-rating {
                     display: flex;
@@ -47,10 +47,9 @@
                     gap: 4px;
 
                     .ta-user-fullname {
-                        font-weight: 700;
-                        font-size: 11px;
-                        color: $bw6-2;
-                        line-height: 14px;
+                        font-size: 14px;
+                        color: $ta-black;
+                        line-height: 18px;
 
                         .current-user {
                             color: $ta-orange-2;
@@ -59,7 +58,7 @@
                                 background-color: rgb(247, 125, 59, 0.2);
                                 color: $ta-orange-2;
                             }
-    
+
                             &::selection {
                                 background-color: rgb(247, 125, 59, 0.2);
                                 color: $ta-orange-2;
@@ -91,7 +90,7 @@
                                 width: 15px;
                                 height: 15px;
                                 path {
-                                    fill: $ta-red;
+                                    fill: $ta-green;
                                 }
                             }
                         }
@@ -102,10 +101,13 @@
                     display: flex;
                     gap: 6px;
                     align-items: center;
-                    font-size: 11px;
-                    font-weight: 600;
+                    font-size: 12px;
                     line-height: 14px;
-                    color: $bw4;
+                    margin-left: 4px;
+
+                    &__edited {
+                        color: $ta-blue-13;
+                    }
 
                     .ta-user-date,
                     .ta-user-time {
@@ -182,7 +184,7 @@
         position: relative;
 
         .message {
-            color: #6c6c6c;
+            color: $ta-black-2;
             line-height: 18px;
             font-size: 14px;
             font-weight: 400;
@@ -425,7 +427,7 @@
     }
 
     &:hover {
-        background-color: #f7f7f7;
+        background-color: $bw2;
         .ta-review-header {
             .ta-user-actions {
                 display: flex !important;
@@ -481,4 +483,8 @@
             }
         }
     }
+}
+
+.color-muted {
+    color: $muted;
 }

@@ -53,3 +53,37 @@
 
     //----------------   Below put your custom class ----------------
 }
+
+.ta-like--action {
+    display: flex;
+    align-items: center;
+    justify-content: uc;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 2px;
+    color: $muted;
+    transition: 0.3s;
+    svg path {
+        fill: $muted;
+    }
+
+    // &:hover {
+    //     background-color: $bw2;
+    //     color: $ta-black;
+    // }
+
+    // &__dislike {
+    //     &:hover {
+    //         svg path {
+    //             fill: $th-start-date;
+    //         }
+    //     }
+    // }
+    // &__like {
+    //     &:hover {
+    //         svg path {
+    //             fill: $special-filter-green;
+    //         }
+    //     }
+    // }
+}

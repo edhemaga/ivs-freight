@@ -564,7 +564,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     public onFilesEvent(event: any) {
-        this.files = event;
+        this.files = event.files;
     }
 
     get documents() {

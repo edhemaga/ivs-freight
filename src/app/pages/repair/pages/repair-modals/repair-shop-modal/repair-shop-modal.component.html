@@ -437,6 +437,7 @@
                 <div
                 [hidden]="selectedTab !== TableStringEnum.CONTACT"
                     class="m-tab"
+                    class="repair-shop-card"
                 >
                     <app-ta-custom-card
                         (onActionEvent)="addContact()"
@@ -453,10 +454,11 @@
                         [hasScrollBody]="contactAddedCounter > 10"
                         [isCardOpen]="contactAddedCounter"
                         [isCommentData]="true"
+                        [hasScrollBodyXAxis]="true"
                     >
                         <div
                             (scroll)="onScrollingContacts($event)"
-                            class="common-fake-table-modal common-fake-table-modal-original-repair-shop"
+                            class="repair-shop__contact-table "
                         >
                             <app-ta-modal-table
                                 [tableType]="modalTableTypeEnum.CONTACT"
