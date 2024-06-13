@@ -3,7 +3,20 @@
 .input-custom-group {
     display: block;
     position: relative; // DateTime Dark
+    .location-area-filter {
+        background-color: $default-counter-content !important;
+        color: $valid-focus-content !important;
 
+        &.focus,
+        &.focus:hover {
+            background-color: $default-counter-content !important;
+            color: $default-removed-background-input-focus-text !important;
+        }
+
+        &.focus::placeholder {
+            background-color: $default-counter-content !important;
+        }
+    }
     // DateTime
     &.datetimeclass {
         border-radius: 2px !important;
