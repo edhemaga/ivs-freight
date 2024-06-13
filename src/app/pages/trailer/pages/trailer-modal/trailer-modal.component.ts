@@ -66,6 +66,8 @@ import {
     VinDecodeResponse,
     TrailerAutocompleteModelResponse,
 } from 'appcoretruckassist';
+import { TrailerModalConfig } from './utils/configs/trailer-modal.config';
+import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -134,7 +136,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         value: this.selectedTab,
         params: { height: '0px' },
     };
-    public liftgate: boolean = false;
+    public isLiftgate: boolean = false;
 
     public trailerStatus: boolean = true;
     public loadingVinDecoder: boolean = false;
@@ -161,13 +163,110 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private formService: FormService
     ) {}
 
+    get TrailerNumberConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerNumberConfig(this.editData);
+    }
+
+    get TrailerTypeIdConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerTypeIdConfig({
+            selectedTrailerType: this.selectedTrailerType,
+        });
+    }
+
+    get TrailerLengthConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerLengthConfig();
+    }
+
+    get TrailerYearConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerYearConfig();
+    }
+
+    get TrailerVinConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerVinConfig({
+            loadingVinDecoder: this.loadingVinDecoder,
+        });
+    }
+
+    get TrailerMakeConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerMakeConfig({
+            selectedTrailerMake: this.selectedTrailerMake,
+        });
+    }
+
+    get TrailerModelConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerModelConfig();
+    }
+
+    get TrailerColorConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerColorConfig({
+            selectedColor: this.selectedColor,
+        });
+    }
+
+    get TrailerOwnerConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerOwnerConfig();
+    }
+
+    get TrailerReferConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerReferConfig();
+    }
+
+    get TrailerVolumeConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerVolumeConfig({
+            selectedTrailerType: this.selectedTrailerType,
+            formValue: this.trailerForm.get('volume').value,
+        });
+    }
+
+    get TrailerWeightConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerWeightConfig({
+            formValue: this.trailerForm.get('emptyWeight').value,
+        });
+    }
+
+    get TrailerTireSizeConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerTireSizeConfig();
+    }
+
+    get TrailerSuspensionConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerSuspensionConfig({
+            formValue: this.trailerForm.get('trailerTypeId').value,
+        });
+    }
+
+    get TrailerDoorTypeConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerDoorTypeConfig();
+    }
+
+    get TrailerMileageConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerMileageConfig();
+    }
+
+    get TrailerInsurancePolicyConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerInsurancePolicyConfig();
+    }
+
+    get TrailerFhwaExpConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerFhwaExpConfig();
+    }
+
+    get TrailerPurchaseDateConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerPurchaseDateConfig();
+    }
+
+    get TrailerPurchasePriceConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerPurchasePriceConfig();
+    }
+
+    get TrailerAxlesConfig(): ITaInput {
+        return TrailerModalConfig.getTrailerAxlesConfig();
+    }
     ngOnInit() {
         this.createForm();
 
         this.getTrailerDropdowns();
         this.isCompanyOwned();
         this.vinDecoder();
-        console.log(this.editData, 'test');
     }
 
     private createForm() {
@@ -193,7 +292,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             suspension: [null],
             tireSizeId: [null],
             doorType: [null],
-            liftgate: [null],
+            isLiftgate: [null],
             reeferUnit: [null],
             emptyWeight: [null, emptyWeightValidation],
             mileage: [null, mileageValidation],
@@ -418,7 +517,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
             doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
-            liftgate: this.trailerForm.get('liftgate').value ?? false,
+            isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
             reeferUnit: this.selectedReeferType
                 ? this.selectedReeferType.id
                 : null,
@@ -498,7 +597,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.selectedTireSize = null;
                         this.selectedDoorType = null;
                         this.selectedReeferType = null;
-                        this.liftgate = false;
+                        this.isLiftgate = false;
                         this.tabChange({ id: 1 });
 
                         this.trailerForm
@@ -605,7 +704,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     ? this.selectedReeferType.id
                     : null
                 : null,
-            liftgate: this.trailerForm.get('liftgate').value ?? false,
+            isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
             emptyWeight: this.trailerForm.get('emptyWeight').value
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
                       this.trailerForm.get('emptyWeight').value
@@ -733,7 +832,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             : null,
                         model: res.model,
                         vin: res.vin,
-                        liftgate: res.liftgate ?? false,
+                        isLiftgate: res.liftgate ?? false,
                         colorId: res.color ? res.color.name : null,
                         year: res.year.toString(),
                         trailerLengthId: res.trailerLength

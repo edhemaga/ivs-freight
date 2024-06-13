@@ -143,7 +143,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log(res);
                 if (res?.filterType) {
                     if (res.action === TableStringEnum.SET) {
                         if (res.action === TableStringEnum.SET) {
