@@ -26,6 +26,7 @@ import { TaUploadFilesCarouselComponent } from '@shared/components/ta-upload-fil
 import { FileEvent } from '@shared/models/file-event.model';
 import { Tags } from '@shared/models/tags.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
 //Services
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
@@ -95,6 +96,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     @Input() dropzoneFocus: boolean = false;
     @Input() showDropzone: boolean = false;
     @Input() dropzoneColumn: boolean = false;
+    @Input() dropZoneConfig: DropZoneConfig
 
     // Review
     @Input() isReview: boolean;

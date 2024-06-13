@@ -104,24 +104,31 @@
 
             .first-name-group,
             .last-name-group {
-                width: 302px;
+                width: 221px;
             }
 
             .date-group {
-                width: 170px;
+                width: 150px;
             }
 
-            .ssn-group,
+            .ssn-group {
+                width: 140px;
+            }
+
             .phone-group {
-                width: 211px;
+                width: 180px;
+            }
+
+            .email-group {
+                width: 272px;
             }
 
             .address-group {
-                width: 440px;
+                width: 494px;
             }
 
             .address-unit-group {
-                width: 164px;
+                width: 110px;
             }
 
             .bank-group,
@@ -132,6 +139,7 @@
         }
 
         .previous-addresses {
+            margin-bottom: 16px;
             .dets-container {
                 width: 616px;
 
@@ -507,6 +515,11 @@
                 margin: 22px auto 32px auto;
                 width: 616px;
 
+                p {
+                    line-height: 18px;
+                    font-size: 14px;
+                }
+
                 .previous-address-title {
                     color: $ta-black;
                     font-size: 14px;
@@ -664,39 +677,27 @@
         .files-container {
             width: 616px;
 
-            .files-header {
-                border-top: 0.2px solid $bw-9;
-                border-radius: 1px;
-                margin-bottom: 9px;
-                padding-top: 10px;
+            .header-content {
+                padding: 0px 6px;
+                margin: 8px 0;
 
-                p {
+                .header-text {
+                    // margin-left: 4px;
                     font-size: 14px;
-                    color: $ta-black-2;
                     line-height: 18px;
-                    margin-right: 6px !important;
-
-                    -webkit-user-select: none !important;
-                    -moz-user-select: none !important;
-                    -ms-user-select: none !important;
-                    user-select: none !important;
+                    color: $ta-black;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    transition: color 0.3s ease-in-out;
                 }
 
-                .counter-container {
-                    border-radius: 60px;
-                    background: $ta-black;
-                    width: 18px;
-                    height: 18px;
-
+                .subtext-container {
                     p {
                         font-size: 11px;
-                        color: $white;
-                        margin-right: 0 !important;
-
-                        -webkit-user-select: none !important;
-                        -moz-user-select: none !important;
-                        -ms-user-select: none !important;
-                        user-select: none !important;
+                        line-height: 15px;
+                        color: $bw5;
                     }
                 }
             }
@@ -710,4 +711,11 @@
     bottom: 50%;
     transform: translate(0, -50%);
     right: 42px;
+}
+
+.divider {
+    height: 1px;
+    width: 616px;
+    background: $bw-9;
+    border-radius: 1px;
 }

@@ -45,6 +45,7 @@ export class TaCopyComponent implements OnInit {
     @Input() boldText: boolean = false;
     @Input() accountCompany: boolean;
     @Input() maxWidth: string;
+    @Input() type: string;
     @Output() showHideEye = new EventEmitter<any>();
     public textCopied: boolean;
     public isVisible: boolean;

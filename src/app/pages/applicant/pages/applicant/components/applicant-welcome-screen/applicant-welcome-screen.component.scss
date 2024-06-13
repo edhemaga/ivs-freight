@@ -45,9 +45,7 @@
     }
 
     .mid-header {
-        background-color: $ta-light-grey-5;
-        height: 125px;
-        padding: 12px 0 18px 0;
+        margin-top: 60px;
 
         .company-container {
             .company-name {
@@ -56,8 +54,8 @@
                 margin-bottom: 12px;
 
                 span {
-                    font-size: 22px;
-                    line-height: 22px;
+                    font-size: 20px;
+                    line-height: 24.38px;
                     color: $ta-black;
 
                     &::-moz-selection {
@@ -75,10 +73,11 @@
             .company-usdot,
             .company-phone {
                 height: 22px;
+                gap: 6px;
 
                 span {
-                    font-size: 18px;
-                    line-height: 22px;
+                    font-size: 16px;
+                    line-height: 19.5px;
                     color: $ta-black;
 
                     &::-moz-selection {
@@ -94,7 +93,6 @@
 
                 .usdot-title {
                     color: $bw5;
-                    margin-right: 5px !important;
 
                     &::-moz-selection {
                         color: $bw5;
@@ -108,13 +106,11 @@
                 }
 
                 &.company-usdot {
-                    margin-right: 22px;
+                    margin-right: 16px;
                 }
 
                 &.company-phone {
                     .phone-icon {
-                        margin-right: 6px;
-
                         svg {
                             path {
                                 fill: $bw5;
@@ -137,8 +133,8 @@
                 margin-right: 6px;
 
                 span {
-                    font-size: 18px;
-                    line-height: 22px;
+                    font-size: 16px;
+                    line-height: 19.5px;
                     color: $ta-black;
 
                     &::-moz-selection {
@@ -168,13 +164,14 @@
     }
 
     .welcome-icon {
-        margin: 80px auto 40px auto;
+        margin: 60px auto 0px auto;
     }
 
     .welcome-title {
+        padding: 10px 6px 10px 6px;
         font-size: 32px;
-        height: 39px;
         color: $ta-blue-5;
+        line-height: 40px;
         margin-bottom: 12px !important;
 
         &::-moz-selection {
@@ -189,11 +186,11 @@
     }
 
     .welcome-text,
-    .welcome-company {
+    .date-of-invatation-text {
+        padding: 4px 6px 4px 6px;
         font-size: 14px;
-        line-height: 22px;
-        height: 18px;
-        color: $ta-black;
+        line-height: 18px;
+        color: $ta-black-2;
         text-align: center;
 
         &::-moz-selection {
@@ -206,21 +203,22 @@
             background: rgb(47, 47, 47, 0.2);
         }
 
-        &.welcome-company {
-            text-transform: uppercase;
+        &.date-of-invatation-text {
+            color: $bw6-2;
         }
     }
 
     .welcome-btn {
-        margin: 32px auto 22px auto;
-        width: 240px;
+        margin: 32px auto;
+        width: 260px;
         height: 42px;
         border: none;
         outline: none;
         font-size: 14px;
-        border-radius: 3px;
+        border-radius: 2px;
+        padding: 6px;
         color: $white;
-        background: $ta-blue-5;
+        background: $ta-blue-14;
         transition: background 0.3s ease-in-out;
         text-transform: uppercase;
 
@@ -229,13 +227,13 @@
         }
 
         p {
-            position: relative;
-            top: 1px;
+            line-height: 20px;
+            font-size: 14px;
         }
     }
 
     .welcome-info {
-        height: 18px;
+        padding: 4px 6px 4px 6px;
         font-size: 14px;
         color: $ta-black;
         text-align: center;

@@ -28,7 +28,6 @@ import { BrokerLoadStop } from '../../models/broker-load-stop.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 
 // Enums
-import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Svg routes
@@ -86,33 +85,28 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
     }
 
     public getStops(data: BrokerResponse | any): void {
-        let datas;
-
         data?.loadStops?.loads?.data?.map((item) => {
-            datas = item.stops.map((itemStop) => {
-                if (itemStop.stopType.name === BrokerDetailsStringEnum.PICKUP) {
-                    return {
-                        date: itemStop.dateFrom,
-                        stopOrder: itemStop.stopOrder,
-                        addressCity: itemStop.shipper.address.city,
-                        addressShortState:
-                            itemStop.shipper.address.stateShortName,
-                    };
-                }
-                if (
-                    itemStop.stopType.name === BrokerDetailsStringEnum.DELIVERY
-                ) {
-                    return {
-                        date: itemStop.dateFrom,
-                        stopOrder: itemStop.stopOrder,
-                        addressCity: itemStop.shipper.address.city,
-                        addressShortState:
-                            itemStop.shipper.address.stateShortName,
-                    };
-                }
-            });
-            this.stopsDataPickup = datas[0];
-            this.stopsDataDelivery = datas[1];
+            let pickup = item.pickup
+                ? {
+                      date: item.pickup.dateFrom,
+                      stopOrder: 1,
+                      addressCity: item.pickup.shipper.address.city,
+                      addressShortState:
+                          item.pickup.shipper.address.stateShortName,
+                  }
+                : null;
+            let delivery = item.delivery
+                ? {
+                      date: item.delivery.dateFrom,
+                      stopOrder: 1,
+                      addressCity: item.delivery.shipper.address.city,
+                      addressShortState:
+                          item.delivery.shipper.address.stateShortName,
+                  }
+                : null;
+
+            this.stopsDataPickup = pickup ? [pickup] : [];
+            this.stopsDataDelivery = delivery ? [delivery] : [];
         });
     }
 
@@ -129,6 +123,7 @@ export class BrokerDetailsItemComponent implements OnInit, OnChanges {
                 commentContent: item.comment,
                 rating: item.thumb,
                 id: item.reviewId ? item.reviewId : item.ratingId,
+                prohibitEditingOthers: !item.isItCurrentCompanyUser,
             };
         });
     }

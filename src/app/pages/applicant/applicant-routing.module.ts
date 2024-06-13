@@ -22,7 +22,10 @@ const routes: Routes = [
         children: [
             {
                 path: '1',
-                component: Step1Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step1/step1.component'
+                    ).then((m) => m.Step1Component),
                 data: {
                     title: 'Personal Info',
                     depth: 1,

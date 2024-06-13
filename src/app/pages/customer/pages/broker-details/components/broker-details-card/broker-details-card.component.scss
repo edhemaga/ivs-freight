@@ -1,32 +1,23 @@
 @import '../broker-details-item/broker-details-item.component.scss';
 
-.header-bottom {
-    font-size: 18px;
-    font-weight: 500;
-    color: #6c6c6c;
-    &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
+app-broker-details-card {
+    .divider {
+        margin-left: 0px;
+        width: 100%;
     }
-    &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-    }
-}
-.additional-template-broker-data {
-    display: grid;
-    grid-template-columns: 150px 150px;
-    column-gap: 60px;
     
-    .addition-template-item {
-        display: flex;
-        flex-direction: column;
+    .ta-card-header {
+        margin-right: 10px !important;
     }
 
-    .header {
-        font-size: 11px;
-        line-height: 14px;
-        color: $ta-black-2;
+    .header-content {
+        margin-left: 4px !important;
+    }
+
+    .header-bottom {
+        font-size: 18px;
+        font-weight: 500;
+        color: #6c6c6c;
 
         &::-moz-selection {
             color: $color-gray-dark;
@@ -38,80 +29,146 @@
         }
     }
 
-    .value {
-        font-size: 14px;
-        line-height: 18px;
-        color: $ta-black-2;
-
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-    }
-
-    .charts-value {
-        font-size: 18px !important;
-        font-weight: 600 !important;
-        line-height: 18px;
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-    }
-
-    .header-svg-wrapper {
-        display: flex;
-        align-items: center;
-        .header {
-            margin-left: 6px;
-        }
-        svg {
+    .additional-template-broker-data {
+        display: grid;
+        grid-template-columns: 150px 150px;
+        column-gap: 60px;
+        
+        .addition-template-item {
             display: flex;
+            flex-direction: column;
         }
-    }
-}
-.charts-broker-template {
-    padding: 0 0px !important;
-    margin-top: 6px;
-}
-.invoice-ageing-template {
-    display: grid;
-    grid-template-columns: 150px 150px;
-    grid-column-gap: 60px;
-    column-gap: 60px;
     
-    .invoice-ageing-template-item {
-        display: flex;
-        flex-direction: column;
-
-        .header-name {
+        .header {
             font-size: 11px;
             line-height: 14px;
-            color: $ta-black;
-
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-        
-        .value-ageing {
-            font-size: 18px;
-            line-height: 22px;
             color: $ta-black-2;
+    
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    
+        .value {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black-2;
+    
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    
+        .charts-value {
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            line-height: 18px;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+        }
+    
+        .header-svg-wrapper {
+            display: flex;
+            align-items: center;
+            .header {
+                margin-left: 6px;
+            }
+            svg {
+                display: flex;
+            }
+        }
+    }
 
+    .charts-broker-template {
+        padding: 0 0px !important;
+        margin-top: 6px;
+    }
+
+    .invoice-ageing-template {
+        display: grid;
+        grid-template-columns: 150px 150px;
+        grid-column-gap: 60px;
+        column-gap: 60px;
+        
+        .invoice-ageing-template-item {
+            display: flex;
+            flex-direction: column;
+    
+            .header-name {
+                font-size: 11px;
+                line-height: 14px;
+                color: $ta-black;
+    
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+            
+            .value-ageing {
+                font-size: 18px;
+                line-height: 22px;
+                color: $ta-black-2;
+    
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
+        }
+    }
+
+    .progress-container {
+        width: 408px;
+        height: 8px;
+        border-radius: 2px;
+        margin-left: 10px;
+        margin-top: 8px;
+        margin-bottom: 16px;
+    }
+
+    .invoice-agein-unlimited {
+        white-space: nowrap;
+        font-size: 18px;
+        font-weight: 500;
+        color: #6c6c6c;
+        display: flex;
+        align-items: flex-end;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        .avg-days-invoice {
+            margin-left: 6px;
+            font-weight: 600 !important;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
@@ -122,167 +179,135 @@
             }
         }
     }
-}
-.progress-container {
-    width: 408px;
-    height: 8px;
-    border-radius: 2px;
-    margin-left: 10px;
-    margin-top: 8px;
-    margin-bottom: 16px;
-}
-.invoice-agein-unlimited {
-    white-space: nowrap;
-    font-size: 18px;
-    font-weight: 500;
-    color: #6c6c6c;
-    display: flex;
-    align-items: flex-end;
-    &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-    }
-    &::selection {
-        color: $color-gray-dark;
-        background: rgb(183, 183, 183, 0.2);
-    }
-    .avg-days-invoice {
-        margin-left: 6px;
-        font-weight: 600 !important;
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-    }
-}
-
-.credit-perctange {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 408px;
-
-    .percntage-broker {
-        font-size: 14px;
-        line-height: 18px;
-        color: $ta-black;
-
-        &::-moz-selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-        &::selection {
-            color: $color-gray-dark;
-            background: rgb(183, 183, 183, 0.2);
-        }
-    }
-}
-
-.table-progress-bar-container {
-    width: 100%;
-    height: 8px;
-    border-radius: 2px;
-    overflow: hidden;
-
-    .table-progress-bar {
-        height: 100%;
-
-        // Progress Bar
-        &.bg-progress-sliver {
-            background: $muted;
-            width: 80%;
-        }
-
-        &.bg-progress-orange {
-            background: $ta-yellow-1;
-            width: 50%;
-        }
-
-        &.bg-progress-danger {
-            background: $ta-red-10;
-            width: 20%;
-        }
-    }
-
-    // Progress Container
-    &.bg-sliver-container {
-        background: $dark-2;
-    }
-
-    &.bg-expired-container {
-        background: $ta-red;
-    }
-
-    &.bg-inactive-container {
-        background: $ta-light-grey;
-    }
-
-    &.bg-orange-container {
-        background: $ta-yellow-7;
-    }
-
-    &.bg-danger-container {
-        background: $ta-red-16;
-    }
-}
-
-.invoice-aging-content {
-    .invoice-aging-content-item {
-        .days-count {
-            width: 35%;
-            color: $white;
-
-            span {
-                color: $bw5;
+    
+    .credit-perctange {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 408px;
+    
+        .percntage-broker {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black;
+    
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(183, 183, 183, 0.2);
             }
         }
-
-        .invoice-count {
-            width: 30%;
-            color: $bw5;
-            text-align: center;
+    }
+    
+    .table-progress-bar-container {
+        width: 100%;
+        height: 8px;
+        border-radius: 2px;
+        overflow: hidden;
+    
+        .table-progress-bar {
+            height: 100%;
+    
+            // Progress Bar
+            &.bg-progress-sliver {
+                background: $muted;
+                width: 80%;
+            }
+    
+            &.bg-progress-orange {
+                background: $ta-yellow-1;
+                width: 50%;
+            }
+    
+            &.bg-progress-danger {
+                background: $ta-red-10;
+                width: 20%;
+            }
         }
-
-        .total-amount {
-            width: 35%;
-            color: $white;
-            text-align: right;
-        }
-
-        .invoice-aging-item-progress-bar-container {
-            position: relative;
-            width: 252px;
-            height: 8px;
-            border-radius: 2px;
+    
+        // Progress Container
+        &.bg-sliver-container {
             background: $dark-2;
-            overflow: hidden;
-
-            .progress-bar {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-
-                &.group-1 {
-                    background: $ta-blue-13;
+        }
+    
+        &.bg-expired-container {
+            background: $ta-red;
+        }
+    
+        &.bg-inactive-container {
+            background: $ta-light-grey;
+        }
+    
+        &.bg-orange-container {
+            background: $ta-yellow-7;
+        }
+    
+        &.bg-danger-container {
+            background: $ta-red-16;
+        }
+    }
+    
+    .invoice-aging-content {
+        .invoice-aging-content-item {
+            .days-count {
+                width: 35%;
+                color: $white;
+    
+                span {
+                    color: $bw5;
                 }
-
-                &.group-2 {
-                    background: $ta-yellow-1;
-                }
-
-                &.group-3 {
-                    background: $ta-orange-4;
-                }
-
-                &.group-4 {
-                    background: $ta-red-10;
+            }
+    
+            .invoice-count {
+                width: 30%;
+                color: $bw5;
+                text-align: center;
+            }
+    
+            .total-amount {
+                width: 35%;
+                color: $white;
+                text-align: right;
+            }
+    
+            .invoice-aging-item-progress-bar-container {
+                position: relative;
+                width: 252px;
+                height: 8px;
+                border-radius: 2px;
+                background: $dark-2;
+                overflow: hidden;
+    
+                .progress-bar {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+    
+                    &.group-1 {
+                        background: $ta-blue-13;
+                    }
+    
+                    &.group-2 {
+                        background: $ta-yellow-1;
+                    }
+    
+                    &.group-3 {
+                        background: $ta-orange-4;
+                    }
+    
+                    &.group-4 {
+                        background: $ta-red-10;
+                    }
                 }
             }
         }
+    }
+    
+    .note-cards {
+        padding: 0px 12px 0px 4px;
     }
 }

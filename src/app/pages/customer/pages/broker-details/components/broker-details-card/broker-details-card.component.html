@@ -110,8 +110,8 @@
 
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
-                [hasDivider]="true"
-                [hasCounter]="20"
+                [hasDivider]="broker?.ein || broker?.mcNumber"
+                [hasCounter]="invoiceChartCount"
                 [cardName]="'Invoice'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{

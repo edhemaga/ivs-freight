@@ -32,29 +32,30 @@
                         shipperContact?.fullName
                     }}</span>
                     <div class="svg-wrapper">
-                        <span
+                        <div
                             ngbTooltip
                             mainTooltip="Edit"
                             position="top"
                             tooltipBackground="#6C6C6C"
+                            (click)="editContact()"
+                            class="action_buttons d-flex justify-content-center align-items-center"
                         >
                             <svg-icon
                                 src="{{ contactsImageRoutes.edit }}"
-                                class="svg-icon-edit"
-                                (click)="editContact()"
                             ></svg-icon>
-                        </span>
-                        <span
+                        </div>
+                        <div
                             ngbTooltip
                             mainTooltip="Delete"
                             position="top"
                             tooltipBackground="#6C6C6C"
+                            (click)="deleteContactModal()"
+                            class="action_buttons delete d-flex justify-content-center align-items-center delete"
                         >
                             <svg-icon
                                 src="{{ contactsImageRoutes.delete }}"
-                                class="svg-icon-trash"
                             ></svg-icon>
-                        </span>
+                        </div>
                     </div>
                 </div>
                 <ng-container *ngIf="shipperContact?.phone">
@@ -74,6 +75,7 @@
                                         : (shipperContact?.phone | formatPhoneP)
                                 "
                                 [arrayText]="shipperContact?.phoneExt ?? false"
+                                [type]="'Contacts'"
                             >
                             </app-ta-copy>
                         </span>
