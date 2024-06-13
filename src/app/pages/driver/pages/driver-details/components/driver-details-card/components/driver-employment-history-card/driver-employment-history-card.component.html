@@ -99,6 +99,7 @@
                 >
                     <div
                         class="employment-progress-bar-box"
+                        [ngClass]="{ reset: resetProgressBar }"
                         [ngStyle]="{
                             width: progressBox.percents + '%',
                             background: progressBox.isEmployed

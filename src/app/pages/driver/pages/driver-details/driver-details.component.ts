@@ -39,7 +39,10 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 // store
-import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
+import {
+    DriverMinimalListState,
+    DriversMinimalListStore,
+} from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
@@ -72,26 +75,26 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
     public currentIndex: number = 0;
 
-    //////////////
+    public isInactive: boolean = false;
 
-    public driverStatus: boolean;
-    public data: any;
-    public showInc: boolean;
-    public hasDangerCDL: boolean;
-    public arrayCDL: any[] = [];
-    public arrayMedical: any[] = [];
-    public arrayMvrs: any[] = [];
+    public driversList: DriverMinimalListState;
+
+    public driverObject: DriverResponse;
+    public driverStatus: boolean = false;
+    public driverId: number;
+    public newDriverId: number;
+
+    public hasDangerCdl: boolean;
     public hasDangerMedical: boolean;
     public hasDangerMvr: boolean;
-    public driverId: number = null;
-    public driverObject: any;
-    public driversList: any = this.driverMinimalQuery.getAll();
+
+    //////////////
+
+    public data: any;
 
     public isActiveCdl: boolean;
     public dataCdl: any;
     public cdlActiveId: number;
-
-    private newDriverId: number;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -105,7 +108,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private driverService: DriverService,
         private detailsPageDriverService: DetailsPageService,
         private confirmationService: ConfirmationService,
-        private DetailsDataService: DetailsDataService,
+        private detailsDataService: DetailsDataService,
         private cdlService: DriverCdlService,
         private confirmationActivationService: ConfirmationActivationService,
 
@@ -123,6 +126,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.getStoreData();
 
         this.getDriverData();
+
+        this.getDriversMinimalList();
 
         this.confirmationSubscribe();
 
@@ -161,13 +166,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                                 this.deactivateCdl(res.data.id, driverId);
 
                                 if (
-                                    this.DetailsDataService.cdlId !=
+                                    this.detailsDataService.cdlId !=
                                         res.data.id ||
                                     res?.data?.newCdlID
                                 ) {
                                     let newCdlId = res?.data?.newCdlID
                                         ? res?.data?.newCdlID
-                                        : this.DetailsDataService.cdlId;
+                                        : this.detailsDataService.cdlId;
                                     setTimeout(() => {
                                         this.activateCdl(newCdlId);
                                     }, 1000);
@@ -198,12 +203,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             const newDriverData = { ...state.entities[this.newDriverId] };
 
             if (!this.isEmpty(newDriverData)) {
-                this.DetailsDataService.setNewData(newDriverData);
+                this.detailsDataService.setNewData(newDriverData);
 
                 this.getDetailsConfig(newDriverData);
                 this.getDetailsOptions(newDriverData.status);
             }
         });
+    }
+
+    private getDriversMinimalList(): void {
+        this.driversList = this.driverMinimalQuery.getAll();
     }
 
     private getDriverData(): void {
@@ -236,9 +245,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }); */
     }
 
-    public getDetailsConfig(driverData: any) {
+    public getDetailsConfig(driverData: DriverResponse) {
         console.log('driverData', driverData);
-        this.DetailsDataService.setNewData(driverData);
+        this.detailsDataService.setNewData(driverData);
 
         this.driverObject = driverData;
 
@@ -247,19 +256,23 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
         if (!driverData?.status) {
             this.driverStatus = true;
-            this.showInc = true;
+
+            this.isInactive = true;
         } else {
             this.driverStatus = false;
-            this.showInc = false;
+
+            this.isInactive = false;
         }
 
         this.driverDetailsConfig = DriverDetailsHelper.getDriverDetailsConfig(
             driverData,
             this.driverStatus,
-            this.hasDangerCDL,
+            this.hasDangerCdl,
             this.hasDangerMedical,
             this.hasDangerMvr
         );
+
+        console.log(' this.driverDetailsConfig', this.driverDetailsConfig);
 
         this.driverId = driverData?.id;
     }
@@ -486,58 +499,54 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
+    private checkExpiration(data: any) {
+        this.hasDangerCdl = false;
+        this.hasDangerMedical = false;
+        this.hasDangerMvr = false;
+
+        const arrayCdl: boolean[] = [];
+        const arrayMedical: boolean[] = [];
+        const arrayMvr: boolean[] = [];
+
+        data?.cdls?.map((cdl) => {
+            if (moment(cdl.expDate).isAfter(moment())) {
+                arrayCdl.push(false);
+            }
+
+            if (moment(cdl.expDate).isBefore(moment())) {
+                arrayCdl.push(true);
+            }
+        });
+
+        data?.medicals?.map((medical) => {
+            if (moment(medical.expDate).isAfter(moment())) {
+                arrayMedical.push(false);
+            }
+
+            if (moment(medical.expDate).isBefore(moment())) {
+                arrayMedical.push(true);
+            }
+        });
+
+        data?.mvrs.map((mvr) => {
+            if (moment(mvr.issueDate).isAfter(moment())) {
+                arrayMvr.push(false);
+            }
+
+            if (moment(mvr.issueDate).isBefore(moment())) {
+                arrayMvr.push(true);
+            }
+        });
+
+        this.hasDangerCdl = !arrayCdl.includes(false);
+        this.hasDangerMedical = !arrayMedical.includes(false);
+        this.hasDangerMvr = !arrayMvr.includes(false);
+    }
+
     //////////////////////////////////////////////////////////////////////
 
     public isEmpty(obj: Record<string, any>): boolean {
         return Object.keys(obj).length === 0;
-    }
-
-    checkExpiration(data: any) {
-        this.hasDangerCDL = false;
-        this.hasDangerMedical = false;
-        this.hasDangerMvr = false;
-        this.arrayCDL = [];
-        this.arrayMedical = [];
-        this.arrayMvrs = [];
-
-        data?.cdls?.map((el) => {
-            if (moment(el.expDate).isAfter(moment())) {
-                this.arrayCDL.push(false);
-            }
-            if (moment(el.expDate).isBefore(moment())) {
-                this.arrayCDL.push(true);
-            }
-        });
-
-        data?.medicals?.map((el) => {
-            if (moment(el.expDate).isAfter(moment())) {
-                this.arrayMedical.push(false);
-            }
-            if (moment(el.expDate).isBefore(moment())) {
-                this.arrayMedical.push(true);
-            }
-        });
-
-        if (data.mvrs?.length > 0) {
-            data?.mvrs.map((el) => {
-                if (moment(el.issueDate).isAfter(moment())) {
-                    this.arrayMedical.push(false);
-                }
-                if (moment(el.issueDate).isBefore(moment())) {
-                    this.arrayMedical.push(true);
-                }
-            });
-        }
-        if (this.arrayCDL.includes(false)) {
-            this.hasDangerCDL = false;
-        } else {
-            this.hasDangerCDL = true;
-        }
-        if (this.arrayMedical.includes(false)) {
-            this.hasDangerMedical = false;
-        } else {
-            this.hasDangerMedical = true;
-        }
     }
 
     public getCdlById(id: number) {

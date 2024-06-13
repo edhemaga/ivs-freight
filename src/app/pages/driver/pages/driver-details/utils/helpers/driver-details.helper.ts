@@ -117,7 +117,7 @@ export class DriverDetailsHelper {
     static getDriverDetailsConfig(
         driverData: any,
         driverStatus: boolean,
-        hasDangerCDL: boolean,
+        hasDangerCdl: boolean,
         hasDangerMedical: boolean,
         hasDangerMvr: boolean
     ): DriverDetailsConfig[] {
@@ -134,7 +134,7 @@ export class DriverDetailsHelper {
                 template: 'cdl',
                 req: false,
                 status: driverStatus,
-                hasDanger: hasDangerCDL,
+                hasDanger: hasDangerCdl,
                 length: driverData?.cdls?.length,
                 data: driverData?.cdls,
             },
@@ -152,7 +152,7 @@ export class DriverDetailsHelper {
                 id: 3,
                 name: 'Medical',
                 template: 'medical',
-                req: false,
+                req: true,
                 status: driverStatus,
                 hasDanger: hasDangerMedical,
                 length: driverData?.medicals?.length,

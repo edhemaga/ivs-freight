@@ -63,6 +63,9 @@ export class DriverEmploymentHistoryCardComponent implements OnChanges {
     private getYearsAndDays(
         employmentHistories: EmploymentHistoryResponse[]
     ): void {
+        this.yearsOfService = 0;
+        this.daysOfService = 0;
+
         let yearsSum = 0;
         let daysSum = 0;
 
@@ -82,6 +85,9 @@ export class DriverEmploymentHistoryCardComponent implements OnChanges {
     public getProgressBarData(
         employmentHistories: EmploymentHistoryResponse[]
     ): void {
+        this.employmentHistoryData = [];
+        this.employmentHistoryProgressData = [];
+
         this.firstEmploymentDate =
             MethodsCalculationsHelper.convertDateFromBackend(
                 employmentHistories[0].startDate

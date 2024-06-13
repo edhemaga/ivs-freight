@@ -152,10 +152,9 @@
 
                     <app-ta-counter
                         *ngIf="
-                            (!danger && counterData) ||
-                            (counterData == 0 && !hideCounter)
+                            counterData || (counterData == 0 && !hideCounter)
                         "
-                        [countBackground]="dropOpened ? '#424242' : '#424242'"
+                        [countBackground]="dropOpened ? '#424242' : '#6c6c6c'"
                         [countColor]="dropOpened ? '#FFFFFF' : '#FFFFFF'"
                         [countHeight]="'20px'"
                         [countWidth]="'20px'"
