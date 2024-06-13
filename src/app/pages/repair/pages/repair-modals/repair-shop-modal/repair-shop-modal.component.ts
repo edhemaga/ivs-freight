@@ -16,7 +16,7 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { Subject, forkJoin, of, takeUntil } from 'rxjs';
+import { Subject, Subscription, forkJoin, of, takeUntil } from 'rxjs';
 
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
@@ -110,6 +110,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -148,8 +149,9 @@ import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-m
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
     // Enums
-    RepairShopModalStringEnum = RepairShopModalStringEnum;
-    TableStringEnum = TableStringEnum;
+    public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
+    public RepairShopModalStringEnum = RepairShopModalStringEnum;
+    public TableStringEnum = TableStringEnum;
     public RepairShopModalEnum = RepairShopModalEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
 
@@ -158,8 +160,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // Tabs
     public tabs: RepairShopTabs[];
-    selectedTab: OpenedTab = TableStringEnum.DETAILS;
-    tabTitle: string;
+    public selectedTab: OpenedTab = TableStringEnum.DETAILS;
+    public tabTitle: string;
 
     // Form
     public repairShopForm: UntypedFormGroup;
@@ -188,17 +190,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     // Contact Tab
     public contactAddedCounter: number = 0;
-    isNewContactAdded: boolean;
-    isDaysVisible: boolean;
+    public isNewContactAdded: boolean;
+    public isDaysVisible: boolean;
     public showPhoneExt: boolean = false;
     // Reviews
     public reviews: any[] = [];
-    contacts = [];
-    isRequestInProgress: boolean;
-    departments: DepartmentResponse[];
-    isContactFormValid: boolean = true;
-    disableOneMoreReview: boolean;
-    files: UploadFile[] | FileResponse[] = [];
+    public contacts = [];
+    public isRequestInProgress: boolean;
+    private departments: DepartmentResponse[];
+    private isContactFormValid: boolean = true;
+    public disableOneMoreReview: boolean;
+    public files: UploadFile[] | FileResponse[] = [];
     public filesForDelete: any[] = [];
     public companyUser: SignInResponse = null;
 
@@ -213,6 +215,52 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private reviewRatingService: ReviewsRatingService
     ) {}
 
+    public get isModalValidToSubmit() {
+        return (
+            this.repairShopForm.valid &&
+            this.repairShopForm.dirty &&
+            this.isContactFormValid
+        );
+    }
+
+    public get openAlways() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.OPEN_ALWAYS);
+    }
+
+    public get isOpenAllDay() {
+        return !!this.openAlways.value;
+    }
+
+    public get isEditMode() {
+        return this.editData?.data;
+    }
+
+    public get modalTitle(): string {
+        return this.isEditMode
+            ? RepairShopModalEnum.MODAL_TITLE_EDIT
+            : RepairShopModalEnum.MODAL_TITLE_ADD;
+    }
+
+    public get isFavorite() {
+        return !!this.favoriteField.value;
+    }
+
+    private get favoriteField() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
+    }
+
+    public get favoriteLabel() {
+        return this.isFavorite
+            ? this.RepairShopModalEnum.REMOVE_FAVORITE
+            : this.RepairShopModalEnum.ADD_FAVORITE;
+    }
+
+    // Open hours
+    public get openHours(): UntypedFormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.OPEN_HOURS
+        ) as UntypedFormArray;
+    }
     ngOnInit() {
         this.initTabs();
         this.initializeServices();
@@ -221,7 +269,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
-    private generateForm() {
+    private generateForm(): void {
         this.repairShopForm = this.formBuilder.group({
             [RepairShopModalStringEnum.NAME]: [
                 null,
@@ -265,7 +313,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     // Inside your component
-    private initializeServices() {
+    private initializeServices(): Subscription {
         return forkJoin({
             dropdowns: this.shopService.getRepairShopModalDropdowns(),
             repairShop: this.isEditMode
@@ -323,7 +371,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private mapEditData(res: RepairShopResponse) {
+    private mapEditData(res: RepairShopResponse): void {
         // This fields are custom and cannot be part of the form so we need to remap it
         this.showPhoneExt = !!res.phoneExt;
         this.services = mapServices(res, false);
@@ -349,7 +397,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.mapRatings(res);
     }
 
-    private preSelectService(shopServiceType?: EnumValue) {
+    private preSelectService(shopServiceType?: EnumValue): void {
         const service = shopServiceType ?? this.repairTypes[0];
         this.repairShopForm
             .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
@@ -362,7 +410,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public tabChange(selectedTab: RepairShopTabs): void {
         this.selectedTab = selectedTab.id;
-        let dotAnimation = document.querySelector(`.${this.animationTabClass}`);
+        const dotAnimation = document.querySelector(
+            `.${this.animationTabClass}`
+        );
 
         this.animationObject = {
             value: this.selectedTab,
@@ -370,7 +420,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    initTabs() {
+    private initTabs(): void {
         if (this.editData) this.selectedTab = this.editData.openedTab;
         this.tabs = RepairShopConstants.TABS(
             !this.isEditMode,
@@ -378,17 +428,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         );
     }
 
-    get isEditMode() {
-        return this.editData?.data;
-    }
-
-    get modalTitle(): string {
-        return this.isEditMode
-            ? RepairShopModalEnum.MODAL_TITLE_EDIT
-            : RepairShopModalEnum.MODAL_TITLE_ADD;
-    }
-
-    public mapRatings(res: RepairShopResponse) {
+    public mapRatings(res: RepairShopResponse): void {
         // If there is no rating and commentContent, rating will not be visible
         this.reviews = res.ratingReviews.map((item) => ({
             ...item,
@@ -407,7 +447,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         address: AddressEntity;
         valid: boolean;
         longLat: any;
-    }) {
+    }): void {
         if (event.valid) {
             this.selectedAddress = event.address;
             this.repairShopForm
@@ -420,47 +460,30 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     // Favorite
-    public addShopToFavorite() {
+    public addShopToFavorite(): void {
         this.favoriteField.patchValue(!this.isFavorite);
     }
 
-    get isFavorite() {
-        return !!this.favoriteField.value;
-    }
-
-    get favoriteField() {
-        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
-    }
-
-    get favoriteLabel() {
-        return this.isFavorite
-            ? this.RepairShopModalEnum.REMOVE_FAVORITE
-            : this.RepairShopModalEnum.ADD_FAVORITE;
-    }
-
-    // Open hours
-    public get openHours(): UntypedFormArray {
-        return this.repairShopForm.get(
-            RepairShopModalStringEnum.OPEN_HOURS
-        ) as UntypedFormArray;
-    }
-
-    patchWorkingDayTime(item: any, startTime: Date, endTime: Date): void {
+    private patchWorkingDayTime(
+        item: any,
+        startTime: Date,
+        endTime: Date
+    ): void {
         item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
         item.get(RepairShopModalStringEnum.END_TIME)?.patchValue(endTime);
     }
 
-    private initWorkingHours() {
+    private initWorkingHours(): void {
         RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
             this.openHours.push(createOpenHour(day, this.formBuilder))
         );
     }
 
-    public toggleDays() {
+    public toggleDays(): void {
         this.isDaysVisible = !this.isDaysVisible;
     }
 
-    public addNewWorkingDays(index: number) {
+    public addNewWorkingDays(index: number): void {
         const newWorkingDay = this.openHours.at(index);
         const isShopOpen =
             newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value ===
@@ -476,7 +499,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.patchWorkingDayTime(newWorkingDay, startTime, endTime);
     }
 
-    public toggle247WorkingHours() {
+    public toggle247WorkingHours(): void {
         this.openAlways.patchValue(!this.isOpenAllDay);
 
         const startTime = this.convertTime(
@@ -497,26 +520,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    get openAlways() {
-        return this.repairShopForm.get(RepairShopModalStringEnum.OPEN_ALWAYS);
-    }
-
-    get isOpenAllDay() {
-        return !!this.openAlways.value;
-    }
-
-    public convertTime(time: string) {
+    public convertTime(time: string): Date {
         return MethodsCalculationsHelper.convertTimeFromBackend(time);
     }
 
     // Services
-    public repairTypeTabChange(repairType: EnumValue) {
+    public repairTypeTabChange(repairType: EnumValue): void {
         this.repairShopForm
             .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
             .patchValue(repairType.id);
     }
 
-    public activeRepairService(service: RepairShopModalService) {
+    public activeRepairService(service: RepairShopModalService): void {
         service.active = !service.active;
     }
 
@@ -538,7 +553,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onBankSelected(event: BankResponse | null) {
+    public onBankSelected(event: BankResponse | null): void {
         this.selectedBank = event;
 
         if (!event)
@@ -578,9 +593,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
     }
 
-
-
-    private updateFilesField(files: any[]): void {   
+    private updateFilesField(files: any[]): void {
         const filesValue = files.length ? JSON.stringify(files) : null;
         this.repairShopForm
             .get(RepairShopModalStringEnum.FILES)
@@ -594,9 +607,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             this.filesForDelete.push(event.deleteId);
         }
     }
-   
 
-    public onModalAction(data: RepairShopModalAction) {
+    public onModalAction(data: RepairShopModalAction): void {
         // Prevent double click
         if (!this.isModalValidToSubmit || this.isRequestInProgress) {
             return;
@@ -621,13 +633,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         if (data.action === ActionTypesEnum.DELETE) {
             this.deleteRepairShopById(this.editData.id);
         }
-        if(data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
             this.showCloseBusinessModal();
         }
-
     }
 
-    getFromFieldValue(keyName: string) {
+    private getFromFieldValue(keyName: string) {
         const field = this.repairShopForm.get(keyName);
 
         if (field) {
@@ -637,7 +648,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         return null;
     }
 
-    generateShopRequest() {  
+    private generateShopRequest(): CreateShopModel {
         const repairModel: CreateShopModel = {
             name: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
             phone: this.getFromFieldValue(RepairShopModalStringEnum.PHONE),
@@ -695,17 +706,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
         return repairModel;
     }
-    private createDocumentsForRequest() {
-        let documents = [];
-        this.files.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+    private createDocumentsForRequest(): Array<Blob> {
+        let documents: Array<Blob> = [];
+        this.files.map((item: UploadFile) => {
+            if (item.realFile) documents.push(item.realFile);
         });
         return documents;
     }
 
-    mapContacts(): RepairShopContactCommand[] {
+    private mapContacts(): RepairShopContactCommand[] {
         const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
             RepairShopModalStringEnum.CONTACTS
         );
@@ -719,7 +728,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public addNewRepairShop(addNewShop: boolean) {
+    public addNewRepairShop(addNewShop: boolean): void {
         this.shopService
             .addRepairShop(this.generateShopRequest())
             .pipe(takeUntil(this.destroy$))
@@ -743,7 +752,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    updateRepairShop(id: number) {
+    private updateRepairShop(id: number): void {
         this.shopService
             .updateRepairShop({ id, ...this.generateShopRequest() })
             .pipe(takeUntil(this.destroy$))
@@ -757,7 +766,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteRepairShopById(id: number) {
+    private deleteRepairShopById(id: number): void {
         this.shopService
             .deleteRepairShopById(id)
             .pipe(takeUntil(this.destroy$))
@@ -776,7 +785,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             | ActionTypesEnum.DELETE,
         status: boolean,
         close: boolean
-    ) {
+    ): void {
         this.modalService.setModalSpinner({
             action,
             status,
@@ -787,24 +796,16 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         setTimeout(() => (this.isRequestInProgress = false), 400);
     }
 
-    get isModalValidToSubmit() {
-        return (
-            this.repairShopForm.valid &&
-            this.repairShopForm.dirty &&
-            this.isContactFormValid
-        );
-    }
-
-    showCloseBusinessModal() {
+    private showCloseBusinessModal(): void {
         // close current modal
         this.setModalSpinner(ActionTypesEnum.DELETE, false, true);
 
         const data = {
-            data: this.editData
-        }
+            data: this.editData,
+        };
         const mappedEvent = {
             ...data,
-            type: TableStringEnum.CLOSE 
+            type: TableStringEnum.CLOSE,
         };
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
@@ -814,13 +815,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                 template: TableStringEnum.INFO,
                 subType: TableStringEnum.REPAIR_SHOP,
                 subTypeStatus: TableStringEnum.BUSINESS,
-                tableType:
-                    ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
-                modalTitle: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
-                modalSecondTitle: this.selectedAddress.address ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                modalTitle: this.getFromFieldValue(
+                    RepairShopModalStringEnum.NAME
+                ),
+                modalSecondTitle:
+                    this.selectedAddress.address ??
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             }
         );
-
     }
 
     // Contact tab
@@ -844,27 +847,26 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.isContactFormValid = validStatus;
     }
 
-    public changeReviewsEvent(reviews: ReviewComment) {
+    public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete': {
+            case 'delete':
                 this.deleteReview(reviews);
                 break;
-            }
-            case 'add': {
+
+            case 'add':
                 this.addReview(reviews);
                 break;
-            }
-            case 'update': {
+
+            case 'update':
                 this.updateReview(reviews);
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
-    public createReview() {
+    public createReview(): void {
         if (
             this.reviews.some((item) => item.isNewReview) ||
             this.disableOneMoreReview
@@ -887,7 +889,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private addReview(reviews: ReviewComment) {
+    private addReview(reviews: ReviewComment): void {
         // 2 represent repair shop entity
         const review: CreateReviewCommand = {
             entityTypeReviewId: 2,
@@ -916,7 +918,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
+    private deleteReview(reviews: ReviewComment): void {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -925,7 +927,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewComment) {
+    private updateReview(reviews: ReviewComment): void {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
@@ -935,10 +937,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.reviewRatingService
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     ngOnDestroy(): void {

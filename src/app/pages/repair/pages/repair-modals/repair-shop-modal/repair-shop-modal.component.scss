@@ -23,15 +23,6 @@
     }
 
     // Override tabs to match figma design
-    &__main-tabs {
-        .tab-switch-name {
-            font-size: 14px !important;
-            font-weight: 700 !important;
-            line-height: 18px;
-            text-transform: none !important;
-        }
-    }
-
     &__contact-table {
         width: 600px;
         overflow-x: scroll;
@@ -50,7 +41,7 @@
                     top: auto;
                     border-top-width: 1px;
                     margin-top: -1px;
-                    background-color: #fff;
+                    background-color: $white;
                 }
 
                 &:nth-child(1) {
@@ -70,7 +61,7 @@
                 top: auto;
                 border-top-width: 1px;
                 margin-top: -1px;
-                background-color: #fff;
+                background-color: $white;
                 z-index: 11;
             }
             .contact-number {

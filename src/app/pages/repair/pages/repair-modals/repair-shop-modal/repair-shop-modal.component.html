@@ -9,12 +9,12 @@
     [editDate]="!!editData"
     [showCloseBusinessButton]="isEditMode"
 >
-    <div origin *ngIf="repairShopForm">
+    <ng-container origin *ngIf="repairShopForm">
         <app-ta-tab-switch
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
             [type]="'type2-modal-popup'"
-            class="repair-shop__main-tabs"
+            [isBold]="true"
         >
         </app-ta-tab-switch>
 
@@ -28,7 +28,7 @@
                 [class]="animationTabClass"
             >
                 <!-- Details Tab -->
-                 <!-- Use hidden so we don't reinitilaze every field once they are set,
+                <!-- Use hidden so we don't reinitilaze every field once they are set,
                  Also for contacts, all data is lost on tab change  -->
                 <div
                     [hidden]="selectedTab !== TableStringEnum.DETAILS"
@@ -65,7 +65,7 @@
                                         isFavorite
                                     "
                                     class="repair-shop__favorite"
-                                    src="assets/svg/common/ic_star.svg"
+                                    [src]="repairShopModalSvgRoutes.starIcon"
                                 ></svg-icon>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                 tooltipBackground="#6c6c6c"
                             >
                                 <svg-icon
-                                    src="assets/svg/common/ic_plus.svg"
+                                    [src]="repairShopModalSvgRoutes.plusIcon"
                                 ></svg-icon>
                             </div>
                             <app-ta-input
@@ -222,7 +222,7 @@
                         </div>
                     </app-ta-custom-card>
                     <!-- Open Hours -->
-                     <!-- isCardOpen: Close card since backend not working now neither does frontend-->
+                    <!-- isCardOpen: Close card since backend not working now neither does frontend-->
                     <app-ta-custom-card
                         (onActionEvent)="toggle247WorkingHours($event)"
                         [cardName]="'Work Hours'"
@@ -230,7 +230,7 @@
                         [has24Hours]="true"
                         [hasBodyData]="true"
                         [is24Hours]="isOpenAllDay"
-                        [isCardOpen]="false" 
+                        [isCardOpen]="false"
                         [disabledCard]="true"
                     >
                         <div
@@ -256,80 +256,95 @@
                                     let ind = index
                                 "
                             >
-                                <div
+                                <ng-container
                                     *ngIf="
                                         ind === 0 ||
                                         ind === openHours.controls.length - 1 ||
                                         ind === openHours.controls.length - 2 ||
                                         isDaysVisible
                                     "
-                                    [formGroupName]="ind"
-                                    class="timeline__card timeline__card-hover"
                                 >
-                                    <!-- Switch for all days -->
                                     <div
-                                        *ngIf="ind === 0"
-                                        (click)="toggleDays()"
+                                        [formGroupName]="ind"
+                                        class="timeline__card timeline__card-hover"
                                     >
-                                        <svg-icon
-                                            class="timeline__card-icon"
-                                            [class.timeline__card-icon-rotate]="
-                                                isDaysVisible
+                                        <!-- Switch for all days -->
+                                        <ng-container *ngIf="ind === 0">
+                                            <div (click)="toggleDays()">
+                                                <svg-icon
+                                                    class="timeline__card-icon"
+                                                    [class.timeline__card-icon-rotate]="
+                                                        isDaysVisible
+                                                    "
+                                                    [src]="
+                                                        repairShopModalSvgRoutes.iconDown
+                                                    "
+                                                ></svg-icon>
+                                                <span
+                                                    class="timeline__card-label"
+                                                >
+                                                    {{
+                                                        openHour.get('dayLabel')
+                                                            .value
+                                                    }}
+                                                </span>
+                                            </div>
+                                        </ng-container>
+
+                                        <!-- Other Days Check -->
+                                        <!-- Hide checkbox for MON - FRI label -->
+                                        <app-ta-checkbox
+                                            (formArrayAction)="
+                                                addNewWorkingDays(ind)
                                             "
-                                            src="assets/svg/common/ic_arrow_down_updated.svg"
-                                        ></svg-icon>
-                                        <span class="timeline__card-label">
-                                            {{ openHour.get('dayLabel').value }}
-                                        </span>
+                                            *ngIf="ind !== 0"
+                                            [customClass]="'medium'"
+                                            [label]="
+                                                openHour.get('dayLabel').value
+                                            "
+                                            [name]="
+                                                openHour.get('dayLabel').value
+                                            "
+                                            [formControlName]="
+                                                RepairShopModalStringEnum.IS_WORKING_DAY
+                                            "
+                                        ></app-ta-checkbox>
+
+                                        <!-- Time Picker -->
+                                        <app-ta-input
+                                            *ngIf="
+                                                openHour.get('isWorkingDay')
+                                                    .value
+                                            "
+                                            [inputConfig]="{
+                                                name: 'timepicker',
+                                                type: 'text',
+                                                placeholderIcon: 'time',
+                                                customClass: 'datetimeclass',
+                                                hideClear: true
+                                            }"
+                                            [formControlName]="
+                                                RepairShopModalStringEnum.START_TIME
+                                            "
+                                        ></app-ta-input>
+                                        <app-ta-input
+                                            *ngIf="
+                                                openHour.get('isWorkingDay')
+                                                    .value
+                                            "
+                                            [inputConfig]="{
+                                                name: 'timepicker',
+                                                type: 'text',
+                                                placeholderIcon: 'time',
+                                                customClass: 'datetimeclass',
+                                                hideClear: true
+                                            }"
+                                            [formControlName]="
+                                                RepairShopModalStringEnum.END_TIME
+                                            "
+                                        ></app-ta-input>
                                     </div>
-
-                                    <!-- Other Days Check -->
-                                    <!-- Hide checkbox for MON - FRI label -->
-                                    <app-ta-checkbox
-                                        (formArrayAction)="
-                                            addNewWorkingDays(ind)
-                                        "
-                                        *ngIf="ind !== 0"
-                                        [customClass]="'medium'"
-                                        [label]="openHour.get('dayLabel').value"
-                                        [name]="openHour.get('dayLabel').value"
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.IS_WORKING_DAY
-                                        "
-                                    ></app-ta-checkbox>
-
-                                    <!-- Time Picker -->
-                                    <app-ta-input
-                                        *ngIf="
-                                            openHour.get('isWorkingDay').value
-                                        "
-                                        [inputConfig]="{
-                                            name: 'timepicker',
-                                            type: 'text',
-                                            placeholderIcon: 'time',
-                                            customClass: 'datetimeclass',
-                                            hideClear: true
-                                        }"
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.START_TIME
-                                        "
-                                    ></app-ta-input>
-                                    <app-ta-input
-                                        *ngIf="
-                                            openHour.get('isWorkingDay').value
-                                        "
-                                        [inputConfig]="{
-                                            name: 'timepicker',
-                                            type: 'text',
-                                            placeholderIcon: 'time',
-                                            customClass: 'datetimeclass',
-                                            hideClear: true
-                                        }"
-                                        [formControlName]="
-                                            RepairShopModalStringEnum.END_TIME
-                                        "
-                                    ></app-ta-input>
-                                </div>
+                                </ng-container>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -408,9 +423,7 @@
                         <app-ta-custom-card
                             [cardName]="'Document'"
                             [disableAnimation]="disableCardAnimation"
-                            [hasCounter]="
-                                files.length ? files.length : 0
-                            "
+                            [hasCounter]="files.length"
                             [isCardOpen]="files.length"
                         >
                             <app-ta-upload-files
@@ -425,7 +438,7 @@
                     <app-ta-input-note
                         [isVisibleNote]="
                             repairShopForm.get(RepairShopModalStringEnum.NOTE)
-                                .value !== null
+                                .value
                         "
                         [note]="
                             repairShopForm.get(RepairShopModalStringEnum.NOTE)
@@ -435,7 +448,7 @@
                     ></app-ta-input-note>
                 </div>
                 <div
-                [hidden]="selectedTab !== TableStringEnum.CONTACT"
+                    [hidden]="selectedTab !== TableStringEnum.CONTACT"
                     class="m-tab"
                     class="repair-shop-card"
                 >
@@ -448,7 +461,7 @@
                         [cardName]="'Contact'"
                         [disableAnimation]="disableCardAnimation"
                         [disabledCard]="!contactAddedCounter"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                         [hasArrow]="false"
                         [hasCounter]="contactAddedCounter"
                         [hasScrollBody]="contactAddedCounter > 10"
@@ -458,7 +471,7 @@
                     >
                         <div
                             (scroll)="onScrollingContacts($event)"
-                            class="repair-shop__contact-table "
+                            class="repair-shop__contact-table"
                         >
                             <app-ta-modal-table
                                 [tableType]="modalTableTypeEnum.CONTACT"
@@ -474,15 +487,15 @@
                             </app-ta-modal-table>
                         </div>
                     </app-ta-custom-card>
-                    <div class="no-review-broker" *ngIf="!contactAddedCounter">
+                    <ng-container *ngIf="!contactAddedCounter">
                         <svg-icon
                             class="no-review-svg"
-                            src="assets/svg/common/ic_no_contacts.svg"
+                            [src]="repairShopModalSvgRoutes.noContactIcon"
                         ></svg-icon>
-                    </div>
+                    </ng-container>
                 </div>
                 <div
-                [hidden]="selectedTab !== TableStringEnum.REVIEW"
+                    [hidden]="selectedTab !== TableStringEnum.REVIEW"
                     class="m-tab"
                 >
                     <app-ta-custom-card
@@ -494,10 +507,10 @@
                         [cardName]="'Rating & Review'"
                         [disableAnimation]="disableCardAnimation"
                         [disableMultipleReviews]="disableOneMoreReview"
-                        [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+                        [hasActionSvg]="repairShopModalSvgRoutes.plusIcon"
                         [hasArrow]="false"
-                        [hasBodyData]="reviews.length > 0"
-                        [hasCounter]="reviews.length ?? 0"
+                        [hasBodyData]="reviews.length"
+                        [hasCounter]="reviews.length"
                         [hasLikeDislike]="true"
                         [hasScrollBody]="reviews.length > 6"
                         [isCardOpen]="true"
@@ -506,7 +519,7 @@
                         <div *ngIf="!reviews.length" class="no-review-broker">
                             <svg-icon
                                 class="no-review-svg"
-                                src="assets/svg/common/ic_no_review.svg"
+                                [src]="repairShopModalSvgRoutes.noReviewsIcon"
                             ></svg-icon>
                         </div>
                         <app-ta-user-review
@@ -519,5 +532,5 @@
                 </div>
             </div>
         </form>
-    </div>
+    </ng-container>
 </app-ta-modal>
