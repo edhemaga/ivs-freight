@@ -59,8 +59,11 @@
     [headerSvg]="
         editData?.type === 'multiple delete'
             ? 'delete'
-            : editData?.template === 'void'
+            : editData?.template === 'void' ||
+              (editData?.template === 'cdl' && editData?.type === 'activate')
             ? 'hire'
+            : editData?.subType === 'void cdl'
+            ? 'close'
             : editData?.type
     "
     [confirmationData]="editData"

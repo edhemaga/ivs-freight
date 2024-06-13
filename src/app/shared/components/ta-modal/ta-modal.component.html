@@ -645,7 +645,8 @@
                                     'driver',
                                     'medical',
                                     'test',
-                                    'mvr'
+                                    'mvr',
+                                    'cdl'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -836,6 +837,18 @@
                                 'modal-gray-btn':
                                     confirmationData?.type !== 'open'
                             }"
+                            type="button"
+                        >
+                            Yes
+                        </button>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="confirmationData?.subType === 'void cdl'"
+                    >
+                        <button
+                            (click)="onAction('void-cdl')"
+                            class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                             type="button"
                         >
                             Yes

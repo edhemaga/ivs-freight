@@ -12,4 +12,6 @@ export enum ConfirmationModalStringEnum {
     DELETE_SHIPPER = 'Delete Shipper',
     REPAIR_SHOP_REVIEW = 'repair shop review',
     QUESTION_MARK = '?',
+    VOID_CDL = 'Void CDL',
+    SELECTED_DRIVER = 'selected driver',
 }

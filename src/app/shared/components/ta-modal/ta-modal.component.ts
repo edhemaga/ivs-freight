@@ -419,6 +419,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
                 break;
             }
+            case 'void-cdl': {
+                this.confirmationAction.emit(this.confirmationData);
+
+                break;
+            }
             default: {
                 break;
             }
