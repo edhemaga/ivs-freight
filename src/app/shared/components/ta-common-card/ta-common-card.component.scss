@@ -2,7 +2,7 @@
 
 @keyframes change {
     from {
-        color: #6c6c6c;
+        color: $bw6-2;
     }
     to {
         color: #3551b7;
@@ -10,7 +10,7 @@
 }
 @keyframes changeSVG {
     from {
-        fill: #6c6c6c;
+        fill: $bw6-2;
     }
     to {
         fill: #536bc2;
@@ -46,7 +46,7 @@
         svg {
             &:hover {
                 path {
-                    fill: #6c6c6c;
+                    fill: $bw6-2;
                 }
             }
         }
@@ -59,7 +59,7 @@
     }
 
     .card-close-title {
-        color: #919191 !important;
+        color: $bw5 !important;
     }
     &:hover {
         .card-close-title {
@@ -88,10 +88,8 @@
 .card-name-cmp {
     font-size: 14px;
     font-weight: 800;
-    color: #6c6c6c;
+    color: $bw6-2;
 
-    //height: 22px;
-    //center align
     height: 28px;
 
     display: flex;
@@ -102,11 +100,11 @@
     text-overflow: ellipsis;
 
     &::-moz-selection {
-        color: #6c6c6c;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
     }
     &::selection {
-        color: #6c6c6c;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
     }
 }
@@ -116,14 +114,13 @@
     margin-bottom: 8px;
     width: 100%;
     padding: 0px 8px;
+    cursor: pointer;
 
     .card-body-cmp {
         flex-direction: column;
         background-color: #ffffff;
         max-height: 0;
         overflow: hidden;
-        //transition: all 3.3s ease-in-out;
-
         &.active {
             max-height: 1200px;
             transition: height 0.2s ease-in-out;
@@ -150,13 +147,8 @@
         align-items: flex-start;
         justify-content: space-between;
         background-color: #ffffff;
-        margin-left: 4px !important;
-        margin-right: 4px !important;
-        padding-bottom: 12px !important;
-        padding-top: 11px;
-        svg {
-            //cursor: pointer;
-        }
+        padding: 10px 6px 12px 6px;
+
         .icon-counter {
             position: relative;
             top: 1px;
@@ -169,15 +161,15 @@
                     height: 16px;
                     width: 14px;
                     path {
-                        fill: #cccccc;
+                        fill: $bw5;
                     }
                 }
             }
             .attachment-icon {
-                margin-left: 12px;
+                margin-left: 14px;
                 svg {
                     path {
-                        fill: #cccccc;
+                        fill: $bw5;
                     }
                 }
             }
@@ -206,11 +198,6 @@
     }
 }
 
-svg {
-    &:hover {
-        //cursor: pointer;
-    }
-}
 p {
     margin: 0 !important;
 }
@@ -310,7 +297,7 @@ p {
         transition: all 0.3s ease-in-out;
         path {
             &:hover {
-                fill: #6c6c6c;
+                fill: $bw6-2;
             }
         }
     }
@@ -325,9 +312,6 @@ p {
     svg {
         path {
             fill: #aaaaaa;
-            // &:hover {
-            //     fill: #6c6c6c;
-            // }
         }
     }
 }
@@ -338,15 +322,12 @@ p {
     line-height: 17px;
     cursor: pointer;
     &::-moz-selection {
-        color: #6c6c6c;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
     }
     &::selection {
-        color: #6c6c6c;
+        color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
-    }
-    &:hover {
-        //color: #3c3c3c !important;
     }
 }
 .dropdown-common {
@@ -361,8 +342,8 @@ p {
     position: relative;
 }
 .weekly-status {
-    background-color: #f3f3f3;
-    height: 18px;
+    background-color: $bw2;
+    padding: 2px 4px;
     border-radius: 2px;
     margin-right: 6px;
     text-align: center;
@@ -375,11 +356,11 @@ p {
     line-height: 17px;
     z-index: 1;
     &::-moz-selection {
-        color: #6c6c6c;
+        color: $bw6-2;
         background: rgb(145, 145, 145, 0.2);
     }
     &::selection {
-        color: #919191;
+        color: $bw5;
         background: rgb(145, 145, 145, 0.2);
     }
 }
@@ -390,14 +371,14 @@ p {
     svg {
         &:hover {
             path {
-                fill: #6c6c6c;
+                fill: $bw6-2;
             }
         }
     }
 }
 .second-name {
     font-size: 14px;
-    color: #919191;
+    color: $bw5;
     font-weight: 400;
     margin-left: 12px;
     //width: 150px;

@@ -1,3 +1,11 @@
+import {
+    CdlResponse,
+    DriverResponse,
+    MedicalResponse,
+    MvrResponse,
+    TestResponse,
+} from 'appcoretruckassist';
+
 export interface DriverDetailsConfig {
     id?: number;
     name?: string;
@@ -6,5 +14,10 @@ export interface DriverDetailsConfig {
     status?: boolean;
     hasDanger?: boolean;
     length?: number;
-    data?: any;
+    data?:
+        | DriverResponse
+        | CdlResponse
+        | TestResponse
+        | MedicalResponse
+        | MvrResponse;
 }

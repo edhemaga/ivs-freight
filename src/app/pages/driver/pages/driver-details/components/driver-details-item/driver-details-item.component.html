@@ -1,5 +1,7 @@
-<div class="details-component">
-    <ng-container *ngFor="let driverItem of drivers; trackBy: identity">
+<div class="details-component driver-details-item-container">
+    <ng-container
+        *ngFor="let driverItem of detailsConfig; trackBy: trackByIdentity"
+    >
         <ng-container [ngSwitch]="driverItem.template">
             <!-- General -->
 
@@ -13,216 +15,174 @@
 
             <ng-container *ngSwitchCase="'cdl'">
                 <div class="card-width">
-                    <div>
-                        <app-ta-common-card
-                            *ngFor="
-                                let cdl of dataCDl;
-                                let i = index;
-                                trackBy: identity
-                            "
-                            [options]="dataDropDown"
-                            [cardDocumentCounter]="
-                                cdl?.files?.length ? cdl.files.length : 0
-                            "
-                            [statusActive]="cdl.status"
-                            (dataDropDopwn)="getCdlById(cdl.id)"
-                            (preloadData)="preloadData(cdl, 'cdl')"
-                            (resizePage)="toggleResizePage(i, 'cdl')"
-                            [cardNameCommon]="cdl?.cdlNumber"
-                            [expDateClose]="formatDate(cdl?.expDate)"
-                            [voidedDate]="formatDate(cdl?.dateDeactivated)"
-                            [hasCopyIcon]="true"
-                            [optionsId]="cdl.id"
-                            [isCardOpen]="cdl.status == 1 ? true : false"
-                            [forcedOpen]="
-                                cdl.issueDate > currentDate ? true : false
-                            "
-                            (clickedCard)="getNameForDrop($event, cdl.id)"
-                            [cardNameCurrent]="'cdl'"
-                            [noteIcons]="
-                                (cdl.note &&
-                                    cdl.note != null &&
-                                    cdl.note != 'null') ||
-                                cdlNote?.value
-                                    ? 'assets/svg/truckassist-table/note/Note.svg'
-                                    : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                            "
-                            [isDeactivated]="cdl.dateDeactivated"
-                            [weeklyWidth]="'28'"
-                            [stateTooltipName]="cdl.state.stateName"
-                            [shortName]="cdl.state.stateShortName"
-                            [mainData]="cdl"
-                            (dropActions)="optionsEvent($event, 'cdl')"
-                        >
-                            <div class="cards-container">
-                                <div class="card-body-cdl">
+                    <app-ta-common-card
+                        *ngFor="
+                            let cdl of cdlData;
+                            let i = index;
+                            trackBy: trackByIdentity
+                        "
+                        [cardNameCurrent]="'cdl'"
+                        [cardNameCommon]="cdl?.cdlNumber"
+                        [expDateClose]="
+                            cdl?.isExpired
+                                ? 'Expired ' + formatDate(cdl?.expDate)
+                                : formatDate(cdl?.expDate)
+                        "
+                        [voidedDate]="formatDate(cdl?.dateDeactivated)"
+                        [cardDocumentCounter]="cdl?.files?.length"
+                        [statusActive]="cdl?.status"
+                        [isCardOpen]="!!cdl?.status"
+                        [hasCopyIcon]="true"
+                        [forcedOpen]="
+                            cdl?.issueDate > currentDate ? true : false
+                        "
+                        [isDeactivated]="cdl?.dateDeactivated"
+                        [weeklyWidth]="'28'"
+                        [stateTooltipName]="cdl?.state?.stateName"
+                        [shortName]="cdl?.state?.stateShortName"
+                        [mainData]="cdl"
+                        [options]="dataDropDown"
+                        [optionsId]="cdl?.id"
+                        [noteIcons]="
+                            (cdl.note &&
+                                cdl.note != null &&
+                                cdl.note != 'null') ||
+                            cdlNote?.value
+                                ? 'assets/svg/truckassist-table/note/Note.svg'
+                                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                        "
+                        (dataDropDopwn)="getCdlById(cdl.id)"
+                        (preloadData)="preloadData(cdl, 'cdl')"
+                        (resizePage)="toggleResizePage(i, 'cdl')"
+                        (clickedCard)="getNameForDrop($event, cdl.id)"
+                        (dropActions)="optionsEvent($event, 'cdl')"
+                    >
+                        <div class="cards-container">
+                            <div
+                                class="d-flex flex-column justify-content-center cdl-card-container"
+                            >
+                                <!-- Class, Issued -->
+
+                                <div
+                                    class="align-items-center cdl-card-inner-container"
+                                >
                                     <div
-                                        [ngClass]="{
-                                            'card-row-issued':
-                                                cdl.dateDeactivated
-                                        }"
-                                        class="card-restriction-endorsment card-restriction-class"
+                                        class="d-flex flex-column jusitfy-content-center cdl-card-box"
                                     >
-                                        <div class="card-restriction">
-                                            <div class="restriction-name">
-                                                Class
-                                            </div>
-                                            <div class="restriction-item-value">
-                                                {{ cdl?.classType.name }}
-                                            </div>
-                                        </div>
-                                        <div class="card-restriction">
-                                            <div class="restriction-name">
-                                                Issued
-                                            </div>
-                                            <div class="restriction-item-value">
-                                                {{ formatDate(cdl?.issueDate) }}
-                                            </div>
-                                        </div>
-                                        <div
-                                            *ngIf="cdl.dateDeactivated"
-                                            class="card-restriction"
-                                        >
-                                            <div class="restriction-name">
-                                                Voided
-                                            </div>
-                                            <div class="restriction-item-value">
-                                                {{
-                                                    formatDate(
-                                                        cdl.dateDeactivated
-                                                    )
-                                                }}
-                                            </div>
-                                        </div>
+                                        <p class="m-0 ta-font-bold">Class</p>
+
+                                        <span> {{ cdl?.classType.name }}</span>
                                     </div>
+
                                     <div
-                                        [ngClass]="{
-                                            'card-restriction-endorsment':
-                                                !toggler[i + 'cdl']
-                                        }"
+                                        class="d-flex flex-column jusitfy-content-center cdl-card-box"
                                     >
-                                        <div class="card-restriction">
-                                            <p class="restriction-name">
-                                                Restriction
-                                            </p>
-                                            <div class="item-card-wrapper">
-                                                <p
-                                                    class="restriction-item-value"
-                                                    *ngFor="
-                                                        let rest of cdl?.cdlRestrictions;
-                                                        trackBy: identity
-                                                    "
-                                                >
-                                                    <span class="value-name">{{
-                                                        rest?.code
-                                                    }}</span>
-                                                    <span
-                                                        class="desc"
-                                                        *ngIf="
-                                                            toggler[i + 'cdl']
-                                                        "
-                                                        >-
-                                                        {{ rest?.description }}
-                                                    </span>
-                                                </p>
-                                                <span
-                                                    class="no-data-driver-details"
-                                                    style="
-                                                        padding: 0 !important;
-                                                    "
-                                                    *ngIf="
-                                                        cdl.cdlRestrictions
-                                                            .length == 0
-                                                    "
-                                                    >None</span
-                                                >
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="card-restriction endorsement"
+                                        <p class="m-0 ta-font-bold">Issued</p>
+
+                                        <span>
+                                            {{
+                                                formatDate(cdl?.issueDate)
+                                            }}</span
                                         >
-                                            <p class="restriction-name">
-                                                Endorsement
-                                            </p>
-                                            <div class="item-card-wrapper">
-                                                <p
-                                                    class="restriction-item-value"
-                                                    *ngFor="
-                                                        let endors of cdl?.cdlEndorsements;
-                                                        trackBy: identity
-                                                    "
-                                                >
-                                                    <span
-                                                        class="span-value"
-                                                        *ngIf="
-                                                            endors.description &&
-                                                            endors.code
-                                                        "
-                                                    >
-                                                        <span
-                                                            class="value-name"
-                                                            >{{
-                                                                endors?.code
-                                                            }}</span
-                                                        >
-                                                        <span
-                                                            *ngIf="
-                                                                toggler[
-                                                                    i + 'cdl'
-                                                                ]
-                                                            "
-                                                            class="desc"
-                                                            >-
-                                                            {{
-                                                                endors?.description
-                                                            }}</span
-                                                        >
-                                                    </span>
-                                                </p>
-                                                <span
-                                                    class="no-data-driver-details"
-                                                    style="
-                                                        padding: 0 !important;
-                                                    "
-                                                    *ngIf="
-                                                        cdl.cdlEndorsements
-                                                            .length == 0
-                                                    "
-                                                    >None</span
-                                                >
-                                            </div>
-                                        </div>
                                     </div>
+                                </div>
+
+                                <!-- Restrictions, Endorsements -->
+
+                                <div
+                                    class="align-items-center cdl-card-inner-container"
+                                >
                                     <div
-                                        class="card-row-progress second-progress"
+                                        class="d-flex flex-column jusitfy-content-center cdl-card-box"
                                     >
-                                        <div
-                                            class="card-details-progress-container"
-                                        >
-                                            <app-ta-progress-expiration
-                                                [expireDate]="
-                                                    formatDate(cdl?.expDate)
+                                        <p class="m-0 ta-font-bold">
+                                            Restrictions
+                                        </p>
+
+                                        <span>
+                                            <ng-container
+                                                *ngFor="
+                                                    let restriction of cdl?.cdlRestrictions;
+                                                    let i = index;
+                                                    trackBy: trackByIdentity
                                                 "
-                                                [startDate]="
-                                                    formatDate(cdl?.issueDate)
-                                                "
-                                                [expiresSettings]="'details'"
-                                                [darkText]="true"
                                             >
-                                            </app-ta-progress-expiration>
-                                        </div>
+                                                {{ restriction.code }}
+                                                {{
+                                                    i !==
+                                                    cdl?.cdlRestrictions
+                                                        .length -
+                                                        1
+                                                        ? ','
+                                                        : ''
+                                                }}
+                                            </ng-container>
+                                        </span>
+                                    </div>
+
+                                    <div
+                                        class="d-flex flex-column jusitfy-content-center cdl-card-box"
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            Endorsements
+                                        </p>
+
+                                        <span>
+                                            <ng-container
+                                                *ngFor="
+                                                    let endorsement of cdl?.cdlEndorsements;
+                                                    let i = index;
+                                                    trackBy: trackByIdentity
+                                                "
+                                            >
+                                                {{ endorsement.code }}
+                                                {{
+                                                    i !==
+                                                    cdl?.cdlEndorsements
+                                                        .length -
+                                                        1
+                                                        ? ','
+                                                        : ''
+                                                }}
+                                            </ng-container>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Progress Bar -->
+
+                                <div
+                                    class="d-flex flex-column justify-content-center progress-bar-container"
+                                >
+                                    <app-ta-progress-expiration
+                                        [expireDate]="formatDate(cdl?.expDate)"
+                                        [startDate]="formatDate(cdl?.issueDate)"
+                                        [expiresSettings]="'details'"
+                                        [darkText]="true"
+                                    >
+                                    </app-ta-progress-expiration>
+
+                                    <ng-container *ngIf="cdl?.dateDeactivated">
                                         <div
-                                            *ngIf="cdl.dateDeactivated"
                                             (click)="
                                                 openCommand(
                                                     cdl,
                                                     'activate-licence'
                                                 )
                                             "
-                                            class="activate-button"
+                                            class="d-flex align-items-center justify-content-center ta-font-bold activate-button"
                                         >
                                             Activate
                                         </div>
+                                    </ng-container>
+
+                                    <ng-container
+                                        *ngIf="
+                                            cdl?.showButton &&
+                                            !cdl?.dateDeactivated &&
+                                            cdl?.issueDate < currentDate
+                                        "
+                                    >
                                         <div
                                             (click)="
                                                 openCommand(
@@ -230,114 +190,88 @@
                                                     'renew-licence'
                                                 )
                                             "
-                                            *ngIf="
-                                                !cdl.showButton &&
-                                                !cdl.dateDeactivated &&
-                                                cdl.issueDate < currentDate
-                                            "
-                                            class="activate-button"
+                                            class="d-flex align-items-center justify-content-center ta-font-bold activate-button"
                                         >
-                                            Renew
+                                            RENEW
                                         </div>
-                                    </div>
+                                    </ng-container>
                                 </div>
-                                <div
-                                    [@showHideCardBody]="
-                                        toggler[i + 'cdl'] ? 'true' : 'false'
-                                    "
-                                >
-                                    <div
-                                        class="divider"
-                                        *ngIf="cdl?.files?.length"
-                                    ></div>
 
+                                <!-- Note, Documents -->
+
+                                <div class="note-documents-container">
                                     <div
-                                        class="details-document-container"
-                                        [class.disabled]="!cdl?.files?.length"
-                                        *ngIf="cdl?.files?.length"
-                                    >
-                                        <div class="icon-counter-wrapper">
-                                            <div
-                                                class="counter-text-wrapper"
-                                                [class.disabled]="
-                                                    !cdl?.files?.length
-                                                "
-                                            >
-                                                <p
-                                                    class="details-document-name"
-                                                >
-                                                    Document
-                                                </p>
-                                                <app-ta-counter
-                                                    [countBackground]="
-                                                        '#424242'
-                                                    "
-                                                    [customClass]="
-                                                        'circle_counter'
-                                                    "
-                                                    [countHeight]="'22px'"
-                                                    [countWidth]="'22px'"
-                                                    [count]="
-                                                        cdl?.files?.length
-                                                            ? cdl.files.length
-                                                            : 0
-                                                    "
-                                                >
-                                                </app-ta-counter>
-                                            </div>
-                                            <svg-icon
-                                                *ngIf="cdl?.files?.length"
-                                                (click)="
-                                                    onFileAction('download')
-                                                "
-                                                src="assets/svg/common/ic_download.svg"
-                                            >
-                                            </svg-icon>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-pdf"
-                                        [class.extended]="
-                                            cdl?.files?.length > 1
+                                        [@showHideCardBody]="
+                                            toggler[i + 'cdl']
+                                                ? 'true'
+                                                : 'false'
                                         "
-                                        [class.disabled]="!cdl?.files?.length"
                                     >
-                                        <app-ta-upload-files
-                                            [files]="cdl.files ? cdl.files : []"
-                                            [customClassName]="
-                                                'driver-details-pdf'
-                                            "
-                                            [hasCarouselBottomTabs]="true"
-                                            [type]="'details'"
-                                            [slideWidth]="324"
-                                            [hasLandscapeOption]="true"
-                                        ></app-ta-upload-files>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="card-note">
-                                        <app-ta-input-note
-                                            [formControl]="cdlNote"
-                                            [isVisibleDivider]="false"
-                                            [isVisibleNote]="true"
-                                            [isVisibleArrow]="false"
-                                            [minRows]="1"
-                                            [placeholder]="'Write something.'"
-                                            [customClass]="'note-small'"
-                                            [noteType]="'details-card'"
-                                            [note]="
-                                                cdl.note && cdl.note != 'null'
-                                                    ? cdl.note
-                                                    : ''
-                                            "
-                                            [entityId]="cdl.id"
-                                            [entityType]="'Cdl'"
+                                        <ng-container
+                                            *ngIf="cdl?.files?.length"
                                         >
-                                        </app-ta-input-note>
+                                            <div class="divider"></div>
+
+                                            <app-ta-custom-card
+                                                [cardName]="'Document'"
+                                                [hasCounter]="
+                                                    cdl?.files?.length
+                                                "
+                                                [isCardOpen]="true"
+                                                [hasArrow]="false"
+                                                [hasDownload]="
+                                                    'assets/svg/common/ic_download.svg
+'
+                                                "
+                                                (onActionEvent)="
+                                                    onFileAction($event, 'cdl')
+                                                "
+                                            >
+                                                <app-ta-upload-files
+                                                    [files]="cdl?.files"
+                                                    [customClassName]="
+                                                        'driver-details-pdf'
+                                                    "
+                                                    [hasCarouselBottomTabs]="
+                                                        true
+                                                    "
+                                                    [type]="'details'"
+                                                    [slideWidth]="324"
+                                                    [hasLandscapeOption]="true"
+                                                ></app-ta-upload-files>
+                                            </app-ta-custom-card>
+                                        </ng-container>
+
+                                        <div class="divider"></div>
+
+                                        <div class="card-note">
+                                            <app-ta-input-note
+                                                [formControl]="cdlNote"
+                                                [isVisibleDivider]="false"
+                                                [isVisibleNote]="true"
+                                                [isVisibleArrow]="false"
+                                                [minRows]="1"
+                                                [placeholder]="
+                                                    'Write something.'
+                                                "
+                                                [customClass]="'note-small'"
+                                                [noteType]="'details-card'"
+                                                [note]="
+                                                    cdl.note &&
+                                                    cdl.note != 'null'
+                                                        ? cdl.note
+                                                        : ''
+                                                "
+                                                [entityId]="cdl.id"
+                                                [entityType]="'Cdl'"
+                                            >
+                                            </app-ta-input-note>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </app-ta-common-card>
-                    </div>
+                        </div>
+                    </app-ta-common-card>
                 </div>
             </ng-container>
 
@@ -350,7 +284,7 @@
                             *ngFor="
                                 let test of driverItem?.data;
                                 let i = index;
-                                trackBy: identity
+                                trackBy: trackByIdentity
                             "
                             [hasToggler]="true"
                             [options]="dataDropDownMvr"
@@ -517,7 +451,7 @@
                             *ngFor="
                                 let med of driverItem?.data;
                                 let i = index;
-                                trackBy: identity
+                                trackBy: trackByIdentity
                             "
                             [options]="dataDropDownMvr"
                             [cardNameCommon]="formatDate(med?.issueDate)"
@@ -671,7 +605,7 @@
                             *ngFor="
                                 let mvr of driverItem?.data;
                                 let i = index;
-                                trackBy: identity
+                                trackBy: trackByIdentity
                             "
                             [options]="dataDropDownMvr"
                             [cardNameCurrent]="'mvr'"

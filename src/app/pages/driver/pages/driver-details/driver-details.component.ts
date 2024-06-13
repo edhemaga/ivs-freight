@@ -272,8 +272,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             this.hasDangerMvr
         );
 
-        console.log(' this.driverDetailsConfig', this.driverDetailsConfig);
-
         this.driverId = driverData?.id;
     }
 

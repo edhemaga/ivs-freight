@@ -72,10 +72,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                     height: '*',
                     overflow: 'hidden',
                     opacity: 1,
-                    'margin-left': '12px',
-                    'margin-right': '10px',
-                    'padding-bottom': '11px',
-                    'padding-top': '0px',
                 })
             ),
             state(
@@ -84,10 +80,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                     height: '0px',
                     overflow: 'hidden',
                     opacity: 0,
-                    'margin-left': '0px',
-                    'margin-right': '0px',
-                    'padding-bottom': '0px',
-                    'padding-top': '0px',
                 })
             ),
             transition('false <=> true', [animate('200ms ease-in-out')]),

@@ -1,11 +1,9 @@
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
     Component,
     ViewEncapsulation,
     OnInit,
     OnDestroy,
     OnChanges,
-    ViewChild,
     Input,
     SimpleChanges,
 } from '@angular/core';
@@ -38,9 +36,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-
-// models
-import { GetMvrModalResponse } from 'appcoretruckassist';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -49,6 +45,13 @@ import { cardAnimation } from '@shared/animations/card.animation';
 // helpers
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// enums
+import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
+
+// models
+import { CdlResponse, GetMvrModalResponse } from 'appcoretruckassist';
+import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
 
 @Titles()
 @Component({
@@ -73,30 +76,40 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         TaCommonCardComponent,
         TaProgressExpirationComponent,
         TaCounterComponent,
+        TaCustomCardComponent,
     ],
 })
 export class DriverDetailsItemComponent
     implements OnInit, OnDestroy, OnChanges
 {
+    @Input() detailsConfig: DriverDetailsConfig;
+
     private destroy$ = new Subject<void>();
-    @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-    @Input() drivers: any = null;
+
+    public toggler: boolean[] = [];
+
+    public cdlData: CdlResponse;
+
+    public currentDate: string;
+
+    public dataCdl: any;
+
+    ///////////////////////////////////////
+
     public cdlNote: UntypedFormControl = new UntypedFormControl();
     public mvrNote: UntypedFormControl = new UntypedFormControl();
     public testNote: UntypedFormControl = new UntypedFormControl();
     public medNote: UntypedFormControl = new UntypedFormControl();
-    public toggler: boolean[] = [];
+
     public showMoreEmployment: boolean = false;
     public dataDropDown: any;
     public dataDropDownMvr: any;
-    public expDateCard: any;
-    public dataCDl: any;
+
     public templateName: boolean;
     public hasActiveCdl: boolean;
     public arrayOfRenewCdl: any[] = [];
-    public inactiveCdl: boolean;
     public test: boolean;
-    public dataCdl: any;
+
     public dataMvr: any;
     public dataMedical: any;
     public dataTest: any;
@@ -105,7 +118,6 @@ export class DriverDetailsItemComponent
     public expiredCard: any[] = [];
     public currentIndex: number;
     public activeCdl: any;
-    public currentDate: any;
 
     constructor(
         private cdlService: DriverCdlService,
@@ -119,33 +131,44 @@ export class DriverDetailsItemComponent
     ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.drivers.firstChange && changes.drivers.currentValue) {
-            this.drivers = changes.drivers.currentValue;
-            this.getExpireDate();
+        if (
+            !changes.detailsConfig.firstChange &&
+            changes.detailsConfig.currentValue
+        ) {
+            this.detailsConfig = changes.detailsConfig.currentValue;
+            this.getCdlData();
 
-            this.activeCdl = changes.drivers.currentValue[0].data?.cdls?.filter(
-                (item) => item.status === 1
-            );
+            this.activeCdl =
+                changes.detailsConfig.currentValue[0].data?.cdls?.filter(
+                    (item) => item.status === 1
+                );
         }
-        this.initTableOptions(changes.drivers.currentValue[0].data);
+        this.initTableOptions(changes.detailsConfig.currentValue[0].data);
     }
 
     ngOnInit(): void {
-        this.getExpireDate();
-        this.activeCdl = this.drivers[0].data.cdls.filter(
+        console.log('detailsConfig', this.detailsConfig);
+
+        this.getCdlData();
+
+        this.getCurrentDate();
+
+        ////////////////////////////////
+
+        this.activeCdl = this.detailsConfig[0].data.cdls.filter(
             (item) => item.status === 1
         );
 
-        this.dataMvr = this.drivers[0].data.mvrs;
-        this.dataMedical = this.drivers[0].data.medicals;
-        this.dataTest = this.drivers[0].data.dataTest;
+        this.dataMvr = this.detailsConfig[0].data.mvrs;
+        this.dataMedical = this.detailsConfig[0].data.medicals;
+        this.dataTest = this.detailsConfig[0].data.dataTest;
 
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    let driverData = this.drivers[0].data;
+                    let driverData = this.detailsConfig[0].data;
                     switch (res.type) {
                         case 'delete': {
                             if (res.template === 'cdl') {
@@ -198,41 +221,95 @@ export class DriverDetailsItemComponent
                     }
                 },
             });
+    }
+
+    public trackByIdentity(index: number): number {
+        return index;
+    }
+
+    public formatDate(date: string): string {
+        return MethodsCalculationsHelper.convertDateFromBackend(date);
+    }
+
+    public getCurrentDate(): void {
         this.currentDate = moment(new Date()).format();
     }
-    public getExpireDate() {
-        this.dataCDl = this.drivers[0]?.data?.cdls?.map((ele) => {
-            let endDate = moment(ele.expDate);
 
-            if (
-                moment(ele.expDate).isBefore(moment()) ||
-                endDate.diff(moment(), 'days') <= 365
-            ) {
-                this.expDateCard = false;
-            } else {
-                this.expDateCard = true;
-            }
-            if (ele.status == 0) {
-                this.inactiveCdl = true;
-            } else {
-                this.inactiveCdl = false;
-            }
+    public getCdlData(): void {
+        this.cdlData = this.detailsConfig[1]?.data?.map((cdl: CdlResponse) => {
+            const endDate = moment(cdl.expDate);
+
+            const isExpDateCard = moment(cdl.expDate).isBefore(moment());
+
+            const isDeadlineExpDateCard =
+                endDate.diff(moment(), DriverDetailsItemStringEnum.DAYS) <= 365;
 
             return {
-                ...ele,
-                showButton: this.expDateCard,
-                inactiveCdl: this.inactiveCdl,
+                ...cdl,
+                showButton:
+                    (!isExpDateCard && isDeadlineExpDateCard) ||
+                    (isExpDateCard && this.detailsConfig[1]?.data.length === 1),
+                isExpired: isExpDateCard,
             };
         });
+
+        console.log('cdlData', this.cdlData);
     }
+
+    public openCommand(cdl?: CdlResponse): void {
+        let data = this.detailsConfig;
+
+        if (this.activeCdl.length) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    data: {
+                        ...this.activeCdl[0],
+                        state: this.activeCdl[0].state.stateShortName,
+                        data,
+                        driver: {
+                            id: this.detailsConfig[0].data.id,
+                            file_id: cdl.id,
+                            type: 'renew-licence',
+                            renewData: cdl,
+                        },
+                    },
+                    template: 'cdl',
+                    type: 'info',
+                    subType: 'cdl void',
+                    cdlStatus: 'New',
+                    modalHeader: true,
+                }
+            );
+        } else {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: 'small' },
+                {
+                    data: { ...cdl, state: cdl.state.stateShortName, data },
+                    template: 'cdl',
+                    type: 'activate',
+                    //subType: 'cdl void',
+                    cdlStatus: 'Activate',
+                    modalHeader: true,
+                }
+            );
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////
+
+    public onFileAction(event: File, type: string): void {}
+
     public getNameForDrop(name: string, cdlId?: number) {
         this.templateName = name === 'cdl' ? false : true;
-        this.currentIndex = this.drivers[1]?.data?.cdls?.findIndex(
+        this.currentIndex = this.detailsConfig[1]?.data?.cdls?.findIndex(
             (item) => item.id === cdlId
         );
-        this.initTableOptions(this.drivers[0].data);
+        this.initTableOptions(this.detailsConfig[0].data);
         if (name === 'cdl') {
-            this.getExpireDate();
+            this.getCdlData();
         }
     }
 
@@ -483,7 +560,7 @@ export class DriverDetailsItemComponent
             eventData,
             action
         );
-        let driverId = this.drivers[0].data.id;
+        let driverId = this.detailsConfig[0].data.id;
         let dataCdls: any = [];
 
         if (
@@ -527,56 +604,15 @@ export class DriverDetailsItemComponent
                 this.dataMvr,
                 this.dataMedical,
                 this.dataTest,
-                this.drivers[0].data.id,
+                this.detailsConfig[0].data.id,
                 null,
                 null,
-                this.drivers[0].data,
+                this.detailsConfig[0].data,
                 null,
                 null,
                 dataCdls
             );
         }, 200);
-    }
-    public openCommand(cdl?: any) {
-        if (this.activeCdl.length) {
-            let data = this.drivers;
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    data: {
-                        ...this.activeCdl[0],
-                        state: this.activeCdl[0].state.stateShortName,
-                        data,
-                        driver: {
-                            id: this.drivers[0].data.id,
-                            file_id: cdl.id,
-                            type: 'renew-licence',
-                            renewData: cdl,
-                        },
-                    },
-                    template: 'cdl',
-                    type: 'info',
-                    subType: 'cdl void',
-                    cdlStatus: 'New',
-                    modalHeader: true,
-                }
-            );
-        } else {
-            let data = this.drivers;
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: 'small' },
-                {
-                    data: { ...cdl, state: cdl.state.stateShortName, data },
-                    template: 'cdl',
-                    type: 'activate',
-                    //subType: 'cdl void',
-                    cdlStatus: 'Activate',
-                    modalHeader: true,
-                }
-            );
-        }
     }
 
     public onButtonAction(data: { template: string; action: string }) {
@@ -636,23 +672,16 @@ export class DriverDetailsItemComponent
     public onShowDetails(componentData: any) {
         componentData.showDetails = !componentData.showDetails;
     }
-    /**Function retrun id */
-    public identity(index: number, _: any): number {
-        return index;
-    }
 
     /**Function for toggle page in cards */
     public toggleResizePage(value: number, indexName: string) {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
 
-    public formatDate(mod) {
-        return MethodsCalculationsHelper.convertDateFromBackend(mod);
-    }
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+
         this.tableService.sendActionAnimation({});
     }
 }
