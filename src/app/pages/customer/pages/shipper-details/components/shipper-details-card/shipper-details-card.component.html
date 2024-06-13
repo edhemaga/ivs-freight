@@ -1,9 +1,14 @@
 <div class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [ngClass]="{ 'disabedPreviousArrow': shipperIndex == 0, 'disableNextArrow': shipperIndex == (shipperList.length -1 ) }"
+        [ngClass]="{
+            disabedPreviousArrow: shipperIndex == 0,
+            disableNextArrow: shipperIndex == shipperList.length - 1
+        }"
         [cardDetailsDate]="shipper?.createdAt | formatDateP"
-        [tooltipNext]=" shipperIndex == (shipperList.length -1 )  ?  '' : 'Next Shipper' "
-        [tooltipPrevious]=" shipperIndex == 0 ? '' : 'Previous Shipper' "
+        [tooltipNext]="
+            shipperIndex == shipperList.length - 1 ? '' : 'Next Shipper'
+        "
+        [tooltipPrevious]="shipperIndex == 0 ? '' : 'Previous Shipper'"
         [searchInputName]="'Search Shipper'"
         [dateChecked]="'5 days ago'"
         [options]="shipperDropdowns"
@@ -25,9 +30,9 @@
                         src="assets/svg/common/ic_phone.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy 
+                <app-ta-copy
                     [copyValue]="shipper?.phone"
-                    [textColor]="'#2f2f2f'"    
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
             <div class="repair-information-item" *ngIf="shipper?.email">
@@ -43,12 +48,15 @@
                         src="assets/svg/common/ic_email.svg"
                     ></svg-icon>
                 </span>
-                <app-ta-copy 
+                <app-ta-copy
                     [copyValue]="shipper?.email"
-                    [textColor]="'#2f2f2f'"    
+                    [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
-            <div class="repair-information-item address-cont" *ngIf="shipper?.address?.address">
+            <div
+                class="repair-information-item address-cont"
+                *ngIf="shipper?.address?.address"
+            >
                 <svg-icon
                     class="repair-icon"
                     src="assets/svg/common/ic_address.svg"
@@ -65,39 +73,17 @@
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="false"
-                [cardName]="'Avillable Hours'"
+                [cardName]="'Available Hours'"
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
                 <div class="hours-template">
                     <div class="hours-item">
-                        <span class="name-item">Receiving Hours</span>
-                        <div
-                            *ngIf="shipper?.receivingFrom"
-                            class="icon-wrapper"
-                        >
-                            <svg-icon
-                                *ngIf="shipper?.receivingAppointment"
-                                class="svg-appoiment"
-                                src="assets/svg/common/ic_appoiment.svg"
-                            ></svg-icon>
-                            <span class="value-item"
-                                >{{converTime(shipper?.receivingFrom)}} -
-                                {{converTime(shipper?.receivingTo)}}</span
-                            >
-                        </div>
-                        <span
-                            *ngIf="shipper?.receivingOpenTwentyFourHours"
-                            class="value-item"
-                            >24h</span
-                        >
-                    </div>
-                    <div class="hours-item">
-                        <span class="name-item">Shipping Hours</span>
+                        <span class="name-item">Shipping - Open Hours</span>
                         <div *ngIf="shipper?.shippingFrom" class="icon-wrapper">
                             <svg-icon
                                 *ngIf="shipper?.shippingAppointment"
@@ -105,8 +91,8 @@
                                 src="assets/svg/common/ic_appoiment.svg"
                             ></svg-icon>
                             <span class="value-item"
-                                >{{converTime(shipper?.shippingFrom)}} -
-                                {{converTime(shipper?.shippingTo)}}</span
+                                >{{ converTime(shipper?.shippingFrom) }} -
+                                {{ converTime(shipper?.shippingTo) }}</span
                             >
                         </div>
                         <span
@@ -114,6 +100,27 @@
                             class="value-item"
                             >24h</span
                         >
+                    </div>
+                    <div class="hours-item">
+                        <span class="name-item">Receiving - Appointment</span>
+                        <ng-container *ngIf="shipper?.receivingFrom">
+                            <div class="icon-wrapper">
+                                <svg-icon
+                                    *ngIf="shipper?.receivingAppointment"
+                                    class="svg-appoiment"
+                                    src="assets/svg/common/ic_appoiment.svg"
+                                ></svg-icon>
+                                <span class="value-item"
+                                    >{{ converTime(shipper?.receivingFrom) }} -
+                                    {{ converTime(shipper?.receivingTo) }}</span
+                                >
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="shipper?.receivingOpenTwentyFourHours"
+                        >
+                            <span class="value-item">24h</span>
+                        </ng-container>
                     </div>
                 </div>
             </app-ta-custom-card>
@@ -128,7 +135,7 @@
                     marginTop: '0px',
                     marginBottom: '10px'
                 }"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
                 <div
                     class="charts-template perfomance"

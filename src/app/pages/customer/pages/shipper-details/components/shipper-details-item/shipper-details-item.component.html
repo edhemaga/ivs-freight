@@ -16,7 +16,7 @@
                     *ngIf="shipperData?.data?.loadStops?.length"
                 >
                     <div class="repair-header">
-                        <span class="repaier-headers">LOAD</span>
+                        <span class="repaier-headers">LOAD NO</span>
                         <span class="repaier-headers">DRIVER</span>
                         <span class="repaier-headers">TRUCK</span>
                         <span class="repaier-headers">TRAILER</span>
@@ -49,7 +49,9 @@
                                             >
                                                 <svg-icon
                                                     class="arrow-ri"
-                                                    src="{{shipperImageRoutes.arrowRight}}"
+                                                    src="{{
+                                                        shipperImageRoutes.arrowRight
+                                                    }}"
                                                 ></svg-icon
                                             ></ng-container>
                                             <ng-container
@@ -60,7 +62,9 @@
                                             >
                                                 <svg-icon
                                                     class="arrow-le"
-                                                    src="{{shipperImageRoutes.arrowLeft}}"
+                                                    src="{{
+                                                        shipperImageRoutes.arrowLeft
+                                                    }}"
                                                 ></svg-icon>
                                             </ng-container>
                                             <span class="unit">{{
@@ -141,7 +145,6 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="divider"></div>
                             </div>
                         </ng-container>
                     </ng-container>
@@ -151,6 +154,7 @@
                 <div *ngIf="shipperContacts.length" class="contact-wrapper">
                     <app-ta-contacts-card
                         [departmentContacts]="departmentContacts"
+                        [parentId]="shipper[0].data.id"
                     ></app-ta-contacts-card>
                 </div>
             </div>

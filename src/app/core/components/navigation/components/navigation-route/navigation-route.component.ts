@@ -166,7 +166,8 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public hoveredArrow(event) {
         this.arrowHovered = event;
     }
-    public onRouteAction(ind?) {
+    public onRouteAction(ind?, underConstruction?: boolean) {
+        if (underConstruction) return;
         ind && this.hideSubrouteFromChild.emit(ind);
 
         this.onRouteEvent.emit({

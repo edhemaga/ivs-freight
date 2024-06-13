@@ -18,6 +18,7 @@ export class NavigationDataConstants {
             name: 'Dispatch',
             image: 'ic_dispatch.svg',
             route: '/dispatcher',
+            construction: true,
             isRouteActive: false,
         },
         {
@@ -32,16 +33,19 @@ export class NavigationDataConstants {
                     name: 'Load',
                     route: '/list/load',
                     activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
+                    construction: true,
                 },
                 {
                     name: 'Customer',
                     route: '/list/customer',
                     activeRouteFlegId: 3,
+                    construction: true
                 },
                 {
                     name: 'Driver',
                     route: '/list/driver',
                     activeRouteFlegId: 3,
+                    construction: true
                 },
                 {
                     name: 'Truck',
@@ -52,6 +56,7 @@ export class NavigationDataConstants {
                     name: 'Trailer',
                     route: '/list/trailer',
                     activeRouteFlegId: 3,
+                    construction: true
                 },
                 {
                     name: 'Repair',
@@ -61,12 +66,13 @@ export class NavigationDataConstants {
                 {
                     name: 'PM',
                     route: '/list/pm',
-                    activeRouteFlegId: 3,
+                    activeRouteFlegId: 3
                 },
                 {
                     name: 'Fuel',
                     route: '/list/fuel',
                     activeRouteFlegId: 3,
+                    construction: true,
                 },
                 {
                     name: 'Owner',
@@ -98,11 +104,13 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            construction: true,
             route: [
                 {
                     name: 'Payroll',
                     route: '/accounting/payroll',
                     activeRouteFlegId: 4,
+                    construction: true
                 },
                 {
                     name: 'IFTA',
@@ -130,17 +138,20 @@ export class NavigationDataConstants {
             image: 'ic_safety.svg',
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
+            construction: true,
             isSubrouteActive: false,
             route: [
                 {
                     name: 'Violation',
                     route: '/safety/violation',
                     activeRouteFlegId: 5,
+                    construction: true,
                 },
                 {
                     name: 'Accident',
                     route: '/safety/accident',
                     activeRouteFlegId: 5,
+                    construction: true,
                 },
                 {
                     name: 'Log',
@@ -175,21 +186,25 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            construction: true,
             route: [
                 {
                     name: 'Miles',
                     route: '/tools/miles',
                     activeRouteFlegId: 6,
+                    construction: true,
                 },
                 {
                     name: 'Calendar',
                     route: '/tools/calendar',
                     activeRouteFlegId: 6,
+                    construction: true,
                 },
                 {
                     name: 'To-Do',
                     route: '/tools/todo',
                     activeRouteFlegId: 6,
+                    construction: true,
                 },
                 {
                     name: '1099',
@@ -229,6 +244,7 @@ export class NavigationDataConstants {
             image: 'ic_routing.svg',
             route: '/routing',
             isRouteActive: false,
+            construction: true,
         },
         {
             id: 8,
@@ -261,7 +277,7 @@ export class NavigationDataConstants {
             image: 'ic_gps.svg',
             route: '/telematic',
             isRouteActive: false,
-            construction: false,
+            construction: true,
         },
         {
             id: 12,
@@ -534,23 +550,27 @@ export class NavigationDataConstants {
                     image: 'assets/svg/common/ic_settings.svg',
                     route: '/settings',
                     activeRouteFlegId: 34,
+                    construction: true
                 },
                 {
                     name: 'Location',
                     image: 'assets/svg/common/ic_location.svg',
                     route: '/location',
                     activeRouteFlegId: 34,
+                    construction: true
                 },
                 {
                     name: 'Document',
                     image: 'assets/svg/common/ic_document.svg',
                     route: '/document',
                     activeRouteFlegId: 34,
+                    construction: true
                 },
                 {
                     name: 'User',
                     image: 'assets/svg/common/ic_user.svg',
                     route: '/user',
+                    construction: true,
                     activeRouteFlegId: 34,
                 },
                 {
@@ -580,6 +600,7 @@ export class NavigationDataConstants {
                     image: 'assets/svg/common/ic_integration.svg',
                     route: '/integration',
                     activeRouteFlegId: 34,
+                    construction: true
                 },
             ],
         },
