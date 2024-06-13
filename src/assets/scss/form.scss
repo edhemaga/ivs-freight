@@ -325,7 +325,7 @@
 //---------------- Model Color Year Length ----------------
 .custom-model-color-year-length {
     display: grid;
-    grid-template-columns: 109px 72px 133px 106px;
+    grid-template-columns: 280px 164px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -440,7 +440,7 @@
 //---------------- Trailer --------------------------------------
 .trailer-modal-first-row {
     display: grid;
-    grid-template-columns: 110px 334px;
+    grid-template-columns: 110px 222px 100px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -449,10 +449,11 @@
 
 .trailer-modal-insurance-fhwa {
     display: grid;
-    grid-template-columns: 196px 1fr;
+    grid-template-columns: 160px 114px 1fr;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
+    margin-bottom: 32px;
 }
 
 //---------------- Phone, Phone Extension, Email ----------------
