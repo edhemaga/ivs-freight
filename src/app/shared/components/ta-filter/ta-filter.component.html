@@ -164,7 +164,8 @@
                     *ngIf="
                         type === 'categoryRepairFilter' ||
                             type === 'pmFilter' ||
-                            type === 'truckFilter';
+                            type === 'truckFilter' ||
+                            type == 'trailerFilter';
                         else truckFilter
                     "
                 >
@@ -882,10 +883,23 @@
                                     class="user-main-holder"
                                 >
                                     <div class="user-frame">
-                                        <div class="selected-name-text">
-                                            <span> {{ item.name }} </span>
+                                        <div
+                                            class="selected-name-text justify-content-between"
+                                        >
+                                            <div>
+                                                <span>
+                                                    {{ item.name }}
+                                                </span>
+                                            </div>
+                                            <ng-container *ngIf="item.logo">
+                                                <div class="truck-icon">
+                                                    <svg-icon
+                                                        [src]="item.logo"
+                                                    ></svg-icon>
+                                                </div>
+                                            </ng-container>
                                         </div>
-                                        <ng-container *ngIf="isRepairFilter">
+                                        <ng-container>
                                             <span
                                                 class="count-holder align-items-center justify-content-center d-flex"
                                             >
