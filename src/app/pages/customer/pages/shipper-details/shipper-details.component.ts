@@ -109,27 +109,9 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 icon: true,
                 length: data?.loadStops?.length ? data.loadStops.length : 0,
                 hide: true,
-                hasArrow: true,
-                customText: ShipperDetailsStringEnum.DATE,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                    },
-
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_arrow-right-line.svg',
-                    },
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_arrow-right-line.svg',
-                    },
-                ],
+                hasArrow: false,
+                hasSearch: true,
+                searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
             },
             {
@@ -142,13 +124,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: false,
                 icon: true,
                 hasArrow: false,
-                icons: [
-                    {
-                        id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                    },
-                ],
-                customText: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                hasSearch: true,
+                searchPlaceholder: ShipperDetailsStringEnum.CONTACTS,
                 data: data,
             },
             {
@@ -242,6 +219,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             openedTab: event,
         };
         setTimeout(() => {
+            console.log(this.shipperObject, 'shipperobj')
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 this.shipperObject,

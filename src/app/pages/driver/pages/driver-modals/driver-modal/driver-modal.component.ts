@@ -97,7 +97,7 @@ import {
     DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
 } from 'appcoretruckassist';
-import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { AnimationObject } from '@pages/driver/pages/driver-modals/driver-modal/models/animation-object.model';
 import { AddUpdateDriverProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-properties.model';
@@ -987,6 +987,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     ): void {
         if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
             this.offDutyLocationItems = modalTableDataValue;
+            console.log('this.offDutyLocationItems: ', this.offDutyLocationItems);
 
             this.driverForm
                 .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)

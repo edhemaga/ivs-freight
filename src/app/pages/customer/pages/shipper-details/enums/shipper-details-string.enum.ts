@@ -5,6 +5,7 @@ export enum ShipperDetailsStringEnum {
     LOAD_2 = 'load',
     CONTACT = 'Contact',
     CONTACT_2 = 'contact',
+    CONTACTS = 'Contacts',
     REVIEW = 'Review',
     REVIEW_2 = 'review',
     DATE = 'Date',

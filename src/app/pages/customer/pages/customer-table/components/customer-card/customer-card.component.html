@@ -49,15 +49,7 @@
                         </div>
 
                         <div class="name d-flex ta-font-bold">
-                            <span
-                                class="title"
-                                (click)="
-                                    goToDetailsPage(
-                                        card,
-                                        cardTitleLink + card.id + '/details'
-                                    )
-                                "
-                            >
+                            <span class="title" (click)="goToDetailsPage(card)">
                                 <span
                                     class="title-tooltip"
                                     type="button"
@@ -111,13 +103,21 @@
                                     <ng-container
                                         *ngIf="cardRow.title === 'Contacts'"
                                     >
-                                        <div
-                                            class="contacts-holder d-flex align-items-center justify-content-center"
-                                        >
-                                            <svg-icon
-                                                src="/assets/svg/truckassist-table/customer/contact-column-avatar.svg"
-                                            ></svg-icon>
-                                            {{ card[cardRow.key].length }}
+                                        <div class="contacts-holder">
+                                            <app-ta-input-dropdown-contacts
+                                                [contactsData]="
+                                                    card[cardRow.key]
+                                                "
+                                                (onAddButton)="
+                                                    onAddContact(row)
+                                                "
+                                                (onEditButton)="
+                                                    onEditContact(row)
+                                                "
+                                                (onDeleteButton)="
+                                                    onDeleteContact(row)
+                                                "
+                                            ></app-ta-input-dropdown-contacts>
                                         </div>
                                     </ng-container>
 

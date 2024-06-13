@@ -12,6 +12,7 @@ export class ApplicantAddSaveBtnComponent implements OnInit {
     @Input() cancelBtn?: boolean = false;
     @Input() saveBtn?: boolean = false;
     @Input() reviewBtn?: boolean = false;
+    @Input() sizeSmall?: boolean = false;
 
     @Output() clickValueEmitter = new EventEmitter<any>();
 

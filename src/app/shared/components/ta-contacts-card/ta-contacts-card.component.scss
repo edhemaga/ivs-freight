@@ -1,0 +1,55 @@
+@import 'src/theme/variables.scss';
+
+.svg-wrapper {
+    gap: 4px;
+    
+    .action_buttons {
+        position: relative;
+        top: 4px;
+        
+        width: 18px;
+        height: 18px;
+        
+        border-radius: 1px;
+        cursor: pointer;
+    
+        svg-icon {
+            width: 14px;
+            height: 14px;
+    
+            svg {
+                display: flex;
+                width: 14px;
+                height: 14px;
+
+                path {
+                    fill: $bw5;
+                }
+            }
+        }
+    
+        &:hover {
+            background-color: #91919133;
+
+            svg-icon {
+                svg {
+                    path {
+                        fill: $ta-black;
+                    }
+                }
+            }
+    
+            &.delete {
+                background-color: $ta-red-15;
+
+                svg-icon {
+                    svg {
+                        path {
+                            fill: $ta-red-14;
+                        }
+                    }
+                }
+            }
+        }
+    }  
+}

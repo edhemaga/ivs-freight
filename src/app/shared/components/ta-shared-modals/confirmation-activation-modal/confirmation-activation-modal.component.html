@@ -93,9 +93,21 @@
                                 </ng-template>
 
                                 <div class="d-flex flex-column title-container">
-                                    <p class="m-0 ta-font-bold">
-                                        {{ editData?.data?.name }}
-                                    </p>
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0 ta-font-bold">
+                                            {{ editData?.data?.name }}
+                                        </p>
+                                        <ng-container
+                                            *ngIf="
+                                                editData?.type === 'activate'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="d-flex ms-1"
+                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                            ></svg-icon>
+                                        </ng-container>
+                                    </div>
 
                                     <p class="m-0 ta-font-medium">
                                         {{ editData?.data?.tableDOB }}
@@ -184,9 +196,22 @@
                                 </ng-template>
 
                                 <div class="d-flex flex-column title-container">
-                                    <p class="m-0 ta-font-bold">
-                                        {{ item?.name }}
-                                    </p>
+                                    <div class="d-flex align-items-center">
+                                        <p class="m-0 ta-font-bold">
+                                            {{ item?.name }}
+                                        </p>
+                                        <ng-container
+                                            *ngIf="
+                                                editData?.type ===
+                                                'activate-multiple'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="d-flex ms-1"
+                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                            ></svg-icon>
+                                        </ng-container>
+                                    </div>
 
                                     <p class="m-0 ta-font-medium">
                                         {{ item?.tableDOB }}

@@ -400,6 +400,10 @@
             .header-arrow {
                 display: none !important;
             }
+
+            .show-pointer {
+                cursor: pointer !important;
+            }
         }
 
         &.cursor {

@@ -13,7 +13,8 @@ export class ConfirmationModalSvgRoutes {
     static confirmationCloseBrokerSvg =
         '/assets/svg/common/ic_closed_broker.svg';
     static confirmationReviewLikeSvg = '/assets/svg/common/ic_review_like.svg';
-    static confirmationPrintSvg = '/assets/svg/common/ic_closed_broker.svg';
+    static confirmationPrintSvg =
+        '/assets/svg/common/confirmation/ic_confirmation_print.svg';
     static confirmationTrashSvg =
         '/assets/svg/common/confirmation/ic_confirmation_modal_trash.svg';
 }
