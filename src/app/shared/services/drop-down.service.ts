@@ -414,9 +414,9 @@ export class DropDownService {
                         },
                         template: DropActionsStringEnum.CDL,
                         type: DropActionsStringEnum.INFO,
-                        subType: DropActionsStringEnum.CDL_VOID,
-                        cdlStatus: DropActionsStringEnum.NEW,
+                        subType: DropActionsStringEnum.VOID_CDL,
                         modalHeader: true,
+                        modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
                         cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
                 );
@@ -432,7 +432,8 @@ export class DropDownService {
                                 ...dataCdl[0],
                                 state: dataCdl[0].state.stateShortName,
                                 data,
-                                driverName: data?.firstName + ' ' + data?.lastName,
+                                driverName:
+                                    data?.firstName + ' ' + data?.lastName,
                             },
                             template: DropActionsStringEnum.CDL,
                             type: DropActionsStringEnum.INFO,
@@ -450,7 +451,8 @@ export class DropDownService {
                                 ...dataCdl,
                                 state: dataCdl.state.stateShortName,
                                 data,
-                                driverName: data?.firstName + ' ' + data?.lastName,
+                                driverName:
+                                    data?.firstName + ' ' + data?.lastName,
                             },
                             template: DropActionsStringEnum.CDL,
                             type: DropActionsStringEnum.ACTIVATE,
