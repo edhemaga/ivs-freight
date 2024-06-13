@@ -365,7 +365,10 @@ export class DriverDetailsCardComponent
             this.dataMvr,
             this.dataMedical,
             this.dataTest,
-            this.driver.id
+            this.driver.id,
+            null,
+            null,
+            this.driver
         );
     }
     public getCdlById(id: number): void {

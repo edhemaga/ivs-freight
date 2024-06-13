@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     UntypedFormBuilder,
@@ -14,6 +14,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 
 // services
 import { ImageBase64Service } from '@shared/services/image-base64.service';
@@ -34,11 +35,15 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 import { ConfirmationModalSvgRoutes } from './utils/confirmation-modal-svg-routes';
 
+// pdf-viewer
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+
 @Component({
     selector: 'app-confirmation-modal',
     templateUrl: './confirmation-modal.component.html',
     styleUrls: ['./confirmation-modal.component.scss'],
     standalone: true,
+    encapsulation: ViewEncapsulation.None,
     imports: [
         // modules
         CommonModule,
@@ -50,11 +55,15 @@ import { ConfirmationModalSvgRoutes } from './utils/confirmation-modal-svg-route
         TaModalComponent,
         TaInputDropdownComponent,
         TaProfileImagesComponent,
+        TaUploadFileComponent,
 
         // pipes
         FormatDatePipe,
         ConfirmationModalTextPipe,
         ThousandSeparatorPipe,
+
+        // pdf viewer
+        PdfViewerModule,
     ],
 })
 export class ConfirmationModalComponent implements OnInit {
@@ -70,7 +79,6 @@ export class ConfirmationModalComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        console.log('editData', this.editData);
         this.cdlForm = this.formBuilder.group({
             cdlId: [null],
         });
