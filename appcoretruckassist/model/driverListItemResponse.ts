@@ -35,6 +35,7 @@ export interface DriverListItemResponse {
     ssn?: string | null;
     phone?: string | null;
     email?: string | null;
+    fleetType?: EnumValue;
     address?: AddressEntity;
     owner?: DriverListOwnerResponse;
     driverType?: EnumValue;
@@ -53,7 +54,9 @@ export interface DriverListItemResponse {
     general?: DriverListNotificationResponse;
     payroll?: DriverListNotificationResponse;
     truck?: string | null;
+    truckType?: string | null;
     trailer?: string | null;
+    trailerType?: string | null;
     hiredAt?: string | null;
     terminatedAt?: string | null;
     createdAt?: string;

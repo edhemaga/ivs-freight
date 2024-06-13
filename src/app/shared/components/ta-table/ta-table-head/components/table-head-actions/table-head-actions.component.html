@@ -17,7 +17,7 @@
             class="d-flex align-items-center justify-content-center"
             [ngStyle]="{
                 width: column.isAction ? column.width + 'px' : '0px',
-                'min-width.px': column?.minWidth ?? 'unset',
+                'min-width.px': column?.width ?? 'unset',
                 display: column.isAction ? 'flex' : 'none'
             }"
             [ngClass]="{

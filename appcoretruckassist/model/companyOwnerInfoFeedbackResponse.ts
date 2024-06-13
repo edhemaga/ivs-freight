@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { TrailerLengthResponse } from './trailerLengthResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { BankResponse } from './bankResponse';
@@ -36,6 +37,8 @@ export interface CompanyOwnerInfoFeedbackResponse {
     truckModel?: string | null;
     truckYear?: number;
     truckColor?: ColorResponse;
+    truckLicenceFiles?: Array<FileResponse> | null;
+    truckFHWAFiles?: Array<FileResponse> | null;
     hasTrailer?: boolean;
     trailerType?: TrailerTypeResponse;
     trailerLength?: TrailerLengthResponse;
@@ -44,6 +47,8 @@ export interface CompanyOwnerInfoFeedbackResponse {
     trailerModel?: string | null;
     trailerYear?: number | null;
     trailerColor?: ColorResponse;
+    trailerLicenceFiles?: Array<FileResponse> | null;
+    trailerFHWAFiles?: Array<FileResponse> | null;
     applicantId?: number;
     review?: CompanyOwnerInfoReviewResponse;
 }

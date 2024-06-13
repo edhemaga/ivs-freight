@@ -1,22 +1,34 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import type { RepairItemResponse } from 'appcoretruckassist';
 
 @Pipe({
     standalone: true,
     name: 'tableDescriptionTextPipe',
 })
 export class TableDescriptionTextPipe implements PipeTransform {
-    transform(descriptionItems: RepairItemResponse[], width: number): string {
+    transform(descriptionItems: any[], width: number): string {
         let itemsToShow = '';
         let numberOfItemsInList = 0;
         let checkItemsWidth = '';
+
+        let description = '';
+        let size = 0;
         for (let descriptionItem of descriptionItems) {
-            checkItemsWidth += descriptionItem.description;
-            if (checkItemsWidth.length * 8 < width) {
+            if (descriptionItem?.price) {
+                description = descriptionItem.description;
+                size = 8;
+            } else if (descriptionItem.code) {
+                description = descriptionItem.code;
+                size = 20;
+            } else if (descriptionItem.nickname) {
+                description = descriptionItem.nickname;
+                size = 18;
+            }
+            checkItemsWidth += description;
+            if (checkItemsWidth.length * size < width) {
                 if (numberOfItemsInList > 0) {
                     itemsToShow += ' • ';
                 }
-                itemsToShow += descriptionItem.description;
+                itemsToShow += description;
                 numberOfItemsInList++;
             } else {
                 itemsToShow += `<div class="round-number d-flex justify-content-center align-items-center">
