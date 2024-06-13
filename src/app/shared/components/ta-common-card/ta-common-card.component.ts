@@ -133,7 +133,6 @@ export class TaCommonCardComponent implements OnInit {
     @Input() statusActive: number;
     @Input() paddingDots: string = '8px 8px 0px 0px';
     @Output() clickedCard = new EventEmitter<any>();
-    @Output() dataDropDopwn = new EventEmitter<any>();
     @Output() preloadData = new EventEmitter<any>();
     @Input() hasToggler: boolean;
     @Input() public testDate: any;
@@ -173,8 +172,6 @@ export class TaCommonCardComponent implements OnInit {
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
 
-        // api start after every click
-        //this.dataDropDopwn.emit(data);
         if (this.preloadData) {
             this.preloadData.emit(data);
         }

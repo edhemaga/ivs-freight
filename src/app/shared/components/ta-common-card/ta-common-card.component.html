@@ -221,8 +221,19 @@
                     <ng-container *ngIf="isDeactivated && isCardOpen">
                         <div
                             class="voided-button ta-font-bold d-flex justify-content-center"
+                            [ngStyle]="{
+                                width: isVoidDateDisplayed ? '106px' : 'auto'
+                            }"
+                            (mouseenter)="isVoidDateDisplayed = true"
+                            (mouseleave)="isVoidDateDisplayed = false"
                         >
-                            <p>Voided</p>
+                            <p>
+                                {{
+                                    isVoidDateDisplayed
+                                        ? 'Voided ' + voidedDate
+                                        : 'Voided'
+                                }}
+                            </p>
                         </div>
                     </ng-container>
                     <app-ta-details-dropdown

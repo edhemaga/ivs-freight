@@ -569,7 +569,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public populateCdlFormOnRenew(id: any): void {
+    public populateCdlFormOnRenew(id: number): void {
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
