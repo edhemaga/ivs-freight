@@ -53,8 +53,7 @@ import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enu
     ],
 })
 export class TaUploadFilesNoSliderComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @ViewChildren('uploadedFiles') public uploadedFiles: ElementRef;
 
     @Output() documentReviewInputEvent: EventEmitter<{
@@ -88,13 +87,14 @@ export class TaUploadFilesNoSliderComponent
     @Input() isReview: boolean;
     @Input() reviewMode: string;
     @Input() feedbackText: string;
+
     @Input() categoryTag: string;
 
     public _files: UploadFile[] = [];
     public currentSlide: number = 0;
     private destroy$ = new Subject<void>();
 
-    constructor(private uploadFileService: TaUploadFileService) {}
+    constructor(private uploadFileService: TaUploadFileService) { }
 
     ngOnInit(): void {
         this.uploadFileService.uploadedFiles$

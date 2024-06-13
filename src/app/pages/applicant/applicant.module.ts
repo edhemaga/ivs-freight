@@ -52,6 +52,9 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 
 @NgModule({
     declarations: [
@@ -65,8 +68,8 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
         ApplicantDeleteBtnComponent,
+        
 
-        Step1Component,
         Step2Component,
         Step3Component,
         Step4Component,
@@ -106,6 +109,9 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
         TaInputDropdownComponent,
         TaInputArrowsComponent,
         TaUploadFilesComponent,
+        TaCounterComponent,
+        TaCustomCardComponent,
+        TaModalTableComponent,
 
         /* PIPES */
 

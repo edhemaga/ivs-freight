@@ -81,6 +81,14 @@
                 padding-left: 6px;
             }
         }
+
+        &.previous-adresses-table-header {
+            grid-template-columns: 26px 482px 100px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
+        }
     }
 
     .subtotal {

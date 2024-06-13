@@ -11,7 +11,8 @@
             'contact-table-header ': isContactTable,
             'pm-table-header': isPMTruckTable || isPMTrailerTable,
             'off-duty-location-table-header': isOffDutyLocationTable,
-            'fuel-card-table-header': isFuelCardTable
+            'fuel-card-table-header': isFuelCardTable,
+            'previous-adresses-table-header': isPreviousAddressesTable
         }"
     >
         <ng-container
@@ -70,7 +71,7 @@
                                 : isPMTruckTable
                                 : isPMTrailerTable
                                 : isOffDutyLocationTable
-                                : isFuelCardTable
+                                : isFuelCardTable || isPreviousAddressesTable
                     "
                 >
                     <span class="m-0 ta-font-bold">*</span>
@@ -184,5 +185,16 @@
             (onInputHover)="handleInputHover($event)"
         >
         </app-ta-modal-table-fuel-card>
+
+        <app-ta-modal-table-previous-addresses
+            *ngSwitchCase="modalTableTypeEnum.PREVIOUS_ADDRESSES"
+            [modalTableForm]="modalTableForm"
+            [arrayName]="taModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS"
+            [isInputHoverRows]="isInputHoverRows"
+            (onSelectAddress)="onSelectAddress($event)"
+            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            (onInputHover)="handleInputHover($event)"
+        >
+        </app-ta-modal-table-previous-addresses>
     </ng-container>
 </div>

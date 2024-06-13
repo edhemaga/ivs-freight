@@ -33,6 +33,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import moment from 'moment';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
 @Injectable({
     providedIn: 'root',
@@ -44,11 +45,13 @@ export class DropDownService {
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService
     ) {}
+
     public getParkingById(id: number) {
         this.settingsLocationService
             .getCompanyParkingById(id)
             .subscribe((item) => (this.parkingDataById = item));
     }
+
     public dropActions(
         dropDownData: any,
         name: string,
@@ -65,28 +68,31 @@ export class DropDownService {
         cdlsArray?: any
     ) {
         switch (name) {
-            case 'delete-cdl': {
+            case DropActionsStringEnum.DELETE_CDL: {
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...dataCdl,
                         state: dataCdl.state.stateShortName,
+                        driverName: data?.firstName + ' ' + data?.lastName,
                     },
                     cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'cdl',
-                        type: 'delete',
+                        template: DropActionsStringEnum.CDL,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
+                        modalHeaderTitle:
+                            DropActionsStringEnum.DELETE_CDL_TITLE,
                     }
                 );
                 break;
             }
-            case 'void': {
+            case DropActionsStringEnum.VOID: {
                 let voidData = data.registrations.find(
                     (registration) => registration.id === dropDownData.id
                 );
@@ -111,13 +117,13 @@ export class DropDownService {
                     : [];
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         data: {
                             ...voidData,
                         },
-                        template: 'void',
-                        type: 'void',
+                        template: DropActionsStringEnum.VOID,
+                        type: DropActionsStringEnum.VOID,
                         modalHeader: true,
                         array: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
@@ -125,92 +131,98 @@ export class DropDownService {
 
                 break;
             }
-            case 'activate':
-                {
-                    let registrationData = data.registrations.find(
-                        (registration) => registration.id === dropDownData.id
-                    );
-                    const mappedEvent = {
-                        ...event,
-                        data: {
-                            ...registrationData,
-                        },
-                    };
-                    this.modalService.openModal(
-                        ConfirmationModalComponent,
-                        { size: 'small' },
-                        {
-                            ...mappedEvent,
-                            template: 'void',
-                            type: 'activate',
-                            svg: true,
-                        }
-                    );
-                }
+            case DropActionsStringEnum.ACTIVATE: {
+                let registrationData = data.registrations.find(
+                    (registration) => registration.id === dropDownData.id
+                );
+                const mappedEvent = {
+                    ...dropDownData,
+                    data: {
+                        ...registrationData,
+                    },
+                };
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DropActionsStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: DropActionsStringEnum.VOID,
+                        type: DropActionsStringEnum.ACTIVATE,
+                        svg: true,
+                    }
+                );
                 break;
-            case 'delete-medical': {
+            }
+            case DropActionsStringEnum.DELETE_MEDICAL: {
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...dataMedical,
+                        driverName: data?.firstName + ' ' + data?.lastName,
                     },
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'medical',
-                        type: 'delete',
+                        template: DropActionsStringEnum.MEDICAL,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
+                        modalHeaderTitle:
+                            DropActionsStringEnum.DELETE_MEDICAL_TITLE,
                     }
                 );
                 break;
             }
-            case 'delete-mvr': {
+            case DropActionsStringEnum.DELETE_MVR: {
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...dataMvr,
+                        driverName: data?.firstName + ' ' + data?.lastName,
                     },
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'mvr',
-                        type: 'delete',
+                        template: DropActionsStringEnum.MVR,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
             }
-            case 'delete-test': {
+            case DropActionsStringEnum.DELETE_TEST: {
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...dataTest,
                         testTypeName: dataTest.testType.name,
                         reasonName: dataTest.testReason.name,
+                        driverName: data?.firstName + ' ' + data?.lastName,
                     },
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'test',
-                        type: 'delete',
+                        template: DropActionsStringEnum.TEST,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
+                        modalHeaderTitle:
+                            DropActionsStringEnum.DELETE_TEST_TITLE,
                     }
                 );
                 break;
             }
-            case 'edit-licence': {
+            case DropActionsStringEnum.EDIT_LICENCE: {
                 this.modalService.openModal(
                     DriverCdlModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         file_id: dropDownData.id,
                         id: driverId,
@@ -220,10 +232,10 @@ export class DropDownService {
                 break;
             }
 
-            case 'edit-drug': {
+            case DropActionsStringEnum.EDIT_DRUG: {
                 this.modalService.openModal(
                     DriverDrugAlcoholTestModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         file_id: dropDownData.id,
                         id: driverId,
@@ -232,10 +244,10 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'edit-medical': {
+            case DropActionsStringEnum.EDIT_MEDICAL: {
                 this.modalService.openModal(
                     DriverMedicalModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         file_id: dropDownData.id,
                         id: driverId,
@@ -244,10 +256,10 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'edit-mvr': {
+            case DropActionsStringEnum.EDIT_MVR: {
                 this.modalService.openModal(
                     DriverMvrModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         file_id: dropDownData.id,
                         id: driverId,
@@ -256,7 +268,7 @@ export class DropDownService {
                 );
                 break;
             }
-            case 'delete-inspection': {
+            case DropActionsStringEnum.DELETE_INSPECTION: {
                 const inspection = data.inspections.find(
                     (ins) => ins.id === dropDownData.id
                 );
@@ -269,17 +281,17 @@ export class DropDownService {
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'inspection',
-                        type: 'delete',
+                        template: DropActionsStringEnum.INSPECTION,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
             }
-            case 'delete-registration': {
+            case DropActionsStringEnum.DELETE_REGISTRATION: {
                 const registration = data.registrations.find(
                     (reg) => reg.id === dropDownData.id
                 );
@@ -292,17 +304,17 @@ export class DropDownService {
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'registration',
-                        type: 'delete',
+                        template: DropActionsStringEnum.REGISTRATION,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
             }
-            case 'delete-title': {
+            case DropActionsStringEnum.DELETE_TITLE: {
                 const title = data.titles.find(
                     (title) => title.id === dropDownData.id
                 );
@@ -315,123 +327,136 @@ export class DropDownService {
                 };
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'title',
-                        type: 'delete',
+                        template: DropActionsStringEnum.TITLE,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
             }
-            case 'edit-registration': {
+            case DropActionsStringEnum.EDIT_REGISTRATION: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: data.id,
                         payload: data,
                         file_id: dropDownData.id,
                         type: name,
-                        modal: nameTruck === 'truck' ? 'truck' : 'trailer',
+                        modal:
+                            nameTruck === DropActionsStringEnum.TRUCK
+                                ? DropActionsStringEnum.TRUCK
+                                : DropActionsStringEnum.TRAILER,
                     }
                 );
                 break;
             }
-            case 'edit-inspection': {
+            case DropActionsStringEnum.EDIT_INSPECTION: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: data.id,
                         payload: data,
                         file_id: dropDownData.id,
                         type: name,
-                        modal: nameTruck === 'truck' ? 'truck' : 'trailer',
+                        modal:
+                            nameTruck === DropActionsStringEnum.TRUCK
+                                ? DropActionsStringEnum.TRUCK
+                                : DropActionsStringEnum.TRAILER,
                     }
                 );
                 break;
             }
-            case 'edit-title': {
+            case DropActionsStringEnum.EDIT_TITLE: {
                 this.modalService.openModal(
                     TtTitleModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: data.id,
                         payload: data,
                         file_id: dropDownData.id,
                         type: name,
-                        modal: nameTruck === 'truck' ? 'truck' : 'trailer',
+                        modal:
+                            nameTruck === DropActionsStringEnum.TRUCK
+                                ? DropActionsStringEnum.TRUCK
+                                : DropActionsStringEnum.TRAILER,
                     }
                 );
                 break;
             }
-            case 'renew': {
+            case DropActionsStringEnum.RENEW: {
                 this.modalService.openModal(
                     DriverCdlModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: driverId,
                         file_id: dataCdl.id,
-                        type: 'renew-licence',
+                        type: DropActionsStringEnum.RENEW_LICENCE,
                         renewData: dataCdl,
                     }
                 );
                 break;
             }
-            case 'deactivate-item': {
+            case DropActionsStringEnum.DEACTIVATE_ITEM: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         data: {
                             ...dataCdl[0],
                             state: dataCdl[0].state.stateShortName,
                             data,
+                            driverName: data?.firstName + ' ' + data?.lastName,
                         },
-                        template: 'cdl',
-                        type: 'info',
-                        subType: 'cdl void',
-                        cdlStatus: 'New',
+                        template: DropActionsStringEnum.CDL,
+                        type: DropActionsStringEnum.INFO,
+                        subType: DropActionsStringEnum.VOID_CDL,
                         modalHeader: true,
+                        modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
                         cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
                 );
                 break;
             }
-            case 'activate-item': {
+            case DropActionsStringEnum.ACTIVATE_ITEM: {
                 if (dataCdl[0]?.status == 1) {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             data: {
                                 ...dataCdl[0],
                                 state: dataCdl[0].state.stateShortName,
                                 data,
+                                driverName:
+                                    data?.firstName + ' ' + data?.lastName,
                             },
-                            template: 'CDL',
-                            type: 'info',
-                            subType: 'cdl void',
-                            cdlStatus: 'New',
+                            template: DropActionsStringEnum.CDL,
+                            type: DropActionsStringEnum.INFO,
+                            subType: DropActionsStringEnum.CDL_VOID,
+                            cdlStatus: DropActionsStringEnum.NEW,
                             modalHeader: true,
                         }
                     );
                 } else {
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             data: {
                                 ...dataCdl,
                                 state: dataCdl.state.stateShortName,
                                 data,
+                                driverName:
+                                    data?.firstName + ' ' + data?.lastName,
                             },
-                            template: 'CDL',
-                            type: 'activate',
-                            //subType: 'cdl void',
-                            cdlStatus: 'Activate',
+                            template: DropActionsStringEnum.CDL,
+                            type: DropActionsStringEnum.ACTIVATE,
+                            cdlStatus: DropActionsStringEnum.ACTIVATE_2,
                             modalHeader: true,
                         }
                     );
@@ -439,45 +464,45 @@ export class DropDownService {
 
                 break;
             }
-            case 'edit-repair': {
+            case DropActionsStringEnum.EDIT_REPAIR: {
                 this.modalService.openModal(
                     RepairOrderModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: data.id,
                         payload: data,
                         file_id: dropDownData.id,
                         type: name,
-                        modal: 'repair',
+                        modal: DropActionsStringEnum.REPAIR,
                     }
                 );
                 break;
             }
-            case 'delete-repair': {
+            case DropActionsStringEnum.DELETE_REPAIR: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         id: data.id,
-                        template: 'repair',
-                        type: 'delete',
+                        template: DropActionsStringEnum.REPAIR,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
             }
-            case TableStringEnum.DELETE_REPAIR_DETAIL: {
+            case DropActionsStringEnum.DELETE_REPAIR_DETAIL: {
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: TableStringEnum.SMALL },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...dropDownData,
                         id: data.id,
-                        template: TableStringEnum.REPAIR_DETAIL,
-                        type: TableStringEnum.DELETE,
+                        template: DropActionsStringEnum.REPAIR_DETAIL,
+                        type: DropActionsStringEnum.DELETE,
                         modalHeaderTitle:
                             data?.data?.repairType?.name ===
-                            TableStringEnum.ORDER
+                            DropActionsStringEnum.ORDER
                                 ? ConfirmationModalStringEnum.DELETE_ORDER
                                 : ConfirmationModalStringEnum.DELETE_REPAIR,
                         subType: data?.data?.repairType?.name,
@@ -490,6 +515,7 @@ export class DropDownService {
             }
         }
     }
+
     public dropActionsHeader(event: any, driverObject?: any, _?: number) {
         const mappedEvent = {
             ...driverObject,
@@ -498,35 +524,42 @@ export class DropDownService {
                 name: driverObject?.firstName + ' ' + driverObject?.lastName,
             },
         };
-        if (event.type === 'edit') {
+
+        if (event.type === DropActionsStringEnum.EDIT) {
             this.modalService.openModal(
                 DriverModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...event,
                     disableButton: true,
                     id: event.id,
                 }
             );
-        } else if (event.type === 'deactivate' || event.type === 'activate') {
+        } else if (
+            event.type === DropActionsStringEnum.DEACTIVATE ||
+            event.type === DropActionsStringEnum.ACTIVATE
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'driver',
-                    type: driverObject.status === 1 ? 'deactivate' : 'activate',
+                    template: DropActionsStringEnum.DRIVER,
+                    type:
+                        driverObject.status === 1
+                            ? DropActionsStringEnum.DEACTIVATE
+                            : DropActionsStringEnum.ACTIVATE,
                     image: true,
                 }
             );
-        } else if (event.type === 'delete-item') {
+        } else if (event.type === DropActionsStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: 'driver',
-                    type: 'delete',
+                    template: DropActionsStringEnum.DRIVER,
+                    type: DropActionsStringEnum.DELETE,
                     image: true,
                 }
             );
@@ -560,6 +593,7 @@ export class DropDownService {
                 }
             );
         }
+
         if (
             event.type === TableStringEnum.EDIT &&
             name === TableStringEnum.BROKER
@@ -682,47 +716,59 @@ export class DropDownService {
                     : `assets/svg/common/trucks/${truckObject?.truckType?.logoName}`,
             },
         };
-        if (event.type === 'edit' && !trailerId) {
+
+        if (event.type === DropActionsStringEnum.EDIT && !trailerId) {
             this.modalService.openModal(
                 TruckModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    type: 'edit',
+                    type: DropActionsStringEnum.EDIT,
                     disableButton: true,
                 }
             );
         }
-        if (event.type === 'edit' && trailerId) {
+
+        if (event.type === DropActionsStringEnum.EDIT && trailerId) {
             this.modalService.openModal(
                 TrailerModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...event,
-                    type: 'edit',
+                    type: DropActionsStringEnum.EDIT,
                     disableButton: true,
                     id: trailerId,
                 }
             );
-        } else if (event.type === 'deactivate' || event.type === 'activate') {
+        } else if (
+            event.type === DropActionsStringEnum.DEACTIVATE ||
+            event.type === DropActionsStringEnum.ACTIVATE
+        ) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: trailerId ? 'trailer' : 'truck',
-                    type: truckObject.status === 1 ? 'deactivate' : 'activate',
+                    template: trailerId
+                        ? DropActionsStringEnum.TRAILER
+                        : DropActionsStringEnum.TRUCK,
+                    type:
+                        truckObject.status === 1
+                            ? DropActionsStringEnum.DEACTIVATE
+                            : DropActionsStringEnum.ACTIVATE,
                     svg: true,
                 }
             );
-        } else if (event.type === 'delete-item') {
+        } else if (event.type === DropActionsStringEnum.DELETE_ITEM) {
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: 'small' },
+                { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
-                    template: trailerId ? 'trailer' : 'truck',
-                    type: 'delete',
+                    template: trailerId
+                        ? DropActionsStringEnum.TRAILER
+                        : DropActionsStringEnum.TRUCK,
+                    type: DropActionsStringEnum.DELETE,
                     svg: true,
                 }
             );
@@ -741,13 +787,13 @@ export class DropDownService {
                 name: parkingObject?.name,
             },
         };
-        if (event.type === 'edit') {
+        if (event.type === DropActionsStringEnum.EDIT) {
             switch (names) {
-                case 'edit-parking': {
+                case DropActionsStringEnum.EDIT_PARKING:
                     this.modalService.openModal(
                         SettingsParkingModalComponent,
                         {
-                            size: 'small',
+                            size: DropActionsStringEnum.SMALL,
                         },
                         {
                             ...event,
@@ -756,12 +802,12 @@ export class DropDownService {
                         }
                     );
                     break;
-                }
-                case 'edit-office': {
+
+                case DropActionsStringEnum.EDIT_OFFICE:
                     this.modalService.openModal(
                         SettingsOfficeModalComponent,
                         {
-                            size: 'small',
+                            size: DropActionsStringEnum.SMALL,
                         },
                         {
                             ...event,
@@ -770,12 +816,12 @@ export class DropDownService {
                         }
                     );
                     break;
-                }
-                case 'edit-repair-shop': {
+
+                case DropActionsStringEnum.EDIT_REPAIR_SHOP:
                     this.modalService.openModal(
                         SettingsRepairshopModalComponent,
                         {
-                            size: 'small',
+                            size: DropActionsStringEnum.SMALL,
                         },
                         {
                             ...event,
@@ -784,12 +830,12 @@ export class DropDownService {
                         }
                     );
                     break;
-                }
-                case 'edit-terminal': {
+
+                case DropActionsStringEnum.EDIT_TERMINAL:
                     this.modalService.openModal(
                         SettingsTerminalModalComponent,
                         {
-                            size: 'small',
+                            size: DropActionsStringEnum.SMALL,
                         },
                         {
                             ...event,
@@ -798,62 +844,60 @@ export class DropDownService {
                         }
                     );
                     break;
-                }
             }
-        } else if (event.type === 'delete-item') {
+        } else if (event.type === DropActionsStringEnum.DELETE_ITEM) {
             switch (names) {
-                case 'delete-parking': {
+                case DropActionsStringEnum.DELETE_PARKING:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             ...mappedEvent,
-                            template: 'Company Parking',
-                            type: 'delete',
+                            template: DropActionsStringEnum.COMPANY_PARKING,
+                            type: DropActionsStringEnum.DELETE,
                             svg: false,
                         }
                     );
                     break;
-                }
-                case 'delete-office': {
+
+                case DropActionsStringEnum.DELETE_OFFICE:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             ...mappedEvent,
-                            template: 'Company Office',
-                            type: 'delete',
+                            template: DropActionsStringEnum.COMPANY_OFFICE,
+                            type: DropActionsStringEnum.DELETE,
                             svg: false,
                         }
                     );
                     break;
-                }
-                case 'delete-repair-shop': {
+
+                case DropActionsStringEnum.DELETE_REPAIR_SHOP:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             ...mappedEvent,
-                            template: 'Company Repair Shop',
-                            type: 'delete',
+                            template: DropActionsStringEnum.COMPANY_REPAIR_SHOP,
+                            type: DropActionsStringEnum.DELETE,
                             svg: false,
                         }
                     );
                     break;
-                }
-                case 'delete-terminal': {
+
+                case DropActionsStringEnum.DELETE_TERMINAL:
                     this.modalService.openModal(
                         ConfirmationModalComponent,
-                        { size: 'small' },
+                        { size: DropActionsStringEnum.SMALL },
                         {
                             ...mappedEvent,
-                            template: 'Company Terminal',
-                            type: 'delete',
+                            template: DropActionsStringEnum.COMPANY_TERMINAL,
+                            type: DropActionsStringEnum.DELETE,
                             svg: false,
                         }
                     );
                     break;
-                }
             }
         }
     }
@@ -866,10 +910,10 @@ export class DropDownService {
         };
 
         switch (event.type) {
-            case 'edit': {
+            case DropActionsStringEnum.EDIT:
                 this.modalService.openModal(
                     RepairShopModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...event,
                         disableButton: true,
@@ -877,103 +921,102 @@ export class DropDownService {
                     }
                 );
                 break;
-            }
-            case 'add-favourites':
-            case 'remove-favourites': {
+
+            case DropActionsStringEnum.ADD_FAVOURITES:
+            case DropActionsStringEnum.REMOVE_FAVOURITES:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'repair shop',
-                        type: 'activate',
+                        template: DropActionsStringEnum.REPAIR_SHOP,
+                        type: DropActionsStringEnum.ACTIVATE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'move-to-favourite': {
+
+            case DropActionsStringEnum.MOVE_TO_FAVOURITE:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'repair shop',
-                        type: 'info',
-                        subType: 'favorite',
-                        subTypeStatus: 'move',
+                        template: DropActionsStringEnum.REPAIR_SHOP,
+                        type: DropActionsStringEnum.INFO,
+                        subType: DropActionsStringEnum.FAVORITE,
+                        subTypeStatus: DropActionsStringEnum.MOVE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'remove-from-favourite': {
+
+            case DropActionsStringEnum.REMOVE_FROM_FAVOURITE:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'repair shop',
-                        type: 'info',
-                        subType: 'favorite',
-                        subTypeStatus: 'remove',
+                        template: DropActionsStringEnum.REPAIR_SHOP,
+                        type: DropActionsStringEnum.INFO,
+                        subType: DropActionsStringEnum.FAVORITE,
+                        subTypeStatus: DropActionsStringEnum.REMOVE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'delete-item': {
+
+            case DropActionsStringEnum.DELETE_ITEM:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'repair shop',
-                        type: 'delete',
+                        template: DropActionsStringEnum.REPAIR_SHOP,
+                        type: DropActionsStringEnum.DELETE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'close-business': {
+
+            case DropActionsStringEnum.CLOSE_BUSINESS:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'Repair Shop',
-                        type: 'deactivate',
+                        template: DropActionsStringEnum.REPAIR_SHOP_2,
+                        type: DropActionsStringEnum.DEACTIVATE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'open-business': {
+
+            case DropActionsStringEnum.OPEN_BUSINESS:
                 this.modalService.openModal(
                     ConfirmationModalComponent,
-                    { size: 'small' },
+                    { size: DropActionsStringEnum.SMALL },
                     {
                         ...mappedEvent,
-                        template: 'Repair Shop',
-                        type: 'activate',
+                        template: DropActionsStringEnum.REPAIR_SHOP_2,
+                        type: DropActionsStringEnum.ACTIVATE,
                         image: false,
                     }
                 );
                 break;
-            }
-            case 'Repair': {
+
+            case DropActionsStringEnum.REPAIR_2:
                 this.modalService.openModal(
                     RepairOrderModalComponent,
-                    { size: 'large' },
+                    { size: DropActionsStringEnum.LARGE },
                     {
-                        template: 'Repair Shop',
-                        type: 'specific-repair-shop',
+                        template: DropActionsStringEnum.REPAIR_SHOP_2,
+                        type: DropActionsStringEnum.SPECIFIC_REPAIR_SHOP,
                         shopId: event.id ? event.id : null,
                     }
                 );
 
                 break;
-            }
         }
     }
 }
