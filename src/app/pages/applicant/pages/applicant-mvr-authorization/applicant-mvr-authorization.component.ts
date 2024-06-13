@@ -33,6 +33,7 @@ import {
     CreateMvrAuthReviewCommand,
     MvrAuthFeedbackResponse,
 } from 'appcoretruckassist';
+import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
 
 // modules
 import { SharedModule } from '@shared/shared.module';
@@ -43,6 +44,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { ApplicantLicensesTableComponent } from '@pages/applicant/components/applicant-licenses-table/applicant-licenses-table.component';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -60,6 +62,7 @@ import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.com
         TaUploadFilesComponent,
         TaCheckboxComponent,
         TaCounterComponent,
+        ApplicantLicensesTableComponent,
     ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
@@ -79,7 +82,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
-    public licences: any = [];
+    public licenses: License[] = [];
 
     public previousStepValues: any;
 
@@ -174,10 +177,9 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
                     this.applicantId = res.id;
 
-                    const personalInfo = res.personalInfo;
                     const cdlInformation = res.cdlInformation;
 
-                    this.licences = cdlInformation?.licences.map((item) => {
+                    this.licenses = cdlInformation?.licences.map((item) => {
                         return {
                             license: item.licenseNumber,
                             state: item.state?.stateName,
@@ -187,7 +189,12 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                                 MethodsCalculationsHelper.convertDateFromBackend(
                                     item?.expDate
                                 ),
-                            name: personalInfo?.fullName,
+                            restrictions: item.cdlRestrictions
+                                .map((resItem) => resItem.code)
+                                .join(', '),
+                            endorsments: item.cdlEndorsements
+                                .map((resItem) => resItem.code)
+                                .join(', '),
                         };
                     });
 

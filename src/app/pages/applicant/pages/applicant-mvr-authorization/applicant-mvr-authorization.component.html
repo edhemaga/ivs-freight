@@ -135,107 +135,12 @@
 
                         <!-- LICENSE -->
 
-                        <ng-container *ngIf="licences">
-                            <div
-                                class="d-flex flex-column justify-content-center license-view-container"
-                                [ngStyle]="{
-                                    'margin-bottom':
-                                        selectedMode === 'APPLICANT_MODE'
-                                            ? '32px'
-                                            : '22px'
-                                }"
+                        <ng-container *ngIf="licenses">
+                            <app-applicant-licenses-table
+                                [selectedMode]="selectedMode"
+                                [licenses]="licenses"
                             >
-                                <div
-                                    class="d-flex align-items-center"
-                                    [ngClass]="
-                                        selectedMode === 'FEEDBACK_MODE'
-                                            ? 'title-container title-container-feedback'
-                                            : 'title-container'
-                                    "
-                                >   
-                                
-                                    <div
-                                        class="d-flex align-items-center text-uppercase licence-detail"
-                                    >
-                                        <p class="m-0 ta-font-bold">
-                                            Licence detail
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center text-uppercase state-class"
-                                    >
-                                        <p class="m-0 ta-font-bold">
-                                            State & Class
-                                        </p>
-                                    </div>
-                                    <div
-                                        class="d-flex align-items-center text-uppercase additional-detail"
-                                    >
-                                        <p class="m-0 ta-font-bold">
-                                            Additional detail
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <ng-container
-                                    *ngFor="
-                                        let licence of licences;
-                                        let i = index;
-                                        trackBy: trackByIdentity
-                                    "
-                                >
-                                    <div
-                                        class="d-flex align-items-center"
-                                        [ngClass]="
-                                            selectedMode === 'FEEDBACK_MODE'
-                                                ? 'license-info-container license-info-container-feedback'
-                                                : 'license-info-container'
-                                        "
-                                    >
-                                        <div
-                                            class="d-flex flex-column licence-detail"
-                                        >
-                                            <p class="m-0 ta-font-bold text-ta-black">
-                                                {{ licence?.license }}
-                                            </p>
-                                            <p class="m-0 ta-font-medium">
-                                                {{ licence?.name }}
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="d-flex flex-column state-class"
-                                        >
-                                            <p class="m-0 ta-font-bold text-ta-black">
-                                                {{ licence?.state }} ({{ licence?.stateShort }})
-                                            </p>
-                                            <p class="m-0 ta-font-medium">
-                                                Class {{ licence?.classType }}
-                                            </p>
-                                        </div>
-                                        <div
-                                            class="d-flex flex-column state-class"
-                                        >
-                                            <div>
-                                                <p class="m-0 ta-font-bold date-text text-ta-black">
-                                                    Issued Date:
-                                                </p>
-                                                <p class="m-0 ta-font-medium">
-                                                    {{ licence?.expDate }}
-                                                </p>
-                                            </div>
-
-                                            <div>
-                                                <p class="m-0 ta-font-bold date-text text-ta-black">
-                                                    Expiry Date:
-                                                </p>
-                                                <p class="m-0 ta-font-medium">
-                                                    {{ licence?.expDate }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
+                            </app-applicant-licenses-table>
                         </ng-container>
 
                         <!-- DONT HAVE MVR CHECKBOX -->

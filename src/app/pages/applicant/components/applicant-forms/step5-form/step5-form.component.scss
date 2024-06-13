@@ -1,8 +1,8 @@
 @import 'src/theme/variables.scss';
 
 .violation-border-container {
-    border: 1px solid #2f2f2f;
-    border-radius: 2px;
+    border: 1px solid #00000026;
+    border-radius: 4px;
     padding: 4px 4px 12px 4px;
 }
 
@@ -25,6 +25,33 @@
         &::selection {
             color: $white;
             background: rgb(255, 255, 255, 0.2);
+        }
+    }
+
+    .icon-delete-container {
+        margin-right: 8px;
+        margin-left: 4px;
+        background: transparent;
+        cursor: pointer;
+
+        .delete-icon {
+            svg {
+                path {
+                    transition: fill 0.3s ease-in-out;
+                    fill: $bw5;
+                }
+            }
+        }
+
+        &:hover {
+            .delete-icon {
+                svg {
+                    path {
+                        transition: fill 0.3s ease-in-out;
+                        fill: $white;
+                    }
+                }
+            }
         }
     }
 }
@@ -51,8 +78,12 @@
         }
     }
 
+    .location-group {
+        width: 434px;
+    }
+
     .date-group {
-        width: 150px;
+        width: 170px;
     }
 
     .truck-type-group {
@@ -60,6 +91,53 @@
     }
 
     .description-group {
+        width: 404px;
         margin: 0 0 12px 0 !important;
+    }
+
+    .violation-btn-container {
+        margin: 0 auto 32px auto;
+        width: 616px;
+
+        p {
+            line-height: 18px;
+            font-size: 14px;
+        }
+
+        .violation-title {
+            color: $bw6-2;
+            font-size: 14px;
+            height: 18px;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+}
+
+.violation-detail {
+    margin: 4px 0 30px 4px;
+
+    p {
+        font-size: 14px;
+        color: $ta-black;
+        line-height: 18px;
+
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background: rgb(47, 47, 47, 0.2);
+        }
     }
 }

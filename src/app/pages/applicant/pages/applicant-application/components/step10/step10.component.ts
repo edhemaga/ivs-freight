@@ -27,11 +27,33 @@ import {
     DisclosureReleaseFeedbackResponse,
     UpdateDisclosureReleaseCommand,
 } from 'appcoretruckassist/model/models';
+import { StringConstantsStep10 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+
+// modules
+import { CommonModule } from '@angular/common';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+
+// helpers
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
     selector: 'app-step10',
     templateUrl: './step10.component.html',
     styleUrls: ['./step10.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+    ],
 })
 export class Step10Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -43,6 +65,8 @@ export class Step10Component implements OnInit, OnDestroy {
     public applicantId: number;
 
     public companyName: string;
+
+    public stringConstants: StringConstantsStep10;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -57,6 +81,8 @@ export class Step10Component implements OnInit, OnDestroy {
         this.createForm();
 
         this.getStepValuesFromStore();
+
+        this.initStringConstants();
     }
 
     public createForm(): void {
@@ -68,6 +94,12 @@ export class Step10Component implements OnInit, OnDestroy {
             isFifthDisclosure: [false, Validators.requiredTrue],
             isSixthDisclosure: [false, Validators.requiredTrue],
         });
+    }
+
+    public initStringConstants() {
+        this.stringConstants = ApplicantApplicationConstants.stringConstantsStep10(
+            this.companyName
+        );
     }
 
     public getStepValuesFromStore(): void {
@@ -102,68 +134,6 @@ export class Step10Component implements OnInit, OnDestroy {
             isFifthDisclosure,
             isSixthDisclosure: isSixDisclosure,
         });
-    }
-
-    public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
-            return;
-        }
-
-        switch (type) {
-            case InputSwitchActions.FIRST_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isFirstDisclosure:
-                        !this.disclosureReleaseForm.get('isFirstDisclosure')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.SECOND_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isSecondDisclosure:
-                        !this.disclosureReleaseForm.get('isSecondDisclosure')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.THIRD_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isThirdDisclosure:
-                        !this.disclosureReleaseForm.get('isThirdDisclosure')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.FOURTH_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isFourthDisclosure:
-                        !this.disclosureReleaseForm.get('isFourthDisclosure')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.FIFTH_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isFifthDisclosure:
-                        !this.disclosureReleaseForm.get('isFifthDisclosure')
-                            .value,
-                });
-
-                break;
-            case InputSwitchActions.SIXTH_DISCLOSURE:
-                this.disclosureReleaseForm.patchValue({
-                    isSixthDisclosure:
-                        !this.disclosureReleaseForm.get('isSixthDisclosure')
-                            .value,
-                });
-
-                break;
-            default:
-                break;
-        }
     }
 
     public onStepAction(event: any): void {

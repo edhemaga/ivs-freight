@@ -21,35 +21,35 @@
     }
 
     .info-container {
-        width: 820px;
+        width: 616px;
         margin-bottom: 22px;
 
         p {
             font-size: 14px;
-            color: $bw6-2;
-            line-height: 22px;
+            color: $ta-black-2;
+            line-height: 18px;
 
             &::-moz-selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
         }
     }
 
     .question-container {
-        margin-bottom: 22px;
-        width: 820px;
+        margin-bottom: 32px;
+        width: 616px;
 
         .question-title {
             font-size: 14px;
             color: $bw6-2;
-            line-height: 22px;
-            margin-bottom: 12px !important;
+            line-height: 18px;
+            margin-bottom: 18px !important;
 
             &::-moz-selection {
                 color: $bw6-2;
@@ -138,20 +138,20 @@
 
         .motor-carrier-group,
         .sap-name-group {
-            width: 376px;
+            width: 404px;
         }
 
         .phone-group {
-            width: 228px;
+            width: 200px;
             margin-right: 0;
         }
 
         .address-group {
-            width: 481px;
+            width: 494px;
         }
 
         .unit-group {
-            width: 123px;
+            width: 110px;
             margin-right: 0;
         }
 
@@ -161,15 +161,16 @@
 
             p {
                 font-size: 14px;
-                color: $bw6-2;
+                color: $ta-black-2;
+                line-height: 18px;
 
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
             }
@@ -185,6 +186,10 @@
             margin-bottom: 12px !important;
             margin-right: 0;
         }
+    }
+
+    .agreement-container {
+        margin-top: 18px;
     }
 }
 

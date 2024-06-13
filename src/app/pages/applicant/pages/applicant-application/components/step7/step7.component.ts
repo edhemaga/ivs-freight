@@ -57,11 +57,52 @@ import {
     SevenDaysHosFeedbackResponse,
 } from 'appcoretruckassist/model/models';
 import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
+import { StringConstantsStep7 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// modules
+import { CommonModule } from '@angular/common';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+
+// pipes
+import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
+
+// helpers
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
+
+// config
+import { Step7Config } from '@pages/applicant/pages/applicant-application/components/step7/configs/step7.config';
 
 @Component({
     selector: 'app-step7',
     templateUrl: './step7.component.html',
     styleUrls: ['./step7.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaCheckboxComponent,
+        TaInputRadiobuttonsComponent,
+        TaAppTooltipV2Component,
+        TaInputAddressDropdownComponent,
+
+        // pipes
+        SumArraysPipe,
+    ],
 })
 export class Step7Component implements OnInit, OnDestroy {
     @ViewChildren('cmp') set content(content: QueryList<any>) {
@@ -98,19 +139,9 @@ export class Step7Component implements OnInit, OnDestroy {
 
     public selectedAddress: AddressEntity = null;
 
-    public sevenDaysHosDaysData: string[] = [
-        'Day',
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-    ];
+    public sevenDaysHosDaysData: string[] = ['1', '2', '3', '4', '5', '6', '7'];
 
     public sevenDaysHosDateData: string[] = [
-        'Date',
         null,
         null,
         null,
@@ -123,54 +154,8 @@ export class Step7Component implements OnInit, OnDestroy {
     public totalHours: { id: number; value: number }[] = [];
     public totalHoursCounter: number = 0;
 
-    public questions: ApplicantQuestion[] = [
-        {
-            title: 'Are you currently working for another employer?',
-            formControlName: 'anotherEmployer',
-            formControlNameExplain: 'anotherEmployerExplain',
-            answerChoices: [
-                {
-                    id: 1,
-                    label: 'YES',
-                    value: 'anotherEmployerYes',
-                    name: 'anotherEmployerYes',
-                    checked: false,
-                    index: 0,
-                },
-                {
-                    id: 2,
-                    label: 'NO',
-                    value: 'anotherEmployerNo',
-                    name: 'anotherEmployerNo',
-                    checked: false,
-                    index: 0,
-                },
-            ],
-        },
-        {
-            title: 'At this time do you intend to work for another employer while still employed by this company?',
-            formControlName: 'intendToWorkAnotherEmployer',
-            formControlNameExplain: 'intendToWorkAnotherEmployerExplain',
-            answerChoices: [
-                {
-                    id: 3,
-                    label: 'YES',
-                    value: 'intendToWorkAnotherEmployerYes',
-                    name: 'intendToWorkAnotherEmployerYes',
-                    checked: false,
-                    index: 1,
-                },
-                {
-                    id: 4,
-                    label: 'NO',
-                    value: 'intendToWorkAnotherEmployerNo',
-                    name: 'intendToWorkAnotherEmployerNo',
-                    checked: false,
-                    index: 1,
-                },
-            ],
-        },
-    ];
+    public questions: ApplicantQuestion[] =
+        ApplicantApplicationConstants.questionsStep7;
 
     private anotherEmployerRadios: any;
     private intendToWorkForAnotherEmployerRadios: any;
@@ -183,35 +168,15 @@ export class Step7Component implements OnInit, OnDestroy {
         { id: 1, displayRadioRequiredNote: false },
     ];
 
-    public openAnnotationArray: {
-        lineIndex?: number;
-        lineInputs?: boolean[];
-        displayAnnotationButton?: boolean;
-        displayAnnotationTextArea?: boolean;
-    }[] = [
-        {
-            lineIndex: 0,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 1,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 2,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
+    public openAnnotationArray: AnnotationItem[] =
+        ApplicantApplicationConstants.openAnnotationArrayStep7;
     public hasIncorrectFields: boolean = false;
 
     public stepFeedbackValues: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public stringConstants: StringConstantsStep7 =
+        ApplicantApplicationConstants.stringConstantsStep7;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -221,6 +186,32 @@ export class Step7Component implements OnInit, OnDestroy {
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantService
     ) {}
+
+    get hosInputConfig(): ITaInput {
+        return Step7Config.getHosInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
+
+    get startDateInputConfig(): ITaInput {
+        return Step7Config.getStartDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get addressInputConfig(): ITaInput {
+        return Step7Config.getAddressInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get explainInputConfig(): ITaInput {
+        return Step7Config.getExplainInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -277,9 +268,9 @@ export class Step7Component implements OnInit, OnDestroy {
             releasedDate,
             location,
             workingForAnotherEmployer,
-            /* workingForAnotherEmployerDescription, */
+            workingForAnotherEmployerDescription,
             intendToWorkForAnotherEmployer,
-            /*  intendToWorkForAnotherEmployerDescription, */
+            intendToWorkForAnotherEmployerDescription,
             certifyInformation,
             sevenDaysHosReview,
         } = stepValues;
@@ -360,10 +351,10 @@ export class Step7Component implements OnInit, OnDestroy {
                 MethodsCalculationsHelper.convertDateFromBackend(releasedDate),
             address: location.address,
             anotherEmployer: workingForAnotherEmployer,
-            /*   anotherEmployerExplain: workingForAnotherEmployerDescription, */
+            anotherEmployerExplain: workingForAnotherEmployerDescription,
             intendToWorkAnotherEmployer: intendToWorkForAnotherEmployer,
-            /*     intendToWorkAnotherEmployerExplain:
-                intendToWorkForAnotherEmployerDescription, */
+            intendToWorkAnotherEmployerExplain:
+                intendToWorkForAnotherEmployerDescription,
             isValidAnotherEmployer: certifyInformation,
         });
 
@@ -405,11 +396,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
         this.sevenDaysHosDateData = this.sevenDaysHosDateData.map(
             (item, index) => {
-                if (index === 0) {
-                    return item;
-                }
-
-                return daysArray[index - 1];
+                return daysArray[index];
             }
         );
     }
@@ -756,7 +743,7 @@ export class Step7Component implements OnInit, OnDestroy {
                     }),
                     hours: +item.hos,
                     date: MethodsCalculationsHelper.convertDateToBackend(
-                        this.sevenDaysHosDateData[index + 1]
+                        this.sevenDaysHosDateData[index]
                     ),
                 };
             });
@@ -775,9 +762,9 @@ export class Step7Component implements OnInit, OnDestroy {
                 MethodsCalculationsHelper.convertDateToBackend(startDate),
             location: selectedAddress,
             workingForAnotherEmployer: anotherEmployer,
-            /*    workingForAnotherEmployerDescription: anotherEmployerExplain, */
-            /*       intendToWorkForAnotherEmployerDescription:
-                intendToWorkAnotherEmployerExplain, */
+            workingForAnotherEmployerDescription: anotherEmployerExplain,
+            intendToWorkForAnotherEmployerDescription:
+                intendToWorkAnotherEmployerExplain,
             intendToWorkForAnotherEmployer: intendToWorkAnotherEmployer,
             certifyInformation: isValidAnotherEmployer,
         };
@@ -824,12 +811,12 @@ export class Step7Component implements OnInit, OnDestroy {
                                     location: saveData.location,
                                     workingForAnotherEmployer:
                                         saveData.workingForAnotherEmployer,
-                                    /*   workingForAnotherEmployerDescription:
-                                        saveData.workingForAnotherEmployerDescription, */
+                                    workingForAnotherEmployerDescription:
+                                        saveData.workingForAnotherEmployerDescription,
                                     intendToWorkForAnotherEmployer:
                                         saveData.intendToWorkForAnotherEmployer,
-                                    /* intendToWorkForAnotherEmployerDescription:
-                                        saveData.intendToWorkForAnotherEmployerDescription, */
+                                    intendToWorkForAnotherEmployerDescription:
+                                        saveData.intendToWorkForAnotherEmployerDescription,
                                     certifyInformation:
                                         saveData.certifyInformation,
                                 },

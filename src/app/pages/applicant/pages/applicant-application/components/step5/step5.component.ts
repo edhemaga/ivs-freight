@@ -13,7 +13,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // helpers
@@ -47,11 +47,47 @@ import {
     TrafficViolationFeedbackResponse,
     TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
+import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
+import { StringConstantsStep5 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+
+// components
+import { ApplicantLicensesTableComponent } from '@pages/applicant/components/applicant-licenses-table/applicant-licenses-table.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { Step5FormComponent } from '@pages/applicant/components/applicant-forms/step5-form/step5-form.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// helpers
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
     selector: 'app-step5',
     templateUrl: './step5.component.html',
     styleUrls: ['./step5.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaUploadFilesComponent,
+        TaCheckboxComponent,
+        TaCounterComponent,
+        ApplicantLicensesTableComponent,
+        Step5FormComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+    ],
 })
 export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
@@ -75,7 +111,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     public stepHasValues: boolean = false;
     public stepHasReviewValues: boolean = false;
 
-    public lastValidLicense: any;
+    public lastValidLicense: License[];
 
     public lastViolationsCard: any;
 
@@ -104,6 +140,9 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
     public stepFeedbackValues: any;
     public feedbackValuesToPatch: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public stringConstants: StringConstantsStep5 =
+        ApplicantApplicationConstants.stringConstantsStep5;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -170,19 +209,31 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
 
                 const cdlInformation = res.cdlInformation;
 
-                const lastLicenseAdded =
-                    cdlInformation?.licences[
-                        cdlInformation.licences.length - 1
-                    ];
+                if (cdlInformation) {
+                    const lastLicenseAdded =
+                        cdlInformation?.licences[
+                            cdlInformation.licences.length - 1
+                        ];
 
-                this.lastValidLicense = {
-                    license: lastLicenseAdded?.licenseNumber,
-                    state: lastLicenseAdded?.state?.stateShortName,
-                    classType: lastLicenseAdded?.classType.name,
-                    expDate: MethodsCalculationsHelper.convertDateFromBackend(
-                        lastLicenseAdded?.expDate
-                    ),
-                };
+                    this.lastValidLicense = [
+                        {
+                            license: lastLicenseAdded?.licenseNumber,
+                            state: lastLicenseAdded?.state?.stateName,
+                            stateShort: lastLicenseAdded.state?.stateShortName,
+                            classType: lastLicenseAdded?.classType.name,
+                            expDate:
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    lastLicenseAdded?.expDate
+                                ),
+                            restrictions: lastLicenseAdded.cdlRestrictions
+                                .map((resItem) => resItem.code)
+                                .join(', '),
+                            endorsments: lastLicenseAdded.cdlEndorsements
+                                .map((resItem) => resItem.code)
+                                .join(', '),
+                        },
+                    ];
+                }
 
                 if (res.trafficViolation) {
                     this.patchStepValues(res.trafficViolation);
@@ -468,13 +519,13 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
         }
     }
 
-    public onDeleteViolation(index: number): void {
-        if (this.isEditing) {
-            return;
-        }
+    // public onDeleteViolation(index: number): void {
+    //     if (this.isEditing) {
+    //         return;
+    //     }
 
-        this.violationsArray.splice(index, 1);
-    }
+    //     this.violationsArray.splice(index, 1);
+    // }
 
     public getViolationFormValues(event: any): void {
         this.violationsArray = [...this.violationsArray, event];
@@ -1282,6 +1333,43 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                     console.log(err);
                 },
             });
+    }
+
+    public onDeleteViolation(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
+        }
+
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.violationsArray.length === 1) {
+            const selectedViolation = this.violationsArray[0];
+
+            this.formValuesToPatch = selectedViolation;
+
+            this.violationsArray = [];
+        } else {
+            if (this.selectedViolationIndex >= 0) {
+                this.violationsArray[
+                    this.selectedViolationIndex
+                ].isEditingViolation = false;
+            }
+            this.violationsArray.splice(this.selectedViolationIndex, 1);
+
+            this.formValuesToPatch = {
+                date: null,
+                vehicleType: null,
+                location: null,
+                description: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedViolationIndex = -1;
     }
 
     ngOnDestroy(): void {

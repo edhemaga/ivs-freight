@@ -250,6 +250,10 @@
             }
         }
 
+        .top-questions-container {
+            border-bottom: none;
+        }
+
         .general-title {
             margin-top: 22px !important;
             margin-bottom: 22px !important;
@@ -274,16 +278,16 @@
             .contact-title {
                 font-size: 14px;
                 line-height: 18px;
-                color: $ta-black-2;
-                margin-bottom: 26px;
+                color: $ta-black;
+                margin-bottom: 26px !important;;
 
                 &::-moz-selection {
-                    color: $ta-black-2;
+                    color: $ta-black;
                     background: rgb(47, 47, 47, 0.2);
                 }
 
                 &::selection {
-                    color: $ta-black-2;
+                    color: $ta-black;
                     background: rgb(47, 47, 47, 0.2);
                 }
             }

@@ -89,6 +89,7 @@ import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applica
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // configs
 import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-owner-info.config';
@@ -104,6 +105,7 @@ import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-in
         CommonModule,
         SharedModule,
         ApplicantModule,
+        AngularSvgIconModule,
 
         // components
         TaInputAddressDropdownComponent,

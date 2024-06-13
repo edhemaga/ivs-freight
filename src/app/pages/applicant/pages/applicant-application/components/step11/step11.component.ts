@@ -26,13 +26,39 @@ import {
     ApplicantResponse,
     AuthorizationFeedbackResponse,
     CreateAuthorizationReviewCommand,
+    PersonalInfoFeedbackResponse,
     UpdateAuthorizationCommand,
 } from 'appcoretruckassist';
+import { StringConstantsStep11 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+
+// modules
+import { CommonModule } from '@angular/common';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
+
+// helpers
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 @Component({
     selector: 'app-step11',
     templateUrl: './step11.component.html',
     styleUrls: ['./step11.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+        ApplicantCardComponent,
+    ],
 })
 export class Step11Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -46,6 +72,10 @@ export class Step11Component implements OnInit, OnDestroy {
     public signature: string;
     public signatureImgSrc: string;
     public displaySignatureRequiredNote: boolean = false;
+
+    public stringConstants: StringConstantsStep11 =
+        ApplicantApplicationConstants.stringConstantsStep11;
+    public applicantCardInfo: PersonalInfoFeedbackResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -81,6 +111,16 @@ export class Step11Component implements OnInit, OnDestroy {
                 if (res.authorization) {
                     this.patchStepValues(res.authorization);
                 }
+
+                const personalInfo = res.personalInfo;
+
+                this.applicantCardInfo = {
+                    fullName: personalInfo?.fullName,
+                    ssn: personalInfo?.ssn,
+                    doB: MethodsCalculationsHelper.convertDateFromBackend(
+                        personalInfo?.doB
+                    ),
+                };
             });
     }
 
@@ -103,54 +143,7 @@ export class Step11Component implements OnInit, OnDestroy {
         this.signatureImgSrc = signature;
         this.signature = signature;
     }
-
-    public handleCheckboxParagraphClick(type: string): void {
-        if (
-            this.selectedMode === SelectedMode.FEEDBACK ||
-            this.selectedMode === SelectedMode.REVIEW
-        ) {
-            return;
-        }
-
-        switch (type) {
-            case InputSwitchActions.FIRST_AUTHORIZATION:
-                this.authorizationForm.patchValue({
-                    isFirstAuthorization: !this.authorizationForm.get(
-                        'isFirstAuthorization'
-                    ).value,
-                });
-
-                break;
-            case InputSwitchActions.SECOND_AUTHORIZATION:
-                this.authorizationForm.patchValue({
-                    isSecondAuthorization: !this.authorizationForm.get(
-                        'isSecondAuthorization'
-                    ).value,
-                });
-
-                break;
-            case InputSwitchActions.THIRD_AUTHORIZATION:
-                this.authorizationForm.patchValue({
-                    isThirdAuthorization: !this.authorizationForm.get(
-                        'isThirdAuthorization'
-                    ).value,
-                });
-
-                break;
-            case InputSwitchActions.FOURTH_AUTHORIZATION:
-                this.authorizationForm.patchValue({
-                    isFourthAuthorization: !this.authorizationForm.get(
-                        'isFourthAuthorization'
-                    ).value,
-                });
-
-                break;
-
-            default:
-                break;
-        }
-    }
-
+    
     public onSignatureAction(event: any): void {
         if (event) {
             this.signature = this.imageBase64Service.getStringFromBase64(event);
