@@ -31,6 +31,9 @@ import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-mod
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
+//Svg Routes
+import { TrailerCardsSvgRoutes } from './utils/svg-routes/trailer-cards-svg-routes';
+
 @Component({
     selector: 'app-trailer-card',
     templateUrl: './trailer-card.component.html',
@@ -54,6 +57,8 @@ export class TrailerCardComponent implements OnInit, OnDestroy {
     public cardsFront: CardDataResult[][][] = [];
     public cardsBack: CardDataResult[][][] = [];
     public titleArray: string[][] = [];
+
+    public trailerImageRoutes = TrailerCardsSvgRoutes;
 
     constructor(
         //Services

@@ -175,8 +175,7 @@
                                             [src]="
                                                 '
                                                 /assets/svg/common/trailers/' +
-                                                card.trailerType
-                                                    .logoName
+                                                card.trailerType.logoName
                                             "
                                         ></svg-icon>
                                         {{ card.trailerType.name }}
@@ -246,9 +245,7 @@
                                 class="card-attachments-icon-container d-flex flex-column align-items-center"
                             >
                                 <svg-icon
-                                    [src]="
-                                        '/assets/svg/truckassist-table/attachment-icon.svg'
-                                    "
+                                    [src]="trailerImageRoutes.attachment"
                                     [svgStyle]="{
                                         'width.px': '18',
                                         'height.px': '18'

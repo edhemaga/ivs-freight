@@ -242,12 +242,10 @@ export class TrailerCardModalComponent implements OnInit, OnDestroy {
     }
 
     public getDataFromStore(): void {
-        console.log('get data from store')
         this.modalService.tabObservable$
             .pipe(takeUntil(this.destroy$))
             .subscribe(
                 (res: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE) => {
-                    console.log('get data from store 111', res)
                     this.tabSelected = res;
                     this.setDefaultValues(res);
                 }
@@ -359,7 +357,6 @@ export class TrailerCardModalComponent implements OnInit, OnDestroy {
     private setDefaultValues(
         type: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE
     ): void {
-        console.log(type, 'tyyyyyyyyyype')
         this.displayData$ = this.store.select(selectActiveModalTabs(type));
         this.subscription.add(
             this.displayData$
