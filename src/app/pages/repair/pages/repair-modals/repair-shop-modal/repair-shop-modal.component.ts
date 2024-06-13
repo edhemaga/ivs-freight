@@ -111,6 +111,8 @@ import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-s
 
 // Types
 import { OpenedTab } from './types/open-tabs.type';
+import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 
 @Component({
@@ -262,6 +264,43 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             RepairShopModalStringEnum.OPEN_HOURS
         ) as UntypedFormArray;
     }
+
+    public get nameInputConfig(): ITaInput {
+        return RepairShopConfig.getNameInputConfig();
+    }
+
+    public get phoneInputConfig(): ITaInput {
+        return RepairShopConfig.getPhoneInputConfig();
+    }
+
+    public get phoneExtInputConfig(): ITaInput {
+        return RepairShopConfig.getPhoneExtInputConfig();
+    }
+
+    public get emailInputConfig(): ITaInput {
+        return RepairShopConfig.getEmailInputConfig();
+    }
+
+    public get addressInputConfig(): ITaInput {
+        return RepairShopConfig.getAddressInputConfig();
+    }
+
+    public get addressUnitInputConfig(): ITaInput {
+        return RepairShopConfig.getAddressUnitInputConfig();
+    }
+
+    public get bankInputConfig(): ITaInput {
+        return RepairShopConfig.getBankInputConfig();
+    }
+
+    get accountNumberInputConfig(): ITaInput {
+        return RepairShopConfig.getAccountNumberInputConfig(this.isBankSelected);
+    }
+
+    get routingNumberInputConfig(): ITaInput {
+        return RepairShopConfig.getRoutingNumberInputConfig(this.isBankSelected);
+    }
+
     ngOnInit() {
         this.initTabs();
         this.initializeServices();
