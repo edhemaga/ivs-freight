@@ -8,7 +8,7 @@ import { CroppieOptions } from 'croppie';
 
 import { Tabs } from '@shared/models/tabs.model';
 import { AnimationObject } from '@pages/driver/pages/driver-modals/driver-modal/models/animation-object.model';
-import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
 export class DriverModalConstants {
     static MAIN_TABS: Tabs[] = [

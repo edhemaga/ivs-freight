@@ -22,7 +22,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 
 // components
-import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
