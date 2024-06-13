@@ -52,6 +52,9 @@ import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/model
 import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
 
+// Enums
+import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+
 @Component({
     selector: 'app-driver-details',
     templateUrl: './driver-details.component.html',
@@ -160,6 +163,37 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         case 'info':
                             if (res.cdlStatus === 'New') {
+                            }
+                        case 'deactivate': {
+                            this.changeDriverStatus(res.id);
+                            break;
+                        }
+                        case 'info':
+                            if (res.cdlStatus) {
+                                if (res.cdlStatus === 'New') {
+                                    let driverId = res.data.data.id
+                                        ? res.data.data.id
+                                        : res.data.driver.id;
+                                    this.deactivateCdl(res.data.id, driverId);
+                                    if (
+                                        this.detailsDataService.cdlId !=
+                                            res.data.id ||
+                                        res?.data?.newCdlID
+                                    ) {
+                                        let newCdlId = res?.data?.newCdlID
+                                            ? res?.data?.newCdlID
+                                            : this.detailsDataService.cdlId;
+                                        setTimeout(() => {
+                                            this.activateCdl(newCdlId);
+                                        }, 1000);
+                                    }
+                                } else {
+                                    this.activateCdl(res.data.id);
+                                }
+                            } else if (
+                                res.subType === DropActionsStringEnum.VOID_CDL
+                            ) {
+                                console.log('void cdl');
                                 let driverId = res.data.data.id
                                     ? res.data.data.id
                                     : res.data.driver.id;
@@ -180,6 +214,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             } else {
                                 this.activateCdl(res.data.id);
                             }
+
                             break;
                         default:
                             break;

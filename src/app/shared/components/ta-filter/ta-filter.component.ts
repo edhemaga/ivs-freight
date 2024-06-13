@@ -948,12 +948,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 return type;
                             });
                         } else {
-                            newData = res.data?.pagination?.data.map(
-                                (type: any) => {
-                                    type['name'] = type.trailerNumber;
-                                    return type;
-                                }
-                            );
+                            newData = res.data?.map((type: any) => {
+                                type['name'] = type.name;
+                                type['logo'] =
+                                    FilterIconRoutes.trailerSVG + type.logoName;
+                                return type;
+                            });
                         }
                         this.trailerArray = newData;
                     }
@@ -1685,8 +1685,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         originLongValue: this.originLongVal,
                         destinationLatValue: this.destLatVal,
                         destinationLongValue: this.destLongVal,
+                        rangeValue: this.locationRange,
                     };
 
+                    this.locationRangeSet = this.locationRange;
                     this.originLatValSet = this.originLatVal;
                     this.originLongValSet = this.originLongVal;
                     this.destLongValSet = this.destLongVal;

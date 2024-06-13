@@ -29,6 +29,8 @@ export interface CreateCompanyOwnerInfoCommand {
     truckModel?: string | null;
     truckYear?: number;
     truckColorId?: number | null;
+    truckLicenceFiles?: Array<Blob> | null;
+    truckFHWAFiles?: Array<Blob> | null;
     hasTrailer?: boolean;
     trailerTypeId?: number | null;
     trailerLengthId?: number | null;
@@ -37,6 +39,8 @@ export interface CreateCompanyOwnerInfoCommand {
     trailerModel?: string | null;
     trailerYear?: number | null;
     trailerColorId?: number | null;
+    trailerLicenceFiles?: Array<Blob> | null;
+    trailerFHWAFiles?: Array<Blob> | null;
     applicantId?: number;
 }
 

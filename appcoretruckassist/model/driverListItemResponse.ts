@@ -54,7 +54,9 @@ export interface DriverListItemResponse {
     general?: DriverListNotificationResponse;
     payroll?: DriverListNotificationResponse;
     truck?: string | null;
+    truckType?: string | null;
     trailer?: string | null;
+    trailerType?: string | null;
     hiredAt?: string | null;
     terminatedAt?: string | null;
     createdAt?: string;

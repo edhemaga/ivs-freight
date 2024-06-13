@@ -414,9 +414,9 @@ export class DropDownService {
                         },
                         template: DropActionsStringEnum.CDL,
                         type: DropActionsStringEnum.INFO,
-                        subType: DropActionsStringEnum.CDL_VOID,
-                        cdlStatus: DropActionsStringEnum.NEW,
+                        subType: DropActionsStringEnum.VOID_CDL,
                         modalHeader: true,
+                        modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
                         cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
                 );

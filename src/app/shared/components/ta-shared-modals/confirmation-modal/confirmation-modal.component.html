@@ -47,7 +47,7 @@
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
-    [showCounter]="true"
+    [showCounter]="editData.array?.length > 1"
     [disableDelete]="
         (editData?.template === 'void' || editData?.template === 'cdl') &&
         editData?.array?.length
@@ -59,8 +59,11 @@
     [headerSvg]="
         editData?.type === 'multiple delete'
             ? 'delete'
-            : editData?.template === 'void'
+            : editData?.template === 'void' ||
+              (editData?.template === 'cdl' && editData?.type === 'activate')
             ? 'hire'
+            : editData?.subType === 'void cdl'
+            ? 'close'
             : editData?.type
     "
     [confirmationData]="editData"

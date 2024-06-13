@@ -186,6 +186,7 @@ model/bankCardResponse.ts
 model/bankListResponse.ts
 model/bankResponse.ts
 model/bankResponsePagination.ts
+model/billingInfo.ts
 model/brakes.ts
 model/brokerAvailableCreditCommand.ts
 model/brokerAvailableCreditResponse.ts
@@ -200,6 +201,7 @@ model/brokerFilterResponsePagination.ts
 model/brokerIntervalResponse.ts
 model/brokerInvoiceAgeingResponse.ts
 model/brokerLoadModalResponse.ts
+model/brokerLoadStopResponse.ts
 model/brokerLoadsResponse.ts
 model/brokerMileageRateChartResponse.ts
 model/brokerMileageRateResponse.ts
@@ -562,7 +564,12 @@ model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadBrokerDetailsResponse.ts
 model/loadBrokerDetailsResponsePagination.ts
+model/loadBrokerInfo.ts
+model/loadDetails.ts
+model/loadDriverInfo.ts
 model/loadItemUnit.ts
+model/loadListDto.ts
+model/loadListDtoPagination.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
@@ -576,8 +583,6 @@ model/loadPossibleStatusesResponse.ts
 model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
-model/loadResponsePagination.ts
-model/loadShipperDetailsResponse.ts
 model/loadShortResponse.ts
 model/loadStatus.ts
 model/loadStatusHistoryCommand.ts
@@ -585,12 +590,12 @@ model/loadStatusHistoryResponse.ts
 model/loadStatusResponse.ts
 model/loadStatusType.ts
 model/loadStopCommand.ts
+model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
-model/loadStopShipperResponse.ts
 model/loadStopShortResponse.ts
 model/loadStopType.ts
 model/loadTemplateListResponse.ts
@@ -614,6 +619,7 @@ model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
+model/milesInfo.ts
 model/milesStopPayrollResponse.ts
 model/milesStopResponse.ts
 model/mobileFuelStopExpensesChartResponse.ts
@@ -841,9 +847,9 @@ model/shipperContactResponse.ts
 model/shipperContactShortResponse.ts
 model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
-model/shipperLoadDetailsResponse.ts
-model/shipperLoadDetailsResponsePagination.ts
 model/shipperLoadModalResponse.ts
+model/shipperLoadStopsResponse.ts
+model/shipperLoadStopsResponsePagination.ts
 model/shipperLoadsResponse.ts
 model/shipperMinimalListResponse.ts
 model/shipperMinimalResponse.ts
