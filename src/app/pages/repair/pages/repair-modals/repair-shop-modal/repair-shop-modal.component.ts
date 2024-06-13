@@ -34,18 +34,15 @@ import {
     SignInResponse,
     UpdateReviewCommand,
 } from 'appcoretruckassist/model/models';
-import {
-    CreateShopModel,
-    DisplayServiceTab,
-    OpenedTab,
-    RepairShopModalAction,
-    RepairShopModalService,
-    RepairShopTabs,
-    RepeairShopModalInput,
-} from './models/edit-data.model';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { FileEvent } from '@shared/models/file-event.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { RepairShopModalAction } from './models/repair-shop-modal-actions.model';
+import { RepeairShopModalInput } from './models/repair-shop-modal-input.model';
+import { DisplayServiceTab } from './models/repair-shop-modal-service-tabs.model';
+import { RepairShopModalService } from './models/repair-shop-modal-services.model';
+import { RepairShopTabs } from './models/repair-shop-modal-tabs.model';
+import { CreateShopModel } from './models/repair-shop.model';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -68,8 +65,8 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
-import { createOpenHour, mapServices } from './utils/helper';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { RepairShopHelper } from './utils/repair-shop.helper';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -97,20 +94,24 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import {
-    ActionTypesEnum,
-    FileActionEvent,
-    OpenWorkingHours,
-    RepairShopModalEnum,
-} from './enums/repair-shop-modal.enum';
-import {
-    RepairShopConstants,
-    RepairShopModalStringEnum,
-} from './utils/constants/repair-shop-modal.constants';
+import { RepairShopModalEnum } from './enums/repair-shop-modal.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { FileActionEvent } from './enums/file-actions.enum';
+import { ActionTypesEnum } from './enums/modal-actions.enum';
+import { OpenWorkingHours } from './enums/working-hours.enum';
+import { RepairShopModalStringEnum } from './enums/repair-shop-modal-strings.enum';
+
+// Constants
+import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
+
+// SVG Routes
 import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
+
+// Types
+import { OpenedTab } from './types/open-tabs.type';
+
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -323,7 +324,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: ({ dropdowns, repairShop }) => {
-                    this.services = mapServices(dropdowns, true);
+                    this.services = RepairShopHelper.mapServices(dropdowns, true);
                     this.repairTypes = dropdowns.shopServiceTypes;
                     this.banks = dropdowns.banks;
                     this.departments = dropdowns.departments;
@@ -374,7 +375,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     private mapEditData(res: RepairShopResponse): void {
         // This fields are custom and cannot be part of the form so we need to remap it
         this.showPhoneExt = !!res.phoneExt;
-        this.services = mapServices(res, false);
+        this.services = RepairShopHelper.mapServices(res, false);
         this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
@@ -422,7 +423,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private initTabs(): void {
         if (this.editData) this.selectedTab = this.editData.openedTab;
-        this.tabs = RepairShopConstants.TABS(
+        this.tabs = RepairShopHelper.TABS(
             !this.isEditMode,
             this.selectedTab
         );
@@ -475,7 +476,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private initWorkingHours(): void {
         RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
-            this.openHours.push(createOpenHour(day, this.formBuilder))
+            this.openHours.push(RepairShopHelper.createOpenHour(day, this.formBuilder))
         );
     }
 

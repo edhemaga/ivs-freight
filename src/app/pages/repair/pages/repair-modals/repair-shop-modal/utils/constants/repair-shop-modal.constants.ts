@@ -1,12 +1,9 @@
-import {
-    OpenHourDays,
-    OpenWorkingHours,
-    RepairShopModalEnum,
-    WorkingHoursType,
-} from '../../enums/repair-shop-modal.enum';
+
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { OpenedTab, RepairShopTabs } from '../../models/edit-data.model';
+import { OpenHourDays } from '../../enums/open-hours.enum';
+import { OpenWorkingHours } from '../../enums/working-hours.enum';
+
+export type WorkingHoursType = OpenHourDays[];
 
 const startTime = MethodsCalculationsHelper.convertTimeFromBackend(
     OpenWorkingHours.EIGHTAM
@@ -14,33 +11,6 @@ const startTime = MethodsCalculationsHelper.convertTimeFromBackend(
 const endTime = MethodsCalculationsHelper.convertTimeFromBackend(
     OpenWorkingHours.FIVEAM
 );
-
-export enum RepairShopModalStringEnum {
-    OPEN_HOURS = 'openHours',
-    START_TIME = 'startTime',
-    END_TIME = 'endTime',
-    IS_WORKING_DAY = 'isWorkingDay',
-    OPEN_ALWAYS = 'openAlways',
-    PINNED = 'pinned',
-    ADDRESS = 'address',
-    ADDRESS_UNIT = 'addressUnit',
-    LONGITUDE = 'longitude',
-    LATITUDE = 'latitude',
-    SHOP_SERVICE_TYPE = 'shopServiceType',
-    BANK_ID = 'bankId',
-    FILES = 'files',
-    CONTACTS = 'contacts',
-    PHONE_EXT = 'phoneExt',
-    ROUTING = 'routing',
-    ACCOUNT = 'account',
-    NOTE = 'note',
-    PHONE = 'phone',
-    EMAIL = 'email',
-    NAME = 'name',
-    OPEN_HOURS_SAME_ALL_DAYS = 'openHoursSameAllDays',
-    START_TIME_ALL_DAYS = 'startTimeAllDays',
-    END_TIME_ALL_DAYS = 'endTimeAllDays',
-}
 
 export class RepairShopConstants {
     static OPEN_HOUR_DAYS: WorkingHoursType = [
@@ -112,30 +82,4 @@ export class RepairShopConstants {
             endTime: null,
         },
     ];
-
-    static TABS(isAddMode: boolean, openedTab: OpenedTab): RepairShopTabs[] {
-        const tabs = [
-            {
-                id: TableStringEnum.DETAILS as OpenedTab,
-                name: RepairShopModalEnum.TAB_TITLE_DETAILS,
-                checked: TableStringEnum.DETAILS === openedTab,
-            },
-            {
-                id: TableStringEnum.CONTACT as OpenedTab,
-                name: RepairShopModalEnum.TAB_TITLE_CONTACT,
-                checked: TableStringEnum.CONTACT === openedTab,
-            },
-            {
-                id: TableStringEnum.REVIEW as OpenedTab,
-                name: RepairShopModalEnum.TAB_TITLE_REVIEW,
-                checked: TableStringEnum.REVIEW === openedTab,
-            },
-        ];
-
-        if (isAddMode) {
-            return tabs.slice(0, -1);
-        }
-
-        return tabs;
-    }
 }
