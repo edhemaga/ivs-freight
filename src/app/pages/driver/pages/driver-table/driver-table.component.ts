@@ -1476,7 +1476,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.driverBackFilterQuery.active =
                         this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
                     this.driverBackFilterQuery.pageIndex = 1;
-                    this.driverBackFilterQuery.searchOne = 's';
                     this.driverBackFilterQuery.sort = event.direction;
                     this.driverBackFilter(this.driverBackFilterQuery);
                 }
