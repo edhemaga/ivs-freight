@@ -17,7 +17,7 @@
             longValueSet !== 0 ||
             maxValueSet !== maxValueRange ||
             minValueSet !== minValueRange ||
-            destLongValSet !== 0 ||
+            destLongValSet ||
             singleFormActive
     }"
     (mouseenter)="
@@ -28,7 +28,7 @@
         longValueSet !== 0 ||
         maxValueSet !== maxValueRange ||
         minValueSet !== minValueRange ||
-        destLongValSet !== 0 ||
+        destLongValSet ||
         singleFormActive
             ? (hoverFilter = true)
             : (hoverFilter = false)
@@ -76,7 +76,7 @@
                             maxValueSet !== maxValueRange ||
                             minValueSet !== minValueRange ||
                             singleFormActive ||
-                            destLongValSet !== 0),
+                            destLongValSet),
                     'd-none': hoverFilter
                 }"
             >
@@ -92,7 +92,7 @@
                 (filterActiveTime !== '' ||
                     longValueSet !== 0 ||
                     singleFormActive ||
-                    destLongValSet !== 0 ||
+                    destLongValSet ||
                     activeFormNum > 0) &&
                 !hoverClose
             "
@@ -109,7 +109,7 @@
                             longValueSet !== 0 ||
                             maxValueSet !== maxValueRange ||
                             minValueSet !== minValueRange ||
-                            destLongValSet !== 0 ||
+                            destLongValSet ||
                             singleFormActive),
                     'd-none': hoverFilter
                 }"
@@ -126,7 +126,7 @@
                 moneyFilterStatus ||
                 longVal != 0 ||
                 maxValueSet != maxValueRange ||
-                destLongValSet !== 0 ||
+                destLongValSet ||
                 minValueSet != minValueRange
             "
         >

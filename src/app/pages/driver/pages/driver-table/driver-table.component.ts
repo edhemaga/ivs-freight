@@ -1487,7 +1487,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public onTableBodyActions(event: TableBodyActions): void {
-        console.log(event);
         const mappedEvent = {
             ...event,
             data: {

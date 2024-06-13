@@ -792,7 +792,6 @@ export class TaTableBodyComponent
         column: any,
         field: string
     ): void {
-        console.log(column);
         this.restriction = false;
         this.endorsement = false;
         this.widthPopover = width;
@@ -809,7 +808,7 @@ export class TaTableBodyComponent
             } else {
                 popup.open({ data: column });
             }
-        } else if (row.descriptionItems.length > 1) {
+        } else if (row.descriptionItems.length) {
             if (popup.isOpen()) {
                 popup.close();
             } else {
