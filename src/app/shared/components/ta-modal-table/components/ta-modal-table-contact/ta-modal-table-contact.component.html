@@ -99,7 +99,7 @@
                 ></app-ta-input>
 
                 <app-ta-input
-                    formControlName="ext"
+                    formControlName="phoneExt"
                     [inputConfig]="{
                         name: 'ext',
                         type: 'text',
@@ -113,7 +113,7 @@
                         isInputBackgroundRemoved:
                             contactItemRow.valid && !isInputHoverRows[i][3],
                         blackInput:
-                            formArray.at(i).get('ext').value &&
+                            formArray.at(i).get('phoneExt').value &&
                             !isInputHoverRows[i][3]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 3)"

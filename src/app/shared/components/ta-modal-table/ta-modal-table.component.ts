@@ -700,7 +700,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     fullName: [null, [Validators.required]],
                     department: [null, [Validators.required]],
                     phone: [null, [Validators.required, phoneFaxRegex]],
-                    ext: [null, phoneExtension],
+                    phoneExt: [null, phoneExtension],
                     email: [null, [Validators.required]],
                 });
 

@@ -133,17 +133,27 @@
                     <app-ta-custom-card
                         [cardName]="'Service'"
                         [disableAnimation]="disableCardAnimation"
-                        [hasCounter]="services | activeItems"
+                        [hasCounter]="getServiceCounter"
                         [isCardOpen]="true"
                         [disabledCard]="true"
                     >
                         <div class="col-12 service-types">
-                            <app-ta-tab-switch
-                                (switchClicked)="repairTypeTabChange($event)"
-                                [tabs]="repairTypes"
-                                [type]="'type2-modal-popup'"
+                            <ng-container
+                                *ngIf="
+                                    repairShopForm.get(
+                                        RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+                                    ).value
+                                "
                             >
-                            </app-ta-tab-switch>
+                                <app-ta-tab-switch
+                                    (switchClicked)="
+                                        repairTypeTabChange($event)
+                                    "
+                                    [tabs]="repairTypes"
+                                    [type]="'type2-modal-popup'"
+                                >
+                                </app-ta-tab-switch>
+                            </ng-container>
                         </div>
 
                         <div class="repair-shop-services">

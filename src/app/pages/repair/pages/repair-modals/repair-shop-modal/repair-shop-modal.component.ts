@@ -67,6 +67,7 @@ import {
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from './utils/repair-shop.helper';
+import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -85,9 +86,6 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-
-// Pipes
-import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -111,9 +109,7 @@ import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-s
 
 // Types
 import { OpenedTab } from './types/open-tabs.type';
-import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -145,9 +141,6 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaUserReviewComponent,
-
-        // Pipes
-        ActiveItemsPipe,
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
@@ -159,7 +152,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
 
     // Inputs
-    @Input() editData: null | RepeairShopModalInput;
+    @Input() editData: RepeairShopModalInput;
 
     // Tabs
     public tabs: RepairShopTabs[];
@@ -294,11 +287,19 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
 
     get accountNumberInputConfig(): ITaInput {
-        return RepairShopConfig.getAccountNumberInputConfig(this.isBankSelected);
+        return RepairShopConfig.getAccountNumberInputConfig(
+            this.isBankSelected
+        );
     }
 
     get routingNumberInputConfig(): ITaInput {
-        return RepairShopConfig.getRoutingNumberInputConfig(this.isBankSelected);
+        return RepairShopConfig.getRoutingNumberInputConfig(
+            this.isBankSelected
+        );
+    }
+
+    public get getServiceCounter(): number {
+        return this.services.filter((service) => service.active).length;
     }
 
     ngOnInit() {
@@ -363,7 +364,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: ({ dropdowns, repairShop }) => {
-                    this.services = RepairShopHelper.mapServices(dropdowns, true);
+                    this.services = RepairShopHelper.mapServices(
+                        dropdowns,
+                        true
+                    );
                     this.repairTypes = dropdowns.shopServiceTypes;
                     this.banks = dropdowns.banks;
                     this.departments = dropdowns.departments;
@@ -439,13 +443,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private preSelectService(shopServiceType?: EnumValue): void {
         const service = shopServiceType ?? this.repairTypes[0];
-        this.repairShopForm
-            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
-            .patchValue(service.id);
-
         this.repairTypes.forEach(
             (repairType) => (repairType.checked = repairType.id === service.id)
         );
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+            .patchValue(service.id);
     }
 
     public tabChange(selectedTab: RepairShopTabs): void {
@@ -462,10 +465,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private initTabs(): void {
         if (this.editData) this.selectedTab = this.editData.openedTab;
-        this.tabs = RepairShopHelper.TABS(
-            !this.isEditMode,
-            this.selectedTab
-        );
+        this.tabs = RepairShopHelper.TABS(!this.isEditMode, this.selectedTab);
     }
 
     public mapRatings(res: RepairShopResponse): void {
@@ -515,7 +515,9 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     private initWorkingHours(): void {
         RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
-            this.openHours.push(RepairShopHelper.createOpenHour(day, this.formBuilder))
+            this.openHours.push(
+                RepairShopHelper.createOpenHour(day, this.formBuilder)
+            )
         );
     }
 
