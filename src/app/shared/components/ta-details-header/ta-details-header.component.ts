@@ -39,7 +39,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
         TaCounterComponent,
         TaSearchV2Component,
         TaFilterComponent,
-        
+
         //Pipes
         FormatCurrencyPipe,
     ],
@@ -176,19 +176,7 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
 
                     if (index == 9) {
-                        if (itemData.status != 1) {
-                            action.title = 'Reopen Business';
-                            action.greenIcon = true;
-                            action.redIcon = false;
-                            action.name = 'open-business';
-                            action.iconName = 'mark-as-done';
-                        } else {
-                            action.title = 'Close Business';
-                            action.greenIcon = false;
-                            action.redIcon = true;
-                            action.name = 'close-business';
-                            action.iconName = 'close-business';
-                        }
+                        this.openCloseBusiness(itemData, action);
                     }
                 });
                 break;
@@ -224,19 +212,7 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
 
                     if (index == 11) {
-                        if (itemData.status != 1) {
-                            action.title = 'Reopen Business';
-                            action.greenIcon = true;
-                            action.redIcon = false;
-                            action.name = 'open-business';
-                            action.iconName = 'mark-as-done';
-                        } else {
-                            action.title = 'Close Business';
-                            action.greenIcon = false;
-                            action.redIcon = true;
-                            action.name = 'close-business';
-                            action.iconName = 'close-business';
-                        }
+                        this.openCloseBusiness(itemData, action);
                     }
                 });
 
@@ -270,6 +246,22 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
                 });
                 break;
+        }
+    }
+
+    private openCloseBusiness(itemData: any, action: any) {
+        if (itemData.status === 0) {
+            action.title = 'Reopen Business';
+            action.greenIcon = true;
+            action.redIcon = false;
+            action.name = 'open-business';
+            action.iconName = 'mark-as-done';
+        } else {
+            action.title = 'Close Business';
+            action.greenIcon = false;
+            action.redIcon = true;
+            action.name = 'close-business';
+            action.iconName = 'close-business';
         }
     }
 
