@@ -19,7 +19,7 @@
         [stateTooltipName]="cdl?.state?.stateName"
         [shortName]="cdl?.state?.stateShortName"
         [mainData]="cdl"
-        [options]="cdlOptionsDropdownList"
+        [options]="cdlOptionsDropdownList[i]"
         [optionsId]="cdl?.id"
         [noteIcons]="
             (cdl.note && cdl.note != null && cdl.note != 'null') ||
@@ -28,7 +28,6 @@
                 : 'assets/svg/truckassist-table/note/Note - Empty.svg'
         "
         (resizePage)="toggleResizePage(i, 'cdl')"
-        (clickedCard)="getNameForDrop(cdl?.id)"
         (dropActions)="onOptions($event, 'cdl')"
     >
         <div class="cards-container">
@@ -122,9 +121,20 @@
                     >
                     </app-ta-progress-expiration>
 
-                    <ng-container *ngIf="cdl?.dateDeactivated">
+                    <ng-container
+                        *ngIf="
+                            cdl?.dateDeactivated &&
+                            !cdl?.isExpired &&
+                            !activeCdlArray.length
+                        "
+                    >
                         <div
-                            (click)="openCommand(cdl, 'activate-licence')"
+                            (click)="
+                                handleActivateRenewClick(
+                                    cdl,
+                                    'activate-licence'
+                                )
+                            "
                             class="d-flex align-items-center justify-content-center ta-font-bold activate-button"
                         >
                             ACTIVATE
@@ -132,10 +142,16 @@
                     </ng-container>
 
                     <ng-container
-                        *ngIf="cdl?.showButton && !cdl?.dateDeactivated"
+                        *ngIf="
+                            cdl?.showButton &&
+                            !cdl?.dateDeactivated &&
+                            cdl?.issueDate < currentDate
+                        "
                     >
                         <div
-                            (click)="openCommand(cdl, 'renew-licence')"
+                            (click)="
+                                handleActivateRenewClick(cdl, 'renew-licence')
+                            "
                             class="d-flex align-items-center justify-content-center ta-font-bold activate-button"
                         >
                             RENEW

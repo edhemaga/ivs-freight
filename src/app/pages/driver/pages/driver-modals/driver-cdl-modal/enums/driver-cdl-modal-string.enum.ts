@@ -19,6 +19,10 @@ export enum DriverCdlModalStringEnum {
     CLOSE = 'close',
     SAVE = 'save',
     FILES = 'files',
+    SMALL = 'small',
+
+    CDL = 'cdl',
+    DELETE_CDL_TITLE = 'Delete CDL',
 
     EMPTY_STRING = ' ',
 }
