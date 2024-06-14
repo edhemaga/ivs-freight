@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CdlEndorsementResponse } from './cdlEndorsementResponse';
+import { FileResponse } from './fileResponse';
 import { CdlLicenseReviewResponse } from './cdlLicenseReviewResponse';
 import { CdlRestrictionResponse } from './cdlRestrictionResponse';
 import { EnumValue } from './enumValue';
@@ -23,8 +24,10 @@ export interface CdlLicenseResponse {
     state?: StateResponse;
     classType?: EnumValue;
     expDate?: string;
+    issueDate?: string;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
     licenseReview?: CdlLicenseReviewResponse;
+    files?: Array<FileResponse> | null;
 }
 

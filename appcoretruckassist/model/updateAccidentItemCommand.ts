@@ -10,11 +10,12 @@
  * Do not edit the class manually.
  */
 import { UpdateAccidentItemReviewCommand } from './updateAccidentItemReviewCommand';
+import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateAccidentItemCommand { 
     id?: number | null;
-    location?: string | null;
+    location?: AddressEntity;
     date?: string;
     collisions?: number | null;
     fatalities?: number | null;

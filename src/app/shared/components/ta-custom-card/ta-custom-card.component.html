@@ -197,6 +197,10 @@
                     class="_24-7-status"
                     [ngClass]="{ active: is24Hours }"
                     (click)="onAction($event, 'hours-24')"
+                    [mainTooltip]="'Set as Non-Stop'"
+                    ngbTooltip
+                    position="bottom"
+                    tooltipBackground="#424242"
                 >
                     <p>24/7</p>
                 </div>

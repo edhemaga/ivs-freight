@@ -114,9 +114,17 @@ export class MapService {
             throw new Error('Required parameter id was null or undefined when calling apiMapIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -158,6 +166,7 @@ export class MapService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -180,9 +189,17 @@ export class MapService {
             throw new Error('Required parameter id was null or undefined when calling apiMapIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -224,6 +241,7 @@ export class MapService {
         return this.httpClient.request<MapResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -287,6 +305,12 @@ export class MapService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -348,9 +372,17 @@ export class MapService {
     public apiMapPost(createMapCommand?: CreateMapCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
     public apiMapPost(createMapCommand?: CreateMapCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -404,6 +436,7 @@ export class MapService {
             {
                 context: localVarHttpContext,
                 body: createMapCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -423,9 +456,17 @@ export class MapService {
     public apiMapPut(updateMapCommand?: UpdateMapCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiMapPut(updateMapCommand?: UpdateMapCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -479,6 +520,7 @@ export class MapService {
             {
                 context: localVarHttpContext,
                 body: updateMapCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

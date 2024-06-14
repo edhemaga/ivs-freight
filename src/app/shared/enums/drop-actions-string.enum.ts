@@ -84,6 +84,7 @@ export enum DropActionsStringEnum {
     // Other
     RENEW_LICENCE = 'renew-licence',
     CDL_VOID = 'cdl void',
+    VOID_CDL = 'void cdl',
     NEW = 'New',
 
     // Size

@@ -11,11 +11,12 @@
  */
 import { AccidentItemReviewResponse } from './accidentItemReviewResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface AccidentItemResponse { 
     id?: number;
-    location?: string | null;
+    location?: AddressEntity;
     date?: string;
     fatalities?: number;
     injuries?: number;

@@ -137,6 +137,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isCardsModal: boolean = false;
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
+    @Input() showCloseBusinessButton = false;
 
     // -----------------
 
@@ -416,6 +417,15 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'finish-order': {
                 this.action.emit({ action: action, bool: false });
+
+                break;
+            }
+            case 'CLOSE_BUSINESS': {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case 'void-cdl': {
+                this.confirmationAction.emit(this.confirmationData);
 
                 break;
             }

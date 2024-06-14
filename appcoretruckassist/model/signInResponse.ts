@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { CompanyShortResponse } from './companyShortResponse';
 
 
@@ -20,6 +21,7 @@ export interface SignInResponse {
     firstName?: string | null;
     lastName?: string | null;
     avatar?: string | null;
+    avatarFile?: FileResponse;
     driverId?: number | null;
     companies?: Array<CompanyShortResponse> | null;
     refreshToken?: string | null;

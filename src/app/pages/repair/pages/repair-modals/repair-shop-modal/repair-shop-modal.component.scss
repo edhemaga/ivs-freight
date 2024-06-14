@@ -1,109 +1,151 @@
 @import '/src/theme/variables.scss';
 
-.repair-shop-star {
-    position: relative;
-    bottom: 1px;
-    cursor: pointer;
+.repair-shop {
+    &__favorite {
+        position: relative;
+        bottom: 1px;
+        cursor: pointer;
 
-    &:hover {
-        transition: fill 0.3s ease-in-out;
-        svg {
-            path {
-                fill: $ta-black;
+        svg path {
+            transition: fill 0.3s ease-in-out;
+        }
+
+        &:hover svg path {
+            fill: $ta-black;
+        }
+
+        &-active svg path {
+            fill: $ta-blue-13;
+            &:hover {
+                fill: $ta-blue-15;
             }
         }
     }
 
-    &.active {
-        svg {
-            path {
-                fill: $ta-blue-13;
+    // Override tabs to match figma design
+    &__contact-table {
+        width: 600px;
+        overflow-x: scroll;
+        margin-left: 196px;
+        overflow-x: visible;
+        padding: 0;
+        scrollbar-width: thin !important;
+        .modal-table-container {
+        }
+        .contact-table-header {
+            .table-header-box {
+                &:nth-child(1),
+                &:nth-child(2) {
+                    position: absolute;
+                    left: 0;
+                    top: auto;
+                    border-top-width: 1px;
+                    margin-top: -1px;
+                    background-color: $white;
+                }
+
+                &:nth-child(1) {
+                    width: 26px;
+                }
+                &:nth-child(2) {
+                    width: 170px;
+                    left: 26px;
+                }
             }
         }
 
-        &:hover {
-            transition: all 0.3s ease-in-out;
-            svg {
-                path {
-                    fill: $ta-blue-15;
-                }
+        .contact-table-container {
+            .contact-pinned {
+                position: absolute;
+                left: 0;
+                top: auto;
+                border-top-width: 1px;
+                margin-top: -1px;
+                background-color: $white;
+                z-index: 11;
+            }
+            .contact-number {
+                width: 26px;
+            }
+            .contact-name {
+                width: 170px;
+                left: 26px;
             }
         }
     }
 }
 
 .service-types {
-    margin: 22px 0;
+    margin: 10px 0 15px 0;
 }
 
-.custom-bank-row {
-    margin-bottom: 22px !important;
-}
-
-.open-hours-card-repair-shop {
-    ::ng-deep .content-holder {
-        margin: 0px !important;
-    }
-}
-
-.time-picker-all-days {
-    display: flex;
+.timeline__card {
+    grid-template-columns: 1fr repeat(2, 140px);
+    padding: 0 10px;
+    border-radius: 2px;
+    display: grid;
+    grid-template-rows: 34px;
     align-items: center;
+    column-gap: 12px;
+    row-gap: 2px;
+    margin-bottom: 2px;
+    position: relative;
 
-    &-btn {
-        position: relative;
-        right: 2px;
-        cursor: pointer;
-
-        svg {
-            transform: rotate(0deg);
-            transition: all 0.3s ease-in-out;
-            path {
-                fill: #919191;
-            }
-        }
-
-        &.rotate {
-            svg {
-                transform: rotate(180deg);
-                transition: all 0.3s ease-in-out;
-                path {
-                    fill: #3074d3;
-                }
-            }
-        }
+    &-range {
+        font-size: 11px;
+        line-height: 14px;
+        color: $muted;
+        text-transform: uppercase;
+        padding-left: 32px;
     }
 
-    &-title {
+    &-label {
         cursor: pointer;
-        color: #2f2f2f;
+        color: $ta-black-2;
         font-weight: 500;
         font-size: 14px;
         line-height: 14px;
         -webkit-user-select: none;
         user-select: none;
     }
-}
 
-.common-open-hours-table-modal {
-    overflow-x: scroll;
-    scrollbar-width: none !important;
-    margin-bottom: 0px;
+    &-icon {
+        svg {
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        &-rotate {
+            svg {
+                transform: rotate(180deg);
+                path {
+                    fill: $ta-blue-13;
+                }
+            }
+        }
+    }
 
-    .common-table-body {
-        .common-table-card {
-            grid-template-columns: 1fr repeat(2, 140px);
-            padding: 0 10px;
-            border-radius: 2px;
-            display: grid;
-            grid-template-rows: 34px;
-            align-items: center;
-            -moz-column-gap: 12px;
-            column-gap: 12px;
-            row-gap: 2px;
-            margin-bottom: 2px;
-            background-color: #f7f7f7;
-            position: relative;
+    &-hover {
+        transition: background-color 0.3s ease-in-out;
+        &:hover {
+            background-color: $ta-light-grey-5;
+
+            .input-custom-group .date_time_holder {
+                background-color: $ta-light-grey-5;
+            }
+        }
+    }
+
+    .input-custom-group .date_time_holder {
+        transition: background-color 0.3s ease-in-out;
+        background-color: $white;
+        color: $ta-black-2;
+        &:hover {
+            background-color: #e2ecf9;
+        }
+
+        &:focus,
+        &:active {
+            background-color: $ta-blue-15;
         }
     }
 }

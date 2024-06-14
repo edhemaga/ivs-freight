@@ -212,8 +212,7 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getTrailerData() {
-        const trailerList = this.trailerService
-            .apiTrailerFilterGet()
+        const trailerList = this.TrailerTypeService.apiTrailertypeFilterGet()
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (data: any) => {

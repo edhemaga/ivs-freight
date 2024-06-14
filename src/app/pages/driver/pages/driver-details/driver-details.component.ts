@@ -25,6 +25,9 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 
+// Enums
+import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+
 @Component({
     selector: 'app-driver-details',
     templateUrl: './driver-details.component.html',
@@ -140,26 +143,37 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case 'info': {
-                            if (res.cdlStatus === 'New') {
+                            if (res.cdlStatus) {
+                                if (res.cdlStatus === 'New') {
+                                    let driverId = res.data.data.id
+                                        ? res.data.data.id
+                                        : res.data.driver.id;
+                                    this.deactivateCdl(res.data.id, driverId);
+                                    if (
+                                        this.DetailsDataService.cdlId !=
+                                            res.data.id ||
+                                        res?.data?.newCdlID
+                                    ) {
+                                        let newCdlId = res?.data?.newCdlID
+                                            ? res?.data?.newCdlID
+                                            : this.DetailsDataService.cdlId;
+                                        setTimeout(() => {
+                                            this.activateCdl(newCdlId);
+                                        }, 1000);
+                                    }
+                                } else {
+                                    this.activateCdl(res.data.id);
+                                }
+                            } else if (
+                                res.subType === DropActionsStringEnum.VOID_CDL
+                            ) {
+                                console.log('void cdl');
                                 let driverId = res.data.data.id
                                     ? res.data.data.id
                                     : res.data.driver.id;
                                 this.deactivateCdl(res.data.id, driverId);
-                                if (
-                                    this.DetailsDataService.cdlId !=
-                                        res.data.id ||
-                                    res?.data?.newCdlID
-                                ) {
-                                    let newCdlId = res?.data?.newCdlID
-                                        ? res?.data?.newCdlID
-                                        : this.DetailsDataService.cdlId;
-                                    setTimeout(() => {
-                                        this.activateCdl(newCdlId);
-                                    }, 1000);
-                                }
-                            } else {
-                                this.activateCdl(res.data.id);
                             }
+
                             break;
                         }
                         default: {

@@ -127,9 +127,17 @@ export class RegistrationService {
             throw new Error('Required parameter id was null or undefined when calling apiRegistrationIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -171,6 +179,7 @@ export class RegistrationService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -193,9 +202,17 @@ export class RegistrationService {
             throw new Error('Required parameter id was null or undefined when calling apiRegistrationIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -237,6 +254,7 @@ export class RegistrationService {
         return this.httpClient.request<RegistrationResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -270,6 +288,12 @@ export class RegistrationService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -330,9 +354,17 @@ export class RegistrationService {
     public apiRegistrationModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RegistrationModalResponse>>;
     public apiRegistrationModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -374,6 +406,7 @@ export class RegistrationService {
         return this.httpClient.request<RegistrationModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -400,9 +433,17 @@ export class RegistrationService {
     public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiRegistrationPost(truckId?: number, trailerId?: number, licensePlate?: string, stateId?: number, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -490,6 +531,7 @@ export class RegistrationService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -516,9 +558,17 @@ export class RegistrationService {
     public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiRegistrationPut(id?: number, stateId?: number, licensePlate?: string, issueDate?: string, expDate?: string, note?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -608,6 +658,7 @@ export class RegistrationService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -627,9 +678,17 @@ export class RegistrationService {
     public apiRegistrationTransferPost(transferRegistrationCommand?: TransferRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiRegistrationTransferPost(transferRegistrationCommand?: TransferRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -683,6 +742,7 @@ export class RegistrationService {
             {
                 context: localVarHttpContext,
                 body: transferRegistrationCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -702,9 +762,17 @@ export class RegistrationService {
     public apiRegistrationVoidPost(voidRegistrationCommand?: VoidRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiRegistrationVoidPost(voidRegistrationCommand?: VoidRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -758,6 +826,7 @@ export class RegistrationService {
             {
                 context: localVarHttpContext,
                 body: voidRegistrationCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

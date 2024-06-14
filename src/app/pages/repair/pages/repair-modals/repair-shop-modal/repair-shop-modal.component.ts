@@ -1,4 +1,5 @@
 import {
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     Input,
@@ -15,88 +16,107 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
-import { distinctUntilChanged, Subject, takeUntil, switchMap } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-
-// moment
-import moment from 'moment';
+import { Subject, Subscription, forkJoin, of, takeUntil } from 'rxjs';
 
 // Models
+import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
-    AddressEntity,
+    BankResponse,
     CreateResponse,
-    RepairShopModalResponse,
-    RepairShopResponse,
-    CreateRatingCommand,
     CreateReviewCommand,
+    DepartmentResponse,
+    EnumValue,
+    FileResponse,
+    RepairShopContactCommand,
+    RepairShopContactResponse,
+    RepairShopResponse,
+    ServiceType,
     SignInResponse,
     UpdateReviewCommand,
-} from 'appcoretruckassist';
-import { RepairTypes } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-types.model';
+} from 'appcoretruckassist/model/models';
 import { ReviewComment } from '@shared/models/review-comment.model';
+import { FileEvent } from '@shared/models/file-event.model';
+import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { RepairShopModalAction } from './models/repair-shop-modal-actions.model';
+import { RepeairShopModalInput } from './models/repair-shop-modal-input.model';
+import { DisplayServiceTab } from './models/repair-shop-modal-service-tabs.model';
+import { RepairShopModalService } from './models/repair-shop-modal-services.model';
+import { RepairShopTabs } from './models/repair-shop-modal-tabs.model';
+import { CreateShopModel } from './models/repair-shop.model';
 
 // Services
-import { RepairService } from '@shared/services/repair.service';
-import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
+import { RepairService } from '@shared/services/repair.service';
+import { TaLikeDislikeService } from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
-import {
-    TaLikeDislikeService,
-    LikeDislikeModel,
-} from '@shared/components/ta-like-dislike/services/ta-like-dislike.service';
 // Validators
 import {
-    accountBankValidation,
-    addressUnitValidation,
-    addressValidation,
-    bankValidation,
-    phoneExtension,
-    phoneFaxRegex,
     repairShopValidation,
+    phoneFaxRegex,
+    phoneExtension,
+    addressValidation,
+    addressUnitValidation,
+    bankValidation,
     routingBankValidation,
+    accountBankValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { RepairShopHelper } from './utils/repair-shop.helper';
+import { RepairShopConfig } from '../repair-order-modal/utils/config/repair-shop-form.config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Component
-import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+// Components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-
-// Pipes
-import { ActiveItemsPipe } from '@shared/pipes/active-Items.pipe';
+import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Constants
-import { RepairOrderConstants } from '@pages/repair/pages/repair-modals/repair-order-modal/utils/constants/repair-order.constant';
-
-//Enums
+// Enums
+import { RepairShopModalEnum } from './enums/repair-shop-modal.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { FileActionEvent } from './enums/file-actions.enum';
+import { ActionTypesEnum } from './enums/modal-actions.enum';
+import { OpenWorkingHours } from './enums/working-hours.enum';
+import { RepairShopModalStringEnum } from './enums/repair-shop-modal-strings.enum';
+
+// Constants
+import { RepairShopConstants } from './utils/constants/repair-shop-modal.constants';
+
+// SVG Routes
+import { RepairShopModalSvgRoutes } from './utils/svg-routes/repair-shop-modal-svg-routes';
+
+// Types
+import { OpenedTab } from './types/open-tabs.type';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Component({
     selector: 'app-repair-shop-modal',
     templateUrl: './repair-shop-modal.component.html',
     styleUrls: ['./repair-shop-modal.component.scss'],
     animations: [tabsModalAnimation('animationTabsModal')],
+    changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
     providers: [ModalService, BankVerificationService, FormService],
     standalone: true,
@@ -120,114 +140,322 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
         TaCheckboxComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
-
-        // Pipe
-        ActiveItemsPipe,
+        TaUserReviewComponent,
     ],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
+    // Enums
+    public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
+    public RepairShopModalStringEnum = RepairShopModalStringEnum;
+    public TableStringEnum = TableStringEnum;
+    public RepairShopModalEnum = RepairShopModalEnum;
+    public modalTableTypeEnum = ModalTableTypeEnum;
+
+    // Inputs
+    @Input() editData: RepeairShopModalInput;
+
+    // Tabs
+    public tabs: RepairShopTabs[];
+    public selectedTab: OpenedTab = TableStringEnum.DETAILS;
+    public tabTitle: string;
+
+    // Form
     public repairShopForm: UntypedFormGroup;
-    public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Details',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Contact',
-            checked: false,
-        },
-        // {
-        //     id: 3,
-        //     name: 'Review',
-        //     disabled: true,
-        // },
-    ];
+
+    // Animation
     public animationObject = {
         value: this.selectedTab,
         params: { height: '0px' },
     };
-    public isRepairShopFavourite: boolean = false;
-    public isPhoneExtExist: boolean = false;
-    public selectedAddress: AddressEntity = null;
-    public labelsBank: any[] = [];
-    public selectedBank: any = null;
-    public isBankSelected: boolean = false;
-    public services: any[] = [];
-    // DAYS
-    public openHoursDays = [
-        'MON - FRI',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-    ];
-    public isDaysVisible: boolean = false;
-    // Documents
-    public documents: any[] = [];
-    public fileModified: boolean = false;
-    public filesForDelete: any[] = [];
-    // Contact Tab
-    public isContactCardsScrolling: boolean = false;
-    public selectedContractDepartmentFormArray: any[] = [];
-    // Review
-    public reviews: any[] = [];
-    public companyUser: SignInResponse = null;
-    public disableOneMoreReview: boolean = false;
-    public addNewAfterSave: boolean = false;
-    public isFormDirty: boolean;
-    public disableCardAnimation: boolean = false;
-    public longitude: number;
-    public latitude: number;
+    public animationTabClass = 'animation-three-tabs';
+
+    // Address
+    public selectedAddress: AddressEntity;
+
+    // Subject
     private destroy$ = new Subject<void>();
 
-    public repairTypes: RepairTypes[] = RepairOrderConstants.REPAIR_TYPES;
-    public isSelectedRepairType: RepairTypes = null;
+    // Services and Types
+    public services: RepairShopModalService[] = [];
+    public repairTypes: DisplayServiceTab[] = [];
 
-    public repairShopName: string = null;
+    // Bank Tab
+    public banks: BankResponse[];
+    public selectedBank: BankResponse = null;
+    public isBankSelected: boolean;
 
-    public isOpenHoursHidden: boolean = true;
-
-    public isNewContactAdded: boolean = false;
+    // Contact Tab
     public contactAddedCounter: number = 0;
-
-    // enums
-    public modalTableTypeEnum = ModalTableTypeEnum;
+    public isNewContactAdded: boolean;
+    public isDaysVisible: boolean;
+    public showPhoneExt: boolean = false;
+    // Reviews
+    public reviews: any[] = [];
+    public contacts = [];
+    public isRequestInProgress: boolean;
+    private departments: DepartmentResponse[];
+    private isContactFormValid: boolean = true;
+    public disableOneMoreReview: boolean;
+    public files: UploadFile[] | FileResponse[] = [];
+    public filesForDelete: any[] = [];
+    public companyUser: SignInResponse = null;
 
     constructor(
-        // Form
         private formBuilder: UntypedFormBuilder,
-
-        // Services
-        private inputService: TaInputService,
         private shopService: RepairService,
-        private modalService: ModalService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService,
-        private reviewRatingService: ReviewsRatingService,
+        private cdr: ChangeDetectorRef,
+        private modalService: ModalService,
         private taLikeDislikeService: TaLikeDislikeService,
-
-        // Ref
-        private cdr: ChangeDetectorRef
+        private formService: FormService,
+        private reviewRatingService: ReviewsRatingService
     ) {}
 
-    ngOnInit() {
-        this.companyUser = JSON.parse(localStorage.getItem('user'));
-        this.createForm();
-        this.getRepairShopModalDropdowns();
-        this.onBankSelected();
-        this.trackOpenHours();
+    public get isModalValidToSubmit() {
+        return (
+            this.repairShopForm.valid &&
+            this.repairShopForm.dirty &&
+            this.isContactFormValid
+        );
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-three-tabs');
+    public get openAlways() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.OPEN_ALWAYS);
+    }
+
+    public get isOpenAllDay() {
+        return !!this.openAlways.value;
+    }
+
+    public get isEditMode() {
+        return this.editData?.data;
+    }
+
+    public get modalTitle(): string {
+        return this.isEditMode
+            ? RepairShopModalEnum.MODAL_TITLE_EDIT
+            : RepairShopModalEnum.MODAL_TITLE_ADD;
+    }
+
+    public get isFavorite() {
+        return !!this.favoriteField.value;
+    }
+
+    private get favoriteField() {
+        return this.repairShopForm.get(RepairShopModalStringEnum.PINNED);
+    }
+
+    public get favoriteLabel() {
+        return this.isFavorite
+            ? this.RepairShopModalEnum.REMOVE_FAVORITE
+            : this.RepairShopModalEnum.ADD_FAVORITE;
+    }
+
+    // Open hours
+    public get openHours(): UntypedFormArray {
+        return this.repairShopForm.get(
+            RepairShopModalStringEnum.OPEN_HOURS
+        ) as UntypedFormArray;
+    }
+
+    public get nameInputConfig(): ITaInput {
+        return RepairShopConfig.getNameInputConfig();
+    }
+
+    public get phoneInputConfig(): ITaInput {
+        return RepairShopConfig.getPhoneInputConfig();
+    }
+
+    public get phoneExtInputConfig(): ITaInput {
+        return RepairShopConfig.getPhoneExtInputConfig();
+    }
+
+    public get emailInputConfig(): ITaInput {
+        return RepairShopConfig.getEmailInputConfig();
+    }
+
+    public get addressInputConfig(): ITaInput {
+        return RepairShopConfig.getAddressInputConfig();
+    }
+
+    public get addressUnitInputConfig(): ITaInput {
+        return RepairShopConfig.getAddressUnitInputConfig();
+    }
+
+    public get bankInputConfig(): ITaInput {
+        return RepairShopConfig.getBankInputConfig();
+    }
+
+    get accountNumberInputConfig(): ITaInput {
+        return RepairShopConfig.getAccountNumberInputConfig(
+            this.isBankSelected
+        );
+    }
+
+    get routingNumberInputConfig(): ITaInput {
+        return RepairShopConfig.getRoutingNumberInputConfig(
+            this.isBankSelected
+        );
+    }
+
+    public get getServiceCounter(): number {
+        return this.services.filter((service) => service.active).length;
+    }
+
+    ngOnInit() {
+        this.initTabs();
+        this.initializeServices();
+        this.generateForm();
+        this.initWorkingHours();
+        this.companyUser = JSON.parse(localStorage.getItem('user'));
+    }
+
+    private generateForm(): void {
+        this.repairShopForm = this.formBuilder.group({
+            [RepairShopModalStringEnum.NAME]: [
+                null,
+                [Validators.required, ...repairShopValidation],
+            ],
+            [RepairShopModalStringEnum.PINNED]: [null],
+            [RepairShopModalStringEnum.PHONE]: [
+                null,
+                [Validators.required, phoneFaxRegex],
+            ],
+            [RepairShopModalStringEnum.PHONE_EXT]: [null, [...phoneExtension]],
+            [RepairShopModalStringEnum.EMAIL]: [null],
+            [RepairShopModalStringEnum.ADDRESS]: [
+                null,
+                [Validators.required, ...addressValidation],
+            ],
+            [RepairShopModalStringEnum.ADDRESS_UNIT]: [
+                null,
+                [...addressUnitValidation],
+            ],
+            [RepairShopModalStringEnum.OPEN_HOURS]: this.formBuilder.array([]),
+            [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]: [null],
+            [RepairShopModalStringEnum.OPEN_ALWAYS]: [false],
+            [RepairShopModalStringEnum.BANK_ID]: [null, [...bankValidation]],
+            [RepairShopModalStringEnum.ROUTING]: [null, routingBankValidation],
+            [RepairShopModalStringEnum.ACCOUNT]: [null, accountBankValidation],
+            [RepairShopModalStringEnum.NOTE]: [null],
+            [RepairShopModalStringEnum.CONTACTS]: [[]],
+            [RepairShopModalStringEnum.FILES]: [[]],
+            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]: [
+                null,
+                Validators.required,
+            ],
+            [RepairShopModalStringEnum.LONGITUDE]: [null],
+            [RepairShopModalStringEnum.LATITUDE]: [null],
+        });
+
+        this.tabTitle = this.editData?.data?.name;
+    }
+
+    // Inside your component
+    private initializeServices(): Subscription {
+        return forkJoin({
+            dropdowns: this.shopService.getRepairShopModalDropdowns(),
+            repairShop: this.isEditMode
+                ? this.shopService.getRepairShopById(this.editData?.id)
+                : of(null),
+        })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: ({ dropdowns, repairShop }) => {
+                    this.services = RepairShopHelper.mapServices(
+                        dropdowns,
+                        true
+                    );
+                    this.repairTypes = dropdowns.shopServiceTypes;
+                    this.banks = dropdowns.banks;
+                    this.departments = dropdowns.departments;
+
+                    if (repairShop) {
+                        this.repairShopForm.patchValue({
+                            [RepairShopModalStringEnum.NAME]: repairShop.name,
+                            [RepairShopModalStringEnum.PINNED]:
+                                repairShop.pinned,
+                            [RepairShopModalStringEnum.PHONE]: repairShop.phone,
+                            [RepairShopModalStringEnum.PHONE_EXT]:
+                                repairShop.phoneExt,
+                            [RepairShopModalStringEnum.EMAIL]: repairShop.email,
+                            [RepairShopModalStringEnum.ADDRESS_UNIT]:
+                                repairShop.address.addressUnit,
+                            [RepairShopModalStringEnum.ADDRESS]:
+                                repairShop.address.address,
+                            [RepairShopModalStringEnum.OPEN_HOURS_SAME_ALL_DAYS]:
+                                repairShop.openHoursSameAllDays,
+                            [RepairShopModalStringEnum.START_TIME_ALL_DAYS]:
+                                repairShop.startTimeAllDays,
+                            [RepairShopModalStringEnum.END_TIME_ALL_DAYS]:
+                                repairShop.endTimeAllDays,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
+                                repairShop.openAlways,
+                            [RepairShopModalStringEnum.ROUTING]:
+                                repairShop.routing,
+                            [RepairShopModalStringEnum.ACCOUNT]:
+                                repairShop.account,
+                            [RepairShopModalStringEnum.NOTE]: repairShop.note,
+                            [RepairShopModalStringEnum.CONTACTS]:
+                                repairShop.contacts,
+                            // [RepairShopModalStringEnum.FILES]: repairShop.files,
+                            [RepairShopModalStringEnum.SHOP_SERVICE_TYPE]:
+                                repairShop.shopServiceType.id,
+                            [RepairShopModalStringEnum.LONGITUDE]:
+                                repairShop.longitude,
+                            [RepairShopModalStringEnum.LATITUDE]:
+                                repairShop.latitude,
+                        });
+                        this.mapEditData(repairShop);
+                    }
+                    this.preSelectService(repairShop?.shopServiceType);
+                },
+            });
+    }
+
+    private mapEditData(res: RepairShopResponse): void {
+        // This fields are custom and cannot be part of the form so we need to remap it
+        this.showPhoneExt = !!res.phoneExt;
+        this.services = RepairShopHelper.mapServices(res, false);
+        this.selectedAddress = res.address;
+        this.isBankSelected = !!res.bank;
+        this.files = res.files;
+        if (res.bank) {
+            this.selectedBank =
+                this.banks.find((bank) => bank.id === res.bank.id) ?? null;
+        }
+
+        // Patch address
+        this.onAddressChange({
+            address: res.address,
+            valid: true,
+            longLat: {
+                latitude: res.latitude,
+                longitude: res.longitude,
+            },
+        });
+
+        this.contacts = res.contacts;
+        this.mapRatings(res);
+    }
+
+    private preSelectService(shopServiceType?: EnumValue): void {
+        const service = shopServiceType ?? this.repairTypes[0];
+        this.repairTypes.forEach(
+            (repairType) => (repairType.checked = repairType.id === service.id)
+        );
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+            .patchValue(service.id);
+    }
+
+    public tabChange(selectedTab: RepairShopTabs): void {
+        this.selectedTab = selectedTab.id;
+        const dotAnimation = document.querySelector(
+            `.${this.animationTabClass}`
+        );
 
         this.animationObject = {
             value: this.selectedTab,
@@ -235,299 +463,122 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        switch (data.action) {
-            case 'close': {
-                if (this.editData?.canOpenModal) {
-                    switch (this.editData?.key) {
-                        case 'repair-modal': {
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: RepairOrderModalComponent,
-                                size: 'large',
-                                type: this.editData?.type,
-                                closing: 'fastest',
-                            });
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                }
-                break;
-            }
-            case 'save and add new': {
-                if (this.repairShopForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.repairShopForm);
-                    return;
-                }
-                this.addRepairShop();
-                this.modalService.setModalSpinner({
-                    action: 'save and add new',
-                    status: true,
-                    close: false,
-                });
-                this.addNewAfterSave = true;
-                break;
-            }
-            case 'save': {
-                if (this.repairShopForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.repairShopForm);
-                    return;
-                }
-                if (this.editData?.id) {
-                    this.updateRepairShop(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addRepairShop();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            case 'delete': {
-                if (this.editData) {
-                    this.deleteRepairShopById(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            default: {
-                break;
-            }
+    private initTabs(): void {
+        if (this.editData) this.selectedTab = this.editData.openedTab;
+        this.tabs = RepairShopHelper.TABS(!this.isEditMode, this.selectedTab);
+    }
+
+    public mapRatings(res: RepairShopResponse): void {
+        // If there is no rating and commentContent, rating will not be visible
+        this.reviews = res.ratingReviews.map((item) => ({
+            ...item,
+            commentContent: item.comment,
+            rating: item.thumb,
+        }));
+
+        this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: res.downCount,
+            upRatingCount: res.upCount,
+            currentCompanyUserRating: res.currentCompanyUserRating,
+        });
+    }
+
+    public onAddressChange(event: {
+        address: AddressEntity;
+        valid: boolean;
+        longLat: any;
+    }): void {
+        if (event.valid) {
+            this.selectedAddress = event.address;
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.LONGITUDE)
+                .patchValue(event.longLat.longitude);
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.LATITUDE)
+                .patchValue(event.longLat.latitude);
         }
     }
 
-    public get openHours(): UntypedFormArray {
-        return this.repairShopForm.get('openHours') as UntypedFormArray;
+    // Favorite
+    public addShopToFavorite(): void {
+        this.favoriteField.patchValue(!this.isFavorite);
     }
 
-    // public get contacts(): UntypedFormArray {
-    //     return this.repairShopForm.get('contacts') as UntypedFormArray;
-    // }
-
-    public trackOpenHours() {
-        this.openHours.valueChanges
-            .pipe(debounceTime(500), takeUntil(this.destroy$))
-            .subscribe((array: any[]) => {
-                array.forEach((item) => {
-                    if (item.startTime && item.endTime) {
-                        if (
-                            moment(item.startTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00' &&
-                            moment(item.endTime, 'HH:mm:ss').format(
-                                'HH:mm:ss'
-                            ) !== '00:00:00'
-                        ) {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(false);
-                        } else {
-                            this.repairShopForm
-                                .get('openAlways')
-                                .patchValue(true);
-                        }
-                    }
-                });
-            });
+    private patchWorkingDayTime(
+        item: any,
+        startTime: Date,
+        endTime: Date
+    ): void {
+        item.get(RepairShopModalStringEnum.START_TIME)?.patchValue(startTime);
+        item.get(RepairShopModalStringEnum.END_TIME)?.patchValue(endTime);
     }
 
-    public addOpenHours(
-        day: string,
-        isDay: boolean = false,
-        dayOfWeek: number,
-        startTime?: any,
-        endTime?: any
-    ) {
-        if (!isDay) {
-            this.openHours.push(this.createOpenHour(day, isDay, dayOfWeek));
-        } else {
+    private initWorkingHours(): void {
+        RepairShopConstants.DEFAULT_OPEN_HOUR_DAYS.forEach((day) =>
             this.openHours.push(
-                this.createOpenHour(day, isDay, dayOfWeek, startTime, endTime)
-            );
-        }
+                RepairShopHelper.createOpenHour(day, this.formBuilder)
+            )
+        );
     }
 
-    public active24Hours(event: any) {
-        this.isOpenHoursHidden = !event.check;
-        this.repairShopForm.get('openAlways').patchValue(event.check);
+    public toggleDays(): void {
+        this.isDaysVisible = !this.isDaysVisible;
+    }
+
+    public addNewWorkingDays(index: number): void {
+        const newWorkingDay = this.openHours.at(index);
+        const isShopOpen =
+            newWorkingDay.get(RepairShopModalStringEnum.START_TIME).value ===
+            null;
+        const startTime = isShopOpen
+            ? this.convertTime(OpenWorkingHours.EIGHTAM)
+            : null;
+
+        const endTime = isShopOpen
+            ? this.convertTime(OpenWorkingHours.FIVEPM)
+            : null;
+
+        this.patchWorkingDayTime(newWorkingDay, startTime, endTime);
+    }
+
+    public toggle247WorkingHours(): void {
+        this.openAlways.patchValue(!this.isOpenAllDay);
+
+        const startTime = this.convertTime(
+            this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.EIGHTAM
+        );
+        const endTime = this.convertTime(
+            this.isOpenAllDay
+                ? OpenWorkingHours.MIDNIGHT
+                : OpenWorkingHours.FIVEPM
+        );
+
         this.openHours.controls.forEach((item) => {
-            if (item.get('isDay').value) {
-                item.get('startTime').patchValue(
-                    event.check
-                        ? MethodsCalculationsHelper.convertTimeFromBackend(
-                              '0:00:00 AM'
-                          )
-                        : MethodsCalculationsHelper.convertTimeFromBackend(
-                              '8:00:00 AM'
-                          )
-                );
-                item.get('endTime').patchValue(
-                    event.check
-                        ? MethodsCalculationsHelper.convertTimeFromBackend(
-                              '0:00:00 AM'
-                          )
-                        : MethodsCalculationsHelper.convertTimeFromBackend(
-                              '5:00:00 PM'
-                          )
-                );
+            if (item.get(RepairShopModalStringEnum.IS_WORKING_DAY)?.value) {
+                this.patchWorkingDayTime(item, startTime, endTime);
             }
         });
     }
 
-    public openHourDayAction(event: boolean, index: number) {
-        this.openHours
-            .at(index)
-            .get('isDay')
-            .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.openHours
-                        .at(index)
-                        .get('startTime')
-                        .patchValue(
-                            MethodsCalculationsHelper.convertTimeFromBackend(
-                                '8:00:00 AM'
-                            )
-                        );
-                    this.openHours
-                        .at(index)
-                        .get('endTime')
-                        .patchValue(
-                            MethodsCalculationsHelper.convertTimeFromBackend(
-                                '5:00:00 PM'
-                            )
-                        );
-                } else {
-                    this.openHours.at(index).get('startTime').patchValue(null);
-                    this.openHours.at(index).get('endTime').patchValue(null);
-                }
-            });
+    public convertTime(time: string): Date {
+        return MethodsCalculationsHelper.convertTimeFromBackend(time);
     }
 
-    public activeRepairService(service) {
+    // Services
+    public repairTypeTabChange(repairType: EnumValue): void {
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.SHOP_SERVICE_TYPE)
+            .patchValue(repairType.id);
+    }
+
+    public activeRepairService(service: RepairShopModalService): void {
         service.active = !service.active;
-        this.services = [...this.services];
-
-        this.repairShopForm
-            .get('servicesHelper')
-            .patchValue(JSON.stringify(this.services));
     }
 
-    public addContact(): void {
-        this.isNewContactAdded = true;
-
-        setTimeout(() => {
-            this.isNewContactAdded = false;
-        }, 400);
-    }
-
-    // public removeContacts(id: number) {
-    //     this.contacts.removeAt(id);
-    //     this.selectedContractDepartmentFormArray.splice(id, 1);
-
-    //     if (this.contacts.length === 0) {
-    //         this.repairShopForm.markAsUntouched();
-    //     }
-    // }
-
-    // public trackContactEmail() {
-    //     const helper = new Array(this.contacts.length).fill(false);
-
-    //     this.contacts.valueChanges
-    //         .pipe(debounceTime(300), takeUntil(this.destroy$))
-    //         .subscribe((items) => {
-    //             items.forEach((item, index) => {
-    //                 if (item.email && helper[index] === false) {
-    //                     helper[index] = true;
-
-    //                     this.inputService.changeValidators(
-    //                         this.contacts.at(index).get('phone'),
-    //                         false,
-    //                         [],
-    //                         false
-    //                     );
-    //                 }
-
-    //                 if (!item.email && helper[index] === true) {
-    //                     this.contacts.at(index).get('email').patchValue(null);
-    //                     this.inputService.changeValidators(
-    //                         this.contacts.at(index).get('phone'),
-    //                         true,
-    //                         [phoneFaxRegex]
-    //                     );
-    //                     helper[index] = false;
-    //                 }
-    //             });
-    //         });
-    // }
-
-    // public onScrollingContacts(event: any) {
-    //     this.isContactCardsScrolling = event.target.scrollLeft > 1;
-    // }
-
-    public onHandleAddress(event: {
-        address: AddressEntity;
-        valid: boolean;
-        longLat: any;
-    }) {
-        if (event.valid) {
-            this.selectedAddress = event.address;
-            this.longitude = event.longLat.longitude;
-            this.latitude = event.longLat.latitude;
-        }
-    }
-
-    public favouriteRepairShop() {
-        this.isRepairShopFavourite = !this.isRepairShopFavourite;
-        this.repairShopForm
-            .get('pinned')
-            .patchValue(this.isRepairShopFavourite);
-    }
-
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
-    public onSelectDropdown(event: any, action: string, indx?: number) {
-        switch (action) {
-            case 'bank': {
-                this.selectedBank = event;
-                if (!event) {
-                    this.repairShopForm.get('bankId').patchValue(null);
-                }
-                break;
-            }
-            case 'contact-department': {
-                this.selectedContractDepartmentFormArray[indx] = event;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
-    public onSaveNewBank(bank: { data: any; action: string }) {
-        this.selectedBank = bank.data;
-
+    // Bank
+    public onSaveNewBank(bank: { data: { name: string } }) {
         this.bankVerificationService
             .createBank({ name: bank.data.name })
             .pipe(takeUntil(this.destroy$))
@@ -537,72 +588,334 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                         id: res.id,
                         name: bank.data.name,
                     };
-                    this.labelsBank = [...this.labelsBank, this.selectedBank];
+
+                    this.banks = [...this.banks, this.selectedBank];
                 },
                 error: () => {},
             });
     }
 
-    public onFilesEvent(event: any) {
-        this.documents = event.files;
-        switch (event.action) {
-            case 'add': {
-                this.repairShopForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
-                break;
-            }
-            case 'delete': {
-                this.repairShopForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+    public onBankSelected(event: BankResponse | null): void {
+        this.selectedBank = event;
 
-                this.fileModified = true;
+        if (!event)
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.BANK_ID)
+                .patchValue(null);
+
+        this.checkBankField();
+    }
+
+    private checkBankField(): void {
+        const timeout = setTimeout(async () => {
+            this.isBankSelected =
+                await this.bankVerificationService.onSelectBank(
+                    this.selectedBank ? this.selectedBank.name : null,
+
+                    this.repairShopForm.get(RepairShopModalStringEnum.ROUTING),
+                    this.repairShopForm.get(RepairShopModalStringEnum.ACCOUNT)
+                );
+            this.cdr.detectChanges();
+            clearTimeout(timeout);
+        }, 100);
+    }
+
+    public onFilesEvent(event: FileEvent): void {
+        this.files = event.files;
+
+        switch (event.action) {
+            case FileActionEvent.ADD:
+                this.updateFilesField(event.files);
                 break;
-            }
-            default: {
+            case FileActionEvent.DELETE:
+                this.handleDeleteEvent(event);
                 break;
-            }
+            default:
+                console.warn(`Unhandled file event action: ${event.action}`);
         }
     }
 
-    public toggleDays() {
-        this.isDaysVisible = !this.isDaysVisible;
+    private updateFilesField(files: any[]): void {
+        const filesValue = files.length ? JSON.stringify(files) : null;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.FILES)
+            .patchValue(filesValue);
     }
 
-    // Reviews
-    public changeReviewsEvent(reviews: ReviewComment) {
+    private handleDeleteEvent(event: FileEvent): void {
+        this.updateFilesField(event.files);
+
+        if (event.deleteId) {
+            this.filesForDelete.push(event.deleteId);
+        }
+    }
+
+    public onModalAction(data: RepairShopModalAction): void {
+        // Prevent double click
+        if (!this.isModalValidToSubmit || this.isRequestInProgress) {
+            return;
+        }
+
+        this.isRequestInProgress = true;
+        if (data.action === ActionTypesEnum.SAVE_AND_ADD_NEW) {
+            this.addNewRepairShop(true);
+            return;
+        }
+
+        if (data.action === ActionTypesEnum.SAVE) {
+            if (this.isEditMode) {
+                this.updateRepairShop(this.editData.id);
+            } else {
+                this.addNewRepairShop(false);
+            }
+
+            return;
+        }
+
+        if (data.action === ActionTypesEnum.DELETE) {
+            this.deleteRepairShopById(this.editData.id);
+        }
+        if (data.action === ActionTypesEnum.CLOSE_BUSINESS) {
+            this.showCloseBusinessModal();
+        }
+    }
+
+    private getFromFieldValue(keyName: string) {
+        const field = this.repairShopForm.get(keyName);
+
+        if (field) {
+            return field.value;
+        }
+
+        return null;
+    }
+
+    private generateShopRequest(): CreateShopModel {
+        const repairModel: CreateShopModel = {
+            name: this.getFromFieldValue(RepairShopModalStringEnum.NAME),
+            phone: this.getFromFieldValue(RepairShopModalStringEnum.PHONE),
+            email: this.getFromFieldValue(RepairShopModalStringEnum.EMAIL),
+            phoneExt: this.getFromFieldValue(
+                RepairShopModalStringEnum.PHONE_EXT
+            ),
+            address: {
+                ...this.selectedAddress,
+                addressUnit: this.getFromFieldValue(
+                    RepairShopModalStringEnum.ADDRESS_UNIT
+                ),
+            },
+            serviceTypes: this.services.map((item) => {
+                return {
+                    serviceType: item.serviceType as ServiceType,
+                    active: item.active,
+                };
+            }),
+            bankId: this.selectedBank ? this.selectedBank.id : null,
+            files: this.createDocumentsForRequest(),
+            filesForDeleteIds: this.filesForDelete,
+            pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
+            note: this.getFromFieldValue(RepairShopModalStringEnum.NOTE),
+            account: this.getFromFieldValue(RepairShopModalStringEnum.ACCOUNT),
+            routing: this.getFromFieldValue(RepairShopModalStringEnum.ROUTING),
+            latitude: this.getFromFieldValue(
+                RepairShopModalStringEnum.LATITUDE
+            ),
+            longitude: this.getFromFieldValue(
+                RepairShopModalStringEnum.LONGITUDE
+            ),
+            openAlways: this.getFromFieldValue(
+                RepairShopModalStringEnum.OPEN_ALWAYS
+            ),
+            contacts: this.mapContacts(),
+            shopServiceType: this.getFromFieldValue(
+                RepairShopModalStringEnum.SHOP_SERVICE_TYPE
+            ),
+            // TODO: HOURS NOT DONE yet
+            openHoursSameAllDays: !this.isDaysVisible,
+            startTimeAllDays: !this.isDaysVisible
+                ? this.openHours.value.at(0).startTime
+                : null,
+            endTimeAllDays: !this.isDaysVisible
+                ? this.openHours.value.at(0).endTime
+                : null,
+            // weeklyDay: null,
+            // monthlyDay: null,
+            // openHours: [],
+            // payPeriod: 'Weekly',
+            // TODO: Check meaning of this fields since we are not showing them on FE
+            // companyOwned: false,
+            // rent: 1,
+        };
+        return repairModel;
+    }
+    private createDocumentsForRequest(): Array<Blob> {
+        let documents: Array<Blob> = [];
+        this.files.map((item: UploadFile) => {
+            if (item.realFile) documents.push(item.realFile);
+        });
+        return documents;
+    }
+
+    private mapContacts(): RepairShopContactCommand[] {
+        const contacts: RepairShopContactResponse[] = this.getFromFieldValue(
+            RepairShopModalStringEnum.CONTACTS
+        );
+        return contacts.map((contact) => {
+            return {
+                ...contact,
+                departmentId: this.departments.find(
+                    (d) => d.name === contact.department
+                )?.id,
+            };
+        });
+    }
+
+    public addNewRepairShop(addNewShop: boolean): void {
+        this.shopService
+            .addRepairShop(this.generateShopRequest())
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.setModalSpinner(null, false, !addNewShop);
+                    if (addNewShop) {
+                        this.formService.resetForm(this.repairShopForm);
+                        this.tabChange(this.tabs[0]);
+                        this.contacts = [];
+                        this.showPhoneExt = false;
+                        this.selectedAddress = null;
+                        this.isBankSelected = null;
+                        this.files = [];
+                        this.filesForDelete = [];
+                    }
+                },
+                error: () => {
+                    this.setModalSpinner(null, false, false);
+                },
+            });
+    }
+
+    private updateRepairShop(id: number): void {
+        this.shopService
+            .updateRepairShop({ id, ...this.generateShopRequest() })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.setModalSpinner(null, true, true);
+                },
+                error: () => {
+                    this.setModalSpinner(null, false, false);
+                },
+            });
+    }
+
+    private deleteRepairShopById(id: number): void {
+        this.shopService
+            .deleteRepairShopById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () =>
+                    this.setModalSpinner(ActionTypesEnum.DELETE, true, false),
+                error: () =>
+                    this.setModalSpinner(ActionTypesEnum.DELETE, false, false),
+            });
+    }
+
+    private setModalSpinner(
+        action:
+            | null
+            | ActionTypesEnum.SAVE_AND_ADD_NEW
+            | ActionTypesEnum.DELETE,
+        status: boolean,
+        close: boolean
+    ): void {
+        this.modalService.setModalSpinner({
+            action,
+            status,
+            close,
+        });
+
+        // Wait for modal to close to prevent click while closing it
+        setTimeout(() => (this.isRequestInProgress = false), 400);
+    }
+
+    private showCloseBusinessModal(): void {
+        // close current modal
+        this.setModalSpinner(ActionTypesEnum.DELETE, false, true);
+
+        const data = {
+            data: this.editData,
+        };
+        const mappedEvent = {
+            ...data,
+            type: TableStringEnum.CLOSE,
+        };
+        this.modalService.openModal(
+            ConfirmationActivationModalComponent,
+            { size: TableStringEnum.SMALL },
+            {
+                ...mappedEvent,
+                template: TableStringEnum.INFO,
+                subType: TableStringEnum.REPAIR_SHOP,
+                subTypeStatus: TableStringEnum.BUSINESS,
+                tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
+                modalTitle: this.getFromFieldValue(
+                    RepairShopModalStringEnum.NAME
+                ),
+                modalSecondTitle:
+                    this.selectedAddress.address ??
+                    TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            }
+        );
+    }
+
+    // Contact tab
+    public addContact(): void {
+        this.isNewContactAdded = true;
+
+        setTimeout(() => {
+            this.isNewContactAdded = false;
+        }, 400);
+    }
+
+    public handleModalTableValueEmit(modalTableDataValue): void {
+        this.contactAddedCounter = modalTableDataValue.length;
+        this.repairShopForm
+            .get(RepairShopModalStringEnum.CONTACTS)
+            .patchValue(modalTableDataValue);
+        this.cdr.detectChanges();
+    }
+
+    public handleModalTableValidStatusEmit(validStatus: boolean): void {
+        this.isContactFormValid = validStatus;
+    }
+
+    public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete': {
+            case 'delete':
                 this.deleteReview(reviews);
                 break;
-            }
-            case 'add': {
+
+            case 'add':
                 this.addReview(reviews);
                 break;
-            }
-            case 'update': {
+
+            case 'update':
                 this.updateReview(reviews);
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
-    public createReview() {
+    public createReview(): void {
         if (
             this.reviews.some((item) => item.isNewReview) ||
             this.disableOneMoreReview
         ) {
             return;
         }
+
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
@@ -618,793 +931,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private createForm() {
-        this.repairShopForm = this.formBuilder.group({
-            name: [null, [Validators.required, ...repairShopValidation]],
-            pinned: [null],
-            phone: [null, [Validators.required, phoneFaxRegex]],
-            phoneExt: [null, [...phoneExtension]],
-            email: [null],
-            address: [null, [Validators.required, ...addressValidation]],
-            addressUnit: [null, [...addressUnitValidation]],
-            openHours: this.formBuilder.array([]),
-            openHoursSameAllDays: [null],
-            startTimeAllDays: [null],
-            endTimeAllDays: [null],
-            openAlways: [false],
-            bankId: [null, [...bankValidation]],
-            routing: [null, routingBankValidation],
-            account: [null, accountBankValidation],
-            note: [null],
-            contacts: [null],
-            files: [null],
-            servicesHelper: [null],
-            shopServiceType: [null, Validators.required],
-        });
-
-        this.inputService.customInputValidator(
-            this.repairShopForm.get('email'),
-            'email',
-            this.destroy$
-        );
-    }
-
-    private createOpenHour(
-        day: string,
-        isDay: boolean,
-        dayOfWeek: number,
-        startTime?: any,
-        endTime?: any
-    ): UntypedFormGroup {
-        return this.formBuilder.group({
-            isDay: [isDay],
-            dayOfWeek: [dayOfWeek],
-            dayLabel: [day],
-            startTime: [startTime],
-            endTime: [endTime],
-        });
-    }
-
-    // private createContacts(data?: {
-    //     id: number;
-    //     fullName: string;
-    //     departmentId: string;
-    //     phone: string;
-    //     phoneExt: string;
-    //     email: string;
-    // }): UntypedFormGroup {
-    //     return this.formBuilder.group({
-    //         id: [data?.id ? data.id : null],
-    //         fullName: [
-    //             data?.fullName ? data.fullName : null,
-    //             Validators.required,
-    //         ],
-    //         departmentId: [
-    //             data?.departmentId ? data.departmentId : null,
-    //             [Validators.required, ...departmentValidation],
-    //         ],
-    //         phone: [
-    //             data?.phone ? data.phone : null,
-    //             [Validators.required, phoneFaxRegex],
-    //         ],
-    //         phoneExt: [
-    //             data?.phoneExt ? data.phoneExt : null,
-    //             [...phoneExtension],
-    //         ],
-    //         email: [data?.email ? data.email : null],
-    //     });
-    // }
-
-    public handleModalTableValueEmit(modalTableDataValue): void {
-        this.contactAddedCounter = modalTableDataValue.length;
-
-        this.repairShopForm.get('contacts').patchValue(modalTableDataValue);
-
-        this.cdr.detectChanges();
-    }
-
-    public handleModalTableValidStatusEmit(validStatus: boolean): void {
-        if (validStatus) {
-            this.repairShopForm.setErrors({ invalid: false });
-        } else {
-            this.repairShopForm.setErrors({ invalid: true });
-        }
-    }
-
-    private onBankSelected(): void {
-        this.repairShopForm
-            .get('bankId')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(() => {
-                const timeout = setTimeout(async () => {
-                    this.isBankSelected =
-                        await this.bankVerificationService.onSelectBank(
-                            this.selectedBank ? this.selectedBank.name : null,
-                            this.repairShopForm.get('routing'),
-                            this.repairShopForm.get('account')
-                        );
-                    clearTimeout(timeout);
-                }, 100);
-            });
-    }
-
-    private editRepairShopById(id: number) {
-        this.shopService
-            .getRepairShopById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: RepairShopResponse) => {
-                    this.repairShopForm.patchValue({
-                        name: res.name,
-                        pinned: res.pinned,
-                        phone: res.phone,
-                        phoneExt: res.phoneExt,
-                        email: res.email,
-                        address: res.address.address,
-                        addressUnit: res.address.addressUnit,
-                        openHours: [],
-                        openHoursSameAllDays: res.openHoursSameAllDays,
-                        startTimeAllDays: res.startTimeAllDays,
-                        endTimeAllDays: res.endTimeAllDays,
-                        openAlways: res.openAlways,
-                        bankId: res.bank ? res.bank.name : null,
-                        routing: res.routing,
-                        account: res.account,
-                        note: res.note,
-                    });
-                    this.repairShopName = res.name;
-                    this.selectedAddress = res.address;
-                    this.selectedBank = res.bank;
-                    this.isBankSelected = !!this.selectedBank;
-                    this.isPhoneExtExist = !!res.phoneExt;
-                    this.isRepairShopFavourite = res.pinned;
-                    this.documents = res.files;
-                    this.longitude = res.longitude;
-                    this.latitude = res.latitude;
-
-                    // Services
-                    this.services = res.serviceTypes.map((item) => {
-                        return {
-                            id: item.serviceType.id,
-                            serviceType: item.serviceType.name,
-                            svg: `assets/svg/common/repair-services/${item.logoName}`,
-                            active: item.active,
-                        };
-                    });
-
-                    this.repairShopForm
-                        .get('servicesHelper')
-                        .patchValue(JSON.stringify(this.services));
-
-                    // Contacts
-                    // if (res.contacts) {
-                    //     for (const contact of res.contacts) {
-                    //         this.contacts.push(
-                    //             this.createContacts({
-                    //                 id: contact.id,
-                    //                 fullName: contact.fullName,
-                    //                 departmentId: contact.department.name,
-                    //                 phone: contact.phone,
-                    //                 phoneExt: contact.phoneExt,
-                    //                 email: contact.email,
-                    //             })
-                    //         );
-
-                    //         this.selectedContractDepartmentFormArray.push(
-                    //             contact.department
-                    //         );
-                    //     }
-                    // }
-
-                    // Reviews
-                    if (res.ratingReviews?.length) {
-                        this.reviews = res.ratingReviews.map((item: any) => ({
-                            ...item,
-                            companyUser: {
-                                ...item.companyUser,
-                                avatar: item.companyUser.avatar,
-                            },
-                            commentContent: item.comment,
-                            rating: item.ratingFromTheReviewer,
-                        }));
-
-                        const reviewIndex = this.reviews.findIndex(
-                            (item) =>
-                                item.companyUser.id ===
-                                this.companyUser.companyUserId
-                        );
-
-                        if (reviewIndex !== -1) {
-                            this.disableOneMoreReview = true;
-                        }
-                    }
-
-                    this.taLikeDislikeService.populateLikeDislikeEvent({
-                        downRatingCount: res.downCount,
-                        upRatingCount: res.upCount,
-                        currentCompanyUserRating: res.currentCompanyUserRating,
-                    });
-
-                    // Open Hours
-                    if (res.openHoursSameAllDays) {
-                        this.openHoursDays.forEach((el, index) => {
-                            this.addOpenHours(
-                                el,
-                                true,
-                                index - 1,
-                                MethodsCalculationsHelper.convertTimeFromBackend(
-                                    res.startTimeAllDays
-                                ),
-                                MethodsCalculationsHelper.convertTimeFromBackend(
-                                    res.endTimeAllDays
-                                )
-                            );
-                        });
-
-                        if (res.openHours.length === 2) {
-                            const sunday = res.openHours.find(
-                                (item) => item.dayOfWeek === 'Sunday'
-                            );
-                            const saturday = res.openHours.find(
-                                (item) => item.dayOfWeek === 'Saturday'
-                            );
-                            this.openHours.controls.forEach((item) => {
-                                if (item.get('dayOfWeek').value === 0) {
-                                    item.get('startTime').patchValue(
-                                        sunday.startTime
-                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                                  sunday.startTime
-                                              )
-                                            : null
-                                    );
-                                    item.get('endTime').patchValue(
-                                        sunday.endTime
-                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                                  sunday.endTime
-                                              )
-                                            : null
-                                    );
-                                }
-
-                                if (item.get('dayOfWeek').value === 6) {
-                                    item.get('startTime').patchValue(
-                                        saturday.startTime
-                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                                  saturday.startTime
-                                              )
-                                            : null
-                                    );
-                                    item.get('isDay').patchValue(
-                                        !!(
-                                            saturday.startTime &&
-                                            saturday.endTime
-                                        )
-                                    );
-                                    item.get('endTime').patchValue(
-                                        saturday.endTime
-                                            ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                                  saturday.endTime
-                                              )
-                                            : null
-                                    );
-                                }
-                            });
-
-                            this.openHours.removeAt(1);
-
-                            this.addOpenHours(
-                                sunday.dayOfWeek,
-                                !!(sunday.startTime && sunday.endTime),
-                                0,
-                                MethodsCalculationsHelper.convertTimeFromBackend(
-                                    sunday.startTime
-                                ),
-                                MethodsCalculationsHelper.convertTimeFromBackend(
-                                    sunday.endTime
-                                )
-                            );
-                        }
-                    } else {
-                        this.addOpenHours(
-                            'MON - SAT',
-                            true,
-                            -1,
-                            res.openAlways
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      '00:00:00 AM'
-                                  )
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
-                                      '8:00:00 AM'
-                                  ),
-                            res.openAlways
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      '00:00:00 PM'
-                                  )
-                                : MethodsCalculationsHelper.convertTimeFromBackend(
-                                      '5:00:00 PM'
-                                  )
-                        );
-                        this.isDaysVisible = true;
-                        res.openHours.forEach((el) => {
-                            this.addOpenHours(
-                                el.dayOfWeek,
-                                !!(el.startTime && el.endTime),
-                                this.openHoursDays.indexOf(el.dayOfWeek) - 1,
-                                el.startTime
-                                    ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                          el.startTime
-                                      )
-                                    : null,
-                                el.endTime
-                                    ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                          el.endTime
-                                      )
-                                    : null
-                            );
-                        });
-                    }
-
-                    setTimeout(() => {
-                        this.startFormChanges();
-                        this.disableCardAnimation = false;
-                    }, 1000);
-                },
-                error: () => {},
-            });
-    }
-
-    private addRepairShop() {
-        let { addressUnit, openHours, contacts, ...form } =
-            this.repairShopForm.value;
-
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        const formatOpenHours = openHours
-            .map((item) => {
-                if (item.isDay) {
-                    return {
-                        dayOfWeek: item.dayOfWeek,
-                        startTime: item.startTime,
-                        endTime: item.endTime,
-                    };
-                } else {
-                    return {
-                        dayOfWeek: item.dayOfWeek,
-                        startTime: null,
-                        endTime: null,
-                    };
-                }
-            })
-            .filter((item) => {
-                if (!this.isDaysVisible) {
-                    return item.dayOfWeek === 0 || item.dayOfWeek === 6;
-                }
-                return item;
-            })
-            .filter((item) => item.dayOfWeek !== -1)
-            .map((item) => {
-                if (item.dayOfWeek === 0) {
-                    item.dayOfWeek = 'Sunday';
-                }
-                return item;
-            });
-
-        let newData: any = {
-            ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
-            bankId: this.selectedBank ? this.selectedBank.id : null,
-            openHoursSameAllDays: !this.isDaysVisible,
-            startTimeAllDays: !this.isDaysVisible
-                ? openHours[0].startTime
-                : null,
-            endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
-            openHours: formatOpenHours,
-            openAlways: form.openAlways,
-            serviceTypes: this.services.map((item) => {
-                return {
-                    serviceType: item.serviceType,
-                    active: item.active,
-                };
-            }),
-            files: documents,
-            longitude: this.longitude,
-            latitude: this.latitude,
-        };
-
-        /*  for (let index = 0; index < contacts.length; index++) {
-            contacts[index].departmentId =
-                this.selectedContractDepartmentFormArray[index].id;
-        } */
-
-        newData = {
-            ...newData,
-            contacts: contacts,
-        };
-
-        if (newData.shopServiceType === 'Fixed & Mobile')
-            newData.shopServiceType = 'Combined';
-        this.shopService
-            .addRepairShop(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (this.editData?.canOpenModal) {
-                        switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type,
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-
-                    if (this.addNewAfterSave) {
-                        this.formService.resetForm(this.repairShopForm);
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
-
-                        this.services = this.services.map((item) => {
-                            return {
-                                ...item,
-                                active: false,
-                            };
-                        });
-                        if (!this.editData || this.editData?.canOpenModal) {
-                            for (
-                                let i = 0;
-                                i < this.openHoursDays.length;
-                                i++
-                            ) {
-                                this.addOpenHours(
-                                    this.openHoursDays[i],
-                                    i !== this.openHoursDays.length - 1 &&
-                                        i !== this.openHoursDays.length - 2,
-                                    i - 1,
-                                    i !== this.openHoursDays.length - 1 ||
-                                        i !== this.openHoursDays.length - 2
-                                        ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                              '8:00:00 AM'
-                                          )
-                                        : null,
-                                    i !== this.openHoursDays.length - 1 ||
-                                        i !== this.openHoursDays.length - 2
-                                        ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                              '5:00:00 PM'
-                                          )
-                                        : null
-                                );
-                            }
-                        }
-                        this.isRepairShopFavourite = false;
-                        this.favouriteRepairShop = null;
-                        this.isPhoneExtExist = false;
-                        this.documents = [];
-
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private updateRepairShop(id: number) {
-        let { addressUnit, openHours, ...form } = this.repairShopForm.value;
-
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
-
-        const formatOpenHours = openHours
-            .map((item) => {
-                if (item.isDay) {
-                    return {
-                        dayOfWeek: item.dayOfWeek,
-                        startTime: item.startTime,
-                        endTime: item.endTime,
-                    };
-                } else {
-                    return {
-                        dayOfWeek: item.dayOfWeek,
-                        startTime: null,
-                        endTime: null,
-                    };
-                }
-            })
-            .filter((item) => {
-                if (!this.isDaysVisible) {
-                    return item.dayOfWeek === 0 || item.dayOfWeek === 6;
-                }
-                return item;
-            })
-            .filter((item) => item.dayOfWeek !== -1)
-            .map((item) => {
-                if (item.dayOfWeek === 0) {
-                    item.dayOfWeek = 'Sunday';
-                }
-                return item;
-            });
-
-        let newData: any = {
-            id: id,
-            ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
-            bankId: this.selectedBank ? this.selectedBank.id : null,
-            openHoursSameAllDays: !this.isDaysVisible,
-            startTimeAllDays: !this.isDaysVisible
-                ? openHours[0].startTime
-                : null,
-            endTimeAllDays: !this.isDaysVisible ? openHours[0].endTime : null,
-            openHours: formatOpenHours,
-            openAlways: form.openAlways,
-            serviceTypes: this.services.map((item) => {
-                return {
-                    serviceType: item.serviceType,
-                    active: item.active,
-                };
-            }),
-            files: documents,
-            longitude: this.longitude,
-            latitude: this.latitude,
-        };
-
-        // for (let index = 0; index < contacts.length; index++) {
-        //     contacts[index].departmentId =
-        //         this.selectedContractDepartmentFormArray[index].id;
-        // }
-
-        // newData = {
-        //     ...newData,
-        //     contacts: contacts,
-        // };
-
-        this.shopService
-            .updateRepairShop(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    if (this.editData?.canOpenModal) {
-                        switch (this.editData?.key) {
-                            case 'repair-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: RepairOrderModalComponent,
-                                    size: 'large',
-                                    type: this.editData?.type,
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
-                            default: {
-                                break;
-                            }
-                        }
-                    }
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private deleteRepairShopById(id: number) {
-        this.shopService
-            .deleteRepairShopById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
-    private getRepairShopModalDropdowns() {
-        return this.shopService
-            .getRepairShopModalDropdowns()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: RepairShopModalResponse) => {
-                    this.labelsBank = res.banks;
-
-                    this.services = res.serviceTypes.map((item) => {
-                        return {
-                            id: item.serviceType.id,
-                            serviceType: item.serviceType.name,
-                            svg: `assets/svg/common/repair-services/${item.logoName}`,
-                            active: false,
-                        };
-                    });
-
-                    this.repairShopForm
-                        .get('servicesHelper')
-                        .patchValue(JSON.stringify(this.services));
-
-                    if (this.editData?.id) {
-                        this.disableCardAnimation = true;
-                        this.tabs = this.tabs.map((item) => {
-                            return {
-                                ...item,
-                                disabled: false,
-                            };
-                        });
-                        this.editRepairShopById(this.editData.id);
-                        this.ratingChanges();
-                    } else {
-                        this.startFormChanges();
-                    }
-
-                    if (
-                        !this.editData ||
-                        (this.editData?.canOpenModal && !this.editData?.id)
-                    ) {
-                        for (let i = 0; i < this.openHoursDays.length; i++) {
-                            this.addOpenHours(
-                                this.openHoursDays[i],
-                                i !== this.openHoursDays.length - 1,
-                                i - 1,
-                                i == this.openHoursDays.length - 1
-                                    ? null
-                                    : MethodsCalculationsHelper.convertTimeFromBackend(
-                                          '8:00:00 AM'
-                                      ),
-                                i == this.openHoursDays.length - 1
-                                    ? null
-                                    : MethodsCalculationsHelper.convertTimeFromBackend(
-                                          '5:00:00 AM'
-                                      )
-                            );
-                        }
-                        this.openHours.removeAt(1);
-                        this.addOpenHours('Sunday', false, 0, null, null);
-                    }
-
-                    // Open Tab Position
-                    if (this.editData?.openedTab) {
-                        setTimeout(() => {
-                            this.tabChange({
-                                id:
-                                    this.editData?.openedTab === 'Contact'
-                                        ? 2
-                                        : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
-                            });
-                            this.disableCardAnimation = true;
-                        });
-                    }
-                },
-                error: () => {},
-            });
-    }
-
-    private ratingChanges() {
-        this.taLikeDislikeService.userLikeDislike$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((action: LikeDislikeModel) => {
-                let rating: CreateRatingCommand;
-
-                if (action.action === 'liked') {
-                    rating = {
-                        entityTypeRatingId: 2,
-                        entityTypeId: this.editData.id,
-                        thumb: action.likeDislike,
-                    };
-                } else {
-                    rating = {
-                        entityTypeRatingId: 2,
-                        entityTypeId: this.editData.id,
-                        thumb: action.likeDislike,
-                    };
-                }
-
-                this.reviewRatingService
-                    .addRating(rating)
-                    .pipe(
-                        takeUntil(this.destroy$),
-                        switchMap(() => {
-                            return this.shopService.getRepairShopById(
-                                this.editData.id
-                            );
-                        })
-                    )
-                    .subscribe({
-                        next: (res: RepairShopResponse) => {
-                            if (res.ratingReviews?.length) {
-                                this.reviews = res.ratingReviews.map(
-                                    (item: any) => ({
-                                        ...item,
-                                        companyUser: {
-                                            ...item.companyUser,
-                                            avatar: item.companyUser.avatar,
-                                        },
-                                        commentContent: item.comment,
-                                        rating: item.ratingFromTheReviewer,
-                                    })
-                                );
-
-                                const reviewIndex = this.reviews.findIndex(
-                                    (item) =>
-                                        item.companyUser.id ===
-                                        this.companyUser.companyUserId
-                                );
-
-                                if (reviewIndex !== -1) {
-                                    this.disableOneMoreReview = true;
-                                }
-                            }
-
-                            this.taLikeDislikeService.populateLikeDislikeEvent({
-                                downRatingCount: res.downCount,
-                                upRatingCount: res.upCount,
-                                currentCompanyUserRating:
-                                    res.currentCompanyUserRating,
-                            });
-                        },
-                        error: () => {},
-                    });
-            });
-    }
-
-    private addReview(reviews: ReviewComment) {
+    private addReview(reviews: ReviewComment): void {
+        // 2 represent repair shop entity
         const review: CreateReviewCommand = {
             entityTypeReviewId: 2,
             entityTypeId: this.editData.id,
@@ -1432,7 +960,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private deleteReview(reviews: ReviewComment) {
+    private deleteReview(reviews: ReviewComment): void {
         this.reviews = reviews.sortData;
         this.disableOneMoreReview = false;
         this.reviewRatingService
@@ -1441,7 +969,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    private updateReview(reviews: ReviewComment) {
+    private updateReview(reviews: ReviewComment): void {
         this.reviews = reviews.sortData;
         const review: UpdateReviewCommand = {
             id: reviews.data.id,
@@ -1452,15 +980,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
-    }
-
-    private startFormChanges() {
-        this.formService.checkFormChange(this.repairShopForm);
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) => {
-                this.isFormDirty = isFormChange;
-            });
     }
 
     ngOnDestroy(): void {

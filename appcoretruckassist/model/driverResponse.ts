@@ -53,8 +53,10 @@ export interface DriverResponse {
     general?: DriverDetailsNotificationResponse;
     payroll?: DriverDetailsNotificationResponse;
     files?: Array<FileResponse> | null;
+    avatarFile?: FileResponse;
     filesCountForList?: number | null;
     note?: string | null;
+    useCarrieraAch?: boolean;
     hiredAt?: string | null;
     terminatedAt?: string | null;
     createdAt?: string;

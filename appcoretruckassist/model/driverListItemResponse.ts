@@ -14,6 +14,7 @@ import { DriverListEmergencyContactResponse } from './driverListEmergencyContact
 import { EnumValue } from './enumValue';
 import { DriverListOffDutyLocationResponse } from './driverListOffDutyLocationResponse';
 import { DriverListFuelCardResponse } from './driverListFuelCardResponse';
+import { FileResponse } from './fileResponse';
 import { DriverListMedicalResponse } from './driverListMedicalResponse';
 import { DriverListOwnerResponse } from './driverListOwnerResponse';
 import { DriverListMvrResponse } from './driverListMvrResponse';
@@ -29,12 +30,14 @@ export interface DriverListItemResponse {
     name?: string | null;
     status?: number;
     avatar?: string | null;
+    avatarFile?: FileResponse;
     note?: string | null;
     fileCount?: number | null;
     dateOfBirth?: string | null;
     ssn?: string | null;
     phone?: string | null;
     email?: string | null;
+    fleetType?: EnumValue;
     address?: AddressEntity;
     owner?: DriverListOwnerResponse;
     driverType?: EnumValue;
@@ -53,7 +56,9 @@ export interface DriverListItemResponse {
     general?: DriverListNotificationResponse;
     payroll?: DriverListNotificationResponse;
     truck?: string | null;
+    truckType?: string | null;
     trailer?: string | null;
+    trailerType?: string | null;
     hiredAt?: string | null;
     terminatedAt?: string | null;
     createdAt?: string;

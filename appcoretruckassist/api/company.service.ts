@@ -151,9 +151,17 @@ export class CompanyService {
             throw new Error('Required parameter request was null or undefined when calling apiCompanyAdditionalinfoGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -195,6 +203,7 @@ export class CompanyService {
         return this.httpClient.request<CompanyAdditionalInfoResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -217,9 +226,17 @@ export class CompanyService {
             throw new Error('Required parameter ein was null or undefined when calling apiCompanyCheckEinEinGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -261,6 +278,7 @@ export class CompanyService {
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -279,9 +297,17 @@ export class CompanyService {
     public apiCompanyCompanypayrollGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<CompanyPayrollResponse>>>;
     public apiCompanyCompanypayrollGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -323,6 +349,7 @@ export class CompanyService {
         return this.httpClient.request<Array<CompanyPayrollResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -345,9 +372,17 @@ export class CompanyService {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyDivisionIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -389,6 +424,7 @@ export class CompanyService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -411,9 +447,17 @@ export class CompanyService {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyDivisionIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -455,6 +499,7 @@ export class CompanyService {
         return this.httpClient.request<CompanyResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -474,9 +519,17 @@ export class CompanyService {
     public apiCompanyDivisionPost(createDivisionCompanyCommand?: CreateDivisionCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
     public apiCompanyDivisionPost(createDivisionCompanyCommand?: CreateDivisionCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -530,6 +583,7 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: createDivisionCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -549,9 +603,17 @@ export class CompanyService {
     public apiCompanyDivisionPut(updateDivisionCompanyCommand?: UpdateDivisionCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiCompanyDivisionPut(updateDivisionCompanyCommand?: UpdateDivisionCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -605,6 +667,7 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: updateDivisionCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -668,6 +731,12 @@ export class CompanyService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -731,9 +800,17 @@ export class CompanyService {
     public apiCompanyDocumentsPost(files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiCompanyDocumentsPost(files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -810,6 +887,7 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -828,9 +906,17 @@ export class CompanyService {
     public apiCompanyDocumentsStatisticGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyDocumentsStatisticResponse>>;
     public apiCompanyDocumentsStatisticGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -872,6 +958,7 @@ export class CompanyService {
         return this.httpClient.request<CompanyDocumentsStatisticResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -894,9 +981,17 @@ export class CompanyService {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyFactoringcompanyIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -938,6 +1033,7 @@ export class CompanyService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -957,9 +1053,17 @@ export class CompanyService {
     public apiCompanyFactoringcompanyPut(updateFactoringCompanyCommand?: UpdateFactoringCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiCompanyFactoringcompanyPut(updateFactoringCompanyCommand?: UpdateFactoringCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1013,6 +1117,7 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: updateFactoringCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1031,9 +1136,17 @@ export class CompanyService {
     public apiCompanyGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyResponse>>;
     public apiCompanyGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1075,6 +1188,7 @@ export class CompanyService {
         return this.httpClient.request<CompanyResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1093,9 +1207,17 @@ export class CompanyService {
     public apiCompanyInsurancepolicyGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<InsurancePolicyResponse>>;
     public apiCompanyInsurancepolicyGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1137,6 +1259,7 @@ export class CompanyService {
         return this.httpClient.request<InsurancePolicyResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1159,9 +1282,17 @@ export class CompanyService {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyInsurancepolicyIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1203,6 +1334,7 @@ export class CompanyService {
         return this.httpClient.request<object>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1225,9 +1357,17 @@ export class CompanyService {
             throw new Error('Required parameter id was null or undefined when calling apiCompanyInsurancepolicyIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1269,6 +1409,7 @@ export class CompanyService {
         return this.httpClient.request<object>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1287,9 +1428,17 @@ export class CompanyService {
     public apiCompanyInsurancepolicyModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<InsurancePolicyModalResponse>>;
     public apiCompanyInsurancepolicyModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1331,6 +1480,7 @@ export class CompanyService {
         return this.httpClient.request<InsurancePolicyModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1368,9 +1518,17 @@ export class CompanyService {
     public apiCompanyInsurancepolicyPost(producerName?: string, issued?: string, expires?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, insurancePolicyAddons?: Array<CreateInsurancePolicyAddonCommand>, files?: Array<Blob>, companyId?: number, note?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiCompanyInsurancepolicyPost(producerName?: string, issued?: string, expires?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, insurancePolicyAddons?: Array<CreateInsurancePolicyAddonCommand>, files?: Array<Blob>, companyId?: number, note?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1493,6 +1651,7 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1531,9 +1690,17 @@ export class CompanyService {
     public apiCompanyInsurancepolicyPut(id?: number, producerName?: string, issued?: string, expires?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, insurancePolicyAddons?: Array<UpdateInsurancePolicyAddonCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, note?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiCompanyInsurancepolicyPut(id?: number, producerName?: string, issued?: string, expires?: string, phone?: string, email?: string, addressCity?: string, addressState?: string, addressCounty?: string, addressAddress?: string, addressStreet?: string, addressStreetNumber?: string, addressCountry?: string, addressZipCode?: string, addressStateShortName?: string, addressAddressUnit?: string, insurancePolicyAddons?: Array<UpdateInsurancePolicyAddonCommand>, files?: Array<Blob>, filesForDeleteIds?: Array<number>, note?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1661,6 +1828,78 @@ export class CompanyService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiCompanyLogoPost(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiCompanyLogoPost(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiCompanyLogoPost(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiCompanyLogoPost(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/company/logo`;
+        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1679,9 +1918,17 @@ export class CompanyService {
     public apiCompanyModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CompanyModalResponse>>;
     public apiCompanyModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1723,6 +1970,7 @@ export class CompanyService {
         return this.httpClient.request<CompanyModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1737,14 +1985,22 @@ export class CompanyService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<object>;
-    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<object>>;
-    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
+    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiCompanyPut(updateCompanyCommand?: UpdateCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1794,10 +2050,11 @@ export class CompanyService {
         }
 
         let localVarPath = `/api/company`;
-        return this.httpClient.request<object>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

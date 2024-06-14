@@ -252,6 +252,18 @@
                                 </button>
                             </ng-container>
 
+                            <ng-container
+                                *ngIf="showCloseBusinessButton"
+                            >
+                                <button
+                                    (click)="onAction('CLOSE_BUSINESS')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                >
+                                    Close Business
+                                </button>
+                            </ng-container>
+
                             <!-- Map Settings Reset -->
 
                             <ng-container
@@ -645,7 +657,8 @@
                                     'driver',
                                     'medical',
                                     'test',
-                                    'mvr'
+                                    'mvr',
+                                    'cdl'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -836,6 +849,18 @@
                                 'modal-gray-btn':
                                     confirmationData?.type !== 'open'
                             }"
+                            type="button"
+                        >
+                            Yes
+                        </button>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="confirmationData?.subType === 'void cdl'"
+                    >
+                        <button
+                            (click)="onAction('void-cdl')"
+                            class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                             type="button"
                         >
                             Yes
