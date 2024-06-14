@@ -201,7 +201,7 @@ export class DriverDetailsItemCdlComponent
                         }
  */
                         break;
-                    case DriverDetailsItemStringEnum.DELETE_ITEM:
+                    case DriverDetailsItemStringEnum.DELETE:
                         this.deleteCdlById(data.id);
 
                         if (data?.newCdlID) {
