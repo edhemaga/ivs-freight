@@ -13,4 +13,5 @@ export enum DriverDetailsItemStringEnum {
     EDIT = 'edit',
     RENEW = 'renew',
     DELETE_ITEM = 'delete-item',
+    DELETE = 'delete',
 }
