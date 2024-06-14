@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ContactEmailResponse } from './contactEmailResponse';
+import { FileResponse } from './fileResponse';
 import { ContactPhoneResponse } from './contactPhoneResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyContactLabelResponse } from './companyContactLabelResponse';
@@ -31,6 +32,7 @@ export interface CompanyContactResponse {
     contactEmails?: Array<ContactEmailResponse> | null;
     companyName?: string | null;
     companyUserId?: number;
+    avatarFile?: FileResponse;
     createdAt?: string;
     updatedAt?: string;
 }

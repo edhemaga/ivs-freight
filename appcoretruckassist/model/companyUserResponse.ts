@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
@@ -46,6 +47,7 @@ export interface CompanyUserResponse {
     commission?: number | null;
     note?: string | null;
     verified?: boolean;
+    avatarFile?: FileResponse;
     lastLogin?: string | null;
     createdAt?: string;
     updatedAt?: string;

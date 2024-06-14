@@ -175,67 +175,67 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
 
         this.documents = files;
 
-        if (this.selectedMode === SelectedMode.REVIEW) {
-            if (stepValues.files[0].review) {
-                this.stepHasReviewValues = true;
+        // if (this.selectedMode === SelectedMode.REVIEW) {
+        //     if (stepValues.files[0].review) {
+        //         this.stepHasReviewValues = true;
 
-                /*    const {
-                    isIssueDateValid,
-                    isExpireDateValid,
-                    dateMessage,
-                    filesReviewMessage,
-                } = stepValues.medicalCertificateReview;
+        //         /*    const {
+        //             isIssueDateValid,
+        //             isExpireDateValid,
+        //             dateMessage,
+        //             filesReviewMessage,
+        //         } = stepValues.medicalCertificateReview;
 
-                this.openAnnotationArray[0] = {
-                    ...this.openAnnotationArray[0],
-                    lineInputs: [!isIssueDateValid, !isExpireDateValid],
-                    displayAnnotationButton:
-                        (!isIssueDateValid || !isExpireDateValid) &&
-                        !dateMessage
-                            ? true
-                            : false,
-                    displayAnnotationTextArea: dateMessage ? true : false,
-                }; */
+        //         this.openAnnotationArray[0] = {
+        //             ...this.openAnnotationArray[0],
+        //             lineInputs: [!isIssueDateValid, !isExpireDateValid],
+        //             displayAnnotationButton:
+        //                 (!isIssueDateValid || !isExpireDateValid) &&
+        //                 !dateMessage
+        //                     ? true
+        //                     : false,
+        //             displayAnnotationTextArea: dateMessage ? true : false,
+        //         }; */
 
-                for (let i = 0; i < stepValues.files.length; i++) {
-                    const isFileValid = stepValues.files[i].review.isValid;
+        //         for (let i = 0; i < stepValues.files.length; i++) {
+        //             const isFileValid = stepValues.files[i].review.isValid;
 
-                    this.openAnnotationArray[1].lineInputs = [
-                        ...this.openAnnotationArray[1].lineInputs,
-                        !isFileValid,
-                    ];
-                }
-                /*  
-                const filesLineInputItems =
-                    this.openAnnotationArray[1].lineInputs;
-                const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(filesLineInputItems);
+        //             this.openAnnotationArray[1].lineInputs = [
+        //                 ...this.openAnnotationArray[1].lineInputs,
+        //                 !isFileValid,
+        //             ];
+        //         }
+        //         /*  
+        //         const filesLineInputItems =
+        //             this.openAnnotationArray[1].lineInputs;
+        //         const isAnyInputInLineIncorrect =
+        //             anyInputInLineIncorrect(filesLineInputItems);
 
-                 if (isAnyInputInLineIncorrect && !filesReviewMessage) {
-                    this.openAnnotationArray[1].displayAnnotationButton = true;
-                }
+        //          if (isAnyInputInLineIncorrect && !filesReviewMessage) {
+        //             this.openAnnotationArray[1].displayAnnotationButton = true;
+        //         }
 
-                if (isAnyInputInLineIncorrect && filesReviewMessage) {
-                    this.openAnnotationArray[1].displayAnnotationTextArea =
-                        true;
-                } */
+        //         if (isAnyInputInLineIncorrect && filesReviewMessage) {
+        //             this.openAnnotationArray[1].displayAnnotationTextArea =
+        //                 true;
+        //         } */
 
-                const inputFieldsArray = JSON.stringify(
-                    this.openAnnotationArray.map((item) => item.lineInputs)
-                );
+        //         const inputFieldsArray = JSON.stringify(
+        //             this.openAnnotationArray.map((item) => item.lineInputs)
+        //         );
 
-                if (inputFieldsArray.includes('true')) {
-                    this.hasIncorrectFields = true;
-                } else {
-                    this.hasIncorrectFields = false;
-                }
+        //         if (inputFieldsArray.includes('true')) {
+        //             this.hasIncorrectFields = true;
+        //         } else {
+        //             this.hasIncorrectFields = false;
+        //         }
 
-                /*    this.medicalCertificateForm.patchValue({
-                    firstRowReview: dateMessage,
-                    secondRowReview: filesReviewMessage,
-                }); */
-            }
-        }
+        //         /*    this.medicalCertificateForm.patchValue({
+        //             firstRowReview: dateMessage,
+        //             secondRowReview: filesReviewMessage,
+        //         }); */
+        //     }
+        // }
     }
 
     public onFilesAction(event: any): void {

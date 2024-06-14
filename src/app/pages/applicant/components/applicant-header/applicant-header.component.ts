@@ -225,143 +225,143 @@ export class ApplicantHeaderComponent implements OnInit, OnChanges {
                                 };
                             }
 
-                            if (index === 2) {
-                                let hasIncorrectValue: boolean;
-                                let filteredMedicalCertReview = [];
-                                let filesHaveIncorrectValue: boolean;
+                            // if (index === 2) {
+                            //     let hasIncorrectValue: boolean;
+                            //     let filteredMedicalCertReview = [];
+                            //     let filesHaveIncorrectValue: boolean;
 
-                                const medicalCertReview =
-                                    res?.medicalCertificate
-                                        ?.medicalCertificateReview;
+                            //     const medicalCertReview =
+                            //         res?.medicalCertificate
+                            //             ?.medicalCertificateReview;
 
-                                if (medicalCertReview) {
-                                    hasIncorrectValue =
-                                        isAnyPropertyInObjectFalse(
-                                            medicalCertReview
-                                        );
-                                }
+                            //     if (medicalCertReview) {
+                            //         hasIncorrectValue =
+                            //             isAnyPropertyInObjectFalse(
+                            //                 medicalCertReview
+                            //             );
+                            //     }
 
-                                const medicalCertItems =
-                                    res?.medicalCertificate?.files;
+                            //     const medicalCertItems =
+                            //         res?.medicalCertificate?.files;
 
-                                const medicalCertReviewItems =
-                                    medicalCertItems?.map(
-                                        (item) => item?.review
-                                    );
+                            //     const medicalCertReviewItems =
+                            //         medicalCertItems?.map(
+                            //             (item) => item?.review
+                            //         );
 
-                                if (medicalCertReviewItems) {
-                                    if (medicalCertReviewItems[0]) {
-                                        let incorrectValuesArray = [];
+                            //     if (medicalCertReviewItems) {
+                            //         if (medicalCertReviewItems[0]) {
+                            //             let incorrectValuesArray = [];
 
-                                        for (
-                                            let i = 0;
-                                            i < medicalCertReviewItems?.length;
-                                            i++
-                                        ) {
-                                            const filteredItem =
-                                                medicalCertReviewItems[i];
+                            //             for (
+                            //                 let i = 0;
+                            //                 i < medicalCertReviewItems?.length;
+                            //                 i++
+                            //             ) {
+                            //                 const filteredItem =
+                            //                     medicalCertReviewItems[i];
 
-                                            filteredMedicalCertReview = [
-                                                ...filteredMedicalCertReview,
-                                                filteredItem,
-                                            ];
+                            //                 filteredMedicalCertReview = [
+                            //                     ...filteredMedicalCertReview,
+                            //                     filteredItem,
+                            //                 ];
 
-                                            const objectHasIncorrectValue =
-                                                isAnyPropertyInObjectFalse(
-                                                    filteredItem
-                                                );
+                            //                 const objectHasIncorrectValue =
+                            //                     isAnyPropertyInObjectFalse(
+                            //                         filteredItem
+                            //                     );
 
-                                            incorrectValuesArray = [
-                                                ...incorrectValuesArray,
-                                                objectHasIncorrectValue,
-                                            ];
-                                        }
+                            //                 incorrectValuesArray = [
+                            //                     ...incorrectValuesArray,
+                            //                     objectHasIncorrectValue,
+                            //                 ];
+                            //             }
 
-                                        if (
-                                            isAnyValueInArrayTrue(
-                                                incorrectValuesArray
-                                            )
-                                        ) {
-                                            filesHaveIncorrectValue = true;
-                                        } else {
-                                            filesHaveIncorrectValue = false;
-                                        }
-                                    }
-                                }
+                            //             if (
+                            //                 isAnyValueInArrayTrue(
+                            //                     incorrectValuesArray
+                            //                 )
+                            //             ) {
+                            //                 filesHaveIncorrectValue = true;
+                            //             } else {
+                            //                 filesHaveIncorrectValue = false;
+                            //             }
+                            //         }
+                            //     }
 
-                                return {
-                                    ...item,
-                                    isReviewed:
-                                        medicalCertReviewItems &&
-                                        medicalCertReviewItems[0]
-                                            ? true
-                                            : false,
-                                    hasIncorrectAnswer:
-                                        hasIncorrectValue ||
-                                        filesHaveIncorrectValue,
-                                };
-                            }
+                            //     return {
+                            //         ...item,
+                            //         isReviewed:
+                            //             medicalCertReviewItems &&
+                            //             medicalCertReviewItems[0]
+                            //                 ? true
+                            //                 : false,
+                            //         hasIncorrectAnswer:
+                            //             hasIncorrectValue ||
+                            //             filesHaveIncorrectValue,
+                            //     };
+                            // }
 
-                            if (index === 3) {
-                                const mvrAuthItems = res?.mvrAuth?.files;
+                            // if (index === 3) {
+                            //     const mvrAuthItems = res?.mvrAuth?.files;
 
-                                const mvrAuthReviewItems = mvrAuthItems?.map(
-                                    (item) => item?.review
-                                );
+                            //     const mvrAuthReviewItems = mvrAuthItems?.map(
+                            //         (item) => item?.review
+                            //     );
 
-                                let filteredMvrAuthItemsReview = [];
-                                let hasIncorrectValue: boolean;
+                            //     let filteredMvrAuthItemsReview = [];
+                            //     let hasIncorrectValue: boolean;
 
-                                if (mvrAuthReviewItems) {
-                                    if (mvrAuthReviewItems[0]) {
-                                        let incorrectValuesArray = [];
+                            //     if (mvrAuthReviewItems) {
+                            //         if (mvrAuthReviewItems[0]) {
+                            //             let incorrectValuesArray = [];
 
-                                        for (
-                                            let i = 0;
-                                            i < mvrAuthReviewItems?.length;
-                                            i++
-                                        ) {
-                                            const filteredItem =
-                                                mvrAuthReviewItems[i];
+                            //             for (
+                            //                 let i = 0;
+                            //                 i < mvrAuthReviewItems?.length;
+                            //                 i++
+                            //             ) {
+                            //                 const filteredItem =
+                            //                     mvrAuthReviewItems[i];
 
-                                            filteredMvrAuthItemsReview = [
-                                                ...filteredMvrAuthItemsReview,
-                                                filteredItem,
-                                            ];
+                            //                 filteredMvrAuthItemsReview = [
+                            //                     ...filteredMvrAuthItemsReview,
+                            //                     filteredItem,
+                            //                 ];
 
-                                            const objectHasIncorrectValue =
-                                                isAnyPropertyInObjectFalse(
-                                                    filteredItem
-                                                );
+                            //                 const objectHasIncorrectValue =
+                            //                     isAnyPropertyInObjectFalse(
+                            //                         filteredItem
+                            //                     );
 
-                                            incorrectValuesArray = [
-                                                ...incorrectValuesArray,
-                                                objectHasIncorrectValue,
-                                            ];
-                                        }
+                            //                 incorrectValuesArray = [
+                            //                     ...incorrectValuesArray,
+                            //                     objectHasIncorrectValue,
+                            //                 ];
+                            //             }
 
-                                        if (
-                                            isAnyValueInArrayTrue(
-                                                incorrectValuesArray
-                                            )
-                                        ) {
-                                            hasIncorrectValue = true;
-                                        } else {
-                                            hasIncorrectValue = false;
-                                        }
-                                    }
-                                }
+                            //             if (
+                            //                 isAnyValueInArrayTrue(
+                            //                     incorrectValuesArray
+                            //                 )
+                            //             ) {
+                            //                 hasIncorrectValue = true;
+                            //             } else {
+                            //                 hasIncorrectValue = false;
+                            //             }
+                            //         }
+                            //     }
 
-                                return {
-                                    ...item,
-                                    isReviewed:
-                                        mvrAuthReviewItems &&
-                                        mvrAuthReviewItems[0]
-                                            ? true
-                                            : false,
-                                    hasIncorrectAnswer: hasIncorrectValue,
-                                };
-                            }
+                            //     return {
+                            //         ...item,
+                            //         isReviewed:
+                            //             mvrAuthReviewItems &&
+                            //             mvrAuthReviewItems[0]
+                            //                 ? true
+                            //                 : false,
+                            //         hasIncorrectAnswer: hasIncorrectValue,
+                            //     };
+                            // }
 
                             if (index === 4) {
                                 return {
