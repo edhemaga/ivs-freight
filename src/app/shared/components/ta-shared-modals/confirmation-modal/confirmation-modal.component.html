@@ -62,7 +62,8 @@
             : editData?.template === 'void' ||
               (editData?.template === 'cdl' && editData?.type === 'activate')
             ? 'hire'
-            : editData?.subType === 'void cdl'
+            : editData?.subType === 'void cdl' ||
+              editData?.subType === 'cdl void'
             ? 'close'
             : editData?.type
     "

@@ -140,12 +140,6 @@ export class DriverDetailsItemComponent
                             if (
                                 res.template === DriverDetailsItemStringEnum.CDL
                             ) {
-                                this.deleteCdlByIdFunction(res.id);
-                                if (res?.data?.newCdlID) {
-                                    setTimeout(() => {
-                                        this.activateCdl(res?.data?.newCdlID);
-                                    }, 1000);
-                                }
                             } else if (res.template === 'medical') {
                                 this.deleteMedicalByIdFunction(res.id);
                             } else if (res.template === 'mvr') {
@@ -333,13 +327,6 @@ export class DriverDetailsItemComponent
 
     public onFileAction(event: File, type: string): void {}
 
-    private activateCdl(id: number) {
-        this.cdlService
-            .activateCdlById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({});
-    }
-
     public getMedicalById(id: number) {
         this.medicalService
             .getMedicalById(id)
@@ -385,16 +372,6 @@ export class DriverDetailsItemComponent
                 break;
             }
         }
-    }
-
-    public deleteCdlByIdFunction(id: number) {
-        this.cdlService
-            .deleteCdlById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
     }
 
     private deleteMedicalByIdFunction(id: number) {

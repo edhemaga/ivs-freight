@@ -172,8 +172,7 @@ export class DriverCdlService {
                     },
                 });
 
-                /*
-               this.cdlService.apiCdlIdGet(res.id).subscribe({
+                this.cdlService.apiCdlIdGet(id).subscribe({
                     next: (resp: any) => {
                         newData.cdls.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
@@ -189,10 +188,8 @@ export class DriverCdlService {
 
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-
                     },
                 });
-                */
             })
         );
     }
@@ -219,8 +216,7 @@ export class DriverCdlService {
                     },
                 });
 
-                /*
-              this.cdlService.apiCdlIdGet(res.id).subscribe({
+                this.cdlService.apiCdlIdGet(id).subscribe({
                     next: (resp: any) => {
                         newData.cdls.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
@@ -236,11 +232,8 @@ export class DriverCdlService {
 
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-
                     },
                 });
-
-                */
             })
         );
     }

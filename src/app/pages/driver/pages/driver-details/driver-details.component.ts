@@ -27,7 +27,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
@@ -51,9 +50,6 @@ import { DriversItemStore } from '@pages/driver/state/driver-details-state/drive
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
-
-// Enums
-import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
 
 @Component({
     selector: 'app-driver-details',
@@ -96,8 +92,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     public data: any;
 
     public isActiveCdl: boolean;
-    public dataCdl: any;
-    public cdlActiveId: number;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -112,7 +106,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private detailsPageDriverService: DetailsPageService,
         private confirmationService: ConfirmationService,
         private detailsDataService: DetailsDataService,
-        private cdlService: DriverCdlService,
         private confirmationActivationService: ConfirmationActivationService,
 
         // store
@@ -143,6 +136,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         return index;
     }
 
+    public isEmpty(obj: Record<string, any>): boolean {
+        return !Object.keys(obj).length;
+    }
+
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -153,67 +150,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             this.deleteDriverById(res.data.id);
 
                             break;
-                        case 'activate':
-                            if (
-                                res?.cdlStatus &&
-                                res?.cdlStatus == 'Activate'
-                            ) {
-                                this.activateCdl(res.data.id);
-                            }
-                            break;
-                        case 'info':
-                            if (res.cdlStatus === 'New') {
-                            }
-                        case 'deactivate': {
+                        case DriverDetailsStringEnum.DEACTIVATE:
                             this.changeDriverStatus(res.id);
-                            break;
-                        }
-                        case 'info':
-                            if (res.cdlStatus) {
-                                if (res.cdlStatus === 'New') {
-                                    let driverId = res.data.data.id
-                                        ? res.data.data.id
-                                        : res.data.driver.id;
-                                    this.deactivateCdl(res.data.id, driverId);
-                                    if (
-                                        this.detailsDataService.cdlId !=
-                                            res.data.id ||
-                                        res?.data?.newCdlID
-                                    ) {
-                                        let newCdlId = res?.data?.newCdlID
-                                            ? res?.data?.newCdlID
-                                            : this.detailsDataService.cdlId;
-                                        setTimeout(() => {
-                                            this.activateCdl(newCdlId);
-                                        }, 1000);
-                                    }
-                                } else {
-                                    this.activateCdl(res.data.id);
-                                }
-                            } else if (
-                                res.subType === DropActionsStringEnum.VOID_CDL
-                            ) {
-                                console.log('void cdl');
-                                let driverId = res.data.data.id
-                                    ? res.data.data.id
-                                    : res.data.driver.id;
-                                this.deactivateCdl(res.data.id, driverId);
-
-                                if (
-                                    this.detailsDataService.cdlId !=
-                                        res.data.id ||
-                                    res?.data?.newCdlID
-                                ) {
-                                    let newCdlId = res?.data?.newCdlID
-                                        ? res?.data?.newCdlID
-                                        : this.detailsDataService.cdlId;
-                                    setTimeout(() => {
-                                        this.activateCdl(newCdlId);
-                                    }, 1000);
-                                }
-                            } else {
-                                this.activateCdl(res.data.id);
-                            }
 
                             break;
                         default:
@@ -263,21 +201,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     public getDetailsOptions(status: number): void {
         this.detailsDropdownOptions =
             DriverDetailsHelper.getDetailsDropdownOptions(status);
-
-        ///////////////////////////////
-
-        this.isActiveCdl = false;
-        this.cdlActiveId = 0;
-        /*  data?.cdls?.map((item) => {
-            if (item.status == 1) {
-                this.cdlActiveId = item.id;
-             
-                this.isActiveCdl = true;
-            } else {
-         
-                this.isActiveCdl = false;
-            }
-        }); */
     }
 
     public getDetailsConfig(driverData: DriverResponse) {
@@ -325,9 +248,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         );
 
                         this.newDriverId = id;
-
-                        if (this.cdlActiveId > 0)
-                            this.getCdlById(this.cdlActiveId);
 
                         this.getDetailsOptions(res.status);
                         this.getDetailsConfig(res);
@@ -574,33 +494,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.hasDangerCdl = !arrayCdl.includes(false);
         this.hasDangerMedical = !arrayMedical.includes(false);
         this.hasDangerMvr = !arrayMvr.includes(false);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-
-    public isEmpty(obj: Record<string, any>): boolean {
-        return Object.keys(obj).length === 0;
-    }
-
-    public getCdlById(id: number) {
-        this.cdlService
-            .getCdlById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.dataCdl = item));
-    }
-
-    private deactivateCdl(id: number, driverId: number) {
-        this.cdlService
-            .deactivateCdlById(id, driverId)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({});
-    }
-
-    private activateCdl(id: number) {
-        this.cdlService
-            .activateCdlById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({});
     }
 
     ngOnDestroy(): void {

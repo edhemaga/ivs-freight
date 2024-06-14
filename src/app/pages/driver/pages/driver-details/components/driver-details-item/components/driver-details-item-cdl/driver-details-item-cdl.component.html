@@ -1,6 +1,6 @@
 <div class="card-width">
     <app-ta-common-card
-        *ngFor="let cdl of cardsData; let i = index; trackBy: trackByIdentity"
+        *ngFor="let cdl of cdlData; let i = index; trackBy: trackByIdentity"
         [cardNameCurrent]="'cdl'"
         [cardNameCommon]="cdl?.cdlNumber"
         [expDateClose]="
@@ -132,11 +132,7 @@
                     </ng-container>
 
                     <ng-container
-                        *ngIf="
-                            cdl?.showButton &&
-                            !cdl?.dateDeactivated &&
-                            cdl?.issueDate < currentDate
-                        "
+                        *ngIf="cdl?.showButton && !cdl?.dateDeactivated"
                     >
                         <div
                             (click)="openCommand(cdl, 'renew-licence')"
