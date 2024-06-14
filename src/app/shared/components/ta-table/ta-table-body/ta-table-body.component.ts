@@ -50,7 +50,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { TaContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
+import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -114,7 +114,7 @@ import { TaStateImageTextComponent } from '@shared/components/ta-state-image-tex
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
         TaProgresBarComponent,
-        TaContactsComponent,
+        TaInputDropdownContactsComponent,
         TaStateImageTextComponent,
         TaPasswordAccountHiddenCharactersComponent,
 
@@ -196,7 +196,8 @@ export class TaTableBodyComponent
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
     public widthPopover: number = 0;
-
+    public endorsement: boolean = false;
+    public restriction: boolean = false;
     public companyUser: SignInResponse;
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
@@ -787,19 +788,34 @@ export class TaTableBodyComponent
     public onShowDescriptionDropdown(
         popup: NgbPopover,
         row: any,
-        width: number
+        width: number,
+        column: any,
+        field: string
     ): void {
-        if (row.descriptionItems.length > 1) {
-            this.descriptionTooltip = popup;
-            this.widthPopover = width;
+        this.restriction = false;
+        this.endorsement = false;
+        this.widthPopover = width;
+        this.descriptionTooltip = popup;
+        if (row.tableOffDutyLocation) {
+            if (field !== 'tableOffDutyLocation') {
+                this.endorsement = true;
+            }
+            if (field === 'tableCdlDetailRestriction') {
+                this.restriction = true;
+            }
+            if (popup.isOpen()) {
+                popup.close();
+            } else {
+                popup.open({ data: column });
+            }
+        } else if (row.descriptionItems.length) {
             if (popup.isOpen()) {
                 popup.close();
             } else {
                 popup.open({ data: row });
             }
-
-            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
+        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
     // Show Invoice Aging Dropdown

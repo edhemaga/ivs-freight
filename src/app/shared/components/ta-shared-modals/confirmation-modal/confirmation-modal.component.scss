@@ -76,6 +76,14 @@
                     color: $bw5;
                 }
             }
+
+            .cdl-void-text {
+                width: 70%;
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black;
+            }
+
             .unit-container {
                 width: fit-content;
                 height: 18px;
@@ -119,11 +127,42 @@
                 padding: 2px 6px;
                 background-color: $bw5;
                 border-radius: 2px;
+                user-select: none;
 
                 p {
                     font-size: 11px;
                     line-height: 14px;
                     color: $white;
+                }
+            }
+
+            .pdf-file-image {
+                width: 36px;
+                height: 36px;
+                border-radius: 2px;
+                background: $bw2;
+
+                app-ta-upload-file {
+                    .ta-upload-file-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transform: scale(0.225);
+
+                        .ta-upload-file-content {
+                            margin: 0 !important;
+
+                            .ng2-pdf-viewer-container {
+                                top: 0px !important;
+                            }
+
+                            .image_main_holder {
+                                .spinner {
+                                    transform: scale(4);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

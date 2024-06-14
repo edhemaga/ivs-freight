@@ -1687,8 +1687,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         originLongValue: this.originLongVal,
                         destinationLatValue: this.destLatVal,
                         destinationLongValue: this.destLongVal,
+                        rangeValue: this.locationRange,
                     };
 
+                    this.locationRangeSet = this.locationRange;
                     this.originLatValSet = this.originLatVal;
                     this.originLongValSet = this.originLongVal;
                     this.destLongValSet = this.destLongVal;

@@ -144,9 +144,17 @@ export class AccountService {
             throw new Error('Required parameter code was null or undefined when calling apiAccountAvatarCodeGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -188,6 +196,7 @@ export class AccountService {
         return this.httpClient.request<AvatarResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -207,9 +216,17 @@ export class AccountService {
     public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountForgotpasswordPut(forgotPasswordCommand?: ForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -263,6 +280,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: forgotPasswordCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -282,9 +300,17 @@ export class AccountService {
     public apiAccountLoginPost(signInCommand?: SignInCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SignInResponse>>;
     public apiAccountLoginPost(signInCommand?: SignInCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -338,6 +364,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: signInCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -357,9 +384,17 @@ export class AccountService {
     public apiAccountMobileCreateaccountPut(createMobileAccountCommand?: CreateMobileAccountCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountMobileCreateaccountPut(createMobileAccountCommand?: CreateMobileAccountCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -413,6 +448,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: createMobileAccountCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -432,9 +468,17 @@ export class AccountService {
     public apiAccountMobileCreatepasswordPut(createDriverPasswordMobileCommand?: CreateDriverPasswordMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountMobileCreatepasswordPut(createDriverPasswordMobileCommand?: CreateDriverPasswordMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -488,6 +532,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: createDriverPasswordMobileCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -507,9 +552,17 @@ export class AccountService {
     public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountMobileForgotpasswordPut(driverForgotPasswordCommand?: DriverForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -563,6 +616,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: driverForgotPasswordCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -582,9 +636,17 @@ export class AccountService {
     public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SignInResponse>>;
     public apiAccountMobileLoginPost(loginMobileCommand?: LoginMobileCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -638,6 +700,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: loginMobileCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -657,9 +720,17 @@ export class AccountService {
     public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountMobileRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -713,6 +784,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: refreshTokenCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -732,9 +804,17 @@ export class AccountService {
     public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountMobileVerifydriverPut(verifyDriverCommand?: VerifyDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -788,6 +868,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: verifyDriverCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -807,9 +888,17 @@ export class AccountService {
     public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountMobileVerifyforgotpasswordPut(verifyForgotPasswordDriverCommand?: VerifyForgotPasswordDriverCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -863,6 +952,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: verifyForgotPasswordDriverCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -882,9 +972,17 @@ export class AccountService {
     public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountRefreshPost(refreshTokenCommand?: RefreshTokenCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -938,6 +1036,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: refreshTokenCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -957,9 +1056,17 @@ export class AccountService {
     public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountResendsignupcompanyoruserPut(resendSignUpCompanyOrUserCommand?: ResendSignUpCompanyOrUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1013,6 +1120,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: resendSignUpCompanyOrUserCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1032,9 +1140,17 @@ export class AccountService {
     public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<SelectCompanyResponse>>;
     public apiAccountSelectcompanyPost(selectCompanyCommand?: SelectCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1088,6 +1204,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: selectCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1107,9 +1224,17 @@ export class AccountService {
     public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountSetnewpasswordPut(setNewPasswordCommand?: SetNewPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1163,6 +1288,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: setNewPasswordCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1182,9 +1308,17 @@ export class AccountService {
     public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountSignupcompanyPost(signUpCompanyCommand?: SignUpCompanyCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1238,6 +1372,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: signUpCompanyCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1257,9 +1392,17 @@ export class AccountService {
     public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountSignupuserPut(signupUserCommand?: SignupUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1313,6 +1456,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: signupUserCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1332,9 +1476,17 @@ export class AccountService {
     public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountVerifyforgotpasswordPut(verifyForgotPasswordCommand?: VerifyForgotPasswordCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1388,6 +1540,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: verifyForgotPasswordCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1407,9 +1560,17 @@ export class AccountService {
     public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<object>>;
     public apiAccountVerifyownerPut(verifyOwnerCommand?: VerifyOwnerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1463,6 +1624,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: verifyOwnerCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1482,9 +1644,17 @@ export class AccountService {
     public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccountVerifyuserPut(verifyUserCommand?: VerifyUserCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1538,6 +1708,7 @@ export class AccountService {
             {
                 context: localVarHttpContext,
                 body: verifyUserCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

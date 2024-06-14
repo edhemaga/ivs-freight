@@ -171,6 +171,12 @@ $tab-colors: '26A690', 'EF5350', '3074D3';
                 font-size: 11px;
                 font-weight: 700;
                 text-transform: uppercase;
+
+                &-big {
+                    line-height: 18px;
+                    text-transform: none;
+                    font-size: 14px;
+                }
             }
         }
 

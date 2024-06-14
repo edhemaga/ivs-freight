@@ -1310,7 +1310,9 @@
                                                 onShowDescriptionDropdown(
                                                     t1,
                                                     row,
-                                                    column.width
+                                                    column.width,
+                                                    row[column.field],
+                                                    column.field
                                                 )
                                             "
                                             [ngbPopover]="descriptionPopover"
@@ -1957,7 +1959,9 @@
                                             triggers="manual"
                                             (hidden)="optionsPopupOpen = false"
                                             [mainTooltip]="row.colorName"
-                                            [tooltipBackground]="'#424242'"
+                                            [tooltipBackground]="
+                                                row[column.field]
+                                            "
                                             [tooltipColor]="'#ffff'"
                                             position="bottom"
                                         ></div>
@@ -1974,7 +1978,20 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <div class="truckassist-icon">
+                                        <div
+                                            class="truckassist-icon"
+                                            ngbTooltip
+                                            mainContent
+                                            [mainTooltip]="
+                                                row[column.tooltipTitle]
+                                            "
+                                            position="bottom"
+                                            [tooltipBackground]="
+                                                row[column.tooltipColor]
+                                            "
+                                            tooltipColor="#ffff"
+                                            tooltipTextAlign="center"
+                                        >
                                             <svg-icon
                                                 [class]="row[column.classField]"
                                                 [src]="
@@ -1992,6 +2009,62 @@
                                             ></svg-icon>
                                         </div>
                                     </div>
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'text-assigned'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                class="table-text"
+                                                [ngClass]="
+                                                    row[column.field].text
+                                                "
+                                                mainContent
+                                                [mainTooltip]="
+                                                    row[column.field].type
+                                                "
+                                                position="bottom"
+                                                [tooltipBackground]="
+                                                    row[column.field].color
+                                                "
+                                                tooltipColor="#ffff"
+                                                tooltipTextAlign="center"
+                                            >
+                                                <div
+                                                    (mouseenter)="
+                                                        row[
+                                                            column.field
+                                                        ].hover = true
+                                                    "
+                                                    (mouseleave)="
+                                                        row[
+                                                            column.field
+                                                        ].hover = false
+                                                    "
+                                                    [ngStyle]="{
+                                                        color: row[column.field]
+                                                            .hover
+                                                            ? row[column.field]
+                                                                  .color
+                                                            : '#2f2f2f'
+                                                    }"
+                                                >
+                                                    {{ row[column.field].text }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
                                     <ng-container
                                         *ngIf="column.ngTemplate === 'features'"
                                     >
@@ -3213,37 +3286,69 @@
                                             width: column.width + 'px'
                                         }"
                                     >
-                                        <div
-                                            #t1="ngbPopover"
-                                            *ngIf="row[column.field]"
-                                            [ngStyle]="{
-                                                width: column.width - 5 + 'px'
-                                            }"
-                                            class="description-container"
-                                            [innerHtml]="
-                                                row[column.field]
-                                                    | tableDescriptionTextPipe
-                                                        : column.width
+                                        <ng-container
+                                            *ngIf="
+                                                row[column.field] &&
+                                                row[column.field]?.length
                                             "
-                                            (click)="
-                                                onShowDescriptionDropdown(
-                                                    t1,
-                                                    row,
-                                                    column.width
-                                                )
-                                            "
-                                            [ngbPopover]="descriptionPopover"
-                                            container="body"
-                                            [placement]="'bottom-left'"
-                                            popoverClass="table-description-popover"
-                                            triggers="manual"
-                                            (hidden)="
-                                                descriptionPopoverOpen = -1
-                                            "
-                                            (shown)="
-                                                descriptionPopoverOpen = row.id
-                                            "
-                                        ></div>
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                [mainTooltip]="
+                                                    column.field !==
+                                                    'tableOffDutyLocation'
+                                                        ? column.field !==
+                                                          'tableCdlDetailRestriction'
+                                                            ? 'View Endorsements'
+                                                            : 'View Restrictions'
+                                                        : 'View Off Duty Locations'
+                                                "
+                                                tooltipBackground="#424242"
+                                                position="bottom"
+                                            >
+                                                <div
+                                                    #t1="ngbPopover"
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width -
+                                                            5 +
+                                                            'px'
+                                                    }"
+                                                    class="description-container"
+                                                    [innerHtml]="
+                                                        row[column.field]
+                                                            | tableDescriptionTextPipe
+                                                                : column.width
+                                                    "
+                                                    (click)="
+                                                        onShowDescriptionDropdown(
+                                                            t1,
+                                                            row,
+                                                            column.width,
+                                                            row[column.field],
+                                                            column.field
+                                                        )
+                                                    "
+                                                    [ngbPopover]="
+                                                        row.tableOffDutyLocation
+                                                            ? driverDescriptionPopover
+                                                            : descriptionPopover
+                                                    "
+                                                    container="body"
+                                                    [placement]="'bottom-left'"
+                                                    popoverClass="table-description-popover"
+                                                    triggers="manual"
+                                                    (hidden)="
+                                                        descriptionPopoverOpen =
+                                                            -1
+                                                    "
+                                                    (shown)="
+                                                        descriptionPopoverOpen =
+                                                            row.id
+                                                    "
+                                                ></div>
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- SHARED COLUMN-->
@@ -3856,7 +3961,7 @@
                                     </div>
 
                                     <!-- ENDORSEMENT & RESTRICTIONS COLUMN -->
-                                    <ng-container
+                                    <!-- <ng-container
                                         *ngIf="
                                             column.title === 'Endorsement' ||
                                             column.title === 'Restriction'
@@ -3879,7 +3984,7 @@
                                                 "
                                             ></p>
                                         </div>
-                                    </ng-container>
+                                    </ng-container> -->
 
                                     <!-- SEMI BOLD TEXT COLUMN -->
                                     <div
@@ -3978,6 +4083,64 @@
                                             ></svg-icon>
                                         </div>
                                     </div>
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'text-assigned'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <div
+                                                ngbTooltip
+                                                class="table-text"
+                                                [ngClass]="
+                                                    row[column.field].text
+                                                "
+                                                mainContent
+                                                [mainTooltip]="
+                                                    row[column.field].type
+                                                "
+                                                position="bottom"
+                                                [tooltipBackground]="
+                                                    row[column.field].color
+                                                "
+                                                tooltipColor="#ffff"
+                                                tooltipTextAlign="center"
+                                            >
+                                                <div
+                                                    (mouseenter)="
+                                                        row[
+                                                            column.field
+                                                        ].hover = true
+                                                    "
+                                                    (mouseleave)="
+                                                        row[
+                                                            column.field
+                                                        ].hover = false
+                                                    "
+                                                    [ngStyle]="{
+                                                        color: row[column.field]
+                                                            .hover
+                                                            ? row[column.field]
+                                                                  .color
+                                                            : '#2f2f2f',
+                                                        cursor: 'default'
+                                                    }"
+                                                >
+                                                    {{ row[column.field].text }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+
                                     <!-- SVG COLUMN -->
                                     <ng-container
                                         *ngIf="column.ngTemplate === 'features'"
@@ -4154,6 +4317,60 @@
                                                         [hasPopover]="true"
                                                         [isTable]="true"
                                                         [type]="'miles'"
+                                                    ></app-ta-progres-bar>
+                                                </span>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+
+                                    <!-- CREDIT PROGRESS COLUMN -->
+                                    <ng-container
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'progressCredit'
+                                        "
+                                    >
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset'
+                                            }"
+                                        >
+                                            <ng-container
+                                                *ngIf="
+                                                    row[column.field]
+                                                        ?.expirationCreditText
+                                                "
+                                            >
+                                                <span
+                                                    class="checkbox-tooltip"
+                                                    type="button"
+                                                    ngbTooltip
+                                                    [mainTooltip]="
+                                                        'View Credit'
+                                                    "
+                                                    tooltipBackground="#424242"
+                                                    position="bottom"
+                                                >
+                                                    <app-ta-progres-bar
+                                                        [percents]="
+                                                            row[column.field]
+                                                                .percentage
+                                                        "
+                                                        [text]="
+                                                            row[column.field]
+                                                                .expirationCreditText
+                                                        "
+                                                        [data]="row"
+                                                        [columnField]="
+                                                            column.field
+                                                        "
+                                                        [hasPopover]="true"
+                                                        [isTable]="true"
+                                                        [type]="'credit'"
                                                     ></app-ta-progres-bar>
                                                 </span>
                                             </ng-container>
@@ -5272,6 +5489,71 @@
             </div>
             <div class="right-background"></div>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #driverDescriptionPopover let-data="data">
+    <div class="description-dropdown-container">
+        <ng-container *ngIf="endorsement; else tableOffDutyLocation">
+            <div
+                class="description-titles"
+                [ngStyle]="{
+                    width: widthPopover + 'px'
+                }"
+            >
+                <div class="item-title">
+                    {{ restriction ? '# RESTRICTION' : '# ENDORSEMENT' }}
+                </div>
+            </div>
+            <div
+                class="description-popover-items"
+                [ngStyle]="{
+                    'min-width': '233px'
+                }"
+            >
+                <div
+                    class="description-popover-item"
+                    *ngFor="let item of data; let i = index"
+                >
+                    <div class="title-endorsment">
+                        {{ item.code }}
+                    </div>
+                    <div class="white-line">-</div>
+                    <div class="subtitle-endorsment">
+                        {{ item.description }}
+                    </div>
+                </div>
+                <div class="right-background"></div>
+            </div>
+        </ng-container>
+        <ng-template #tableOffDutyLocation>
+            <div
+                class="description-titles"
+                [ngStyle]="{
+                    width: widthPopover + 'px'
+                }"
+            >
+                <div class="item-title"># NAME • ADDRESS, CITY, STATE</div>
+            </div>
+            <div
+                class="description-popover-items"
+                [ngStyle]="{
+                    'min-width': '320px'
+                }"
+            >
+                <div
+                    class="description-popover-item"
+                    *ngFor="let item of data; let i = index"
+                >
+                    <div class="number">{{ i + 1 }}</div>
+                    <div class="content">
+                        <div class="title">{{ item.nickname }}</div>
+                        <div class="address">{{ item.address.address }}</div>
+                    </div>
+                </div>
+                <div class="right-background"></div>
+            </div>
+        </ng-template>
     </div>
 </ng-template>
 

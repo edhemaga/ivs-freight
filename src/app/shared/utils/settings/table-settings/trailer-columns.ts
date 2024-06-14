@@ -1026,6 +1026,11 @@ export function getTrailerColumnDefinition() {
             pdfWidth: 15,
             filter: '',
             isNumeric: false,
+            headIconStyle: {
+                width: 14,
+                height: 14,
+                imgPath: 'assets/svg/truckassist-table/note/Note.svg',
+            },
             index: 12,
             sortable: false,
             isActionColumn: true,

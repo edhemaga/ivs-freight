@@ -87,6 +87,17 @@ export class Configuration {
             this.credentials = {};
         }
 
+        // init default ApiKeyInQueryParams credential
+        if (!this.credentials['ApiKeyInQueryParams']) {
+            this.credentials['ApiKeyInQueryParams'] = () => {
+                if (this.apiKeys === null || this.apiKeys === undefined) {
+                    return undefined;
+                } else {
+                    return this.apiKeys['ApiKeyInQueryParams'] || this.apiKeys['ApiKey'];
+                }
+            };
+        }
+
         // init default bearer credential
         if (!this.credentials['bearer']) {
             this.credentials['bearer'] = () => {

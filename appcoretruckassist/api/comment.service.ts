@@ -116,9 +116,17 @@ export class CommentService {
             throw new Error('Required parameter id was null or undefined when calling apiCommentIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -160,6 +168,7 @@ export class CommentService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -182,9 +191,17 @@ export class CommentService {
             throw new Error('Required parameter id was null or undefined when calling apiCommentIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -226,6 +243,7 @@ export class CommentService {
         return this.httpClient.request<CommentResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -294,6 +312,12 @@ export class CommentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -354,9 +378,17 @@ export class CommentService {
     public apiCommentModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCommentModalResponse>>;
     public apiCommentModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -398,6 +430,7 @@ export class CommentService {
         return this.httpClient.request<GetCommentModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -417,9 +450,17 @@ export class CommentService {
     public apiCommentPost(createCommentCommand?: CreateCommentCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
     public apiCommentPost(createCommentCommand?: CreateCommentCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -473,6 +514,7 @@ export class CommentService {
             {
                 context: localVarHttpContext,
                 body: createCommentCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -492,9 +534,17 @@ export class CommentService {
     public apiCommentPut(updateCommentCommand?: UpdateCommentCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiCommentPut(updateCommentCommand?: UpdateCommentCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -548,6 +598,7 @@ export class CommentService {
             {
                 context: localVarHttpContext,
                 body: updateCommentCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

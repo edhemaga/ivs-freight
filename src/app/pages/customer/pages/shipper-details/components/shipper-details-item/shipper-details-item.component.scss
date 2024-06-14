@@ -1,6 +1,16 @@
 @import '../../shipper-details.component.scss';
 
 app-shipper-details-item {
+    .header-content {
+        margin-left: 5px !important;
+    }
+    .divider {
+        margin-left: 6px;
+        width: calc(100% - 12px);
+    }
+    .ta-card-header {
+        margin-right: 10px !important;
+    }
     .note-cards {
         padding: 0px 6px 0px 4px;
         .note-body {
@@ -149,7 +159,7 @@ app-shipper-details-item {
     .contact-wrapper {
         background-color: $color-white;
         border-radius: 3px;
-        padding: 8px 6px;
+        padding: 4px 2px;
         width: 340px;
         height: fit-content;
     }

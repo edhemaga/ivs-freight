@@ -45,7 +45,7 @@
             >
             <span *ngIf="arrayText"
                 >{{ copyValue[0]
-                }}<span class="boldVinSpan">{{ copyValue[1] }}</span>
+                }}<span class="boldVinSpan" [class.contactType]="type === 'Contacts'">{{ copyValue[1] }}</span>
             </span>
         </div>
         <div class="app-icon-copy" [class.leftIconOrder]="leftSideIcon">

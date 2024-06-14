@@ -9,7 +9,8 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { NotificationService } from '@shared/services/notification.service';
+import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // Store
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
@@ -22,6 +23,13 @@ import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
 // Models
 import { BrokerResponse } from 'appcoretruckassist';
+
+// Enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { BrokerDetailsStringEnum } from '@pages/customer/pages/broker-details/enums/broker-details-string.enum';
+
+// Svg Routes
+import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
 
 @Component({
     selector: 'app-broker-details',
@@ -40,19 +48,21 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     public newBrokerId: any = 0;
     public brokerConfData: any;
     public businessOpen: boolean;
+
     constructor(
         // Router
         private activated_route: ActivatedRoute,
         private router: Router,
 
         // Services
-        private notificationService: NotificationService,
         private brokerService: BrokerService,
         private detailsPageService: DetailsPageService,
         private dropDownService: DropDownService,
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private DetailsDataService: DetailsDataService,
+        private confirmationMoveService: ConfirmationMoveService,
+        private confirmationActivationService: ConfirmationActivationService,
 
         // Store
         private brokerMinimalStore: BrokerMinimalListStore,
@@ -76,82 +86,13 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        // Confirmation Subscribe
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res) => {
-                    switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'broker') {
-                                this.deleteBrokerById(res.id);
-                            }
-                            break;
-                        }
-                        case 'info': {
-                            if (
-                                res.template === 'broker' &&
-                                res.subType === 'ban list'
-                            ) {
-                                this.moveRemoveBrokerToBan(res.id);
-                            }
-                            if (
-                                res.template === 'broker' &&
-                                res.subType === 'dnu'
-                            ) {
-                                this.moveRemoveBrokerToDnu(res.id);
-                            }
-                            break;
-                        }
-                        case 'activate':
-                        case 'deactivate': {
-                            this.changeBrokerStatus(res?.id);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res.animation) {
-                    this.brokerInitConfig(res.data);
-                    this.cdRef.detectChanges();
-                }
-            });
-        this.detailsPageService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
+        this.confirmationSubscribe();
 
-                if (this.bdlq.hasEntity(id)) {
-                    query = this.bdlq.selectEntity(id).pipe(take(1));
-                    query.pipe(takeUntil(this.destroy$)).subscribe({
-                        next: (res: BrokerResponse) => {
-                            this.brokerInitConfig(res);
-                            this.newBrokerId = res.id;
-                            this.router.navigate([
-                                `/customer/${res.id}/broker-details`,
-                            ]);
-                            this.cdRef.detectChanges();
-                        },
-                    });
-                } else {
-                    //query = this.brokerService.getBrokerById(id);
-                    this.newBrokerId = id;
-                    this.router.navigate([`/customer/${id}/broker-details`]);
-                    this.cdRef.detectChanges();
-                }
-            });
+        this.actionAnimationSubscribe();
 
-        let brokerId = this.activated_route.snapshot.params.id;
-        let brokerData = {
-            ...this.BrokerItemStore?.getValue()?.entities[brokerId],
-        };
-        this.brokerInitConfig(brokerData);
+        this.detailsPageChange();
+
+        this.getBrokerStoreData();
     }
 
     public isEmpty(obj: Record<string, any>): boolean {
@@ -190,8 +131,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             (broker) => broker.id === data.id
         );
         this.initTableOptions(data);
-        //calling api every time data is loaded
-        //this.getBrokerById(data.id);
 
         this.businessOpen = data?.status ? true : false;
 
@@ -211,67 +150,63 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.brokerConfig = [
             {
                 id: 0,
-                nameDefault: 'Broker Detail',
-                template: 'general',
+                nameDefault: BrokerDetailsStringEnum.BROKER_DETAIL,
+                template: BrokerDetailsStringEnum.GENERAL,
                 data: data,
             },
             {
                 id: 1,
-                nameDefault: 'Load',
-                template: 'load',
+                nameDefault: BrokerDetailsStringEnum.LOAD,
+                template: BrokerDetailsStringEnum.LOAD_2,
                 icon: true,
-                hasArrowDown: true,
-                length: data?.loadStops?.loads?.data?.length
-                    ? data?.loadStops?.loads?.data?.length
-                    : 0,
+                hasArrowDown: false,
+                length: data?.loadStops?.loads?.data?.length ?? 0,
                 hasCost: true,
-                hide: false,
-                hasArrow: true,
-                brokerLoadDrop: true,
-                customText: 'Revenue',
+                hide: true,
+                hasArrow: false,
+                brokerLoadDrop: false,
+                customText: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 total: totalCost,
                 icons: [
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_clock.svg',
-                        name: 'clock',
+                        icon: BrokerDetailsSvgRoutes.clockIcon,
+                        name: BrokerDetailsStringEnum.CLOCK,
                     },
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
-                        name: 'search',
+                        icon: BrokerDetailsSvgRoutes.searchIcon,
+                        name: BrokerDetailsStringEnum.SEARCH,
                     },
 
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_broker-user.svg',
-                        name: 'broker-user',
+                        icon: BrokerDetailsSvgRoutes.brokerUserIcon,
+                        name: BrokerDetailsStringEnum.BROKER_USER,
                     },
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_broker-half-circle.svg',
-                        name: 'half-circle',
+                        icon: BrokerDetailsSvgRoutes.halfCircleIcon,
+                        name: BrokerDetailsStringEnum.HALF_CIRCLE,
                     },
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/truckassist-table/location-icon.svg',
-                        name: 'location',
+                        icon: BrokerDetailsSvgRoutes.locationIcon,
+                        name: BrokerDetailsStringEnum.LOCATION,
                     },
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_dollar.svg',
-                        name: 'dolar',
+                        icon: BrokerDetailsSvgRoutes.dollarIcon,
+                        name: BrokerDetailsStringEnum.DOLLAR,
                     },
                 ],
                 data: data,
             },
             {
                 id: 2,
-                nameDefault: 'Contact',
-                template: 'contact',
-                length: data?.brokerContacts?.length
-                    ? data.brokerContacts.length
-                    : 0,
+                nameDefault: BrokerDetailsStringEnum.CONTACT,
+                template: BrokerDetailsStringEnum.CONTACT_2,
+                length: data?.brokerContacts?.length ?? 0,
                 hide: false,
                 icon: true,
                 hasCost: false,
@@ -279,18 +214,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 icons: [
                     {
                         id: Math.random() * 1000,
-                        icon: 'assets/svg/common/ic_search.svg',
+                        icon: BrokerDetailsSvgRoutes.searchIcon,
                     },
                 ],
-                customText: '',
                 data: data,
             },
             {
                 id: 3,
-                nameDefault: 'Review',
-                template: 'review',
-                length: data?.reviews?.length ? data.reviews.length : 0,
-                customText: 'Date',
+                nameDefault: BrokerDetailsStringEnum.REVIEW,
+                template: BrokerDetailsStringEnum.REVIEW_2,
+                length: data?.ratingReviews?.length ?? 0,
                 hasCost: false,
                 hide: false,
                 data: data,
@@ -299,12 +232,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         ];
         this.brokerId = data?.id ? data.id : null;
     }
+
     public getBrokerById(id: number) {
         this.brokerService
             .getBrokerById(id, true)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item) => (this.brokerObject = item));
     }
+
     /**Function for dots in cards */
     public initTableOptions(data: BrokerResponse): void {
         this.brokerDrop = {
@@ -321,106 +256,109 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    svg: BrokerDetailsSvgRoutes.editIcon,
                     show: true,
-                    iconName: 'edit',
+                    iconName: TableStringEnum.EDIT,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Create Load',
-                    name: 'create-load',
-                    svg: 'assets/svg/common/ic_plus.svg',
+                    title: TableStringEnum.CREATE_LOAD_2,
+                    name: TableStringEnum.CREATE_LOAD,
+                    svg: BrokerDetailsSvgRoutes.plusIcon,
                     show: true,
                     blueIcon: true,
-                    iconName: 'ic_plus',
+                    iconName: BrokerDetailsStringEnum.IC_PLUS,
+                    hide: true,
                 },
                 {
-                    title: 'Add Contact',
-                    name: 'Contact',
-                    svg: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
+                    title: TableStringEnum.ADD_CONTRACT_2,
+                    name: TableStringEnum.CONTRACT,
+                    svg: BrokerDetailsSvgRoutes.avatarIcon,
                     show: true,
-                    iconName: 'add-contact',
+                    iconName: TableStringEnum.ADD_CONTACT,
                 },
                 {
-                    title: 'Write Review',
-                    name: 'Review',
-                    svg: 'assets/svg/common/review-pen.svg',
+                    title: TableStringEnum.WRITE_REVIEW_2,
+                    name: TableStringEnum.REVIEW,
+                    svg: BrokerDetailsSvgRoutes.reviewIcon,
                     show: true,
-                    iconName: 'write-review',
+                    iconName: TableStringEnum.WRITE_REVIEW,
                 },
                 {
                     title: data?.ban
-                        ? 'Remove from Ban List'
-                        : 'Move to Ban list',
-                    name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
-                    svg: 'assets/svg/common/ic_disable-status.svg',
+                        ? TableStringEnum.REMOVE_FROM_BAN_LIST
+                        : TableStringEnum.MOVE_TO_BAN_LIST_2,
+                    name: data?.ban
+                        ? TableStringEnum.REMOVE_FROM_BAN_LIST_2
+                        : TableStringEnum.MOVE_TO_BAN,
+                    svg: BrokerDetailsSvgRoutes.disableStatusIcon,
                     show: true,
-                    iconName: 'change-status',
+                    iconName: BrokerDetailsStringEnum.CHANGE_STATUS,
                 },
                 {
-                    title: data?.dnu ? 'Remove from DNU' : 'Move to DNU List',
-                    name: data?.dnu ? 'remove-from-dnu' : 'move-to-dnu',
-                    svg: 'assets/svg/common/ic_disable-status.svg',
+                    title: data?.dnu
+                        ? TableStringEnum.REMOVE_FROM_DNU_LIST
+                        : TableStringEnum.MOVE_TO_DNU_LIST_2,
+                    name: data?.dnu
+                        ? TableStringEnum.REMOVE_FROM_DNU_LIST_2
+                        : TableStringEnum.MOVE_TO_DNU,
+                    svg: BrokerDetailsSvgRoutes.disableStatusIcon,
                     deactivate: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'change-status',
+                    iconName: BrokerDetailsStringEnum.CHANGE_STATUS,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
+                    hide: true,
                 },
                 {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
+                    title: TableStringEnum.SHARE_2,
+                    name: TableStringEnum.SHARE,
+                    svg: BrokerDetailsSvgRoutes.shareIcon,
                     show: true,
-                    iconName: 'share',
+                    iconName: TableStringEnum.SHARE,
+                    hide: true,
                 },
                 {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
+                    title: TableStringEnum.PRINT_2,
+                    name: TableStringEnum.PRINT,
+                    svg: BrokerDetailsSvgRoutes.printIcon,
                     show: true,
-                    iconName: 'print',
+                    iconName: TableStringEnum.PRINT,
+                    hide: true,
                 },
                 {
-                    title: 'border',
+                    title: TableStringEnum.BORDER,
                 },
                 {
-                    title: 'Close Business',
-                    name: 'close-business',
-                    svg: 'assets/svg/common/close-business-icon.svg',
+                    title: TableStringEnum.CLOSE_BUSINESS_2,
+                    name: TableStringEnum.CLOSE_BUSINESS,
+                    svg: BrokerDetailsSvgRoutes.closeBusinessIcon,
                     redIcon: true,
                     show: true,
-                    iconName: 'close-business',
+                    iconName: TableStringEnum.CLOSE_BUSINESS,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.TRUCK,
+                    text: BrokerDetailsStringEnum.DELETE_TRUCK_TEXT,
+                    svg: BrokerDetailsSvgRoutes.deleteIcon,
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: TableStringEnum.DELETE,
                 },
-                /*
-        {
-          title: 'Send Message',
-          name: 'dm',
-          svg: 'assets/svg/common/ic_dm.svg',
-          show: true,
-        },
-        */
             ],
             export: true,
         };
     }
+
     public moveRemoveBrokerToBan(id: number) {
         this.brokerService
             .changeBanStatus(id)
@@ -430,6 +368,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 error: () => {},
             });
     }
+
     public moveRemoveBrokerToDnu(id: number) {
         this.brokerService
             .changeDnuStatus(id)
@@ -439,14 +378,15 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
                 error: () => {},
             });
     }
+
     public onDropActions(event: any) {
         let eventType = '';
         if (
-            event.type == 'Contact' ||
-            event.type == 'edit' ||
-            event.type == 'Review'
+            event.type == TableStringEnum.CONTRACT ||
+            event.type == TableStringEnum.EDIT ||
+            event.type == TableStringEnum.REVIEW
         ) {
-            eventType = 'edit';
+            eventType = TableStringEnum.EDIT;
         } else {
             eventType = event.type;
         }
@@ -465,18 +405,18 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         this.dropDownService.dropActionsHeaderShipperBroker(
             eventObject,
             brokerData,
-            'broker'
+            TableStringEnum.BROKER
         );
     }
 
     public onModalAction(event: any) {
-        if (event == 'Load') {
+        if (event == BrokerDetailsStringEnum.LOAD) {
             return false;
         }
         let eventObject = {
             data: undefined,
             id: this.brokerId,
-            type: 'edit',
+            type: TableStringEnum.EDIT,
             openedTab: event,
         };
 
@@ -484,7 +424,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             this.dropDownService.dropActionsHeaderShipperBroker(
                 eventObject,
                 this.brokerObject,
-                'broker'
+                TableStringEnum.BROKER
             );
         }, 100);
     }
@@ -494,8 +434,122 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    public changeBrokerStatus(id: any) {
-        this.brokerService.changeBrokerStatus(id);
+    public changeBrokerStatus(id: number): void {
+        this.brokerService
+            .changeBrokerStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private confirmationSubscribe(): void {
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    switch (res.type) {
+                        case TableStringEnum.DELETE:
+                            if (res.template === TableStringEnum.BROKER) {
+                                this.deleteBrokerById(res.id);
+                            }
+                            break;
+
+                        case TableStringEnum.INFO:
+                            if (
+                                res.template === TableStringEnum.BROKER &&
+                                res.subType === TableStringEnum.BAN_LIST
+                            ) {
+                                this.moveRemoveBrokerToBan(res.id);
+                            }
+                            if (
+                                res.template === TableStringEnum.BROKER &&
+                                res.subType === TableStringEnum.DNU
+                            ) {
+                                this.moveRemoveBrokerToDnu(res.id);
+                            }
+                            break;
+
+                        case TableStringEnum.ACTIVATE:
+                        case TableStringEnum.DEACTIVATE:
+                            this.changeBrokerStatus(res?.id);
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+            });
+
+        // Move to Ban/Dnu subscribe
+        this.confirmationMoveService.getConfirmationMoveData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (res.subType === TableStringEnum.BAN) {
+                        this.moveRemoveBrokerToBan(res.data.id);
+                    } else {
+                        this.moveRemoveBrokerToDnu(res.data.id);
+                    }
+                }
+            });
+
+        // Open / Close Business subscribe
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    if (res.template === TableStringEnum.INFO) {
+                        this.changeBrokerStatus(res.data.id);
+                    }
+                }
+            });
+    }
+
+    private actionAnimationSubscribe(): void {
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res?.animation) {
+                    this.brokerInitConfig(res.data);
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+
+    private detailsPageChange(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+
+                if (this.bdlq.hasEntity(id)) {
+                    query = this.bdlq.selectEntity(id).pipe(take(1));
+                    query.pipe(takeUntil(this.destroy$)).subscribe({
+                        next: (res: BrokerResponse) => {
+                            this.brokerInitConfig(res);
+                            this.newBrokerId = res.id;
+                            this.router.navigate([
+                                `/list/customer/${res.id}/broker-details`,
+                            ]);
+                            this.cdRef.detectChanges();
+                        },
+                    });
+                } else {
+                    this.newBrokerId = id;
+                    this.router.navigate([
+                        `/list/customer/${id}/broker-details`,
+                    ]);
+                    this.cdRef.detectChanges();
+                }
+            });
+    }
+
+    private getBrokerStoreData(): void {
+        const brokerId = this.activated_route.snapshot.params.id;
+        const brokerData = {
+            ...this.BrokerItemStore?.getValue()?.entities[brokerId],
+        };
+        this.brokerInitConfig(brokerData);
     }
 
     ngOnDestroy(): void {

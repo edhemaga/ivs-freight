@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadResponsePagination } from './loadResponsePagination';
+import { LoadListDtoPagination } from './loadListDtoPagination';
 
 
 export interface LoadListResponse { 
-    pagination?: LoadResponsePagination;
+    pagination?: LoadListDtoPagination;
     pendingCount?: number;
     activeCount?: number;
     closedCount?: number;

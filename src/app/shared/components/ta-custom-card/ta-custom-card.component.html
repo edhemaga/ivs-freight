@@ -178,7 +178,11 @@
                 *ngIf="hasPlusHeader || stayOpen"
                 class="arrow-down-plus"
             >
-                <div class="add-custom-card" (click)="onAction($event, 'add')">
+                <div 
+                    class="add-custom-card"
+                    [ngClass]="{ 'show-pointer': stayOpen }"
+                    (click)="onAction($event, 'add')"
+                >
                     <svg-icon
                         class="plus-custom-card"
                         src="assets/svg/common/ic_plus.svg"
@@ -193,6 +197,10 @@
                     class="_24-7-status"
                     [ngClass]="{ active: is24Hours }"
                     (click)="onAction($event, 'hours-24')"
+                    [mainTooltip]="'Set as Non-Stop'"
+                    ngbTooltip
+                    position="bottom"
+                    tooltipBackground="#424242"
                 >
                     <p>24/7</p>
                 </div>

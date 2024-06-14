@@ -11,6 +11,7 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaFilterComponent } from '@shared/components/ta-filter/ta-filter.component';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -24,16 +25,22 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
     styleUrls: ['./ta-details-header.component.scss'],
     standalone: true,
     imports: [
+        //Modules
         CommonModule,
         FormsModule,
         NgbModule,
+        AngularSvgIconModule,
+        RouterModule,
+        NgbPopoverModule,
+
+        //Components
         TaAppTooltipComponent,
         TaDetailsDropdownComponent,
         TaCounterComponent,
-        AngularSvgIconModule,
+        TaSearchV2Component,
         TaFilterComponent,
-        RouterModule,
-        NgbPopoverModule,
+
+        //Pipes
         FormatCurrencyPipe,
     ],
 })
@@ -76,7 +83,11 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() categoryFilter: boolean = false;
     @Input() moneyFilter: boolean = false;
     @Input() brokerLoadDrop: boolean = false;
+    @Input() hasSearch: boolean = false;
+    @Input() searchPlaceholder: string;
 
+    public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
+    public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
     public up: boolean = false;
     public down: boolean = false;
     public dropOpened: boolean = false;
@@ -165,19 +176,7 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
 
                     if (index == 9) {
-                        if (itemData.status != 1) {
-                            action.title = 'Reopen Business';
-                            action.greenIcon = true;
-                            action.redIcon = false;
-                            action.name = 'open-business';
-                            action.iconName = 'mark-as-done';
-                        } else {
-                            action.title = 'Close Business';
-                            action.greenIcon = false;
-                            action.redIcon = true;
-                            action.name = 'close-business';
-                            action.iconName = 'close-business';
-                        }
+                        this.openCloseBusiness(itemData, action);
                     }
                 });
                 break;
@@ -213,19 +212,7 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
 
                     if (index == 11) {
-                        if (itemData.status != 1) {
-                            action.title = 'Reopen Business';
-                            action.greenIcon = true;
-                            action.redIcon = false;
-                            action.name = 'open-business';
-                            action.iconName = 'mark-as-done';
-                        } else {
-                            action.title = 'Close Business';
-                            action.greenIcon = false;
-                            action.redIcon = true;
-                            action.name = 'close-business';
-                            action.iconName = 'close-business';
-                        }
+                        this.openCloseBusiness(itemData, action);
                     }
                 });
 
@@ -259,6 +246,22 @@ export class TaDetailsHeaderComponent implements OnInit {
                     }
                 });
                 break;
+        }
+    }
+
+    private openCloseBusiness(itemData: any, action: any) {
+        if (itemData.status === 0) {
+            action.title = 'Reopen Business';
+            action.greenIcon = true;
+            action.redIcon = false;
+            action.name = 'open-business';
+            action.iconName = 'mark-as-done';
+        } else {
+            action.title = 'Close Business';
+            action.greenIcon = false;
+            action.redIcon = true;
+            action.name = 'close-business';
+            action.iconName = 'close-business';
         }
     }
 

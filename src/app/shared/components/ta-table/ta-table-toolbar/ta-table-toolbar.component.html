@@ -44,7 +44,8 @@
                             class="tab-container d-flex"
                             [ngClass]="{
                                 'tab-inactive': selectedTab !== data.field,
-                                'tab-active': selectedTab === data.field
+                                'tab-active': selectedTab === data.field,
+                                disabled: data.inactive
                             }"
                             (click)="onSelectTab(data)"
                         >

@@ -7,6 +7,7 @@
     [disableDelete]="true"
     (action)="onModalAction($event)"
     [editDate]="editData?.type === 'edit'"
+    [editDate]="editData?.type === 'edit'"
 >
     <div origin class="origin-part-modal">
         <app-ta-tab-switch
@@ -33,49 +34,12 @@
                     <div class="trailer-modal-first-row">
                         <app-ta-input
                             formControlName="trailerNumber"
-                            [inputConfig]="{
-                                name: 'vehicle-unit',
-                                type: 'text',
-                                label: 'Unit No.',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 1,
-                                maxLength: 8,
-                                autoFocus: editData?.type !== 'edit'
-                            }"
+                            [inputConfig]="TrailerNumberConfig"
                         ></app-ta-input>
                         <app-ta-input-dropdown
                             formControlName="trailerTypeId"
                             [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Type',
-                                isRequired: true,
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTrailerType?.logoName,
-                                    template: 'trailer',
-                                    class: [
-                                        'Tanker',
-                                        'Pneumatic Tanker'
-                                    ].includes(selectedTrailerType?.name)
-                                        ? 'tanker'
-                                        : selectedTrailerType?.name
-                                              ?.toLowerCase()
-                                              ?.includes('rgn')
-                                        ? 'low-boy-rgn'
-                                        : selectedTrailerType?.name
-                                              ?.trim()
-                                              .replace(' ', '')
-                                              .toLowerCase()
-                                },
-                                dropdownWidthClass: 'w-col-212',
-                                customClass: 'truck-trailer-dropdown'
-                            }"
+                            [inputConfig]="TrailerTypeIdConfig"
                             [options]="trailerType"
                             [activeItem]="selectedTrailerType"
                             (selectedItem)="
@@ -84,14 +48,7 @@
                         ></app-ta-input-dropdown>
                         <app-ta-input-dropdown
                             formControlName="trailerLengthId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Length',
-                                isDropdown: true,
-                                isRequired: true,
-                                dropdownWidthClass: 'w-col-100'
-                            }"
+                            [inputConfig]="TrailerLengthConfig"
                             [options]="trailerLengthType"
                             [activeItem]="selectedTrailerLength"
                             (selectedItem)="
@@ -103,55 +60,20 @@
                         <div class="col-3">
                             <app-ta-input
                                 formControlName="year"
-                                [inputConfig]="{
-                                    name: 'Year',
-                                    type: 'text',
-                                    label: 'Year',
-                                    isRequired: true,
-                                    minLength: 4,
-                                    maxLength: 4
-                                }"
+                                [inputConfig]="TrailerYearConfig"
                             ></app-ta-input>
                         </div>
                         <div class="col-5">
                             <app-ta-input
                                 formControlName="vin"
-                                [inputConfig]="{
-                                    name: 'vin-number',
-                                    type: 'text',
-                                    label: 'VIN',
-                                    isRequired: true,
-                                    textTransform: 'uppercase',
-                                    maxLength: 17,
-                                    minLength: 5,
-                                    loadingSpinner: {
-                                        size: 'small',
-                                        color: 'white',
-                                        isLoading: loadingVinDecoder
-                                    }
-                                }"
+                                [inputConfig]="TrailerVinConfig"
                             ></app-ta-input>
                         </div>
                         <div class="col-4">
                             <app-ta-input-dropdown
                                 formControlName="trailerMakeId"
                                 [template]="'svg-template'"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Make',
-                                    isRequired: true,
-                                    isDropdown: true,
-                                    dropdownImageInput: {
-                                        withText: false,
-                                        svg: true,
-                                        image: false,
-                                        url: selectedTrailerMake?.logoName,
-                                        class: 'trailer-make'
-                                    },
-                                    placeholder: selectedTrailerMake?.name,
-                                    dropdownWidthClass: 'w-col-156'
-                                }"
+                                [inputConfig]="TrailerMakeConfig"
                                 [options]="trailerMakeType"
                                 [activeItem]="selectedTrailerMake"
                                 (selectedItem)="
@@ -163,37 +85,14 @@
                     <div class="custom-model-color-year-length last-row">
                         <app-ta-input
                             formControlName="model"
-                            [inputConfig]="{
-                                name: 'truck-trailer-model',
-                                type: 'text',
-                                label: 'Model',
-                                textTransform: 'uppercase',
-                                minLength: 1,
-                                maxLength: 50
-                            }"
+                            [inputConfig]="TrailerModelConfig"
                             (blurInput)="onBlurTrailerModel()"
                         ></app-ta-input>
 
                         <app-ta-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Color',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedColor?.code
-                                        ? 'ic_color.svg'
-                                        : null,
-                                    template: 'color',
-                                    color: selectedColor?.code
-                                },
-                                dropdownWidthClass: 'w-col-164'
-                            }"
+                            [inputConfig]="TrailerColorConfig"
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
@@ -215,14 +114,7 @@
                             <div class="col-12">
                                 <app-ta-input-dropdown
                                     formControlName="ownerId"
-                                    [inputConfig]="{
-                                        name: 'Input Dropdown',
-                                        type: 'text',
-                                        label: 'Owner',
-                                        isDropdown: true,
-                                        isRequired: true,
-                                        dropdownWidthClass: 'w-col-456'
-                                    }"
+                                    [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="ownerType"
@@ -272,55 +164,38 @@
                     <!-------------------------------- FIRST ROW -------------------------------->
 
                     <div class="row">
-                        <div
-                            class="col-4"
+                        <ng-container
                             *ngIf="
                                 trailerForm.get('trailerTypeId').value ===
                                 'Reefer'
                             "
                         >
-                            <app-ta-input-dropdown
-                                formControlName="reeferUnit"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Reefer Unit',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-136'
-                                }"
-                                [options]="reeferUnitType"
-                                [activeItem]="selectedReeferType"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'reefer-unit')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
-                        <div
+                            <div class="col-4">
+                                <app-ta-input-dropdown
+                                    formControlName="reeferUnit"
+                                    [inputConfig]="TrailerReferConfig"
+                                    [options]="reeferUnitType"
+                                    [activeItem]="selectedReeferType"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'reefer-unit')
+                                    "
+                                ></app-ta-input-dropdown>
+                            </div>
+                        </ng-container>
+                        <ng-container
                             *ngIf="
                                 ['Tanker', 'Dry Bulk'].includes(
                                     trailerForm.get('trailerTypeId').value
                                 )
                             "
-                            class="col-4"
                         >
-                            <app-ta-input
-                                formControlName="volume"
-                                [inputConfig]="{
-                                    name: 'trailer-volume',
-                                    type: 'text',
-                                    label: 'Volume',
-                                    minLength: 5,
-                                    maxLength: 7,
-                                    placeholderText: trailerForm.get('volume')
-                                        .value
-                                        ? selectedTrailerType?.name === 'Tanker'
-                                            ? 'gal'
-                                            : 'cu_ft'
-                                        : null,
-                                    thousandSeparator: true
-                                }"
-                            ></app-ta-input>
-                        </div>
+                            <div class="col-4">
+                                <app-ta-input
+                                    formControlName="volume"
+                                    [inputConfig]="TrailerVolumeConfig"
+                                ></app-ta-input>
+                            </div>
+                        </ng-container>
                         <div
                             class="{{
                                 ['Dry Bulk', 'Tanker', 'Reefer'].includes(
@@ -332,20 +207,7 @@
                         >
                             <app-ta-input
                                 formControlName="emptyWeight"
-                                [inputConfig]="{
-                                    name: 'Empty Weight',
-                                    type: 'text',
-                                    label: 'Empty Weight',
-                                    minLength: 4,
-                                    maxLength: 6,
-                                    placeholderText: 'ibs',
-                                    thousandSeparator: true,
-                                    placeholderText: !trailerForm.get(
-                                        'emptyWeight'
-                                    ).value
-                                        ? ''
-                                        : 'ibs'
-                                }"
+                                [inputConfig]="TrailerWeightConfig"
                             ></app-ta-input>
                         </div>
                         <div
@@ -359,13 +221,7 @@
                         >
                             <app-ta-input-dropdown
                                 formControlName="tireSizeId"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Tire Size',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-148'
-                                }"
+                                [inputConfig]="TrailerTireSizeConfig"
                                 [options]="tireSize"
                                 [activeItem]="selectedTireSize"
                                 (selectedItem)="
@@ -393,13 +249,7 @@
                         >
                             <app-ta-input
                                 formControlName="axles"
-                                [inputConfig]="{
-                                    name: 'Axles',
-                                    type: 'number',
-                                    label: 'Axles',
-                                    minLength: 1,
-                                    maxLength: 2
-                                }"
+                                [inputConfig]="TrailerAxlesConfig"
                             ></app-ta-input>
                         </div>
                         <div
@@ -419,17 +269,7 @@
                         >
                             <app-ta-input-dropdown
                                 formControlName="suspension"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Suspension',
-                                    isDropdown: true,
-                                    dropdownWidthClass:
-                                        trailerForm.get('trailerTypeId')
-                                            .value !== 'Reefer'
-                                            ? 'w-col-228'
-                                            : 'w-col-108'
-                                }"
+                                [inputConfig]="TrailerSuspensionConfig"
                                 [options]="suspensionType"
                                 [activeItem]="selectedSuspension"
                                 (selectedItem)="
@@ -437,8 +277,7 @@
                                 "
                             ></app-ta-input-dropdown>
                         </div>
-
-                        <div
+                        <ng-container
                             *ngIf="
                                 [
                                     'Dry Van',
@@ -450,60 +289,53 @@
                                     trailerForm.get('trailerTypeId').value
                                 )
                             "
-                            class="col-3 no-p-left"
                         >
-                            <app-ta-input-dropdown
-                                formControlName="doorType"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Door Type',
-                                    isDropdown: true,
-                                    dropdownWidthClass: 'w-col-108'
-                                }"
-                                [options]="doorType"
-                                [activeItem]="selectedDoorType"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'door-type')
-                                "
-                            ></app-ta-input-dropdown>
-                        </div>
-                        <div
-                            *ngIf="
-                                [
-                                    'Dry Van',
-                                    'Container',
-                                    'Reefer',
-                                    'Tanker',
-                                    'Dry Bulk'
-                                ].includes(
-                                    trailerForm.get('trailerTypeId').value
-                                )
-                            "
-                            class="col-2 no-p-left"
-                        >
-                            <div
-                                class="checkbox-liftgate d-flex justify-content-center align-items-center"
-                            >
-                                <app-ta-checkbox
-                                    formControlName="liftgate"
-                                ></app-ta-checkbox>
-                                <p>Liftgate</p>
+                            <div class="col-3 no-p-left">
+                                <app-ta-input-dropdown
+                                    formControlName="doorType"
+                                    [inputConfig]="TrailerDoorTypeConfig"
+                                    [options]="doorType"
+                                    [activeItem]="selectedDoorType"
+                                    (selectedItem)="
+                                        onSelectDropdown($event, 'door-type')
+                                    "
+                                ></app-ta-input-dropdown>
                             </div>
-                        </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                [
+                                    'Dry Van',
+                                    'Container',
+                                    'Reefer',
+                                    'Tanker',
+                                    'Dry Bulk'
+                                ].includes(
+                                    trailerForm.get('trailerTypeId').value
+                                )
+                            "
+                        >
+                            <div class="col-2 no-p-left">
+                                <div
+                                    class="checkbox-liftgate d-flex justify-content-center ta-font-medium align-items-center"
+                                >
+                                    <app-ta-checkbox
+                                        formControlName="isLiftgate"
+                                    ></app-ta-checkbox>
+                                    <p>Liftgate</p>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
                     <!-------------------------------- THIRD ROW -------------------------------->
                     <div class="trailer-modal-insurance-fhwa">
                         <app-ta-input
                             formControlName="insurancePolicy"
-                            [inputConfig]="{
-                                name: 'insurance-policy',
-                                type: 'text',
-                                label: 'Insurance Policy',
-                                minLength: 8,
-                                maxLength: 14,
-                                textTransform: 'uppercase'
-                            }"
+                            [inputConfig]="TrailerInsurancePolicyConfig"
+                        ></app-ta-input>
+                        <app-ta-input
+                            formControlName="mileage"
+                            [inputConfig]="TrailerMileageConfig"
                         ></app-ta-input>
                         <app-ta-input
                             formControlName="mileage"
@@ -519,59 +351,25 @@
                         ></app-ta-input>
                         <app-ta-input
                             formControlName="fhwaExp"
-                            [inputConfig]="{
-                                name: 'months',
-                                type: 'text',
-                                placeholderText: 'months',
-                                label: 'FHWA Exp.',
-                                isRequired: true,
-                                hideClear: true,
-                                commands: {
-                                    active: true,
-                                    type: 'months',
-                                    firstCommand: {
-                                        name: 'minus',
-                                        svg: 'assets/svg/common/ic_pm_decrement.svg'
-                                    },
-                                    secondCommand: {
-                                        name: 'plus',
-                                        svg: 'assets/svg/common/ic_pm_increment.svg'
-                                    }
-                                }
-                            }"
+                            [inputConfig]="TrailerFhwaExpConfig"
                         ></app-ta-input>
                     </div>
-                    <div
-                        class="row row-no-mb"
-                        *ngIf="trailerForm.get('companyOwned').value"
-                    >
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="purchaseDate"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    label: 'Purchase Date',
-                                    isDropdown: true,
-                                    placeholderIcon: 'date',
-                                    customClass: 'datetimeclass'
-                                }"
-                            ></app-ta-input>
+                    <ng-container *ngIf="trailerForm.get('companyOwned').value">
+                        <div class="row row-no-mb">
+                            <div class="col-6">
+                                <app-ta-input
+                                    formControlName="purchaseDate"
+                                    [inputConfig]="TrailerPurchaseDateConfig"
+                                ></app-ta-input>
+                            </div>
+                            <div class="col-6">
+                                <app-ta-input
+                                    formControlName="purchasePrice"
+                                    [inputConfig]="TrailerPurchasePriceConfig"
+                                ></app-ta-input>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <app-ta-input
-                                formControlName="purchasePrice"
-                                [inputConfig]="{
-                                    name: 'Purchase Price',
-                                    type: 'text',
-                                    label: 'Purchase Price',
-                                    maxLength: 14,
-                                    thousandSeparator: true,
-                                    placeholderIcon: 'dollar'
-                                }"
-                            ></app-ta-input>
-                        </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
         </form>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -76,27 +76,28 @@ export class LoadService {
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
-        return this.loadService.apiLoadListGet(
-            loadType,
-            statusType,
-            status,
-            dispatcherId,
-            dispatchId,
-            brokerId,
-            shipperId,
-            dateFrom,
-            dateTo,
-            revenueFrom,
-            revenueTo,
-            truckId,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            search,
-            search1,
-            search2
-        );
+        // return this.loadService.apiLoadListGet(
+        //     loadType,
+        //     statusType,
+        //     status,
+        //     dispatcherId,
+        //     dispatchId,
+        //     brokerId,
+        //     shipperId,
+        //     dateFrom,
+        //     dateTo,
+        //     revenueFrom,
+        //     revenueTo,
+        //     truckId,
+        //     pageIndex,
+        //     pageSize,
+        //     companyId,
+        //     sort,
+        //     search,
+        //     search1,
+        //     search2
+        // );
+        return of(null);
     }
 
     public getLoadMinimalList(

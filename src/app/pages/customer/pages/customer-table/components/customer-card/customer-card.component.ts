@@ -91,7 +91,6 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
         this.flipAllCards();
     }
 
-
     public flipAllCards(): void {
         this.tableService.isFlipedAllCards
             .pipe(takeUntil(this.destroy$))
@@ -117,10 +116,13 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
-    public goToDetailsPage(card: CardDetails, link: string): void {
+    public goToDetailsPage(card: CardDetails): void {
         this.detailsDataService.setNewData(card);
 
-        this.router.navigate([link]);
+        if (this.selectedTab === TableStringEnum.ACTIVE)
+            this.router.navigate([`/list/customer/${card.id}/broker-details`]);
+        else
+            this.router.navigate([`/list/customer/${card.id}/shipper-details`]);
     }
 
     public trackCard(item: number): number {

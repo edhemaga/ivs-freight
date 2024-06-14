@@ -1,0 +1,101 @@
+<ng-container
+    *ngFor="
+        let department of departmentContacts;
+        let i = index;
+        trackBy: identity
+    "
+>
+    <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [hasDivider]="false"
+        [cardName]="department.name"
+        [hasCounter]="department.contacts.length ?? 0"
+        [isCardOpen]="true"
+        [animationMarginParams]="{
+            marginTop: '0px',
+            marginBottom: '10px'
+        }"
+        class="shipper-contact-container"
+        [customClass]="'detailsPadding'"
+    >
+        <ng-container
+            *ngFor="
+                let shipperContact of department.contacts;
+                trackBy: identity
+            "
+        >
+            <div class="parking-template-data">
+                <div
+                    class="parking-template-item parking-template-email parking-name"
+                >
+                    <span class="parking-template-name">{{
+                        shipperContact?.fullName
+                    }}</span>
+                    <div class="svg-wrapper">
+                        <div
+                            ngbTooltip
+                            mainTooltip="Edit"
+                            position="top"
+                            tooltipBackground="#6C6C6C"
+                            (click)="editContact()"
+                            class="action_buttons d-flex justify-content-center align-items-center"
+                        >
+                            <svg-icon
+                                src="{{ contactsImageRoutes.edit }}"
+                            ></svg-icon>
+                        </div>
+                        <div
+                            ngbTooltip
+                            mainTooltip="Delete"
+                            position="top"
+                            tooltipBackground="#6C6C6C"
+                            (click)="deleteContactModal()"
+                            class="action_buttons delete d-flex justify-content-center align-items-center delete"
+                        >
+                            <svg-icon
+                                src="{{ contactsImageRoutes.delete }}"
+                            ></svg-icon>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="shipperContact?.phone">
+                    <div class="parking-template-item">
+                        <svg-icon
+                            src="{{ contactsImageRoutes.phone }}"
+                        ></svg-icon>
+                        <span class="parking-template-text d-flex"
+                            ><app-ta-copy
+                                [copyValue]="
+                                    shipperContact?.phoneExt
+                                        ? [
+                                              shipperContact?.phone
+                                                  | formatPhoneP,
+                                              ' x' + shipperContact?.phoneExt
+                                          ]
+                                        : (shipperContact?.phone | formatPhoneP)
+                                "
+                                [arrayText]="shipperContact?.phoneExt ?? false"
+                                [type]="'Contacts'"
+                            >
+                            </app-ta-copy>
+                        </span>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="shipperContact?.email">
+                    <div class="parking-template-item parking-template-email">
+                        <svg-icon
+                            src="{{ contactsImageRoutes.email }}"
+                        ></svg-icon>
+                        <span class="parking-template-text"
+                            ><app-ta-copy [copyValue]="shipperContact?.email">
+                            </app-ta-copy
+                        ></span>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </app-ta-custom-card>
+    <ng-container *ngIf="i !== departmentContacts.length - 1">
+        <div class="divider"></div>
+    </ng-container>
+</ng-container>

@@ -192,6 +192,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -256,9 +262,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadFilesIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -300,6 +314,7 @@ export class LoadService {
         return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -319,9 +334,17 @@ export class LoadService {
     public apiLoadHazardousmaterialModalGet(getHazardousMaterialDropdownModalQuery?: GetHazardousMaterialDropdownModalQuery, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<HazardousMaterialResponse>>>;
     public apiLoadHazardousmaterialModalGet(getHazardousMaterialDropdownModalQuery?: GetHazardousMaterialDropdownModalQuery, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -375,6 +398,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: getHazardousMaterialDropdownModalQuery,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -397,9 +421,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -441,6 +473,7 @@ export class LoadService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -463,9 +496,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -507,6 +548,7 @@ export class LoadService {
         return this.httpClient.request<LoadResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -520,6 +562,7 @@ export class LoadService {
      * @param loadType 
      * @param statusType 
      * @param status 
+     * @param dispatcherIds 
      * @param dispatcherId 
      * @param dispatchId 
      * @param brokerId 
@@ -529,6 +572,14 @@ export class LoadService {
      * @param revenueFrom 
      * @param revenueTo 
      * @param truckId 
+     * @param rateFrom 
+     * @param rateTo 
+     * @param paidFrom 
+     * @param paidTo 
+     * @param dueFrom 
+     * @param dueTo 
+     * @param pickup 
+     * @param delivery 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -539,10 +590,10 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: number, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -556,6 +607,12 @@ export class LoadService {
         if (status !== undefined && status !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>status, 'Status');
+        }
+        if (dispatcherIds) {
+            dispatcherIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'DispatcherIds');
+            })
         }
         if (dispatcherId !== undefined && dispatcherId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -593,6 +650,38 @@ export class LoadService {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>truckId, 'TruckId');
         }
+        if (rateFrom !== undefined && rateFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>rateFrom, 'RateFrom');
+        }
+        if (rateTo !== undefined && rateTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>rateTo, 'RateTo');
+        }
+        if (paidFrom !== undefined && paidFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>paidFrom, 'PaidFrom');
+        }
+        if (paidTo !== undefined && paidTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>paidTo, 'PaidTo');
+        }
+        if (dueFrom !== undefined && dueFrom !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dueFrom, 'DueFrom');
+        }
+        if (dueTo !== undefined && dueTo !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>dueTo, 'DueTo');
+        }
+        if (pickup !== undefined && pickup !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pickup, 'Pickup');
+        }
+        if (delivery !== undefined && delivery !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>delivery, 'Delivery');
+        }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageIndex, 'PageIndex');
@@ -625,6 +714,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -710,6 +805,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -774,9 +875,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadListStatusIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -818,6 +927,7 @@ export class LoadService {
         return this.httpClient.request<LoadPossibleStatusesResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -836,9 +946,17 @@ export class LoadService {
     public apiLoadMobileListGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadMobileListResponse>>;
     public apiLoadMobileListGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -880,6 +998,7 @@ export class LoadService {
         return this.httpClient.request<LoadMobileListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -908,6 +1027,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1003,9 +1128,17 @@ export class LoadService {
     public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiLoadPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1182,6 +1315,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1258,9 +1392,17 @@ export class LoadService {
     public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, commentId?: number, commentCommentContent?: string, deleteCommentId?: number, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, commentId?: number, commentCommentContent?: string, deleteCommentId?: number, statusHistory?: Array<LoadStatusHistoryCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1510,6 +1652,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1563,9 +1706,17 @@ export class LoadService {
     public apiLoadSaveasclosedPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiLoadSaveasclosedPost(type?: LoadType, loadNumber?: string, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1742,6 +1893,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1775,6 +1927,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1836,9 +1994,17 @@ export class LoadService {
     public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1892,6 +2058,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: updateLoadStatusCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1911,9 +2078,17 @@ export class LoadService {
     public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1967,6 +2142,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: revertLoadStatusCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1989,9 +2165,17 @@ export class LoadService {
             throw new Error('Required parameter description was null or undefined when calling apiLoadStopsAutocompleteDescriptionDescriptionGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2033,6 +2217,7 @@ export class LoadService {
         return this.httpClient.request<LoadStopItemAutocompleteDescriptionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2055,9 +2240,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadTemplateIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2099,6 +2292,7 @@ export class LoadService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2121,9 +2315,17 @@ export class LoadService {
             throw new Error('Required parameter id was null or undefined when calling apiLoadTemplateIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2165,6 +2367,7 @@ export class LoadService {
         return this.httpClient.request<LoadTemplateResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2238,6 +2441,12 @@ export class LoadService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2299,9 +2508,17 @@ export class LoadService {
     public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
     public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2355,6 +2572,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: createLoadTemplateCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -2374,9 +2592,17 @@ export class LoadService {
     public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -2430,6 +2656,7 @@ export class LoadService {
             {
                 context: localVarHttpContext,
                 body: updateLoadTemplateCommand,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

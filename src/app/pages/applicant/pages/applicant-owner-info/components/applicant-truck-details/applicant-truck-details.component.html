@@ -1,0 +1,273 @@
+<div
+    class="d-flex align-self-start add-truck-container"
+>
+    <p class="m-0 ta-font-extra-bold">
+        Truck Detail
+    </p>
+</div>
+
+<div [formGroup]="formGroup">
+    <!-- TYPE, YEAR, VIN -->
+    <div class="d-flex line-container mt-4">
+      <div class="group type-group">
+          <app-ta-input-dropdown
+              formControlName="truckType"
+              [template]="'svgtext-template'"
+              [inputConfig]="truckTypeInputConfig"
+              [options]="dropdownOptions.truckType"
+              [activeItem]="selectedTruckType"
+              (selectedItem)="
+                  emitInputSelect(
+                      $event,
+                      inputSwitchActions.TRUCK_TYPE
+                  )
+              "
+          ></app-ta-input-dropdown>
+      </div>
+
+      <div class="group year-group">
+          <app-ta-input
+              formControlName="truckYear"
+              [inputConfig]="truckYearInputConfig"
+          ></app-ta-input>
+      </div>
+
+      <div class="group vin-group">
+          <app-ta-input
+              formControlName="truckVin"
+              [inputConfig]="truckVinInputConfig"
+          ></app-ta-input>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <ng-container
+          *ngIf="
+              selectedMode !==
+              selectedModeEnum.APPLICANT
+          "
+      >
+          <div
+              class="review-feedback-container"
+          >
+              <app-applicant-review-feedback
+                  formControlName="fifthRowReview"
+                  [displayAnnotationButton]="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                      openAnnotationArray[4]
+                          .displayAnnotationButton
+                  "
+                  [displayAnnotationTextArea]="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                      openAnnotationArray[4]
+                          .displayAnnotationTextArea
+                  "
+                  [lineIndex]="4"
+                  [isFeedback]="
+                      selectedMode ===
+                      selectedModeEnum.FEEDBACK
+                  "
+                  [feedbackText]="
+                      selectedMode ===
+                          selectedModeEnum.FEEDBACK &&
+                      stepFeedbackValues?.truckVinMessage
+                  "
+                  (annotationBtnClickEvent)="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                          getAnnotationBtnClickValue(
+                              $event
+                          )
+                  "
+              ></app-applicant-review-feedback>
+          </div>
+      </ng-container>
+    </div>
+
+    <!-- MAKE, MODEL COLOR -->
+
+    <div class="d-flex line-container">
+      <div class="group make-group">
+          <app-ta-input-dropdown
+              formControlName="truckMake"
+              [template]="'svg-template'"
+              [inputConfig]="truckMakeInputConfig"
+              [options]="dropdownOptions.truckMakeType"
+              [activeItem]="selectedTruckMake"
+              (selectedItem)="
+                  emitInputSelect(
+                      $event,
+                      inputSwitchActions.TRUCK_MAKE
+                  )
+              "
+          ></app-ta-input-dropdown>
+      </div>
+
+      <div class="group model-group">
+          <app-ta-input
+              formControlName="truckModel"
+              [inputConfig]="truckModelInputConfig"
+          ></app-ta-input>
+      </div>
+
+      <div class="group color-group">
+          <app-ta-input-dropdown
+              formControlName="truckColor"
+              [template]="'svgtext-template'"
+              [inputConfig]="truckColorInputConfig"
+              [options]="dropdownOptions.colorType"
+              [activeItem]="
+                  selectedTruckColor
+              "
+              (selectedItem)="
+                  emitInputSelect(
+                      $event,
+                      inputSwitchActions.TRUCK_COLOR
+                  )
+              "
+          ></app-ta-input-dropdown>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <ng-container
+          *ngIf="
+              selectedMode !==
+              selectedModeEnum.APPLICANT
+          "
+      >
+          <div
+              class="review-feedback-container"
+          >
+              <app-applicant-review-feedback
+                  formControlName="sixthRowReview"
+                  [displayAnnotationButton]="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                      openAnnotationArray[5]
+                          .displayAnnotationButton
+                  "
+                  [displayAnnotationTextArea]="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                      openAnnotationArray[5]
+                          .displayAnnotationTextArea
+                  "
+                  [lineIndex]="5"
+                  [isFeedback]="
+                      selectedMode ===
+                      selectedModeEnum.FEEDBACK
+                  "
+                  [feedbackText]="
+                      selectedMode ===
+                          selectedModeEnum.FEEDBACK &&
+                      stepFeedbackValues?.truckModelYearMessage
+                  "
+                  (annotationBtnClickEvent)="
+                      selectedMode ===
+                          selectedModeEnum.REVIEW &&
+                          getAnnotationBtnClickValue(
+                              $event
+                          )
+                  "
+              ></app-applicant-review-feedback>
+          </div>
+      </ng-container>
+
+      
+    </div>
+
+    <!-- TRUCK DOCUMENTS -->
+
+    <div class="truck-documents d-flex">
+      <div class="truck-licence">
+          <div class="divider divider-truck"></div>
+          <div
+              class="d-flex align-self-start add-truck-container"
+          >
+              <p class="m-0 ta-font-extra-bold">
+                  Truck Licence
+              </p>
+          </div>
+          <div
+              class="d-flex flex-column files-container"
+          >
+              <div
+                  class="line-container"
+                  [ngStyle]="{
+                      width:
+                          selectedMode === selectedModeEnum.REVIEW
+                              ? 'fit-content'
+                              : '100%'
+                  }"
+              >
+                  <app-ta-upload-files
+                      [files]="documents"
+                      [size]="'small'"
+                      [showDropzone]="
+                          selectedMode === selectedModeEnum.APPLICANT
+                      "
+                      [isRequired]="!documents.length"
+                      [showRequired]="displayDocumentsRequiredNote"
+                      [isReview]="selectedMode === selectedModeEnum.REVIEW"
+                      [reviewMode]="
+                          selectedMode === selectedModeEnum.REVIEW &&
+                          selectedModeEnum.REVIEW
+                      "
+                      [dropzoneColumn]="true"
+                      (onFileEvent)="emitOnFilesAction($event)"
+                  ></app-ta-upload-files>
+
+                  <!-- REVIEW AND FEEDBACK -->
+
+              </div>
+          </div>
+      </div>
+      <div class="truck-inspection">
+          <div class="divider divider-truck"></div>
+          <div
+              class="d-flex align-self-start add-truck-container"
+          >
+              <p class="m-0 ta-font-extra-bold">
+                  Truck FHWA Inspection
+              </p>
+          </div>
+          <div
+              class="d-flex flex-column files-container"
+          >
+              <div
+                  class="line-container"
+                  [ngStyle]="{
+                      width:
+                          selectedMode === selectedModeEnum.REVIEW
+                              ? 'fit-content'
+                              : '100%'
+                  }"
+              >
+                  <app-ta-upload-files
+                      [files]="documents"
+                      [size]="'small'"
+                      [showDropzone]="
+                          selectedMode === selectedModeEnum.APPLICANT
+                      "
+                      [isRequired]="!documents.length"
+                      [showRequired]="displayDocumentsRequiredNote"
+                      [isReview]="selectedMode === selectedModeEnum.REVIEW"
+                      [reviewMode]="
+                          selectedMode === selectedModeEnum.REVIEW &&
+                          selectedModeEnum.REVIEW
+                      "
+                      [dropzoneColumn]="true"
+                      (onFileEvent)="emitOnFilesAction($event)"
+                  ></app-ta-upload-files>
+
+                  <!-- REVIEW AND FEEDBACK -->
+
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+

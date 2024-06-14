@@ -17,6 +17,7 @@
             longValueSet !== 0 ||
             maxValueSet !== maxValueRange ||
             minValueSet !== minValueRange ||
+            destLongValSet ||
             singleFormActive
     }"
     (mouseenter)="
@@ -27,6 +28,7 @@
         longValueSet !== 0 ||
         maxValueSet !== maxValueRange ||
         minValueSet !== minValueRange ||
+        destLongValSet ||
         singleFormActive
             ? (hoverFilter = true)
             : (hoverFilter = false)
@@ -73,7 +75,8 @@
                             longValueSet !== 0 ||
                             maxValueSet !== maxValueRange ||
                             minValueSet !== minValueRange ||
-                            singleFormActive),
+                            singleFormActive ||
+                            destLongValSet),
                     'd-none': hoverFilter
                 }"
             >
@@ -89,6 +92,7 @@
                 (filterActiveTime !== '' ||
                     longValueSet !== 0 ||
                     singleFormActive ||
+                    destLongValSet ||
                     activeFormNum > 0) &&
                 !hoverClose
             "
@@ -105,6 +109,7 @@
                             longValueSet !== 0 ||
                             maxValueSet !== maxValueRange ||
                             minValueSet !== minValueRange ||
+                            destLongValSet ||
                             singleFormActive),
                     'd-none': hoverFilter
                 }"
@@ -121,6 +126,7 @@
                 moneyFilterStatus ||
                 longVal != 0 ||
                 maxValueSet != maxValueRange ||
+                destLongValSet ||
                 minValueSet != minValueRange
             "
         >
@@ -1942,22 +1948,25 @@
                         {{ filterTitle | uppercase }}
                     </div>
                     <div class="user-title-text" *ngIf="areaFilter">
-                        Area Filter
+                        AREA FILTER
                     </div>
                 </div>
                 <div class="border-filter top-border-margin"></div>
-                <div
-                    class="areaFilterHolder"
-                    *ngIf="areaFilter"
-                    [@showAnimation]="!!activeFilter"
-                >
-                    <app-ta-tab-switch
-                        [tabs]="areBoxTab"
-                        (switchClicked)="onTabChange($event, 'REQUESTS-BOX')"
-                        [type]="'type2-modal-popup'"
+                <ng-container *ngIf="areaFilter">
+                    <div
+                        class="areaFilterHolder"
+                        [@showAnimation]="!!activeFilter"
                     >
-                    </app-ta-tab-switch>
-                </div>
+                        <app-ta-tab-switch
+                            [tabs]="areBoxTab"
+                            (switchClicked)="
+                                onTabChange($event, 'REQUESTS-BOX')
+                            "
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    </div>
+                </ng-container>
                 <div class="area-all-holder">
                     <ng-container
                         *ngIf="areaFilter && areaFilterSelected !== 'Location'"
@@ -1982,6 +1991,7 @@
                                             placeholder: 'Origin',
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-288',
+                                            customClass: 'location-area-filter',
                                             minLength: 6,
                                             maxLength: 256,
                                             placeholderInsteadOfLabel: true
@@ -2003,6 +2013,7 @@
                                             placeholder: 'Destination',
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-288',
+                                            customClass: 'location-area-filter',
                                             minLength: 6,
                                             maxLength: 256,
                                             placeholderInsteadOfLabel: true
@@ -2042,6 +2053,8 @@
                                             placeholder: 'Location',
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-288',
+                                            customClass: 'location-area-filter',
+                                            blueInput: true,
                                             minLength: 6,
                                             maxLength: 256,
                                             placeholderInsteadOfLabel: true
@@ -2053,30 +2066,26 @@
                                     ></app-ta-input-address-dropdown>
                                 </div>
                             </ng-container>
-                            <ng-container *ngIf="type == 'locationFilter'">
-                                <div
-                                    class="filter-middle-holder location-slider-middle-padding"
-                                    [@showAnimation]="!!activeFilter"
-                                >
-                                    <div class="range-new-value-holder">
-                                        <div class="range-text">Range</div>
-                                        <div class="range-flex-holder">
-                                            <app-ta-ngx-slider
-                                                [sliderOptions]="
-                                                    locationSliderData
-                                                "
-                                                [startedValue]="locationRange"
-                                                [customClass]="
-                                                    'custom-slider-filter'
-                                                "
-                                                (onUserValueChange)="
-                                                    setRangeValue($event)
-                                                "
-                                            ></app-ta-ngx-slider>
-                                        </div>
-                                    </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="type == 'locationFilter'">
+                        <div
+                            class="filter-middle-holder location-slider-middle-padding"
+                            [@showAnimation]="!!activeFilter"
+                        >
+                            <div class="range-new-value-holder">
+                                <div class="range-text">Range</div>
+                                <div class="range-flex-holder">
+                                    <app-ta-ngx-slider
+                                        [sliderOptions]="locationSliderData"
+                                        [startedValue]="locationRange"
+                                        [customClass]="'custom-slider-filter'"
+                                        (onUserValueChange)="
+                                            setRangeValue($event)
+                                        "
+                                    ></app-ta-ngx-slider>
                                 </div>
-                            </ng-container>
+                            </div>
                         </div>
                     </ng-container>
                 </div>

@@ -2,7 +2,7 @@
 
 .toolbar-container {
     height: 36px;
-    margin-top: 22px;
+    margin-top: 16px;
     user-select: none;
 
     // BORDER
@@ -47,6 +47,11 @@
         .tab-container {
             cursor: pointer;
             width: fit-content;
+
+            &.disabled {
+                pointer-events: none;
+                opacity: 0.3;
+            }
 
             .tab {
                 height: 26px;
@@ -171,7 +176,8 @@
                         }
                     }
 
-                    .dnu-action-icon, .close-bussiness-icon {
+                    .dnu-action-icon,
+                    .close-bussiness-icon {
                         svg {
                             path {
                                 fill: $ta-red-14;
@@ -186,7 +192,7 @@
                             }
                         }
                     }
-                    
+
                     .open-bussiness-icon {
                         svg {
                             path {

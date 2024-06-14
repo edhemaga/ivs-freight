@@ -296,7 +296,6 @@
                 }
 
                 .document-title-container {
-                    margin-right: 4px;
                     .documents-title {
                         height: 18px;
                         font-size: 14px;
@@ -334,4 +333,12 @@
     bottom: 50%;
     transform: translate(0, -50%);
     right: 42px;
+}
+
+.back-btn-container {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    transform: translate(0, -50%);
+    left: 42px;
 }

@@ -1,102 +1,100 @@
+@import 'src/theme/variables.scss';
+
 .progress-text-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 408px;
-    margin-left: 10px;
-    margin-top: 12px;
+    width: 100%;
+
     .text-broker-wrapper {
-        display: grid;
-        align-content: center;
-        grid-template-columns: 262px 73px 74px;
-        margin-bottom: 3px;
         .days {
+            width: 65%;
             font-size: 14px;
-            font-weight: 500;
-            color: #6c6c6c;
+            line-height: 18px;
+            color: $ta-black-2;
+
             &::-moz-selection {
-                color: #6c6c6c;
+                color: $ta-black-2;
                 background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: #6c6c6c;
+                color: $ta-black-2;
                 background: rgb(183, 183, 183, 0.2);
             }
         }
+
         .invoice-days {
+            width: 15%;
             font-size: 14px;
-            font-weight: 600;
-            color: #aaaaaa;
+            line-height: 18px;
+            color: $bw5;
+
             &::-moz-selection {
-                color: #aaaaaa;
+                color: $bw5;
                 background: rgb(170, 170, 170, 0.2);
             }
             &::selection {
-                color: #aaaaaa;
+                color: $bw5;
                 background: rgb(170, 170, 170, 0.2);
             }
+
             .inv {
-                font-size: 14px !important;
-                font-weight: 500 !important;
                 &::-moz-selection {
-                    color: #aaaaaa;
+                    color: $bw5;
                     background: rgb(170, 170, 170, 0.2);
                 }
                 &::selection {
-                    color: #aaaaaa;
+                    color: $bw5;
                     background: rgb(170, 170, 170, 0.2);
                 }
             }
         }
+
         .cost-total-ageing {
+            width: 20%;
             font-size: 14px;
-            font-weight: 600;
-            color: #6c6c6c;
-            text-align: end;
+            line-height: 18px;
+            color: $ta-black-2;
+
             &::-moz-selection {
-                color: #6c6c6c;
+                color: $ta-black-2;
                 background: rgb(183, 183, 183, 0.2);
             }
             &::selection {
-                color: #6c6c6c;
+                color: $ta-black-2;
                 background: rgb(183, 183, 183, 0.2);
             }
         }
+
+        &.disabled-text {
+            .days, .cost-total-ageing { 
+                color: $bw5;
+            }
+        }
     }
+
     .app-progress-invoices {
-        width: 408px;
+        width: 100%;
         height: 8px;
         border-radius: 2px;
+        background-color: $bw2;
+
         .inside-progress {
             height: 8px;
             border-radius: 2px 0 0 2px;
         }
+
         .inside-progress-light-blue {
-            width: 62%;
-            background-color: #536bc2;
+            background-color: $ta-blue;
         }
+
         .inside-progress-mid-orange {
-            width: 24%;
-            background-color: #ffa726;
+            background-color: $special-filter-orange;
         }
+
         .inside-progress-dark-orange {
-            width: 48%;
-            background-color: #f77d3b;
+            background-color: $ta-orange-2;
         }
+
         .inside-progress-danger-broker {
-            width: 19%;
-            background-color: #ef5350;
+            background-color: $ta-red-2;
         }
     }
-}
-.light-blue-inv {
-    background-color: rgba(83, 107, 194, 0.2) !important;
-}
-.mid-orange-inv {
-    background-color: rgba(255, 167, 38, 0.2) !important;
-}
-.dark-orange-inv {
-    background-color: rgba(247, 125, 59, 0.2) !important;
-}
-.danger-inv {
-    background-color: rgba(239, 83, 80, 0.2) !important;
 }

@@ -614,194 +614,199 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // TODO any type
-    private mapTruckData(data: any): void {
+    private mapTruckData(data: any): any {
+        const {
+            id,
+            axles,
+            color,
+            createdAt,
+            emptyWeight,
+            fhwaExp,
+            fileCount,
+            inspectionExpirationDays,
+            inspectionPercentage,
+            insurancePolicy,
+            licensePlate,
+            mileage,
+            model,
+            note,
+            owner,
+            purchaseDate,
+            purchasePrice,
+            registrationExpirationDays,
+            updatedAt,
+            registrationPercentage,
+            status,
+            tireSize,
+            trailerNumber,
+            vin,
+            files,
+            year,
+            brakes,
+            commission,
+            driver,
+            driverAvatar,
+            engineOilType,
+            frontWheels,
+            fuelTankSize,
+            fuelType,
+            gearRatio,
+            rearWheels,
+            shifter,
+            titleIssueDate,
+            titleNumber,
+            titlePurchaseDate,
+            titleState,
+            tollTransponder,
+            tollTransponderDeviceNo,
+            transmissionModel,
+            truckEngineModel,
+            truckLength,
+            truckMake,
+            truckNumber,
+            truckType,
+            apUnit,
+            truckGrossWeight,
+        } = data;
+
         return {
-            ...data,
-            truckTypeIcon: data.truckType.logoName,
-            tableTruckName: data.truckType.name,
-            tableTruckColor: this.setTruckTooltipColor(data.truckType.name),
+            id,
+            status,
+            truckNumber,
+            year,
+            note,
+            truckTypeIcon: truckType.logoName,
+            tableTruckName: truckType.name,
+            tableTruckColor: this.setTruckTooltipColor(truckType.name),
             tableVin: {
-                regularText: data?.vin
-                    ? data.vin.substr(0, data.vin.length - 6)
+                regularText: vin
+                    ? vin.substr(0, vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                boldText: data?.vin
-                    ? data.vin.substr(data.vin.length - 6)
+                boldText: vin
+                    ? vin.substr(vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
-            truckTypeClass: data.truckType.logoName.replace(
+            truckTypeClass: truckType.logoName.replace(
                 TableStringEnum.SVG,
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER
             ),
-            tabelLength: data?.truckLength?.name
-                ? DataFilterHelper.getLengthNumber(data?.truckLength?.name)
+            tabelLength: truckLength?.name
+                ? DataFilterHelper.getLengthNumber(truckLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textMake: data?.truckMake?.name
-                ? data.truckMake.name
+            textMake: truckMake?.name,
+            textModel: model,
+            textYear: year,
+            tableColor: color?.code,
+            colorName: color?.name,
+            tableDriver: driver
+                ? driverAvatar
+                    ? driverAvatar + driver
+                    : driver
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textModel: data?.model
-                ? data.model
+            tableTrailer: trailerNumber,
+            tabelOwnerDetailsName: owner?.name,
+            tabelOwnerDetailsComm: commission
+                ? commission + TableStringEnum.PERCENTS
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textYear: data.year
-                ? data.year
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableColor: data?.color?.code
-                ? data.color.code
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            colorName: data?.color?.name
-                ? data.color.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: data.driver
-                ? data.driverAvatar
-                    ? data.driverAvatar + data.driver
-                    : data.driver
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTrailer:
-                data.trailerNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelOwnerDetailsName: data?.owner?.name
-                ? data.owner.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelOwnerDetailsComm: data?.commission
-                ? data.commission + TableStringEnum.PERCENTS
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textWeightGross: data?.truckGrossWeight?.name
-                ? data.truckGrossWeight.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textWeightEmpty: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) +
+            textWeightGross: truckGrossWeight?.name,
+            textWeightEmpty: emptyWeight
+                ? this.thousandSeparator.transform(emptyWeight) +
                   TableStringEnum.POUNDS_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelEngineModel: data?.truckEngineModel?.name
-                ? data.truckEngineModel.name
+            tabelEngineModel: truckEngineModel?.name,
+            tabelEngineOilType: engineOilType?.name,
+            tabelTransmissionModel: transmissionModel,
+            tabelTransmissionShifter: shifter?.name,
+            tabelTransmissionRatio: gearRatio?.name,
+            tabelFuelDetailsFuelType: fuelType?.name,
+            tabelFuelDetailsTank: fuelTankSize
+                ? this.thousandSeparator.transform(fuelTankSize)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelEngineOilType: data?.engineOilType?.name
-                ? data.engineOilType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionModel: data?.transmissionModel
-                ? data.transmissionModel
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionShifter: data?.shifter?.name
-                ? data.shifter.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelTransmissionRatio: data?.gearRatio?.name
-                ? data.gearRatio.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelFuelDetailsFuelType: data?.fuelType?.name
-                ? data.fuelType.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelFuelDetailsTank: data?.fuelTankSize
-                ? this.thousandSeparator.transform(data.fuelTankSize)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelAxle: data?.axles
-                ? data.axles
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelBrakes: data?.brakes?.name
-                ? data.brakes.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTireSize: data?.tireSize?.name
-                ? data.tireSize.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWheelCompositionFront: data?.frontWheels?.name
-                ? data.frontWheels.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWheelCompositionRear: data?.rearWheels?.name
-                ? data.rearWheels.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAPUnit: data?.apUnit?.name
-                ? data.apUnit.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tabelAxle: axles,
+            tabelBrakes: brakes?.name,
+            tableTireSize: tireSize?.name,
+            tableWheelCompositionFront: frontWheels?.name,
+            tableWheelCompositionRear: rearWheels?.name,
+            tableAPUnit: apUnit?.name,
             tableFeatures: TruckFeaturesDataHelper.truckFeaturesData(data),
-            tableTollDeviceTransponder: data?.tollTransponder?.name
-                ? data.tollTransponder.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTollDeviceNo: data?.tollTransponderDeviceNo
-                ? data.tollTransponderDeviceNo
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableInsPolicy: data?.insurancePolicy
-                ? data.insurancePolicy
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableMileage: data?.mileage
-                ? this.thousandSeparator.transform(data.mileage) +
+            tableTollDeviceTransponder: tollTransponder?.name,
+            tableTollDeviceNo: tollTransponderDeviceNo,
+            tableInsPolicy: insurancePolicy,
+            tableMileage: mileage
+                ? this.thousandSeparator.transform(mileage) +
                   TableStringEnum.MILES_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailNumber: data?.licensePlate
-                ? data.licensePlate
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailNumber: licensePlate,
             tableLicencePlateDetailST: TableStringEnum.NA,
             tableLicencePlateDetailExpiration: {
-                expirationDays: data?.registrationExpirationDays
-                    ? data.registrationExpirationDays
+                expirationDays: registrationExpirationDays
+                    ? registrationExpirationDays
                     : null,
-                expirationDaysText: data?.registrationExpirationDays
+                expirationDaysText: registrationExpirationDays
                     ? this.thousandSeparator.transform(
-                          data.registrationExpirationDays
+                          registrationExpirationDays
                       )
                     : null,
                 percentage:
-                    data?.registrationPercentage ||
-                    data?.registrationPercentage === 0
-                        ? 100 - data.registrationPercentage
+                    registrationPercentage || registrationPercentage === 0
+                        ? 100 - registrationPercentage
                         : null,
             },
-            tableFhwaInspectionTerm: data?.fhwaExp
-                ? data.fhwaExp + TableStringEnum.MONTHS
+            tableFhwaInspectionTerm: fhwaExp
+                ? fhwaExp + TableStringEnum.MONTHS
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFhwaInspectionExpiration: {
-                expirationDays: data?.inspectionExpirationDays
-                    ? data.inspectionExpirationDays
+                expirationDays: inspectionExpirationDays
+                    ? inspectionExpirationDays
                     : null,
-                expirationDaysText: data?.inspectionExpirationDays
-                    ? this.thousandSeparator.transform(
-                          data.inspectionExpirationDays
-                      )
+                expirationDaysText: inspectionExpirationDays
+                    ? this.thousandSeparator.transform(inspectionExpirationDays)
                     : null,
                 percentage:
-                    data?.inspectionPercentage ||
-                    data?.inspectionPercentage === 0
-                        ? 100 - data.inspectionPercentage
+                    inspectionPercentage || inspectionPercentage === 0
+                        ? 100 - inspectionPercentage
                         : null,
             },
-            tableTitleNumber:
-                data.titleNumber ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitleST:
-                data.titleState ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitleIssued: data.titleIssueDate
+            tableTitleNumber: titleNumber,
+            tableTitleST: titleState,
+            tableTitleIssued: titleIssueDate
                 ? this.datePipe.transform(
-                      data.titlePurchaseDate,
+                      titlePurchaseDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitlePurchase: data.titlePurchaseDate
+            tableTitlePurchase: titlePurchaseDate
                 ? this.datePipe.transform(
-                      data.titlePurchaseDate,
+                      titlePurchaseDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePurchasePrice: data?.purchasePrice
+            tablePurchasePrice: purchasePrice
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.purchasePrice)
+                  this.thousandSeparator.transform(purchasePrice)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePurchaseDate: data.purchaseDate
+            tablePurchaseDate: purchaseDate
                 ? this.datePipe.transform(
-                      data.purchaseDate,
+                      purchaseDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
             tableTerminated: TableStringEnum.NA,
-            tableAdded: data.createdAt
+            tableAdded: createdAt
                 ? this.datePipe.transform(
-                      data.createdAt,
+                      createdAt,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: data.updatedAt
+            tableEdited: updatedAt
                 ? this.datePipe.transform(
-                      data.updatedAt,
+                      updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAttachments: data?.files ? data.files : [],
-            fileCount: data?.fileCount,
+            tableAttachments: files ? files : [],
+            fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownTruckContent(),

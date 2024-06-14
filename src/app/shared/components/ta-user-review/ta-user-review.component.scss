@@ -1,8 +1,10 @@
+@import 'src/theme/variables.scss';
+
 .ta-user-review {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    background-color: #ffffff;
+    background-color: $white;
     padding: 6px;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
@@ -47,17 +49,31 @@
                     .ta-user-fullname {
                         font-weight: 700;
                         font-size: 11px;
-                        color: #6c6c6c;
+                        color: $bw6-2;
                         line-height: 14px;
+
+                        .current-user {
+                            color: $ta-orange-2;
+
+                            &::-moz-selection {
+                                background-color: rgb(247, 125, 59, 0.2);
+                                color: $ta-orange-2;
+                            }
+    
+                            &::selection {
+                                background-color: rgb(247, 125, 59, 0.2);
+                                color: $ta-orange-2;
+                            }
+                        }
 
                         &::-moz-selection {
                             background-color: rgb(108, 108, 108, 0.2);
-                            color: #6c6c6c;
+                            color: $bw6-2;
                         }
 
                         &::selection {
                             background-color: rgb(108, 108, 108, 0.2);
-                            color: #6c6c6c;
+                            color: $bw6-2;
                         }
                     }
 
@@ -66,7 +82,7 @@
                             width: 15px;
                             height: 15px;
                             path {
-                                fill: #e57373;
+                                fill: $ta-red;
                             }
                         }
 
@@ -75,7 +91,7 @@
                                 width: 15px;
                                 height: 15px;
                                 path {
-                                    fill: #4db6a2;
+                                    fill: $ta-red;
                                 }
                             }
                         }
@@ -89,18 +105,18 @@
                     font-size: 11px;
                     font-weight: 600;
                     line-height: 14px;
-                    color: #b7b7b7;
+                    color: $bw4;
 
                     .ta-user-date,
                     .ta-user-time {
                         &::-moz-selection {
                             background-color: rgb(183, 183, 183, 0.2);
-                            color: #b7b7b7;
+                            color: $bw4;
                         }
 
                         &::selection {
                             background-color: rgb(183, 183, 183, 0.2);
-                            color: #b7b7b7;
+                            color: $bw4;
                         }
                     }
                 }
@@ -125,7 +141,7 @@
                     width: 18px;
                     height: 18px;
                     path {
-                        fill: #919191;
+                        fill: $bw5;
                     }
                 }
 
@@ -137,10 +153,10 @@
             .action-edit {
                 transition: all 0.3s ease-in-out;
                 &:hover {
-                    background-color: #cccccc;
+                    background-color: $ta-light-grey-6;
                     svg {
                         path {
-                            fill: #424242;
+                            fill: $ta-black;
                         }
                     }
                 }

@@ -240,6 +240,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                             }
                                         );
 
+                                        // Remove deleted shop from view
+                                        this.viewData = this.viewData.filter(
+                                            (data) =>
+                                                !res.array.includes(data.id)
+                                        );
                                         this.updateDataCount();
 
                                         const interval = setInterval(() => {
@@ -306,8 +311,11 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe({
                                     next: () => {
+                                        // Remove deleted shop from view
+                                        this.viewData = this.viewData.filter(
+                                            (data) => data.id !== repairShopId
+                                        );
                                         this.updateDataCount();
-
                                         if (res.array?.length) {
                                             this.tableService.sendRowsSelected(
                                                 []
@@ -356,6 +364,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public changeRepairShopStatus(data): void {
         this.repairService.changeShopStatus(data.id);
+        const updatedStore = this.viewData.findIndex(
+            (item) => item.id === data.id
+        );
+        if (updatedStore !== -1) {
+            const store = this.viewData[updatedStore];
+            store.status = store.status === 0 ? 1 : 0;
+            store.tableDropdownContent.content = this.getShopDropdownContent(data)
+           
+        }
     }
 
     ngAfterViewInit(): void {
@@ -808,6 +825,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 tableConfiguration: 'REPAIR_SHOP',
                 isActive: this.selectedTab === TableStringEnum.REPAIR_SHOP,
                 gridColumns: this.getGridColumns('REPAIR_SHOP'),
+                inactive: true,
             },
         ];
 

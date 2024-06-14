@@ -78,8 +78,7 @@ export class TaUserReviewComponent implements OnChanges {
             this.reviewData.filter((item) => {
                 return {
                     ...item,
-                    prohibitEditingOthers:
-                        item.companyUser.id !== this.user.companyUserId,
+                    prohibitEditingOthers: !item.isItCurrentCompanyUser,
                 };
             });
         }

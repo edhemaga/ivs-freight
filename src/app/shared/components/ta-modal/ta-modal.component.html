@@ -252,6 +252,18 @@
                                 </button>
                             </ng-container>
 
+                            <ng-container
+                                *ngIf="showCloseBusinessButton"
+                            >
+                                <button
+                                    (click)="onAction('CLOSE_BUSINESS')"
+                                    class="modal-deactivate-btn"
+                                    type="button"
+                                >
+                                    Close Business
+                                </button>
+                            </ng-container>
+
                             <!-- Map Settings Reset -->
 
                             <ng-container
@@ -612,13 +624,7 @@
 
             <!-- Modal Footer Confirmation Modal -->
             <ng-container *ngIf="confirmationData">
-                <div
-                    class="modal-footer"
-                    [ngClass]="{
-                        'mutliple-buttons':
-                            confirmationData.subType !== 'cdl void'
-                    }"
-                >
+                <div class="modal-footer mutliple-buttons">
                     <!-- Cancel -->
 
                     <ng-container
@@ -645,14 +651,36 @@
                                     'registration',
                                     'title',
                                     'inspection',
+                                    'void',
                                     'trailer',
                                     'Driver',
-                                    'driver'
+                                    'driver',
+                                    'medical',
+                                    'test',
+                                    'mvr',
+                                    'cdl'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
                         >
                             No
+                        </button>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="confirmationData.subType === 'cdl void'"
+                    >
+                        <button
+                            (click)="onAction('close')"
+                            class="ta-font-bold modal-cancel-btn"
+                            [ngClass]="{
+                                'active-cancel-btn': ['cdl'].includes(
+                                    confirmationData?.template
+                                )
+                            }"
+                            type="button"
+                        >
+                            Cancel
                         </button>
                     </ng-container>
 
@@ -821,6 +849,18 @@
                                 'modal-gray-btn':
                                     confirmationData?.type !== 'open'
                             }"
+                            type="button"
+                        >
+                            Yes
+                        </button>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="confirmationData?.subType === 'void cdl'"
+                    >
+                        <button
+                            (click)="onAction('void-cdl')"
+                            class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
                             type="button"
                         >
                             Yes

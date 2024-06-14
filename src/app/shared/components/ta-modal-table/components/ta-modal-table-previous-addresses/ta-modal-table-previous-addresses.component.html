@@ -1,0 +1,76 @@
+<form [formGroup]="modalTableForm" class="table-body">
+    <div class="d-flex flex-column previous-addresses-table-container">
+        <ng-container 
+            formArrayName="previousAddressesTableItems" 
+            *ngFor="
+                let previousAddressRow of formArray.controls;
+                let i = index; trackBy: '' | trackByProperty
+            "
+        >
+            <div 
+                class="align-items-center table-item" 
+                [ngClass]="{ valid: previousAddressRow.valid }" 
+                [formGroupName]="i"
+            >
+                <!-- Number & Delete -->
+                <div 
+                    class="d-flex justify-content-center align-items-center table-item-number"
+                >
+                    <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
+                    <svg-icon 
+                        class="delete-icon" 
+                        src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg" 
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }" 
+                        (click)="emitDeleteFormArrayRowClick(i)"
+                    >
+                    </svg-icon>
+                </div>
+                
+                <!-- Address -->
+                <app-ta-input-address-dropdown
+                    formControlName="address" 
+                    [inputConfig]="{
+                        name: 'Address',
+                        type: 'text',
+                        label: 'Address, City, State Zip',
+                        placeholderInsteadOfLabel: true,
+                        minLength: 5,
+                        maxLength: 256,
+                        isRequired: true,
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        dropdownWidthClass: 'w-col-412',
+                        isInputBackgroundRemoved: previousAddressRow.valid && !isInputHoverRows[i][0],
+                        blackInput: formArray.at(i).get('address').value && !isInputHoverRows[i][0]
+                    }" 
+                    [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress[i]"
+                    (selectedAddress)="emitOnSelectAddress($event, i)"
+                    (mouseenter)="emitOnInputHover(true, i, 0)" 
+                    (mouseleave)="emitOnInputHover(false, i, 0)">
+                </app-ta-input-address-dropdown>
+
+                <app-ta-input
+                    formControlName="unit"
+                    [inputConfig]="{
+                        name: 'Description',
+                        type: 'text',
+                        label: 'Unit #',
+                        placeholderInsteadOfLabel: true,
+                        minLength: 2,
+                        hideErrorMessage: true,
+                        hideRequiredCheck: true,
+                        isInputBackgroundRemoved:
+                            previousAddressRow.valid &&
+                            !isInputHoverRows[i][0],
+                        blackInput:
+                            formArray.at(i).get('unit').value &&
+                            !isInputHoverRows[i][0]
+                    }"
+                    (mouseenter)="emitOnInputHover(true, i, 0)"
+                    (mouseleave)="emitOnInputHover(false, i, 0)"
+                ></app-ta-input>
+            </div>
+        </ng-container>
+    </div>
+</form>
