@@ -63,9 +63,7 @@
             class="progress-text"
         >
             <span>
-                {{
-                    expiresSettings !== 'todo-list' ? 'Expired' : 'Deadline was'
-                }}
+                {{ expiresSettings !== 'todo-list' ? 'Exp.' : 'Deadline was' }}
                 <span
                     [ngClass]="{
                         'expires-settings-bold': expiresSettings !== 'todo-list'
@@ -124,9 +122,7 @@
         >
             <span *ngIf="!completedDate || completedDate == 'Invalid date'">
                 {{
-                    expiresSettings !== 'todo-list'
-                        ? 'Expires in'
-                        : 'Deadline in'
+                    expiresSettings !== 'todo-list' ? 'Exp. in' : 'Deadline in'
                 }}
                 <span
                     [ngClass]="{

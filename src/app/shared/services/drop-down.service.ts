@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import moment from 'moment';
+
 // services
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
 import { ModalService } from '@shared/services/modal.service';
@@ -14,7 +16,6 @@ import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-mod
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
@@ -30,7 +31,6 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import moment from 'moment';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
@@ -513,56 +513,6 @@ export class DropDownService {
             default: {
                 break;
             }
-        }
-    }
-
-    public dropActionsHeader(event: any, driverObject?: any, _?: number) {
-        const mappedEvent = {
-            ...driverObject,
-            data: {
-                ...driverObject,
-                name: driverObject?.firstName + ' ' + driverObject?.lastName,
-            },
-        };
-
-        if (event.type === DropActionsStringEnum.EDIT) {
-            this.modalService.openModal(
-                DriverModalComponent,
-                { size: DropActionsStringEnum.SMALL },
-                {
-                    ...event,
-                    disableButton: true,
-                    id: event.id,
-                }
-            );
-        } else if (
-            event.type === DropActionsStringEnum.DEACTIVATE ||
-            event.type === DropActionsStringEnum.ACTIVATE
-        ) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: DropActionsStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: DropActionsStringEnum.DRIVER,
-                    type:
-                        driverObject.status === 1
-                            ? DropActionsStringEnum.DEACTIVATE
-                            : DropActionsStringEnum.ACTIVATE,
-                    image: true,
-                }
-            );
-        } else if (event.type === DropActionsStringEnum.DELETE_ITEM) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: DropActionsStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: DropActionsStringEnum.DRIVER,
-                    type: DropActionsStringEnum.DELETE,
-                    image: true,
-                }
-            );
         }
     }
 

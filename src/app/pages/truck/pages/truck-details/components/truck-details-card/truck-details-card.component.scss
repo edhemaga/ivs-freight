@@ -266,15 +266,15 @@ app-truck-details-card {
             }
         }
     }
-    .assignTo-item {
+    .assign-to-item {
         height: 34px;
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             padding-left: 6px;
             svg {
                 width: fit-content !important;
             }
         }
-        .assignTo-value {
+        .assign-to-value {
             font-size: 14px !important;
         }
         .driverAvatarImg {
@@ -295,8 +295,8 @@ app-truck-details-card {
             //background-position: center;
         }
 
-        &.inactive-assignTo-item {
-            .assignTo-value {
+        &.inactive-assign-to-item {
+            .assign-to-value {
                 padding-left: 6px;
                 color: #b7b7b7;
                 cursor: auto;

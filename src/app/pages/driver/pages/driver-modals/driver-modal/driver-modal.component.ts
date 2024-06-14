@@ -620,6 +620,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     checked: payrollTab.id === event?.id,
                 };
             });
+
+            const payrollType = this.driverForm.get(
+                DriverModalStringEnum.PAYROLL_TYPE
+            ).value;
+
+            const fieldToUpdate =
+                payrollType === DriverModalStringEnum.COMPANY_DRIVER
+                    ? DriverModalStringEnum.IS_PAYROLL_SHARED
+                    : DriverModalStringEnum.IS_PAYROLL_CALCULATED;
+
+            this.driverForm.get(fieldToUpdate).patchValue(false);
         }
     }
 
@@ -711,7 +722,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : soloFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -727,7 +738,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : teamFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -742,7 +753,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? [soloFields[0], teamFields[0]]
                 : [...soloFields.slice(1), ...teamFields.slice(1)];
 
-            fields.forEach((field, index) => {
+            fields.forEach((field) => {
                 if (
                     (field
                         .toLowerCase()
@@ -753,7 +764,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get(DriverModalStringEnum.SOLO_DRIVER)
                             .value)
                 ) {
-                    if (index < 6)
+                    if (!field.includes(DriverModalStringEnum.PER_STOP))
                         this.inputService.changeValidators(
                             this.driverForm.get(field)
                         );
@@ -1931,7 +1942,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             owner,
 
             driverType,
-            /*    useCarrieraAch, */
+            useCarrieraAch,
             fleetType,
             payType,
             soloDriver,
@@ -2014,7 +2025,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
 
-            /* useCarrieraAch, */
+            useCarrieraAch,
             payType: payType?.name,
             soloDriver,
             teamDriver,
@@ -2029,7 +2040,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       solo?.perStop
                   )
                 : null,
-            /*  perMileSolo: perMileSolo ? String(perMileSolo) : perMileSolo, */
+            perMileSolo: solo?.perMile ? String(solo?.perMile) : solo?.perMile,
             teamEmptyMile: team?.emptyMile
                 ? String(team?.emptyMile)
                 : team?.emptyMile,
@@ -2041,7 +2052,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       team?.perStop
                   )
                 : null,
-            /*  perMileTeam: perMileTeam ? String(perMileTeam) : perMileTeam, */
+            perMileTeam: team?.perMile ? String(team?.perMile) : team?.perMile,
             commissionSolo: solo?.commission,
             commissionTeam: team?.commission,
             driverCommission:

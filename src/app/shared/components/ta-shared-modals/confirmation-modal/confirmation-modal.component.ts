@@ -79,6 +79,7 @@ export class ConfirmationModalComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        console.log('edit', this.editData);
         this.cdlForm = this.formBuilder.group({
             cdlId: [null],
         });

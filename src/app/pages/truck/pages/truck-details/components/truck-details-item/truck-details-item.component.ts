@@ -11,14 +11,7 @@ import {
     OnChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
+
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -51,6 +44,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { cardAnimation } from '@shared/animations/card.animation';
 
 // components
 import { TruckDetailsCardComponent } from '@pages/truck/pages/truck-details/components/truck-details-card/truck-details-card.component';
@@ -90,27 +84,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
     ],
     animations: [
         cardComponentAnimation('showHideCardBody'),
-        trigger('cardAnimation', [
-            state('in', style({ opacity: 1, 'max-height': '0px' })),
-            transition(':enter', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 0, 'max-height': '0px' }),
-                        style({ opacity: 1, 'max-height': '600px' }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 1, 'max-height': '600px' }),
-                        style({ opacity: 0, 'max-height': '0px' }),
-                    ])
-                ),
-            ]),
-        ]),
+        cardAnimation('cardAnimation'),
     ],
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {

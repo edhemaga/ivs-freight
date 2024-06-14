@@ -1,19 +1,18 @@
 <div class="details-container-items">
-    <div
+    <ng-container
         *ngFor="
             let item of driverDetailsConfig;
             let i = index;
-            trackBy: identity
+            trackBy: trackByIdentity
         "
     >
         <app-ta-details-header
-            [options]="dataTest"
+            [options]="detailsDropdownOptions"
             [route]="'/list/driver'"
-            [tooltipHeaderName]="'Back to Driver List'"
+            [tooltipHeaderName]="'Back to List'"
             [headerText]="item.name"
             [counterData]="item.length"
-            [hidePlus]="item.hide"
-            [isInactive]="showInc"
+            [isInactive]="isInactive"
             [hasRequest]="item.req"
             [statusInactive]="item.status"
             [optionsId]="driverId"
@@ -22,10 +21,11 @@
             (openModalAction)="onModalAction($event)"
         >
         </app-ta-details-header>
-    </div>
+    </ng-container>
+
     <div class="driver-details-container">
         <app-driver-details-item
-            [drivers]="driverDetailsConfig"
+            [detailsConfig]="driverDetailsConfig"
         ></app-driver-details-item>
     </div>
 </div>

@@ -30,8 +30,7 @@
                         textTransform: 'uppercase',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-97',
-                        isDisabled: editData?.type === 'renew-licence'
+                        dropdownWidthClass: 'w-col-97'
                     }"
                     [options]="stateDropdownList"
                     [activeItem]="selectedState"
@@ -50,9 +49,7 @@
                         textTransform: 'capitalize',
                         minLength: selectedCountry === 'US' ? 1 : 5,
                         maxLength: selectedCountry === 'US' ? 19 : 15,
-                        isDisabled:
-                            !cdlForm.get('stateId').value ||
-                            editData?.type === 'renew-licence'
+                        isDisabled: !cdlForm.get('stateId').value
                     }"
                 ></app-ta-input>
             </div>
@@ -66,8 +63,7 @@
                         label: 'Class',
                         isRequired: true,
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-97',
-                        isDisabled: editData?.type === 'renew-licence'
+                        dropdownWidthClass: 'w-col-97'
                     }"
                     [options]="classDropdownList"
                     [activeItem]="selectedClass"

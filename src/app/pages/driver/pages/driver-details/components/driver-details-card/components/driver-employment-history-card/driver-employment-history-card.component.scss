@@ -1,0 +1,184 @@
+@import 'src/theme/variables.scss';
+
+.employment-history-container {
+    .years-of-service-container {
+        margin: 0 -5px 0 -4px;
+        padding: 6px 7px 4px 6px;
+        border-radius: 2px;
+        background: transparent;
+        transition: background 0.3s ease-in;
+
+        &.hover-container {
+            background: $bw2;
+
+            .employed-deactivated-container {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        span,
+        p {
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        span {
+            font-size: 11px;
+            line-height: 14px;
+            margin-bottom: 2px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            margin-right: 4px !important;
+        }
+
+        .employed-deactivated-container {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease-in;
+
+            p {
+                font-size: 11px;
+                line-height: 14px;
+                margin-right: 4px !important;
+            }
+
+            .circle {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .employment-progress-container {
+        padding: 4px 0;
+        margin-bottom: 8px;
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        .employment-progress-bar {
+            margin-top: 6px;
+            height: 8px;
+            border-radius: 2px;
+
+            &-box {
+                height: 8px;
+
+                &:first-child {
+                    border-top-left-radius: 2px;
+                    border-bottom-left-radius: 2px;
+                }
+
+                &:last-child {
+                    border-top-right-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                }
+
+                &.reset {
+                    width: 0;
+                    background: transparent;
+                }
+            }
+        }
+    }
+
+    .employment-history-list {
+        &-header {
+            display: grid;
+            grid-template-columns: 132px 138px 132px;
+            grid-gap: 12px;
+            margin-bottom: 8px;
+
+            p {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw6-2;
+
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+
+                &:last-child {
+                    text-align: right;
+                }
+            }
+        }
+
+        &-item {
+            display: grid;
+            grid-template-columns: 132px 138px 132px;
+            grid-gap: 12px;
+            margin: 0 -5px 4px -4px;
+            padding: 6px 7px 4px 6px;
+            border-radius: 2px;
+            background: transparent;
+            transition: background 0.2s ease-in;
+
+            &.hover-container {
+                background: $bw2;
+
+                .employed-deactivated-container {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black-2;
+
+                &::-moz-selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+
+            .status-box {
+                .circle {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    margin-right: 4px;
+                }
+            }
+
+            .service-box {
+                padding-right: 4px;
+            }
+        }
+    }
+}

@@ -72,10 +72,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                     height: '*',
                     overflow: 'hidden',
                     opacity: 1,
-                    'margin-left': '12px',
-                    'margin-right': '10px',
-                    'padding-bottom': '11px',
-                    'padding-top': '0px',
                 })
             ),
             state(
@@ -84,10 +80,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
                     height: '0px',
                     overflow: 'hidden',
                     opacity: 0,
-                    'margin-left': '0px',
-                    'margin-right': '0px',
-                    'padding-bottom': '0px',
-                    'padding-top': '0px',
                 })
             ),
             transition('false <=> true', [animate('200ms ease-in-out')]),
@@ -141,7 +133,6 @@ export class TaCommonCardComponent implements OnInit {
     @Input() statusActive: number;
     @Input() paddingDots: string = '8px 8px 0px 0px';
     @Output() clickedCard = new EventEmitter<any>();
-    @Output() dataDropDopwn = new EventEmitter<any>();
     @Output() preloadData = new EventEmitter<any>();
     @Input() hasToggler: boolean;
     @Input() public testDate: any;
@@ -181,8 +172,6 @@ export class TaCommonCardComponent implements OnInit {
             this.DetailsDataService.setCdlId(this.mainData.id);
         }
 
-        // api start after every click
-        //this.dataDropDopwn.emit(data);
         if (this.preloadData) {
             this.preloadData.emit(data);
         }

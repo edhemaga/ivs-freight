@@ -6,8 +6,8 @@
         ngbTooltip
         [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
         [customClass]="'mb-2'"
-        position="top"
-        [tooltipBackground]="isCardOpen || forcedOpen ? '#6C6C6C' : '#6C6C6C'"
+        position="bottom"
+        [tooltipBackground]="'#424242'"
         class="tooltipClose"
     >
         <div
@@ -221,8 +221,19 @@
                     <ng-container *ngIf="isDeactivated && isCardOpen">
                         <div
                             class="voided-button ta-font-bold d-flex justify-content-center"
+                            [ngStyle]="{
+                                width: isVoidDateDisplayed ? '106px' : 'auto'
+                            }"
+                            (mouseenter)="isVoidDateDisplayed = true"
+                            (mouseleave)="isVoidDateDisplayed = false"
                         >
-                            <p>Voided</p>
+                            <p>
+                                {{
+                                    isVoidDateDisplayed
+                                        ? 'Voided ' + voidedDate
+                                        : 'Voided'
+                                }}
+                            </p>
                         </div>
                     </ng-container>
                     <app-ta-details-dropdown
@@ -234,7 +245,6 @@
                                 ? 'bottom-right left auto'
                                 : 'right-top right auto'
                         "
-                        [leftIcon]="setPositionDrop ? false : true"
                         (dropDownActions)="dropAct($event)"
                         [customClassDropDown]="'drop-down-details-single'"
                         (click)="toggleDropdown()"
@@ -285,6 +295,10 @@
                 </ng-container>
             </div>
             <div
+                ngbTooltip
+                [mainTooltip]="resPage ? 'Collapse Card' : 'Expand Card'"
+                position="bottom"
+                [tooltipBackground]="'#424242'"
                 (click)="resizePageFun()"
                 [ngClass]="{ 'rotate-common': resPage }"
                 class="resize-icon"

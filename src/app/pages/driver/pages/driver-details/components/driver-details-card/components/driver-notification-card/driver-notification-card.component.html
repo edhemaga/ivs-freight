@@ -1,0 +1,48 @@
+<app-ta-custom-card
+    [cardName]="'Notification'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4px'
+    }"
+>
+    <div class="align-items-center notification-container">
+        <div class="d-flex flex-column justify-content-center notification-box">
+            <p class="m-0 ta-font-bold">General</p>
+
+            <ng-container
+                *ngIf="
+                    !cardData.general.mail &&
+                        cardData.general.push &&
+                        cardData.general.sms;
+                    else hasGeneralNotification
+                "
+            >
+                <span> None </span>
+            </ng-container>
+
+            <ng-template #hasGeneralNotification>
+                <span>
+                    {{ cardData.general.mail ? 'Email ' : '' }}
+                    {{ cardData.general.push ? ' • ' : '' }}
+                    {{ cardData.general.push ? 'Push' : '' }}
+                    {{ cardData.general.sms ? ' • ' : '' }}
+                    {{ cardData.general.sms ? 'SMS' : '' }}
+                </span>
+            </ng-template>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center notification-box">
+            <p class="m-0 ta-font-bold">Payroll</p>
+
+            <span>
+                {{ cardData.payroll.mail ? 'Email ' : '' }}
+                {{ cardData.payroll.push ? ' • ' : '' }}
+                {{ cardData.payroll.push ? 'Push' : '' }}
+                {{ cardData.payroll.sms ? ' • ' : '' }}
+                {{ cardData.payroll.sms ? 'SMS' : '' }}
+            </span>
+        </div>
+    </div>
+</app-ta-custom-card>

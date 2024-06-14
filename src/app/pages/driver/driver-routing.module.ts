@@ -17,15 +17,15 @@ const routes: Routes = [
     },
     {
         path: ':id/details',
-        loadChildren: () =>
+        loadComponent: () =>
             import(
-                '@pages/driver/pages/driver-details/driver-details.module'
-            ).then((m) => m.DriverDetailsModule),
+                '@pages/driver/pages/driver-details/driver-details.component'
+            ).then((m) => m.DriverDetailsComponent),
         resolve: {
             driver: DriverItemsResolver,
             driverMinimal: DriverMinimalResolver,
         },
-        data: { title: 'Driver Detail' },
+        data: { title: 'Driver Details' },
     },
     {
         path: 'card',

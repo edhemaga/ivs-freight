@@ -136,14 +136,14 @@ p {
         }
     }
 }
-.assignTo {
+.assign-to {
     position: relative;
     left: -3px;
     display: grid;
     grid-template-columns: 204px 204px;
     column-gap: 12px;
     padding: 0 0px;
-    .assignTo-vehicle {
+    .assign-to-vehicle {
         svg {
             width: 55px;
             height: 20px;
@@ -160,7 +160,7 @@ p {
         }
     }
     .first {
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             svg {
                 display: flex;
                 align-items: center;
@@ -189,7 +189,7 @@ p {
             position: relative;
             top: 1px;
         }
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             svg {
                 display: flex;
             }
@@ -212,12 +212,12 @@ p {
             }
         }
     }
-    .assignTo-item {
-        background-color: $color-white-dark;
-        border-radius: 3px;
-        width: 100%;
+    .assign-to-item {
+        background-color: $ta-light-grey-5;
+        border-radius: 2px;
         display: flex;
         align-items: center;
+
         .icon-text-wrapper-cmp {
             display: flex;
             align-items: center;
@@ -244,7 +244,7 @@ p {
         .open-modal-icon2 {
             display: none;
         }
-        .assignTo-vehicle {
+        .assign-to-vehicle {
             margin-right: 6px;
             position: relative;
             bottom: 0px;
@@ -254,25 +254,29 @@ p {
             }
         }
 
-        .assignTo-value {
-            font-size: $font-size18;
+        .assign-to-value {
+            font-size: $font-size14;
             font-weight: $font-medium;
-            color: $color-gray-dark;
-            line-height: 16px;
-            padding-left: 12px;
+            color: $ta-black;
+            line-height: 18px;
+            padding: 4px 6px;
+
             &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
             &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
 
             &.inactive-assignTo-value {
-                padding-left: 6px;
                 color: $ta-light-grey-2;
-                line-height: 34px;
+
+                user-select: none;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
             }
         }
         p {
@@ -694,7 +698,6 @@ p {
 
 .truck-details-wrapper {
     padding: 0px 12px;
-    //margin-left: 12px;
     .truck {
         svg {
             width: 132px;
@@ -937,46 +940,6 @@ p {
     }
 }
 
-.mileage-template {
-    display: grid;
-    grid-template-columns: 130px 130px 130px;
-    row-gap: 10px;
-    column-gap: 10px;
-    //padding: 0 2px;
-    .mileage-template-item {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        .mileage-template-item-name {
-            //color: $color-gray-dark;
-            color: #2f2f2f;
-            font-size: 11px;
-            font-weight: 700;
-            &::-moz-selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .mileage-template-item-value {
-            color: #2f2f2f;
-            font-size: 18px;
-            font-weight: 500;
-            margin-top: -3px;
-            &::-moz-selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #2f2f2f;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
-}
 .owner-items {
     display: flex;
     align-items: center;
@@ -1761,14 +1724,6 @@ p {
         }
     }
 
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 137px 70px !important;
-            }
-        }
-    }
-
     app-shipper-details,
     app-broker-details {
         .details-header-wrapper {
@@ -1810,7 +1765,7 @@ p {
         grid-template-columns: 110px 120px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 185px 185px;
     }
 
@@ -1898,7 +1853,7 @@ p {
         grid-template-columns: 308px 53px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 175px 175px;
     }
 
@@ -1946,18 +1901,6 @@ p {
         .status-container {
             .item-wrapper {
                 grid-template-columns: 85px 86px 92px !important;
-            }
-        }
-    }
-
-    .mileage-template {
-        grid-template-columns: 112px 112px 111px;
-    }
-
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 114px 70px !important;
             }
         }
     }
@@ -2049,7 +1992,7 @@ p {
         grid-template-columns: 290px 53px !important;
     }
 
-    .assignTo {
+    .assign-to {
         grid-template-columns: 162px 162px;
     }
 
@@ -2071,14 +2014,6 @@ p {
         .status-container {
             .item-wrapper {
                 grid-template-columns: 85px 91px 70px !important;
-            }
-        }
-    }
-
-    .employment-history-container {
-        .status-items {
-            .item-wrapper {
-                grid-template-columns: 72px 95px 70px !important;
             }
         }
     }

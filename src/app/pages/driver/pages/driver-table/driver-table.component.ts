@@ -852,6 +852,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DOLLAR_SIGN + solo?.loadedMile,
             perStopSolo:
                 solo?.perStop && TableStringEnum.DOLLAR_SIGN + solo?.perStop,
+            perMileSolo:
+                solo?.perMile && TableStringEnum.DOLLAR_SIGN + solo?.perMile,
             flatRateSolo:
                 solo?.flatRate && TableStringEnum.DOLLAR_SIGN + solo?.flatRate,
             commissionSolo:
@@ -865,6 +867,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DOLLAR_SIGN + team?.loadedMile,
             perStopTeam:
                 team?.perStop && TableStringEnum.DOLLAR_SIGN + team?.perStop,
+            perMileTeam:
+                team?.perMile && TableStringEnum.DOLLAR_SIGN + team?.perMile,
             flatRateTeam:
                 team?.flatRate && TableStringEnum.DOLLAR_SIGN + team?.flatRate,
             commissionTeam:

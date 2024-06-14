@@ -590,8 +590,11 @@
 
                 //------------------------ Details Template ------------------------
                 &.details-template {
-                    display: flex;
+                    display: grid;
+                    grid-template-columns: auto 14px 1fr;
                     align-items: center;
+                    justify-content: space-between;
+
                     .details-template-text {
                         &.active {
                             color: #6f9ee0;
@@ -603,16 +606,16 @@
                         }
                     }
 
+                    .details-template-logo {
+                        margin-left: 6px;
+                        line-height: 15px;
+                    }
+
                     .additional-text {
                         font-size: 11px;
                         font-weight: 400;
                         color: $bw5;
                         line-height: 12px;
-                    }
-
-                    .details-template-logo {
-                        margin-left: 6px;
-                        line-height: 15px;
                     }
                 }
 

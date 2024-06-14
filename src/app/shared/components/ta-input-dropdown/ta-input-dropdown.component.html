@@ -496,10 +496,18 @@
                         }"
                         class="details-template-text"
                     ></div>
-                    <div class="d-flex align-items-center" style="gap: 7px">
-                        <!-- Additional Text -->
+
+                    <!-- Svg -->
+
+                    <svg-icon
+                        [src]="option.svg | taSvg : option.folder"
+                        class="details-template-logo"
+                    ></svg-icon>
+
+                    <!-- Additional Text -->
+
+                    <ng-container *ngIf="option?.additionalText">
                         <div
-                            *ngIf="option?.additionalText"
                             [innerHtml]="
                                 option.additionalText
                                     | taHighlight
@@ -511,12 +519,24 @@
                                           ]
                             "
                             class="svgtext-template-text additional-text"
+                            [ngClass]="{
+                                active: option.id === _activeItem?.id
+                            }"
                         ></div>
+                    </ng-container>
+
+                    <!-- Plus Icon -->
+
+                    <ng-container *ngIf="option.name === 'ADD NEW'">
                         <svg-icon
-                            [src]="option.svg | taSvg : option.folder"
-                            class="details-template-logo"
+                            class="plus-icon"
+                            src="assets/svg/common/ic_plus.svg"
+                            [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '14'
+                            }"
                         ></svg-icon>
-                    </div>
+                    </ng-container>
                 </div>
             </ng-container>
 
