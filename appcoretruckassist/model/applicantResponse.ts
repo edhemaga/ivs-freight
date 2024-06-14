@@ -26,7 +26,6 @@ import { PreviousEmployerRequestResponse } from './previousEmployerRequestRespon
 import { PspAuthFeedbackResponse } from './pspAuthFeedbackResponse';
 import { CompanyOwnerInfoFeedbackResponse } from './companyOwnerInfoFeedbackResponse';
 import { SevenDaysHosFeedbackResponse } from './sevenDaysHosFeedbackResponse';
-import { CdlCardFeedbackResponse } from './cdlCardFeedbackResponse';
 import { AccidentRecordFeedbackResponse } from './accidentRecordFeedbackResponse';
 import { ApplicantCompanyInfoResponse } from './applicantCompanyInfoResponse';
 
@@ -62,7 +61,6 @@ export interface ApplicantResponse {
     pspAuth?: PspAuthFeedbackResponse;
     sph?: SphFeedbackResponse;
     hosRule?: HosRuleFeedbackResponse;
-    cdlCard?: CdlCardFeedbackResponse;
     companyInfo?: ApplicantCompanyInfoResponse;
     requests?: Array<PreviousEmployerRequestResponse> | null;
 }

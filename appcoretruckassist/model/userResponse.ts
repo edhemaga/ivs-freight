@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { AddressEntity } from './addressEntity';
 
 
@@ -20,5 +21,6 @@ export interface UserResponse {
     email?: string | null;
     phone?: string | null;
     avatar?: string | null;
+    avatarFile?: FileResponse;
 }
 

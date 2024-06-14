@@ -162,7 +162,6 @@ model/apiTruckPostRequest1.ts
 model/apiViolationPutRequest.ts
 model/applicantAdminResponse.ts
 model/applicantCompanyInfoResponse.ts
-model/applicantFileResponse.ts
 model/applicantListResponse.ts
 model/applicantModalResponse.ts
 model/applicantPersonalInfoReviewResponse.ts
@@ -217,8 +216,6 @@ model/brokerResponse.ts
 model/brokerResponsePagination.ts
 model/brokerShortResponse.ts
 model/byStateReportType.ts
-model/cdlCardFeedbackResponse.ts
-model/cdlCardReviewResponse.ts
 model/cdlEndorsementResponse.ts
 model/cdlFeedbackResponse.ts
 model/cdlLicenseResponse.ts
@@ -459,7 +456,6 @@ model/fileManagerDefaultViewType.ts
 model/fileResponse.ts
 model/fileResponsePagination.ts
 model/fileReviewCommand.ts
-model/fileReviewResponse.ts
 model/fleetType.ts
 model/folderResponse.ts
 model/forgotPasswordCommand.ts

@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface CompanyShortResponse { 
@@ -18,5 +19,6 @@ export interface CompanyShortResponse {
     isDivision?: boolean;
     isActive?: boolean;
     lastLogin?: string | null;
+    logoFile?: FileResponse;
 }
 
