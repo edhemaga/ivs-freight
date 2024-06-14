@@ -53,6 +53,7 @@ export interface CompanyResponse {
     divisions?: Array<CompanyShortResponse> | null;
     files?: Array<FileResponse> | null;
     logo?: string | null;
+    logoFile?: FileResponse;
     createdAt?: string;
     updatedAt?: string;
     driverMiles?: boolean | null;

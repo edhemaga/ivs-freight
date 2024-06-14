@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { LoadDriverInfo } from './loadDriverInfo';
 import { BrokerLoadStopResponse } from './brokerLoadStopResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
@@ -25,7 +25,7 @@ export interface LoadBrokerDetailsResponse {
     pickupCount?: number;
     delivery?: BrokerLoadStopResponse;
     deliveryCount?: number;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number; } | null;
     totalRate?: number | null;
     totalMiles?: number | null;

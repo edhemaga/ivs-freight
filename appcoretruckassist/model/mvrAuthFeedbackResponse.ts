@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicantFileResponse } from './applicantFileResponse';
+import { FileResponse } from './fileResponse';
 
 
 export interface MvrAuthFeedbackResponse { 
@@ -24,7 +24,7 @@ export interface MvrAuthFeedbackResponse {
     reviewed?: boolean | null;
     approved?: boolean | null;
     filesReviewMessage?: string | null;
-    files?: Array<ApplicantFileResponse> | null;
+    files?: Array<FileResponse> | null;
     applicantId?: number;
 }
 
