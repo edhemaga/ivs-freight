@@ -54,7 +54,6 @@ import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/d
     selector: 'app-driver-details-item',
     templateUrl: './driver-details-item.component.html',
     styleUrls: ['./driver-details-item.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     animations: [
         cardComponentAnimation('showHideCardBody'),
         cardAnimation('cardAnimation'),

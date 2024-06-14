@@ -1333,7 +1333,9 @@
         <div class="confirmation-icon">
             <ng-container
                 *ngIf="
-                    editData?.type === 'void' || editData?.template === 'cdl'
+                    editData?.type === 'void' ||
+                    (editData?.template === 'cdl' &&
+                        editData?.type !== 'activate')
                 "
             >
                 <svg-icon
@@ -1346,13 +1348,17 @@
             </ng-container>
             <ng-container
                 *ngIf="
-                    editData?.type !== 'void' && editData?.template !== 'cdl'
+                    (editData?.type !== 'void' &&
+                        editData?.template !== 'cdl') ||
+                    (editData?.template === 'cdl' &&
+                        editData?.type === 'activate')
                 "
             >
                 <ng-container
                     *ngIf="
                         editData?.type === 'activate' &&
-                            editData?.template === 'void';
+                            (editData?.template === 'void' ||
+                                editData?.template === 'cdl');
                         else trasgSvg
                     "
                 >
