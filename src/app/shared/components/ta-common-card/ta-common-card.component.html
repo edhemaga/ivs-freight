@@ -24,7 +24,9 @@
                         ngbTooltip
                         [mainTooltip]="stateTooltipName"
                         position="top"
-                        tooltipBackground="#6C6C6C"
+                        [tooltipBackground]="
+                            stateTooltipName ? '#6C6C6C' : '#fff'
+                        "
                         class="tooltipShortName"
                     >
                         <ng-container *ngIf="shortName">
@@ -62,6 +64,9 @@
                         [ngClass]="{
                             'has-svgIcon': hasSvg,
                             'card-close-title': !isCardOpen && !forcedOpen
+                        }"
+                        [ngStyle]="{
+                            width: cardNameCurrent === 'test' ? '100%' : 'unset'
                         }"
                     >
                         <ng-container
@@ -148,25 +153,36 @@
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="cardSecondResult">
-                            <span
-                                class="second-name resultHolder"
-                                [class.positiveResult]="
-                                    cardSecondResult == 'Positive'
-                                "
-                                [class.openedCardResults]="isCardOpen"
-                            >
-                                {{ cardSecondResult }}
-                            </span>
-                        </ng-container>
-
-                        <ng-container
-                            *ngIf="cardSecondName && !isCardOpen && !forcedOpen"
+                        <div
+                            class="d-flex align-items-center w-100"
+                            [ngClass]="{
+                                'justify-content-between':
+                                    cardSecondName && !isCardOpen,
+                                'justify-content-end': isCardOpen
+                            }"
                         >
-                            <span class="second-name reason-span">
-                                {{ cardSecondName }}</span
+                            <ng-container
+                                *ngIf="
+                                    cardSecondName && !isCardOpen && !forcedOpen
+                                "
                             >
-                        </ng-container>
+                                <span class="second-name reason-span">
+                                    {{ cardSecondName }}</span
+                                >
+                            </ng-container>
+
+                            <ng-container *ngIf="cardSecondResult">
+                                <span
+                                    class="second-name resultHolder"
+                                    [class.positiveResult]="
+                                        cardSecondResult == 'Positive'
+                                    "
+                                    [class.openedCardResults]="isCardOpen"
+                                >
+                                    {{ cardSecondResult }}
+                                </span>
+                            </ng-container>
+                        </div>
                     </span>
 
                     <ng-container *ngIf="hasCopyIcon">

@@ -95,7 +95,12 @@
                     triggers="manual"
                     [autoClose]="'outside'"
                 >
-                    <ng-container *ngIf="danger || !counterData">
+                    <ng-container
+                        *ngIf="
+                            (danger || !counterData) &&
+                            headerText !== 'Drug & Alcohol'
+                        "
+                    >
                         <div
                             ngbTooltip
                             [mainTooltip]="
@@ -242,18 +247,16 @@
                     <div
                         (click)="makeRequestFun(headerText)"
                         *ngIf="hasRequest"
-                        class="request-header-container"
+                        class="d-flex align-items-center justify-content-center request-header-container"
                     >
-                        REQUEST
-                    </div>
-                    <div
-                        (click)="makeRequestFun(headerText)"
-                        *ngIf="hasRequest"
-                        class="request-header-container icon-request-holder"
-                    >
+                        <p class="m-0 ta-font-bold">Request</p>
+
                         <svg-icon [src]="'assets/svg/common/ic_documents.svg'">
                         </svg-icon>
                     </div>
+
+                    <div class="header-divider"></div>
+
                     <div
                         ngbTooltip
                         [mainTooltip]="'Add New'"

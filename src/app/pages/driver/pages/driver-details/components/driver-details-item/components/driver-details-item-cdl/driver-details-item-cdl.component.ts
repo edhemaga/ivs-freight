@@ -34,7 +34,7 @@ import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-m
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { DriverDetailsHelper } from '@pages/driver/pages/driver-details/components/driver-details-item/utils/helpers/driver-details-item.helper';
+import { DriverDetailsItemHelper } from '@pages/driver/pages/driver-details/components/driver-details-item/utils/helpers/driver-details-item.helper';
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // enums
@@ -210,7 +210,7 @@ export class DriverDetailsItemCdlComponent
 
         data.forEach((_, index) => {
             this.cdlOptionsDropdownList[index] =
-                DriverDetailsHelper.getCdlOptionsDropdownList(
+                DriverDetailsItemHelper.getCdlOptionsDropdownList(
                     isCdlRenewArray,
                     isCdlActivateDeactivateArray,
                     isCdlExpiredArray,
