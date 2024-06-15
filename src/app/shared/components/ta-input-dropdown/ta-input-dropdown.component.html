@@ -466,7 +466,13 @@
             <ng-container *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
-                    *ngFor="let option of _options; trackBy: identity"
+                    (mouseenter)="driverHoveringIndex = i"
+                    (mouseleave)="driverHoveringIndex = -1"
+                    *ngFor="
+                        let option of _options;
+                        let i = index;
+                        trackBy: identity
+                    "
                     [ngClass]="{
                         disabled: option?.disabled,
                         'no-result':
@@ -503,6 +509,51 @@
                         [src]="option.svg | taSvg : option.folder"
                         class="details-template-logo"
                     ></svg-icon>
+
+                    <!-- Driver Details Template -->
+
+                    <ng-container *ngIf="option?.address?.address">
+                        <div
+                            class="d-flex align-items-center driver-details-template-container"
+                        >
+                            <div class="d-flex align-items-center left-box">
+                                <p class="m-0">
+                                    <ng-container
+                                        *ngIf="
+                                            i === driverHoveringIndex;
+                                            else notHoveringLeft
+                                        "
+                                    >
+                                        {{ option?.totalMiles }} mi
+                                    </ng-container>
+
+                                    <ng-template #notHoveringLeft>
+                                        {{ option?.address?.city }},
+                                        {{ option?.address?.stateShortName }}
+                                    </ng-template>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center right-box">
+                                <p class="m-0">
+                                    <ng-container
+                                        *ngIf="
+                                            i === driverHoveringIndex;
+                                            else notHoveringRight
+                                        "
+                                    >
+                                        ${{ option?.totalEarnings }}K
+                                    </ng-container>
+
+                                    <ng-template #notHoveringRight>
+                                        {{ option?.hiredAt }}
+                                    </ng-template>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Plus Icon -->
 
                     <!-- Additional Text -->
 

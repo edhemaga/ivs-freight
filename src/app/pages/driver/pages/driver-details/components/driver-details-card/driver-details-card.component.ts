@@ -52,6 +52,9 @@ import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-mini
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
+// helpers
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
 // models
 import { DoughnutChartConfig } from '@pages/dashboard/models/dashboard-chart-models/doughnut-chart.model';
 import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.model';
@@ -199,7 +202,7 @@ export class DriverDetailsCardComponent
         this.driversDropdownList = this.driverMinimalQuery
             .getAll()
             .map((driver) => {
-                const { id, firstName, lastName, status, owner } = driver;
+                const { id, firstName, lastName, owner, hiredAt } = driver;
 
                 const fullname =
                     firstName +
@@ -207,14 +210,18 @@ export class DriverDetailsCardComponent
                     lastName;
 
                 return {
-                    id: id,
+                    ...driver,
                     name: fullname,
-                    status: status,
                     svg: owner
                         ? DriverDetailsCardSvgRoutes.ownerStatusRoute
                         : null,
                     folder: DriverDetailsCardStringEnum.COMMON,
                     active: id === this.driver.id,
+                    hiredAt: hiredAt
+                        ? MethodsCalculationsHelper.convertDateFromBackend(
+                              hiredAt
+                          )
+                        : null,
                 };
             });
 
