@@ -86,6 +86,7 @@ export enum DropActionsStringEnum {
     CDL_VOID = 'cdl void',
     VOID_CDL = 'void cdl',
     NEW = 'New',
+    RENEW_2 = 'Renew',
 
     // Size
     SMALL = 'small',

@@ -12,6 +12,11 @@ export enum DriverDetailsItemStringEnum {
     VOID = 'Void',
     EDIT = 'edit',
     RENEW = 'renew',
+    NEW = 'new',
     DELETE_ITEM = 'delete-item',
     DELETE = 'delete',
+    DEACTIVATE_ITEM = 'deactivate-item',
+    ACTIVATE_ITEM = 'activate-item',
+    ACTIVATE = 'activate',
+    ACTIVATE_2 = 'Activate',
 }

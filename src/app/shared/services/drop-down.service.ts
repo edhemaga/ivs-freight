@@ -67,17 +67,25 @@ export class DropDownService {
         hasActiveCdl?: boolean,
         cdlsArray?: any
     ) {
+        console.log('dropActions dropDownData', dropDownData);
+        console.log('dropActions name', name);
+        console.log('dropActions dataCdl', dataCdl);
+        console.log('dropActions data', data);
+
         switch (name) {
             case DropActionsStringEnum.DELETE_CDL: {
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...dataCdl,
-                        state: dataCdl.state.stateShortName,
+                        state: dataCdl?.state?.stateShortName,
                         driverName: data?.firstName + ' ' + data?.lastName,
                     },
                     cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                 };
+
+                console.log('mappedEvent DELETE_CDL', mappedEvent);
+
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: DropActionsStringEnum.SMALL },
@@ -402,22 +410,25 @@ export class DropDownService {
                 break;
             }
             case DropActionsStringEnum.DEACTIVATE_ITEM: {
+                const mappedEvent = {
+                    data: {
+                        ...dataCdl,
+                        driver: { ...data },
+                        driverName: data?.firstName + ' ' + data?.lastName,
+                    },
+                    cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
+                };
+
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: DropActionsStringEnum.SMALL },
                     {
-                        data: {
-                            ...dataCdl[0],
-                            state: dataCdl[0].state.stateShortName,
-                            data,
-                            driverName: data?.firstName + ' ' + data?.lastName,
-                        },
+                        ...mappedEvent,
                         template: DropActionsStringEnum.CDL,
                         type: DropActionsStringEnum.INFO,
                         subType: DropActionsStringEnum.VOID_CDL,
                         modalHeader: true,
                         modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
-                        cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                     }
                 );
                 break;
@@ -430,7 +441,7 @@ export class DropDownService {
                         {
                             data: {
                                 ...dataCdl[0],
-                                state: dataCdl[0].state.stateShortName,
+                                state: dataCdl[0].state?.stateShortName,
                                 data,
                                 driverName:
                                     data?.firstName + ' ' + data?.lastName,
@@ -440,6 +451,7 @@ export class DropDownService {
                             subType: DropActionsStringEnum.CDL_VOID,
                             cdlStatus: DropActionsStringEnum.NEW,
                             modalHeader: true,
+                            modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
                         }
                     );
                 } else {
@@ -449,7 +461,7 @@ export class DropDownService {
                         {
                             data: {
                                 ...dataCdl,
-                                state: dataCdl.state.stateShortName,
+                                state: dataCdl.state?.stateShortName,
                                 data,
                                 driverName:
                                     data?.firstName + ' ' + data?.lastName,
@@ -458,6 +470,7 @@ export class DropDownService {
                             type: DropActionsStringEnum.ACTIVATE,
                             cdlStatus: DropActionsStringEnum.ACTIVATE_2,
                             modalHeader: true,
+                            modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
                         }
                     );
                 }

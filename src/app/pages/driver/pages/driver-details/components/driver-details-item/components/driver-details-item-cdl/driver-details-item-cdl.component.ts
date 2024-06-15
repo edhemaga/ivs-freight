@@ -42,6 +42,7 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 // enums
 import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
 import { DropActionsStringEnum } from '@shared/enums/drop-actions-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 // models
 import { CdlResponse, DriverResponse } from 'appcoretruckassist';
@@ -152,23 +153,45 @@ export class DriverDetailsItemCdlComponent
 
                         this.deactivateCdlById(data.id, driverId);
 
-                        setTimeout(() => {
-                            this.dropDownService.dropActions(
-                                null,
-                                'renew',
-                                data,
-                                null,
-                                null,
-                                null,
-                                driverId,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                null
-                            );
-                        }, 500);
+                        if (
+                            cdlStatus &&
+                            (cdlStatus ===
+                                DropActionsStringEnum.RENEW_2.toString() ||
+                                cdlStatus ===
+                                    DropActionsStringEnum.NEW.toString())
+                        ) {
+                            const newCdlData = newCdlId
+                                ? this.cdlData.find(
+                                      (cdlItem) => cdlItem.id === newCdlId
+                                  )
+                                : data;
+
+                            const actionName =
+                                cdlStatus ===
+                                DropActionsStringEnum.RENEW_2.toString()
+                                    ? DropActionsStringEnum.RENEW
+                                    : DropActionsStringEnum.ACTIVATE_ITEM;
+
+                            if (newCdlData) {
+                                setTimeout(() => {
+                                    this.dropDownService.dropActions(
+                                        null,
+                                        actionName,
+                                        newCdlData,
+                                        null,
+                                        null,
+                                        null,
+                                        driverId,
+                                        null,
+                                        null,
+                                        this.driver,
+                                        null,
+                                        null,
+                                        null
+                                    );
+                                }, 500);
+                            }
+                        }
 
                         /*  
 
@@ -212,16 +235,17 @@ export class DriverDetailsItemCdlComponent
 
                         break;
 
-                    /* 
-                  case 'activate':
-                      if (
-                          res?.cdlStatus &&
-                          res?.cdlStatus == 'Activate'
-                      ) {
-                          this.activateCdl(res.data.id);
-                      }
-                      break;
-                  case DriverDetailsItemStringEnum.SMALL:
+                    case DriverDetailsItemStringEnum.ACTIVATE:
+                        if (
+                            cdlStatus &&
+                            cdlStatus === DriverDetailsItemStringEnum.ACTIVATE_2
+                        ) {
+                            this.activateCdlById(data.id);
+                        }
+                        break;
+
+                    /*
+                      case DriverDetailsItemStringEnum.SMALL:
                       if (res.cdlStatus === 'New') {
                       }
                   case 'deactivate': {
@@ -334,13 +358,30 @@ export class DriverDetailsItemCdlComponent
         event: { id: number; type: string },
         action: string
     ): void {
-        console.log('event', event);
-        console.log('action', action);
-        const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const cdl = {
-            ...this.activeCdlArray[0],
-        };
+        console.log('onOptions event', event);
+        console.log('onOptions action', action);
 
+        const name = DropActionNameHelper.dropActionNameDriver(event, action);
+
+        let cdl;
+        if (event.type === DriverDetailsItemStringEnum.ACTIVATE_ITEM) {
+            const selectedCdl = this.cdlData.find(
+                (cdlItem) => cdlItem.id === event.id
+            );
+            console.log('selectedCdl', selectedCdl);
+
+            if (selectedCdl)
+                cdl = {
+                    ...selectedCdl,
+                };
+        } else {
+            cdl = {
+                ...this.activeCdlArray[0],
+            };
+        }
+
+        console.log('onOptions cdl', cdl);
+        console.log('onOptions cdlData', this.cdlData);
         /* const cdlsData = [];
 
         if (
@@ -369,6 +410,8 @@ export class DriverDetailsItemCdlComponent
         switch (event.type) {
             case DriverDetailsItemStringEnum.EDIT:
             case DriverDetailsItemStringEnum.DELETE_ITEM:
+            case DriverDetailsItemStringEnum.DEACTIVATE_ITEM:
+            case DriverDetailsItemStringEnum.ACTIVATE_ITEM:
                 setTimeout(() => {
                     this.dropDownService.dropActions(
                         event,
@@ -425,6 +468,62 @@ export class DriverDetailsItemCdlComponent
         cdlsArray?: any */
     }
 
+    private onOpenActivateLicenceModal(cdl: CdlResponse): void {
+        if (this.activeCdlArray?.length) {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: DropActionsStringEnum.SMALL },
+                {
+                    data: {
+                        ...this.activeCdlArray[0],
+                        state: this.activeCdlArray[0].state?.stateShortName,
+                        driver: {
+                            id: this.driver.id,
+                            file_id: cdl.id,
+                            type: DriverDetailsItemStringEnum.ACTIVATE_LICENCE,
+                            renewData: cdl,
+                        },
+                        driverName:
+                            this.driver?.firstName +
+                            ' ' +
+                            this.driver?.lastName,
+                    },
+                    template: DropActionsStringEnum.CDL,
+                    type: DropActionsStringEnum.INFO,
+                    subType: DropActionsStringEnum.CDL_VOID,
+                    cdlStatus: DropActionsStringEnum.NEW,
+                    modalHeader: true,
+                    modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
+                }
+            );
+        } else {
+            this.modalService.openModal(
+                ConfirmationModalComponent,
+                { size: DropActionsStringEnum.SMALL },
+                {
+                    data: {
+                        ...cdl,
+                        state: cdl.state?.stateShortName,
+                        driver: {
+                            id: this.driver.id,
+                            file_id: cdl.id,
+                            type: DriverDetailsItemStringEnum.ACTIVATE_LICENCE,
+                            renewData: cdl,
+                        },
+                        driverName:
+                            this.driver?.firstName +
+                            ' ' +
+                            this.driver?.lastName,
+                    },
+                    template: DropActionsStringEnum.CDL,
+                    type: DropActionsStringEnum.ACTIVATE,
+                    cdlStatus: DropActionsStringEnum.ACTIVATE_2,
+                    modalHeader: true,
+                }
+            );
+        }
+    }
+
     private onOpenRenewLicenceModal(cdl: CdlResponse): void {
         this.modalService.openModal(
             ConfirmationModalComponent,
@@ -443,15 +542,19 @@ export class DriverDetailsItemCdlComponent
                 template: DriverDetailsItemStringEnum.CDL,
                 type: DriverDetailsItemStringEnum.INFO,
                 subType: DriverDetailsItemStringEnum.CDL_VOID,
-                cdlStatus: DriverDetailsItemStringEnum.VOID,
+                cdlStatus: DropActionsStringEnum.RENEW_2,
                 modalHeader: true,
             }
         );
     }
 
     public openCommand(cdl: CdlResponse, type: string): void {
+        console.log('openCommand cdl', cdl);
+        console.log('openCommand type', type);
+
         switch (type) {
             case DriverDetailsItemStringEnum.ACTIVATE_LICENCE:
+                this.onOpenActivateLicenceModal(cdl);
                 break;
             case DriverDetailsItemStringEnum.RENEW_LICENCE:
                 this.onOpenRenewLicenceModal(cdl);
