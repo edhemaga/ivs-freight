@@ -327,7 +327,7 @@ export class DriverDetailsItemCdlComponent
         );
     }
 
-    private onOpenDEactivateLicenceModal(cdl: CdlResponse): void {
+    private onOpenDeactivateLicenceModal(cdl: CdlResponse): void {
         const driverData = {
             driverName:
                 this.driver?.firstName +
@@ -394,7 +394,7 @@ export class DriverDetailsItemCdlComponent
 
                 break;
             case DriverDetailsItemStringEnum.DEACTIVATE_ITEM:
-                this.onOpenDEactivateLicenceModal(cdl);
+                this.onOpenDeactivateLicenceModal(cdl);
 
                 break;
             default:

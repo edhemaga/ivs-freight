@@ -10,6 +10,7 @@
     [editName]="modalName"
     [isModalValid]="cdlForm.valid && isFormDirty"
     [specificCaseModalName]="true"
+    [isVoidBtn]="editData?.type === 'edit-licence'"
     (action)="onModalAction($event)"
 >
     <form

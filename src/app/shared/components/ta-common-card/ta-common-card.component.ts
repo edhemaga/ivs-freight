@@ -126,7 +126,6 @@ export class TaCommonCardComponent implements OnInit {
     @Output() public dropActions = new EventEmitter<any>();
     @Input() public weeklyWidth: string = '';
     @Input() public setPositionDrop: boolean;
-    @Input() public mvrPositionDrop: boolean;
     @Input() isDeactivated: any;
     @Input() noteIcons: string = '';
     @Input() cardNameCurrent: string;

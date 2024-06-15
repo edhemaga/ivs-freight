@@ -1,62 +1,53 @@
 <div class="card-width">
     <app-ta-common-card
-        *ngFor="let test of cardsData; let i = index; trackBy: trackByIdentity"
-        [cardNameCurrent]="'test'"
-        [cardNameCommon]="formatDate(test?.testingDate)"
-        [cardSecondResult]="test?.result?.name"
-        [cardSecondName]="test?.testReason?.name"
-        [testDate]="formatDate(test?.testingDate)"
-        [cardDocumentCounter]="test?.files?.length"
-        [isCardOpen]="true"
-        [weeklyWidth]="'18'"
-        [shortName]="test?.testType?.name[0]"
-        [hasToggler]="true"
-        [options]="testOptionsDropdownList"
-        [optionsId]="test?.id"
+        *ngFor="let mvr of mvrData; let i = index; trackBy: trackByIdentity"
+        [cardNameCurrent]="'mvr'"
+        [cardNameCommon]="
+            mvr?.isExpired && !isMvrCardOpen[i]
+                ? 'Expired ' + formatDate(mvr?.expDate)
+                : formatDate(mvr?.expDate)
+        "
+        [expDateClose]="
+            mvr?.isExpired && !isMvrCardOpen[i]
+                ? 'Expired ' + formatDate(mvr?.expDate)
+                : formatDate(mvr?.expDate)
+        "
+        [cardDocumentCounter]="mvr?.files?.length"
+        [options]="mvrOptionsDropdownList"
+        [optionsId]="mvr?.id"
         [noteIcons]="
-            test?.note && test?.note != 'null'
+            mvr?.note && mvr?.note != 'null'
                 ? 'assets/svg/truckassist-table/note/Note.svg'
                 : 'assets/svg/truckassist-table/note/Note - Empty.svg'
         "
-        (resizePage)="toggleResizePage(i, 'test')"
-        (dropActions)="onOptions($event, 'test')"
+        (resizePage)="toggleResizePage(i, 'mvr')"
+        (dropActions)="onOptions($event, 'mvr')"
+        (isCardOpenEmitter)="handleIsCardOpenEmit($event)"
     >
         <div class="cards-container">
-            <div class="align-items-center test-card-container">
-                <div class="align-items-center test-card-inner-container">
-                    <!-- Type, Reason -->
-
-                    <div
-                        class="d-flex flex-column jusitfy-content-center test-card-box"
-                    >
-                        <p class="m-0 ta-font-bold">Type</p>
-
-                        <span> {{ test?.testType.name + ' Test' }}</span>
-                    </div>
-
-                    <div
-                        class="d-flex flex-column jusitfy-content-center test-card-box"
-                    >
-                        <p class="m-0 ta-font-bold">Reason</p>
-
-                        <span> {{ test?.testReason.name }} </span>
-                    </div>
-                </div>
+            <div class="mvr-card-container">
+                <app-ta-progress-expiration
+                    [expireDate]="formatDate(mvr?.expDate)"
+                    [startDate]="formatDate(mvr?.issueDate)"
+                    [expiresSettings]="'details'"
+                    [darkText]="true"
+                >
+                </app-ta-progress-expiration>
 
                 <!-- Note, Documents -->
 
                 <div class="note-documents-container">
                     <div
                         [@showHideCardBody]="
-                            toggler[i + 'test'] ? 'true' : 'false'
+                            toggler[i + 'mvr'] ? 'true' : 'false'
                         "
                     >
-                        <ng-container *ngIf="test?.files?.length">
+                        <ng-container *ngIf="mvr?.files?.length">
                             <div class="divider"></div>
 
                             <app-ta-custom-card
                                 [cardName]="'Document'"
-                                [hasCounter]="test?.files?.length"
+                                [hasCounter]="mvr?.files?.length"
                                 [isCardOpen]="true"
                                 [hasArrow]="false"
                                 [hasDownload]="
@@ -64,7 +55,7 @@
                                 "
                             >
                                 <app-ta-upload-files
-                                    [files]="test?.files"
+                                    [files]="mvr?.files"
                                     [customClassName]="'driver-details-pdf'"
                                     [hasCarouselBottomTabs]="true"
                                     [type]="'details'"
@@ -77,7 +68,7 @@
                         <div class="divider"></div>
 
                         <app-ta-input-note
-                            [formControl]="testNote"
+                            [formControl]="mvrNote"
                             [isVisibleDivider]="false"
                             [isVisibleNote]="true"
                             [isVisibleArrow]="false"
@@ -86,12 +77,12 @@
                             [customClass]="'note-small'"
                             [noteType]="'details-card'"
                             [note]="
-                                test?.note && test?.note !== 'null'
-                                    ? test?.note
+                                mvr?.note && mvr?.note !== 'null'
+                                    ? mvr?.note
                                     : ''
                             "
-                            [entityId]="test?.id"
-                            [entityType]="'test'"
+                            [entityId]="mvr?.id"
+                            [entityType]="'mvr'"
                         >
                         </app-ta-input-note>
                     </div>

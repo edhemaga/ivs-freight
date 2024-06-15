@@ -8,6 +8,9 @@ export enum DriverDrugAlcoholTestModalStringEnum {
     ADD = 'add',
     DELETE = 'delete',
     FILES = 'files',
+    SMALL = 'small',
+
+    DELETE_TEST_TITLE = 'Delete Test',
 
     TEST = 'test',
     REASON = 'reason',

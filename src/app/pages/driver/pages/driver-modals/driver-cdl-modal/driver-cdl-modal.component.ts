@@ -116,6 +116,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
+
         // bootstrap
         private ngbActiveModal: NgbActiveModal
     ) {}
@@ -192,10 +193,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                 const mappedEvent = {
                     data: {
                         ...this.cdl,
-                        state: this.cdl.state.stateShortName,
                         driverName: this.modalName,
                     },
                 };
+
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: DriverCdlModalStringEnum.SMALL },
@@ -206,6 +207,27 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         image: false,
                         modalHeaderTitle:
                             DriverCdlModalStringEnum.DELETE_CDL_TITLE,
+                    }
+                );
+
+                break;
+            case DriverCdlModalStringEnum.VOID:
+                this.ngbActiveModal.close();
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverCdlModalStringEnum.SMALL },
+                    {
+                        data: {
+                            ...this.cdl,
+                            state: this.cdl.state.stateShortName,
+                            driverName: this.modalName,
+                        },
+                        template: DriverCdlModalStringEnum.CDL,
+                        type: DriverCdlModalStringEnum.INFO,
+                        subType: DriverCdlModalStringEnum.VOID_CDL,
+                        modalHeader: true,
+                        modalHeaderTitle: DriverCdlModalStringEnum.VOID_CDL_2,
                     }
                 );
 
@@ -378,7 +400,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (cdl: CdlResponse) => {
+                next: (cdl) => {
                     const {
                         cdlNumber,
                         issueDate,
@@ -390,6 +412,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         files,
                         note,
                     } = cdl;
+
                     this.cdl = cdl;
 
                     // state
