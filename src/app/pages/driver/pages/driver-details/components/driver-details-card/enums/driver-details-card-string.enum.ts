@@ -1,5 +1,5 @@
 export enum DriverDetailsCardStringEnum {
-    EMPTY_STRING = '',
+    EMPTY_STRING = ' ',
     COMMON = 'common',
     TODAY = 'Today',
     INVALID_DATE = 'Invalid Date',

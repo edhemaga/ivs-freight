@@ -235,7 +235,7 @@
                 }
 
                 &.add-new {
-                    padding: 4.5px 4px;
+                    padding: 4.5px 6px 4.5px 4px;
                     font-size: 11px;
                     font-weight: 700;
                     color: $ta-blue-19;
@@ -595,6 +595,10 @@
                     align-items: center;
                     justify-content: space-between;
 
+                    &.dropdown-option {
+                        position: relative;
+                    }
+
                     .details-template-text {
                         &.active {
                             color: #6f9ee0;
@@ -611,9 +615,35 @@
                         line-height: 15px;
                     }
 
+                    .driver-details-template-container {
+                        position: absolute;
+                        right: 6px;
+
+                        p {
+                            font-size: 11px;
+                            line-height: 18px;
+                            color: $bw5;
+
+                            user-select: none;
+                            -webkit-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                        }
+
+                        .right-box {
+                            margin-left: 4px;
+                            padding: 0 6px;
+                            border-radius: 10px;
+                            background: $dark-3;
+
+                            p {
+                                color: $ta-light-grey-2;
+                            }
+                        }
+                    }
+
                     .additional-text {
                         font-size: 11px;
-                        font-weight: 400;
                         color: $bw5;
                         line-height: 12px;
                     }
