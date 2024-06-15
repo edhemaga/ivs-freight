@@ -126,7 +126,6 @@ export class TaCommonCardComponent implements OnInit {
     @Output() public dropActions = new EventEmitter<any>();
     @Input() public weeklyWidth: string = '';
     @Input() public setPositionDrop: boolean;
-    @Input() public mvrPositionDrop: boolean;
     @Input() isDeactivated: any;
     @Input() noteIcons: string = '';
     @Input() cardNameCurrent: string;
@@ -144,6 +143,12 @@ export class TaCommonCardComponent implements OnInit {
     public resPage: boolean = false;
     public copiedCommon: boolean = false;
     animationStarted: boolean = true;
+
+    @Output() isCardOpenEmitter = new EventEmitter<{
+        isCardOpen: boolean;
+        id: number;
+    }>();
+
     constructor(
         private clipboard: Clipboard,
         private DetailsDataService: DetailsDataService
@@ -151,6 +156,10 @@ export class TaCommonCardComponent implements OnInit {
 
     ngOnInit(): void {
         this.CloseCard();
+    }
+
+    private isCardOpenEmit(isCardOpen: boolean, id: number): void {
+        this.isCardOpenEmitter.emit({ isCardOpen, id });
     }
 
     public CloseCard() {
@@ -209,6 +218,8 @@ export class TaCommonCardComponent implements OnInit {
             }
             setTimeout(() => {
                 this.isCardOpen = !this.isCardOpen;
+
+                this.isCardOpenEmit(this.isCardOpen, this.optionsId);
             }, timeOut);
         }
     }

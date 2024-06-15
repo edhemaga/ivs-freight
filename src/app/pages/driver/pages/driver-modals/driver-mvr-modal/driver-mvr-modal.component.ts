@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -31,6 +32,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
@@ -38,6 +40,7 @@ import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driv
 // models
 import { EditData } from '@shared/models/edit-data.model';
 import { ExtendedCdlMinimalResponse } from '@pages/driver/pages/driver-modals/driver-mvr-modal/models/extended-cdl-minimal-response.model';
+import { MvrResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-driver-mvr-modal',
@@ -68,6 +71,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public mvrForm: UntypedFormGroup;
+    public mvr: MvrResponse;
 
     public isFormDirty: boolean = false;
     public isCardAnimationDisabled: boolean = false;
@@ -93,7 +97,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private mvrService: DriverMvrService,
-        private formService: FormService
+        private formService: FormService,
+
+        // bootstrap
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -168,6 +175,28 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
+                break;
+            case DriverMVrModalStringEnum.DELETE:
+                this.ngbActiveModal.close();
+
+                const mappedEvent = {
+                    data: {
+                        ...this.mvr,
+                        driverName: this.modalName,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverMVrModalStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: DriverMVrModalStringEnum.MVR,
+                        type: DriverMVrModalStringEnum.DELETE,
+                        image: false,
+                    }
+                );
 
                 break;
             default:
@@ -260,8 +289,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.mvrService
             .getMvrById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { cdlNumber, issueDate, note, files, cdlId } = res;
+            .subscribe((mvr) => {
+                const { cdlNumber, issueDate, note, files, cdlId } = mvr;
+
+                this.mvr = mvr;
 
                 this.mvrForm.patchValue({
                     cdlId: cdlNumber,

@@ -1,0 +1,97 @@
+<div class="card-width">
+    <app-ta-common-card
+        *ngFor="
+            let medical of medicalData;
+            let i = index;
+            trackBy: trackByIdentity
+        "
+        [cardNameCurrent]="'medical'"
+        [cardNameCommon]="
+            medical?.isExpired && !isMedicalCardOpen[i]
+                ? 'Expired ' + formatDate(medical?.expDate)
+                : formatDate(medical?.expDate)
+        "
+        [expDateClose]="
+            medical?.isExpired && !isMedicalCardOpen[i]
+                ? 'Expired ' + formatDate(medical?.expDate)
+                : formatDate(medical?.expDate)
+        "
+        [cardDocumentCounter]="medical?.files?.length"
+        [options]="medicalOptionsDropdownList"
+        [optionsId]="medical?.id"
+        [noteIcons]="
+            medical.note && medical.note != 'null'
+                ? 'assets/svg/truckassist-table/note/Note.svg'
+                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+        "
+        (resizePage)="toggleResizePage(i, 'medical')"
+        (dropActions)="onOptions($event, 'medical')"
+        (isCardOpenEmitter)="handleIsCardOpenEmit($event)"
+    >
+        <div class="cards-container">
+            <div class="medical-card-container">
+                <app-ta-progress-expiration
+                    [expireDate]="formatDate(medical?.expDate)"
+                    [startDate]="formatDate(medical?.issueDate)"
+                    [expiresSettings]="'details'"
+                    [darkText]="true"
+                >
+                </app-ta-progress-expiration>
+
+                <!-- Note, Documents -->
+
+                <div class="note-documents-container">
+                    <div
+                        [@showHideCardBody]="
+                            toggler[i + 'medical'] ? 'true' : 'false'
+                        "
+                    >
+                        <ng-container *ngIf="medical?.files?.length">
+                            <div class="divider"></div>
+
+                            <app-ta-custom-card
+                                [cardName]="'Document'"
+                                [hasCounter]="medical?.files?.length"
+                                [isCardOpen]="true"
+                                [hasArrow]="false"
+                                [hasDownload]="
+                                    'assets/svg/common/ic_download.svg'
+                                "
+                            >
+                                <app-ta-upload-files
+                                    [files]="medical?.files"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                    [slideWidth]="324"
+                                    [hasLandscapeOption]="true"
+                                ></app-ta-upload-files>
+                            </app-ta-custom-card>
+                        </ng-container>
+
+                        <div class="divider"></div>
+
+                        <app-ta-input-note
+                            [formControl]="medicalNote"
+                            [isVisibleDivider]="false"
+                            [isVisibleNote]="true"
+                            [isVisibleArrow]="false"
+                            [minRows]="1"
+                            [placeholder]="'Write something.'"
+                            [customClass]="'note-small'"
+                            [noteType]="'details-card'"
+                            [note]="
+                                medical?.note && medical?.note !== 'null'
+                                    ? medical?.note
+                                    : ''
+                            "
+                            [entityId]="medical?.id"
+                            [entityType]="'medical'"
+                        >
+                        </app-ta-input-note>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-ta-common-card>
+</div>

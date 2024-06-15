@@ -3,6 +3,8 @@ export enum DriverDetailsItemStringEnum {
 
     CDL = 'cdl',
 
+    EMPTY_STRING = ' ',
+
     ACTIVATE_LICENCE = 'activate-licence',
     RENEW_LICENCE = 'renew-licence',
 
@@ -10,6 +12,9 @@ export enum DriverDetailsItemStringEnum {
     INFO = 'info',
     CDL_VOID = 'cdl void',
     VOID = 'Void',
+    VOID_2 = 'void',
+    VOID_CDL = 'void cdl',
+    VOID_CDL_2 = 'Void CDL',
     EDIT = 'edit',
     RENEW = 'renew',
     NEW = 'new',

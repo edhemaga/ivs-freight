@@ -2,7 +2,7 @@
 
 // Constants
 $color-white-light: #f3f3f3;
-$color-white: #ffffff;
+$color-white: $white;
 $color-white-dark: #f7f7f7;
 
 $color-gray-light: #b7b7b7;
@@ -289,27 +289,7 @@ p {
     .card-body-cdl {
         display: grid;
         padding: 0px 4px;
-        .card-restriction-endorsment {
-            display: grid;
-            grid-template-columns: 110px 131px;
-            column-gap: 53px;
-            height: 44px;
-            .item-card-wrapper {
-                display: flex;
-                .restriction-item-value {
-                    .value-name {
-                        font-size: 14px !important;
-                        font-weight: 400 !important;
-                        color: #2f2f2f;
-                    }
-                    &:not(:first-child) {
-                        .value-name:before {
-                            content: ', ';
-                        }
-                    }
-                }
-            }
-        }
+
         .card-item-name {
             font-size: 11px;
             color: #2f2f2f;
@@ -358,66 +338,7 @@ p {
         .card-row-progress {
             margin-top: 8px;
         }
-        .card-restriction {
-            display: flex;
-            flex-direction: column;
-            margin-top: 10px;
-            .restriction-name {
-                font-size: 11px;
-                font-weight: $font-bold;
-                color: #2f2f2f;
-                height: 15px;
-                &::-moz-selection {
-                    color: #2f2f2f;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-                &::selection {
-                    color: #2f2f2f;
-                    background: rgb(108, 108, 108, 0.2);
-                }
-            }
-            .span-value {
-                &::-moz-selection {
-                    color: #2f2f2f !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-                &::selection {
-                    color: #2f2f2f !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-            }
-            .restriction-item-value {
-                font-size: $font-size14;
-                font-weight: 400;
-                color: #2f2f2f;
-                height: 18px;
-                white-space: nowrap;
-                margin-bottom: 2px;
-                margin-top: 2px;
-                &::-moz-selection {
-                    color: #6c6c6c !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-                &::selection {
-                    color: #6c6c6c !important;
-                    background: rgb(108, 108, 108, 0.2) !important;
-                }
-                .value-name {
-                    font-size: $font-size14;
-                    font-weight: $font-semibold;
 
-                    color: #6c6c6c;
-                    &::-moz-selection {
-                        color: #6c6c6c;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                    &::selection {
-                        color: #6c6c6c;
-                        background: rgb(108, 108, 108, 0.2);
-                    }
-                }
-            }
-        }
         .endorsement {
             margin-top: 12px;
         }
@@ -514,7 +435,7 @@ p {
                         }
                     }
 
-                    font[color='#6692f1'] {
+                    font[color='   $ta-blue-13'] {
                         &::-moz-selection {
                             color: rgb(102, 146, 241) !important;
                             background: rgb(102, 146, 241, 0.2) !important;
@@ -1128,16 +1049,6 @@ p {
         display: none;
     }
 
-    .card-restriction-endorsment {
-        grid-template-columns: 110px 115px !important;
-    }
-
-    .restriction-item-value {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
     app-shipper-details,
     app-broker-details {
         .load {
@@ -1276,10 +1187,6 @@ p {
 }
 
 @media (max-width: 1820px) {
-    .card-restriction-endorsment {
-        column-gap: 30px !important;
-    }
-
     .repair-details-container {
         grid-template-columns: 420px 692px 300px 240px !important;
     }
@@ -1390,33 +1297,25 @@ p {
         width: 280px;
     }
 
-    .card-restriction-endorsment {
-        column-gap: 20px !important;
-    }
-
     .request-header-container {
-        display: none !important;
-        width: 26px;
+        width: 26px !important;
+        height: 26px !important;
 
-        &.icon-request-holder {
+        p {
+            display: none;
+        }
+
+        svg-icon {
             display: flex !important;
-            width: 26px !important;
-            height: 26px !important;
 
-            background-color: #ffffff !important;
-
-            svg {
-                path {
-                    fill: #3074d3;
-                }
-            }
+            transition: background 0.2s ease-in;
 
             &:hover {
-                background-color: #3074d3 !important;
+                background: $ta-blue-16 !important;
 
                 svg {
                     path {
-                        fill: #ffffff;
+                        fill: $ta-blue-15;
                     }
                 }
             }
@@ -1527,25 +1426,6 @@ p {
         .credit-perctange {
             width: 450px !important;
         }
-
-        /*
-        .repair-component{
-            column-gap: 0px;
-            height: 40px;
-            &.contactGridHolder{
-                grid-row: 1 !important;
-                grid-column: 2 !important;
-                height: fit-content;
-            }
-        
-            &.reviewGridHolder{
-                grid-row: 2 !important;
-                grid-column: 2 !important;
-                width: 410px !important;
-            }
-
-        }
-        */
     }
 
     app-repair-shop-details {
@@ -1755,16 +1635,6 @@ p {
         grid-template-columns: 330px 53px !important;
     }
 
-    .restriction-item-value {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-    .card-restriction-endorsment {
-        grid-template-columns: 110px 120px !important;
-    }
-
     .assign-to {
         grid-template-columns: 185px 185px;
     }
@@ -1972,16 +1842,6 @@ p {
 
     .card-width {
         width: 260px;
-    }
-
-    .card-restriction-endorsment {
-        column-gap: 12px !important;
-    }
-
-    .card-body-cdl {
-        .card-restriction-endorsment {
-            grid-template-columns: 110px 95px !important;
-        }
     }
 
     .reason-span {

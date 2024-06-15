@@ -142,7 +142,9 @@ export class TaDetailsDropdownComponent
             if (tooltip.isOpen()) {
                 tooltip.close();
             } else {
-                tooltip.open({ data: [...this.options] });
+                if (this.options) {
+                    tooltip.open({ data: [...this.options] });
+                }
                 if (this.data) {
                     this.DetailsDataService.setNewData(this.data);
                 }

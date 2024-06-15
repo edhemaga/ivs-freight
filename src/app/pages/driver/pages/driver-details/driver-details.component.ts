@@ -74,24 +74,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
     public currentIndex: number = 0;
 
-    public isInactive: boolean = false;
-
     public driversList: DriverMinimalListState;
-
     public driverObject: DriverResponse;
-    public driverStatus: boolean = false;
+
     public driverId: number;
     public newDriverId: number;
+
+    public isInactive: boolean = false;
 
     public hasDangerCdl: boolean;
     public hasDangerMedical: boolean;
     public hasDangerMvr: boolean;
-
-    //////////////
-
-    public data: any;
-
-    public isActiveCdl: boolean;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -203,34 +196,34 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             DriverDetailsHelper.getDetailsDropdownOptions(status);
     }
 
-    public getDetailsConfig(driverData: DriverResponse) {
-        console.log('driverData', driverData);
-        this.detailsDataService.setNewData(driverData);
-
-        this.driverObject = driverData;
-
-        this.getDetailsOptions(driverData.status);
-        this.checkExpiration(driverData);
+    public getDetailsConfig(driverData: DriverResponse): void {
+        let driverStatus: boolean;
 
         if (!driverData?.status) {
-            this.driverStatus = true;
+            driverStatus = true;
 
             this.isInactive = true;
         } else {
-            this.driverStatus = false;
+            driverStatus = false;
 
             this.isInactive = false;
         }
 
+        this.driverId = driverData?.id;
+        this.driverObject = driverData;
+
+        this.detailsDataService.setNewData(driverData);
+
+        this.getDetailsOptions(driverData.status);
+        this.checkExpiration(driverData);
+
         this.driverDetailsConfig = DriverDetailsHelper.getDriverDetailsConfig(
             driverData,
-            this.driverStatus,
+            driverStatus,
             this.hasDangerCdl,
             this.hasDangerMedical,
             this.hasDangerMvr
         );
-
-        this.driverId = driverData?.id;
     }
 
     private handleDriverIdRouteChange(): void {
@@ -402,6 +395,50 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
+    private checkExpiration(data: any): void {
+        this.hasDangerCdl = false;
+        this.hasDangerMedical = false;
+        this.hasDangerMvr = false;
+
+        const arrayCdl: boolean[] = [];
+        const arrayMedical: boolean[] = [];
+        const arrayMvr: boolean[] = [];
+
+        data?.cdls?.map((cdl) => {
+            if (moment(cdl.expDate).isAfter(moment())) {
+                arrayCdl.push(false);
+            }
+
+            if (moment(cdl.expDate).isBefore(moment())) {
+                arrayCdl.push(true);
+            }
+        });
+
+        data?.medicals?.map((medical) => {
+            if (moment(medical.expDate).isAfter(moment())) {
+                arrayMedical.push(false);
+            }
+
+            if (moment(medical.expDate).isBefore(moment())) {
+                arrayMedical.push(true);
+            }
+        });
+
+        data?.mvrs.map((mvr) => {
+            if (moment(mvr.issueDate).isAfter(moment())) {
+                arrayMvr.push(false);
+            }
+
+            if (moment(mvr.issueDate).isBefore(moment())) {
+                arrayMvr.push(true);
+            }
+        });
+
+        this.hasDangerCdl = !arrayCdl.includes(false);
+        this.hasDangerMedical = !arrayMedical.includes(false);
+        this.hasDangerMvr = !arrayMvr.includes(false);
+    }
+
     private changeDriverStatus(id: number): void {
         const status = !this.driverObject.status
             ? DriverDetailsStringEnum.INACTIVE
@@ -450,50 +487,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     ]);
                 },
             });
-    }
-
-    private checkExpiration(data: any) {
-        this.hasDangerCdl = false;
-        this.hasDangerMedical = false;
-        this.hasDangerMvr = false;
-
-        const arrayCdl: boolean[] = [];
-        const arrayMedical: boolean[] = [];
-        const arrayMvr: boolean[] = [];
-
-        data?.cdls?.map((cdl) => {
-            if (moment(cdl.expDate).isAfter(moment())) {
-                arrayCdl.push(false);
-            }
-
-            if (moment(cdl.expDate).isBefore(moment())) {
-                arrayCdl.push(true);
-            }
-        });
-
-        data?.medicals?.map((medical) => {
-            if (moment(medical.expDate).isAfter(moment())) {
-                arrayMedical.push(false);
-            }
-
-            if (moment(medical.expDate).isBefore(moment())) {
-                arrayMedical.push(true);
-            }
-        });
-
-        data?.mvrs.map((mvr) => {
-            if (moment(mvr.issueDate).isAfter(moment())) {
-                arrayMvr.push(false);
-            }
-
-            if (moment(mvr.issueDate).isBefore(moment())) {
-                arrayMvr.push(true);
-            }
-        });
-
-        this.hasDangerCdl = !arrayCdl.includes(false);
-        this.hasDangerMedical = !arrayMedical.includes(false);
-        this.hasDangerMvr = !arrayMvr.includes(false);
     }
 
     ngOnDestroy(): void {
