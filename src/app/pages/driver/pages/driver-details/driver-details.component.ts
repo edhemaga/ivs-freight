@@ -50,6 +50,7 @@ import { DriversItemStore } from '@pages/driver/state/driver-details-state/drive
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
+import { DriverDetailsItemStringEnum } from './components/driver-details-item/enums/driver-details-item-string.enum';
 
 @Component({
     selector: 'app-driver-details',
@@ -138,17 +139,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    switch (res.type) {
-                        case DriverDetailsStringEnum.DELETE:
-                            this.deleteDriverById(res.data.id);
-
-                            break;
-                        case DriverDetailsStringEnum.DEACTIVATE:
-                            this.changeDriverStatus(res.id);
-
-                            break;
-                        default:
-                            break;
+                    if (res?.template === DriverDetailsItemStringEnum.DRIVER) {
+                        switch (res.type) {
+                            case DriverDetailsStringEnum.DELETE:
+                                this.deleteDriverById(res.data.id);
+                                break;
+                            case DriverDetailsStringEnum.DEACTIVATE:
+                                this.changeDriverStatus(res.id);
+                                break;
+                            default:
+                                break;
+                        }
                     }
                 },
             });
@@ -158,7 +159,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                this.changeDriverStatus(res.data.id);
+                if (res) {
+                    this.changeDriverStatus(res.data.id);
+                }
             });
     }
 
@@ -304,6 +307,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                                 { size: TableStringEnum.MEDIUM },
                                 {
                                     ...editData,
+                                    avatarIndex: this.currentIndex,
                                 }
                             );
                         })

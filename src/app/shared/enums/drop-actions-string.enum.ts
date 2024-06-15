@@ -45,6 +45,7 @@ export enum DropActionsStringEnum {
     DELETE_MEDICAL_TITLE = 'Delete Medical',
     DELETE_TEST_TITLE = 'Delete Test',
     DELETE_CDL_TITLE = 'Delete CDL',
+    DELETE_MVR_TITLE = 'Delete MVR',
 
     // Delete actions
     DELETE_CDL = 'delete-cdl',

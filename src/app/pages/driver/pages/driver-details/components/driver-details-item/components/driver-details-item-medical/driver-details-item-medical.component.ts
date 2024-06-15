@@ -122,9 +122,11 @@ export class DriverDetailsItemMedicalComponent
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(({ data, type }) => {
-                if (type === DriverDetailsItemStringEnum.DELETE)
-                    this.deleteMedicalById(data?.id);
+            .subscribe(({ data, type, template }) => {
+                if (template === DriverDetailsItemStringEnum.MEDICAL) {
+                    if (type === DriverDetailsItemStringEnum.DELETE)
+                        this.deleteMedicalById(data?.id);
+                }
             });
     }
 

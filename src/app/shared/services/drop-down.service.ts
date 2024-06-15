@@ -199,6 +199,8 @@ export class DropDownService {
                         template: DropActionsStringEnum.MVR,
                         type: DropActionsStringEnum.DELETE,
                         image: false,
+                        modalHeaderTitle:
+                            DropActionsStringEnum.DELETE_MVR_TITLE,
                     }
                 );
                 break;
@@ -452,7 +454,8 @@ export class DropDownService {
                             subType: DropActionsStringEnum.CDL_VOID,
                             cdlStatus: DropActionsStringEnum.NEW,
                             modalHeader: true,
-                            modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
+                            modalHeaderTitle:
+                                ConfirmationModalStringEnum.VOID_CDL,
                         }
                     );
                 } else {
@@ -471,7 +474,8 @@ export class DropDownService {
                             type: DropActionsStringEnum.ACTIVATE,
                             cdlStatus: DropActionsStringEnum.ACTIVATE_2,
                             modalHeader: true,
-                            modalHeaderTitle: ConfirmationModalStringEnum.VOID_CDL,
+                            modalHeaderTitle:
+                                ConfirmationModalStringEnum.ACTIVATE_CDL,
                         }
                     );
                 }

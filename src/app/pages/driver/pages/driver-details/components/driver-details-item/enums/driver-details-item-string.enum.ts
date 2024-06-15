@@ -24,4 +24,9 @@ export enum DriverDetailsItemStringEnum {
     ACTIVATE_ITEM = 'activate-item',
     ACTIVATE = 'activate',
     ACTIVATE_2 = 'Activate',
+    ACTIVATE_CDL = 'Activate CDL',
+    DRIVER = 'driver',
+    TEST = 'test',
+    MVR = 'mvr',
+    MEDICAL = 'medical',
 }
