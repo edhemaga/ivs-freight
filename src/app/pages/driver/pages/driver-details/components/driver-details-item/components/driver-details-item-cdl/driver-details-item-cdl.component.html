@@ -13,7 +13,6 @@
         [statusActive]="cdl?.status"
         [isCardOpen]="!!cdl?.status"
         [hasCopyIcon]="true"
-        [forcedOpen]="cdl?.issueDate > currentDate"
         [isDeactivated]="cdl?.dateDeactivated"
         [weeklyWidth]="'28'"
         [stateTooltipName]="cdl?.state?.stateName"
@@ -177,7 +176,6 @@
                                 [hasDownload]="
                                     'assets/svg/common/ic_download.svg'
                                 "
-                                (onActionEvent)="onFileAction($event, 'cdl')"
                             >
                                 <app-ta-upload-files
                                     [files]="cdl?.files"

@@ -183,7 +183,9 @@ export class DriverDetailsItemCdlComponent
     }
 
     public getCdlData(data: CdlResponse[]): void {
-        this.cdlData = data?.map((cdl: CdlResponse) => {
+        this.cdlData = [];
+
+        this.cdlData = data?.map((cdl) => {
             const endDate = moment(cdl.expDate);
 
             const isExpDateCard = moment(cdl.expDate).isBefore(moment());

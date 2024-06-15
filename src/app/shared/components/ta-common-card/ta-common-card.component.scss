@@ -209,9 +209,9 @@ p {
         transform: rotate(180deg);
 
         path {
-            fill: #6d82c7 !important;
+            fill: $ta-blue-13 !important;
             &:hover {
-                fill: #3551b7 !important;
+                fill: $ta-blue-15 !important;
             }
         }
     }

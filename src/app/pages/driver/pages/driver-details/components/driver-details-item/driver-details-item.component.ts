@@ -34,6 +34,7 @@ import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.com
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { DriverDetailsItemCdlComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-cdl/driver-details-item-cdl.component';
 import { DriverDetailsItemTestComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-test/driver-details-item-test.component';
+import { DriverDetailsItemMedicalComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-medical/driver-details-item-medical.component';
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -75,6 +76,7 @@ import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/d
         TaCustomCardComponent,
         DriverDetailsItemCdlComponent,
         DriverDetailsItemTestComponent,
+        DriverDetailsItemMedicalComponent,
     ],
 })
 export class DriverDetailsItemComponent
@@ -89,20 +91,16 @@ export class DriverDetailsItemComponent
     ///////////////////////////////////////
 
     public mvrNote: UntypedFormControl = new UntypedFormControl();
-    public medNote: UntypedFormControl = new UntypedFormControl();
 
     public dataDropDownMvr: any;
 
     public test: boolean;
 
     public dataMvr: any;
-    public dataMedical: any;
 
     constructor(
-        private cdlService: DriverCdlService,
-        private medicalService: DriverMedicalService,
         private mvrService: DriverMvrService,
-        private testService: DriverDrugAlcoholTestService,
+
         private confirmationService: ConfirmationService,
         private tableService: TruckassistTableService,
         private dropDownService: DropDownService
@@ -123,7 +121,6 @@ export class DriverDetailsItemComponent
         ////////////////////////////////
 
         this.dataMvr = this.detailsConfig[0].data.mvrs;
-        this.dataMedical = this.detailsConfig[0].data.medicals;
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -136,11 +133,9 @@ export class DriverDetailsItemComponent
                                 res.template === DriverDetailsItemStringEnum.CDL
                             ) {
                             } else if (res.template === 'medical') {
-                                this.deleteMedicalByIdFunction(res.id);
                             } else if (res.template === 'mvr') {
                                 this.deleteMvrByIdFunction(res.id);
                             } else if (res.template === 'test') {
-                                this.deleteTestByIdFunction(res.id);
                             }
                             break;
                         }
@@ -190,13 +185,6 @@ export class DriverDetailsItemComponent
 
     ///////////////////////////////////////////////////////////////////////////////////
 
-    public getMedicalById(id: number) {
-        this.medicalService
-            .getMedicalById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.dataMedical = item));
-    }
-
     public getMvrById(id: number) {
         this.mvrService
             .getMvrById(id)
@@ -208,41 +196,18 @@ export class DriverDetailsItemComponent
         if (title == DriverDetailsItemStringEnum.CDL) {
         } else if (title == 'test') {
         } else if (title == 'med') {
-            this.dataMedical = data;
         } else if (title == 'mvr') {
             this.dataMvr = data;
         }
-    }
-
-    private deleteMedicalByIdFunction(id: number) {
-        this.medicalService
-            .deleteMedicalById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
     }
 
     private deleteMvrByIdFunction(id: number) {
         this.mvrService
             .deleteMvrById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
-    private deleteTestByIdFunction(id: number) {
-        this.testService
-            .deleteTestById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
-    }
     public onShowDetails(componentData: any) {
         componentData.showDetails = !componentData.showDetails;
     }
