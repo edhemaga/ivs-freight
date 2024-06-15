@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface DriverMinimalResponse { 
@@ -18,5 +20,10 @@ export interface DriverMinimalResponse {
     owner?: number | null;
     status?: number;
     avatar?: string | null;
+    avatarFile?: FileResponse;
+    address?: AddressEntity;
+    totalMiles?: number | null;
+    totalEarnings?: number | null;
+    hiredAt?: string | null;
 }
 
