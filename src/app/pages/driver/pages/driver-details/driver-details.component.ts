@@ -402,6 +402,50 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
+    private checkExpiration(data: any): void {
+        this.hasDangerCdl = false;
+        this.hasDangerMedical = false;
+        this.hasDangerMvr = false;
+
+        const arrayCdl: boolean[] = [];
+        const arrayMedical: boolean[] = [];
+        const arrayMvr: boolean[] = [];
+
+        data?.cdls?.map((cdl) => {
+            if (moment(cdl.expDate).isAfter(moment())) {
+                arrayCdl.push(false);
+            }
+
+            if (moment(cdl.expDate).isBefore(moment())) {
+                arrayCdl.push(true);
+            }
+        });
+
+        data?.medicals?.map((medical) => {
+            if (moment(medical.expDate).isAfter(moment())) {
+                arrayMedical.push(false);
+            }
+
+            if (moment(medical.expDate).isBefore(moment())) {
+                arrayMedical.push(true);
+            }
+        });
+
+        data?.mvrs.map((mvr) => {
+            if (moment(mvr.issueDate).isAfter(moment())) {
+                arrayMvr.push(false);
+            }
+
+            if (moment(mvr.issueDate).isBefore(moment())) {
+                arrayMvr.push(true);
+            }
+        });
+
+        this.hasDangerCdl = !arrayCdl.includes(false);
+        this.hasDangerMedical = !arrayMedical.includes(false);
+        this.hasDangerMvr = !arrayMvr.includes(false);
+    }
+
     private changeDriverStatus(id: number): void {
         const status = !this.driverObject.status
             ? DriverDetailsStringEnum.INACTIVE
@@ -450,50 +494,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                     ]);
                 },
             });
-    }
-
-    private checkExpiration(data: any) {
-        this.hasDangerCdl = false;
-        this.hasDangerMedical = false;
-        this.hasDangerMvr = false;
-
-        const arrayCdl: boolean[] = [];
-        const arrayMedical: boolean[] = [];
-        const arrayMvr: boolean[] = [];
-
-        data?.cdls?.map((cdl) => {
-            if (moment(cdl.expDate).isAfter(moment())) {
-                arrayCdl.push(false);
-            }
-
-            if (moment(cdl.expDate).isBefore(moment())) {
-                arrayCdl.push(true);
-            }
-        });
-
-        data?.medicals?.map((medical) => {
-            if (moment(medical.expDate).isAfter(moment())) {
-                arrayMedical.push(false);
-            }
-
-            if (moment(medical.expDate).isBefore(moment())) {
-                arrayMedical.push(true);
-            }
-        });
-
-        data?.mvrs.map((mvr) => {
-            if (moment(mvr.issueDate).isAfter(moment())) {
-                arrayMvr.push(false);
-            }
-
-            if (moment(mvr.issueDate).isBefore(moment())) {
-                arrayMvr.push(true);
-            }
-        });
-
-        this.hasDangerCdl = !arrayCdl.includes(false);
-        this.hasDangerMedical = !arrayMedical.includes(false);
-        this.hasDangerMvr = !arrayMvr.includes(false);
     }
 
     ngOnDestroy(): void {

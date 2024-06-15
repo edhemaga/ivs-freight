@@ -33,6 +33,7 @@ import { TaProgressExpirationComponent } from '@shared/components/ta-progress-ex
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { DriverDetailsItemCdlComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-cdl/driver-details-item-cdl.component';
+import { DriverDetailsItemTestComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-test/driver-details-item-test.component';
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -73,6 +74,7 @@ import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/d
         TaCounterComponent,
         TaCustomCardComponent,
         DriverDetailsItemCdlComponent,
+        DriverDetailsItemTestComponent,
     ],
 })
 export class DriverDetailsItemComponent
@@ -87,7 +89,6 @@ export class DriverDetailsItemComponent
     ///////////////////////////////////////
 
     public mvrNote: UntypedFormControl = new UntypedFormControl();
-    public testNote: UntypedFormControl = new UntypedFormControl();
     public medNote: UntypedFormControl = new UntypedFormControl();
 
     public dataDropDownMvr: any;
@@ -96,7 +97,6 @@ export class DriverDetailsItemComponent
 
     public dataMvr: any;
     public dataMedical: any;
-    public dataTest: any;
 
     constructor(
         private cdlService: DriverCdlService,
@@ -115,8 +115,6 @@ export class DriverDetailsItemComponent
         ) {
             this.detailsConfig = changes.detailsConfig.currentValue;
         }
-
-        this.getDetailsOptions(changes.detailsConfig.currentValue[0].data);
     }
 
     ngOnInit(): void {
@@ -126,8 +124,6 @@ export class DriverDetailsItemComponent
 
         this.dataMvr = this.detailsConfig[0].data.mvrs;
         this.dataMedical = this.detailsConfig[0].data.medicals;
-        this.dataTest = this.detailsConfig[0].data.dataTest;
-
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -192,139 +188,7 @@ export class DriverDetailsItemComponent
         return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
-    public getNameForDrop(type: string, cdlId?: number): void {
-        this.getDetailsOptions(this.detailsConfig[0].data);
-    }
-
-    public getDetailsOptions(data: any): void {
-        this.dataDropDownMvr = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
-                    show: true,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    iconName: 'view-details',
-                    show: true,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
-                    show: true,
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
-                    show: true,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-cdl',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
-                    danger: true,
-                    show: true,
-                    redIcon: true,
-                },
-            ],
-            export: true,
-        };
-    }
-
-    public optionsEvent(eventData: any, action: string): void {
-        /* const name = DropActionNameHelper.dropActionNameDriver(
-            eventData,
-            action
-        );
-        let driverId = this.detailsConfig[0].data.id;
-        let dataCdls: any = [];
-
-        if (
-            this.activeCdlArray.length &&
-            this.activeCdlArray[0].id == eventData.id &&
-            (eventData.type == 'deactivate-item' ||
-                eventData.type == 'delete-item')
-        ) {
-            this.mvrService
-                .getMvrModal(driverId)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe({
-                    next: (res: GetMvrModalResponse) => {
-                        res?.cdls?.map((item) => {
-                            if (item.id != eventData.id) {
-                                dataCdls.push({
-                                    ...item,
-                                    name: item.cdlNumber,
-                                });
-                            }
-                        });
-                    },
-                });
-        }
-
-        let dataForCdl;
-        if (
-            (this.activeCdlArray.length && eventData.type === 'activate-item') ||
-            eventData.type === 'deactivate-item'
-        ) {
-            dataForCdl = this.activeCdlArray;
-        } else {
-        }
-
-        setTimeout(() => {
-            this.dropDownService.dropActions(
-                eventData,
-                name,
-                dataForCdl,
-                this.dataMvr,
-                this.dataMedical,
-                this.dataTest,
-                this.detailsConfig[0].data.id,
-                null,
-                null,
-                this.detailsConfig[0].data,
-                null,
-                null,
-                dataCdls
-            );
-        }, 200); */
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////
-
-    public onFileAction(event: File, type: string): void {}
 
     public getMedicalById(id: number) {
         this.medicalService
@@ -340,36 +204,13 @@ export class DriverDetailsItemComponent
             .subscribe((item) => (this.dataMvr = item));
     }
 
-    public getTestById(id: number) {
-        this.testService
-            .getTestById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => (this.dataTest = item));
-    }
-
     public preloadData(data: any, title?: any) {
         if (title == DriverDetailsItemStringEnum.CDL) {
         } else if (title == 'test') {
-            this.dataTest = data;
         } else if (title == 'med') {
             this.dataMedical = data;
         } else if (title == 'mvr') {
             this.dataMvr = data;
-        }
-    }
-
-    public onButtonAction(data: { template: string; action: string }) {
-        switch (data.template) {
-            case DriverDetailsItemStringEnum.CDL: {
-                if (data.action === 'attachments') {
-                    // TODO: attachments
-                } else if (data.action === 'notes') {
-                    // TODO: notes
-                } else {
-                    // TODO: dots
-                }
-                break;
-            }
         }
     }
 

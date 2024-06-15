@@ -13,7 +13,7 @@
         [statusActive]="cdl?.status"
         [isCardOpen]="!!cdl?.status"
         [hasCopyIcon]="true"
-        [forcedOpen]="cdl?.issueDate > currentDate ? true : false"
+        [forcedOpen]="cdl?.issueDate > currentDate"
         [isDeactivated]="cdl?.dateDeactivated"
         [weeklyWidth]="'28'"
         [stateTooltipName]="cdl?.state?.stateName"
@@ -22,8 +22,7 @@
         [options]="cdlOptionsDropdownList[i]"
         [optionsId]="cdl?.id"
         [noteIcons]="
-            (cdl.note && cdl.note != null && cdl.note != 'null') ||
-            cdlNote?.value
+            (cdl.note && cdl.note != 'null') || cdlNote?.value
                 ? 'assets/svg/truckassist-table/note/Note.svg'
                 : 'assets/svg/truckassist-table/note/Note - Empty.svg'
         "
@@ -176,8 +175,7 @@
                                 [isCardOpen]="true"
                                 [hasArrow]="false"
                                 [hasDownload]="
-                                    'assets/svg/common/ic_download.svg
-'
+                                    'assets/svg/common/ic_download.svg'
                                 "
                                 (onActionEvent)="onFileAction($event, 'cdl')"
                             >
@@ -194,26 +192,24 @@
 
                         <div class="divider"></div>
 
-                        <div class="card-note">
-                            <app-ta-input-note
-                                [formControl]="cdlNote"
-                                [isVisibleDivider]="false"
-                                [isVisibleNote]="true"
-                                [isVisibleArrow]="false"
-                                [minRows]="1"
-                                [placeholder]="'Write something.'"
-                                [customClass]="'note-small'"
-                                [noteType]="'details-card'"
-                                [note]="
-                                    cdl.note && cdl.note != 'null'
-                                        ? cdl.note
-                                        : ''
-                                "
-                                [entityId]="cdl.id"
-                                [entityType]="'Cdl'"
-                            >
-                            </app-ta-input-note>
-                        </div>
+                        <app-ta-input-note
+                            [formControl]="cdlNote"
+                            [isVisibleDivider]="false"
+                            [isVisibleNote]="true"
+                            [isVisibleArrow]="false"
+                            [minRows]="1"
+                            [placeholder]="'Write something.'"
+                            [customClass]="'note-small'"
+                            [noteType]="'details-card'"
+                            [note]="
+                                cdl?.note && cdl?.note !== 'null'
+                                    ? cdl?.note
+                                    : ''
+                            "
+                            [entityId]="cdl?.id"
+                            [entityType]="'Cdl'"
+                        >
+                        </app-ta-input-note>
                     </div>
                 </div>
             </div>

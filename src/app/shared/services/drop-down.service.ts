@@ -205,6 +205,7 @@ export class DropDownService {
                         driverName: data?.firstName + ' ' + data?.lastName,
                     },
                 };
+
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: DropActionsStringEnum.SMALL },

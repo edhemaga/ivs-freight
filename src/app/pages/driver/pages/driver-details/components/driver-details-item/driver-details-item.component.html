@@ -7,7 +7,7 @@
 
             <ng-container *ngSwitchCase="'general'">
                 <app-driver-details-card
-                    [driver]="driverItem.data"
+                    [driver]="detailsConfig[0]?.data"
                 ></app-driver-details-card>
             </ng-container>
 
@@ -23,168 +23,11 @@
             <!-- Test -->
 
             <ng-container *ngSwitchCase="'drug-alcohol'">
-                <div class="card-width">
-                    <div>
-                        <app-ta-common-card
-                            *ngFor="
-                                let test of driverItem?.data;
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                            [hasToggler]="true"
-                            [options]="dataDropDownMvr"
-                            [cardNameCommon]="formatDate(test?.testingDate)"
-                            [expDateClose]="formatDate(test?.testingDate)"
-                            (resizePage)="toggleResizePage(i, 'test')"
-                            [optionsId]="test.id"
-                            [testDate]="formatDate(test?.testingDate)"
-                            (dataDropDopwn)="getTestById(test.id)"
-                            (preloadData)="preloadData(test, 'test')"
-                            (clickedCard)="getNameForDrop($event)"
-                            [cardDocumentCounter]="
-                                test?.files?.length ? test.files.length : 0
-                            "
-                            [weeklyWidth]="'18'"
-                            [cardNameCurrent]="'test'"
-                            [noteIcons]="
-                                test.note &&
-                                test.note != null &&
-                                test.note != 'null'
-                                    ? 'assets/svg/truckassist-table/note/Note.svg'
-                                    : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                            "
-                            [cardSecondResult]="test?.result.name"
-                            [cardSecondName]="test?.testReason.name"
-                            [shortName]="test.testType.name[0]"
-                            [stateTooltipName]="test.testType.name + ' Test'"
-                            (dropActions)="optionsEvent($event, 'test')"
-                        >
-                            <div class="cards-container">
-                                <div class="card-body-cdl">
-                                    <div
-                                        class="card-restriction-endorsment card-restriction-class"
-                                    >
-                                        <div class="card-restriction">
-                                            <div class="restriction-name">
-                                                Type
-                                            </div>
-                                            <div class="restriction-item-value">
-                                                {{
-                                                    test.testType.name + ' Test'
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="card-restriction">
-                                            <div class="restriction-name">
-                                                Reason
-                                            </div>
-                                            <div class="restriction-item-value">
-                                                {{ test?.testReason.name }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="second-progress"></div>
-                            <div class="cards-container">
-                                <div
-                                    [@showHideCardBody]="
-                                        toggler[i + 'test'] ? 'true' : 'false'
-                                    "
-                                >
-                                    <div
-                                        class="divider"
-                                        *ngIf="test?.files?.length"
-                                    ></div>
-                                    <div
-                                        class="details-document-container"
-                                        [class.disabled]="!test?.files?.length"
-                                        *ngIf="test?.files?.length"
-                                    >
-                                        <div class="icon-counter-wrapper">
-                                            <div
-                                                class="counter-text-wrapper"
-                                                [class.disabled]="
-                                                    !test?.files?.length
-                                                "
-                                            >
-                                                <p
-                                                    class="details-document-name"
-                                                >
-                                                    Document
-                                                </p>
-                                                <app-ta-counter
-                                                    [countBackground]="
-                                                        '#424242'
-                                                    "
-                                                    [customClass]="
-                                                        'circle_counter'
-                                                    "
-                                                    [countHeight]="'22px'"
-                                                    [countWidth]="'22px'"
-                                                    [count]="
-                                                        test?.files?.length
-                                                            ? test.files.length
-                                                            : 0
-                                                    "
-                                                >
-                                                </app-ta-counter>
-                                            </div>
-                                            <svg-icon
-                                                *ngIf="test?.files?.length"
-                                                (click)="
-                                                    onFileAction('download')
-                                                "
-                                                src="assets/svg/common/ic_download.svg"
-                                            >
-                                            </svg-icon>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="card-pdf"
-                                        [class.extended]="
-                                            test?.files?.length > 1
-                                        "
-                                        [class.disabled]="!test?.files?.length"
-                                    >
-                                        <app-ta-upload-files
-                                            [files]="
-                                                test.files ? test.files : []
-                                            "
-                                            [customClassName]="
-                                                'driver-details-pdf'
-                                            "
-                                            [hasCarouselBottomTabs]="true"
-                                            [type]="'details'"
-                                            [slideWidth]="324"
-                                        ></app-ta-upload-files>
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="card-note">
-                                        <app-ta-input-note
-                                            [formControl]="testNote"
-                                            [isVisibleDivider]="false"
-                                            [isVisibleNote]="true"
-                                            [isVisibleArrow]="false"
-                                            [minRows]="1"
-                                            [placeholder]="'Write something.'"
-                                            [customClass]="'note-small'"
-                                            [noteType]="'details-card'"
-                                            [note]="
-                                                test.note && test.note != 'null'
-                                                    ? test.note
-                                                    : ''
-                                            "
-                                            [entityId]="test.id"
-                                            [entityType]="'Test'"
-                                        >
-                                        </app-ta-input-note>
-                                    </div>
-                                </div>
-                            </div>
-                        </app-ta-common-card>
-                    </div>
-                </div>
+                <app-driver-details-item-test
+                    [cardsData]="detailsConfig[2]?.data"
+                    [driver]="detailsConfig[0]?.data"
+                >
+                </app-driver-details-item-test>
             </ng-container>
 
             <!-- Medical -->

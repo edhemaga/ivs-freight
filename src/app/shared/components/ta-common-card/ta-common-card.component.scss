@@ -60,26 +60,19 @@
         color: $bw5 !important;
     }
     &:hover {
-        .card-close-title {
-            color: #2f2f2f !important;
+        .card-close-title,
+        .second-name,
+        .open-name {
+            color: $ta-black-2 !important;
         }
 
-        .second-name {
-            color: #2f2f2f;
+        .resultHolder {
+            background: $bw2;
         }
 
         .positiveResult {
-            color: #ef5350;
-            background: linear-gradient(
-                    0deg,
-                    rgba(229, 115, 115, 0.2),
-                    rgba(229, 115, 115, 0.2)
-                ),
-                #ffffff;
-        }
-
-        .open-name {
-            color: #2f2f2f;
+            color: $ta-red-11 !important;
+            background: $white-6;
         }
     }
 }
@@ -108,7 +101,7 @@
 }
 .card-container-cmp {
     border-radius: 3px;
-    background-color: #ffffff;
+    background-color: $white;
     margin-bottom: 8px;
     width: 100%;
     padding: 0px 8px;
@@ -116,7 +109,7 @@
 
     .card-body-cmp {
         flex-direction: column;
-        background-color: #ffffff;
+        background-color: $white;
         max-height: 0;
         overflow: hidden;
         &.active {
@@ -144,8 +137,8 @@
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        background-color: #ffffff;
-        padding: 10px 6px 12px 6px;
+        background-color: $white;
+        padding: 4px 6px 12px 6px;
 
         .icon-counter {
             position: relative;
@@ -316,7 +309,7 @@ p {
 .open-name {
     font-size: 14px;
     font-weight: 800;
-    color: #2f2f2f;
+    color: $ta-black-2;
     line-height: 17px;
     cursor: pointer;
     &::-moz-selection {
@@ -350,7 +343,7 @@ p {
     justify-content: center;
     font-size: 11px;
     font-weight: 800;
-    color: #2f2f2f;
+    color: $ta-black-2;
     line-height: 17px;
     z-index: 1;
     &::-moz-selection {
@@ -378,8 +371,7 @@ p {
     font-size: 14px;
     color: $bw5;
     font-weight: 400;
-    margin-left: 12px;
-    //width: 150px;
+    margin-left: 4px;
     overflow: hidden;
 
     text-overflow: ellipsis;
@@ -388,15 +380,17 @@ p {
         padding: 2px 6px;
 
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 700;
 
         border-radius: 2px;
-        background-color: #f3f3f3;
+        background: $ta-light-grey-5;
+        color: $ta-light-grey-2;
+        transition: background 0.2s ease-in, color 0.2s ease-in;
     }
 
     &.positiveResult {
-        background-color: #f7f7f7;
-        color: #e57373;
+        background: $ta-light-grey-5;
+        color: $ta-red-13;
     }
 
     &.reason-span {
@@ -410,6 +404,8 @@ p {
     align-items: center;
     line-height: 23px;
     z-index: 100;
+    width: 100%;
+
     &:hover {
         .card-icon-common {
             display: flex;
@@ -432,20 +428,16 @@ p {
 
 .openedCardResults {
     &.resultHolder {
-        color: #2f2f2f;
+        background: $bw2;
+        color: $ta-black-2;
 
         &.positiveResult {
-            background: linear-gradient(
-                    0deg,
-                    rgba(229, 115, 115, 0.2),
-                    rgba(229, 115, 115, 0.2)
-                ),
-                #ffffff;
-            color: #ef5350;
+            background: $white-6;
+            color: $ta-red-11;
         }
     }
 }
 
 .openedTitle {
-    color: #2f2f2f;
+    color: $ta-black-2;
 }
