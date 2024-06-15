@@ -11,6 +11,9 @@ import { ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 
 import { Subject, takeUntil } from 'rxjs';
 
+// modules
+import moment from 'moment';
+
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 import { cardAnimation } from '@shared/animations/card.animation';
@@ -20,11 +23,12 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { DriverDrugAlcoholTestService } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/services/driver-drug-alcohol-test.service';
+import { DriverMvrService } from '@pages/driver/pages/driver-modals/driver-mvr-modal/services/driver-mvr.service';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -35,13 +39,12 @@ import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.hel
 import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
 
 // models
-import { DriverResponse, TestResponse } from 'appcoretruckassist';
+import { DriverResponse, MvrResponse } from 'appcoretruckassist';
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 
 @Component({
-    selector: 'app-driver-details-item-test',
-    templateUrl: './driver-details-item-test.component.html',
-    styleUrls: ['./driver-details-item-test.component.scss'],
+    selector: 'app-driver-details-item-mvr',
+    templateUrl: './driver-details-item-mvr.component.html',
     animations: [
         cardComponentAnimation('showHideCardBody'),
         cardAnimation('cardAnimation'),
@@ -57,35 +60,46 @@ import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/model
         TaInputNoteComponent,
         TaCommonCardComponent,
         TaCustomCardComponent,
+        TaProgressExpirationComponent,
     ],
+    styleUrls: ['./driver-details-item-mvr.component.scss'],
 })
-export class DriverDetailsItemTestComponent
+export class DriverDetailsItemMvrComponent
     implements OnInit, OnChanges, OnDestroy
 {
-    @Input() cardsData: TestResponse[];
+    @Input() cardsData: MvrResponse[];
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
 
-    public testNote: UntypedFormControl = new UntypedFormControl();
+    public mvrNote: UntypedFormControl = new UntypedFormControl();
 
-    public testOptionsDropdownList: DetailsDropdownOptions;
+    public mvrData: MvrResponse[] = [];
+    public mvrOptionsDropdownList: DetailsDropdownOptions;
+
+    public isMvrCardOpen: boolean[] = [];
+
+    public currentDate: string;
 
     public toggler: boolean[] = [];
 
     constructor(
         private dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        private testService: DriverDrugAlcoholTestService
+        private mvrService: DriverMvrService
     ) {}
 
     ngOnInit(): void {
+        this.getCurrentDate();
+
         this.confirmationSubscribe();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.cardsData?.currentValue) {
             this.getDetailsOptions();
+
+            this.getMvrData(changes.cardsData.currentValue);
         }
     }
 
@@ -97,6 +111,10 @@ export class DriverDetailsItemTestComponent
         return MethodsCalculationsHelper.convertDateFromBackend(date);
     }
 
+    public getCurrentDate(): void {
+        this.currentDate = moment(new Date()).format();
+    }
+
     public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
@@ -106,15 +124,44 @@ export class DriverDetailsItemTestComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe(({ data, type }) => {
                 if (type === DriverDetailsItemStringEnum.DELETE)
-                    this.deleteTestById(data?.id);
+                    this.deleteMvrById(data?.id);
             });
     }
 
+    public handleIsCardOpenEmit(event: {
+        isCardOpen: boolean;
+        id: number;
+    }): void {
+        const { isCardOpen, id } = event;
+
+        const index = this.mvrData.findIndex((medical) => medical.id === id);
+
+        this.isMvrCardOpen[index] = isCardOpen;
+    }
+
+    public getMvrData(data: MvrResponse[]): void {
+        this.mvrData = data?.map((mvr) => {
+            const isExpDateCard = moment(mvr.expDate).isBefore(moment());
+
+            return {
+                ...mvr,
+                isExpired: isExpDateCard,
+            };
+        });
+    }
+
     public getDetailsOptions(): void {
-        this.testOptionsDropdownList =
+        this.mvrOptionsDropdownList =
             DriverDetailsItemHelper.getTestMedicalMvrDropdownList(
                 this.driver?.status
             );
+    }
+
+    private deleteMvrById(id: number): void {
+        this.mvrService
+            .deleteMvrById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     public onOptions(
@@ -122,7 +169,7 @@ export class DriverDetailsItemTestComponent
         action: string
     ): void {
         const name = DropActionNameHelper.dropActionNameDriver(event, action);
-        const test = this.cardsData.find((test) => test.id === event.id);
+        const mvr = this.cardsData.find((mvr) => mvr.id === event.id);
 
         if (
             event.type === DriverDetailsItemStringEnum.EDIT ||
@@ -133,9 +180,9 @@ export class DriverDetailsItemTestComponent
                     event,
                     name,
                     null,
+                    mvr,
                     null,
                     null,
-                    test,
                     this.driver.id,
                     null,
                     null,
@@ -145,13 +192,6 @@ export class DriverDetailsItemTestComponent
                     null
                 );
             }, 200);
-    }
-
-    private deleteTestById(id: number): void {
-        this.testService
-            .deleteTestById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
     }
 
     ngOnDestroy(): void {

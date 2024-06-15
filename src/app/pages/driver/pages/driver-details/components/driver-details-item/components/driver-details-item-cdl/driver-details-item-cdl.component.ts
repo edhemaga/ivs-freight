@@ -183,7 +183,9 @@ export class DriverDetailsItemCdlComponent
     }
 
     public getCdlData(data: CdlResponse[]): void {
-        this.cdlData = data?.map((cdl: CdlResponse) => {
+        this.cdlData = [];
+
+        this.cdlData = data?.map((cdl) => {
             const endDate = moment(cdl.expDate);
 
             const isExpDateCard = moment(cdl.expDate).isBefore(moment());
@@ -325,7 +327,7 @@ export class DriverDetailsItemCdlComponent
         );
     }
 
-    private onOpenDEactivateLicenceModal(cdl: CdlResponse): void {
+    private onOpenDeactivateLicenceModal(cdl: CdlResponse): void {
         const driverData = {
             driverName:
                 this.driver?.firstName +
@@ -392,7 +394,7 @@ export class DriverDetailsItemCdlComponent
 
                 break;
             case DriverDetailsItemStringEnum.DEACTIVATE_ITEM:
-                this.onOpenDEactivateLicenceModal(cdl);
+                this.onOpenDeactivateLicenceModal(cdl);
 
                 break;
             default:
