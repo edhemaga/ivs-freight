@@ -390,11 +390,11 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             .subscribe((driver) => {
                 const { firstName, lastName, status } = driver;
 
-                (this.driverStatus = status),
-                    (this.modalName = firstName.concat(
-                        DriverCdlModalStringEnum.EMPTY_STRING,
-                        lastName
-                    ));
+                this.driverStatus = status;
+                this.modalName = firstName.concat(
+                    DriverCdlModalStringEnum.EMPTY_STRING,
+                    lastName
+                );
             });
     }
 
