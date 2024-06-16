@@ -122,9 +122,11 @@ export class DriverDetailsItemMvrComponent
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(({ data, type }) => {
-                if (type === DriverDetailsItemStringEnum.DELETE)
-                    this.deleteMvrById(data?.id);
+            .subscribe(({ data, type, template }) => {
+                if (template === DriverDetailsItemStringEnum.MVR) {
+                    if (type === DriverDetailsItemStringEnum.DELETE)
+                        this.deleteMvrById(data?.id);
+                }
             });
     }
 
