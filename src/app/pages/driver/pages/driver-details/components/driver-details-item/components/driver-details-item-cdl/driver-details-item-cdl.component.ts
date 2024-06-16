@@ -132,7 +132,7 @@ export class DriverDetailsItemCdlComponent
                     switch (type) {
                         case DriverDetailsItemStringEnum.INFO:
                             const driverId = this.driver?.id;
-                            this.deactivateCdlById(data.id, driverId);
+                            this.deactivateCdlById(data.id);
 
                             const newCdlData = data?.newCdlID
                                 ? this.cdlData.find(
@@ -194,16 +194,6 @@ export class DriverDetailsItemCdlComponent
                             this.activateCdlById(data.id);
 
                             break;
-
-                        /*
-                      case DriverDetailsItemStringEnum.SMALL:
-                      if (res.cdlStatus === 'New') {
-                      }
-                  case 'deactivate': {
-                      this.changeDriverStatus(res.id);
-                      break;
-                  }
-                */
                         default:
                             break;
                     }
@@ -471,23 +461,41 @@ export class DriverDetailsItemCdlComponent
         }
     }
 
-    private deactivateCdlById(id: number, driverId: number): void {
+    private deactivateCdlById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.cdlService
-            .deactivateCdlById(id, driverId)
+            .deactivateCdlById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
     private activateCdlById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.cdlService
-            .activateCdlById(id)
+            .activateCdlById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
     public deleteCdlById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.cdlService
-            .deleteCdlById(id)
+            .deleteCdlById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }

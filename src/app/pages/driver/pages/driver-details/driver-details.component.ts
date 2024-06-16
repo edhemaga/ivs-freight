@@ -33,6 +33,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 // enums
 import { DriverDetailsStringEnum } from '@pages/driver/pages/driver-details/enums/driver-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -44,13 +45,13 @@ import {
 } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
+import { DriversItemQuery } from '@pages/driver/state/driver-details-state/driver-details-item.query';
 
 // models
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
-import { DriverDetailsItemStringEnum } from './components/driver-details-item/enums/driver-details-item-string.enum';
 
 @Component({
     selector: 'app-driver-details',
@@ -107,15 +108,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private driverMinimalQuery: DriversMinimalListQuery,
         private driverDQuery: DriversDetailsListQuery,
         private driversItemStore: DriversItemStore,
+        private driversItemQuery: DriversItemQuery,
 
         // pipes
         private nameInitialsPipe: NameInitialsPipe
     ) {}
 
     ngOnInit() {
-        this.getStoreData();
-
         this.getDriverData();
+
+        this.getStoreData();
 
         this.getDriversMinimalList();
 
@@ -168,9 +170,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private getStoreData(): void {
         const storeData$ = this.driversItemStore._select((state) => state);
 
-        storeData$.subscribe((state) => {
+        storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
             const newDriverData = { ...state.entities[this.newDriverId] };
-
             if (!this.isEmpty(newDriverData)) {
                 this.detailsDataService.setNewData(newDriverData);
 
@@ -190,6 +191,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         const driverData = {
             ...this.driversItemStore?.getValue()?.entities[dataId],
         };
+
+        this.newDriverId = dataId;
 
         this.getDetailsConfig(driverData);
     }
@@ -235,6 +238,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             .subscribe((id) => {
                 let query;
 
+                this.newDriverId = id;
+
                 if (this.driverDQuery.hasEntity(id)) {
                     query = this.driverDQuery.selectEntity(id).pipe(take(1));
 
@@ -242,8 +247,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         this.currentIndex = this.driversList.findIndex(
                             (driver: DriverResponse) => driver.id === res.id
                         );
-
-                        this.newDriverId = id;
 
                         this.getDetailsOptions(res.status);
                         this.getDetailsConfig(res);
@@ -259,8 +262,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         }
                     });
                 } else {
-                    this.newDriverId = id;
-
                     this.router.navigate([`/list/driver/${id}/details`]);
                 }
 
@@ -428,7 +429,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             }
         });
 
-        data?.mvrs.map((mvr) => {
+        data?.mvrs?.map((mvr) => {
             if (moment(mvr.issueDate).isAfter(moment())) {
                 arrayMvr.push(false);
             }

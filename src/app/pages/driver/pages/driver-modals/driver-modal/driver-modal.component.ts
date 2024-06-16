@@ -40,6 +40,7 @@ import { FormService } from '@shared/services/form.service';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // validators
 import {
@@ -108,7 +109,6 @@ import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-mo
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
-import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-driver-modal',
@@ -1025,10 +1025,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     ): void {
         if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
             this.offDutyLocationItems = modalTableDataValue;
-            console.log(
-                'this.offDutyLocationItems: ',
-                this.offDutyLocationItems
-            );
 
             this.driverForm
                 .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)

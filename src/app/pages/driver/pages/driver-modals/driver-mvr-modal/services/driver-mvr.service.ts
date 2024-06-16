@@ -13,7 +13,7 @@ import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 // models

@@ -28,7 +28,7 @@ import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 // services

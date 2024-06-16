@@ -6,15 +6,15 @@
             [driverCurrentIndex]="driverCurrentIndex"
             [driversDropdownList]="driversDropdownList"
             [cardData]="{
-                hiredAt: driver.hiredAt,
-                terminatedAt: driver.terminatedAt,
-                firstName: driver.firstName,
-                lastName: driver.lastName,
-                avatar: driver.avatar,
-                ssn: driver.ssn,
-                phone: driver.phone,
-                email: driver.email,
-                owner: driver.owner
+                hiredAt: driver?.hiredAt,
+                terminatedAt: driver?.terminatedAt,
+                firstName: driver?.firstName,
+                lastName: driver?.lastName,
+                avatar: driver?.avatar,
+                ssn: driver?.ssn,
+                phone: driver?.phone,
+                email: driver?.email,
+                owner: driver?.owner
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-driver-details-title-card>
@@ -27,7 +27,7 @@
 
                 <app-driver-details-assign-to-card
                     [cardData]="{
-                        assignedTo: driver.assignedTo
+                        assignedTo: driver?.assignedTo
                     }"
                 ></app-driver-details-assign-to-card>
 
@@ -35,11 +35,11 @@
 
                 <app-driver-details-additional-info-card
                     [cardData]="{
-                        address: driver.address,
-                        dateOfBirth: driver.dateOfBirth,
-                        fuelCards: driver.fuelCards,
-                        twicExpDate: driver.twicExpDate,
-                        mvrExpiration: driver.mvrExpiration
+                        address: driver?.address,
+                        dateOfBirth: driver?.dateOfBirth,
+                        fuelCards: driver?.fuelCards,
+                        twicExpDate: driver?.twicExpDate,
+                        mvrExpiration: driver?.mvrExpiration
                     }"
                 ></app-driver-details-additional-info-card>
 
@@ -47,7 +47,7 @@
 
                 <app-driver-employment-history-card
                     [cardData]="{
-                        employmentHistories: driver.employmentHistories
+                        employmentHistories: driver?.employmentHistories
                     }"
                 ></app-driver-employment-history-card>
 
@@ -55,8 +55,8 @@
 
                 <app-driver-owner-info-card
                     [cardData]="{
-                        owner: driver.owner,
-                        driverType: driver.driverType
+                        owner: driver?.owner,
+                        driverType: driver?.driverType
                     }"
                 >
                 </app-driver-owner-info-card>
@@ -65,11 +65,11 @@
 
                 <app-driver-pay-types-card
                     [cardData]="{
-                        payType: driver.payType,
-                        solo: driver.solo,
-                        team: driver.team,
-                        isOpenPayrollShared: driver.isOpenPayrollShared,
-                        fleetType: driver.fleetType
+                        payType: driver?.payType,
+                        solo: driver?.solo,
+                        team: driver?.team,
+                        isOpenPayrollShared: driver?.isOpenPayrollShared,
+                        fleetType: driver?.fleetType
                     }"
                 >
                 </app-driver-pay-types-card>
@@ -116,7 +116,7 @@
 
                 <app-driver-bank-info-card
                     [cardData]="{
-                        bank: driver.bank
+                        bank: driver?.bank
                     }"
                 >
                 </app-driver-bank-info-card>
@@ -125,7 +125,7 @@
 
                 <app-driver-off-duty-location-card
                     [cardData]="{
-                        offDutyLocations: driver.offDutyLocations
+                        offDutyLocations: driver?.offDutyLocations
                     }"
                 >
                 </app-driver-off-duty-location-card>
@@ -134,7 +134,7 @@
 
                 <app-driver-emergency-contact-card
                     [cardData]="{
-                        emergencyContact: driver.emergencyContact
+                        emergencyContact: driver?.emergencyContact
                     }"
                 >
                 </app-driver-emergency-contact-card>
@@ -143,8 +143,8 @@
 
                 <app-driver-notification-card
                     [cardData]="{
-                        general: driver.general,
-                        payroll: driver.payroll
+                        general: driver?.general,
+                        payroll: driver?.payroll
                     }"
                 >
                 </app-driver-notification-card>
@@ -153,9 +153,9 @@
 
                 <app-ta-custom-card
                     [cardName]="'Document'"
-                    [hasCounter]="driver.files.length || -1"
-                    [isCardOpen]="driver.files.length"
-                    [disabledCard]="!driver.files.length"
+                    [hasCounter]="driver?.files?.length || -1"
+                    [isCardOpen]="driver?.files?.length"
+                    [disabledCard]="!driver?.files?.length"
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
@@ -178,13 +178,13 @@
                     <app-ta-input-note
                         formControlName="note"
                         [isVisibleNote]="
-                            driver.note && driver.note !== 'null'
-                                ? driver.note
+                            driver?.note && driver?.note !== 'null'
+                                ? driver?.note
                                 : false
                         "
                         [note]="
-                            driver.note && driver.note !== 'null'
-                                ? driver.note
+                            driver?.note && driver?.note !== 'null'
+                                ? driver?.note
                                 : ''
                         "
                     ></app-ta-input-note>

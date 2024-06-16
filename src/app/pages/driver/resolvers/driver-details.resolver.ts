@@ -7,7 +7,7 @@ import { Observable, forkJoin, tap } from 'rxjs';
 import { DriverService } from '@pages/driver/services/driver.service';
 
 // store
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 @Injectable({

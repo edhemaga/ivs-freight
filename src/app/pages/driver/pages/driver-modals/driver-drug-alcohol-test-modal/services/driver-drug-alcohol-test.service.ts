@@ -9,7 +9,7 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 //Store
 import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
