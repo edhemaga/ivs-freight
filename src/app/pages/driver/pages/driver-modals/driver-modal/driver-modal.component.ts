@@ -104,14 +104,26 @@ import { AddUpdateDriverProperties } from '@pages/driver/pages/driver-modals/dri
 import { SoloTeamSelectedOptions } from '@pages/driver/pages/driver-modals/driver-modal/models/solo-team-selected-options.model';
 import { AddUpdateDriverPayrollProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-payroll-properties.model';
 import { PayrollDefaultValues } from '@pages/driver/pages/driver-modals/driver-modal/models/payroll-default-values.model';
-import { EditData } from '@shared/models/edit-data.model';
+import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-modal/models/driver-modal-edit-data.model';
+
+// pipes
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 @Component({
     selector: 'app-driver-modal',
     templateUrl: './driver-modal.component.html',
     styleUrls: ['./driver-modal.component.scss'],
     animations: [tabsModalAnimation('animationTabsModal')],
-    providers: [ModalService, FormService, BankVerificationService],
+    providers: [
+        // Services
+        ModalService,
+        FormService,
+        BankVerificationService,
+
+        // Pipes
+        NameInitialsPipe,
+    ],
     standalone: true,
     imports: [
         // modules
@@ -141,7 +153,7 @@ import { EditData } from '@shared/models/edit-data.model';
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
-    @Input() editData: EditData;
+    @Input() editData: DriverModalEditData;
 
     private destroy$ = new Subject<void>();
 
@@ -234,7 +246,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private ngbActiveModal: NgbActiveModal,
 
         // change detector
-        private changeDetector: ChangeDetectorRef
+        private changeDetector: ChangeDetectorRef,
+
+        // pipes
+        private nameInitialsPipe: NameInitialsPipe
     ) {}
 
     ngOnInit(): void {
@@ -463,6 +478,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ...this.editData,
                 data: {
                     ...this.editData.data,
+                    name: this.driverFullName,
+                    textShortName: this.nameInitialsPipe.transform(
+                        this.driverFullName
+                    ),
+                    avatarImg: this.editData.data.avatar,
+                    avatarColor: AvatarColorsHelper.getAvatarColors(
+                        this.editData.avatarIndex ?? 0
+                    ),
                 },
             };
 
@@ -534,11 +557,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
             this.ngbActiveModal.close();
 
+            const mappedEvent = {
+                ...this.editData,
+                data: {
+                    ...this.editData.data,
+                    name: this.driverFullName,
+                    textShortName: this.nameInitialsPipe.transform(
+                        this.driverFullName
+                    ),
+                    avatarImg: this.editData.data.avatar,
+                    avatarColor: AvatarColorsHelper.getAvatarColors(
+                        this.editData.avatarIndex ?? 0
+                    ),
+                },
+            };
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
-                    ...this.editData,
+                    ...mappedEvent,
                     template: TableStringEnum.DRIVER,
                     type: TableStringEnum.DELETE,
                     image: true,
@@ -987,7 +1025,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     ): void {
         if (type === DriverModalStringEnum.OFF_DUTY_LOCATION) {
             this.offDutyLocationItems = modalTableDataValue;
-            console.log('this.offDutyLocationItems: ', this.offDutyLocationItems);
+            console.log(
+                'this.offDutyLocationItems: ',
+                this.offDutyLocationItems
+            );
 
             this.driverForm
                 .get(DriverModalStringEnum.OFF_DUTY_LOCATION_ITEMS)

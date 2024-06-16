@@ -107,18 +107,16 @@
             }
 
             .title-container {
-                p {
-                    &:first-child {
-                        font-size: 18px;
-                        line-height: 22px;
-                        color: $ta-black;
-                    }
+                .title-text {
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: $ta-black;
+                }
 
-                    &:last-child {
-                        font-size: 14px;
-                        line-height: 18px;
-                        color: $bw5;
-                    }
+                .second-title-text {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $bw5;
                 }
             }
         }

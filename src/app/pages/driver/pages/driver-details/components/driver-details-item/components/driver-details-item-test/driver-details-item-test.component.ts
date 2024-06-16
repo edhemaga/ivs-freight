@@ -104,9 +104,11 @@ export class DriverDetailsItemTestComponent
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(({ data, type }) => {
-                if (type === DriverDetailsItemStringEnum.DELETE)
-                    this.deleteTestById(data?.id);
+            .subscribe(({ data, type, template }) => {
+                if (template === DriverDetailsItemStringEnum.TEST) {
+                    if (type === DriverDetailsItemStringEnum.DELETE)
+                        this.deleteTestById(data?.id);
+                }
             });
     }
 
