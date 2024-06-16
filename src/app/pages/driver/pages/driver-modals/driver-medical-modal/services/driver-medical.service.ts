@@ -8,11 +8,11 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { FormDataService } from '@shared/services/form-data.service';
 
 // store
-import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 
 // models
@@ -30,10 +30,10 @@ export class DriverMedicalService {
         private formDataService: FormDataService,
 
         // sstore
-        private driverActiveQuery: DriversActiveQuery,
+        private driverActiveQuery: DriverQuery,
         private driverInactiveQuery: DriversInactiveQuery,
         private driverInactiveStore: DriversInactiveStore,
-        private driverActiveStore: DriversActiveStore,
+        private driverStore: DriverStore,
         private driverItemStore: DriversItemStore,
         private dlStore: DriversDetailsListStore
     ) {}
@@ -75,11 +75,11 @@ export class DriverMedicalService {
 
                             // Update Driver Store
                             if (data.tableActiveTab === 'active') {
-                                this.driverActiveStore.remove(
+                                this.driverStore.remove(
                                     ({ id }) => id === data.driverId
                                 );
 
-                                this.driverActiveStore.add(driver);
+                                this.driverStore.add(driver);
                             } else if (data.tableActiveTab === 'inactive') {
                                 this.driverInactiveStore.remove(
                                     ({ id }) => id === data.driverId

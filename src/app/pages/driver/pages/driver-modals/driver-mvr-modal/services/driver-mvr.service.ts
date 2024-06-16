@@ -11,8 +11,8 @@ import { FormDataService } from '@shared/services/form-data.service';
 // store
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
-import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
+import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
@@ -31,8 +31,8 @@ export class DriverMvrService {
         private formDataService: FormDataService,
 
         // store
-        private driverActiveStore: DriversActiveStore,
-        private driverActiveQuery: DriversActiveQuery,
+        private driverStore: DriverStore,
+        private driverActiveQuery: DriverQuery,
         private driverInactiveStore: DriversInactiveStore,
         private driverInactiveQuery: DriversInactiveQuery,
         private driverItemStore: DriversItemStore,
@@ -77,11 +77,11 @@ export class DriverMvrService {
 
                             // Update Driver Store
                             if (data.tableActiveTab === 'active') {
-                                this.driverActiveStore.remove(
+                                this.driverStore.remove(
                                     ({ id }) => id === data.driverId
                                 );
 
-                                this.driverActiveStore.add(driver);
+                                this.driverStore.add(driver);
                             } else if (data.tableActiveTab === 'inactive') {
                                 this.driverInactiveStore.remove(
                                     ({ id }) => id === data.driverId

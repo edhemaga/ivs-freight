@@ -22,6 +22,7 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
@@ -66,6 +67,7 @@ import {
     DriverResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-driver-details-card',
@@ -128,6 +130,7 @@ export class DriverDetailsCardComponent
         // services
         private detailsPageService: DetailsPageService,
         private driverService: DriverService,
+        private modalService: ModalService,
 
         // store
         private driverMinimalQuery: DriversMinimalListQuery
@@ -414,6 +417,14 @@ export class DriverDetailsCardComponent
     public handleDriverDetailsTitleCardEmit(event: any): void {
         switch (event.type) {
             case DriverDetailsCardStringEnum.SELECT_DRIVER:
+                if (event.event.name === DriverDetailsCardStringEnum.ADD_NEW) {
+                    this.modalService.openModal(DriverModalComponent, {
+                        size: DriverDetailsCardStringEnum.MEDIUM,
+                    });
+
+                    return;
+                }
+
                 this.onSelectedDriver(event.event);
 
                 break;

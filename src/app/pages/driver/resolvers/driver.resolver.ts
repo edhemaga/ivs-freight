@@ -9,29 +9,35 @@ import { DriverService } from '@pages/driver/services/driver.service';
 
 // store
 import {
-    DriversActiveState,
-    DriversActiveStore,
-} from '@pages/driver/state/driver-active-state/driver-active.store';
+    DriverState,
+    DriverStore,
+} from '@pages/driver/state/driver-state/driver.store';
 
 @Injectable({
     providedIn: 'root',
 })
-export class DriverActiveResolver implements Resolve<DriversActiveState> {
+export class DriverResolver implements Resolve<DriverState> {
+    private activeId: number = 1;
+    private pageIndex: number = 1;
+    private pageSize: number = 25;
+
     constructor(
         private driverService: DriverService,
-        private store: DriversActiveStore,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+
+        // store
+        private store: DriverStore
     ) {}
 
     resolve(): Observable<any> {
         return forkJoin([
             this.driverService.getDrivers(
-                1,
+                this.activeId,
                 undefined,
                 undefined,
                 undefined,
-                1,
-                25
+                this.pageIndex,
+                this.pageSize
             ),
             this.tableService.getTableConfig(6),
         ]).pipe(

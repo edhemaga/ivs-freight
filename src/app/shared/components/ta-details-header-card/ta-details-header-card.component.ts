@@ -138,7 +138,7 @@ export class TaDetailsHeaderCardComponent {
             this.selectedDropdownSecond = true;
         }
     }
-    public onSelectItem(value: any) {
+    public onSelectItem(value: any): void {
         if (this.optionsSecondInput.length > 1) {
             this.selectedDropdownSecond = !this.selectedDropdownSecond;
             this.selectValueStore.emit(value);
