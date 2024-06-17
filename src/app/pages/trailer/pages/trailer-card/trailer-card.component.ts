@@ -32,7 +32,7 @@ import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modal
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 //Svg Routes
-import { TrailerCardsSvgRoutes } from './utils/svg-routes/trailer-cards-svg-routes';
+import { TrailerCardsSvgRoutes } from '@pages/trailer/pages/trailer-card/utils/svg-routes/trailer-cards-svg-routes';
 
 @Component({
     selector: 'app-trailer-card',
