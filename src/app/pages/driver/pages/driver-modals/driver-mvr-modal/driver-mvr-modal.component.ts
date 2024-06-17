@@ -78,6 +78,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
     public modalName: string;
 
+    private driverStatus: number;
+
     // dropdowns
     public cdlsDropdownList: ExtendedCdlMinimalResponse[] = [];
     public selectedCdl: ExtendedCdlMinimalResponse;
@@ -275,8 +277,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
+
+                this.driverStatus = status;
 
                 this.modalName = firstName.concat(
                     DriverMVrModalStringEnum.EMPTY_STRING,
@@ -331,6 +335,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
@@ -371,6 +376,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             id: this.editData?.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             cdlId: this.selectedCdl.id,
