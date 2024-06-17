@@ -567,6 +567,10 @@ export class CustomerTableComponent
                         this.viewData = this.customerTableData;
                         this.sendCustomerData();
                     }
+
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
+                        this.tableData[0].length = this.viewData.length;
+                    }
                 } else if (res?.filterType) {
                     if (res.filterType === TableStringEnum.STATE_FILTER) {
                         if (res.action === TableStringEnum.SET) {
@@ -1098,6 +1102,10 @@ export class CustomerTableComponent
                 ? this.getTabData(TableStringEnum.ACTIVE)
                 : [];
 
+        const filteredBrokerData = this.filter
+            ? brokerActiveData
+            : this.filterBanDnuBrokerData(brokerActiveData);
+
         const shipperActiveData =
             this.selectedTab === TableStringEnum.INACTIVE
                 ? this.getTabData(TableStringEnum.INACTIVE)
@@ -1107,7 +1115,7 @@ export class CustomerTableComponent
             {
                 title: TableStringEnum.BROKER,
                 field: TableStringEnum.ACTIVE,
-                length: brokerShipperCount.broker,
+                length: filteredBrokerData?.length,
                 data: brokerActiveData,
                 extended: false,
                 moneyCountSelected: false,
@@ -1224,6 +1232,10 @@ export class CustomerTableComponent
                         : this.mapShipperData(data);
                 }
             );
+
+            if (!this.filter) {
+                this.viewData = this.filterBanDnuBrokerData(this.viewData);
+            }
 
             // Set data for cards based on tab active
             this.selectedTab === TableStringEnum.ACTIVE
@@ -1588,12 +1600,25 @@ export class CustomerTableComponent
             this.backBrokerFilterQuery.pageIndex = 1;
             this.backShipperFilterQuery.pageIndex = 1;
 
+            this.filter = false;
+
             this.sendCustomerData();
         } else if (event.action === TableStringEnum.VIEW_MODE) {
+            const isViewModeChanged = this.activeViewMode !== event.mode;
+
             this.activeViewMode = event.mode;
 
             this.tableOptions.toolbarActions.hideSearch =
                 event.mode == TableStringEnum.MAP;
+
+            this.filter = false;
+
+            if (
+                this.selectedTab === TableStringEnum.ACTIVE &&
+                isViewModeChanged
+            ) {
+                this.tableService.sendResetSpecialFilters(true);
+            }
 
             this.sendCustomerData();
         }
@@ -2044,6 +2069,15 @@ export class CustomerTableComponent
                     }
                 }
             });
+    }
+
+    private filterBanDnuBrokerData(data: BrokerResponse[]): BrokerResponse[] {
+        const filteredData = data.filter(
+            (brokerItem) =>
+                !brokerItem.ban && !brokerItem.dnu && brokerItem.status
+        );
+
+        return filteredData;
     }
 
     // ---------------------------- ngOnDestroy ------------------------------

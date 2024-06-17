@@ -130,6 +130,10 @@ export class TruckassistTableService {
     private setTableFilter = new BehaviorSubject<any>(null);
     public currentSetTableFilter = this.setTableFilter.asObservable();
 
+    // Flip cards
+    private resetSpecialFilters = new BehaviorSubject<boolean>(false);
+    public isSpecialFiltersReset = this.resetSpecialFilters.asObservable();
+
     /* Set Table Width */
     private setTableWidth = new BehaviorSubject<number>(null);
     public currentSetTableWidth = this.setTableWidth.asObservable();
@@ -274,5 +278,10 @@ export class TruckassistTableService {
     /* Toaggle Table Column */
     public sendToaggleColumn(toaggleColumn: any) {
         this.toaggleColumn.next(toaggleColumn);
+    }
+
+    /* Reset Special Filters */
+    public sendResetSpecialFilters(resetFilters: boolean): void {
+        this.resetSpecialFilters.next(resetFilters);
     }
 }

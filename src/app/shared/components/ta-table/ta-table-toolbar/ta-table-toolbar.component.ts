@@ -489,11 +489,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.selectedViewMode = modeView.mode;
 
-        this.toolBarAction.emit({
-            action: TableStringEnum.VIEW_MODE,
-            mode: modeView.mode,
-        });
-
         localStorage.setItem(
             `${this.selectedTableData.gridNameTitle}-table-view`,
             JSON.stringify({
@@ -501,6 +496,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 viewMode: this.selectedViewMode,
             })
         );
+
+        this.toolBarAction.emit({
+            action: TableStringEnum.VIEW_MODE,
+            mode: modeView.mode,
+        });
 
         this.isMapShowning = modeView.mode === TableStringEnum.MAP;
     }
