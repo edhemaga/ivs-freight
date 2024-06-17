@@ -452,7 +452,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 hideActivationButton: true,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
@@ -529,16 +528,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 moneyCountSelected: false,
-                // ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     loadTemplateData,
-                //     TableStringEnum.LTL,
-                //     TableStringEnum.TYPE
-                // ),
-                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     loadTemplateData,
-                //     TableStringEnum.FTL,
-                //     TableStringEnum.TYPE
-                // ),
+                ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                    loadTemplateData,
+                    TableStringEnum.LTL,
+                    TableStringEnum.TYPE
+                ),
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                    loadTemplateData,
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
+                ),
                 stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_TEMPLATE',
                 isActive: this.selectedTab === TableStringEnum.TEMPLATE,
@@ -555,16 +554,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 moneyCountSelected: false,
                 gridNameTitle: TableStringEnum.LOAD,
-                // ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     loadPendingData,
-                //     TableStringEnum.LTL,
-                //     TableStringEnum.TYPE
-                // ),
-                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     loadPendingData,
-                //     TableStringEnum.FTL,
-                //     TableStringEnum.TYPE
-                // ),
+                ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                    loadPendingData,
+                    TableStringEnum.LTL,
+                    TableStringEnum.TYPE
+                ),
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                    loadPendingData,
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
+                ),
                 stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
                 isActive: this.selectedTab === TableStringEnum.PENDING,
@@ -579,11 +578,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
-                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     loadActiveData,
-                //     TableStringEnum.FTL,
-                //     TableStringEnum.TYPE
-                // ),
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                    loadActiveData,
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
+                ),
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 stateName: TableStringEnum.LOADS,
@@ -600,11 +599,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
-                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                //     repairClosedData,
-                //     TableStringEnum.FTL,
-                //     TableStringEnum.TYPE
-                // ),
+                ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                    repairClosedData,
+                    TableStringEnum.FTL,
+                    TableStringEnum.TYPE
+                ),
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 stateName: TableStringEnum.LOADS,
@@ -657,7 +656,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadTableData = this.viewData;
     }
 
-    private mapLoadData(data: LoadModel): LoadModel {
+    private mapLoadData(data: LoadModel) /* : LoadModel */ {
+        console.log('load', data);
         let commentsWithAvatarColor;
 
         if (data.comments) {
@@ -726,41 +726,50 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadPickup: {
-                count: data?.stops[0]?.stopLoadOrder
-                    ? data.stops[0].stopLoadOrder
-                    : null,
+                count: data?.stops && (data?.stops[0]?.stopLoadOrder ?? null),
                 location:
+                    data?.stops &&
                     data?.stops[0]?.shipper?.address?.city +
-                    TableStringEnum.COMA +
-                    data?.stops[0]?.shipper?.address?.stateShortName,
-                date: data?.stops[0]?.dateFrom
-                    ? this.datePipe.transform(
-                          data.stops[0].dateFrom,
-                          TableStringEnum.DATE_FORMAT
-                      )
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                time: data?.stops[0]?.timeFrom
-                    ? data.stops[0].timeFrom
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        TableStringEnum.COMA +
+                        data?.stops[0]?.shipper?.address?.stateShortName,
+                date:
+                    data?.stops &&
+                    (data?.stops[0]?.dateFrom
+                        ? this.datePipe.transform(
+                              data.stops[0].dateFrom,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time:
+                    data?.stops &&
+                    (data?.stops[0]?.timeFrom
+                        ? data.stops[0].timeFrom
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
             },
             loadDelivery: {
-                count: data?.stops[data.stops.length - 1]?.stopLoadOrder
-                    ? data.stops[data.stops.length - 1].stopLoadOrder
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                count:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.stopLoadOrder ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER),
                 location:
+                    data?.stops &&
                     data?.stops[data.stops.length - 1]?.shipper?.address?.city +
-                    TableStringEnum.COMA +
-                    data?.stops[data.stops.length - 1]?.shipper?.address
-                        ?.stateShortName,
-                date: data?.stops[data.stops.length - 1]?.dateFrom
-                    ? this.datePipe.transform(
-                          data.stops[data.stops.length - 1].dateFrom,
-                          TableStringEnum.DATE_FORMAT
-                      )
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                time: data?.stops[data.stops.length - 1]?.timeFrom
-                    ? data.stops[data.stops.length - 1].timeFrom
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        TableStringEnum.COMA +
+                        data?.stops[data.stops.length - 1]?.shipper?.address
+                            ?.stateShortName,
+                date:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.dateFrom
+                        ? this.datePipe.transform(
+                              data.stops[data.stops.length - 1].dateFrom,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.timeFrom
+                        ? data.stops[data.stops.length - 1].timeFrom
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
             },
             loadStatus: {
                 status: data?.status?.name
@@ -843,7 +852,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             loadType: number | undefined;
             statusType: number | undefined;
             status: number | undefined;
-            dispatchersId: number[] | undefined;
             dispatcherId: number | undefined;
             dispatchId: number | undefined;
             brokerId: number | undefined;
@@ -852,14 +860,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             dateTo: string | undefined;
             revenueFrom: number | undefined;
             revenueTo: number | undefined;
-            rateFrom?: number;
-            rateTo?: number;
-            paidFrom?: number;
-            paidTo?: number;
-            dueFrom?: number;
-            dueTo?: number;
-            pickup?: boolean;
-            delivery?: boolean;
             truckId: number | undefined;
             pageIndex: number;
             pageSize: number;
@@ -871,12 +871,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         isShowMore?: boolean
     ): void {
-        this.loadServices
+        /*  this.loadServices
             .getLoadList(
                 filter.loadType,
                 filter.statusType,
                 filter.status,
-                filter.dispatchersId,
                 filter.dispatcherId,
                 filter.dispatchId,
                 filter.brokerId,
@@ -889,14 +888,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
-                filter.rateFrom,
-                filter.rateTo,
-                filter.paidFrom,
-                filter.paidTo,
-                filter.dueFrom,
-                filter.dueTo,
-                filter.pickup,
-                filter.delivery,
                 filter.sort,
                 filter.searchOne,
                 filter.searchTwo,
@@ -919,7 +910,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-            });
+            }); */
     }
 
     // ---------------------------- Table Actions ------------------------------

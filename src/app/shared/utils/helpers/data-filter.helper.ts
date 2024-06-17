@@ -6,7 +6,7 @@ export class DataFilterHelper {
         event: string,
         typeName?: string
     ) {
-        const filteredArray = !typeName
+        /*  const filteredArray = !typeName
             ? event == TableStringEnum.STATUS
                 ? data?.filter((dataItem) => dataItem[event] == 0)
                 : data?.filter((dataItem) => dataItem[event])
@@ -21,7 +21,7 @@ export class DataFilterHelper {
                     (typeName === 'userType' || typeName === 'type')) ??
                 false,
             filteredArray,
-        };
+        }; */
     }
 
     static calculateDistanceBetweenTwoCitysByCoordinates(

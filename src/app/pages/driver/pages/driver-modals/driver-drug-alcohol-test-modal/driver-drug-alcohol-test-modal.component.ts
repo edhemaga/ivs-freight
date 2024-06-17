@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -27,6 +28,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -35,7 +37,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { DriverDrugAlcoholTestModalStringEnum } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/enums/driver-drug-alcohol-test-modal-string.enum';
 
 // models
-import { EnumValue } from 'appcoretruckassist';
+import { EnumValue, TestResponse } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
 
 @Component({
@@ -67,11 +69,14 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public drugForm: UntypedFormGroup;
+    public test: TestResponse;
 
     public isFormDirty: boolean;
     public isCardAnimationDisabled: boolean = false;
 
     public modalName: string;
+
+    private driverStatus: number;
 
     // dropdowns
     public testTypesDropdownList: EnumValue[] = [];
@@ -95,7 +100,10 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
         private testService: DriverDrugAlcoholTestService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+
+        // bootstrap
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -156,6 +164,31 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
+                break;
+            case DriverDrugAlcoholTestModalStringEnum.DELETE:
+                this.ngbActiveModal.close();
+
+                const mappedEvent = {
+                    data: {
+                        ...this.test,
+                        driverName: this.modalName,
+                        reasonName: this.test.testReason.name,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverDrugAlcoholTestModalStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: DriverDrugAlcoholTestModalStringEnum.TEST,
+                        type: DriverDrugAlcoholTestModalStringEnum.DELETE,
+                        image: false,
+                        modalHeaderTitle:
+                            DriverDrugAlcoholTestModalStringEnum.DELETE_TEST_TITLE,
+                    }
+                );
 
                 break;
             default:
@@ -240,8 +273,10 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
+
+                this.driverStatus = status;
 
                 this.modalName = firstName.concat(
                     DriverDrugAlcoholTestModalStringEnum.EMPTY_STRING,
@@ -254,7 +289,7 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
         this.testService
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((test) => {
                 const {
                     testingDate,
                     testType,
@@ -262,7 +297,9 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
                     result,
                     files,
                     note,
-                } = res;
+                } = test;
+
+                this.test = test;
 
                 this.drugForm.patchValue({
                     testingDate:
@@ -303,6 +340,7 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             testingDate:
                 MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testType: this.selectedTestType.id,
@@ -345,6 +383,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             testingDate:
                 MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testType: this.selectedTestType.id,

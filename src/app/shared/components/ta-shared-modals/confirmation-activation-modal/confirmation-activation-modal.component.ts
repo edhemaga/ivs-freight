@@ -12,12 +12,15 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 
 // Services
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // Models
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models/confirmation-activation.model';
+import { ConfirmationActivationModalSvgRoutes } from './utils/confirmation-activation-modal-svg-routes';
 
 // Pipes
 import { ConfirmationModalTitlePipe } from '@shared/components/ta-shared-modals/confirmation-activation-modal/pipes/confirmation-modal-title.pipe';
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 @Component({
     selector: 'app-confirmation-activation-modal',
@@ -32,16 +35,22 @@ import { ConfirmationModalTitlePipe } from '@shared/components/ta-shared-modals/
 
         // Pipes
         ConfirmationModalTitlePipe,
+        FormatDatePipe,
     ],
     templateUrl: './confirmation-activation-modal.component.html',
     styleUrls: ['./confirmation-activation-modal.component.scss'],
 })
 export class ConfirmationActivationModalComponent {
     @Input() editData: ConfirmationActivation;
+    
+    public confirmationImageRoutes = ConfirmationActivationModalSvgRoutes;
 
     constructor(
+        private ngbActiveModal: NgbActiveModal,
+
+        // services
         private confirmationActivationService: ConfirmationActivationService,
-        private ngbActiveModal: NgbActiveModal
+        public imageBase64Service: ImageBase64Service
     ) {}
 
     public onModalAction(data: ConfirmationActivation): void {

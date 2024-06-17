@@ -1,0 +1,102 @@
+<div class="card-width">
+    <app-ta-common-card
+        *ngFor="let test of cardsData; let i = index; trackBy: trackByIdentity"
+        [cardNameCurrent]="'test'"
+        [cardNameCommon]="formatDate(test?.testingDate)"
+        [cardSecondResult]="test?.result?.name"
+        [cardSecondName]="test?.testReason?.name"
+        [testDate]="formatDate(test?.testingDate)"
+        [cardDocumentCounter]="test?.files?.length"
+        [isCardOpen]="true"
+        [weeklyWidth]="'18'"
+        [shortName]="test?.testType?.name[0]"
+        [hasToggler]="true"
+        [options]="testOptionsDropdownList"
+        [optionsId]="test?.id"
+        [noteIcons]="
+            test?.note && test?.note != 'null'
+                ? 'assets/svg/truckassist-table/note/Note.svg'
+                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+        "
+        (resizePage)="toggleResizePage(i, 'test')"
+        (dropActions)="onOptions($event, 'test')"
+    >
+        <div class="cards-container">
+            <div class="align-items-center test-card-container">
+                <div class="align-items-center test-card-inner-container">
+                    <!-- Type, Reason -->
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center test-card-box"
+                    >
+                        <p class="m-0 ta-font-bold">Type</p>
+
+                        <span> {{ test?.testType.name + ' Test' }}</span>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column jusitfy-content-center test-card-box"
+                    >
+                        <p class="m-0 ta-font-bold">Reason</p>
+
+                        <span> {{ test?.testReason.name }} </span>
+                    </div>
+                </div>
+
+                <!-- Note, Documents -->
+
+                <div class="note-documents-container">
+                    <div
+                        [@showHideCardBody]="
+                            toggler[i + 'test'] ? 'true' : 'false'
+                        "
+                    >
+                        <ng-container *ngIf="test?.files?.length">
+                            <div class="divider"></div>
+
+                            <app-ta-custom-card
+                                [cardName]="'Document'"
+                                [hasCounter]="test?.files?.length"
+                                [isCardOpen]="true"
+                                [hasArrow]="false"
+                                [hasDownload]="
+                                    'assets/svg/common/ic_download.svg'
+                                "
+                            >
+                                <app-ta-upload-files
+                                    [files]="test?.files"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                    [slideWidth]="324"
+                                    [hasLandscapeOption]="true"
+                                ></app-ta-upload-files>
+                            </app-ta-custom-card>
+                        </ng-container>
+
+                        <div class="divider"></div>
+
+                        <app-ta-input-note
+                            [formControl]="testNote"
+                            [isVisibleDivider]="false"
+                            [isVisibleNote]="true"
+                            [isVisibleArrow]="false"
+                            [minRows]="1"
+                            [placeholder]="'Write something.'"
+                            [customClass]="'note-small'"
+                            [noteType]="'details-card'"
+                            [note]="
+                                test?.note && test?.note !== 'null'
+                                    ? test?.note
+                                    : ''
+                            "
+                            [entityId]="test?.id"
+                            [entityType]="'test'"
+                        >
+                        </app-ta-input-note>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-ta-common-card>
+</div>

@@ -155,32 +155,32 @@
                     marginBottom: '10px'
                 }"
             >
-                <div class="assignTo">
+                <div class="assign-to">
                     <div
-                        class="assignTo-item first"
+                        class="assign-to-item first"
                         *ngIf="truck?.assignedTo?.trailer?.id"
                     >
                         <svg-icon
-                            class="assignTo-vehicle backImage"
+                            class="assign-to-vehicle backImage"
                             [src]="
                                 'assets/svg/common/trailers/' +
                                 truck.assignedTo.trailer.trailerType.logoName
                             "
                         ></svg-icon>
-                        <p class="assignTo-value">
+                        <p class="assign-to-value">
                             {{ truck.assignedTo.trailer.trailerNumber }}
                         </p>
                     </div>
                     <div
-                        class="assignTo-item"
+                        class="assign-to-item"
                         *ngIf="!truck?.assignedTo?.trailer?.id"
                     >
-                        <p class="assignTo-value inactive-assignTo-value">
+                        <p class="assign-to-value inactive-assign-to-value">
                             No Trailer
                         </p>
                     </div>
                     <div
-                        class="assignTo-item"
+                        class="assign-to-item"
                         *ngIf="truck?.assignedTo?.driver?.id"
                     >
                         <ng-container
@@ -207,16 +207,16 @@
                                 alt="driver-image"
                             />
                         </ng-template>
-                        <p class="assignTo-value">
+                        <p class="assign-to-value">
                             {{ truck.assignedTo.driver.firstName }}
                             {{ truck.assignedTo.driver.lastName }}
                         </p>
                     </div>
                     <div
-                        class="assignTo-item"
+                        class="assign-to-item"
                         *ngIf="!truck?.assignedTo?.driver?.id"
                     >
-                        <p class="assignTo-value inactive-assignTo-value">
+                        <p class="assign-to-value inactive-assign-to-value">
                             No Driver
                         </p>
                     </div>
@@ -225,7 +225,6 @@
 
             <!--------Additonal Details--------->
             <app-ta-custom-card
-                class="item-cards"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="true"
                 [cardName]="'Additional Details'"
@@ -551,7 +550,6 @@
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                 [hasCounter]="featureNumber"
-                class="item-cards"
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
@@ -685,7 +683,6 @@
             </app-ta-custom-card>
             <!--------Owner--------->
             <app-ta-custom-card
-                class="item-cards"
                 [cardName]="
                     ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name
                 "
@@ -755,7 +752,6 @@
                 [cardName]="'Owner History'"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                class="item-cards"
                 [customClass]="'detailsPadding'"
                 [animationMarginParams]="{
                     marginTop: '0px',
@@ -909,7 +905,6 @@
                 [cardName]="'Performance'"
                 [isCardOpen]="payrollChartConfig?.hasValue"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                class="item-cards"
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
@@ -942,7 +937,6 @@
                 [cardName]="'Fuel Consumption'"
                 [isCardOpen]="payrollChartConfig?.hasValue"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                class="item-cards"
                 [customClass]="'detailsPadding'"
             >
                 <div
@@ -973,7 +967,6 @@
                 [cardName]="'Revenue'"
                 [bodyTemplate]="'card'"
                 [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
-                class="item-cards"
                 [isCardOpen]="revenueChartConfig?.hasValue"
                 [customClass]="'detailsPadding'"
             >
@@ -1000,7 +993,6 @@
             </app-ta-custom-card>
             <!--------Perfomance--------->
             <app-ta-custom-card
-                class="item-cards"
                 [cardName]="'Expenses'"
                 [bodyTemplate]="'card'"
                 [isCardOpen]="stackedBarChartConfig?.hasValue"
@@ -1035,7 +1027,6 @@
                 [cardName]="'Document'"
                 [isCardOpen]="false"
                 [hasCounter]="truck?.files?.length ? truck?.files.length : 0"
-                class="item-cards"
                 [bodyTemplate]="'card'"
                 [customClass]="'detailsPadding'"
             >
@@ -1078,7 +1069,6 @@
                     [cardName]="'Registration'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [customClass]="'detailsPadding'"
                     [hasCounter]="
@@ -1180,7 +1170,6 @@
                     [customClass]="'detailsPadding'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasCounter]="
                         truck?.inspections?.length
@@ -1254,7 +1243,6 @@
                     [cardName]="'Title'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [customClass]="'detailsPadding'"
                     [hasCounter]="
@@ -1355,7 +1343,6 @@
                     [cardName]="'Lease / Purchase'"
                     [isCardOpen]="false"
                     [hasDivider]="false"
-                    class="item-cards"
                     [bodyTemplate]="'card'"
                     [hasCounter]="0"
                     [hasPlusHeader]="true"

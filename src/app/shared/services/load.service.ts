@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -15,11 +15,11 @@ import {
     LoadResponse,
     LoadMinimalListResponse,
     LoadModalResponse,
-    // CreateLoadTemplateCommand,
     LoadStopItemAutocompleteDescriptionResponse,
     CreateWithUploadsResponse,
     RoutingService,
     RoutingResponse,
+    CreateLoadTemplateCommand,
 } from 'appcoretruckassist';
 
 import {
@@ -59,7 +59,7 @@ export class LoadService {
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
         status?: number,
-        dispatcherIds?: number[],
+        dispatcherIds?: Array<number>,
         dispatcherId?: number,
         dispatchId?: number,
         brokerId?: number,
@@ -69,9 +69,6 @@ export class LoadService {
         revenueFrom?: number,
         revenueTo?: number,
         truckId?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
         rateFrom?: number,
         rateTo?: number,
         paidFrom?: number,
@@ -80,6 +77,9 @@ export class LoadService {
         dueTo?: number,
         pickup?: boolean,
         delivery?: boolean,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
         sort?: string,
         search?: string,
         search1?: string,
@@ -116,6 +116,7 @@ export class LoadService {
             search2
         );
     }
+
     public getLoadMinimalList(
         pageIndex?: number,
         pageSize?: number
@@ -187,8 +188,9 @@ export class LoadService {
     }
 
     // modal operations - template
-    // CreateLoadTemplateCommand this was data response here but it changed
-    public createLoadTemplate(data): Observable<CreateResponse> {
+    public createLoadTemplate(
+        data: CreateLoadTemplateCommand
+    ): Observable<CreateResponse> {
         return this.loadService.apiLoadTemplatePost(data);
     }
 

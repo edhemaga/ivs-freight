@@ -64,9 +64,14 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     public showLtl: boolean = true;
     public showFtl: boolean = true;
     constructor(private tableSevice: TruckassistTableService) {}
-    public customerFilter: { filteredArray: any; selectedFilter: boolean } = {
+    public customerFilter: {
+        filteredArray: any;
+        selectedFilter: boolean;
+        filterName: string;
+    } = {
         filteredArray: [],
         selectedFilter: false,
+        filterName: '',
     };
 
     // --------------------------------NgOnInit---------------------------------
@@ -166,10 +171,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
             this.activeTableData?.bannedArray ||
             this.activeTableData?.closedArray
         ) {
+            this.customerFilter.filterName = data;
             if (event.selectedFilter) {
                 event.filteredArray.forEach((item) => {
                     this.customerFilter.filteredArray.push(item);
-                })
+                });
                 this.customerFilter.selectedFilter = event.selectedFilter;
             } else {
                 this.customerFilter.filteredArray =

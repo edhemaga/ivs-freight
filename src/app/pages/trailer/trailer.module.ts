@@ -10,6 +10,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
 
 // components
 import { TrailerTableComponent } from '@pages/trailer/pages/trailer-table/trailer-table.component';
@@ -21,6 +23,11 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TrailerCardComponent } from '@pages/trailer/pages/trailer-card/trailer-card.component';
+
+// store
+import { StoreModule } from '@ngrx/store';
+import { trailerCardModalReducer } from '@pages/trailer/pages/trailer-card-modal/state/trailer-card-modal.reducer';
+
 @NgModule({
     declarations: [TrailerTableComponent, TrailerCardComponent],
     imports: [
@@ -42,6 +49,10 @@ import { TrailerCardComponent } from '@pages/trailer/pages/trailer-card/trailer-
         // pipes
         ThousandSeparatorPipe,
         FormatDatePipe,
+        FlipCardsPipe,
+        NgForLengthFilterPipe,
+
+        StoreModule.forFeature('trailerCardData', trailerCardModalReducer),
     ],
 })
 export class TrailerModule {}

@@ -1,6 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
-export class trailerCardDataConstants {
+export class TrailerCardDataConstants {
     static rows: number = 4;
 
     static page: string = 'Trailer';
@@ -41,13 +41,15 @@ export class trailerCardDataConstants {
         },
         {
             title: 'Licence Exp.',
-            key: 'tableLicencePlateDetailExpiration.expirationDaysText',
-            secondKey: 'tableLicencePlateDetailExpiration.percentage',
+            key: 'tableLicencePlateDetailExpiration',
+            secondKey: 'expirationDaysText',
+            thirdKey: 'percentage',
         },
         {
             title: 'FHWA Exp.',
-            key: 'tableFHWAInspectionExpiration.expirationDaysText',
-            secondKey: 'tableFHWAInspectionExpiration.percentage',
+            key: 'tableFHWAInspectionExpiration',
+            secondKey: 'expirationDaysText',
+            thirdKey: 'percentage'
         },
     ];
 

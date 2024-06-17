@@ -9,4 +9,8 @@ export enum DriverMedicalModalStringEnum {
     ADD = 'add',
     DELETE = 'delete',
     FILES = 'files',
+    SMALL = 'small',
+
+    DELETE_MEDICAL_TITLE = 'Delete Medical',
+    MEDICAL = 'medical',
 }

@@ -25,37 +25,48 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
     resolve(): Observable<any> {
         return forkJoin([
             this.loadService.getLoadList(
-                undefined,
+                null,
                 2,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                1, // hotfix
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 1,
-                25
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
             ),
             this.tableService.getTableConfig(3),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
-                console.log(loadPagination)
-                if (loadPagination) {
-                    localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
-                        })
-                    );
-                }
+                console.log('loadPagination', loadPagination);
+                localStorage.setItem(
+                    'loadTableCount',
+                    JSON.stringify({
+                        pendingCount: loadPagination.pendingCount,
+                        activeCount: loadPagination.activeCount,
+                        closedCount: loadPagination.closedCount,
+                        templateCount: loadPagination.templateCount,
+                    })
+                );
 
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
@@ -66,7 +77,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                     );
                 }
 
-                this.loadActiveStore.set(loadPagination?.pagination?.data);
+                this.loadActiveStore.set(loadPagination.pagination.data);
             })
         );
     }

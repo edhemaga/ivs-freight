@@ -1,0 +1,57 @@
+@import 'src/theme/variables.scss';
+
+.driver-info-container {
+    margin-left: 12px;
+    margin-right: 12px;
+
+    .driver-personal {
+        display: grid;
+        grid-template-columns: 74px 330px;
+        margin-top: 12px;
+        column-gap: 12px;
+        -moz-column-gap: 12px;
+
+        .driver-avatar {
+            .driver-avatar-svg {
+                width: 74px;
+                height: 82px;
+                border-radius: 2px;
+
+                object-fit: fill;
+                -o-object-fit: fill;
+            }
+        }
+
+        .driver-information {
+            .information-item {
+                margin-bottom: 4px;
+                cursor: pointer;
+
+                .information-svg {
+                    position: relative;
+                    bottom: 2px;
+                    line-height: 0;
+                    margin-right: 4px;
+
+                    svg {
+                        path {
+                            transition: fill 0.2s ease-in;
+                        }
+                    }
+
+                    &:hover {
+                        svg {
+                            path {
+                                fill: $bw6-2;
+                            }
+                        }
+                    }
+                }
+
+                &:last-child {
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+    }
+}

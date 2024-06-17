@@ -91,7 +91,8 @@ export class TruckassistTableService {
         | DriverResponse[]
         | BrokerResponse[]
     >([]);
-    public currentBussinessSelectedRows = this.bussinessSelectedRows.asObservable();
+    public currentBussinessSelectedRows =
+        this.bussinessSelectedRows.asObservable();
 
     /* Delete Selected Rows */
     private deleteSelectedRows = new BehaviorSubject<
@@ -128,6 +129,10 @@ export class TruckassistTableService {
     /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
     public currentSetTableFilter = this.setTableFilter.asObservable();
+
+    // Flip cards
+    private resetSpecialFilters = new BehaviorSubject<boolean>(false);
+    public isSpecialFiltersReset = this.resetSpecialFilters.asObservable();
 
     /* Set Table Width */
     private setTableWidth = new BehaviorSubject<number>(null);
@@ -219,7 +224,7 @@ export class TruckassistTableService {
     public sendDnuListSelectedRows(dnuListSelectedRows) {
         this.dnuSelectedRows.next(dnuListSelectedRows);
     }
-    
+
     /* Open/Close Bussiness Selected Rows */
     public sendBussinessSelectedRows(bussinessListSelectedRows) {
         this.bussinessSelectedRows.next(bussinessListSelectedRows);
@@ -273,5 +278,10 @@ export class TruckassistTableService {
     /* Toaggle Table Column */
     public sendToaggleColumn(toaggleColumn: any) {
         this.toaggleColumn.next(toaggleColumn);
+    }
+
+    /* Reset Special Filters */
+    public sendResetSpecialFilters(resetFilters: boolean): void {
+        this.resetSpecialFilters.next(resetFilters);
     }
 }

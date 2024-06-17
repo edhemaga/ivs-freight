@@ -1,0 +1,40 @@
+<app-ta-custom-card
+    [cardName]="'Emergency Contact'"
+    [isCardOpen]="!!cardData.emergencyContact.name"
+    [disabledCard]="!cardData.emergencyContact.name"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4px'
+    }"
+>
+    <div class="align-items-center emergency-contact-container">
+        <div
+            class="d-flex flex-column justify-content-center emergency-contact-box"
+        >
+            <p class="m-0 ta-font-bold">
+                {{ cardData.emergencyContact.relationship }}
+            </p>
+
+            <app-ta-copy
+                [textFontSize]="'14px'"
+                [copyValue]="cardData.emergencyContact.name"
+                [textColor]="'#2f2f2f'"
+            >
+            </app-ta-copy>
+        </div>
+
+        <div
+            class="d-flex flex-column justify-content-center emergency-contact-box"
+        >
+            <p class="m-0 ta-font-bold">Phone</p>
+
+            <app-ta-copy
+                [textFontSize]="'14px'"
+                [copyValue]="cardData.emergencyContact.phone"
+                [textColor]="'#2f2f2f'"
+            >
+            </app-ta-copy>
+        </div>
+    </div>
+</app-ta-custom-card>
