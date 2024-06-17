@@ -1104,7 +1104,9 @@ export class CustomerTableComponent
 
         const filteredBrokerData = this.filter
             ? brokerActiveData
-            : this.filterBanDnuBrokerData(brokerActiveData);
+            : this.filterBanDnuBrokerData(
+                  this.getTabData(TableStringEnum.ACTIVE)
+              );
 
         const shipperActiveData =
             this.selectedTab === TableStringEnum.INACTIVE
