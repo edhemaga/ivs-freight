@@ -54,10 +54,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CustomerBodyResponse } from '@pages/customer/pages/customer-table/models/customer-body-response.model';
 import { CustomerUpdateRating } from '@pages/customer/pages/customer-table/models/customer-update-rating.model';
 import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
-import {
-    CardDetails,
-    DropdownItem,
-} from '@shared/models/card-models/card-table-data.model';
+import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
 import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
@@ -257,6 +254,9 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    this.filter = false;
+                    this.tableService.sendResetSpecialFilters(true);
+
                     if (!res.array) {
                         if (res.subType === TableStringEnum.BAN) {
                             this.changeBanStatus(res.data);
@@ -277,6 +277,9 @@ export class CustomerTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res) {
+                    this.filter = false;
+                    this.tableService.sendResetSpecialFilters(true);
+
                     if (!res.array) {
                         if (res.template === TableStringEnum.INFO) {
                             if (this.selectedTab === TableStringEnum.ACTIVE) {
@@ -757,7 +760,12 @@ export class CustomerTableComponent
                     res?.animation === TableStringEnum.ADD &&
                     res.tab === TableStringEnum.BROKER
                 ) {
-                    this.viewData.push(this.mapBrokerData(res.data));
+                    if (this.filter) {
+                        this.filter = false;
+                        this.tableService.sendResetSpecialFilters(true);
+                    } else {
+                        this.viewData.push(this.mapBrokerData(res.data));
+                    }
 
                     this.addData(res.id);
                 }
@@ -769,6 +777,8 @@ export class CustomerTableComponent
                     const updatedBroker = this.mapBrokerData(res.data);
 
                     this.updateData(res.id, updatedBroker);
+
+                    this.sendCustomerData();
                 }
                 // Update Multiple Brokers
                 else if (
@@ -904,7 +914,9 @@ export class CustomerTableComponent
                             data: {
                                 ...item.tableData,
                             },
-                            modalTitle: item.tableData.businessName,
+                            modalTitle:
+                                item.tableData.businessName.name ??
+                                item.tableData.businessName,
                             modalSecondTitle:
                                 item.tableData.billingAddress?.address ??
                                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -940,7 +952,9 @@ export class CustomerTableComponent
                             data: {
                                 ...item.tableData,
                             },
-                            modalTitle: item.tableData.businessName,
+                            modalTitle:
+                                item.tableData.businessName.name ??
+                                item.tableData.businessName,
                             modalSecondTitle:
                                 item.tableData.billingAddress?.address ??
                                 TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -976,7 +990,9 @@ export class CustomerTableComponent
                             data: {
                                 ...item.tableData,
                             },
-                            modalTitle: item.tableData.businessName,
+                            modalTitle:
+                                item.tableData.businessName.name ??
+                                item.tableData.businessName,
                             modalSecondTitle:
                                 item.tableData?.address?.address ??
                                 item.tableData?.billingAddress?.address ??
@@ -1663,7 +1679,7 @@ export class CustomerTableComponent
     // Table Body Actions
     private onTableBodyActions(event: {
         id?: number;
-        data?: CardDetails;
+        data?: any; // leave as any for now
         type?: string;
         subType?: string;
     }): void {
@@ -1741,7 +1757,8 @@ export class CustomerTableComponent
                     template: TableStringEnum.BROKER,
                     subType: TableStringEnum.BAN,
                     tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-                    modalTitle: event.data.businessName,
+                    modalTitle:
+                        event.data.businessName.name ?? event.data.businessName,
                     modalSecondTitle:
                         event.data?.billingAddress?.address ??
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1763,7 +1780,8 @@ export class CustomerTableComponent
                     template: TableStringEnum.BROKER,
                     subType: TableStringEnum.DNU,
                     tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-                    modalTitle: event.data.businessName,
+                    modalTitle:
+                        event.data.businessName.name ?? event.data.businessName,
                     modalSecondTitle:
                         event.data?.billingAddress?.address ??
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER,
@@ -1792,7 +1810,8 @@ export class CustomerTableComponent
                         this.selectedTab === TableStringEnum.ACTIVE
                             ? ConfirmationActivationStringEnum.BROKER_TEXT
                             : ConfirmationActivationStringEnum.SHIPPER_TEXT,
-                    modalTitle: event.data.businessName,
+                    modalTitle:
+                        event.data.businessName.name ?? event.data.businessName,
                     modalSecondTitle:
                         event.data?.address?.address ??
                         event.data?.billingAddress?.address ??
