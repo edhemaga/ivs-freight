@@ -38,6 +38,13 @@ import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-prog
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
+import { CardValuePipe } from '@shared/pipes/card-value.pipe';
+
+// store
+import { StoreModule } from '@ngrx/store';
+import { driverCardModalReducer } from '@pages/driver/pages/driver-card-modal/state/driver-card-modal.reducer';
+
 @NgModule({
     declarations: [DriverTableComponent, DriverCardComponent],
 
@@ -69,6 +76,10 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
         //pipes
         FormatDatePipe,
+        FlipCardsPipe,
+        CardValuePipe,
+
+        StoreModule.forFeature('driverCardData', driverCardModalReducer),
     ],
 })
 export class DriverModule {}
