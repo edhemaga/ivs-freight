@@ -23,14 +23,14 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // store
-import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
 } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applicant-table.store';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
 
 // pipes
@@ -89,7 +89,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public columns: GridColumn[] = [];
     public selectedTab: string = TableStringEnum.ACTIVE;
     public activeViewMode: string = TableStringEnum.LIST;
-    public driversActive: DriversActiveState[] = [];
+    public driversActive: DriverState[] = [];
     public driversInactive: DriversInactiveState[] = [];
     public applicantData: ApplicantShortResponse[] = [];
     public inactiveTabClicked: boolean = false;
@@ -143,7 +143,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private imageBase64Service: ImageBase64Service,
 
         // store
-        private driversActiveQuery: DriversActiveQuery,
+        private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
         private driversInactiveStore: DriversInactiveStore,

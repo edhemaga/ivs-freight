@@ -7,7 +7,7 @@ import { DriverTableComponent } from '@pages/driver/pages/driver-table/driver-ta
 
 // resolvers
 import { DriverMinimalResolver } from '@pages/driver/resolvers/driver-minimal-list.resolver';
-import { DriverItemsResolver } from '@pages/driver/resolvers/driver-items.resolver';
+import { DriverDetailsResolver } from '@pages/driver/resolvers/driver-details.resolver';
 
 const routes: Routes = [
     {
@@ -22,7 +22,7 @@ const routes: Routes = [
                 '@pages/driver/pages/driver-details/driver-details.component'
             ).then((m) => m.DriverDetailsComponent),
         resolve: {
-            driver: DriverItemsResolver,
+            driver: DriverDetailsResolver,
             driverMinimal: DriverMinimalResolver,
         },
         data: { title: 'Driver Details' },

@@ -85,61 +85,63 @@ export class DriverEmploymentHistoryCardComponent implements OnChanges {
     public getProgressBarData(
         employmentHistories: EmploymentHistoryResponse[]
     ): void {
-        this.employmentHistoryData = [];
-        this.employmentHistoryProgressData = [];
+        setTimeout(() => {
+            this.employmentHistoryData = [];
+            this.employmentHistoryProgressData = [];
 
-        this.firstEmploymentDate =
-            MethodsCalculationsHelper.convertDateFromBackend(
-                employmentHistories[0].startDate
-            );
+            this.firstEmploymentDate =
+                MethodsCalculationsHelper.convertDateFromBackend(
+                    employmentHistories[0]?.startDate
+                );
 
-        if (employmentHistories) {
-            const sumDates = this.sumArr.transform(
-                this.cardData?.employmentHistories.map((item) => {
-                    return {
-                        id: item.id,
-                        value:
-                            item.duration.Years * 365.25 + item.duration.Days ||
-                            1,
-                    };
-                })
-            );
+            if (employmentHistories) {
+                const sumDates = this.sumArr.transform(
+                    this.cardData?.employmentHistories.map((item) => {
+                        return {
+                            id: item.id,
+                            value:
+                                item.duration.Years * 365.25 +
+                                    item.duration.Days || 1,
+                        };
+                    })
+                );
 
-            this.employmentHistoryData = this.cardData?.employmentHistories
-                .map((employmentHistory) => {
-                    const yearsDaysCount =
-                        employmentHistory.duration.Years * 365.25 +
-                            employmentHistory.duration.Days || 1;
+                this.employmentHistoryData = this.cardData?.employmentHistories
+                    .map((employmentHistory) => {
+                        const yearsDaysCount =
+                            employmentHistory.duration.Years * 365.25 +
+                                employmentHistory.duration.Days || 1;
 
-                    const percents = (
-                        (yearsDaysCount / sumDates) *
-                        100
-                    ).toFixed(1);
+                        const percents = (
+                            (yearsDaysCount / sumDates) *
+                            100
+                        ).toFixed(1);
 
-                    this.employmentHistoryProgressData = [
-                        ...this.employmentHistoryProgressData,
-                        {
-                            percents,
+                        this.employmentHistoryProgressData = [
+                            ...this.employmentHistoryProgressData,
+                            {
+                                percents,
+                                isEmployed: !employmentHistory.isDeactivate,
+                            },
+                        ];
+
+                        return {
                             isEmployed: !employmentHistory.isDeactivate,
-                        },
-                    ];
-
-                    return {
-                        isEmployed: !employmentHistory.isDeactivate,
-                        startDate:
-                            MethodsCalculationsHelper.convertDateFromBackend(
-                                employmentHistory.startDate
-                            ),
-                        endDate: employmentHistory.endDate
-                            ? MethodsCalculationsHelper.convertDateFromBackend(
-                                  employmentHistory.endDate
-                              )
-                            : null,
-                        yearsOfService: employmentHistory.duration.Years,
-                        daysOfService: employmentHistory.duration.Days,
-                    };
-                })
-                .reverse();
-        }
+                            startDate:
+                                MethodsCalculationsHelper.convertDateFromBackend(
+                                    employmentHistory.startDate
+                                ),
+                            endDate: employmentHistory.endDate
+                                ? MethodsCalculationsHelper.convertDateFromBackend(
+                                      employmentHistory.endDate
+                                  )
+                                : null,
+                            yearsOfService: employmentHistory.duration.Years,
+                            daysOfService: employmentHistory.duration.Days,
+                        };
+                    })
+                    .reverse();
+            }
+        }, 300);
     }
 }

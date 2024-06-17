@@ -4,6 +4,7 @@ export enum DriverDetailsCardStringEnum {
     TODAY = 'Today',
     INVALID_DATE = 'Invalid Date',
     DATE_FORMAT = 'MM/DD/YY',
+    MEDIUM = 'medium',
 
     SELECT_DRIVER = 'select-driver',
     CHANGE_DRIVER = 'change-driver',
@@ -14,4 +15,6 @@ export enum DriverDetailsCardStringEnum {
     TWIC_EXP = 'TWIC Exp.',
     MVR_EXP = 'MVR Exp.',
     MONTHS = ' months',
+
+    ADD_NEW = 'ADD NEW',
 }

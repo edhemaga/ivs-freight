@@ -160,8 +160,14 @@ export class DriverDetailsItemMvrComponent
     }
 
     private deleteMvrById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.mvrService
-            .deleteMvrById(id)
+            .deleteMvrById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }

@@ -90,6 +90,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     public modalName: string;
 
+    private driverStatus: number;
+
     // dropdowns
     public stateDropdownList: StateResponse[] = [];
     public classDropdownList: EnumValue[] = [];
@@ -385,9 +387,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
 
+                this.driverStatus = status;
                 this.modalName = firstName.concat(
                     DriverCdlModalStringEnum.EMPTY_STRING,
                     lastName
@@ -504,6 +507,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             ...form,
 
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             stateId: this.selectedState.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
@@ -519,13 +523,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
         if (this.editData.type === DriverCdlModalStringEnum.RENEW_LICENCE) {
             // eslint-disable-next-line no-unused-vars
-            const { driverId, ...renewData } = newData;
+            const renewData = {
+                ...newData,
+                id: this.editData?.renewData?.id,
+            };
 
             this.cdlService
-                .renewCdlUpdate({
-                    ...renewData,
-                    id: this.editData.renewData.id,
-                })
+                .renewCdlUpdate(renewData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: () => {
@@ -589,6 +593,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             ...form,
 
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             stateId: this.selectedState.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),

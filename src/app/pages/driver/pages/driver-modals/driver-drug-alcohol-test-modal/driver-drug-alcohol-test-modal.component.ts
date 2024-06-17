@@ -76,6 +76,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
     public modalName: string;
 
+    private driverStatus: number;
+
     // dropdowns
     public testTypesDropdownList: EnumValue[] = [];
     public testReasonsDropdownList: EnumValue[] = [];
@@ -271,8 +273,10 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
+
+                this.driverStatus = status;
 
                 this.modalName = firstName.concat(
                     DriverDrugAlcoholTestModalStringEnum.EMPTY_STRING,
@@ -286,7 +290,6 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
             .getTestById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe((test) => {
-                console.log('TEST', test);
                 const {
                     testingDate,
                     testType,
@@ -337,6 +340,7 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             testingDate:
                 MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testType: this.selectedTestType.id,
@@ -379,6 +383,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             testingDate:
                 MethodsCalculationsHelper.convertDateToBackend(testingDate),
             testType: this.selectedTestType.id,
