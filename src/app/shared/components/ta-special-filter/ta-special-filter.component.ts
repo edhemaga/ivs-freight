@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -14,6 +15,9 @@ import { FilterClassPipe } from '@shared/components/ta-special-filter/pipes/filt
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 @Component({
     selector: 'app-ta-special-filter',
@@ -30,7 +34,9 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     ],
 })
 export class TaSpecialFilterComponent implements OnInit {
-    constructor() {}
+    constructor(private tableService: TruckassistTableService) {}
+
+    private destroy$ = new Subject<void>();
 
     public activeFilter: boolean = false;
     public hoverClose: boolean = false;
@@ -48,6 +54,8 @@ export class TaSpecialFilterComponent implements OnInit {
 
     ngOnInit(): void {
         this.activeFilter = this.selectedFilter;
+
+        this.resetFiltersSubscribe();
     }
 
     public toggleSpecialFilter(): void {
@@ -59,5 +67,16 @@ export class TaSpecialFilterComponent implements OnInit {
             this.hoverClose = false;
             this.setFilter.emit({ ...this.dataArray, selectedFilter: false });
         }
+    }
+
+    private resetFiltersSubscribe(): void {
+        this.tableService.isSpecialFiltersReset
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    this.activeFilter = false;
+                    this.setFilter.emit({ ...this.dataArray, selectedFilter: false });
+                }
+            });
     }
 }
