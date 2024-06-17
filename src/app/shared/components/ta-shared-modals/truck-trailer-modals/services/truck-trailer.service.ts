@@ -80,7 +80,6 @@ export class TruckTrailerService {
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
-                    console.log(data);
                     let trailerById = this.trailerService
                         .getTrailerById(data.trailerId)
                         .subscribe({
