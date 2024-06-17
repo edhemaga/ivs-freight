@@ -67,11 +67,6 @@ export class DropDownService {
         hasActiveCdl?: boolean,
         cdlsArray?: any
     ) {
-        console.log('dropActions dropDownData', dropDownData);
-        console.log('dropActions name', name);
-        console.log('dropActions dataCdl', dataCdl);
-        console.log('dropActions data', data);
-
         switch (name) {
             case DropActionsStringEnum.DELETE_CDL: {
                 const mappedEvent = {

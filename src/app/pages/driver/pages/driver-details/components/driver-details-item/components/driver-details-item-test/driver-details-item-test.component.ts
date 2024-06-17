@@ -84,9 +84,7 @@ export class DriverDetailsItemTestComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.cardsData?.currentValue) {
-            this.getDetailsOptions();
-        }
+        if (changes.cardsData?.currentValue) this.getDetailsOptions();
     }
 
     public trackByIdentity(index: number): number {
@@ -150,8 +148,14 @@ export class DriverDetailsItemTestComponent
     }
 
     private deleteTestById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.testService
-            .deleteTestById(id)
+            .deleteTestById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
