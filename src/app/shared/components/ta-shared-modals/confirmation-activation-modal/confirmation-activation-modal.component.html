@@ -41,6 +41,13 @@
             class="d-flex flex-column justify-content-center confirmation-activation-body"
         >
             <div class="d-flex flex-row">
+                <ng-container *ngIf="editData?.svg && editData?.data?.avatar">
+                    <svg-icon
+                        class="confirmation-svg"
+                        [src]="editData?.data?.avatar"
+                    ></svg-icon>
+                </ng-container>
+
                 <!-- Title -->
 
                 <div
