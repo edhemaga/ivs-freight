@@ -363,6 +363,39 @@ export class TrailerService implements OnDestroy {
         return this.TitleService.apiTitleIdGet(titleId);
     }
 
+    public voidRegistration(
+        voidedReg?: number,
+        unVoidedReg?: number
+    ): Observable<TrailerResponse> {
+        return this.RegistrationService.apiRegistrationVoidPost({
+            registrationIdToBeVoided: voidedReg,
+            registrationIdToBeUnVoided: unVoidedReg,
+        }).pipe(
+            tap(() => {
+                const trailerId = this.trailerItemStore.getValue().ids[0];
+                const trailerItem = this.trailerItemStore.getValue();
+                const trailerList = JSON.parse(
+                    JSON.stringify(trailerItem.entities)
+                );
+                let trailerData = trailerList[trailerId];
+                console.log(trailerData);
+                this.getTrailerRegistrationsById(trailerId).subscribe({
+                    next: (res: any) => {
+                        trailerData.registrations = res;
+                        this.tableService.sendActionAnimation({
+                            animation: 'update',
+                            data: trailerData,
+                            id: trailerData.id,
+                        });
+
+                        this.tadl.add(trailerData);
+                        this.trailerItemStore.set([trailerData]);
+                    },
+                });
+            })
+        );
+    }
+
     public changeTrailerStatus(
         trailerId: number,
         tabSelected?: string

@@ -150,13 +150,27 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                             break;
                         }
                         case TruckDetailsEnum.VOID_2:
+                            let voidedReg;
+                            let unVoidedReg;
+                            console.log(res);
+                            if (res.array.length) {
+                                voidedReg = res?.array[0]?.id;
+                                unVoidedReg = res.data.id;
+                            } else {
+                                voidedReg = res.data.id;
+                            }
                             this.truckService
-                                .voidRegistration(
-                                    res.data.id,
-                                    res?.array[0]?.id
-                                )
+                                .voidRegistration(voidedReg, unVoidedReg)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe();
+                            break;
+
+                        case TruckDetailsEnum.ACTIVATE:
+                            this.truckService
+                                .voidRegistration(null, res.data.id)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
+                            break;
 
                         default: {
                             break;
@@ -176,15 +190,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         objects: TruckDetailsConfigData[]
     ): boolean {
         const currentDate = moment().valueOf();
-
         return objects.some((object) => {
-            if (object.voidedOn) {
-                const voidedOnDate = moment(object.voidedOn).valueOf();
-                return voidedOnDate >= currentDate;
-            } else {
-                const expDate = moment(object.expDate).valueOf();
-                return expDate >= currentDate;
-            }
+            const expDate = moment(object.expDate).valueOf();
+            const isExpiredOrVoided = expDate < currentDate || object.voidedOn;
+            return isExpiredOrVoided;
         });
     }
     /**Function for dots in cards */
@@ -397,6 +406,36 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 break;
             }
         }
+    }
+    private chechVoidStatus(
+        id: number,
+        data: TruckDetailsConfigData[],
+        action: string
+    ) {
+        const isVoided = data.find((registration) => registration.voidedOn);
+        const cdlsArray = data
+            .map((registration) => {
+                const currentDate = moment().valueOf();
+
+                const expDate = moment(registration.expDate).valueOf();
+                if (isVoided) {
+                    if (expDate > currentDate && !registration.voidedOn) {
+                        return {
+                            id: registration.id,
+                            name: registration.licensePlate,
+                        };
+                    }
+                }
+            })
+            .filter((registration) => registration !== undefined);
+
+        cdlsArray.length
+            ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
+            : this.optionsEvent(
+                  { id: id, type: 'activate' },
+                  data,
+                  'registration'
+              );
     }
 
     public formatDate(mod) {

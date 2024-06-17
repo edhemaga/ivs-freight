@@ -734,9 +734,8 @@ export class DropDownService {
                 TrailerModalComponent,
                 { size: DropActionsStringEnum.SMALL },
                 {
-                    ...event,
+                    ...mappedEvent,
                     type: DropActionsStringEnum.EDIT,
-                    disableButton: true,
                     id: trailerId,
                 }
             );
@@ -745,17 +744,28 @@ export class DropDownService {
             event.type === DropActionsStringEnum.ACTIVATE
         ) {
             this.modalService.openModal(
-                ConfirmationModalComponent,
+                ConfirmationActivationModalComponent,
                 { size: DropActionsStringEnum.SMALL },
                 {
                     ...mappedEvent,
                     template: trailerId
-                        ? DropActionsStringEnum.TRAILER
+                        ? TableStringEnum.TRAILER_2
+                        : DropActionsStringEnum.TRUCK,
+                    subType: trailerId
+                        ? TableStringEnum.TRAILER_2
+                        : DropActionsStringEnum.TRUCK,
+                    tableType: trailerId
+                        ? TableStringEnum.TRAILER_2
                         : DropActionsStringEnum.TRUCK,
                     type:
                         truckObject.status === 1
                             ? DropActionsStringEnum.DEACTIVATE
                             : DropActionsStringEnum.ACTIVATE,
+                    modalTitle:
+                        ' Unit ' + trailerId
+                            ? truckObject?.trailerNumber
+                            : truckObject?.truckNumber,
+                    modalSecondTitle: mappedEvent?.data?.vin,
                     svg: true,
                 }
             );

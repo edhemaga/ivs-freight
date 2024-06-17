@@ -20,13 +20,15 @@
                     (resizePage)="toggleResizePage(i, 'registration')"
                     [cardNameCommon]="reg.licensePlate"
                     [hasCopyIcon]="true"
-                    [options]="dataTest"
+                    [options]="dataRegistration"
                     [expDateClose]="formatDate(reg.expDate)"
                     [isCardOpen]="
                         i == 0 && reg.expDate > currentDate ? true : false
                     "
                     [notExpired]="currentDate > reg.expDate ? false : true"
                     [openCloseStatus]="i == 0 ? false : true"
+                    [voidedDate]="reg.voidedOn | formatDateP"
+                    [isDeactivated]="reg.voidedOn ? true : false"
                     [optionsId]="reg.id"
                     [mainData]="reg"
                     [forcedOpen]="
@@ -42,21 +44,41 @@
                         optionsEvent($event, trailers.data, 'registration')
                     "
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-endor">
                                 <div class="card-item">
                                     <div class="card-item-name">State</div>
                                     <div class="card-item-value">
-                                        {{ reg.state.stateShortName }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                reg.state.stateShortName
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(reg.issueDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(reg.issueDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
+                                <ng-container *ngIf="reg.voidedOn">
+                                    <div class="card-item">
+                                        <div class="card-item-name">Voided</div>
+                                        <div class="card-item-value">
+                                            {{ reg.voidedOn | formatDateP }}
+                                        </div>
+                                    </div>
+                                </ng-container>
                             </div>
                             <div
                                 class="card-row-progress second-progress"
@@ -75,6 +97,20 @@
                                     </app-ta-progress-expiration>
                                 </div>
                             </div>
+                            <ng-container *ngIf="isVoidActive && reg.voidedOn">
+                                <div
+                                    class="void-button"
+                                    (click)="
+                                        chechVoidStatus(
+                                            reg.id,
+                                            trailers.data,
+                                            'registration'
+                                        )
+                                    "
+                                >
+                                    <p class="ta-font-bold">Activate</p>
+                                </div>
+                            </ng-container>
                         </div>
                         <div
                             [@showHideCardBody]="
@@ -156,7 +192,7 @@
                 </app-ta-common-card>
             </div>
             <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-            <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
+            <div class="card-width" *ngSwitchCase="'fhwa-inspection'">
                 <app-ta-common-card
                     *ngFor="
                         let fhwa of trailers?.data;
@@ -185,7 +221,7 @@
                         optionsEvent($event, trailers.data, 'inspection')
                     "
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-progress second-progress">
                                 <div class="card-details-progress-container">
@@ -302,19 +338,31 @@
                     "
                     (dropActions)="optionsEvent($event, trailers.data, 'title')"
                 >
-                    <div class="cards-container">
+                    <div class="card-container">
                         <div class="card-body-cdl">
                             <div class="card-row-endor">
                                 <div class="card-item">
                                     <div class="card-item-name">Purchased</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(title.purchaseDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(title.purchaseDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                                 <div class="card-item">
                                     <div class="card-item-name">Issued</div>
                                     <div class="card-item-value">
-                                        {{ formatDate(title.issueDate) }}
+                                        <app-ta-copy
+                                            [copyValue]="
+                                                formatDate(title.issueDate)
+                                            "
+                                            [textColor]="'#2f2f2f'"
+                                        >
+                                        </app-ta-copy>
                                     </div>
                                 </div>
                             </div>

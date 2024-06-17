@@ -972,13 +972,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: TrailerBodyResponse): void {
+    public onTableBodyActions(event: any): void {
         const mappedEvent = {
             ...event,
             data: {
                 ...event.data,
                 number: event.data?.trailerNumber,
-                avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
+                vin:
+                    event.data?.tableVin?.boldText +
+                    event?.data?.tableVin?.regularText,
+
+                avatar: `/assets/svg/common/trailers/${event.data?.tableTrailerTypeIcon}`,
             },
         };
 
