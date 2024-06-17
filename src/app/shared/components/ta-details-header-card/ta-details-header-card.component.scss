@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 $font-size12: 12px;
 $font-size14: 14px;
 $font-size18: 18px;
@@ -10,7 +12,6 @@ $font-extrabold: 800;
 
 $border-radius: 3px;
 
-@import 'src/theme/variables.scss';
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
     background-color: $white;
@@ -81,16 +82,18 @@ $border-radius: 3px;
         justify-content: flex-start;
         align-items: flex-start;
         padding: 0px 12px;
-        //margin-left: 16px;
-        // .date-terminated {
-        //     margin-left: 130px;
-        // }
+
         .details-header-wrapper-data-item {
             display: flex;
             justify-content: center;
             align-items: center;
             align-content: center;
             height: 18px;
+
+            svg {
+                position: relative;
+                bottom: 1px;
+            }
 
             .vin-text {
                 margin-left: 6px !important;
@@ -153,9 +156,8 @@ $border-radius: 3px;
 .date-add {
     svg {
         &:hover {
-            cursor: pointer;
             path {
-                fill: $muted;
+                fill: $bw6-2;
             }
         }
     }
@@ -163,9 +165,8 @@ $border-radius: 3px;
 .date-terminated {
     svg {
         &:hover {
-            cursor: pointer;
             path {
-                fill: $muted;
+                fill: $bw6-2;
             }
         }
     }
@@ -289,10 +290,7 @@ $border-radius: 3px;
     cursor: default;
     .current-active-name {
         color: $ta-black-2 !important;
-        &:hover {
-            color: $ta-red-17 !important;
-            cursor: default;
-        }
+        cursor: default;
     }
     &:hover {
         background-color: transparent !important;
@@ -349,7 +347,7 @@ $border-radius: 3px;
             .details-template-logo {
                 svg {
                     path {
-                        fill: $ta-light-blue;
+                        fill: $ta-blue-13;
                     }
                 }
             }

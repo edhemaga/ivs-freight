@@ -1,0 +1,112 @@
+<app-ta-details-header-card
+    [ngClass]="{
+        disabedPreviousArrow: [0, -1].includes(driverCurrentIndex),
+        disableNextArrow: driverCurrentIndex === driversDropdownList.length - 1
+    }"
+    [tooltipNext]="
+        driverCurrentIndex === driversDropdownList.length - 1 ? '' : 'Next'
+    "
+    [tooltipPrevious]="[0, -1].includes(driverCurrentIndex) ? '' : 'Previous'"
+    [cardDetailsDate]="cardData.hiredAt | formatDateP"
+    [cardDetailsDateTerminated]="cardData.terminatedAt | formatDateP"
+    [options]="driversDropdownList"
+    [sortOptions]="'active-drivers'"
+    [searchInputName]="'Search Driver'"
+    [currentName]="cardData.firstName + ' ' + cardData.lastName"
+    [deactivate]="!!cardData.terminatedAt"
+    [haveDropSVG]="!!cardData.owner"
+    (selectValue)="handleCardChanges($event, 'select-driver')"
+    (changeEvent)="handleCardChanges($event, 'change-driver')"
+>
+    <div class="driver-info-container">
+        <div class="driver-personal">
+            <!-- Avatar -->
+
+            <div class="d-flex justify-content-center driver-avatar">
+                <ng-container *ngIf="cardData?.avatar; else noAvatar">
+                    <img
+                        class="driver-avatar-svg"
+                        [src]="imageBase64Service.sanitizer(cardData?.avatar)"
+                        alt="driver-image"
+                    />
+                </ng-container>
+
+                <ng-template #noAvatar>
+                    <app-ta-profile-images
+                        [indx]="driverCurrentIndex"
+                        [size]="'large'"
+                        [type]="'driver'"
+                    ></app-ta-profile-images>
+                </ng-template>
+            </div>
+
+            <!-- Info -->
+
+            <div
+                class="d-flex flex-column justify-content-center driver-information"
+            >
+                <div class="d-flex align-items-center information-item">
+                    <div
+                        ngbTooltip
+                        position="bottom"
+                        [tooltipBackground]="'#424242'"
+                        [mainTooltip]="'SSN Number'"
+                    >
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_ssn.svg"
+                        ></svg-icon>
+                    </div>
+
+                    <app-ta-copy
+                        [textFontSize]="'18px'"
+                        [textFontWeight]="'600'"
+                        [copyValue]="cardData?.ssn"
+                        [textColor]="'#2f2f2f'"
+                    >
+                    </app-ta-copy>
+                </div>
+
+                <div class="d-flex align-items-center information-item">
+                    <div
+                        ngbTooltip
+                        position="bottom"
+                        [tooltipBackground]="'#424242'"
+                        [mainTooltip]="'Phone'"
+                    >
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_phone.svg"
+                        ></svg-icon>
+                    </div>
+
+                    <app-ta-copy
+                        [copyValue]="cardData?.phone"
+                        [textColor]="'#424242'"
+                    >
+                    </app-ta-copy>
+                </div>
+
+                <div class="d-flex align-items-center information-item">
+                    <div
+                        ngbTooltip
+                        position="bottom"
+                        [tooltipBackground]="'#424242'"
+                        [mainTooltip]="'Email'"
+                    >
+                        <svg-icon
+                            class="information-svg"
+                            src="assets/svg/common/ic_email.svg"
+                        ></svg-icon>
+                    </div>
+
+                    <app-ta-copy
+                        [copyValue]="cardData?.email"
+                        [textColor]="'#424242'"
+                    >
+                    </app-ta-copy>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-ta-details-header-card>

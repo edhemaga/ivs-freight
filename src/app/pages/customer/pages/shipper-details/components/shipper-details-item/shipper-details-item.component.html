@@ -31,122 +31,102 @@
                             trackBy: identity
                         "
                     >
-                        <ng-container
-                            *ngFor="
-                                let stop of loadStop.stops;
-                                trackBy: identity
-                            "
-                        >
-                            <div class="repair-items-wrapper">
-                                <div class="repair-items">
-                                    <div class="items-header">
-                                        <div class="icon-svg-repair">
-                                            <ng-container
-                                                *ngIf="
-                                                    stop?.stopType?.name ===
-                                                    'Pickup'
-                                                "
-                                            >
-                                                <svg-icon
-                                                    class="arrow-ri"
-                                                    src="{{
-                                                        shipperImageRoutes.arrowRight
-                                                    }}"
-                                                ></svg-icon
-                                            ></ng-container>
-                                            <ng-container
-                                                *ngIf="
-                                                    stop?.stopType?.name ===
-                                                    'Delivery'
-                                                "
-                                            >
-                                                <svg-icon
-                                                    class="arrow-le"
-                                                    src="{{
-                                                        shipperImageRoutes.arrowLeft
-                                                    }}"
-                                                ></svg-icon>
-                                            </ng-container>
-                                            <span class="unit">{{
-                                                stop?.load?.id
-                                            }}</span>
-                                        </div>
-                                        <span class="date">
-                                            {{
-                                                stop?.load?.dispatch.driver
-                                                    ?.firstName.length > 6
-                                                    ? stop?.load?.dispatch
-                                                          .driver
-                                                          ?.firstName[0] + '.'
-                                                    : stop?.load?.dispatch
-                                                          .driver?.firstName
-                                            }}
-                                            {{
-                                                stop?.load?.dispatch.driver
-                                                    ?.lastName
-                                            }}
-                                        </span>
-                                        <span class="date">{{
-                                            stop?.load?.dispatch.truck
-                                                ?.truckNumber
+                        <div class="repair-items-wrapper">
+                            <div class="repair-items">
+                                <div class="items-header">
+                                    <div class="icon-svg-repair">
+                                        <ng-container
+                                            *ngIf="
+                                                loadStop?.stopType?.name ===
+                                                'Pickup'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="arrow-ri"
+                                                src="{{
+                                                    shipperImageRoutes.arrowRight
+                                                }}"
+                                            ></svg-icon
+                                        ></ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                                loadStop?.stopType?.name ===
+                                                'Delivery'
+                                            "
+                                        >
+                                            <svg-icon
+                                                class="arrow-le"
+                                                src="{{
+                                                    shipperImageRoutes.arrowLeft
+                                                }}"
+                                            ></svg-icon>
+                                        </ng-container>
+                                        <span class="unit">{{
+                                            loadStop?.loadNumber
                                         }}</span>
-                                        <span class="date">{{
-                                            stop?.load?.dispatch.trailer
-                                                ?.trailerNumber
-                                        }}</span>
-                                        <div class="time-date">
-                                            <span class="date">{{
-                                                stop?.arrive | formatDateP
-                                            }}</span>
-                                            <span class="time">{{
-                                                stop?.arrive | formatTime
-                                            }}</span>
-                                        </div>
-                                        <div class="time-date">
-                                            <span class="date">{{
-                                                stop?.depart | formatDateP
-                                            }}</span>
-                                            <span class="time">{{
-                                                stop?.depart | formatTime
-                                            }}</span>
-                                        </div>
-                                        <span class="wait-time">
-                                            <ng-container
-                                                *ngIf="stop?.wait?.days > 0"
-                                            >
-                                                <span class="hours"
-                                                    >{{
-                                                        stop?.wait?.days
-                                                    }}
-                                                    d</span
-                                                >
-                                            </ng-container>
-                                            <ng-container
-                                                *ngIf="stop?.wait?.hours > 0"
-                                            >
-                                                <span class="hours"
-                                                    >{{
-                                                        stop?.wait?.hours
-                                                    }}
-                                                    h</span
-                                                >
-                                            </ng-container>
-                                            <ng-container
-                                                *ngIf="
-                                                    stop?.wait?.hours <= 0 &&
-                                                    stop?.wait?.days <= 0
-                                                "
-                                            >
-                                                <span class="hours">
-                                                    {{ stop?.wait?.minutes }}
-                                                    min
-                                                </span>
-                                            </ng-container>
-                                        </span>
                                     </div>
+                                    <span class="date">
+                                        {{
+                                            loadStop?.driver?.firstName.length >
+                                            6
+                                                ? loadStop?.driver
+                                                      ?.firstName[0] + '.'
+                                                : loadStop?.driver?.firstName
+                                        }}
+                                        {{ loadStop?.driver?.lastName }}
+                                    </span>
+                                    <span class="date">{{
+                                        loadStop?.driver?.truckNumber
+                                    }}</span>
+                                    <span class="date">{{
+                                        loadStop?.driver?.trailerNumber
+                                    }}</span>
+                                    <div class="time-date">
+                                        <span class="date">{{
+                                            loadStop?.arrive | formatDateP
+                                        }}</span>
+                                        <span class="time">{{
+                                            loadStop?.arrive | formatTime
+                                        }}</span>
+                                    </div>
+                                    <div class="time-date">
+                                        <span class="date">{{
+                                            loadStop?.depart | formatDateP
+                                        }}</span>
+                                        <span class="time">{{
+                                            loadStop?.depart | formatTime
+                                        }}</span>
+                                    </div>
+                                    <span class="wait-time">
+                                        <ng-container
+                                            *ngIf="loadStop?.wait?.days > 0"
+                                        >
+                                            <span class="hours"
+                                                >{{ loadStop?.wait?.days }} d</span
+                                            >
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="loadStop?.wait?.hours > 0"
+                                        >
+                                            <span class="hours"
+                                                >{{ loadStop?.wait?.hours }} h</span
+                                            >
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="
+                                            loadStop?.wait?.hours <= 0 &&
+                                            loadStop?.wait?.days <= 0
+                                            "
+                                        >
+                                            <span class="hours">
+                                                {{ loadStop?.wait?.minutes }}
+                                                min
+                                            </span>
+                                        </ng-container>
+                                    </span>
                                 </div>
                             </div>
-                        </ng-container>
+                        </div>
                     </ng-container>
                 </div>
             </div>

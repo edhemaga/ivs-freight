@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CommentResponse } from './commentResponse';
+import { LoadStatusResponse } from './loadStatusResponse';
 import { EnumValue } from './enumValue';
 import { LoadStopInfo } from './loadStopInfo';
 import { LoadBrokerInfo } from './loadBrokerInfo';
@@ -27,7 +28,7 @@ export interface LoadListDto {
     statusType?: EnumValue;
     loadType?: EnumValue;
     lastStatusPassed?: { [key: string]: number; } | null;
-    status?: EnumValue;
+    status?: LoadStatusResponse;
     dispatcher?: CompanyUserShortResponse;
     broker?: LoadBrokerInfo;
     loadDetails?: LoadDetails;

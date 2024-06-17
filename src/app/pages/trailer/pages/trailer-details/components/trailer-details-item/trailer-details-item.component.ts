@@ -22,15 +22,8 @@ import { TrailerService } from '@shared/services/trailer.service';
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // animations
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { cardAnimation } from '@shared/animations/card.animation';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -55,27 +48,7 @@ import { RegistrationResponse } from 'appcoretruckassist';
     encapsulation: ViewEncapsulation.None,
     animations: [
         cardComponentAnimation('showHideCardBody'),
-        trigger('cardAnimation', [
-            state('in', style({ opacity: 1, 'max-height': '0px' })),
-            transition(':enter', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 0, 'max-height': '0px' }),
-                        style({ opacity: 1, 'max-height': '600px' }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 1, 'max-height': '600px' }),
-                        style({ opacity: 0, 'max-height': '0px' }),
-                    ])
-                ),
-            ]),
-        ]),
+        cardAnimation('cardAnimation'),
     ],
 })
 export class TrailerDetailsItemComponent

@@ -97,7 +97,7 @@ export class TaDetailsHeaderComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public openModal(val: any) {
+    public openModal(val: string) {
         this.openModalAction.emit(val);
     }
     public makeRequestFun(req: any) {

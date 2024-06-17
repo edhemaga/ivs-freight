@@ -32,7 +32,6 @@ import {
     bankValidation,
     einNumberRegex,
     phoneFaxRegex,
-    routingBankValidation,
     truckTrailerModelValidation,
     vinNumberValidation,
     yearValidation,
@@ -71,7 +70,7 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 

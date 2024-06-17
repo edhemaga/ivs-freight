@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -26,6 +27,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -35,6 +37,7 @@ import { DriverMedicalModalStringEnum } from '@pages/driver/pages/driver-modals/
 
 // models
 import { EditData } from '@shared/models/edit-data.model';
+import { MedicalResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-driver-medical-modal',
@@ -64,11 +67,14 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public medicalForm: UntypedFormGroup;
+    public medical: MedicalResponse;
 
     public isFormDirty: boolean;
     public isCardAnimationDisabled: boolean = false;
 
     public modalName: string;
+
+    private driverStatus: number;
 
     // documents
     public documents: any[] = [];
@@ -83,7 +89,10 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private medicalService: DriverMedicalService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+
+        // bootstrap
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -160,6 +169,30 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
                 }
 
                 break;
+            case DriverMedicalModalStringEnum.DELETE:
+                this.ngbActiveModal.close();
+
+                const mappedEvent = {
+                    data: {
+                        ...this.medical,
+                        driverName: this.modalName,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverMedicalModalStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: DriverMedicalModalStringEnum.MEDICAL,
+                        type: DriverMedicalModalStringEnum.DELETE,
+                        image: false,
+                        modalHeaderTitle:
+                            DriverMedicalModalStringEnum.DELETE_MEDICAL_TITLE,
+                    }
+                );
+
+                break;
             default:
                 break;
         }
@@ -167,6 +200,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any): void {
         this.documents = event.files;
+
         switch (event.action) {
             case DriverMedicalModalStringEnum.ADD:
                 this.medicalForm
@@ -195,8 +229,10 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
+
+                this.driverStatus = status;
 
                 this.modalName = firstName.concat(
                     DriverMedicalModalStringEnum.EMPTY_STRING,
@@ -209,8 +245,10 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.medicalService
             .getMedicalById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { issueDate, expDate, note, files } = res;
+            .subscribe((medical) => {
+                const { issueDate, expDate, note, files } = medical;
+
+                this.medical = medical;
 
                 this.medicalForm.patchValue({
                     issueDate:
@@ -247,6 +285,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
@@ -287,6 +326,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
