@@ -111,6 +111,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 hide: true,
                 hasArrow: false,
                 hasSearch: true,
+                timeFilter: true,
                 searchPlaceholder: ShipperDetailsStringEnum.LOAD,
                 data: data,
             },

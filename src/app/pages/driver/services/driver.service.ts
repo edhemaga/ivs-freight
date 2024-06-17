@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // models
 import {
@@ -22,13 +22,13 @@ import {
 } from 'appcoretruckassist';
 
 // store
-import { DriversActiveStore } from '@pages/driver/state/driver-active-state/driver-active.store';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.store';
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details.store';
+import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 
 // services
@@ -61,17 +61,16 @@ export class DriverService {
         private tableService: TruckassistTableService,
 
         // store
-        private driversActiveQuery: DriversActiveQuery,
+        private driversActiveQuery: DriverQuery,
         private driverMinimalQuery: DriversMinimalListQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private driverInactiveStore: DriversInactiveStore,
         private driverMinimimalListStore: DriversMinimalListStore,
-        private driverActiveStore: DriversActiveStore,
+        private driverStore: DriverStore,
         private driverItemStore: DriversItemStore,
         private dlStore: DriversDetailsListStore
     ) {}
 
-    // Get Driver Minimal List
     public getDriversMinimalList(
         pageIndex?: number,
         pageSize?: number,
@@ -84,7 +83,6 @@ export class DriverService {
         );
     }
 
-    // Get Driver List
     public getDrivers(
         active?: number,
         _long?: number,
@@ -113,7 +111,6 @@ export class DriverService {
         );
     }
 
-    // Create Driver
     public addDriver(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -126,7 +123,7 @@ export class DriverService {
                             name: driver.firstName + ' ' + driver.lastName,
                         };
 
-                        this.driverActiveStore.add(driver);
+                        this.driverStore.add(driver);
                         this.driverMinimimalListStore.add(driver);
 
                         const driverCount = JSON.parse(
@@ -157,7 +154,6 @@ export class DriverService {
         );
     }
 
-    //Delete Driver By Id Details page, treba ovo zbog tableAnimationService
     public deleteDriverByIdDetails(
         driverId: number,
         tableSelectedTab?: string
@@ -174,7 +170,7 @@ export class DriverService {
                 );
 
                 if (tableSelectedTab === TableStringEnum.ACTIVE) {
-                    this.driverActiveStore.remove(({ id }) => id === driverId);
+                    this.driverStore.remove(({ id }) => id === driverId);
 
                     driverCount.active--;
                 } else if (tableSelectedTab === TableStringEnum.INACTIVE) {
@@ -223,7 +219,7 @@ export class DriverService {
                 );
                 this.dlStore.remove(({ id }) => id === driverId);
                 if (tableSelectedTab === TableStringEnum.ACTIVE) {
-                    this.driverActiveStore.remove(({ id }) => id === driverId);
+                    this.driverStore.remove(({ id }) => id === driverId);
 
                     driverCount.active--;
                 } else if (tableSelectedTab === TableStringEnum.INACTIVE) {
@@ -252,8 +248,6 @@ export class DriverService {
     }
 
     public deleteDriverList(ids: number[]): Observable<DriverResponse> {
-        console.log('ids', ids);
-
         return this.driverService.apiDriverListDelete(ids).pipe(
             tap(() => {
                 let storeDrivers = this.driversActiveQuery.getAll();
@@ -261,7 +255,7 @@ export class DriverService {
                 storeDrivers.map((driver) => {
                     ids.map((driverId) => {
                         if (driverId === driver.id) {
-                            this.driverActiveStore.remove(
+                            this.driverStore.remove(
                                 ({ id }) => id === driver.id
                             );
                         }
@@ -294,9 +288,7 @@ export class DriverService {
 
                 this.getDriverById(data.id).subscribe({
                     next: (driver: any) => {
-                        this.driverActiveStore.remove(
-                            ({ id }) => id === data.id
-                        );
+                        this.driverStore.remove(({ id }) => id === data.id);
                         this.driverMinimimalListStore.remove(
                             ({ id }) => id === data.id
                         );
@@ -316,7 +308,7 @@ export class DriverService {
                                 : 0,
                         };
 
-                        this.driverActiveStore.add(driver);
+                        this.driverStore.add(driver);
                         this.driverItemStore.add(driver);
                         this.driverMinimimalListStore.add(driver);
                         this.dlStore.update(driver.id, driver);
@@ -398,9 +390,7 @@ export class DriverService {
 
                     /* Remove Data From Store */
                     tabSelected === TableStringEnum.ACTIVE
-                        ? this.driverActiveStore.remove(
-                              ({ id }) => id === driverId
-                          )
+                        ? this.driverStore.remove(({ id }) => id === driverId)
                         : this.driverInactiveStore.remove(
                               ({ id }) => id === driverId
                           );
@@ -411,7 +401,7 @@ export class DriverService {
                               ...driverToUpdate[0],
                               status: 0,
                           })
-                        : this.driverActiveStore.add({
+                        : this.driverStore.add({
                               ...driverToUpdate[0],
                               status: 1,
                           });

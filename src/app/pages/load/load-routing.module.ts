@@ -17,20 +17,20 @@ const routes: Routes = [
     },
     {
         path: ':id/details',
-        loadChildren: () =>
-            import('@pages/load/pages/load-details/load-details.module').then(
-                (m) => m.LoadDetailsModule
-            ),
+        loadComponent: () =>
+            import(
+                '@pages/load/pages/load-details/load-details.component'
+            ).then((m) => m.LoadDetailsComponent),
         resolve: {
             loadItem: LoadDetailsResolver,
             loadMinimalList: LoadDetailsMinimalResolver,
         },
-        data: { title: 'Load Detail' },
+        data: { title: 'Load Details' },
     },
     {
         path: 'card',
         component: LoadCardsContainerComponent,
-        data: { title: 'Load detail' },
+        data: { title: 'Load Cards' },
     },
 ];
 

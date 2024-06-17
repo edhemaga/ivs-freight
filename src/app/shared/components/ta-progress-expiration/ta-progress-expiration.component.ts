@@ -157,7 +157,7 @@ export class TaProgressExpirationComponent implements OnInit {
                     : (this.expire / 365) * 100;
             } else {
                 if (this.timeDifference > 0) {
-                    var daysProgress =
+                    const daysProgress =
                         this.totalDays !== undefined
                             ? (1 / this.totalDays) * 100
                             : (1 / 365) * 100;
@@ -179,16 +179,12 @@ export class TaProgressExpirationComponent implements OnInit {
             if (progress > 50 && progress <= 100) {
                 return 'progress-muted';
             }
-            /* 25% - 50% */
-            if (progress > 25 && progress <= 50) {
-                return 'progress-sliver';
-            }
-            /* 5% - 25% */
-            if (progress > 5 && progress <= 25) {
+            /* 20% - 50% */
+            if (progress > 20 && progress <= 50) {
                 return 'progress-orange';
             }
-            /* 0% - 5% */
-            if (progress > 0 && progress <= 5) {
+            /* 0% - 20% */
+            if (progress >= 0 && progress <= 20) {
                 return 'progress-danger';
             }
         }

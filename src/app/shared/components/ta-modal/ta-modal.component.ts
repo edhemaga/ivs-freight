@@ -127,6 +127,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isConvertedToTemplate?: boolean = false;
     @Input() isStepper: boolean = false;
     @Input() isCloseIconRemoved: boolean = false;
+    @Input() isVoidBtn: boolean = false;
+
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
@@ -426,6 +428,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
             }
             case 'void-cdl': {
                 this.confirmationAction.emit(this.confirmationData);
+
+                break;
+            }
+            case 'void': {
+                this.action.emit({ action: action, bool: false });
 
                 break;
             }

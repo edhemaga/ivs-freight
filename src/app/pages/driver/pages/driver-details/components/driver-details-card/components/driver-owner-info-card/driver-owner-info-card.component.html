@@ -1,0 +1,79 @@
+<app-ta-custom-card
+    [cardName]="
+        cardData.driverType?.name === '3rd Party Driver'
+            ? cardData.driverType?.name
+            : 'Owner Info'
+    "
+    [subText]="
+        cardData.owner?.type === 'Proprietor'
+            ? 'Sole Proprietor'
+            : cardData.owner?.type === 'Company' && !isOwnerInfoCardOpen
+            ? cardData.owner?.name
+            : ''
+    "
+    [isCardOpen]="!!cardData?.owner && cardData.owner?.type !== 'Proprietor'"
+    [bodyTemplate]="'card'"
+    [hasArrow]="!!cardData?.owner && cardData.owner?.type !== 'Proprietor'"
+    [disabledCard]="
+        !cardData?.owner ||
+        (cardData?.owner && cardData.owner?.type === 'Proprietor')
+    "
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4px'
+    }"
+    (onOpenCard)="handleOwnerInfoCardOpen($event)"
+>
+    <div class="owner-info-container">
+        <div class="align-items-center owner-info-top">
+            <div
+                class="d-flex flex-column justify-content-center owner-info-top-item"
+            >
+                <p class="m-0 ta-font-bold">Company</p>
+
+                <p class="m-0 ta-font-medium">{{ cardData.owner?.name }}</p>
+            </div>
+
+            <div
+                class="d-flex flex-column justify-content-center owner-info-top-item"
+            >
+                <p class="m-0 ta-font-bold">EIN</p>
+
+                <p class="m-0 ta-font-medium">{{ cardData.owner?.ssnEin }}</p>
+            </div>
+        </div>
+
+        <div
+            class="d-flex flex-column justify-content-center owner-info-bottom"
+        >
+            <div class="d-flex align-items-center owner-info-bottom-item">
+                <svg-icon
+                    class="icon"
+                    src="assets/svg/common/ic_phone.svg"
+                ></svg-icon>
+
+                <p class="m-0">{{ cardData.owner?.phone }}</p>
+            </div>
+
+            <div class="d-flex align-items-center owner-info-bottom-item">
+                <svg-icon
+                    class="icon"
+                    src="assets/svg/common/ic_email.svg"
+                ></svg-icon>
+
+                <p class="m-0">{{ cardData.owner?.email }}</p>
+            </div>
+
+            <div class="d-flex align-items-center owner-info-bottom-item">
+                <svg-icon
+                    class="icon"
+                    src="assets/svg/common/ic_location.svg"
+                ></svg-icon>
+
+                <p class="m-0">
+                    {{ cardData.owner?.address?.address }}
+                </p>
+            </div>
+        </div>
+    </div>
+</app-ta-custom-card>

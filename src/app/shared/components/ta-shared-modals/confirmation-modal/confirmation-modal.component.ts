@@ -31,9 +31,11 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { ConfirmationModalTextPipe } from '@shared/components/ta-shared-modals/confirmation-modal/pipes/confirmation-modal-text.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
+// routes
+import { ConfirmationModalSvgRoutes } from '@shared/components/ta-shared-modals/confirmation-modal/utils/confirmation-modal-svg-routes';
+
 // models
 import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
-import { ConfirmationModalSvgRoutes } from './utils/confirmation-modal-svg-routes';
 
 // pdf-viewer
 import { PdfViewerModule } from 'ng2-pdf-viewer';

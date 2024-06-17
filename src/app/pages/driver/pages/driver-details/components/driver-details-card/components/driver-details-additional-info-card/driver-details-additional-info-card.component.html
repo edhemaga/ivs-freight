@@ -1,0 +1,33 @@
+<app-ta-custom-card
+    [cardName]="'Additional info'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4x'
+    }"
+>
+    <div
+        class="d-flex flex-column justify-content-center additional-info-container"
+    >
+        <div
+            class="d-flex flex-column justify-content-center additional-info-box"
+        >
+            <p class="m-0 ta-font-bold">Address</p>
+
+            <p class="m-0">{{ cardData.address.address }}</p>
+        </div>
+
+        <div class="align-items-center additional-info-grid-container">
+            <ng-container *ngFor="let info of additionalInfo">
+                <div
+                    class="d-flex flex-column justify-content-center additional-info-box"
+                >
+                    <p class="m-0 ta-font-bold">{{ info.title }}</p>
+
+                    <p class="m-0">{{ info.content }}</p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</app-ta-custom-card>

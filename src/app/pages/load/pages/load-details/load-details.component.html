@@ -2,19 +2,24 @@
     class="details-container-items"
     [ngClass]="{ 'details-closed-items': statusIsClosed }"
 >
-    <div *ngFor="let item of loadConfig; let i = index; trackBy: identity">
-        <app-ta-details-header
-            [options]="dataTest"
-            [route]="'/list/load'"
-            [tooltipHeaderName]="'Back to Load List'"
-            [headerText]="item.name"
-            [hasDateArrow]="item.hasArrow"
-            [counterData]="item.length"
-            [statusInactive]="item.hide"
-            [loadNames]="item.pl"
-        >
-        </app-ta-details-header>
-    </div>
+    <ng-container
+        *ngFor="let item of loadConfig; let i = index; trackBy: identity"
+    >
+        <div>
+            <app-ta-details-header
+                [options]="dataTest"
+                [route]="'/list/load'"
+                [tooltipHeaderName]="'Back to Load List'"
+                [headerText]="item.name"
+                [hasDateArrow]="item.hasArrow"
+                [counterData]="item.length"
+                [statusInactive]="item.hide"
+                [loadNames]="item.pl"
+            >
+            </app-ta-details-header>
+        </div>
+    </ng-container>
+
     <div class="driver-details-container">
         <app-load-details-item
             [loadData]="loadConfig"
