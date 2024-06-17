@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, map, Subject, takeUntil, tap } from 'rxjs';
+import { forkJoin, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -21,17 +21,20 @@ import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
 
 // store
-import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
 } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applicant-table.store';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
+import { Store, select } from '@ngrx/store';
+import { selectActiveTabCards, selectDriverApplicantTabCards, selectInactiveTabCards } from '@pages/driver/pages/driver-card-modal/state/driver-card-modal.selectors';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -45,6 +48,9 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -87,14 +93,16 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public columns: GridColumn[] = [];
     public selectedTab: string = TableStringEnum.ACTIVE;
     public activeViewMode: string = TableStringEnum.LIST;
-    public driversActive: DriversActiveState[] = [];
+    public driversActive: DriverState[] = [];
     public driversInactive: DriversInactiveState[] = [];
     public applicantData: ApplicantShortResponse[] = [];
     public inactiveTabClicked: boolean = false;
     public applicantTabActive: boolean = false;
     public activeTableData: CardTableData;
-    public driverBackFilterQuery: FilterOptionDriver =
-        TableDropdownComponentConstants.DRIVER_BACK_FILTER;
+    public driverBackFilterQuery: FilterOptionDriver = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.DRIVER_BACK_FILTER)
+    );
+
     public applicantBackFilterQuery: FilterOptionApplicant =
         TableDropdownComponentConstants.APPLICANT_BACK_FILTER;
     public resizeObserver: ResizeObserver;
@@ -124,6 +132,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         private router: Router,
@@ -137,13 +146,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private imageBase64Service: ImageBase64Service,
+        private driverCardsModalService: DriverCardsModalService,
 
         // store
-        private driversActiveQuery: DriversActiveQuery,
+        private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore,
+        private store: Store,
 
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
@@ -246,9 +257,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             forkJoin(
                                 this.driverTableData.map((repairData) =>
                                     this.addressService
-                                        .getAddressInfo(
-                                            repairData.address.address
-                                        )
+                                        .getAddressInfo(repairData.tableAddress)
                                         .pipe(
                                             map((address) => {
                                                 const distance =
@@ -649,6 +658,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.setDriverData(td);
+        this.updateCardView();
     }
 
     private getTabData(dataType: string): DriversInactiveState[] {
@@ -692,7 +702,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.columns = tableData.gridColumns;
 
         if (tableData.data.length) {
-            console.log('tableData.data', tableData.data);
             this.viewData = tableData.data.map((data: any) => {
                 return this.selectedTab === TableStringEnum.APPLICANTS
                     ? this.mapApplicantsData(data)
@@ -731,6 +740,56 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
+    private setTruckTooltipColor(truckName: string): string {
+        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
+            return TooltipColorsStringEnum.YELLOW;
+        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (truckName === TruckNameStringEnum.SPOTTER) {
+            return TooltipColorsStringEnum.BROWN;
+        }
+    }
+
+    private setTrailerTooltipColor(trailerName: string): string {
+        if (trailerName === TrailerNameStringEnum.REEFER) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
+            return TooltipColorsStringEnum.DARK_BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (trailerName === TrailerNameStringEnum.TANKER) {
+            return TooltipColorsStringEnum.GREEN;
+        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
+            return TooltipColorsStringEnum.BROWN;
+        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
+            return TooltipColorsStringEnum.ORANGE;
+        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
+            return TooltipColorsStringEnum.GOLD;
+        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
+            return TooltipColorsStringEnum.YELLOW;
+        }
+    }
+
     private mapDriverData(data: any): any {
         const {
             id,
@@ -763,8 +822,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             createdAt,
             updatedAt,
             fileCount,
+            trailer,
+            truck,
+            trailerType,
+            truckType,
         } = data;
-
         if (!avatar) this.mapingIndex++;
 
         return {
@@ -798,6 +860,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DOLLAR_SIGN + solo?.loadedMile,
             perStopSolo:
                 solo?.perStop && TableStringEnum.DOLLAR_SIGN + solo?.perStop,
+            perMileSolo:
+                solo?.perMile && TableStringEnum.DOLLAR_SIGN + solo?.perMile,
             flatRateSolo:
                 solo?.flatRate && TableStringEnum.DOLLAR_SIGN + solo?.flatRate,
             commissionSolo:
@@ -811,6 +875,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DOLLAR_SIGN + team?.loadedMile,
             perStopTeam:
                 team?.perStop && TableStringEnum.DOLLAR_SIGN + team?.perStop,
+            perMileTeam:
+                team?.perMile && TableStringEnum.DOLLAR_SIGN + team?.perMile,
             flatRateTeam:
                 team?.flatRate && TableStringEnum.DOLLAR_SIGN + team?.flatRate,
             commissionTeam:
@@ -819,9 +885,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableBankDetailBankName: bank?.name,
             tableBankDetailRouting: bank?.routing,
             tableBankDetailAccount: bank?.account,
-            tableOffDutyLocation: offDutyLocations?.map(
-                (offDutyLocation) => offDutyLocation.nickname
-            ),
+            tableOffDutyLocation: offDutyLocations,
             tableEmergContactName: emergencyContact?.name,
             tableEmergContactRelation: emergencyContact?.relationship,
             tableEmergContactPhone: emergencyContact?.phone,
@@ -833,12 +897,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
             tableCdlDetailState: cdl?.state,
-            tableCdlDetailRestriction: cdl?.restrictions?.map(
-                (restriction) => restriction.code
-            ),
-            tableCdlDetailEndorsment: cdl?.endorsements?.map(
-                (endorsement) => endorsement.code
-            ),
+            tableCdlDetailRestriction: cdl?.restrictions,
+            tableCdlDetailEndorsment: cdl?.endorsements,
             tableCdlDetailExpiration: {
                 expirationDays: cdl?.expirationDays ?? null,
                 expirationDaysText: cdl?.expirationDays
@@ -861,6 +921,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
             },
             tableMvrDetailsRenewalTerm: mvr?.expiration,
+            tableAssignedUnitTrailer: {
+                text: trailer,
+                type: trailerType,
+                color: this.setTrailerTooltipColor(trailerType),
+                hover: false,
+            },
+            tableAssignedUnitTruck: {
+                text: truck,
+                type: truckType,
+                color: this.setTruckTooltipColor(truckType),
+                hover: false,
+            },
+
             tableMvrDetailsExpiration: {
                 expirationDays: mvr?.expirationDays ?? null,
                 expirationDaysText: mvr?.expirationDays
@@ -1639,6 +1712,30 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
             });
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            case TableStringEnum.APPLICANTS:
+                this.displayRows$ = this.store.pipe(
+                    select(selectDriverApplicantTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.driverCardsModalService.updateTab(this.selectedTab);
     }
 
     ngOnDestroy(): void {

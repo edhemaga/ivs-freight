@@ -245,48 +245,48 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             );
         }
 
-        if (this.selectedMode === SelectedMode.REVIEW) {
-            if (stepValues.files[0].review) {
-                this.stepHasReviewValues = true;
+        // if (this.selectedMode === SelectedMode.REVIEW) {
+        //     if (stepValues.files[0].review) {
+        //         this.stepHasReviewValues = true;
 
-                for (let i = 0; i < stepValues.files.length; i++) {
-                    const isFileValid = stepValues.files[i].review.isValid;
+        //         for (let i = 0; i < stepValues.files.length; i++) {
+        //             const isFileValid = stepValues.files[i].review.isValid;
 
-                    this.openAnnotationArray[0].lineInputs = [
-                        ...this.openAnnotationArray[0].lineInputs,
-                        !isFileValid,
-                    ];
-                }
+        //             this.openAnnotationArray[0].lineInputs = [
+        //                 ...this.openAnnotationArray[0].lineInputs,
+        //                 !isFileValid,
+        //             ];
+        //         }
 
-                const filesLineInputItems =
-                    this.openAnnotationArray[0].lineInputs;
-                const isAnyInputInLineIncorrect =
-                    anyInputInLineIncorrect(filesLineInputItems);
+        //         const filesLineInputItems =
+        //             this.openAnnotationArray[0].lineInputs;
+        //         const isAnyInputInLineIncorrect =
+        //             anyInputInLineIncorrect(filesLineInputItems);
 
-                /*     if (isAnyInputInLineIncorrect && !filesReviewMessage) {
-                    this.openAnnotationArray[0].displayAnnotationButton = true;
-                }
+        //         /*     if (isAnyInputInLineIncorrect && !filesReviewMessage) {
+        //             this.openAnnotationArray[0].displayAnnotationButton = true;
+        //         }
 
-                if (isAnyInputInLineIncorrect && filesReviewMessage) {
-                    this.openAnnotationArray[0].displayAnnotationTextArea =
-                        true;
-                } */
+        //         if (isAnyInputInLineIncorrect && filesReviewMessage) {
+        //             this.openAnnotationArray[0].displayAnnotationTextArea =
+        //                 true;
+        //         } */
 
-                const inputFieldsArray = JSON.stringify(
-                    this.openAnnotationArray[0].lineInputs
-                );
+        //         const inputFieldsArray = JSON.stringify(
+        //             this.openAnnotationArray[0].lineInputs
+        //         );
 
-                if (inputFieldsArray.includes('true')) {
-                    this.hasIncorrectFields = true;
-                } else {
-                    this.hasIncorrectFields = false;
-                }
+        //         if (inputFieldsArray.includes('true')) {
+        //             this.hasIncorrectFields = true;
+        //         } else {
+        //             this.hasIncorrectFields = false;
+        //         }
 
-                /*   this.mvrAuthorizationForm.patchValue({
-                    firstRowReview: filesReviewMessage,
-                }); */
-            }
-        }
+        //         /*   this.mvrAuthorizationForm.patchValue({
+        //             firstRowReview: filesReviewMessage,
+        //         }); */
+        //     }
+        // }
     }
 
     public requestDrivingRecordFromEmployer(): void {

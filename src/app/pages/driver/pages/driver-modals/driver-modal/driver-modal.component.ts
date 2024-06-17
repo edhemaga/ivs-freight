@@ -40,6 +40,7 @@ import { FormService } from '@shared/services/form.service';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 
 // validators
 import {
@@ -97,21 +98,32 @@ import {
     DriverDetailsOffDutyLocationResponse,
     PerMileEntity,
 } from 'appcoretruckassist';
-import { DropZoneConfig } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { AnimationObject } from '@pages/driver/pages/driver-modals/driver-modal/models/animation-object.model';
 import { AddUpdateDriverProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-properties.model';
 import { SoloTeamSelectedOptions } from '@pages/driver/pages/driver-modals/driver-modal/models/solo-team-selected-options.model';
 import { AddUpdateDriverPayrollProperties } from '@pages/driver/pages/driver-modals/driver-modal/models/add-update-driver-payroll-properties.model';
 import { PayrollDefaultValues } from '@pages/driver/pages/driver-modals/driver-modal/models/payroll-default-values.model';
-import { EditData } from '@shared/models/edit-data.model';
+import { DriverModalEditData } from '@pages/driver/pages/driver-modals/driver-modal/models/driver-modal-edit-data.model';
+
+// pipes
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 @Component({
     selector: 'app-driver-modal',
     templateUrl: './driver-modal.component.html',
     styleUrls: ['./driver-modal.component.scss'],
     animations: [tabsModalAnimation('animationTabsModal')],
-    providers: [ModalService, FormService, BankVerificationService],
+    providers: [
+        // Services
+        ModalService,
+        FormService,
+        BankVerificationService,
+
+        // Pipes
+        NameInitialsPipe,
+    ],
     standalone: true,
     imports: [
         // modules
@@ -141,7 +153,7 @@ import { EditData } from '@shared/models/edit-data.model';
 export class DriverModalComponent implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
-    @Input() editData: EditData;
+    @Input() editData: DriverModalEditData;
 
     private destroy$ = new Subject<void>();
 
@@ -234,7 +246,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         private ngbActiveModal: NgbActiveModal,
 
         // change detector
-        private changeDetector: ChangeDetectorRef
+        private changeDetector: ChangeDetectorRef,
+
+        // pipes
+        private nameInitialsPipe: NameInitialsPipe
     ) {}
 
     ngOnInit(): void {
@@ -463,6 +478,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ...this.editData,
                 data: {
                     ...this.editData.data,
+                    name: this.driverFullName,
+                    textShortName: this.nameInitialsPipe.transform(
+                        this.driverFullName
+                    ),
+                    avatarImg: this.editData.data.avatar,
+                    avatarColor: AvatarColorsHelper.getAvatarColors(
+                        this.editData.avatarIndex ?? 0
+                    ),
                 },
             };
 
@@ -534,11 +557,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         else if (data.action === TableStringEnum.DELETE && this.editData?.id) {
             this.ngbActiveModal.close();
 
+            const mappedEvent = {
+                ...this.editData,
+                data: {
+                    ...this.editData.data,
+                    name: this.driverFullName,
+                    textShortName: this.nameInitialsPipe.transform(
+                        this.driverFullName
+                    ),
+                    avatarImg: this.editData.data.avatar,
+                    avatarColor: AvatarColorsHelper.getAvatarColors(
+                        this.editData.avatarIndex ?? 0
+                    ),
+                },
+            };
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
-                    ...this.editData,
+                    ...mappedEvent,
                     template: TableStringEnum.DRIVER,
                     type: TableStringEnum.DELETE,
                     image: true,
@@ -620,6 +658,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     checked: payrollTab.id === event?.id,
                 };
             });
+
+            const payrollType = this.driverForm.get(
+                DriverModalStringEnum.PAYROLL_TYPE
+            ).value;
+
+            const fieldToUpdate =
+                payrollType === DriverModalStringEnum.COMPANY_DRIVER
+                    ? DriverModalStringEnum.IS_PAYROLL_SHARED
+                    : DriverModalStringEnum.IS_PAYROLL_CALCULATED;
+
+            this.driverForm.get(fieldToUpdate).patchValue(false);
         }
     }
 
@@ -711,7 +760,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : soloFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -727,7 +776,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 : teamFields.slice(1);
 
             fields.forEach((field, index) => {
-                if (index < 3) {
+                if (index <= (this.hasMilesSameRate ? 0 : 1)) {
                     this.inputService.changeValidators(
                         this.driverForm.get(field)
                     );
@@ -742,7 +791,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 ? [soloFields[0], teamFields[0]]
                 : [...soloFields.slice(1), ...teamFields.slice(1)];
 
-            fields.forEach((field, index) => {
+            fields.forEach((field) => {
                 if (
                     (field
                         .toLowerCase()
@@ -753,7 +802,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                         this.driverForm.get(DriverModalStringEnum.SOLO_DRIVER)
                             .value)
                 ) {
-                    if (index < 6)
+                    if (!field.includes(DriverModalStringEnum.PER_STOP))
                         this.inputService.changeValidators(
                             this.driverForm.get(field)
                         );
@@ -1930,7 +1979,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             owner,
 
             driverType,
-            /*    useCarrieraAch, */
+            useCarrieraAch,
             fleetType,
             payType,
             soloDriver,
@@ -2013,7 +2062,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     : null
                 : null,
 
-            /* useCarrieraAch, */
+            useCarrieraAch,
             payType: payType?.name,
             soloDriver,
             teamDriver,
@@ -2028,7 +2077,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       solo?.perStop
                   )
                 : null,
-            /*  perMileSolo: perMileSolo ? String(perMileSolo) : perMileSolo, */
+            perMileSolo: solo?.perMile ? String(solo?.perMile) : solo?.perMile,
             teamEmptyMile: team?.emptyMile
                 ? String(team?.emptyMile)
                 : team?.emptyMile,
@@ -2040,7 +2089,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                       team?.perStop
                   )
                 : null,
-            /*  perMileTeam: perMileTeam ? String(perMileTeam) : perMileTeam, */
+            perMileTeam: team?.perMile ? String(team?.perMile) : team?.perMile,
             commissionSolo: solo?.commission,
             commissionTeam: team?.commission,
             driverCommission:

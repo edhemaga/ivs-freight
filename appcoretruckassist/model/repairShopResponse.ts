@@ -63,5 +63,6 @@ export interface RepairShopResponse {
     files?: Array<FileResponse> | null;
     fileCount?: number | null;
     shopServiceType?: EnumValue;
+    cover?: FileResponse;
 }
 

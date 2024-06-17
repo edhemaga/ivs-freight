@@ -1,14 +1,12 @@
 <form [formGroup]="modalTableForm" class="table-body">
-    <div
-        class="d-flex flex-column contact-table-container scrollable"
-    >
+    <div class="d-flex flex-column contact-table-container">
         <ng-container
-          formArrayName="contactTableItems"
-          *ngFor="
-              let contactItemRow of formArray.controls;
-              let i = index;
-              trackBy: '' | trackByProperty
-          "
+            formArrayName="contactTableItems"
+            *ngFor="
+                let contactItemRow of formArray.controls;
+                let i = index;
+                trackBy: '' | trackByProperty
+            "
         >
             <div
                 class="align-items-center table-item contact-item"
@@ -16,7 +14,7 @@
                 [formGroupName]="i"
             >
                 <div
-                    class="d-flex justify-content-center align-items-center table-item-number"
+                    class="d-flex justify-content-center align-items-center table-item-number contact-pinned contact-number"
                 >
                     <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
@@ -31,7 +29,7 @@
                     ></svg-icon>
                 </div>
 
-                <div class="gradient-border-container">
+                <div class="gradient-border-container contact-pinned contact-name">
                     <app-ta-input
                         formControlName="fullName"
                         [inputConfig]="{
@@ -45,11 +43,9 @@
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             isInputBackgroundRemoved:
-                                contactItemRow.valid &&
-                                !isInputHoverRows[i][0],
+                                contactItemRow.valid && !isInputHoverRows[i][0],
                             blackInput:
-                                formArray.at(i).get('fullName')
-                                    .value &&
+                                formArray.at(i).get('fullName').value &&
                                 !isInputHoverRows[i][0]
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 0)"
@@ -58,7 +54,7 @@
                 </div>
 
                 <app-ta-input-dropdown
-                    formControlName="departmant"
+                    formControlName="department"
                     [inputConfig]="{
                         name: 'pm',
                         type: 'text',
@@ -70,15 +66,13 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            contactItemRow.valid &&
-                            !isInputHoverRows[i][1],
+                            contactItemRow.valid && !isInputHoverRows[i][1],
                         blackInput:
-                            formArray.at(i).get('departmant')
-                                .value && !isInputHoverRows[i][1]
+                            formArray.at(i).get('department').value &&
+                            !isInputHoverRows[i][1]
                     }"
-                    [activeItem]="null"
                     [options]="repairDepartmentOptions"
-                    (selectedItem)="emitOnSelectDropdown($event,i)"
+                    (selectedItem)="emitOnSelectDropdown($event, i)"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
                 ></app-ta-input-dropdown>
@@ -92,20 +86,20 @@
                         mask: '(000) 000-0000',
                         maxLength: 14,
                         hideRequiredCheck: true,
+                        placeholderInsteadOfLabel: true,
                         hideErrorMessage: true,
                         isInputBackgroundRemoved:
-                            contactItemRow.valid &&
-                            !isInputHoverRows[i][2],
+                            contactItemRow.valid && !isInputHoverRows[i][2],
                         blackInput:
-                            formArray.at(i).get('phone')
-                                .value && !isInputHoverRows[i][2]
+                            formArray.at(i).get('phone').value &&
+                            !isInputHoverRows[i][2]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 2)"
                     (mouseleave)="emitOnInputHover(false, i, 2)"
                 ></app-ta-input>
 
                 <app-ta-input
-                    formControlName="ext"
+                    formControlName="phoneExt"
                     [inputConfig]="{
                         name: 'ext',
                         type: 'text',
@@ -117,10 +111,9 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            contactItemRow.valid &&
-                            !isInputHoverRows[i][3],
+                            contactItemRow.valid && !isInputHoverRows[i][3],
                         blackInput:
-                            formArray.at(i).get('ext').value &&
+                            formArray.at(i).get('phoneExt').value &&
                             !isInputHoverRows[i][3]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 3)"
@@ -140,11 +133,10 @@
                         hideErrorMessage: true,
                         hideRequiredCheck: true,
                         isInputBackgroundRemoved:
-                            contactItemRow.valid &&
-                            !isInputHoverRows[i][4],
+                            contactItemRow.valid && !isInputHoverRows[i][4],
                         blackInput:
-                            formArray.at(i).get('email')
-                                .value && !isInputHoverRows[i][4]
+                            formArray.at(i).get('email').value &&
+                            !isInputHoverRows[i][4]
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 4)"
                     (mouseleave)="emitOnInputHover(false, i, 4)"

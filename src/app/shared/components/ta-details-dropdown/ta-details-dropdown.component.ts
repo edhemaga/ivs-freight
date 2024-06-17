@@ -73,11 +73,8 @@ import { DetailsDataService } from '@shared/services/details-data.service';
         ]),
         trigger('showAnimation', [
             transition(':enter', [
-                style({ height: '10px', overflow: 'hidden' }),
-                animate(
-                    '150ms ease',
-                    style({ height: '26px', overflow: 'auto' })
-                ),
+                style({ height: '10px' }),
+                animate('150ms ease', style({ height: '26px' })),
             ]),
             transition(':leave', [animate('150ms ease', style({ height: 0 }))]),
         ]),
@@ -145,7 +142,9 @@ export class TaDetailsDropdownComponent
             if (tooltip.isOpen()) {
                 tooltip.close();
             } else {
-                tooltip.open({ data: [...this.options] });
+                if (this.options) {
+                    tooltip.open({ data: [...this.options] });
+                }
                 if (this.data) {
                     this.DetailsDataService.setNewData(this.data);
                 }

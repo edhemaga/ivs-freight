@@ -10,11 +10,20 @@ export interface Confirmation {
         | 'reset'
         | 'close'
         | 'open'
-        | 'void'; // if type is info => subtype must be: archive | ban list | dnu | void;
+        | 'void'
+        | 'delete-item'; // if type is info => subtype must be: archive | ban list | dnu | void;
     id?: number; // id for item
     data?: any;
     array?: any[]; // multiple array of objects
-    subType?: 'archive' | 'ban list' | 'dnu' | 'cdl void' | 'mark' | 'truck' | 'trailer'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
+    subType?:
+        | 'archive'
+        | 'ban list'
+        | 'dnu'
+        | 'cdl void'
+        | 'mark'
+        | 'truck'
+        | 'trailer'
+        | 'void cdl'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
     subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
     cdlStatus?: 'New' | 'Renew' | 'Activate';
     image?: boolean; // has image or not

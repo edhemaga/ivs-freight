@@ -11,19 +11,15 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// components
+// models
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-export interface DropZoneConfig {
-    dropZoneType: string;
-    dropZoneSvg: string;
-    dropZoneAvailableFiles: string;
-    multiple: boolean;
-    globalDropZone?: boolean;
-}
+// configs
+import { dropzoneDefaultConfig } from '@shared/components/ta-upload-files/configs/dropzone-default.config';
 
 // FILES: assets/svg/common/ic_modal_upload_dropzone.svg
 // IMAGE: image/gif, image/jpeg, image/jpg, image/png
@@ -48,14 +44,9 @@ export class TaUploadDropzoneComponent {
     @ViewChild('dropZone')
     dropZone: ElementRef;
 
-    @Input() dropZoneConfig: DropZoneConfig = {
-        dropZoneType: 'files', // files | image | media
-        dropZoneSvg: 'assets/svg/common/drag-image-dropzone-files.svg',
-        dropZoneAvailableFiles:
-            'application/pdf, image/png, image/jpeg, image/jpg',
-        multiple: true,
-        globalDropZone: false,
-    };
+    @Input() set dropZoneConfig(config: DropZoneConfig) {
+        this._dropZoneConfig = config ?? dropzoneDefaultConfig;
+    }
 
     @Input() customClassName: string;
     @Input() size: string;
@@ -88,6 +79,8 @@ export class TaUploadDropzoneComponent {
 
     public unSupporetedType: boolean = false;
     public supportedExtensions: string[] = [];
+
+    public _dropZoneConfig: DropZoneConfig;
 
     @HostListener('body:dragleave', ['$event'])
     onDragLeaveWindows(e) {
@@ -193,7 +186,7 @@ export class TaUploadDropzoneComponent {
             const base64Content = await this.getBase64(file);
             const fileNameArray = file.name.split('.');
             this.supportedExtensions =
-                this.dropZoneConfig.dropZoneAvailableFiles
+                this._dropZoneConfig.dropZoneAvailableFiles
                     .split(',')
                     .map((item) => item.split('/')[1]);
             fileNameArray[fileNameArray.length - 1] =

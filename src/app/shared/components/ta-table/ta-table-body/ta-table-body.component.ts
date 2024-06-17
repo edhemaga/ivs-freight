@@ -196,7 +196,8 @@ export class TaTableBodyComponent
     viewDataLength: number = 0;
     chipsForHighlight: string[] = [];
     public widthPopover: number = 0;
-
+    public endorsement: boolean = false;
+    public restriction: boolean = false;
     public companyUser: SignInResponse;
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
@@ -787,19 +788,34 @@ export class TaTableBodyComponent
     public onShowDescriptionDropdown(
         popup: NgbPopover,
         row: any,
-        width: number
+        width: number,
+        column: any,
+        field: string
     ): void {
-        if (row.descriptionItems.length > 1) {
-            this.descriptionTooltip = popup;
-            this.widthPopover = width;
+        this.restriction = false;
+        this.endorsement = false;
+        this.widthPopover = width;
+        this.descriptionTooltip = popup;
+        if (row.tableOffDutyLocation) {
+            if (field !== 'tableOffDutyLocation') {
+                this.endorsement = true;
+            }
+            if (field === 'tableCdlDetailRestriction') {
+                this.restriction = true;
+            }
+            if (popup.isOpen()) {
+                popup.close();
+            } else {
+                popup.open({ data: column });
+            }
+        } else if (row.descriptionItems.length) {
             if (popup.isOpen()) {
                 popup.close();
             } else {
                 popup.open({ data: row });
             }
-
-            this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
         }
+        this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
     }
 
     // Show Invoice Aging Dropdown

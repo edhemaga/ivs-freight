@@ -15,6 +15,7 @@ export interface DriverDetailsPayrollResponse {
     emptyMile?: number | null;
     loadedMile?: number | null;
     perStop?: number | null;
+    perMile?: number | null;
     commission?: number | null;
     flatRate?: number | null;
 }

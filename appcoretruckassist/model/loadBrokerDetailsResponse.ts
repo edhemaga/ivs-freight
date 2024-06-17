@@ -9,21 +9,26 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchShortResponse } from './dispatchShortResponse';
-import { LoadStopResponse } from './loadStopResponse';
-import { EnumValue } from './enumValue';
+import { LoadStatusResponse } from './loadStatusResponse';
+import { LoadDriverInfo } from './loadDriverInfo';
+import { BrokerLoadStopResponse } from './brokerLoadStopResponse';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
 export interface LoadBrokerDetailsResponse { 
     id?: number;
     loadNumber?: string | null;
     referenceNumber?: string | null;
-    dispatch?: DispatchShortResponse;
-    stops?: Array<LoadStopResponse> | null;
-    status?: EnumValue;
+    dispatcher?: CompanyUserShortResponse;
+    driver?: LoadDriverInfo;
+    pickup?: BrokerLoadStopResponse;
+    pickupCount?: number;
+    delivery?: BrokerLoadStopResponse;
+    deliveryCount?: number;
+    status?: LoadStatusResponse;
     lastStatusPassed?: { [key: string]: number; } | null;
-    totalRate?: number;
-    totalMiles?: number;
+    totalRate?: number | null;
+    totalMiles?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

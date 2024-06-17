@@ -615,10 +615,6 @@
                         }
                     }
                 }
-
-                .counter-holder {
-                    display: none;
-                }
                 .selected-icon {
                     display: none;
                 }
@@ -2607,7 +2603,7 @@
     color: $ta-light-grey-6;
     background-color: $ta-light-grey-9;
     border-radius: 100%;
-
+    display: flex;
     &.activeCount {
         background-color: $ta-blue-18;
         color: $white;

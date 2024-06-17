@@ -19,24 +19,24 @@ import { DriverMinimalListResponse } from 'appcoretruckassist';
     providedIn: 'root',
 })
 export class DriverMinimalResolver implements Resolve<DriverMinimalListState> {
-    pageIndex: number = 1;
-    pageSize: number = 25;
-    count: number;
+    private pageIndex: number = 1;
+    private pageSize: number = 25;
+
     constructor(
         private driverService: DriverService,
         private driverMinimalListStore: DriversMinimalListStore
     ) {}
-    resolve(): Observable<DriverMinimalListResponse> | Observable<any> {
+    resolve(): Observable<string | DriverMinimalListResponse> {
         return this.driverService
-            .getDriversMinimalList(this.pageIndex, this.pageSize, this.count)
+            .getDriversMinimalList(this.pageIndex, this.pageSize)
             .pipe(
-                catchError(() => {
-                    return of('No drivers data for...');
-                }),
-                tap((driverMinimalList: DriverMinimalListResponse) => {
+                tap((driverMinimalList) => {
                     this.driverMinimalListStore.set(
                         driverMinimalList.pagination.data
                     );
+                }),
+                catchError(() => {
+                    return of('No drivers data for...');
                 })
             );
     }

@@ -1,0 +1,106 @@
+<app-ta-custom-card
+    [cardName]="'Assigned To'"
+    [hasDivider]="false"
+    [hasHeaderSvg]="'assets/svg/common/ic_half_time.svg'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+>
+    <div class="assign-to assign-to-container">
+        <ng-container
+            *ngIf="cardData?.assignedTo?.truck?.id; else noTruckAssigned"
+        >
+            <div class="assign-to-item">
+                <div class="icon-text-wrapper-cmp">
+                    <span
+                        ngbTooltip
+                        mainTooltip="Semi Truck"
+                        tooltipBackground="#424242"
+                        position="bottom"
+                        class="semi-tooltip typeDetails"
+                    >
+                        <svg-icon
+                            class="assign-to-vehicle"
+                            [src]="
+                                'assets/svg/common/trucks/' +
+                                cardData.assignedTo.truck.truckType.logoName
+                            "
+                        >
+                        </svg-icon>
+                    </span>
+
+                    <span class="assign-to-value">{{
+                        cardData.assignedTo.truck.truckNumber
+                    }}</span>
+                </div>
+
+                <span
+                    ngbTooltip
+                    mainTooltip="View Details"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                >
+                    <svg-icon
+                        class="open-modal-icon"
+                        src="assets/svg/common/arrow_top_right.svg"
+                    ></svg-icon>
+                </span>
+            </div>
+        </ng-container>
+
+        <ng-template #noTruckAssigned>
+            <div class="assign-to-item">
+                <span class="assign-to-value inactive-assign-to-value"
+                    >No Truck</span
+                >
+            </div>
+        </ng-template>
+
+        <ng-container
+            *ngIf="cardData?.assignedTo?.trailer?.id; else noTrailerAssigned"
+        >
+            <div class="assign-to-item">
+                <div class="icon-text-wrapper-cmp">
+                    <span
+                        ngbTooltip
+                        mainTooltip="Container"
+                        tooltipBackground="#424242"
+                        position="bottom"
+                        class="semi-tooltip typeDetails"
+                    >
+                        <svg-icon
+                            class="assign-to-vehicle"
+                            [src]="
+                                'assets/svg/common/trailers/' +
+                                cardData.assignedTo.trailer.trailerType.logoName
+                            "
+                        ></svg-icon>
+                    </span>
+
+                    <span class="assign-to-value container-value">
+                        {{ cardData?.assignedTo?.trailer.trailerNumber }}
+                    </span>
+                </div>
+
+                <span
+                    ngbTooltip
+                    mainTooltip="View Details"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                >
+                    <svg-icon
+                        class="open-modal-icon2"
+                        src="assets/svg/common/arrow_top_right.svg"
+                    ></svg-icon>
+                </span>
+            </div>
+        </ng-container>
+
+        <ng-template #noTrailerAssigned>
+            <div class="assign-to-item">
+                <span class="assign-to-value inactive-assign-to-value"
+                    >No Trailer</span
+                >
+            </div>
+        </ng-template>
+    </div>
+</app-ta-custom-card>

@@ -51,6 +51,7 @@ import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/own
 import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/repair-card-modal.component';
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
 import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
+import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -206,6 +207,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.TRAILER_3) {
             this.modalService.openModal(TrailerCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.DRIVER_1) {
+            this.modalService.openModal(DriverCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else {
@@ -494,11 +499,6 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.selectedViewMode = modeView.mode;
 
-        this.toolBarAction.emit({
-            action: TableStringEnum.VIEW_MODE,
-            mode: modeView.mode,
-        });
-
         localStorage.setItem(
             `${this.selectedTableData.gridNameTitle}-table-view`,
             JSON.stringify({
@@ -506,6 +506,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 viewMode: this.selectedViewMode,
             })
         );
+
+        this.toolBarAction.emit({
+            action: TableStringEnum.VIEW_MODE,
+            mode: modeView.mode,
+        });
 
         this.isMapShowning = modeView.mode === TableStringEnum.MAP;
     }

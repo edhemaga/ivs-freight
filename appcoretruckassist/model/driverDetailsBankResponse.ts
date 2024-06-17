@@ -12,6 +12,7 @@
 
 
 export interface DriverDetailsBankResponse { 
+    id?: number | null;
     name?: string | null;
     logoName?: string | null;
     routing?: string | null;

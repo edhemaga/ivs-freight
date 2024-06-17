@@ -58,7 +58,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                         })
                     );
 
-                    this.loadPandingStore.set(loadPagination.pagination.data);
+                    // this.loadPandingStore.set(loadPagination.pagination.data);
                 })
             );
     }

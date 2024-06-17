@@ -4,18 +4,6 @@
             class="welcome-container container-fluid d-flex flex-column justify-content-between"
         >
             <div class="d-flex flex-column align-items-center">
-                <!--TOP HEADER-->
-
-                <div
-                    class="d-flex justify-content-center align-items-center w-100 top-header"
-                >
-                    <h3 class="m-0 top-header-title ta-font-semi-bold">
-                        Date of Invitation:<span>{{ dateOfApplication }}</span>
-                    </h3>
-                </div>
-
-                <!-- MID HEADER -->
-
                 <div
                     class="d-flex flex-column align-items-center w-100 mid-header"
                 >
@@ -23,7 +11,7 @@
                         class="d-flex flex-column align-items-center justify-content-center company-container"
                     >
                         <div class="d-flex align-items-center company-name">
-                            <span class="m-0 ta-font-black">{{
+                            <span class="m-0 ta-font-bold">{{
                                 companyInfo?.name
                             }}</span>
                         </div>
@@ -33,7 +21,7 @@
                                 class="d-flex align-items-center company-usdot"
                             >
                                 <span
-                                    class="m-0 ta-font-extra-bold usdot-title"
+                                    class="m-0 ta-font-bold usdot-title"
                                 >
                                     USDOT
                                 </span>
@@ -70,7 +58,7 @@
                                 class="location-icon"
                                 src="assets/svg/truckassist-table/location-icon.svg"
                                 [svgStyle]="{
-                                    'width.px': '16.39',
+                                    'width.px': 20,
                                     'height.px': 20
                                 }"
                             ></svg-icon>
@@ -130,7 +118,7 @@
                 <svg-icon
                     class="welcome-icon"
                     src="assets/svg/applicant/welcome.svg"
-                    [svgStyle]="{ 'width.px': '484.3', 'height.px': '402.67' }"
+                    [svgStyle]="{ 'width.px': 480, 'height.px': 385 }"
                 ></svg-icon>
 
                 <!-- WELCOME -->
@@ -144,8 +132,8 @@
                         You have been invited to apply for a new job by:
                     </p>
 
-                    <p class="m-0 ta-font-black welcome-company">
-                        {{ companyInfo?.name }}
+                    <p class="m-0 ta-font-extra-bold date-of-invatation-text">
+                        Date of Invitation: {{ dateOfApplication }}
                     </p>
 
                     <button

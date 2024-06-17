@@ -21,6 +21,7 @@ import { PasswordAccountHiddenCharactersStringEnum } from '@shared/components/ta
 export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     @Input() passwordOrAccount: string;
     @Input() numberOfCharactersToHide: number = 4;
+    @Input() isRightSideIcon: boolean = false;
 
     public isShowing: boolean = false;
     public isHovered: boolean = false;

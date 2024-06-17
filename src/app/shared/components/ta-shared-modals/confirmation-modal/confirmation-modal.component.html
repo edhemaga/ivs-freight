@@ -44,18 +44,10 @@
             ? 'Delete Driver'
             : ' Confirmation'
     "
-    [editName]="
-        editData.cdlStatus
-            ? editData.data.data?.firstName?.concat(
-                  ' ',
-                  editData.data.data?.lastName
-              )
-            : ''
-    "
     [specificCaseModalName]="editData.modalHeader"
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
-    [showCounter]="true"
+    [showCounter]="editData.array?.length > 1"
     [disableDelete]="
         (editData?.template === 'void' || editData?.template === 'cdl') &&
         editData?.array?.length
@@ -67,8 +59,12 @@
     [headerSvg]="
         editData?.type === 'multiple delete'
             ? 'delete'
-            : editData?.template === 'void'
+            : editData?.template === 'void' ||
+              (editData?.template === 'cdl' && editData?.type === 'activate')
             ? 'hire'
+            : editData?.subType === 'void cdl' ||
+              editData?.subType === 'cdl void'
+            ? 'close'
             : editData?.type
     "
     [confirmationData]="editData"
@@ -81,23 +77,18 @@
     >
         <!-- Renew CDL -->
         <div class="confirmation-header">
-            <p
+            <ng-container
                 *ngIf="
-                    editData.subType === 'cdl void' &&
+                    editData?.subType === 'cdl void' &&
                     editData?.type === 'info' &&
-                    editData.template === 'cdl'
+                    editData?.template === 'cdl'
                 "
-                class="m-0 ta-font-medium"
             >
-                <span class="ta-font-bold">{{
-                    editData.data.data?.firstName?.concat(
-                        ' ',
-                        editData.data.data?.lastName
-                    )
-                }}</span>
-                has active CDL. <br />
-                You need to void current CDL first.
-            </p>
+                <p class="m-0 ta-font-bold">
+                    This driver has active CDL. <br />
+                    You need to void current CDL first.
+                </p>
+            </ng-container>
         </div>
 
         <!---------------------------------------------- Confirmation Body For Single ---------------------------------------------->
@@ -528,53 +519,95 @@
                         <!-- CDL -->
 
                         <ng-container *ngSwitchCase="'cdl'">
-                            <div class="confirmation-info">
-                                <p
-                                    class="m-0 confirmation-text-1 d-flex align-items-center"
-                                >
-                                    <span class="confirmation-state">{{
-                                        editData?.data?.state
-                                    }}</span>
-                                    {{ editData?.data?.cdlNumber }}
-                                </p>
-                                <p class="m-0 confirmation-text-2">
-                                    Expires:
-                                    {{ editData?.data.expDate | formatDateP }}
-                                </p>
-                                <!-- CDL dropdown slecet if Cdl array is sent -->
-                                <div *ngIf="editData?.cdlsArray?.length > 0">
-                                    <div
-                                        class="col-6 cdl-holder"
-                                        [formGroup]="cdlForm"
+                            <div
+                                class="confirmation-body-content d-flex flex-column gap-2 mb-1"
+                            >
+                                <div class="d-flex align-items-center gap-2">
+                                    <ng-container
+                                        *ngIf="editData?.data?.files?.length"
                                     >
-                                        <app-ta-input-dropdown
-                                            formControlName="cdlId"
-                                            [inputConfig]="{
-                                                name: 'Input Dropdown',
-                                                type: 'text',
-                                                label: 'CDL',
-                                                isRequired: true,
-                                                isDropdown: true,
-                                                isDisabled: cdls?.length === 1,
-                                                dropdownWidthClass: 'w-col-228'
-                                            }"
-                                            [options]="editData?.cdlsArray"
-                                            [activeItem]="selectedCdl"
-                                            (selectedItem)="
-                                                onSelectDropdown($event, 'cdl')
-                                            "
-                                        ></app-ta-input-dropdown>
+                                        <div
+                                            class="pdf-file-image d-flex align-items-center justify-content-center"
+                                        >
+                                            <app-ta-upload-file
+                                                [file]="editData?.data?.files?.[0]"
+                                                [type]="'details'"
+                                                [isFooterHidden]="true"
+                                                [isActionsHidden]="true"
+                                            ></app-ta-upload-file>
+                                        </div>
+                                    </ng-container>
+
+                                    <div class="w-100">
+                                        <p class="m-0 text-1 ta-font-bold">
+                                            {{ editData?.data?.cdlNumber }}
+                                        </p>
+
+                                        <p class="m-0 text-2 ta-font-medium">
+                                            {{
+                                                editData?.data?.expDate
+                                                    | formatDateP
+                                            }}
+                                        </p>
                                     </div>
                                 </div>
 
-                                <div
-                                    *ngIf="editData.subType === 'cdl void'"
-                                    class="confirmation-text-3 cdl-void-message"
+                                <ng-container
+                                    *ngIf="editData?.data?.driverName"
                                 >
-                                    This action can be undone by voiding or
-                                    deleting active CDL and activate or renew
-                                    old one.
-                                </div>
+                                    <div
+                                        class="item-card mt-2 d-flex align-items-center justify-content-center"
+                                    >
+                                        <p class="uppercase ta-font-bold">
+                                            {{ editData?.data?.driverName }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+
+                                <!-- CDL dropdown slecet if Cdl array is sent -->
+                                <ng-container
+                                    *ngIf="editData?.cdlsArray?.length"
+                                >
+                                    <div class="mt-3">
+                                        <div
+                                            class="col-6 cdl-holder"
+                                            [formGroup]="cdlForm"
+                                        >
+                                            <app-ta-input-dropdown
+                                                formControlName="cdlId"
+                                                [inputConfig]="{
+                                                    name: 'Input Dropdown',
+                                                    type: 'text',
+                                                    label: 'CDL',
+                                                    isRequired: true,
+                                                    isDropdown: true,
+                                                    isDisabled:
+                                                        cdls?.length === 1,
+                                                    dropdownWidthClass:
+                                                        'w-col-228'
+                                                }"
+                                                [options]="editData?.cdlsArray"
+                                                [activeItem]="selectedCdl"
+                                                (selectedItem)="
+                                                    onSelectDropdown(
+                                                        $event,
+                                                        'cdl'
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container
+                                    *ngIf="editData?.subType === 'cdl void'"
+                                >
+                                    <div class="cdl-void-text ta-font-medium">
+                                        This action can be undone by voiding or
+                                        deleting active CDL and activating or
+                                        renewing old one.
+                                    </div>
+                                </ng-container>
                             </div>
                         </ng-container>
 
@@ -589,58 +622,114 @@
                                     : ''
                             "
                         >
-                            <div class="confirmation-info">
-                                <p
-                                    class="m-0 confirmation-text-1"
-                                    *ngIf="editData?.template === 'test'"
-                                >
-                                    {{ editData?.data?.testTypeName }} Test ({{
-                                        editData?.data?.reasonName
-                                    }})
-                                </p>
-                                <p
-                                    class="m-0 confirmation-text-1"
-                                    *ngIf="editData?.template === 'medical'"
-                                >
-                                    Issued:
-                                    {{
-                                        editData?.data?.issueDate | formatDateP
-                                    }}
-                                </p>
-                                <p
-                                    class="m-0 confirmation-text-1"
-                                    *ngIf="editData?.template === 'mvr'"
-                                >
-                                    CDL: {{ editData?.data.cdlNumber }}
-                                </p>
-                                <p class="m-0 confirmation-text-2">
-                                    {{
-                                        editData?.template === 'test' ||
-                                        editData?.template === 'mvr'
-                                            ? 'Issued'
-                                            : 'Expires'
-                                    }}:
-                                    <span
-                                        *ngIf="editData?.template === 'test'"
-                                        >{{
-                                            editData?.data.testingDate
-                                                | formatDateP
-                                        }}</span
+                            <div class="confirmation-body-content">
+                                <div class="d-flex align-items-center gap-2">
+                                    <ng-container
+                                        *ngIf="editData?.data?.files?.length"
                                     >
-                                    <span
-                                        *ngIf="editData?.template === 'medical'"
-                                        >{{
-                                            editData?.data.expDate | formatDateP
-                                        }}</span
+                                        <div
+                                            class="pdf-file-image d-flex align-items-center justify-content-center"
+                                        >
+                                            <app-ta-upload-file
+                                                [file]="editData?.data?.files?.[0]"
+                                                [type]="'details'"
+                                                [isFooterHidden]="true"
+                                                [isActionsHidden]="true"
+                                            ></app-ta-upload-file>
+                                        </div>
+                                    </ng-container>
+
+                                    <div class="w-100">
+                                        <p class="m-0 text-1 ta-font-bold">
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template ===
+                                                    'medical'
+                                                "
+                                            >
+                                                {{
+                                                    editData?.data?.issueDate
+                                                        | formatDateP
+                                                }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template ===
+                                                    'test'
+                                                "
+                                            >
+                                                {{
+                                                    editData?.data.testingDate
+                                                        | formatDateP
+                                                }}
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template === 'mvr'
+                                                "
+                                            >
+                                                {{ editData?.data.cdlNumber }}
+                                            </ng-container>
+                                        </p>
+
+                                        <p class="m-0 text-2 ta-font-medium">
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template ===
+                                                    'medical'
+                                                "
+                                            >
+                                                <span>
+                                                    {{
+                                                        editData?.data.expDate
+                                                            | formatDateP
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template ===
+                                                    'test'
+                                                "
+                                            >
+                                                <span>
+                                                    {{
+                                                        editData?.data?.result
+                                                            ?.name
+                                                    }}
+                                                </span>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="
+                                                    editData?.template === 'mvr'
+                                                "
+                                            >
+                                                <span>
+                                                    {{
+                                                        editData?.data.issueDate
+                                                            | formatDateP
+                                                    }}
+                                                </span>
+                                            </ng-container>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.driverName"
+                                >
+                                    <div
+                                        class="item-card mt-2 d-flex align-items-center justify-content-center"
                                     >
-                                    <span
-                                        *ngIf="editData?.template === 'mvr'"
-                                        >{{
-                                            editData?.data.issueDate
-                                                | formatDateP
-                                        }}</span
-                                    >
-                                </p>
+                                        <p class="uppercase ta-font-bold">
+                                            {{ editData?.data?.driverName }}
+                                        </p>
+                                    </div>
+                                </ng-container>
                             </div>
                         </ng-container>
 
@@ -1242,7 +1331,13 @@
         <!-- Icon -->
 
         <div class="confirmation-icon">
-            <ng-container *ngIf="editData?.type === 'void'">
+            <ng-container
+                *ngIf="
+                    editData?.type === 'void' ||
+                    (editData?.template === 'cdl' &&
+                        editData?.type !== 'activate')
+                "
+            >
                 <svg-icon
                     [src]="confirmationImageRoutes.confirmationPrintSvg"
                     [svgStyle]="{
@@ -1251,11 +1346,19 @@
                     }"
                 ></svg-icon>
             </ng-container>
-            <ng-container *ngIf="editData?.type !== 'void'">
+            <ng-container
+                *ngIf="
+                    (editData?.type !== 'void' &&
+                        editData?.template !== 'cdl') ||
+                    (editData?.template === 'cdl' &&
+                        editData?.type === 'activate')
+                "
+            >
                 <ng-container
                     *ngIf="
                         editData?.type === 'activate' &&
-                            editData?.template === 'void';
+                            (editData?.template === 'void' ||
+                                editData?.template === 'cdl');
                         else trasgSvg
                     "
                 >

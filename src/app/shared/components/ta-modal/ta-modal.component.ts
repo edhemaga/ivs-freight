@@ -38,10 +38,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 // components
-import {
-    DropZoneConfig,
-    TaUploadDropzoneComponent,
-} from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
@@ -51,6 +48,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { AuthGuard } from '@core/guards/authentication.guard';
 
 // models
+import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 @Component({
@@ -129,6 +127,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isConvertedToTemplate?: boolean = false;
     @Input() isStepper: boolean = false;
     @Input() isCloseIconRemoved: boolean = false;
+    @Input() isVoidBtn: boolean = false;
+
     // Routing Map Props
     @Input() mapSettingsModal: boolean = false;
     @Input() mapRouteModal: boolean = false;
@@ -139,6 +139,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() isCardsModal: boolean = false;
     @Input() isResetFormCards: boolean = false;
     @Input() cardsSecTitle: string;
+    @Input() showCloseBusinessButton = false;
 
     // -----------------
 
@@ -417,6 +418,20 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'finish-order': {
+                this.action.emit({ action: action, bool: false });
+
+                break;
+            }
+            case 'CLOSE_BUSINESS': {
+                this.action.emit({ action: action, bool: false });
+                break;
+            }
+            case 'void-cdl': {
+                this.confirmationAction.emit(this.confirmationData);
+
+                break;
+            }
+            case 'void': {
                 this.action.emit({ action: action, bool: false });
 
                 break;
