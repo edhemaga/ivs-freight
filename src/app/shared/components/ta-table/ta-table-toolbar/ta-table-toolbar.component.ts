@@ -50,6 +50,7 @@ import { AccountCardModalComponent } from '@pages/account/pages/account-card-mod
 import { OwnerCardModalComponent } from '@pages/owner/pages/owner-card-modal/owner-card-modal.component';
 import { RepairCardModalComponent } from '@pages/repair/pages/repair-card-modal/repair-card-modal.component';
 import { CustomerCardModalComponent } from '@pages/customer/pages/customer-table/components/customer-card-modal/customer-card-modal.component';
+import { TrailerCardModalComponent } from '@pages/trailer/pages/trailer-card-modal/trailer-card-modal.component';
 import { DriverCardModalComponent } from '@pages/driver/pages/driver-card-modal/driver-card-modal.component';
 
 // enums
@@ -202,6 +203,10 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             });
         } else if (this.listName === TableStringEnum.CUSTOMER) {
             this.modalService.openModal(CustomerCardModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.listName === TableStringEnum.TRAILER_3) {
+            this.modalService.openModal(TrailerCardModalComponent, {
                 size: TableStringEnum.SMALL,
             });
         } else if (this.listName === TableStringEnum.DRIVER_1) {

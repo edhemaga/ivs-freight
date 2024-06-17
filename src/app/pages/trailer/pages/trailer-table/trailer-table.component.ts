@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { TrailerService } from '@shared/services/trailer.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { TrailerCardsModalService } from '@pages/trailer/pages/trailer-card-modal/services/trailer-cards-modal.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -24,6 +25,11 @@ import { TrailerActiveState } from '@pages/trailer/state/trailer-active-state/tr
 import { TrailerInactiveQuery } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { Store, select } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/trailer/pages/trailer-card-modal/state/trailer-card-modal.selectors';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -36,9 +42,10 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
 
 // configuration
-import { trailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
+import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -82,35 +89,49 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     //Data to display from model Truck Active
+    public displayRowsFront: CardRows[] =
+    TrailerCardDataConstants.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        TrailerCardsModalConfig.displayRowsBackActive;
+
     public displayRowsFrontActive: CardRows[] =
-        trailerCardDataConstants.displayRowsFrontActive;
+        TrailerCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
-        trailerCardDataConstants.displayRowsBackActive;
+        TrailerCardDataConstants.displayRowsBackActive;
 
     public displayRowsFrontInactive: CardRows[] =
-        trailerCardDataConstants.displayRowsFrontInactive;
+        TrailerCardDataConstants.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
-        trailerCardDataConstants.displayRowsBackInactive;
+        TrailerCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = trailerCardDataConstants.cardTitle;
-    public page: string = trailerCardDataConstants.page;
-    public rows: number = trailerCardDataConstants.rows;
+    public cardTitle: string = TrailerCardDataConstants.cardTitle;
+    public page: string = TrailerCardDataConstants.page;
+    public rows: number = TrailerCardDataConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
+        private router: Router,
+        //Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+        private trailerService: TrailerService,
+        private confirmationService: ConfirmationService,
+        private trailerCardsModalService: TrailerCardsModalService,
+        private confirmationActivationService: ConfirmationActivationService,
+
+        //Store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
-        private trailerService: TrailerService,
-        public datePipe: DatePipe,
-        private router: Router,
-        private thousandSeparator: ThousandSeparatorPipe,
-        private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore,
-        private confirmationActivationService: ConfirmationActivationService
+        private store: Store,
+
+        //Pipes
+        public datePipe: DatePipe,
+        private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
     ngOnInit(): void {
@@ -474,6 +495,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        this.updateCardView();
         this.setTrailerData(td);
     }
 
@@ -1183,6 +1205,25 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
             });
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.trailerCardsModalService.updateTab(this.selectedTab);
     }
 
     ngOnDestroy(): void {
