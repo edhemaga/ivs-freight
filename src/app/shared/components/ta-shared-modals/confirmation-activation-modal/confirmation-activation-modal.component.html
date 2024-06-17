@@ -41,13 +41,6 @@
             class="d-flex flex-column justify-content-center confirmation-activation-body"
         >
             <div class="d-flex flex-row">
-                <ng-container *ngIf="editData?.svg && editData?.data?.avatar">
-                    <svg-icon
-                        class="confirmation-svg"
-                        [src]="editData?.data?.avatar"
-                    ></svg-icon>
-                </ng-container>
-
                 <!-- Title -->
 
                 <div
@@ -131,38 +124,55 @@
                         </ng-container>
 
                         <ng-template #regularTemplate>
-                            <div class="d-flex align-items-center">
-                                <div
-                                    class="m-0 ta-font-bold"
-                                    [class.limit-text]="
-                                        editData.template !== 'truck' &&
-                                        editData.template !== 'trailer'
-                                    "
-                                    [class.shorter-text]="
-                                        editData?.type === 'open'
+                            <div class="d-flex align-items-center w-100 gap-1">
+                                <ng-container
+                                    *ngIf="
+                                        editData?.svg && editData?.data?.avatar
                                     "
                                 >
-                                    {{ editData.modalTitle }}
-                                </div>
-
-                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
-                                        class="d-flex ms-1"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationCloseBrokerSvg
-                                        "
-                                    ></svg-icon
-                                ></ng-container>
-                            </div>
+                                        class="confirmation-svg"
+                                        [src]="editData?.data?.avatar"
+                                    ></svg-icon>
+                                </ng-container>
 
-                            <div
-                                class="m-0 text-2"
-                                [class.limit-text]="
-                                    editData.template !== 'truck' &&
-                                    editData.template !== 'trailer'
-                                "
-                            >
-                                {{ editData.modalSecondTitle }}
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="m-0 ta-font-bold"
+                                            [class.limit-text]="
+                                                editData.template !== 'truck' &&
+                                                editData.template !== 'trailer'
+                                            "
+                                            [class.shorter-text]="
+                                                editData?.type === 'open'
+                                            "
+                                        >
+                                            {{ editData.modalTitle }}
+                                        </div>
+
+                                        <ng-container
+                                            *ngIf="editData?.type === 'open'"
+                                        >
+                                            <svg-icon
+                                                class="d-flex ms-1"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationCloseBrokerSvg
+                                                "
+                                            ></svg-icon
+                                        ></ng-container>
+                                    </div>
+
+                                    <div
+                                        class="m-0 text-2"
+                                        [class.limit-text]="
+                                            editData.template !== 'truck' &&
+                                            editData.template !== 'trailer'
+                                        "
+                                    >
+                                        {{ editData.modalSecondTitle }}
+                                    </div>
+                                </div>
                             </div>
                         </ng-template>
                     </ng-container>
@@ -241,38 +251,54 @@
                         </ng-container>
 
                         <ng-template #regularTemplate>
-                            <div class="d-flex align-items-center">
-                                <div
-                                    class="m-0 ta-font-bold"
-                                    [class.limit-text]="
-                                        editData?.template !== 'truck' &&
-                                        editData?.template !== 'trailer'
-                                    "
-                                    [class.shorter-text]="
-                                        editData?.type === 'open'
-                                    "
+                            <div class="d-flex align-items-center w-100 gap-1">
+                                <ng-container
+                                    *ngIf="editData?.svg && item?.data?.avatar"
                                 >
-                                    {{ item?.modalTitle }}
-                                </div>
-
-                                <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
-                                        class="d-flex ms-1"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationCloseBrokerSvg
-                                        "
-                                    ></svg-icon
-                                ></ng-container>
-                            </div>
+                                        class="confirmation-svg"
+                                        [src]="item?.data?.avatar"
+                                    ></svg-icon>
+                                </ng-container>
 
-                            <div
-                                class="m-0 text-2"
-                                [class.limit-text]="
-                                    editData.template !== 'truck' &&
-                                    editData.template !== 'trailer'
-                                "
-                            >
-                                {{ item?.modalSecondTitle }}
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="m-0 ta-font-bold"
+                                            [class.limit-text]="
+                                                editData?.template !==
+                                                    'truck' &&
+                                                editData?.template !== 'trailer'
+                                            "
+                                            [class.shorter-text]="
+                                                editData?.type === 'open'
+                                            "
+                                        >
+                                            {{ item?.modalTitle }}
+                                        </div>
+
+                                        <ng-container
+                                            *ngIf="editData?.type === 'open'"
+                                        >
+                                            <svg-icon
+                                                class="d-flex ms-1"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationCloseBrokerSvg
+                                                "
+                                            ></svg-icon
+                                        ></ng-container>
+                                    </div>
+
+                                    <div
+                                        class="m-0 text-2"
+                                        [class.limit-text]="
+                                            editData.template !== 'truck' &&
+                                            editData.template !== 'trailer'
+                                        "
+                                    >
+                                        {{ item?.modalSecondTitle }}
+                                    </div>
+                                </div>
                             </div>
                         </ng-template>
                     </ng-container>
