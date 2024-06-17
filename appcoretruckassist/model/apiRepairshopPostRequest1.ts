@@ -51,6 +51,7 @@ export interface ApiRepairshopPostRequest1 {
     OpenHours?: Array<RepairShopOpenHoursCommand>;
     Contacts?: Array<RepairShopContactCommand>;
     Files?: Array<Blob>;
+    Cover?: Blob;
     ShopServiceType?: number;
 }
 

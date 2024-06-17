@@ -11,7 +11,7 @@
  */
 
 
-export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'CheckedInRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded' | 'Loading' | 'Offloading' | 'Break' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery' | 'CheckedInPickupRepair' | 'CheckedInDeliveryRepair';
+export type DispatchStatus = 'Off' | 'Available' | 'Dispatched' | 'DeadHeading' | 'Cancel' | 'Repair' | 'DispatchedRepair' | 'LoadedRepair' | 'Towing' | 'CheckedIn' | 'Loaded' | 'Empty' | 'Offloaded' | 'Loading' | 'Offloading' | 'Break' | 'ArrivedPickup' | 'ArrivedDelivery' | 'CheckedInPickup' | 'CheckedInDelivery';
 
 export const DispatchStatus = {
     Off: 'Off' as DispatchStatus,
@@ -21,7 +21,6 @@ export const DispatchStatus = {
     Cancel: 'Cancel' as DispatchStatus,
     Repair: 'Repair' as DispatchStatus,
     DispatchedRepair: 'DispatchedRepair' as DispatchStatus,
-    CheckedInRepair: 'CheckedInRepair' as DispatchStatus,
     LoadedRepair: 'LoadedRepair' as DispatchStatus,
     Towing: 'Towing' as DispatchStatus,
     CheckedIn: 'CheckedIn' as DispatchStatus,
@@ -34,8 +33,6 @@ export const DispatchStatus = {
     ArrivedPickup: 'ArrivedPickup' as DispatchStatus,
     ArrivedDelivery: 'ArrivedDelivery' as DispatchStatus,
     CheckedInPickup: 'CheckedInPickup' as DispatchStatus,
-    CheckedInDelivery: 'CheckedInDelivery' as DispatchStatus,
-    CheckedInPickupRepair: 'CheckedInPickupRepair' as DispatchStatus,
-    CheckedInDeliveryRepair: 'CheckedInDeliveryRepair' as DispatchStatus
+    CheckedInDelivery: 'CheckedInDelivery' as DispatchStatus
 };
 

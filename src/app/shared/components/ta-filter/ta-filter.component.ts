@@ -911,7 +911,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 } else if (this.type === 'userFilter') {
                     if (res?.animation === 'dispatch-data-update') {
-                        const newData = res.data.pagination.data.map(
+                        const newData = res.data.map(
                             (type: any) => {
                                 type['name'] = type.fullName;
                                 return type;
@@ -2170,6 +2170,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'userFilter': {
+                console.log(this)
                 this.filterService.getDispatchData();
                 break;
             }

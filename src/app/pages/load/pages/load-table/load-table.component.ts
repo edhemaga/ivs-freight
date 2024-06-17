@@ -452,8 +452,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 hideActivationButton: true,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                showDispatcherFilter:
-                    this.selectedTab !== TableStringEnum.TEMPLATE,
+
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
@@ -530,16 +529,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 moneyCountSelected: false,
-                ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadTemplateData,
-                    TableStringEnum.LTL,
-                    TableStringEnum.TYPE
-                ),
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadTemplateData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
+                // ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     loadTemplateData,
+                //     TableStringEnum.LTL,
+                //     TableStringEnum.TYPE
+                // ),
+                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     loadTemplateData,
+                //     TableStringEnum.FTL,
+                //     TableStringEnum.TYPE
+                // ),
                 stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_TEMPLATE',
                 isActive: this.selectedTab === TableStringEnum.TEMPLATE,
@@ -556,16 +555,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 extended: false,
                 moneyCountSelected: false,
                 gridNameTitle: TableStringEnum.LOAD,
-                ltlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadPendingData,
-                    TableStringEnum.LTL,
-                    TableStringEnum.TYPE
-                ),
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadPendingData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
+                // ltlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     loadPendingData,
+                //     TableStringEnum.LTL,
+                //     TableStringEnum.TYPE
+                // ),
+                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     loadPendingData,
+                //     TableStringEnum.FTL,
+                //     TableStringEnum.TYPE
+                // ),
                 stateName: TableStringEnum.LOADS,
                 tableConfiguration: 'LOAD_REGULAR',
                 isActive: this.selectedTab === TableStringEnum.PENDING,
@@ -580,11 +579,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.activeCount,
                 data: loadActiveData,
                 moneyCountSelected: false,
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    loadActiveData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
+                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     loadActiveData,
+                //     TableStringEnum.FTL,
+                //     TableStringEnum.TYPE
+                // ),
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 stateName: TableStringEnum.LOADS,
@@ -601,11 +600,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 length: loadCount.closedCount,
                 moneyCountSelected: false,
                 data: repairClosedData,
-                ftlArray: DataFilterHelper.checkSpecialFilterArray(
-                    repairClosedData,
-                    TableStringEnum.FTL,
-                    TableStringEnum.TYPE
-                ),
+                // ftlArray: DataFilterHelper.checkSpecialFilterArray(
+                //     repairClosedData,
+                //     TableStringEnum.FTL,
+                //     TableStringEnum.TYPE
+                // ),
                 extended: false,
                 gridNameTitle: TableStringEnum.LOAD,
                 stateName: TableStringEnum.LOADS,
@@ -844,6 +843,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             loadType: number | undefined;
             statusType: number | undefined;
             status: number | undefined;
+            dispatchersId: number[] | undefined;
             dispatcherId: number | undefined;
             dispatchId: number | undefined;
             brokerId: number | undefined;
@@ -852,6 +852,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             dateTo: string | undefined;
             revenueFrom: number | undefined;
             revenueTo: number | undefined;
+            rateFrom?: number;
+            rateTo?: number;
+            paidFrom?: number;
+            paidTo?: number;
+            dueFrom?: number;
+            dueTo?: number;
+            pickup?: boolean;
+            delivery?: boolean;
             truckId: number | undefined;
             pageIndex: number;
             pageSize: number;
@@ -868,6 +876,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.loadType,
                 filter.statusType,
                 filter.status,
+                filter.dispatchersId,
                 filter.dispatcherId,
                 filter.dispatchId,
                 filter.brokerId,
@@ -880,6 +889,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
+                filter.rateFrom,
+                filter.rateTo,
+                filter.paidFrom,
+                filter.paidTo,
+                filter.dueFrom,
+                filter.dueTo,
+                filter.pickup,
+                filter.delivery,
                 filter.sort,
                 filter.searchOne,
                 filter.searchTwo,

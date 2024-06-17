@@ -96,7 +96,7 @@
         .total-miles-value {
             font-size: 11px;
             line-height: 14px;
-            color: $ta-black;
+            color: $muted;
 
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -137,4 +137,20 @@
         padding-left: 0px !important;
         height: 781px;
     }
+}
+
+.load-modal {
+    &-time {
+        margin-left: 12px;
+    }
+
+    &-icon {
+        margin-right: 6px;
+    }
+}
+
+.load-financial-payment {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }

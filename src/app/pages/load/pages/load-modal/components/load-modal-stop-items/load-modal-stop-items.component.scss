@@ -1,20 +1,13 @@
 @import 'src/theme/variables';
 
 .stop-items-container {
-    width: 1448px;
-
-    .gradient-border-container {
-        border-right-width: 8px;
-        border-right-style: solid;
-        border-image: linear-gradient(to right, $bw-9, rgba(0, 0, 0, 0)) 1 100%;
-    }
+    // margin-left: 176px;
 
     /* Stop Items Header */
-
     .stop-items-header {
         display: grid;
         grid-template-columns:
-            26px 150px 130px 90px 100px repeat(4, 80px) 100px repeat(2, 140px)
+            150px 130px 90px 100px repeat(4, 80px) 100px repeat(2, 140px)
             repeat(2, 100px);
         grid-gap: 4px;
 
@@ -49,20 +42,21 @@
         .stop-item {
             display: grid;
             grid-template-columns:
-                26px 150px 130px 90px 100px repeat(4, 80px) 100px repeat(
-                    2,
-                    140px
-                )
+                150px 130px 90px 100px repeat(4, 80px) 100px repeat(2, 140px)
                 repeat(2, 100px);
             grid-gap: 4px;
-            background: $bw2;
-
+            background: $white;
+            .stop-items-number {
+                .delete-icon {
+                    cursor: pointer;
+                    display: none;
+                }
+            }
             &:hover {
-                .stop-item-number {
-                    p {
-                        display: none;
-                    }
-
+                p {
+                    display: none;
+                }
+                .stop-items-number {
                     .delete-icon {
                         display: inline-block;
                     }

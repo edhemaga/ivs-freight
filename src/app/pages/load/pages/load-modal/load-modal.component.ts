@@ -91,6 +91,7 @@ import {
     TruckTypeResponse,
     TrailerTypeResponse,
     TagResponse,
+    AddressEntity,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -109,6 +110,9 @@ import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
 import { LoadAdditionalBilling } from '@pages/load/pages/load-modal/models/load-additional-billing.model';
 import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-dropdown.model';
+
+// Svg Routes
+import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
 
 @Component({
     selector: 'app-load-modal',
@@ -159,7 +163,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     // form
     public loadForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
-
+    public loadModalSvgRoutes = LoadModalSvgRoutes;
     // modal
     public originHeight: number;
     public loadModalSize: string = LoadModalStringEnum.MODAL_SIZE;
@@ -260,6 +264,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public pickupStopItems: LoadStopItemCommand[] = [];
     public deliveryStopItems: LoadStopItemCommand[] = [];
     public extraStopItems: LoadStopItemCommand[][] = [];
+    public selectedAddress: AddressEntity = null;
 
     public isCreatedNewStopItemsRow: LoadItemStop;
     public isEachStopItemsRowValid: boolean = true;
@@ -274,6 +279,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isAvailableAdvanceRate: boolean = false;
     public isVisibleBillDropdown: boolean = false;
     public isVisiblePayment: boolean = false;
+    
+    public payTypeDropdownList = LoadStopItems.PAYMENT_TYPES;
 
     // documents
     public documents: any[] = [];
@@ -379,6 +386,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickupStop: [LoadModalStringEnum.PICKUP_2],
             pickupStopOrder: [1],
             pickupShipper: [null, Validators.required],
+            pickupAddress: [null],
             pickupShipperContactId: [null],
             pickupDateFrom: [null, Validators.required],
             pickupDateTo: [null],
@@ -388,6 +396,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegHours: [null],
             pickuplegMinutes: [null],
             pickuplegCost: [null],
+            pickupInvolveDriver: [null],
 
             // delivery stop
             deliveryStop: [LoadModalStringEnum.DELIVERY_2],
@@ -414,6 +423,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillings: this.formBuilder.array([]),
             billingDropdown: [null],
             invoiced: [null],
+            payType:[null],
+            paymentDate: [null],
 
             // note, files
             note: [null],
@@ -434,6 +445,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe(
                 (isFormChange: boolean) => (this.isFormDirty = isFormChange)
             );
+
+            this.loadForm.valueChanges.subscribe(change => console.log(change));
     }
 
     private getCompanyUser(): void {
@@ -1308,11 +1321,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 value: this.selectedPickupShipper.address,
                                 logoName: null,
                             },
-                            {
-                                value: this.selectedPickupShipper.loadsCount,
-                                logoName: null,
-                                isCounter: true,
-                            },
+                            // {
+                            //     value: this.selectedPickupShipper.loadsCount,
+                            //     logoName: null,
+                            //     isCounter: true,
+                            // },
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -1448,11 +1461,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 value: this.selectedDeliveryShipper.address,
                                 logoName: null,
                             },
-                            {
-                                value: this.selectedDeliveryShipper.loadsCount,
-                                logoName: null,
-                                isCounter: true,
-                            },
+                            // {
+                            //     value: this.selectedDeliveryShipper.loadsCount,
+                            //     logoName: null,
+                            //     isCounter: true,
+                            // },
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -3239,6 +3252,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     });
 
+                    console.log(res, this.labelsShippers)
+
                     // shipper contacts
                     this.labelsShipperContacts = this.originShipperContacts =
                         res.shipperContacts.map((item) => {
@@ -3911,6 +3926,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }); 
         */
     }
+
+ 
 
     ngOnDestroy(): void {
         this.destroy$.next();

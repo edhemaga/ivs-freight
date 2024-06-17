@@ -81,29 +81,6 @@
                     text-align: right;
                 }
             }
-
-            span {
-                &:nth-child(2),
-                &:nth-child(3) {
-                    color: $default-label !important;
-                    opacity: 0;
-                    top: -19px;
-                    font-size: 11px;
-                    font-weight: $input-label-font-weight-600;
-                }
-            }
-
-            &.multiple-labels-position-on-focus {
-                span {
-                    &:nth-child(2),
-                    &:nth-child(3) {
-                        transition-delay: 300ms;
-                        color: $default-label !important;
-                        opacity: 1;
-                        top: -19px;
-                    }
-                }
-            }
         }
 
         &.required {

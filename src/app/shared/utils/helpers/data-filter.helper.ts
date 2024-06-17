@@ -13,7 +13,7 @@ export class DataFilterHelper {
             : event === TableStringEnum.IS_CLOSED
             ? data?.filter((dataItem) => dataItem[event])
             : data?.filter(
-                  (dataItem) => dataItem[typeName].name.toLowerCase() == event
+                  (dataItem) => dataItem[typeName]?.name?.toLowerCase() == event
               );
         return {
             selectedFilter:

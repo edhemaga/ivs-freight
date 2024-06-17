@@ -9,7 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ApplicantFileResponse } from './applicantFileResponse';
+import { FileResponse } from './fileResponse';
 import { MedicalCertificateReviewResponse } from './medicalCertificateReviewResponse';
 
 
@@ -20,7 +20,8 @@ export interface MedicalCertificateFeedbackResponse {
     reviewed?: boolean | null;
     approved?: boolean | null;
     applicantId?: number;
-    files?: Array<ApplicantFileResponse> | null;
+    files?: Array<FileResponse> | null;
     medicalCertificateReview?: MedicalCertificateReviewResponse;
+    review: any;
 }
 

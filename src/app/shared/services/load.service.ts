@@ -59,6 +59,7 @@ export class LoadService {
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
         status?: number,
+        dispatcherIds?: number[],
         dispatcherId?: number,
         dispatchId?: number,
         brokerId?: number,
@@ -71,35 +72,50 @@ export class LoadService {
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
+        rateFrom?: number,
+        rateTo?: number,
+        paidFrom?: number,
+        paidTo?: number,
+        dueFrom?: number,
+        dueTo?: number,
+        pickup?: boolean,
+        delivery?: boolean,
         sort?: string,
         search?: string,
         search1?: string,
         search2?: string
     ): Observable<LoadListResponse> {
-        // return this.loadService.apiLoadListGet(
-        //     loadType,
-        //     statusType,
-        //     status,
-        //     dispatcherId,
-        //     dispatchId,
-        //     brokerId,
-        //     shipperId,
-        //     dateFrom,
-        //     dateTo,
-        //     revenueFrom,
-        //     revenueTo,
-        //     truckId,
-        //     pageIndex,
-        //     pageSize,
-        //     companyId,
-        //     sort,
-        //     search,
-        //     search1,
-        //     search2
-        // );
-        return of(null);
+        return this.loadService.apiLoadListGet(
+            loadType,
+            statusType,
+            status,
+            dispatcherIds,
+            dispatcherId,
+            dispatchId,
+            brokerId,
+            shipperId,
+            dateFrom,
+            dateTo,
+            revenueFrom,
+            revenueTo,
+            truckId,
+            rateFrom,
+            rateTo,
+            paidFrom,
+            paidTo,
+            dueFrom,
+            dueTo,
+            pickup,
+            delivery,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            search,
+            search1,
+            search2
+        );
     }
-
     public getLoadMinimalList(
         pageIndex?: number,
         pageSize?: number

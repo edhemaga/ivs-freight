@@ -40,6 +40,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                 undefined,
                 undefined,
                 undefined,
+                1, // hotfix
                 1,
                 25
             )
@@ -48,15 +49,17 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                     return of('No load panding data...');
                 }),
                 tap((loadPagination: LoadListResponse) => {
-                    localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
-                        })
-                    );
+                    if (loadPagination) {
+                        localStorage.setItem(
+                            'loadTableCount',
+                            JSON.stringify({
+                                pendingCount: loadPagination.pendingCount,
+                                activeCount: loadPagination.activeCount,
+                                closedCount: loadPagination.closedCount,
+                                templateCount: loadPagination.templateCount,
+                            })
+                        );
+                    }
 
                     // this.loadPandingStore.set(loadPagination.pagination.data);
                 })

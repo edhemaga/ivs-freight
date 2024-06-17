@@ -163,6 +163,8 @@
                     ></app-ta-input-dropdown>
                 </div>
 
+                <!-- Truck -->
+
                 <div class="company-template-name-container">
                     <!-- Template Name -->
 
@@ -214,9 +216,29 @@
                 </div>
             </div>
 
-            <!-- Broker -->
+            <div class="load-ftl-fourth-row">
+                <app-ta-input-dropdown
+                    formControlName="dispatchId"
+                    [template]="'load-dispatches-ttd'"
+                    [inputConfig]="loadDispatchesTTDInputConfig"
+                    [options]="labelsDispatches"
+                    [activeItem]="selectedDispatches"
+                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
+                ></app-ta-input-dropdown>
+            </div>
 
+            <!-- Broker -->
             <div class="load-ftl-second-row">
+                <app-ta-input
+                    formControlName="referenceNumber"
+                    [inputConfig]="{
+                        name: 'Ref Number',
+                        type: 'text',
+                        label: 'Reference No.',
+                        isRequired: true,
+                        textTransform: 'uppercase'
+                    }"
+                ></app-ta-input>
                 <app-ta-input-dropdown
                     formControlName="brokerId"
                     [template]="'svgtext-template'"
@@ -236,7 +258,11 @@
                     [activeItem]="selectedBroker"
                     (selectedItem)="onSelectDropdown($event, 'broker')"
                 ></app-ta-input-dropdown>
+            </div>
 
+            <!-- Reference No, General Commodity, Weight -->
+
+            <div class="load-ftl-third-row">
                 <app-ta-input-dropdown
                     formControlName="brokerContactId"
                     [template]="'load-broker-contact'"
@@ -247,29 +273,13 @@
                     [activeItem]="selectedBrokerContact"
                     (selectedItem)="onSelectDropdown($event, 'broker-contact')"
                 ></app-ta-input-dropdown>
-            </div>
-
-            <!-- Reference No, General Commodity, Weight -->
-
-            <div class="load-ftl-third-row">
-                <app-ta-input
-                    formControlName="referenceNumber"
-                    [inputConfig]="{
-                        name: 'Ref Number',
-                        type: 'text',
-                        label: 'Reference No.',
-                        isRequired: true,
-                        textTransform: 'uppercase'
-                    }"
-                ></app-ta-input>
-
                 <app-ta-input-dropdown
                     formControlName="generalCommodity"
                     [template]="'svgtext-template'"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
-                        label: 'General Commodity',
+                        label: 'Commodity',
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-200',
                         blackInput: true,
@@ -293,20 +303,6 @@
                     }"
                 ></app-ta-input>
             </div>
-
-            <!-- Truck -->
-
-            <div class="load-ftl-fourth-row">
-                <app-ta-input-dropdown
-                    formControlName="dispatchId"
-                    [template]="'load-dispatches-ttd'"
-                    [inputConfig]="loadDispatchesTTDInputConfig"
-                    [options]="labelsDispatches"
-                    [activeItem]="selectedDispatches"
-                    (selectedItem)="onSelectDropdown($event, 'dispatches')"
-                ></app-ta-input-dropdown>
-            </div>
-
             <!-- Requirement -->
 
             <div
@@ -501,7 +497,7 @@
 
                     <!-- Pickup Stop  -->
 
-                    <app-load-modal-stop
+                    <app-load-modal-stop 
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
                         [isDelivery]="false"
@@ -571,12 +567,12 @@
                                             .get('pickupShipper')
                                             .markAsTouched()
                                     "
-                                ></app-ta-input-dropdown>
+                                >
+                                </app-ta-input-dropdown>
                             </div>
                         </div>
 
                         <!-- Work Hours, Appointment, Shipper Contact -->
-
                         <div class="load-shipper-contact-row">
                             <app-ta-tab-switch
                                 [tabs]="stopTimeTabsPickup"
@@ -708,9 +704,17 @@
                             ></app-ta-input>
                         </div>
 
+                        <div class="stop-load-date-time-driver">
+                            <app-ta-checkbox
+                                formControlName="pickupInvolveDriver"
+                                [customClass]="'medium'"
+                                [label]="'Involve driver in loading the cargo'"
+                            ></app-ta-checkbox>
+                        </div>
+
                         <!-- Stop Items -->
 
-                        <div class="stop-items-wrapper">
+                        <div class="stop-items-wrapper ">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
                                 [isCardOpen]="pickupStopItems.length"
@@ -726,6 +730,7 @@
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
+                                [customClass]="'scrollable'"
                             >
                                 <app-load-modal-stop-items
                                     [createNewStopItemsRow]="
@@ -1195,6 +1200,7 @@
                         [shipperContact]="{
                             fullName: selectedDeliveryShipperContact?.name
                         }"
+                        [isDestinationTab]="true"
                         [disabledCard]="!selectedPickupShipper"
                         [isCardOpen]="isActiveDeliveryStop"
                         [state]="
@@ -1439,9 +1445,10 @@
                         <div
                             class="d-flex align-items-center stops-footer-bar-left-side"
                         >
-                            <p class="m-0 ta-font-bold stops-footer-bar-text">
-                                LOADED
-                            </p>
+                            <svg-icon
+                                [src]="loadModalSvgRoutes.loadIcon"
+                                class="load-modal-icon"
+                            ></svg-icon>
 
                             <span class="m-0 ta-font-bold loaded-miles-value"
                                 >{{
@@ -1455,17 +1462,30 @@
                         <div
                             class="d-flex align-items-center stops-footer-bar-right-side"
                         >
-                            <p class="m-0 ta-font-bold stops-footer-bar-text">
-                                TOTAL
-                            </p>
+                            <div>
+                                <svg-icon
+                                    [src]="loadModalSvgRoutes.milesIcon"
+                                    class="load-modal-icon"
+                                ></svg-icon>
 
-                            <span class="m-0 ta-font-bold total-miles-value"
-                                >{{
-                                    loadForm.get('totalMiles').value
-                                        | number : '1.2-2'
-                                }}
-                                <span>mi</span>
-                            </span>
+                                <span class="m-0 ta-font-bold total-miles-value"
+                                    >{{
+                                        loadForm.get('totalMiles').value
+                                            | number : '1.2-2'
+                                    }}
+                                    <span>mi</span>
+                                </span>
+                            </div>
+
+                            <div class="load-modal-time">
+                                <svg-icon
+                                    [src]="loadModalSvgRoutes.timeIcon"
+                                    class="load-modal-icon"
+                                ></svg-icon>
+                                <span class="m-0 ta-font-bold total-miles-value"
+                                    >≈ 0m</span
+                                >
+                            </div>
                         </div>
                     </div>
                 </app-ta-custom-card>
@@ -1519,7 +1539,7 @@
                                     priceSeparator: true,
                                     priceSeparatorLimitation: 6,
                                     placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'green',
+                                    placeholderIconColor: 'blue',
                                     inputCursorOnRightSide: true,
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true
@@ -1532,7 +1552,7 @@
                                 selectedDispatches.payType === 'Flat Rate'
                             "
  -->
-                            <app-ta-input
+                            <!-- <app-ta-input
                                 formControlName="driverRate"
                                 [inputConfig]="{
                                     name: 'price-separator',
@@ -1548,7 +1568,7 @@
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true
                                 }"
-                            ></app-ta-input>
+                            ></app-ta-input>  -->
 
                             <!-- Adjusted Rate -->
                             <!--  *ngIf="
@@ -1559,7 +1579,7 @@
                                         ?.checked &&
                                     this.selectedAdditionalBillings[0]?.id === 6
                                 " -->
-                            <app-ta-input
+                            <!-- <app-ta-input
                                 formControlName="adjustedRate"
                                 [inputConfig]="{
                                     name: 'price-separator',
@@ -1577,7 +1597,7 @@
                                     hideDangerMark: true
                                 }"
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
-                            ></app-ta-input>
+                            ></app-ta-input> -->
 
                             <div formArrayName="additionalBillings">
                                 <div
@@ -1620,48 +1640,88 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- 
-                                *ngIf="isVisibleBillDropdown" -->
-                            <app-ta-input-dropdown
-                                formControlName="billingDropdown"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Additional',
-                                    isDropdown: true,
-                                    labelInInput: true,
-                                    autoFocus: true,
-                                    dropdownWidthClass: 'w-col-198',
-                                    readOnly: true
-                                }"
-                                [options]="additionalBillingTypes"
-                                [activeItem]="null"
-                                (selectedItem)="addAdditionalBilling($event)"
-                            ></app-ta-input-dropdown>
+                            <ng-container *ngIf="isVisibleBillDropdown">
+                                <app-ta-input-dropdown
+                                    formControlName="billingDropdown"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Additional',
+                                        isDropdown: true,
+                                        labelInInput: true,
+                                        autoFocus: true,
+                                        dropdownWidthClass: 'w-col-198',
+                                        readOnly: true
+                                    }"
+                                    [options]="additionalBillingTypes"
+                                    [activeItem]="null"
+                                    (selectedItem)="
+                                        addAdditionalBilling($event)
+                                    "
+                                ></app-ta-input-dropdown>
+                            </ng-container>
                         </div>
-                        <!-- 
-                                *ngIf="isVisiblePayment" -->
-                        <div class="load-financial-payment">
-                            <app-ta-input
-                                formControlName="advancePay"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Advance',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'purple',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    removeInput: true
-                                }"
-                                (clear)="removeAdditionalPayment()"
-                            ></app-ta-input>
+
+                        <div>
+                            <ng-container *ngIf="isVisiblePayment">
+                                <div class="load-financial-payment">
+                                    <app-ta-input
+                                        formControlName="advancePay"
+                                        [inputConfig]="{
+                                            name: 'price-separator',
+                                            type: 'text',
+                                            label: 'Advance',
+                                            labelInInput: true,
+                                            isRequired: true,
+                                            priceSeparator: true,
+                                            priceSeparatorLimitation: 6,
+                                            placeholderIconRightSide: 'dollar',
+                                            placeholderIconColor: 'green',
+                                            inputCursorOnRightSide: true,
+                                            hideErrorMessage: true,
+                                            hideRequiredCheck: true,
+                                            hideDangerMark: true,
+                                            removeInput: true
+                                        }"
+                                        (clear)="removeAdditionalPayment()"
+                                    ></app-ta-input>
+
+                                    <app-ta-input-dropdown
+                                        formControlName="payType"
+                                        [inputConfig]="{
+                                            name: 'payType',
+                                            type: 'text',
+                                            label: 'Pay Type',
+                                            labelInInput: true,
+                                            isRequired: true,
+                                            placeholderIconRightSide: 'billing',
+                                            placeholderIconColor: 'blue',
+                                            inputCursorOnRightSide: true,
+                                            hideErrorMessage: true,
+                                            hideRequiredCheck: true,
+                                            hideDangerMark: true,
+                                            removeInput: true
+                                        }"
+                                        [canOpenModal]="true"
+                                        [options]="payTypeDropdownList"
+                                        [activeItem]="selectedPayType"
+                                        (selectedItem)="
+                                            onSelectDropDown($event, 'pay-type')
+                                        "
+                                    ></app-ta-input-dropdown>
+
+                                    <app-ta-input
+                                        formControlName="paymentDate"
+                                        [inputConfig]="{
+                                            name: 'datepicker',
+                                            type: 'text',
+                                            label: 'Date',
+                                            placeholderIcon: 'date',
+                                            customClass: 'datetimeclass'
+                                        }"
+                                    ></app-ta-input>
+                                </div>
+                            </ng-container>
                         </div>
 
                         <div class="load-financial-invoice">
@@ -1685,7 +1745,7 @@
 
             <!-- Comments -->
 
-            <div class="load-modal-row">
+            <!-- <div class="load-modal-row">
                 <app-ta-custom-card
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"
@@ -1718,7 +1778,7 @@
                         ></app-ta-comment>
                     </ng-container>
                 </app-ta-custom-card>
-            </div>
+            </div> -->
 
             <!-- Documents -->
 

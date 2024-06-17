@@ -53,6 +53,8 @@ export interface ApiRepairshopPostRequest {
     Contacts?: Array<RepairShopContactCommand>;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;
+    Cover?: Blob;
+    CoverIdForDelete?: number;
     ShopServiceType?: number;
 }
 

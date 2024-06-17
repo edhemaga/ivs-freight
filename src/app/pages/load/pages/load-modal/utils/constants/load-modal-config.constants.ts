@@ -46,7 +46,7 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Shipper', 'City, State, Zip', 'Loads'],
+            labels: ['Shipper', 'Address'],
             customClass: 'load-shipper',
         },
         isDropdown: true,
@@ -74,7 +74,7 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Shipper', 'City, State, Zip', 'Loads'],
+            labels: ['Shipper', 'Address'],
             customClass: 'load-shipper',
         },
         isDropdown: true,

@@ -1075,7 +1075,7 @@
 
 .load-ftl-second-row {
     display: grid;
-    grid-template-columns: 234px 370px;
+    grid-template-columns: 172px 432px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -1084,7 +1084,7 @@
 
 .load-ftl-third-row {
     display: grid;
-    grid-template-columns: 234px 200px 158px;
+    grid-template-columns: 308px 142px 142px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
@@ -1096,7 +1096,7 @@
     -moz-column-gap: 12px;
     column-gap: 12px;
     align-items: center;
-    margin-bottom: 22px;
+    margin-bottom: 32px;
 }
 
 .load-shipper-contact-row {
@@ -1150,6 +1150,10 @@
         align-items: center;
         -moz-column-gap: 12px;
         column-gap: 12px;
+    }
+
+    &-driver {
+        margin-bottom: 6px;
     }
 }
 
@@ -1281,3 +1285,7 @@
 }
 
 // ------------------------------------------------ end ------------------------------------------------
+
+app-load-modal-stop app-load-modal-stop-items .input-custom-group .input-control {
+    background-color: #fff;
+}

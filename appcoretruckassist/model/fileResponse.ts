@@ -19,5 +19,6 @@ export interface FileResponse {
     tags?: Array<string> | null;
     tagGeneratedByUser?: boolean;
     updatedAt?: string | null;
+    review: any;
 }
 
