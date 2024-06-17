@@ -80,7 +80,7 @@ import { CommonModule } from '@angular/common';
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 
-// helpers
+// constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 // config

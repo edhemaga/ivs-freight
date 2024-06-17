@@ -76,7 +76,7 @@ import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-add
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 
-// helpers
+// constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 // config

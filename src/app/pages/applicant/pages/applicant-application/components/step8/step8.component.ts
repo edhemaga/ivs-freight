@@ -70,7 +70,7 @@ import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiob
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
-// helpers
+// constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 // config

@@ -21,14 +21,15 @@
 
     <div class="divider"></div>
 
-    <div
-        *ngIf="!isEditing"
-        class="d-flex align-self-start violation-detail"
-    >
-        <p class="m-0 ta-font-extra-bold">
-            Violation Detail
-        </p>
-    </div>
+    <ng-container *ngIf="!isEditing">
+        <div
+            class="d-flex align-self-start violation-detail"
+        >
+            <p class="m-0 ta-font-extra-bold">
+                Violation Detail
+            </p>
+        </div>
+    </ng-container>
 
     <div class="d-flex flex-column step-form" [formGroup]="violationsForm">
         <div

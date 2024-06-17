@@ -36,7 +36,7 @@ import { SharedModule } from '@shared/shared.module';
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
-// helpers
+// constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({

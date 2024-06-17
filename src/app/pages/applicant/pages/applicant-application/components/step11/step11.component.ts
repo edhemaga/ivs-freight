@@ -41,8 +41,10 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { ApplicantCardComponent } from '@pages/applicant/components/applicant-card/applicant-card.component';
 
 // helpers
-import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// constants
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
     selector: 'app-step11',

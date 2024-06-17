@@ -64,7 +64,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 
-// helpers
+// constants
 import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
@@ -518,14 +518,6 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
             });
         }
     }
-
-    // public onDeleteViolation(index: number): void {
-    //     if (this.isEditing) {
-    //         return;
-    //     }
-
-    //     this.violationsArray.splice(index, 1);
-    // }
 
     public getViolationFormValues(event: any): void {
         this.violationsArray = [...this.violationsArray, event];
