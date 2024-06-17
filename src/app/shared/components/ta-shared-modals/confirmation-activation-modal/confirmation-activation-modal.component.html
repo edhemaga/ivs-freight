@@ -245,13 +245,14 @@
                                 <div
                                     class="m-0 ta-font-bold"
                                     [class.limit-text]="
-                                        editData?.template !== 'truck'
+                                        editData?.template !== 'truck' &&
+                                        editData?.template !== 'trailer'
                                     "
                                     [class.shorter-text]="
                                         editData?.type === 'open'
                                     "
                                 >
-                                    {{ editData?.modalTitle }}
+                                    {{ item?.modalTitle }}
                                 </div>
 
                                 <ng-container *ngIf="editData?.type === 'open'">
@@ -271,7 +272,7 @@
                                     editData.template !== 'trailer'
                                 "
                             >
-                                {{ editData?.modalSecondTitle }}
+                                {{ item?.modalSecondTitle }}
                             </div>
                         </ng-template>
                     </ng-container>
