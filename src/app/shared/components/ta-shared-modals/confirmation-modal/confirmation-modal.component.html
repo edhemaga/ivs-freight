@@ -482,18 +482,22 @@
                                 class="confirmation-info d-flex flex-column justify-content-center"
                             >
                                 <div
-                                    class="d-flex flex-row justify-content-left"
+                                    class="d-flex flex-row justify-content-left gap-1"
                                 >
-                                    <img
-                                        class="avatar-img"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationVoidSvg
-                                        "
-                                        alt="avatar"
-                                    />
+                                    <div
+                                        class="confirmation-img-container d-flex align-items-center justify-content-center"
+                                    >
+                                        <img
+                                            class="confirmation-img"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationVoidSvg
+                                            "
+                                            alt="avatar"
+                                        />
+                                    </div>
                                     <div>
                                         <p
-                                            class="m-0 confirmation-text-1 d-flex align-items-center"
+                                            class="m-0 confirmation-text-1 large-text-1 d-flex align-items-center"
                                         >
                                             {{
                                                 editData?.data.state
@@ -501,7 +505,9 @@
                                             }}
                                             {{ editData?.data.licensePlate }}
                                         </p>
-                                        <p class="m-0 confirmation-text-2">
+                                        <p
+                                            class="m-0 confirmation-text-2 large-text-2"
+                                        >
                                             {{
                                                 editData?.data.expDate
                                                     | formatDateP
