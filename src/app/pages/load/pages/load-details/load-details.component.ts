@@ -1,17 +1,42 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Subject, takeUntil, take } from 'rxjs';
 
-//Services
+// modules
+import { SharedModule } from '@shared/shared.module';
+
+// services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { LoadService } from '@shared/services/load.service';
 
-//Models
+// components
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import { LoadDetailsItemComponent } from '@pages/load/pages/load-details/components/load-details-item/load-details-item.component';
+import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
+
+// pipes
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+// store
+import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
+
+// models
 import { LoadResponse } from 'appcoretruckassist';
 import { MapRoute } from '@shared/models/map-route.model';
-
-//Store
-import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
 
 interface IStopRoutes {
     longitude: number;
@@ -25,14 +50,44 @@ interface IStopRoutes {
     selector: 'app-load-details',
     templateUrl: './load-details.component.html',
     styleUrls: ['./load-details.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+
+        // components
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+
+        TaDetailsHeaderComponent,
+        TaDetailsHeaderCardComponent,
+        TaChartComponent,
+        TaMapsComponent,
+        LoadDetailsItemComponent,
+        LoadDetailsCardComponent,
+
+        // pipes
+        FormatCurrencyPipe,
+        FormatDatePipe,
+    ],
     providers: [DetailsPageService],
 })
 export class LoadDetailsComponent implements OnInit, OnDestroy {
-    public loadConfig: any;
     private destroy$ = new Subject<void>();
+
+    public loadConfig: any;
+
     public statusIsClosed: boolean;
     public dataTest: any;
     public loadStopRoutes: MapRoute[] = [];
+
     constructor(
         private activated_route: ActivatedRoute,
         private detailsPageService: DetailsPageService,
@@ -58,6 +113,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                     error: () => {},
                 });
             });
+
         this.detailCongif(this.activated_route.snapshot.data.loadItem);
         this.initTableOptions(this.activated_route.snapshot.data.loadItem);
     }
