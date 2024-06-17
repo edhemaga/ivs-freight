@@ -14,8 +14,8 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import { getPayrollDriverMilesDefinition } from '@shared/utils/settings/table-settings/payroll-columns';
 
 // Store
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
-import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
+import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { DriversInactiveState } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { PayrollQuery } from '@pages/accounting/pages/payroll/state/payroll.query';
@@ -39,7 +39,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
     viewData: any[] = [];
     resizeObserver: ResizeObserver;
 
-    driversActive: DriversActiveState[] = [];
+    driversActive: DriverState[] = [];
     driversInactive: DriversInactiveState[] = [];
     mapingIndex: number = 0;
     payrollData: Observable<any>;
@@ -49,7 +49,7 @@ export class PayrollComponent implements OnInit, AfterViewInit {
 
     constructor(
         // Store
-        private driversActiveQuery: DriversActiveQuery,
+        private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private payrollQuery: PayrollQuery,
 

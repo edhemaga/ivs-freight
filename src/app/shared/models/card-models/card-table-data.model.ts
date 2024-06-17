@@ -57,6 +57,10 @@ export interface Rating {
 }
 
 export interface CardDetails {
+    tableDOB?: string;
+    textShortName?: string;
+    avatarColor?: string;
+    avatarImg?: string;
     filteredTrucks?: Truck[];
     trailers?: Trailers[];
     truckCount?: number;
@@ -170,6 +174,7 @@ export interface CardDetails {
     businessName?: string;
     billingAddress?: Address;
     address?: Address;
+    fullName?: string;
 }
 
 export interface PmTruckProgressData {

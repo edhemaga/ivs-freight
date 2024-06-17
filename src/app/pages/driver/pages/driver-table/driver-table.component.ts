@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { forkJoin, map, Subject, takeUntil, tap } from 'rxjs';
+import { forkJoin, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
 // components
@@ -21,17 +21,20 @@ import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
 
 // store
-import { DriversActiveState } from '@pages/driver/state/driver-active-state/driver-active.store';
+import { DriverState } from '@pages/driver/state/driver-state/driver.store';
 import {
     DriversInactiveState,
     DriversInactiveStore,
 } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 import { ApplicantTableStore } from '@pages/driver/state/applicant-state/applicant-table.store';
-import { DriversActiveQuery } from '@pages/driver/state/driver-active-state/driver-active.query';
+import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
 import { ApplicantTableQuery } from '@pages/driver/state/applicant-state/applicant-table.query';
+import { Store, select } from '@ngrx/store';
+import { selectActiveTabCards, selectDriverApplicantTabCards, selectInactiveTabCards } from '@pages/driver/pages/driver-card-modal/state/driver-card-modal.selectors';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -72,6 +75,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+
 @Component({
     selector: 'app-driver-table',
     templateUrl: './driver-table.component.html',
@@ -89,7 +93,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public columns: GridColumn[] = [];
     public selectedTab: string = TableStringEnum.ACTIVE;
     public activeViewMode: string = TableStringEnum.LIST;
-    public driversActive: DriversActiveState[] = [];
+    public driversActive: DriverState[] = [];
     public driversInactive: DriversInactiveState[] = [];
     public applicantData: ApplicantShortResponse[] = [];
     public inactiveTabClicked: boolean = false;
@@ -128,6 +132,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
+    public displayRows$: Observable<any>; //leave this as any for now
 
     constructor(
         private router: Router,
@@ -141,13 +146,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private imageBase64Service: ImageBase64Service,
+        private driverCardsModalService: DriverCardsModalService,
 
         // store
-        private driversActiveQuery: DriversActiveQuery,
+        private driversActiveQuery: DriverQuery,
         private driversInactiveQuery: DriversInactiveQuery,
         private applicantQuery: ApplicantTableQuery,
         private driversInactiveStore: DriversInactiveStore,
         private applicantStore: ApplicantTableStore,
+        private store: Store,
 
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
@@ -651,6 +658,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this.setDriverData(td);
+        this.updateCardView();
     }
 
     private getTabData(dataType: string): DriversInactiveState[] {
@@ -1704,6 +1712,30 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
             });
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            case TableStringEnum.APPLICANTS:
+                this.displayRows$ = this.store.pipe(
+                    select(selectDriverApplicantTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.driverCardsModalService.updateTab(this.selectedTab);
     }
 
     ngOnDestroy(): void {

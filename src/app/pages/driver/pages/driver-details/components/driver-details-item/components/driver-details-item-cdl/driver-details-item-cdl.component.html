@@ -21,7 +21,7 @@
         [options]="cdlOptionsDropdownList[i]"
         [optionsId]="cdl?.id"
         [noteIcons]="
-            (cdl.note && cdl.note != 'null') || cdlNote?.value
+            (cdl?.note && cdl?.note != 'null') || cdlNote?.value
                 ? 'assets/svg/truckassist-table/note/Note.svg'
                 : 'assets/svg/truckassist-table/note/Note - Empty.svg'
         "
@@ -55,7 +55,7 @@
                 <!-- Restrictions, Endorsements -->
 
                 <div class="align-items-center cdl-card-inner-container">
-                    <ng-container *ngIf="cdl?.cdlRestrictions.length">
+                    <ng-container *ngIf="cdl?.cdlRestrictions?.length">
                         <div
                             class="d-flex flex-column jusitfy-content-center cdl-card-box"
                         >
@@ -80,7 +80,7 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="cdl?.cdlEndorsements.length">
+                    <ng-container *ngIf="cdl?.cdlEndorsements?.length">
                         <div
                             class="d-flex flex-column jusitfy-content-center cdl-card-box"
                         >

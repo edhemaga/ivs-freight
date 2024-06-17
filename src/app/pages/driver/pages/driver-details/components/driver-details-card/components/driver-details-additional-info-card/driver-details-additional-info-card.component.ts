@@ -48,24 +48,24 @@ export class DriverDetailsAdditionalInfoCardComponent implements OnChanges {
             },
             {
                 title: DriverDetailsCardStringEnum.FUEL_CARD,
-                content: this.cardData.fuelCards.length
+                content: this.cardData?.fuelCards?.length
                     ? this.cardData.fuelCards[
-                          this.cardData.fuelCards.length - 1
+                          this.cardData?.fuelCards?.length - 1
                       ]
                     : DriverDetailsCardStringEnum.SLASH,
             },
             {
                 title: DriverDetailsCardStringEnum.TWIC_EXP,
-                content: this.cardData.twicExpDate
+                content: this.cardData?.twicExpDate
                     ? MethodsCalculationsHelper.convertDateFromBackend(
-                          this.cardData.twicExpDate
+                          this.cardData?.twicExpDate
                       )
                     : DriverDetailsCardStringEnum.SLASH,
             },
             {
                 title: DriverDetailsCardStringEnum.MVR_EXP,
                 content:
-                    this.cardData.mvrExpiration +
+                    this.cardData?.mvrExpiration +
                     DriverDetailsCardStringEnum.MONTHS,
             },
         ];

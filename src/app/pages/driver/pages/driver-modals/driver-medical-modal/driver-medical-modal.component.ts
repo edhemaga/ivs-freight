@@ -74,6 +74,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     public modalName: string;
 
+    private driverStatus: number;
+
     // documents
     public documents: any[] = [];
     public filesForDelete: any[] = [];
@@ -198,6 +200,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     public onFilesEvent(event: any): void {
         this.documents = event.files;
+
         switch (event.action) {
             case DriverMedicalModalStringEnum.ADD:
                 this.medicalForm
@@ -226,8 +229,10 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
+
+                this.driverStatus = status;
 
                 this.modalName = firstName.concat(
                     DriverMedicalModalStringEnum.EMPTY_STRING,
@@ -280,6 +285,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
@@ -320,6 +326,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
         const newData = {
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
             expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
