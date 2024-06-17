@@ -44,8 +44,7 @@ export class DriverCdlService {
 
         return this.cdlService.apiCdlPost().pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -55,8 +54,7 @@ export class DriverCdlService {
 
         return this.cdlService.apiCdlPut().pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -68,8 +66,7 @@ export class DriverCdlService {
     }): Observable<any> {
         return this.cdlService.apiCdlIdDelete(data?.id).pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -81,8 +78,7 @@ export class DriverCdlService {
     }): Observable<any> {
         return this.cdlService.apiCdlActivateIdPut(data?.id).pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -94,8 +90,7 @@ export class DriverCdlService {
     }) {
         return this.cdlService.apiCdlDeactivateIdPut(data?.driverId).pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -103,8 +98,7 @@ export class DriverCdlService {
     public renewCdlUpdate(data: any): Observable<any> {
         return this.cdlService.apiCdlRenewPost(data).pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }

@@ -44,8 +44,7 @@ export class DriverDrugAlcoholTestService {
 
         return this.drugService.apiTestPost().pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -55,8 +54,7 @@ export class DriverDrugAlcoholTestService {
 
         return this.drugService.apiTestPut().pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -68,8 +66,7 @@ export class DriverDrugAlcoholTestService {
     }): Observable<any> {
         return this.drugService.apiTestIdDelete(data?.id).pipe(
             tap(() => {
-                if (data?.driverId)
-                    this.setStoreData(data.driverId, data?.driverStatus);
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }

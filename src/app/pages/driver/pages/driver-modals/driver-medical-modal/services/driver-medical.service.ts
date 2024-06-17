@@ -12,11 +12,13 @@ import { DriverStore } from '@pages/driver/state/driver-state/driver.store';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
 import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list-state/driver-details-list.store';
 import { DriversInactiveStore } from '@pages/driver/state/driver-inactive-state/driver-inactive.store';
-import { DriverQuery } from '@pages/driver/state/driver-state/driver.query';
-import { DriversInactiveQuery } from '@pages/driver/state/driver-inactive-state/driver-inactive.query';
 
 // models
-import { MedicalResponse, MedicalService } from 'appcoretruckassist';
+import {
+    CreateWithUploadsResponse,
+    MedicalResponse,
+    MedicalService,
+} from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
@@ -30,102 +32,40 @@ export class DriverMedicalService {
         private formDataService: FormDataService,
 
         // sstore
-        private driverActiveQuery: DriverQuery,
-        private driverInactiveQuery: DriversInactiveQuery,
-        private driverInactiveStore: DriversInactiveStore,
         private driverStore: DriverStore,
-        private driverItemStore: DriversItemStore,
-        private dlStore: DriversDetailsListStore
+        private driverInactiveStore: DriversInactiveStore,
+        private driverDetailsListStore: DriversDetailsListStore,
+        private driverItemStore: DriversItemStore
     ) {}
 
-    public addMedical(data: any): Observable<any> {
+    public addMedical(data: any): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.medicalService.apiMedicalPost().pipe(
             tap(() => {
-                if (data?.driverId) {
-                    this.driverService.getDriverById(data.driverId).subscribe({
-                        next: (driver: any) => {
-                            let driverInStore = null;
-
-                            // Get Driver From Store
-                            if (data.tableActiveTab === 'active') {
-                                driverInStore =
-                                    this.driverActiveQuery.getEntity(
-                                        data.driverId
-                                    );
-                            } else if (data.tableActiveTab === 'inactive') {
-                                driverInStore =
-                                    this.driverInactiveQuery.getEntity(
-                                        data.driverId
-                                    );
-                            }
-
-                            // Update Driver Data
-                            driver = {
-                                ...driver,
-                                name: driver.firstName + ' ' + driver.lastName,
-                                cdlNumber: driverInStore?.cdlNumber
-                                    ? driverInStore.cdlNumber
-                                    : null,
-                                fileCount: driver?.filesCountForList
-                                    ? driver.filesCountForList
-                                    : 0,
-                            };
-
-                            // Update Driver Store
-                            if (data.tableActiveTab === 'active') {
-                                this.driverStore.remove(
-                                    ({ id }) => id === data.driverId
-                                );
-
-                                this.driverStore.add(driver);
-                            } else if (data.tableActiveTab === 'inactive') {
-                                this.driverInactiveStore.remove(
-                                    ({ id }) => id === data.driverId
-                                );
-
-                                this.driverInactiveStore.add(driver);
-                            }
-
-                            // Send Update Data To Table
-                            this.tableService.sendActionAnimation({
-                                animation: 'update',
-                                data: driver,
-                                id: driver.id,
-                            });
-                        },
-                    });
-                }
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
 
-    public deleteMedicalById(id: number): Observable<any> {
-        return this.medicalService.apiMedicalIdDelete(id).pipe(
+    public updateMedical(data: any): Observable<CreateWithUploadsResponse> {
+        this.formDataService.extractFormDataFromFunction(data);
+
+        return this.medicalService.apiMedicalPut().pipe(
             tap(() => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const dr = this.driverItemStore.getValue();
-                const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+                this.setStoreData(data.driverId, data?.driverStatus);
+            })
+        );
+    }
 
-                let indexNum;
-                newData.medicals.map((reg: any, index: any) => {
-                    if (reg.id == id) {
-                        indexNum = index;
-                    }
-                });
-
-                newData.medicals.splice(indexNum, 1);
-
-                this.tableService.sendActionAnimation({
-                    animation: 'update',
-                    data: newData,
-                    id: newData.id,
-                });
-
-                this.dlStore.add(newData);
-                this.driverItemStore.set([newData]);
+    public deleteMedicalById(data: {
+        id: number;
+        driverId: number;
+        driverStatus: number;
+    }): Observable<any> {
+        return this.medicalService.apiMedicalIdDelete(data?.id).pipe(
+            tap(() => {
+                this.setStoreData(data.driverId, data?.driverStatus);
             })
         );
     }
@@ -134,34 +74,37 @@ export class DriverMedicalService {
         return this.medicalService.apiMedicalIdGet(id);
     }
 
-    public updateMedical(data: any): Observable<object> {
-        this.formDataService.extractFormDataFromFunction(data);
-        return this.medicalService.apiMedicalPut().pipe(
-            tap((res: any) => {
-                let driverId = this.driverItemStore.getValue().ids[0];
-                const dr = this.driverItemStore.getValue();
-                const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+    private setStoreData(driverId: number, driverStatus: number): void {
+        this.driverService
+            .getDriverMedicalsById(driverId)
+            .pipe(
+                tap((medicals) => {
+                    const storeData = this.driverItemStore.getValue();
+                    const driverData = JSON.parse(
+                        JSON.stringify(storeData.entities)
+                    );
+                    const driver = driverData[driverId];
 
-                this.medicalService.apiMedicalIdGet(res.id).subscribe({
-                    next: (resp: any) => {
-                        newData.medicals.map((reg: any, index: any) => {
-                            if (reg.id == resp.id) {
-                                newData.medicals[index] = resp;
-                            }
-                        });
+                    const mappedDriver = {
+                        ...driver,
+                        name: driver.firstName + ' ' + driver.lastName,
+                        medicals,
+                    };
 
-                        this.tableService.sendActionAnimation({
-                            animation: 'update',
-                            data: newData,
-                            id: newData.id,
-                        });
+                    this.driverDetailsListStore.add(mappedDriver);
+                    this.driverItemStore.set([mappedDriver]);
 
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
-                    },
-                });
-            })
-        );
+                    driverStatus
+                        ? this.driverStore.add(mappedDriver)
+                        : this.driverInactiveStore.add(driver);
+
+                    this.tableService.sendActionAnimation({
+                        animation: 'update',
+                        data: mappedDriver,
+                        id: mappedDriver.id,
+                    });
+                })
+            )
+            .subscribe();
     }
 }

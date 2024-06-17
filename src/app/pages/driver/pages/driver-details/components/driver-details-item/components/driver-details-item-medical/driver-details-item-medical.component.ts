@@ -162,8 +162,14 @@ export class DriverDetailsItemMedicalComponent
     }
 
     private deleteMedicalById(id: number): void {
+        const data = {
+            id,
+            driverId: this.driver?.id,
+            driverStatus: this.driver?.status,
+        };
+
         this.medicalService
-            .deleteMedicalById(id)
+            .deleteMedicalById(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
