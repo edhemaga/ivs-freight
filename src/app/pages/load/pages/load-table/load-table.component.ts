@@ -452,8 +452,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             toolbarActions: {
                 hideActivationButton: true,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                showDispatcherFilter:
-                    this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
@@ -658,7 +656,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadTableData = this.viewData;
     }
 
-    private mapLoadData(data: LoadModel): LoadModel {
+    private mapLoadData(data: LoadModel) /* : LoadModel */ {
+        console.log('load', data);
         let commentsWithAvatarColor;
 
         if (data.comments) {
@@ -727,41 +726,50 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadPickup: {
-                count: data?.stops[0]?.stopLoadOrder
-                    ? data.stops[0].stopLoadOrder
-                    : null,
+                count: data?.stops && (data?.stops[0]?.stopLoadOrder ?? null),
                 location:
+                    data?.stops &&
                     data?.stops[0]?.shipper?.address?.city +
-                    TableStringEnum.COMA +
-                    data?.stops[0]?.shipper?.address?.stateShortName,
-                date: data?.stops[0]?.dateFrom
-                    ? this.datePipe.transform(
-                          data.stops[0].dateFrom,
-                          TableStringEnum.DATE_FORMAT
-                      )
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                time: data?.stops[0]?.timeFrom
-                    ? data.stops[0].timeFrom
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        TableStringEnum.COMA +
+                        data?.stops[0]?.shipper?.address?.stateShortName,
+                date:
+                    data?.stops &&
+                    (data?.stops[0]?.dateFrom
+                        ? this.datePipe.transform(
+                              data.stops[0].dateFrom,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time:
+                    data?.stops &&
+                    (data?.stops[0]?.timeFrom
+                        ? data.stops[0].timeFrom
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
             },
             loadDelivery: {
-                count: data?.stops[data.stops.length - 1]?.stopLoadOrder
-                    ? data.stops[data.stops.length - 1].stopLoadOrder
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                count:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.stopLoadOrder ??
+                        TableStringEnum.EMPTY_STRING_PLACEHOLDER),
                 location:
+                    data?.stops &&
                     data?.stops[data.stops.length - 1]?.shipper?.address?.city +
-                    TableStringEnum.COMA +
-                    data?.stops[data.stops.length - 1]?.shipper?.address
-                        ?.stateShortName,
-                date: data?.stops[data.stops.length - 1]?.dateFrom
-                    ? this.datePipe.transform(
-                          data.stops[data.stops.length - 1].dateFrom,
-                          TableStringEnum.DATE_FORMAT
-                      )
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                time: data?.stops[data.stops.length - 1]?.timeFrom
-                    ? data.stops[data.stops.length - 1].timeFrom
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                        TableStringEnum.COMA +
+                        data?.stops[data.stops.length - 1]?.shipper?.address
+                            ?.stateShortName,
+                date:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.dateFrom
+                        ? this.datePipe.transform(
+                              data.stops[data.stops.length - 1].dateFrom,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+                time:
+                    data?.stops &&
+                    (data?.stops[data.stops.length - 1]?.timeFrom
+                        ? data.stops[data.stops.length - 1].timeFrom
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
             },
             loadStatus: {
                 status: data?.status?.name
@@ -863,7 +871,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         isShowMore?: boolean
     ): void {
-        this.loadServices
+        /*  this.loadServices
             .getLoadList(
                 filter.loadType,
                 filter.statusType,
@@ -902,7 +910,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
-            });
+            }); */
     }
 
     // ---------------------------- Table Actions ------------------------------

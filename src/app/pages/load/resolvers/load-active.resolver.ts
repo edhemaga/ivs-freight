@@ -25,24 +25,39 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
     resolve(): Observable<any> {
         return forkJoin([
             this.loadService.getLoadList(
-                undefined,
+                null,
                 2,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 1,
-                25
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
             ),
             this.tableService.getTableConfig(3),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
+                console.log('loadPagination', loadPagination);
                 localStorage.setItem(
                     'loadTableCount',
                     JSON.stringify({

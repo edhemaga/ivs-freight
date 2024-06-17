@@ -46,7 +46,6 @@ import {
 import { DriversMinimalListQuery } from '@pages/driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversDetailsListQuery } from '@pages/driver/state/driver-details-list-state/driver-details-list.query';
 import { DriversItemStore } from '@pages/driver/state/driver-details-state/driver-details-item.store';
-import { DriversItemQuery } from '@pages/driver/state/driver-details-state/driver-details-item.query';
 
 // models
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
@@ -108,7 +107,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         private driverMinimalQuery: DriversMinimalListQuery,
         private driverDQuery: DriversDetailsListQuery,
         private driversItemStore: DriversItemStore,
-        private driversItemQuery: DriversItemQuery,
 
         // pipes
         private nameInitialsPipe: NameInitialsPipe
@@ -145,9 +143,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         switch (res.type) {
                             case DriverDetailsStringEnum.DELETE:
                                 this.deleteDriverById(res.data.id);
+
                                 break;
                             case DriverDetailsStringEnum.DEACTIVATE:
                                 this.changeDriverStatus(res.id);
+
                                 break;
                             default:
                                 break;
@@ -161,9 +161,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.confirmationActivationService.getConfirmationActivationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                if (res) {
-                    this.changeDriverStatus(res.data.id);
-                }
+                if (res) this.changeDriverStatus(res.data.id);
             });
     }
 
@@ -172,6 +170,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
         storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
             const newDriverData = { ...state.entities[this.newDriverId] };
+
             if (!this.isEmpty(newDriverData)) {
                 this.detailsDataService.setNewData(newDriverData);
 
