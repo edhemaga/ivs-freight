@@ -12,7 +12,6 @@ export const showAnimation = (type: string) =>
             'true',
             style({
                 height: '*',
-                overflow: 'visible',
                 opacity: 1,
             })
         ),
@@ -20,7 +19,6 @@ export const showAnimation = (type: string) =>
             'false',
             style({
                 height: '10px',
-                overflow: 'hidden',
                 opacity: '0.5',
             })
         ),
@@ -28,7 +26,6 @@ export const showAnimation = (type: string) =>
             'null',
             style({
                 height: '10px',
-                overflow: 'hidden',
                 opacity: '0.5',
             })
         ),

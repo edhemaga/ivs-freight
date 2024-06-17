@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // models
 import {
@@ -71,7 +71,6 @@ export class DriverService {
         private dlStore: DriversDetailsListStore
     ) {}
 
-    // Get Driver Minimal List
     public getDriversMinimalList(
         pageIndex?: number,
         pageSize?: number,
@@ -84,7 +83,6 @@ export class DriverService {
         );
     }
 
-    // Get Driver List
     public getDrivers(
         active?: number,
         _long?: number,
@@ -113,7 +111,6 @@ export class DriverService {
         );
     }
 
-    // Create Driver
     public addDriver(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
 
@@ -157,7 +154,6 @@ export class DriverService {
         );
     }
 
-    //Delete Driver By Id Details page, treba ovo zbog tableAnimationService
     public deleteDriverByIdDetails(
         driverId: number,
         tableSelectedTab?: string
@@ -252,8 +248,6 @@ export class DriverService {
     }
 
     public deleteDriverList(ids: number[]): Observable<DriverResponse> {
-        console.log('ids', ids);
-
         return this.driverService.apiDriverListDelete(ids).pipe(
             tap(() => {
                 let storeDrivers = this.driversActiveQuery.getAll();

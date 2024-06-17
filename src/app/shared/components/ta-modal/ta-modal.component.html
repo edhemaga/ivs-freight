@@ -252,9 +252,19 @@
                                 </button>
                             </ng-container>
 
-                            <ng-container
-                                *ngIf="showCloseBusinessButton"
-                            >
+                            <!-- Void CDL Btn -->
+
+                            <ng-container *ngIf="isVoidBtn">
+                                <button
+                                    (click)="onAction('void')"
+                                    class="ta-font-bold modal-deactivate-btn"
+                                    type="button"
+                                >
+                                    Void
+                                </button>
+                            </ng-container>
+
+                            <ng-container *ngIf="showCloseBusinessButton">
                                 <button
                                     (click)="onAction('CLOSE_BUSINESS')"
                                     class="modal-deactivate-btn"
@@ -781,6 +791,7 @@
                     </ng-container>
 
                     <!-- Void CDL -->
+
                     <ng-container
                         *ngIf="confirmationData?.subType === 'cdl void'"
                     >

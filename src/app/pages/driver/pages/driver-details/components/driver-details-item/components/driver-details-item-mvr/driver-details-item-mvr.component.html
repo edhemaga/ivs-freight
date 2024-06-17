@@ -1,0 +1,93 @@
+<div class="card-width">
+    <app-ta-common-card
+        *ngFor="let mvr of mvrData; let i = index; trackBy: trackByIdentity"
+        [cardNameCurrent]="'mvr'"
+        [cardNameCommon]="
+            mvr?.isExpired && !isMvrCardOpen[i]
+                ? 'Expired ' + formatDate(mvr?.expDate)
+                : formatDate(mvr?.expDate)
+        "
+        [expDateClose]="
+            mvr?.isExpired && !isMvrCardOpen[i]
+                ? 'Expired ' + formatDate(mvr?.expDate)
+                : formatDate(mvr?.expDate)
+        "
+        [cardDocumentCounter]="mvr?.files?.length"
+        [options]="mvrOptionsDropdownList"
+        [optionsId]="mvr?.id"
+        [noteIcons]="
+            mvr?.note && mvr?.note != 'null'
+                ? 'assets/svg/truckassist-table/note/Note.svg'
+                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+        "
+        (resizePage)="toggleResizePage(i, 'mvr')"
+        (dropActions)="onOptions($event, 'mvr')"
+        (isCardOpenEmitter)="handleIsCardOpenEmit($event)"
+    >
+        <div class="cards-container">
+            <div class="mvr-card-container">
+                <app-ta-progress-expiration
+                    [expireDate]="formatDate(mvr?.expDate)"
+                    [startDate]="formatDate(mvr?.issueDate)"
+                    [expiresSettings]="'details'"
+                    [darkText]="true"
+                >
+                </app-ta-progress-expiration>
+
+                <!-- Note, Documents -->
+
+                <div class="note-documents-container">
+                    <div
+                        [@showHideCardBody]="
+                            toggler[i + 'mvr'] ? 'true' : 'false'
+                        "
+                    >
+                        <ng-container *ngIf="mvr?.files?.length">
+                            <div class="divider"></div>
+
+                            <app-ta-custom-card
+                                [cardName]="'Document'"
+                                [hasCounter]="mvr?.files?.length"
+                                [isCardOpen]="true"
+                                [hasArrow]="false"
+                                [hasDownload]="
+                                    'assets/svg/common/ic_download.svg'
+                                "
+                            >
+                                <app-ta-upload-files
+                                    [files]="mvr?.files"
+                                    [customClassName]="'driver-details-pdf'"
+                                    [hasCarouselBottomTabs]="true"
+                                    [type]="'details'"
+                                    [slideWidth]="324"
+                                    [hasLandscapeOption]="true"
+                                ></app-ta-upload-files>
+                            </app-ta-custom-card>
+                        </ng-container>
+
+                        <div class="divider"></div>
+
+                        <app-ta-input-note
+                            [formControl]="mvrNote"
+                            [isVisibleDivider]="false"
+                            [isVisibleNote]="true"
+                            [isVisibleArrow]="false"
+                            [minRows]="1"
+                            [placeholder]="'Write something.'"
+                            [customClass]="'note-small'"
+                            [noteType]="'details-card'"
+                            [note]="
+                                mvr?.note && mvr?.note !== 'null'
+                                    ? mvr?.note
+                                    : ''
+                            "
+                            [entityId]="mvr?.id"
+                            [entityType]="'mvr'"
+                        >
+                        </app-ta-input-note>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </app-ta-common-card>
+</div>

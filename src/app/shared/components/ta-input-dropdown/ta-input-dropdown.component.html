@@ -466,7 +466,13 @@
             <ng-container *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
-                    *ngFor="let option of _options; trackBy: identity"
+                    (mouseenter)="driverHoveringIndex = i"
+                    (mouseleave)="driverHoveringIndex = -1"
+                    *ngFor="
+                        let option of _options;
+                        let i = index;
+                        trackBy: identity
+                    "
                     [ngClass]="{
                         disabled: option?.disabled,
                         'no-result':
@@ -496,10 +502,63 @@
                         }"
                         class="details-template-text"
                     ></div>
-                    <div class="d-flex align-items-center" style="gap: 7px">
-                        <!-- Additional Text -->
+
+                    <!-- Svg -->
+
+                    <svg-icon
+                        [src]="option.svg | taSvg : option.folder"
+                        class="details-template-logo"
+                    ></svg-icon>
+
+                    <!-- Driver Details Template -->
+
+                    <ng-container *ngIf="option?.address?.address">
                         <div
-                            *ngIf="option?.additionalText"
+                            class="d-flex align-items-center driver-details-template-container"
+                        >
+                            <div class="d-flex align-items-center left-box">
+                                <p class="m-0">
+                                    <ng-container
+                                        *ngIf="
+                                            i === driverHoveringIndex;
+                                            else notHoveringLeft
+                                        "
+                                    >
+                                        {{ option?.totalMiles }} mi
+                                    </ng-container>
+
+                                    <ng-template #notHoveringLeft>
+                                        {{ option?.address?.city }},
+                                        {{ option?.address?.stateShortName }}
+                                    </ng-template>
+                                </p>
+                            </div>
+
+                            <div class="d-flex align-items-center right-box">
+                                <p class="m-0">
+                                    <ng-container
+                                        *ngIf="
+                                            i === driverHoveringIndex;
+                                            else notHoveringRight
+                                        "
+                                    >
+                                        ${{ option?.totalEarnings }}K
+                                    </ng-container>
+
+                                    <ng-template #notHoveringRight>
+                                        {{ option?.hiredAt }}
+                                    </ng-template>
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Plus Icon -->
+
+                    <!-- Additional Text -->
+
+                    <ng-container *ngIf="option?.additionalText">
+                        <div
                             [innerHtml]="
                                 option.additionalText
                                     | taHighlight
@@ -511,12 +570,24 @@
                                           ]
                             "
                             class="svgtext-template-text additional-text"
+                            [ngClass]="{
+                                active: option.id === _activeItem?.id
+                            }"
                         ></div>
+                    </ng-container>
+
+                    <!-- Plus Icon -->
+
+                    <ng-container *ngIf="option.name === 'ADD NEW'">
                         <svg-icon
-                            [src]="option.svg | taSvg : option.folder"
-                            class="details-template-logo"
+                            class="plus-icon"
+                            src="assets/svg/common/ic_plus.svg"
+                            [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '14'
+                            }"
                         ></svg-icon>
-                    </div>
+                    </ng-container>
                 </div>
             </ng-container>
 

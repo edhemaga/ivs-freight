@@ -1,0 +1,34 @@
+<app-ta-custom-card
+    [cardName]="'Off Duty Location'"
+    [hasCounter]="cardData.offDutyLocations.length || -1"
+    [isCardOpen]="cardData.offDutyLocations.length"
+    [disabledCard]="!cardData.offDutyLocations.length"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '4px'
+    }"
+>
+    <div
+        class="d-flex flex-column justify-content-center off-duty-location-container"
+    >
+        <ng-container
+            *ngFor="
+                let offDutyLocation of cardData.offDutyLocations;
+                trackBy: trackByIdentity
+            "
+        >
+            <div
+                class="d-flex flex-column justify-content-center off-duty-location-box"
+            >
+                <p class="m-0 ta-font-bold">
+                    {{ offDutyLocation.nickname }}
+                </p>
+
+                <span>
+                    {{ offDutyLocation.address.address }}
+                </span>
+            </div>
+        </ng-container>
+    </div>
+</app-ta-custom-card>

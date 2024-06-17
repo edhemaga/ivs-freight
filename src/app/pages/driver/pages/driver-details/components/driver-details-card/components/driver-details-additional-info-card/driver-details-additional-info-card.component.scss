@@ -1,0 +1,42 @@
+@import 'src/theme/variables.scss';
+
+.additional-info-container {
+    .additional-info-box {
+        p:nth-child(1) {
+            font-size: 11px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+
+        p:nth-child(2) {
+            font-size: 14px;
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+    }
+
+    .additional-info-grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-row-gap: 8px;
+        margin-top: 8px;
+    }
+}

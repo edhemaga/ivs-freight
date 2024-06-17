@@ -155,25 +155,27 @@ export class DriverCdlService {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+                const newData = { ...driverData[driverId] };
 
                 this.cdlService.apiCdlListGet(driverId).subscribe({
                     next: (resp: any) => {
-                        newData.cdls = resp;
+                        const newDriverData = {
+                            ...newData,
+                            cdls: resp,
+                        };
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
-                            data: newData,
-                            id: newData.id,
+                            data: newDriverData,
+                            id: newDriverData.id,
                         });
 
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                        this.dlStore.add(newDriverData);
+                        this.driverItemStore.set([newDriverData]);
                     },
                 });
 
-                /*
-               this.cdlService.apiCdlIdGet(res.id).subscribe({
+                this.cdlService.apiCdlIdGet(id).subscribe({
                     next: (resp: any) => {
                         newData.cdls.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
@@ -189,10 +191,8 @@ export class DriverCdlService {
 
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-
                     },
                 });
-                */
             })
         );
     }
@@ -202,25 +202,27 @@ export class DriverCdlService {
                 let driverId = this.driverItemStore.getValue().ids[0];
                 const dr = this.driverItemStore.getValue();
                 const driverData = JSON.parse(JSON.stringify(dr.entities));
-                let newData = driverData[driverId];
+                const newData = { ...driverData[driverId] };
 
                 this.cdlService.apiCdlListGet(driverId).subscribe({
                     next: (resp: any) => {
-                        newData.cdls = resp;
+                        const newDriverData = {
+                            ...newData,
+                            cdls: resp,
+                        };
 
                         this.tableService.sendActionAnimation({
                             animation: 'update',
-                            data: newData,
-                            id: newData.id,
+                            data: newDriverData,
+                            id: newDriverData.id,
                         });
 
-                        this.dlStore.add(newData);
-                        this.driverItemStore.set([newData]);
+                        this.dlStore.add(newDriverData);
+                        this.driverItemStore.set([newDriverData]);
                     },
                 });
 
-                /*
-              this.cdlService.apiCdlIdGet(res.id).subscribe({
+                this.cdlService.apiCdlIdGet(id).subscribe({
                     next: (resp: any) => {
                         newData.cdls.map((reg: any, index: any) => {
                             if (reg.id == resp.id) {
@@ -236,11 +238,8 @@ export class DriverCdlService {
 
                         this.dlStore.add(newData);
                         this.driverItemStore.set([newData]);
-
                     },
                 });
-
-                */
             })
         );
     }

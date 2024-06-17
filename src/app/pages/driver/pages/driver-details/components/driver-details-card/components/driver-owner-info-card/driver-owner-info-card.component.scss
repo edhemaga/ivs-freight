@@ -1,0 +1,63 @@
+@import 'src/theme/variables.scss';
+
+.owner-info-container {
+    .owner-info-top {
+        display: grid;
+        grid-template-columns: repeat(2, 202px);
+        grid-gap: 12px;
+        margin-bottom: 8px;
+
+        &-item {
+            p {
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &:first-child {
+                    font-size: 11px;
+                    line-height: 14px;
+                }
+
+                &:last-child {
+                    font-size: 18px;
+                    line-height: 22px;
+                }
+            }
+        }
+    }
+
+    .owner-info-bottom {
+        &-item {
+            padding: 2px 0;
+
+            .icon {
+                margin-right: 4px;
+                position: relative;
+                bottom: 1px;
+            }
+
+            p {
+                font-size: 14px;
+                line-height: 18px;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+        }
+    }
+}

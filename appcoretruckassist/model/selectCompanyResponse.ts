@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface SelectCompanyResponse { 
@@ -20,6 +21,7 @@ export interface SelectCompanyResponse {
     firstName?: string | null;
     lastName?: string | null;
     avatar?: string | null;
+    avatarFile?: FileResponse;
     driverId?: number | null;
     areSettingsUpdated?: boolean | null;
 }

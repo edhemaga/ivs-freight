@@ -41,13 +41,6 @@
             class="d-flex flex-column justify-content-center confirmation-activation-body"
         >
             <div class="d-flex flex-row">
-                <ng-container *ngIf="editData?.data?.avatar">
-                    <svg-icon
-                        class="confirmation-svg m-1"
-                        [src]="editData?.data?.avatar"
-                    ></svg-icon>
-                </ng-container>
-
                 <!-- Title -->
 
                 <div
@@ -69,7 +62,12 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="editData.data.avatarImg"
+                                        [src]="
+                                            imageBase64Service.sanitizer(
+                                                editData.data.avatar ||
+                                                    editData.data.avatarImg
+                                            )
+                                        "
                                     />
                                 </ng-container>
 
@@ -96,7 +94,7 @@
 
                                 <div class="d-flex flex-column title-container">
                                     <div class="d-flex align-items-center">
-                                        <p class="m-0 ta-font-bold">
+                                        <p class="title-text m-0 ta-font-bold">
                                             {{ editData?.data?.name }}
                                         </p>
                                         <ng-container
@@ -106,13 +104,20 @@
                                         >
                                             <svg-icon
                                                 class="d-flex ms-1"
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationDeactivationSvg
+                                                "
                                             ></svg-icon>
                                         </ng-container>
                                     </div>
 
-                                    <p class="m-0 ta-font-medium">
-                                        {{ editData?.data?.tableDOB }}
+                                    <p
+                                        class="second-title-text m-0 ta-font-medium"
+                                    >
+                                        {{
+                                            editData?.data?.dateOfBirth
+                                                | formatDateP
+                                        }}
                                     </p>
                                 </div>
                             </div>
@@ -136,7 +141,9 @@
                                 <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="assets/svg/common/ic_closed_broker.svg"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationCloseBrokerSvg
+                                        "
                                     ></svg-icon
                                 ></ng-container>
                             </div>
@@ -170,7 +177,11 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="item?.avatarImg"
+                                        [src]="
+                                            imageBase64Service.sanitizer(
+                                                item.avatar || item.avatarImg
+                                            )
+                                        "
                                     />
                                 </ng-container>
 
@@ -195,7 +206,7 @@
 
                                 <div class="d-flex flex-column title-container">
                                     <div class="d-flex align-items-center">
-                                        <p class="m-0 ta-font-bold">
+                                        <p class="title-text m-0 ta-font-bold">
                                             {{ item?.name }}
                                         </p>
                                         <ng-container
@@ -206,13 +217,17 @@
                                         >
                                             <svg-icon
                                                 class="d-flex ms-1"
-                                                src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
+                                                [src]="
+                                                    confirmationImageRoutes.confirmationDeactivationSvg
+                                                "
                                             ></svg-icon>
                                         </ng-container>
                                     </div>
 
-                                    <p class="m-0 ta-font-medium">
-                                        {{ item?.tableDOB }}
+                                    <p
+                                        class="second-title-text m-0 ta-font-medium"
+                                    >
+                                        {{ item?.dateOfBirth | formatDateP }}
                                     </p>
                                 </div>
                             </div>
@@ -235,7 +250,9 @@
                                 <ng-container *ngIf="editData?.type === 'open'">
                                     <svg-icon
                                         class="d-flex ms-1"
-                                        src="assets/svg/common/ic_closed_broker.svg"
+                                        [src]="
+                                            confirmationImageRoutes.confirmationCloseBrokerSvg
+                                        "
                                     ></svg-icon
                                 ></ng-container>
                             </div>
