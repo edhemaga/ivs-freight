@@ -33,35 +33,36 @@
     }
 
     .instructions-container {
-        width: 820px;
+        width: 616px;
 
         p {
             font-size: 14px;
-            color: $bw6-2;
-            line-height: 22px;
+            color: $ta-black-2;
+            line-height: 18px;
 
             &::-moz-selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
             &:nth-child(2) {
                 margin-top: 22px !important;
+                margin-bottom: 14px !important;
             }
 
             span {
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
             }
@@ -72,16 +73,18 @@
         .seven-days-hos-table-container {
             table {
                 width: 616px;
-                margin: 12px auto 12px auto;
+                margin: 12px auto 16px auto;
 
                 .day-container {
                     width: 616px;
-                    height: 18px;
-                    margin-bottom: 6px;
 
                     .day-box {
+                        width: 84.57px;
+                        margin-right: 4px;
+
                         p {
-                            font-size: 14px;
+                            font-size: 11px;
+                            line-height: 14px;
                             color: $bw5;
 
                             &::-moz-selection {
@@ -100,14 +103,16 @@
                 .date-container {
                     width: 616px;
                     height: 18px;
-                    margin-bottom: 14px;
+                    margin-bottom: 2px;
 
                     .date-box {
-                        width: 53px;
+                        width: 84.57px;
+                        margin-right: 4px;
 
                         p {
                             color: $bw5;
-                            font-size: 12px;
+                            font-size: 11px;
+                            line-height: 14px;
 
                             &::-moz-selection {
                                 color: $bw5;
@@ -118,10 +123,6 @@
                                 color: $bw5;
                                 background: rgb(145, 145, 145, 0.2);
                             }
-                        }
-
-                        .date-para0 {
-                            font-size: 14px;
                         }
                     }
                 }
@@ -193,8 +194,8 @@
                     }
 
                     .hos-input-group {
-                        width: 76px;
-                        margin-right: 6px !important;
+                        width: 84.57px;
+                        margin-right: 4px !important;
 
                         &:last-child {
                             margin-right: 0px;
@@ -203,11 +204,10 @@
                 }
 
                 .total-container {
-                    height: 18px;
-                    margin-left: 52px;
+                    margin: 0 6px;
 
                     p {
-                        color: $ta-blue-5 !important;
+                        color: $ta-blue-5;
                         font-size: 14px;
 
                         &::-moz-selection {
@@ -219,6 +219,10 @@
                             color: $ta-blue-5;
                             background: rgb(48, 116, 211, 0.2);
                         }
+                    }
+
+                    .total-text {
+                        color: $bw5;
                     }
                 }
             }
@@ -249,6 +253,7 @@
             color: $bw6-2;
             font-size: 14px;
             margin-bottom: 32px !important;
+            line-height: 18px;
 
             &::-moz-selection {
                 color: $bw6-2;
@@ -288,42 +293,43 @@
             margin: 0 auto;
 
             .date-group {
-                width: 173px;
+                width: 170px;
             }
 
             .location-group {
-                width: 431px;
+                width: 434px;
                 margin-right: 0;
             }
         }
 
         .instructions-bottom-container {
-            width: 820px;
+            width: 616px;
             margin-bottom: 22px;
 
             p {
+                padding: 4px 0;
                 font-size: 14px;
-                color: $bw6-2;
-                line-height: 22px;
+                color: $ta-black-2;
+                line-height: 18px;
 
                 &::-moz-selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
 
                 &::selection {
-                    color: $bw6-2;
+                    color: $ta-black-2;
                     background: rgb(108, 108, 108, 0.2);
                 }
 
                 span {
                     &::-moz-selection {
-                        color: $bw6-2;
+                        color: $ta-black-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
 
                     &::selection {
-                        color: $bw6-2;
+                        color: $ta-black-2;
                         background: rgb(108, 108, 108, 0.2);
                     }
                 }
@@ -332,7 +338,7 @@
 
         .questions-container {
             width: 616px;
-            margin: 0 auto;
+            margin: 0 auto 22px auto;
 
             .question-container {
                 padding-left: 1px;
@@ -375,17 +381,17 @@
 
                 .title-box {
                     .question-title {
-                        color: $bw6-2;
+                        color: $ta-black-2;
                         font-size: 14px;
                         line-height: 18px;
 
                         &::-moz-selection {
-                            color: $bw6-2;
+                            color: $ta-black-2;
                             background: rgb(108, 108, 108, 0.2);
                         }
 
                         &::selection {
-                            color: $bw6-2;
+                            color: $ta-black-2;
                             background: rgb(108, 108, 108, 0.2);
                         }
 

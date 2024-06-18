@@ -10,7 +10,9 @@
         [tooltipPrevious]="trailerIndex == 0 ? '' : 'Previous Trailer'"
         [cardDetailsDate]="trailer.createdAt | formatDateP"
         [options]="trailerDropDowns"
+        [deactivate]="!trailer.status"
         [sortOptions]="'active-drivers'"
+        [cardDetailsDateTerminated]="trailer.updatedAt | formatDateP"
         [searchInputName]="'Search Trailer'"
         [currentName]="trailer.trailerNumber"
         (selectValue)="onSelectedTrailer($event)"
@@ -131,7 +133,7 @@
                             "
                         >
                         </svg-icon>
-                        <p class="assign-to-value no-truck">
+                        <p class="assignTo-value">
                             {{ trailer.assignedTo.truck.truckNumber }}
                         </p>
                         <span
@@ -179,7 +181,7 @@
                             alt="driver-image"
                         />
 
-                        <p class="assign-to-value no-truck">
+                        <p class="assignTo-value">
                             {{ trailer?.assignedTo?.driver?.firstName }}
                             {{ trailer?.assignedTo?.driver?.lastName }}
                         </p>
@@ -238,13 +240,26 @@
                             Empty Weight
                         </div>
                         <div class="common-template-item-value">
-                            {{ trailer.emptyWeight | thousandSeparator }} Ibs
+                            <app-ta-copy
+                                [copyValue]="
+                                    (trailer.emptyWeight | thousandSeparator) +
+                                    'Ibs'
+                                "
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                     <div *ngIf="trailer?.mileage" class="common-template-item">
                         <div class="common-template-item-name">Mileage</div>
                         <div class="common-template-item-value">
-                            {{ trailer.mileage | thousandSeparator }} mi
+                            <app-ta-copy
+                                [copyValue]="
+                                    (trailer.mileage | thousandSeparator) + 'mi'
+                                "
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                     <div
@@ -253,13 +268,21 @@
                     >
                         <div class="common-template-item-name">Reefer Unit</div>
                         <div class="common-template-item-value">
-                            {{ trailer?.reeferUnit?.name }}
+                            <app-ta-copy
+                                [copyValue]="trailer?.reeferUnit?.name"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                     <div *ngIf="trailer?.axles" class="common-template-item">
                         <div class="common-template-item-name">Axles</div>
                         <div class="common-template-item-value">
-                            {{ trailer.axles }}
+                            <app-ta-copy
+                                [copyValue]="trailer.axles"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                     <div
@@ -268,7 +291,11 @@
                     >
                         <div class="common-template-item-name">Tire Size</div>
                         <div class="common-template-item-value">
-                            {{ trailer.tireSize.name }}
+                            <app-ta-copy
+                                [copyValue]="trailer.tireSize.name"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                     <div
@@ -277,7 +304,11 @@
                     >
                         <div class="common-template-item-name">Suspension</div>
                         <div class="common-template-item-value">
-                            {{ trailer.suspension.name }}
+                            <app-ta-copy
+                                [copyValue]="trailer.suspension.name"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
 
@@ -289,7 +320,59 @@
                             Insurance Policy
                         </div>
                         <div class="common-template-item-value">
-                            {{ trailer.insurancePolicy }}
+                            <app-ta-copy
+                                [copyValue]="trailer.insurancePolicy"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
+
+                    <div *ngIf="trailer?.fhwaExp" class="common-template-item">
+                        <div class="common-template-item-name">
+                            FHWA Expiration
+                        </div>
+                        <div class="common-template-item-value">
+                            <app-ta-copy
+                                [copyValue]="trailer?.fhwaExp + ' months'"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="trailer?.purchaseDate"
+                        class="common-template-item"
+                    >
+                        <div class="common-template-item-name">
+                            Purchase Date
+                        </div>
+                        <div class="common-template-item-value">
+                            <app-ta-copy
+                                [copyValue]="
+                                    trailer?.purchaseDate | formatDateP
+                                "
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="trailer?.purchasePrice"
+                        class="common-template-item"
+                    >
+                        <div class="common-template-item-name">
+                            Purchase Price
+                        </div>
+                        <div class="common-template-item-value">
+                            <app-ta-copy
+                                [copyValue]="
+                                    '$' +
+                                    (trailer?.purchasePrice | thousandSeparator)
+                                "
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
                         </div>
                     </div>
                 </div>
@@ -423,6 +506,36 @@
                 ></app-ta-input-note>
             </div>
         </div>
+        <app-ta-custom-card
+            [tooltipName]="'View in Modal'"
+            [bodyTemplate]="'card'"
+            [cardName]="'Fuel Consumption'"
+            [isCardOpen]="payrollChartConfig?.hasValue"
+            [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+            class="item-cards"
+            [customClass]="'detailsPadding'"
+        >
+            <div
+                class="charts-template perfomance"
+                [class.p-0]="payrollChart.hoveringStatus"
+            >
+                <div [class.d-none]="payrollChart.hoveringStatus">
+                    <app-ta-tab-switch
+                        [type]="'type2-modal-popup'"
+                        (switchClicked)="changeTabFuel($event)"
+                        [tabs]="buttonsArrayFuel"
+                    >
+                    </app-ta-tab-switch>
+                </div>
+                <app-ta-chart
+                    #payrollChart
+                    [chartConfig]="payrollChartConfig"
+                    [axesProperties]="barAxes"
+                    [legendAttributes]="barChartLegend"
+                >
+                </app-ta-chart>
+            </div>
+        </app-ta-custom-card>
         <div *ngIf="templateCard">
             <div class="custom-card-single">
                 <app-ta-custom-card

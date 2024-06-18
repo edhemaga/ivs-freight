@@ -9,4 +9,5 @@ export interface ConfirmationActivation {
     data: any;
     array?: any[];
     id: number;
+    svg?: boolean;
 }

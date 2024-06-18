@@ -615,6 +615,7 @@
                         }
                     }
                 }
+
                 .selected-icon {
                     display: none;
                 }
@@ -973,7 +974,7 @@
             }
             .select-item-logo {
                 display: flex;
-                svg-icon {
+                .truck-logo-icon {
                     svg {
                         path {
                             fill: $ta-red-10;

@@ -11,9 +11,15 @@ import {
     OnChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
+import {
+    animate,
+    style,
+    transition,
+    trigger,
+    state,
+    keyframes,
+} from '@angular/animations';
 
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 // decorators
@@ -44,47 +50,36 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
-import { cardAnimation } from '@shared/animations/card.animation';
 
-// components
-import { TruckDetailsCardComponent } from '@pages/truck/pages/truck-details/components/truck-details-card/truck-details-card.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-
-// pipes
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { SharedModule } from '@shared/shared.module';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 @Titles()
 @Component({
     selector: 'app-truck-details-item',
     templateUrl: './truck-details-item.component.html',
     styleUrls: ['./truck-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        SharedModule,
-
-        //components
-        TaInputNoteComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaUploadFilesComponent,
-        TruckDetailsCardComponent,
-        TaCopyComponent,
-
-        // pipes
-        ThousandSeparatorPipe,
-        FormatDatePipe,
-    ],
     animations: [
         cardComponentAnimation('showHideCardBody'),
-        cardAnimation('cardAnimation'),
+        trigger('cardAnimation', [
+            state('in', style({ opacity: 1, 'max-height': '0px' })),
+            transition(':enter', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 0, 'max-height': '0px' }),
+                        style({ opacity: 1, 'max-height': '600px' }),
+                    ])
+                ),
+            ]),
+            transition(':leave', [
+                animate(
+                    5100,
+                    keyframes([
+                        style({ opacity: 1, 'max-height': '600px' }),
+                        style({ opacity: 0, 'max-height': '0px' }),
+                    ])
+                ),
+            ]),
+        ]),
     ],
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
@@ -125,26 +120,18 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             }
         });
         if (changes.truck?.currentValue != changes.truck?.previousValue) {
-            this.initTableOptions();
+            //this.truck = changes.truck?.currentValue;
+            //his.initTableOptions();
         }
     }
 
     ngOnInit(): void {
         // Confirmation Subscribe
 
-        this.confirmationSubscribe();
-
-        this.initTableOptions();
-
-        this.currentDate = moment(new Date()).format();
-    }
-
-    private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
-                    console.log(res);
                     switch (res.type) {
                         case TableStringEnum.DELETE: {
                             if (
@@ -163,23 +150,22 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                             break;
                         }
                         case TruckDetailsEnum.VOID_2:
-                            console.log('test');
+                            let voidedReg;
+                            let unVoidedReg;
+                            console.log(res);
+                            if (res.array.length) {
+                                voidedReg = res?.array[0]?.id;
+                                unVoidedReg = res.data.id;
+                            } else {
+                                voidedReg = res.data.id;
+                            }
                             this.truckService
-                                .voidRegistration(
-                                    res?.array[0]?.id
-                                        ? res?.array[0]?.id
-                                        : res.data.id,
-                                    res?.array[0]?.id
-                                        ? res.data.id
-                                        : res?.array[0]?.id
-                                )
+                                .voidRegistration(voidedReg, unVoidedReg)
                                 .pipe(takeUntil(this.destroy$))
                                 .subscribe();
                             break;
 
                         case TruckDetailsEnum.ACTIVATE:
-                            console.log('test2222');
-
                             this.truckService
                                 .voidRegistration(null, res.data.id)
                                 .pipe(takeUntil(this.destroy$))
@@ -192,6 +178,9 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     }
                 },
             });
+
+        this.initTableOptions();
+        this.currentDate = moment(new Date()).format();
     }
 
     public onShowDetails(componentData: any) {
@@ -207,7 +196,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             return isExpiredOrVoided;
         });
     }
-    /**Funct
     /**Function for dots in cards */
     public initTableOptions(): void {
         this.dataEdit = {
@@ -289,6 +277,16 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                     title: TruckDetailsEnum.BORDER,
                 },
                 {
+                    title: TableStringEnum.VIEW_DETAILS_2,
+                    name: TableStringEnum.VIEW_DETAILS,
+                    svg: 'assets/svg/common/ic_hazardous-info.svg',
+                    iconName: TableStringEnum.VIEW_DETAILS,
+                    show: true,
+                },
+                {
+                    title: TruckDetailsEnum.BORDER,
+                },
+                {
                     title: TableStringEnum.DELETE_2,
                     name: TableStringEnum.DELETE_ITEM,
                     type: TableStringEnum.DRIVER,
@@ -316,7 +314,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
 
     public optionsEvent(file: any, data: any, action: string) {
         data = this.truck[0]?.data;
-
         const name = DropActionNameHelper.dropActionNameTrailerTruck(
             file,
             action
@@ -341,36 +338,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
-    private chechVoidStatus(
-        id: number,
-        data: TruckDetailsConfigData[],
-        action: string
-    ) {
-        const isVoided = data.find((registration) => registration.voidedOn);
-        const cdlsArray = data
-            .map((registration) => {
-                const currentDate = moment().valueOf();
 
-                const expDate = moment(registration.expDate).valueOf();
-                if (isVoided) {
-                    if (expDate > currentDate && !registration.voidedOn) {
-                        return {
-                            id: registration.id,
-                            name: registration.licensePlate,
-                        };
-                    }
-                }
-            })
-            .filter((registration) => registration !== undefined);
-
-        cdlsArray.length
-            ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
-            : this.optionsEvent(
-                  { id: id, type: 'activate' },
-                  data,
-                  'registration'
-              );
-    }
     private deleteInspectionByIdFunction(id: number) {
         this.commonTruckService
             .deleteInspectionById(id)
@@ -438,6 +406,36 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                 break;
             }
         }
+    }
+    private chechVoidStatus(
+        id: number,
+        data: TruckDetailsConfigData[],
+        action: string
+    ) {
+        const isVoided = data.find((registration) => registration.voidedOn);
+        const cdlsArray = data
+            .map((registration) => {
+                const currentDate = moment().valueOf();
+
+                const expDate = moment(registration.expDate).valueOf();
+                if (isVoided) {
+                    if (expDate > currentDate && !registration.voidedOn) {
+                        return {
+                            id: registration.id,
+                            name: registration.licensePlate,
+                        };
+                    }
+                }
+            })
+            .filter((registration) => registration !== undefined);
+
+        cdlsArray.length
+            ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
+            : this.optionsEvent(
+                  { id: id, type: 'activate' },
+                  data,
+                  'registration'
+              );
     }
 
     public formatDate(mod) {

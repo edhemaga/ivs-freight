@@ -12,10 +12,13 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 import {
     distinctUntilChanged,
@@ -47,10 +50,36 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 // models
 import { Contact } from '@pages/applicant/pages/applicant-application/models/contact.model';
 
+// modules
+import { SharedModule } from '@shared/shared.module';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { ApplicantDeleteBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-delete-btn/applicant-delete-btn.component';
+
+
 @Component({
     selector: 'app-step6-form',
     templateUrl: './step6-form.component.html',
     styleUrls: ['./step6-form.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+
+        // components
+        TaInputComponent,
+        TaAppTooltipV2Component,
+        ApplicantAddSaveBtnComponent,
+        ApplicantDeleteBtnComponent
+    ],
 })
 export class Step6FormComponent
     implements OnInit, OnDestroy, OnChanges, AfterViewInit
