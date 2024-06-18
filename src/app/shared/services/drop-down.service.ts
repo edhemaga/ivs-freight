@@ -79,8 +79,6 @@ export class DropDownService {
                     cdlsArray: cdlsArray?.length > 0 ? cdlsArray : [],
                 };
 
-                console.log('mappedEvent DELETE_CDL', mappedEvent);
-
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: DropActionsStringEnum.SMALL },
@@ -278,11 +276,15 @@ export class DropDownService {
                 const inspection = data.inspections.find(
                     (ins) => ins.id === dropDownData.id
                 );
+
                 const mappedEvent = {
                     ...dropDownData,
                     data: {
                         ...inspection,
-                        unit: data.truckNumber,
+                        unit:
+                            nameTruck === DropActionsStringEnum.TRAILER
+                                ? data.trailerNumber
+                                : data.truckNumber,
                     },
                 };
                 this.modalService.openModal(
@@ -305,7 +307,10 @@ export class DropDownService {
                     ...dropDownData,
                     data: {
                         ...registration,
-                        unit: data.truckNumber,
+                        unit:
+                            nameTruck === DropActionsStringEnum.TRAILER
+                                ? data.trailerNumber
+                                : data.truckNumber,
                     },
                 };
                 this.modalService.openModal(
@@ -328,7 +333,10 @@ export class DropDownService {
                     ...dropDownData,
                     data: {
                         ...title,
-                        unit: data.truckNumber,
+                        unit:
+                            nameTruck === DropActionsStringEnum.TRAILER
+                                ? data.trailerNumber
+                                : data.truckNumber,
                     },
                 };
                 this.modalService.openModal(
