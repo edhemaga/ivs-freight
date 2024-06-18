@@ -113,7 +113,7 @@
 // billing
 .load-financial-container {
     display: grid;
-    grid-template-columns: 198px 196px 1fr;
+    grid-template-columns: 200px 208px 1fr;
     -moz-column-gap: 13px;
     column-gap: 13px;
     align-items: flex-start;
@@ -134,8 +134,8 @@
 
     &.load-hazardous-container {
         padding: 12px !important;
-        padding-left: 0px !important;
         height: 781px;
+        background-color: $ta-light-grey-5;
     }
 }
 

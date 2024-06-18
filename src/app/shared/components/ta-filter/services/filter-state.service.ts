@@ -153,7 +153,6 @@ export class FilterStateService implements OnDestroy {
     }
 
     public getDispatchData() {
-        console.log(this)
         const dispatcherData = this.loadService
             .apiLoadDispatcherFilterGet('Active')
             .pipe(takeUntil(this.destroy$))

@@ -36,6 +36,7 @@ export enum LoadModalStringEnum {
     BILLING = 'billing',
     BILLING_VALUE = 'billingValue',
     PAYMENT = 'payment',
+    PAYMENT_TYPE = 'pay-type',
     ADVANCE_PAY = 'advancePay',
     BASE_RATE = 'baseRate',
     LEG_MILES = 'legMiles',

@@ -178,7 +178,7 @@ export class TaInputDropdownComponent
                             ? value.number
                             : value.name
                             ? value.name
-                            : null
+                            : value.companyName ?? null
                     );
 
                     if (!this.inputConfig.hideColorValidations) {

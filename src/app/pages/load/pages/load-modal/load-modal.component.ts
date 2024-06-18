@@ -50,6 +50,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
+import { LoadModalHazardousComponent } from './components/load-modal-hazardous/load-modal-hazardous.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -141,6 +142,7 @@ import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
         TaMapsComponent,
         TaCommentComponent,
         LoadModalStopItemsComponent,
+        LoadModalHazardousComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -279,7 +281,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isAvailableAdvanceRate: boolean = false;
     public isVisibleBillDropdown: boolean = false;
     public isVisiblePayment: boolean = false;
-    
+
     public payTypeDropdownList = LoadStopItems.PAYMENT_TYPES;
 
     // documents
@@ -317,6 +319,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegHours: number = null;
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
+    selectedPayType: any;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -423,7 +426,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillings: this.formBuilder.array([]),
             billingDropdown: [null],
             invoiced: [null],
-            payType:[null],
+            payType: [null],
             paymentDate: [null],
 
             // note, files
@@ -446,7 +449,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 (isFormChange: boolean) => (this.isFormDirty = isFormChange)
             );
 
-            this.loadForm.valueChanges.subscribe(change => console.log(change));
+        this.loadForm.get('advancePay').valueChanges.subscribe((value) => {
+            const payType = this.loadForm.get('payType');
+            console.log(value);
+            if (value) {
+                payType.addValidators(Validators.required);
+            } else {
+                payType.clearValidators();
+            }
+            payType.updateValueAndValidity();
+        });
     }
 
     private getCompanyUser(): void {
@@ -722,6 +734,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.labelsDispatches = this.originLabelsDispatches;
                 }
+
+                break;
+            case LoadModalStringEnum.PAYMENT_TYPE:
+                this.selectedPayType = event;
 
                 break;
             case LoadModalStringEnum.COMPANY:
@@ -1932,10 +1948,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     break;
                 case LoadModalStringEnum.PAYMENT:
                     this.isVisiblePayment = true;
-                    this.inputService.changeValidators(
-                        this.loadForm.get(LoadModalStringEnum.ADVANCE_PAY)
-                    );
-
                     break;
                 default:
                     break;
@@ -2947,7 +2959,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private loadModalData() {
         const { ...form } = this.loadForm.value;
-
         return {
             type: this.tabs.find((tab) => tab.id === this.selectedTab)
                 .name as LoadType,
@@ -3252,8 +3263,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     });
 
-                    console.log(res, this.labelsShippers)
-
                     // shipper contacts
                     this.labelsShipperContacts = this.originShipperContacts =
                         res.shipperContacts.map((item) => {
@@ -3413,8 +3422,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
+            pays: [],
         };
-
         this.loadService
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
@@ -3453,6 +3462,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay,
             // eslint-disable-next-line no-unused-vars
             pickuplegMiles,
+            paymentDate,
         } = this.loadForm.value;
 
         let documents: Blob[] = [];
@@ -3476,7 +3486,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ? this.selectedDispatcher.id
                 : null,
             dateCreated,
-            /*          status: status.name as LoadStatus, */
+            status: status.statusString as LoadStatus,
             dispatchId: this.selectedDispatches
                 ? this.selectedDispatches.id
                 : null,
@@ -3523,6 +3533,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                       driverRate
                   )
                 : null,
+            advancePay:
+                MethodsCalculationsHelper.convertThousanSepInNumber(advancePay),
             additionalBillingRates: this.premmapedAdditionalBillingRate(
                 LoadModalStringEnum.CREATE
             ),
@@ -3550,6 +3562,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
+            pays: [
+                {
+                    pay: advancePay,
+                    paymentType: this.selectedPayType,
+                    payDate: paymentDate,
+                },
+            ],
         };
 
         this.loadService
@@ -3679,6 +3698,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private populateLoadModalData(loadModalData: LoadResponse): void {
+        console.log(loadModalData);
         const {
             loadNumber,
             type,
@@ -3689,7 +3709,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             generalCommodity,
             weight,
             dispatch,
-            loadRequirements,
+            advancePay,
             note,
             files,
             stops,
@@ -3697,7 +3717,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles,
             totalTimeHours,
             comments,
+            baseRate,
+            additionalBillingRates,
         } = loadModalData;
+
+        const loadRequirements = {
+            truckType: loadModalData.dispatch.truck as any,
+            trailerType: loadModalData.dispatch.trailer as any,
+            year: loadModalData.dispatch.truck.year,
+            liftgate: loadModalData.loadRequirements.liftgate,
+            driverMessage: loadModalData.loadRequirements.driverMessage,
+            trailierLength: loadModalData.loadRequirements.trailerLength,
+            doorType: loadModalData.loadRequirements.doorType,
+            suspension: loadModalData.loadRequirements.suspension,
+        };
 
         const pickupStop = stops[0];
         const deliveryStop = stops[stops.length - 1];
@@ -3739,7 +3772,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             liftgate: loadRequirements?.liftgate,
             driverMessage: loadRequirements?.driverMessage,
             note: note,
-
             // pickup
             pickupDateFrom: MethodsCalculationsHelper.convertDateFromBackend(
                 pickupStop.dateFrom
@@ -3772,10 +3804,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliveryStopOrder: deliveryStop.stopLoadOrder,
 
             // billing & payment
-            /*   baseRate: baseRate,
-            driverRate: driverRate,
+            baseRate: baseRate,
+            advancePay: advancePay,
+            /*  driverRate: driverRate,
             adjustedRate: adjustedRate,
-            advancePay: advancePay, */
+            , */
 
             // total
             loadMiles: loadedMiles,
@@ -3819,6 +3852,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             editedDeliveryShipper,
             LoadModalStringEnum.SHIPPER_DELIVERY
         );
+        this.onSelectDropdown(company, LoadModalStringEnum.COMPANY);
+        this.onSelectDropdown(
+            loadRequirements?.truckType.truckType,
+            LoadModalStringEnum.TRUCK_REQ
+        );
+        this.onSelectDropdown(
+            loadRequirements?.trailerType,
+            LoadModalStringEnum.TRAILER_REQ
+        );
+
+        this.onSelectDropdown(
+            loadRequirements.trailierLength,
+            LoadModalStringEnum.LENGTH
+        );
+        this.onSelectDropdown(
+            loadRequirements.doorType,
+            LoadModalStringEnum.DOOR_TYPE
+        );
+        this.onSelectDropdown(
+            loadRequirements.suspension,
+            LoadModalStringEnum.SUSPENSION
+        );
 
         // tabs
         this.onTabChange(type, LoadModalStringEnum.FTL_LTL);
@@ -3835,14 +3890,22 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectedCompany = company;
         this.selectedDispatcher = editedDispatcher;
         this.selectedGeneralCommodity = generalCommodity;
-        this.selectedTruckReq = loadRequirements?.truckType;
-        this.selectedTrailerReq = loadRequirements?.trailerType;
-        this.selectedTrailerLength = loadRequirements?.trailerLength;
-        this.selectedDoorType = loadRequirements?.doorType;
-        this.selectedSuspension = loadRequirements?.suspension;
+        this.selectedTruckReq = loadRequirements?.truckType.truckType;
+        this.selectedTrailerReq = loadRequirements?.trailerType.trailerType;
         this.selectedYear = this.labelsYear.find(
             (year) => year.name == loadRequirements?.year
         );
+        additionalBillingRates.forEach((rate) => {
+            if (rate.rate) {
+                this.additionalBillings().push(
+                    this.createAdditionaBilling({
+                        id: rate.id,
+                        name: rate.additionalBillingType.name,
+                        billingValue: rate.rate,
+                    })
+                );
+            }
+        });
 
         this.pickupDateRange = pickupStop.dateTo ? true : false;
         this.deliveryDateRange = deliveryStop.dateTo ? true : false;
@@ -3926,8 +3989,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }); 
         */
     }
-
- 
 
     ngOnDestroy(): void {
         this.destroy$.next();

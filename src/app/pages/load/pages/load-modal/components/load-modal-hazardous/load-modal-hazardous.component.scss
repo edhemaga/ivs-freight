@@ -1,9 +1,11 @@
-$container-background-color: #f7f7f7;
+@import 'src/theme/variables';
+$container-background-color: $white;
 $container-color: #6c6c6c;
 $container-x-close: #919191;
 $container-color-20: rgba(108, 108, 108, 0.2);
 $white: #ffffff;
 $yellow: #ffcb86;
+$columnGap: 2px;
 
 .load-m-hazardous-container {
     display: flex;
@@ -41,8 +43,6 @@ $yellow: #ffcb86;
     &-title {
         height: 34px;
         padding: 6px 12px;
-        border-radius: 2px;
-        background-color: $container-background-color;
         color: $container-color;
         display: grid;
         grid-template-columns: 1fr 22px;
@@ -53,8 +53,13 @@ $yellow: #ffcb86;
             margin: 0;
             padding: 0;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 18px;
             line-height: 18px;
+            color: $ta-black;
+
+            &-second {
+                color: $bw6-2;
+            }
 
             &::-moz-selection {
                 background-color: $container-color-20;
@@ -74,15 +79,15 @@ $yellow: #ffcb86;
         }
 
         &.compatibility-title-container {
-            margin: 10px 0px 20px 0px;
+            margin: 10px 0px 10px 0px;
         }
     }
 
     &-explanations {
-        margin-top: 12px;
+        margin-top: $columnGap;
 
         .load-m-hazardous-explanation {
-            margin-bottom: 12px;
+            margin-bottom: $columnGap;
 
             // Main
             &-main,
@@ -90,17 +95,17 @@ $yellow: #ffcb86;
                 display: grid;
                 grid-template-columns: 26px 1fr;
                 grid-template-rows: auto;
-                -moz-column-gap: 6px;
-                column-gap: 6px;
+                -moz-column-gap: $columnGap;
+                column-gap: $columnGap;
                 align-items: center;
-                margin-bottom: 4px;
+                margin-bottom: $columnGap;
 
                 &-type,
                 &-tableContext,
                 &-empty {
                     border-radius: 2px;
                     display: flex;
-                    align-items: flex-start;
+                    align-items: center;
                     justify-content: center;
                     background-color: $container-background-color;
 
@@ -112,8 +117,8 @@ $yellow: #ffcb86;
                     p {
                         margin: 0;
                         padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
+                        color: $ta-black;
+                        font-size: 10px;
                         line-height: 15px;
                         font-weight: 600;
                         -webkit-user-select: none;
@@ -134,7 +139,7 @@ $yellow: #ffcb86;
 
                     width: 100%;
                     height: 100%;
-                    padding: 10px 12px;
+                    padding: 10px 8px;
 
                     &-no-mb {
                         margin-bottom: 0px !important;
@@ -143,8 +148,8 @@ $yellow: #ffcb86;
                     p {
                         margin: 0;
                         padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
+                        color: $ta-black-2;
+                        font-size: 10px;
                         line-height: 15px;
                         font-weight: 400;
 
@@ -205,10 +210,10 @@ $yellow: #ffcb86;
                 display: grid;
                 grid-template-columns: repeat(2, 26px) 1fr;
                 grid-template-rows: auto;
-                -moz-column-gap: 6px;
-                column-gap: 6px;
+                -moz-column-gap: $columnGap;
+                column-gap: $columnGap;
                 align-items: center;
-                margin-bottom: 4px;
+                margin-bottom: $columnGap;
 
                 &-type,
                 &-empty {
@@ -225,8 +230,8 @@ $yellow: #ffcb86;
                     p {
                         margin: 0;
                         padding: 0;
-                        color: $container-color;
-                        font-size: 12px;
+                        color: $ta-black-2;
+                        font-size: 10px;
                         font-weight: 600;
                         -webkit-user-select: none;
                         -moz-user-select: none;
@@ -247,7 +252,7 @@ $yellow: #ffcb86;
                         margin: 0;
                         padding: 0;
                         color: $container-color;
-                        font-size: 12px;
+                        font-size: 10px;
                         line-height: 15px;
                         font-weight: 400;
                         &::-moz-selection {
@@ -283,14 +288,41 @@ $yellow: #ffcb86;
         user-select: none;
         svg {
             width: 615px;
-            height: 350px;
+            height: 530px;
         }
     }
 
     .load-m-hazardous-compatibility-table {
         svg {
             width: 615px;
-            height: 252px;
+            height: 390px;
         }
     }
+
+    &-footer {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+
+        &-title {
+            color: $muted;
+            font-size: 14px;
+        }
+        &-desc {
+            color: $ta-black-2;
+            font-size: 10px;
+            width: 460px;
+
+            a {
+                color: $ta-blue-14;
+            }
+        }
+    }
+}
+
+.color-red {
+    color: $ta-red-14 !important; 
 }
