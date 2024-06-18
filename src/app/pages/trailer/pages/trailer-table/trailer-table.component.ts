@@ -90,7 +90,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Data to display from model Truck Active
     public displayRowsFront: CardRows[] =
-    TrailerCardDataConstants.displayRowsFrontActive;
+        TrailerCardDataConstants.displayRowsFrontActive;
     public displayRowsBack: CardRows[] =
         TrailerCardsModalConfig.displayRowsBackActive;
 
@@ -361,7 +361,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             data: {
                                 ...item.tableData,
                                 number: item.tableData?.trailerNumber,
-                                avatar: `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
+                                avatar: item.tableData?.tableTrailerTypeIcon
+                                    ? `assets/svg/common/trailers/${item.tableData?.tableTrailerTypeIcon}`
+                                    : `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
                             },
                         };
                     });
@@ -950,10 +952,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             data: {
                                 ...data,
                                 number: data.trailerNumber,
-                                avatar: `assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                                avatar: data?.tableTrailerTypeIcon
+                                    ? `/assets/svg/common/trailers/${data?.tableTrailerTypeIcon}`
+                                    : `/assets/svg/common/trailers/${data?.trailerType?.logoName}`,
                             },
                             modalTitle: ' Unit ' + data?.trailerNumber,
-                            modalSecondTitle: data?.vin,
+                            modalSecondTitle: data?.tableVin
+                                ? data?.tableVin?.regularText +
+                                  data?.tableVin?.boldText
+                                : data?.vin,
                         });
                     }
                 });
@@ -1000,10 +1007,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             data: {
                 ...event.data,
                 number: event.data?.trailerNumber,
-                vin:
-                    event.data?.tableVin?.boldText +
-                    event?.data?.tableVin?.regularText,
-
+                vin: event.data?.tableVin
+                    ? event.data?.tableVin?.regularText +
+                      event.data?.tableVin?.boldText
+                    : event.data?.vin,
                 avatar: `/assets/svg/common/trailers/${event.data?.tableTrailerTypeIcon}`,
             },
         };
