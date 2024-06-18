@@ -1,6 +1,6 @@
 <div class="d-flex flex-column align-items-center step-container">
     <h1 class="m-0 step-title text-center noselect ta-font-bold">
-        Disclosure & release
+        {{ stringConstants.title }}
     </h1>
 
     <!-- FORM SECTION -->
@@ -11,119 +11,63 @@
                 <app-ta-checkbox
                     formControlName="isFirstDisclosure"
                     [name]="'isFirstDisclosure'"
+                    [label]="stringConstants.becauseIMustDrive"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isFirstDisclosure')"
-                >
-                    1. Because I must drive as an essential function of my
-                    employment or potential employment, I hereby give permission
-                    to {{ companyName }} to obtain my state driving record (also
-                    known as my motor vehicle record or MVR) in accordance with
-                    the Fair Credit Reporting Act (FCRA) and the Federal
-                    Driver’s Privacy Protection Act (DPPA).
-                </p>
             </div>
 
             <div class="d-flex checkbox-container">
                 <app-ta-checkbox
                     formControlName="isSecondDisclosure"
                     [name]="'isSecondDisclosure'"
+                    [label]="stringConstants.publicRecordInformation"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isSecondDisclosure')"
-                >
-                    2. I acknowledge and understand that my driving record is a
-                    consumer report that contains public record information.
-                </p>
             </div>
 
             <div class="d-flex checkbox-container">
                 <app-ta-checkbox
                     formControlName="isThirdDisclosure"
                     [name]="'isThirdDisclosure'"
+                    [label]="stringConstants.stateDrivingRecord"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isThirdDisclosure')"
-                >
-                    3. I authorize, without reservation any party or agency
-                    contacted by {{ companyName }} to furnish
-                    {{ companyName }} a copy of my state driving record.
-                </p>
             </div>
 
             <div class="d-flex checkbox-container">
                 <app-ta-checkbox
                     formControlName="isFourthDisclosure"
                     [name]="'isFourthDisclosure'"
+                    [label]="stringConstants.twoYearDrivingRecord"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isFourthDisclosure')"
-                >
-                    4. I understand that I have the right to request a copy of
-                    my driving record and to know the source or sources of my
-                    driving record, for a two-year period preceding my request.
-                </p>
             </div>
 
             <div class="d-flex checkbox-container">
                 <app-ta-checkbox
                     formControlName="isFifthDisclosure"
+                    [label]="stringConstants.authorizationRemainOnFile"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [name]="'isFifthDisclosure'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
@@ -131,53 +75,20 @@
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isFifthDisclosure')"
-                >
-                    5. This authorization shall remain on file by
-                    {{ companyName }} for the duration of my and will serve as
-                    ongoing authorization for {{ companyName }} to procure my
-                    state driving record at any time during my employment
-                    period.
-                </p>
             </div>
 
             <div class="d-flex checkbox-container">
                 <app-ta-checkbox
                     formControlName="isSixthDisclosure"
                     [name]="'isSixthDisclosure'"
+                    [label]="stringConstants.adverseActionAffectinEmployment"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isSixthDisclosure')"
-                >
-                    6. I understand that {{ companyName }} may take adverse
-                    action affecting my employment, based on information in my
-                    driving record.If such adverse action is taken, I
-                    acknowledge that my rights are as follows:
-                </p>
             </div>
 
             <div
@@ -188,33 +99,23 @@
                 }"
             >
                 <p class="m-0 ta-font-regular">
-                    - Employer must notify me in writing of any such adverse
-                    action
+                    {{ stringConstants.writingAdverseAction }}
                 </p>
 
                 <p class="m-0 ta-font-regular">
-                    - I have the right to receive a copy of the driving record
-                    upon which the adverse action was based.
+                    {{ stringConstants.rightCopyDrivingRecord }}
                 </p>
 
                 <p class="m-0 ta-font-regular">
-                    - I have the right to receive a summary of my rights under
-                    the Fair Credit Reporting Act. I have the right to know the
-                    name, address and phone number of the consumer reporting
-                    agency that provided my driving record to {{ companyName }}.
+                    {{ stringConstants.rightSummaryFairCreditReportingAct }}
                 </p>
 
                 <p class="m-0 ta-font-regular">
-                    - I have the right to obtain a free copy of my driving
-                    record from the agency that provided it, if such request is
-                    made within 60 days from the date that Employer took adverse
-                    action.
+                    {{ stringConstants.drivingRecord60Days }}
                 </p>
 
                 <p class="m-0 ta-font-regular">
-                    - I have the right to dispute the accuracy or completeness
-                    of my driving record with the consumer reporting agency that
-                    provided it, and request that errors be corrected.
+                    {{ stringConstants.disputeAccuracyCompleteness }}
                 </p>
             </div>
         </form>

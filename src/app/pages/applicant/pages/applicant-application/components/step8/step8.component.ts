@@ -55,11 +55,45 @@ import {
     CreateDrugAndAlcoholReviewCommand,
     DrugAndAlcoholFeedbackResponse,
 } from 'appcoretruckassist/model/models';
+import { StringConstantsStep8 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// modules
+import { CommonModule } from '@angular/common';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// components
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+
+// constants
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
+
+// config
+import { Step8Config } from '@pages/applicant/pages/applicant-application/components/step8/configs/step8.config';
 
 @Component({
     selector: 'app-step8',
     templateUrl: './step8.component.html',
     styleUrls: ['./step8.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaCheckboxComponent,
+        TaInputRadiobuttonsComponent,
+        TaAppTooltipV2Component,
+        TaInputAddressDropdownComponent,
+    ],
 })
 export class Step8Component implements OnInit, OnDestroy {
     @ViewChildren('cmp') set content(content: QueryList<any>) {
@@ -94,62 +128,21 @@ export class Step8Component implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity = null;
     public selectedSapAddress: AddressEntity = null;
 
-    public question = {
-        title: 'Have you, the applicant, tested positive, or refused to test, on any pre-employment drug or alcohol test administered by an employer to which you applied for, but did not obtain, safety-sensitive transportation work covered by DOT agency drug and alcohol testing rules during the past two years?',
-        formControlName: 'drugTest',
-        answerChoices: [
-            {
-                id: 1,
-                label: 'YES',
-                value: 'drugTestYes',
-                name: 'drugTestYes',
-                checked: false,
-            },
-            {
-                id: 2,
-                label: 'NO',
-                value: 'drugTestNo',
-                name: 'drugTestNo',
-                checked: false,
-            },
-        ],
-    };
+    public question = ApplicantApplicationConstants.questionStep8;
 
     public openAnnotationArray: {
         lineIndex?: number;
         lineInputs?: boolean[];
         displayAnnotationButton?: boolean;
         displayAnnotationTextArea?: boolean;
-    }[] = [
-        {
-            lineIndex: 0,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 1,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 2,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-        {
-            lineIndex: 3,
-            lineInputs: [false, false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
+    }[] = ApplicantApplicationConstants.openAnnotationArrayStep8;
     public hasIncorrectFields: boolean = false;
 
     public stepFeedbackValues: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public stringConstants: StringConstantsStep8 =
+        ApplicantApplicationConstants.stringConstantsStep8;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -159,6 +152,62 @@ export class Step8Component implements OnInit, OnDestroy {
         private applicantQuery: ApplicantQuery,
         private applicantActionsService: ApplicantService
     ) {}
+
+    get motorCarrierInputConfig(): ITaInput {
+        return Step8Config.getMotorCarrierInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get phoneInputConfig(): ITaInput {
+        return Step8Config.getPhoneInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get addressInputConfig(): ITaInput {
+        return Step8Config.getAddressInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get addressUnitInputConfig(): ITaInput {
+        return Step8Config.getAddressUnitInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get sapNameInputConfig(): ITaInput {
+        return Step8Config.getSapNameInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get sapPhoneInputConfig(): ITaInput {
+        return Step8Config.getSapPhoneInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get sapAddressInputConfig(): ITaInput {
+        return Step8Config.getSapAddressInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get sapAddressUnitInputConfig(): ITaInput {
+        return Step8Config.getSapAddressUnitInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
 
     ngOnInit(): void {
         this.createForm();

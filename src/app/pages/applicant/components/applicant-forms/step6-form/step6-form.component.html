@@ -128,15 +128,6 @@
     <!-- BTN -->
 
     <div class="d-flex align-items-center justify-content-center btn-container">
-        <ng-container *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing">
-            <app-applicant-add-save-btn
-                [addBtn]="true"
-                [btnText]="'Add  Emergency Contact'"
-                [disabledValue]="contactForm.invalid"
-                (clickValueEmitter)="onGetBtnClickValue($event)"
-            ></app-applicant-add-save-btn>
-        </ng-container>
-
         <ng-container *ngIf="isEditing">
             <app-applicant-add-save-btn
                 [cancelBtn]="true"
