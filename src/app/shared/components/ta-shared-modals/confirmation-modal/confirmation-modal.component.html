@@ -280,7 +280,7 @@
                             "
                         >
                             <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                                <p class="m-0 confirmation-text-1 large-text-1">
                                     Unit {{ editData?.data?.number }}
                                     <ng-container
                                         *ngIf="!editData?.data?.status"
@@ -292,8 +292,15 @@
                                         ></svg-icon>
                                     </ng-container>
                                 </p>
-                                <p class="m-0 confirmation-text-2">
-                                    VIN: {{ editData?.data?.vin }}
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{
+                                        editData?.data?.tableVin
+                                            ? editData.data.tableVin.regularText.concat(
+                                                  editData.data.tableVin
+                                                      .boldText
+                                              )
+                                            : editData?.data?.vin
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -357,23 +364,27 @@
                             <div
                                 class="d-flex flex-column justify-content-center confirmation-body-content"
                             >
-                                <div class="d-flex align-items-center">
-                                    <img
-                                        class="confirmation-img"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationRegistrationSvg
-                                        "
-                                        alt="registration"
-                                    />
+                                <div class="d-flex align-items-center gap-1">
+                                    <div
+                                        class="confirmation-img-container d-flex align-items-center justify-content-center"
+                                    >
+                                        <img
+                                            class="confirmation-img"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationRegistrationSvg
+                                            "
+                                            alt="registration"
+                                        />
+                                    </div>
 
                                     <div
-                                        class="d-flex flex-column justify-content-center"
+                                        class="d-flex flex-column justify-content-center w-100"
                                     >
                                         <p class="m-0 ta-font-bold text-1">
                                             {{ editData?.data?.licensePlate }}
                                         </p>
 
-                                        <p class="m-0 ta-font-medium">
+                                        <p class="m-0 ta-font-medium text-2">
                                             {{
                                                 editData?.data.expDate
                                                     | formatDateP
@@ -393,19 +404,23 @@
                             <div
                                 class="d-flex flex-column justify-content-center confirmation-body-content"
                             >
-                                <div class="d-flex align-items-center">
-                                    <img
-                                        class="confirmation-img"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationInspectionSvg
-                                        "
-                                        alt="inspection"
-                                    />
+                                <div class="d-flex align-items-center gap-1">
+                                    <div
+                                        class="confirmation-img-container d-flex align-items-center justify-content-center"
+                                    >
+                                        <img
+                                            class="confirmation-img"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationInspectionSvg
+                                            "
+                                            alt="inspection"
+                                        />
+                                    </div>
 
                                     <div
                                         class="d-flex flex-column justify-content-center"
                                     >
-                                        <p class="m-0 ta-font-medium text-1">
+                                        <p class="m-0 ta-font-bold text-1">
                                             {{
                                                 editData?.data.expDate
                                                     | formatDateP
@@ -425,14 +440,18 @@
                             <div
                                 class="d-flex flex-column justify-content-center confirmation-body-content"
                             >
-                                <div class="d-flex align-items-center">
-                                    <img
-                                        class="m-1 confirmation-img"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationTitle
-                                        "
-                                        alt="title"
-                                    />
+                                <div class="d-flex align-items-center gap-1">
+                                    <div
+                                        class="confirmation-img-container d-flex align-items-center justify-content-center"
+                                    >
+                                        <img
+                                            class="confirmation-img"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationTitle
+                                            "
+                                            alt="title"
+                                        />
+                                    </div>
 
                                     <div
                                         class="d-flex flex-column justify-content-center"
@@ -441,7 +460,7 @@
                                             {{ editData?.data?.number }}
                                         </p>
 
-                                        <p class="m-0 ta-font-medium">
+                                        <p class="m-0 ta-font-medium text-2">
                                             {{
                                                 editData?.data.issueDate
                                                     | formatDateP
@@ -463,18 +482,22 @@
                                 class="confirmation-info d-flex flex-column justify-content-center"
                             >
                                 <div
-                                    class="d-flex flex-row justify-content-left"
+                                    class="d-flex flex-row justify-content-left gap-1"
                                 >
-                                    <img
-                                        class="avatar-img"
-                                        [src]="
-                                            confirmationImageRoutes.confirmationVoidSvg
-                                        "
-                                        alt="avatar"
-                                    />
+                                    <div
+                                        class="confirmation-img-container d-flex align-items-center justify-content-center"
+                                    >
+                                        <img
+                                            class="confirmation-img"
+                                            [src]="
+                                                confirmationImageRoutes.confirmationVoidSvg
+                                            "
+                                            alt="avatar"
+                                        />
+                                    </div>
                                     <div>
                                         <p
-                                            class="m-0 confirmation-text-1 d-flex align-items-center"
+                                            class="m-0 confirmation-text-1 large-text-1 d-flex align-items-center"
                                         >
                                             {{
                                                 editData?.data.state
@@ -482,7 +505,9 @@
                                             }}
                                             {{ editData?.data.licensePlate }}
                                         </p>
-                                        <p class="m-0 confirmation-text-2">
+                                        <p
+                                            class="m-0 confirmation-text-2 large-text-2"
+                                        >
                                             {{
                                                 editData?.data.expDate
                                                     | formatDateP
@@ -1100,11 +1125,17 @@
                             "
                         >
                             <div class="confirmation-info">
-                                <p class="m-0 confirmation-text-1">
+                                <p class="m-0 confirmation-text-1 large-text-1">
                                     Unit {{ item?.data?.number }}
                                 </p>
-                                <p class="m-0 confirmation-text-2">
-                                    VIN: {{ item?.data?.vin }}
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{
+                                        item?.data?.tableVin
+                                            ? item.data.tableVin.regularText.concat(
+                                                  item.data.tableVin.boldText
+                                              )
+                                            : item?.data?.vin
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
