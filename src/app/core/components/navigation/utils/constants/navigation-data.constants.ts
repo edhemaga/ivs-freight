@@ -39,13 +39,11 @@ export class NavigationDataConstants {
                     name: 'Customer',
                     route: '/list/customer',
                     activeRouteFlegId: 3,
-                    construction: true
                 },
                 {
                     name: 'Driver',
                     route: '/list/driver',
                     activeRouteFlegId: 3,
-                    construction: true
                 },
                 {
                     name: 'Truck',
@@ -56,7 +54,6 @@ export class NavigationDataConstants {
                     name: 'Trailer',
                     route: '/list/trailer',
                     activeRouteFlegId: 3,
-                    construction: true
                 },
                 {
                     name: 'Repair',
@@ -66,7 +63,7 @@ export class NavigationDataConstants {
                 {
                     name: 'PM',
                     route: '/list/pm',
-                    activeRouteFlegId: 3
+                    activeRouteFlegId: 3,
                 },
                 {
                     name: 'Fuel',
@@ -110,7 +107,7 @@ export class NavigationDataConstants {
                     name: 'Payroll',
                     route: '/accounting/payroll',
                     activeRouteFlegId: 4,
-                    construction: true
+                    construction: true,
                 },
                 {
                     name: 'IFTA',
@@ -550,21 +547,21 @@ export class NavigationDataConstants {
                     image: 'assets/svg/common/ic_settings.svg',
                     route: '/settings',
                     activeRouteFlegId: 34,
-                    construction: true
+                    construction: true,
                 },
                 {
                     name: 'Location',
                     image: 'assets/svg/common/ic_location.svg',
                     route: '/location',
                     activeRouteFlegId: 34,
-                    construction: true
+                    construction: true,
                 },
                 {
                     name: 'Document',
                     image: 'assets/svg/common/ic_document.svg',
                     route: '/document',
                     activeRouteFlegId: 34,
-                    construction: true
+                    construction: true,
                 },
                 {
                     name: 'User',
@@ -600,7 +597,7 @@ export class NavigationDataConstants {
                     image: 'assets/svg/common/ic_integration.svg',
                     route: '/integration',
                     activeRouteFlegId: 34,
-                    construction: true
+                    construction: true,
                 },
             ],
         },
