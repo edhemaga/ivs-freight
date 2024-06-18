@@ -196,6 +196,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public labelsDispatches: any[] = [];
     public originLabelsDispatches: any[] = [];
     public labelsGeneralCommodity: EnumValue[] = [];
+    public payTypeDropdownList = [];
 
     // broker labels
     public labelsBroker: any[] = [];
@@ -282,7 +283,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isVisibleBillDropdown: boolean = false;
     public isVisiblePayment: boolean = false;
 
-    public payTypeDropdownList = LoadStopItems.PAYMENT_TYPES;
 
     // documents
     public documents: any[] = [];
@@ -3050,6 +3050,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             logoName: item?.avatar,
                         };
                     });
+
+                    this.payTypeDropdownList = res.paymentMethods;
 
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
