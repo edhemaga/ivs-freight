@@ -57,7 +57,7 @@ export class TruckTrailerService {
         return this.registrationService.apiRegistrationPost().pipe(
             tap((res) => {
                 // Truck Add Registration
-                if (res.id) {
+                if (data.truckId) {
                     const newTitleId = res.id;
                     const tr = this.truckItemStore.getValue();
                     const truckData = JSON.parse(JSON.stringify(tr.entities));
@@ -80,31 +80,31 @@ export class TruckTrailerService {
                 }
                 // Trailer Add Registration
                 else if (data.trailerId) {
-                    // let trailerById = this.trailerService
-                    //     .getTrailerById(data.trailerId)
-                    //     .subscribe({
-                    //         next: (trailer: any) => {
-                    //             // Update Trailer Store
-                    //             if (data.tabSelected === 'active') {
-                    //                 this.trailerActiveStore.remove(
-                    //                     ({ id }) => id === data.driverId
-                    //                 );
-                    //                 this.trailerActiveStore.add(trailer);
-                    //             } else if (data.tabSelected === 'inactive') {
-                    //                 this.trailerInactiveStore.remove(
-                    //                     ({ id }) => id === data.driverId
-                    //                 );
-                    //                 this.trailerInactiveStore.add(trailer);
-                    //             }
-                    //             // Send Update Data To Table
-                    //             this.tableService.sendActionAnimation({
-                    //                 animation: 'update',
-                    //                 data: trailer,
-                    //                 id: trailer.id,
-                    //             });
-                    //             trailerById.unsubscribe();
-                    //         },
-                    //     });
+                    let trailerById = this.trailerService
+                        .getTrailerById(data.trailerId)
+                        .subscribe({
+                            next: (trailer: any) => {
+                                // Update Trailer Store
+                                if (data.tabSelected === 'active') {
+                                    this.trailerActiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+                                    this.trailerActiveStore.add(trailer);
+                                } else if (data.tabSelected === 'inactive') {
+                                    this.trailerInactiveStore.remove(
+                                        ({ id }) => id === data.driverId
+                                    );
+                                    this.trailerInactiveStore.add(trailer);
+                                }
+                                // Send Update Data To Table
+                                this.tableService.sendActionAnimation({
+                                    animation: 'update',
+                                    data: trailer,
+                                    id: trailer.id,
+                                });
+                                trailerById.unsubscribe();
+                            },
+                        });
                 }
             })
         );

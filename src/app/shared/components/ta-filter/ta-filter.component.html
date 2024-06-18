@@ -389,7 +389,27 @@
                             <span> {{ item.name }}</span>
                             <ng-container *ngIf="item.logo">
                                 <div class="select-item-logo">
-                                    <svg-icon [src]="item.logo"></svg-icon>
+                                    <ng-container
+                                        *ngIf="
+                                            type === 'trailerFilter';
+                                            else truckLogo
+                                        "
+                                    >
+                                        <svg-icon
+                                            [src]="item.logo"
+                                            class="trailers"
+                                            [ngClass]="
+                                                item.name
+                                                    | filterTrailerColorPipe
+                                            "
+                                        ></svg-icon>
+                                    </ng-container>
+                                    <ng-template #truckLogo>
+                                        <svg-icon
+                                            [src]="item.logo"
+                                            class="truck-logo-icon"
+                                        ></svg-icon>
+                                    </ng-template>
                                 </div>
                             </ng-container>
                         </div>

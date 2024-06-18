@@ -1069,16 +1069,18 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private onTableBodyActions(event: TruckBodyResponse): void {
+    private onTableBodyActions(event: any): void {
         const mappedEvent = {
             ...event,
             data: {
                 ...event.data,
                 number: event.data?.truckNumber,
-                avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
+                vin:
+                    event.data?.tableVin?.boldText +
+                    event?.data?.tableVin?.regularText,
+                avatar: `/assets/svg/common/trucks/${event.data?.truckTypeIcon}`,
             },
         };
-
         switch (event.type) {
             case TableStringEnum.SHOW_MORE: {
                 this.backFilterQuery.active =
