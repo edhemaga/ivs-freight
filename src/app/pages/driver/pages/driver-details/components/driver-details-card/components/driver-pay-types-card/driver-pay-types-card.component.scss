@@ -1,0 +1,45 @@
+@import 'src/theme/variables.scss';
+
+.pay-types-container {
+    display: grid;
+    grid-gap: 12px;
+
+    &-double-column {
+        grid-template-columns: repeat(2, 202px);
+    }
+
+    &-triple-column {
+        grid-template-columns: repeat(3, 131px);
+    }
+
+    &:first-child {
+        margin-bottom: 8px;
+    }
+
+    .pay-type-box {
+        p {
+            font-size: 11px;
+            line-height: 14px;
+        }
+
+        span {
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+        p,
+        span {
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+}

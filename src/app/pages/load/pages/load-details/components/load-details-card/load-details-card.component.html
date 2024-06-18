@@ -1,8 +1,18 @@
 <div *ngIf="load" class="cards-item-wrapper-1">
     <app-ta-details-header-card
-        [ngClass]="{ 'disabedPreviousArrow': currentLoadIndex == 0 || currentLoadIndex == -1 , 'disableNextArrow': currentLoadIndex == (loadList.length -1 ) }"
-        [tooltipNext]=" currentLoadIndex == (loadList.length -1 )  ?  '' : 'Next Load' " 
-        [tooltipPrevious]=" currentLoadIndex == 0 || currentLoadIndex == -1 ? '' : 'Previous Load' "
+        [ngClass]="{
+            disabedPreviousArrow:
+                currentLoadIndex == 0 || currentLoadIndex == -1,
+            disableNextArrow: currentLoadIndex == loadList.length - 1
+        }"
+        [tooltipNext]="
+            currentLoadIndex == loadList.length - 1 ? '' : 'Next Load'
+        "
+        [tooltipPrevious]="
+            currentLoadIndex == 0 || currentLoadIndex == -1
+                ? ''
+                : 'Previous Load'
+        "
         [cardDetailsDate]="load.dateCreated | formatDateP"
         [searchInputName]="'Search Load'"
         [options]="loadDropdowns"
@@ -17,7 +27,7 @@
         <div class="load-status-driver-container">
             <div class="load-status-time">
                 <div class="load-status-item-status">
-                    {{ load?.status?.name.toUpperCase() }}
+                    {{ load?.status?.statusString?.toUpperCase() }}
                 </div>
                 <div class="load-status-item-days">
                     <span class="days" *ngIf="load?.lastStatusPassed?.days > 0"
@@ -40,7 +50,7 @@
                     </span>
                 </div>
             </div>
-            <div class="driver-reg" *ngIf="load?.dispatch?.driver" >
+            <div class="driver-reg" *ngIf="load?.dispatch?.driver">
                 <div class="driver-avatar">
                     <img
                         [src]="
@@ -53,7 +63,7 @@
                         alt="Avatar Driver"
                         class="avatar"
                     />
-                    <div class="load-item-driver-name" >
+                    <div class="load-item-driver-name">
                         {{
                             load?.dispatch?.driver?.firstName +
                                 ' ' +
@@ -84,12 +94,12 @@
                     marginBottom: '0px'
                 }"
                 class="first-custom-card"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
                 <div class="load-broker-container">
                     <div class="company-name">
-                        {{ load?.broker?.businessName }} 
-                    </div> 
+                        {{ load?.broker?.businessName }}
+                    </div>
                     <div
                         class="broker-name"
                         *ngIf="load?.brokerContact?.contactName"
@@ -144,27 +154,31 @@
                 [isCardOpen]="true"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
                 <div class="load-assigned-container">
                     <div class="assigned-driver">
                         <div class="driver-info">
                             <img
                                 [src]="
-                                load?.dispatch?.driver?.avatar
-                                    ? imageBase64Service.sanitizer(
-                                        load?.dispatch?.driver?.avatar
-                                    )
-                                : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+                                    load?.dispatch?.driver?.avatar
+                                        ? imageBase64Service.sanitizer(
+                                              load?.dispatch?.driver?.avatar
+                                          )
+                                        : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
                                 "
                                 class="driver-avatar"
                                 alt=""
                             />
-                            <span class="driver-name" *ngIf="load?.dispatch?.driver">{{
-                                load?.dispatch?.driver?.firstName +
-                                    ' ' +
-                                    load?.dispatch?.driver?.lastName
-                            }}</span>
+                            <span
+                                class="driver-name"
+                                *ngIf="load?.dispatch?.driver"
+                                >{{
+                                    load?.dispatch?.driver?.firstName +
+                                        ' ' +
+                                        load?.dispatch?.driver?.lastName
+                                }}</span
+                            >
                         </div>
                     </div>
                     <div class="flex-load">
@@ -173,7 +187,10 @@
                                 <svg-icon
                                     class="flex-load"
                                     src="assets/svg/common/trucks/ic_truck_car-hauler.svg"
-                                    [src]="'assets/svg/common/trucks/' + load.dispatch?.truck?.truckType.logoName "
+                                    [src]="
+                                        'assets/svg/common/trucks/' +
+                                        load.dispatch?.truck?.truckType.logoName
+                                    "
                                 ></svg-icon>
                                 <span class="driver-name">{{
                                     load?.dispatch?.truck?.truckNumber
@@ -184,7 +201,11 @@
                             <div class="driver-info">
                                 <svg-icon
                                     class="flex-load"
-                                    [src]="'assets/svg/common/trailers/' + load.dispatch?.trailer?.trailerType.logoName "
+                                    [src]="
+                                        'assets/svg/common/trailers/' +
+                                        load.dispatch?.trailer?.trailerType
+                                            .logoName
+                                    "
                                     src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
                                 ></svg-icon>
                                 <span class="driver-name">{{
@@ -210,7 +231,7 @@
                 [isCardOpen]="false"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
             </app-ta-custom-card>
 
@@ -225,12 +246,15 @@
                     marginTop: '0px',
                     marginBottom: '0px'
                 }"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
                 <div class="load-details-container">
                     <div class="load-details-wrapper">
                         <div class="load-details-item">
-                            <div class="load-details-header" *ngIf="load?.generalCommodity?.name">
+                            <div
+                                class="load-details-header"
+                                *ngIf="load?.generalCommodity?.name"
+                            >
                                 General Commodity
                             </div>
                             <div class="load-details-value">
@@ -243,31 +267,46 @@
                                 {{ load?.weight }} ibs
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.truckType?.name">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.truckType?.name"
+                        >
                             <div class="load-details-header">Truck req.</div>
                             <div class="load-details-value">
                                 {{ load?.loadRequirements?.truckType?.name }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.trailerType?.name">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.trailerType?.name"
+                        >
                             <div class="load-details-header">Trailer req.</div>
                             <div class="load-details-value">
                                 {{ load?.loadRequirements?.trailerType?.name }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.doorType?.name">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.doorType?.name"
+                        >
                             <div class="load-details-header">Door type</div>
                             <div class="load-details-value">
                                 {{ load?.loadRequirements?.doorType?.name }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.suspension?.name">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.suspension?.name"
+                        >
                             <div class="load-details-header">Suspension</div>
                             <div class="load-details-value">
                                 {{ load?.loadRequirements?.suspension?.name }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.trailerLength?.name">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.trailerLength?.name"
+                        >
                             <div class="load-details-header">Length</div>
                             <div class="load-details-value">
                                 {{
@@ -275,13 +314,19 @@
                                 }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.year">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.year"
+                        >
                             <div class="load-details-header">Year</div>
                             <div class="load-details-value">
                                 {{ load?.loadRequirements?.year }}
                             </div>
                         </div>
-                        <div class="load-details-item" *ngIf="load?.loadRequirements?.liftgate">
+                        <div
+                            class="load-details-item"
+                            *ngIf="load?.loadRequirements?.liftgate"
+                        >
                             <div class="load-details-header">Liftgate</div>
                             <div class="load-details-value">
                                 {{
@@ -303,10 +348,13 @@
                 [hasCounter]="load.files?.length"
                 [bodyTemplate]="'card'"
                 [animationsDisabled]="false"
-                [customClass]="'detailsPadding'" 
+                [customClass]="'detailsPadding'"
             >
-            <div class="card_files_holder" [class.active]="load.files?.length > 1">
-                <app-ta-upload-files
+                <div
+                    class="card_files_holder"
+                    [class.active]="load.files?.length > 1"
+                >
+                    <app-ta-upload-files
                         [files]="load?.files"
                         [customClassName]="'driver-card-pdf'"
                         [hasCarouselBottomTabs]="true"
@@ -314,7 +362,7 @@
                         [slideWidth]="428"
                         [reviewMode]="'REVIEW_MODE'"
                     ></app-ta-upload-files>
-            </div>
+                </div>
             </app-ta-custom-card>
             <div class="divider"></div>
             <div class="details-page-row-5">
@@ -329,7 +377,7 @@
                         [placeholder]="'Write something.'"
                         [customClass]="'note-small'"
                         [noteType]="'details-card'"
-                        [blankNote]="load?.note ? false : true" 
+                        [blankNote]="load?.note ? false : true"
                         [note]="
                             load.note && load.note != 'null' ? load.note : ''
                         "

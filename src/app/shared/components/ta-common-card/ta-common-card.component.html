@@ -6,8 +6,8 @@
         ngbTooltip
         [mainTooltip]="isCardOpen ? 'Close Card' : 'Open Card'"
         [customClass]="'mb-2'"
-        position="top"
-        [tooltipBackground]="isCardOpen || forcedOpen ? '#6C6C6C' : '#6C6C6C'"
+        position="bottom"
+        [tooltipBackground]="'#424242'"
         class="tooltipClose"
     >
         <div
@@ -24,7 +24,9 @@
                         ngbTooltip
                         [mainTooltip]="stateTooltipName"
                         position="top"
-                        tooltipBackground="#6C6C6C"
+                        [tooltipBackground]="
+                            stateTooltipName ? '#6C6C6C' : '#fff'
+                        "
                         class="tooltipShortName"
                     >
                         <ng-container *ngIf="shortName">
@@ -62,6 +64,12 @@
                         [ngClass]="{
                             'has-svgIcon': hasSvg,
                             'card-close-title': !isCardOpen && !forcedOpen
+                        }"
+                        [ngStyle]="{
+                            width:
+                                cardNameCurrent === 'test' ? '100%' : 'unset',
+                            'margin-left':
+                                cardNameCurrent === 'medical' ? '2px' : 0
                         }"
                     >
                         <ng-container
@@ -148,25 +156,36 @@
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="cardSecondResult">
-                            <span
-                                class="second-name resultHolder"
-                                [class.positiveResult]="
-                                    cardSecondResult == 'Positive'
-                                "
-                                [class.openedCardResults]="isCardOpen"
-                            >
-                                {{ cardSecondResult }}
-                            </span>
-                        </ng-container>
-
-                        <ng-container
-                            *ngIf="cardSecondName && !isCardOpen && !forcedOpen"
+                        <div
+                            class="d-flex align-items-center w-100"
+                            [ngClass]="{
+                                'justify-content-between':
+                                    cardSecondName && !isCardOpen,
+                                'justify-content-end': isCardOpen
+                            }"
                         >
-                            <span class="second-name reason-span">
-                                {{ cardSecondName }}</span
+                            <ng-container
+                                *ngIf="
+                                    cardSecondName && !isCardOpen && !forcedOpen
+                                "
                             >
-                        </ng-container>
+                                <span class="second-name reason-span">
+                                    {{ cardSecondName }}</span
+                                >
+                            </ng-container>
+
+                            <ng-container *ngIf="cardSecondResult">
+                                <span
+                                    class="second-name resultHolder"
+                                    [class.positiveResult]="
+                                        cardSecondResult == 'Positive'
+                                    "
+                                    [class.openedCardResults]="isCardOpen"
+                                >
+                                    {{ cardSecondResult }}
+                                </span>
+                            </ng-container>
+                        </div>
                     </span>
 
                     <ng-container *ngIf="hasCopyIcon">
@@ -221,12 +240,23 @@
                     <ng-container *ngIf="isDeactivated && isCardOpen">
                         <div
                             class="voided-button ta-font-bold d-flex justify-content-center"
+                            [ngStyle]="{
+                                width: isVoidDateDisplayed ? '106px' : 'auto'
+                            }"
+                            (mouseenter)="isVoidDateDisplayed = true"
+                            (mouseleave)="isVoidDateDisplayed = false"
                         >
-                            <p>Voided</p>
+                            <p>
+                                {{
+                                    isVoidDateDisplayed
+                                        ? 'Voided ' + voidedDate
+                                        : 'Voided'
+                                }}
+                            </p>
                         </div>
                     </ng-container>
                     <app-ta-details-dropdown
-                        [options]="options.actions"
+                        [options]="options?.actions"
                         [id]="optionsId"
                         (click)="sendData(data)"
                         [placement]="
@@ -234,7 +264,6 @@
                                 ? 'bottom-right left auto'
                                 : 'right-top right auto'
                         "
-                        [leftIcon]="setPositionDrop ? false : true"
                         (dropDownActions)="dropAct($event)"
                         [customClassDropDown]="'drop-down-details-single'"
                         (click)="toggleDropdown()"
@@ -285,6 +314,10 @@
                 </ng-container>
             </div>
             <div
+                ngbTooltip
+                [mainTooltip]="resPage ? 'Collapse Card' : 'Expand Card'"
+                position="bottom"
+                [tooltipBackground]="'#424242'"
                 (click)="resizePageFun()"
                 [ngClass]="{ 'rotate-common': resPage }"
                 class="resize-icon"

@@ -9,14 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface TodoUserResponse { 
     id?: number;
     companyUserId?: number;
+    userId?: number;
     firstName?: string | null;
     lastName?: string | null;
     avatar?: string | null;
+    avatarFile?: FileResponse;
     todoId?: number;
 }
 

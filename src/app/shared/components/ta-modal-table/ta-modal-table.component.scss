@@ -47,7 +47,7 @@
         }
 
         &.contact-table-header {
-            grid-template-columns: 26px 170px 120px 140px 80px 200px;
+            grid-template-columns:  120px 140px 80px 260px;
 
             .table-header-box {
                 padding-left: 6px;
@@ -76,6 +76,14 @@
 
         &.fuel-card-table-header {
             grid-template-columns: 26px 220px 138px 220px;
+
+            .table-header-box {
+                padding-left: 6px;
+            }
+        }
+
+        &.previous-adresses-table-header {
+            grid-template-columns: 26px 482px 100px;
 
             .table-header-box {
                 padding-left: 6px;

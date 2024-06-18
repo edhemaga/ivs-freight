@@ -24,6 +24,7 @@ import { CommonModule } from '@angular/common';
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
+import { FilterTrailerColorPipe } from './pipes/filter-trailer-color.pipe';
 
 // validators
 import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -83,6 +84,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 
         // pipes
         TaSvgPipe,
+        FilterTrailerColorPipe,
     ],
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],
@@ -948,12 +950,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                                 return type;
                             });
                         } else {
-                            newData = res.data?.pagination?.data.map(
-                                (type: any) => {
-                                    type['name'] = type.trailerNumber;
-                                    return type;
-                                }
-                            );
+                            newData = res.data?.map((type: any) => {
+                                type['name'] = type.name;
+                                type['logo'] =
+                                    FilterIconRoutes.trailerSVG + type.logoName;
+                                return type;
+                            });
                         }
                         this.trailerArray = newData;
                     }
@@ -1685,8 +1687,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         originLongValue: this.originLongVal,
                         destinationLatValue: this.destLatVal,
                         destinationLongValue: this.destLongVal,
+                        rangeValue: this.locationRange,
                     };
 
+                    this.locationRangeSet = this.locationRange;
                     this.originLatValSet = this.originLatVal;
                     this.originLongValSet = this.originLongVal;
                     this.destLongValSet = this.destLongVal;
@@ -2196,6 +2200,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         }
     }
     private sortItems(): boolean {
+        console.log(this.type);
         switch (this.type) {
             case 'categoryRepairFilter': {
                 this.categoryRepairArray.sort((a, b) => {
@@ -2210,24 +2215,25 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'truckFilter': {
-                this.truckArray.sort((a, b) =>
-                    this.sortComparison(
-                        a.count,
-                        b.count,
-                        this.isAscendingOrderTruck
-                    )
-                );
+                this.truckArray.sort((a, b) => {
+                    if (this.isAscendingOrderTruck) {
+                        return a.name.localeCompare(b.name);
+                    } else {
+                        return b.name.localeCompare(a.name);
+                    }
+                });
                 this.isAscendingOrderTruck = !this.isAscendingOrderTruck;
                 break;
             }
             case 'trailerFilter': {
-                this.trailerArray.sort((a, b) =>
-                    this.sortComparison(
-                        a.count,
-                        b.count,
-                        this.isAscendingOrderTrailer
-                    )
-                );
+                this.trailerArray.sort((a, b) => {
+                    if (this.isAscendingOrderTrailer) {
+                        return a.name.localeCompare(b.name);
+                    } else {
+                        return b.name.localeCompare(a.name);
+                    }
+                });
+
                 this.isAscendingOrderTrailer = !this.isAscendingOrderTrailer;
                 break;
             }

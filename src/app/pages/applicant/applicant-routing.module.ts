@@ -22,7 +22,10 @@ const routes: Routes = [
         children: [
             {
                 path: '1',
-                component: Step1Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step1/step1.component'
+                    ).then((m) => m.Step1Component),
                 data: {
                     title: 'Personal Info',
                     depth: 1,
@@ -58,7 +61,10 @@ const routes: Routes = [
             },
             {
                 path: '5',
-                component: Step5Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step5/step5.component'
+                    ).then((m) => m.Step5Component),
                 data: {
                     title: 'Traffic violations',
                     depth: 5,
@@ -67,17 +73,26 @@ const routes: Routes = [
             },
             {
                 path: '6',
-                component: Step6Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step6/step6.component'
+                    ).then((m) => m.Step6Component),
                 data: { title: 'Education', depth: 6, routeIdx: 5 },
             },
             {
                 path: '7',
-                component: Step7Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step7/step7.component'
+                    ).then((m) => m.Step7Component),
                 data: { title: '7 Days HOS', depth: 7, routeIdx: 6 },
             },
             {
                 path: '8',
-                component: Step8Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step8/step8.component'
+                    ).then((m) => m.Step8Component),
                 data: {
                     title: 'Drug & Alcohol statement',
                     depth: 8,
@@ -86,7 +101,10 @@ const routes: Routes = [
             },
             {
                 path: '9',
-                component: Step9Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step9/step9.component'
+                    ).then((m) => m.Step9Component),
                 data: {
                     title: 'Driver rights',
                     depth: 9,
@@ -95,7 +113,10 @@ const routes: Routes = [
             },
             {
                 path: '10',
-                component: Step10Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step10/step10.component'
+                    ).then((m) => m.Step10Component),
                 data: {
                     title: 'Disclosure & release',
                     depth: 10,
@@ -104,7 +125,10 @@ const routes: Routes = [
             },
             {
                 path: '11',
-                component: Step11Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step11/step11.component'
+                    ).then((m) => m.Step11Component),
                 data: {
                     title: 'Authorization',
                     depth: 11,

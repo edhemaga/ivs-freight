@@ -1,0 +1,85 @@
+
+import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { OpenHourDays } from '../../enums/open-hours.enum';
+import { OpenWorkingHours } from '../../enums/working-hours.enum';
+
+export type WorkingHoursType = OpenHourDays[];
+
+const startTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    OpenWorkingHours.EIGHTAM
+);
+const endTime = MethodsCalculationsHelper.convertTimeFromBackend(
+    OpenWorkingHours.FIVEAM
+);
+
+export class RepairShopConstants {
+    static OPEN_HOUR_DAYS: WorkingHoursType = [
+        OpenHourDays.MON_FRI,
+        OpenHourDays.Sunday,
+        OpenHourDays.Monday,
+        OpenHourDays.Tuesday,
+        OpenHourDays.Wednesday,
+        OpenHourDays.Thursday,
+        OpenHourDays.Friday,
+        OpenHourDays.Saturday,
+    ];
+
+    static DEFAULT_OPEN_HOUR_DAYS = [
+        {
+            dayLabel: OpenHourDays.MON_FRI,
+            dayOfWeek: -1,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Monday,
+            dayOfWeek: 1,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Tuesday,
+            dayOfWeek: 2,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Wednesday,
+            dayOfWeek: 3,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Thursday,
+            dayOfWeek: 4,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Friday,
+            dayOfWeek: 5,
+            isWorkingDay: true,
+            startTime,
+            endTime,
+        },
+        {
+            dayLabel: OpenHourDays.Saturday,
+            dayOfWeek: 6,
+            isWorkingDay: false,
+            startTime: null,
+            endTime: null,
+        },
+        {
+            dayLabel: OpenHourDays.Sunday,
+            dayOfWeek: 0,
+            isWorkingDay: false,
+            startTime: null,
+            endTime: null,
+        },
+    ];
+}

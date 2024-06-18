@@ -1,5 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-    <h1 class="m-0 step-title text-center noselect ta-font-bold">7 Days HOS</h1>
+    <h1 class="m-0 step-title text-center noselect ta-font-bold">
+        {{ stringConstants.title }}
+    </h1>
 
     <!-- INSTRUCTIONS -->
 
@@ -8,27 +10,14 @@
     >
         <p
             class="m-0 text-center ta-font-regular"
-            [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-            }"
         >
-            <span class="ta-font-bold">Instructions:</span> Motor Carriers when
-            using a driver for the first time shall obtain from the driver a
-            signed statement giving the total time on-duty during the
-            immediately preceding 7 days and time at which such driver was last
-            relived from duty prior to beginning work for such motor carrier.
-            Rule 395.8(j) (2) Federal Motor Carrier Safety Regulations.
+            {{ stringConstants.instructionsMotorCarriers }}
         </p>
 
         <p
             class="m-0 text-center ta-font-regular"
-            [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-            }"
         >
-            <span class="ta-font-bold">NOTE:</span> Hours for any compensated
-            work during the preceding 7 days, including work for a non-motor
-            carrier entity, must be recorded on this form.
+            {{ stringConstants.hoursForCompensated }}
         </p>
     </div>
 
@@ -54,18 +43,7 @@
                                 "
                             >
                                 <div
-                                    class="d-flex day-box"
-                                    [ngStyle]="{
-                                        width: first ? '35px' : '46px',
-                                        'justify-content': first
-                                            ? 'start'
-                                            : 'center',
-                                        'margin-right': first
-                                            ? '27px'
-                                            : last
-                                            ? '0'
-                                            : '36px'
-                                    }"
+                                    class="d-flex justify-content-center day-box"
                                 >
                                     <p
                                         class="m-0 ta-font-bold"
@@ -94,25 +72,9 @@
                                 "
                             >
                                 <div
-                                    class="d-flex date-box"
-                                    [ngStyle]="{
-                                        width: first ? '35px' : '46px',
-                                        'justify-content': first
-                                            ? 'start'
-                                            : 'center',
-                                        'margin-right': first
-                                            ? '27px'
-                                            : last
-                                            ? '0'
-                                            : '36px',
-                                        'font-size': first ? '14px' : '12px'
-                                    }"
+                                    class="d-flex justify-content-center date-box"
                                 >
-                                    <p
-                                        [ngClass]="[
-                                            'date-para' + i,
-                                            'm-0 ta-font-bold'
-                                        ]"
+                                    <p class="m-0 ta-font-bold"
                                         [ngStyle]="{
                                             color:
                                                 selectedMode === 'FEEDBACK_MODE'
@@ -128,22 +90,6 @@
                     </tr>
                     <tr>
                         <div class="d-flex align-items-center input-container">
-                            <td>
-                                <div
-                                    class="d-flex align-items-center hos-title-group"
-                                >
-                                    <p
-                                        class="m-0 ta-font-bold"
-                                        [ngClass]="
-                                            selectedMode === 'FEEDBACK_MODE'
-                                                ? 'hos-title hos-title-feedback'
-                                                : 'hos-title'
-                                        "
-                                    >
-                                        HOS <span>*</span>
-                                    </p>
-                                </div>
-                            </td>
                             <td
                                 formArrayName="hosArray"
                                 *ngFor="
@@ -159,20 +105,7 @@
                                     >
                                         <app-ta-input
                                             formControlName="hos"
-                                            [inputConfig]="{
-                                                name: 'hos',
-                                                type: 'number',
-                                                hideClear: true,
-                                                textAlign: 'center',
-                                                max: 24,
-                                                hideErrorMessage: true,
-                                                hideRequiredCheck: true,
-                                                isDisabled:
-                                                    selectedMode ===
-                                                        'REVIEW_MODE' ||
-                                                    selectedMode ===
-                                                        'FEEDBACK_MODE'
-                                            }"
+                                            [inputConfig]="hosInputConfig"
                                             (change)="countTotalHours(i)"
                                         ></app-ta-input>
                                     </div>
@@ -181,18 +114,13 @@
                         </div>
                     </tr>
                     <tr>
-                        <div class="d-flex total-container">
-                            <p
-                                class="m-0 ta-font-bold"
-                                [ngStyle]="{
-                                    color:
-                                        selectedMode === 'FEEDBACK_MODE'
-                                            ? '#97A8DC'
-                                            : '#6d82c7'
-                                }"
-                            >
-                                Total Hours:
+                        <div class="d-flex justify-content-between total-container">
+                            <p class="m-0 ta-font-semi-bold total-text">
+                                Total
+                            </p>
+                            <p class="m-0 ta-font-bold">
                                 {{ totalHours | sumArrays }}
+                                hours
                             </p>
                         </div>
                     </tr>
@@ -207,42 +135,20 @@
                 <app-ta-checkbox
                     formControlName="isValidHos"
                     [name]="'isValidHos'"
-                    [label]="
-                        'I hereby certify that the information given above is correct to the best of my Knowledge '
-                    "
-                    [customClass]="'bold-12'"
+                    [label]="stringConstants.isValidHos"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-                <p
-                    class="m-0 text-center ta-font-bold"
-                    [ngStyle]="{
-                        color: !sevenDaysHosForm.get('isValidHos').value
-                            ? '#6c6c6c'
-                            : '#2f2f2f',
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="handleCheckboxParagraphClick('isValidHos')"
-                >
-                    and behalf, and that I was released from work on:
-                </p>
             </div>
 
             <h3
-                class="m-0 step-subtitle noselect text-center ta-font-bold"
-                [ngStyle]="{
-                    color:
-                        selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-                }"
+                class="m-0 step-subtitle noselect text-center ta-font-extra-bold"
             >
-                Date released from work and location?
+                {{ stringConstants.dateReleasedFrom }}
             </h3>
 
             <!-- DATE, LOCATION -->
@@ -251,20 +157,7 @@
                 <div class="group date-group">
                     <app-ta-input
                         formControlName="startDate"
-                        [inputConfig]="{
-                            name: 'datepicker',
-                            type: 'text',
-                            label: 'Date',
-                            isDropdown: true,
-                            placeholderIcon: 'date',
-                            isRequired: true,
-                            customClass: 'datetimeclass',
-                            isDisabled:
-                                selectedMode === 'REVIEW_MODE' ||
-                                (selectedMode === 'FEEDBACK_MODE' &&
-                                    stepFeedbackValues?.isReleaseDateValid),
-                            incorrectInput: selectedMode === 'REVIEW_MODE'
-                        }"
+                        [inputConfig]="startDateInputConfig"
                         [incorrectValue]="openAnnotationArray[0].lineInputs[0]"
                         (incorrectEvent)="incorrectInput($event, 0, 0)"
                     ></app-ta-input>
@@ -272,22 +165,7 @@
                 <div class="group location-group">
                     <app-ta-input-address-dropdown
                         formControlName="address"
-                        [inputConfig]="{
-                            name: 'Address',
-                            type: 'text',
-                            label: 'City, State',
-                            isRequired: true,
-                            placeholderIcon: 'address',
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-431',
-                            minLength: 6,
-                            maxLength: 256,
-                            isDisabled:
-                                selectedMode === 'REVIEW_MODE' ||
-                                (selectedMode === 'FEEDBACK_MODE' &&
-                                    stepFeedbackValues?.isLocationValid),
-                            incorrectInput: selectedMode === 'REVIEW_MODE'
-                        }"
+                        [inputConfig]="addressInputConfig"
                         [activeAddress]="selectedAddress"
                         [placeholderType]="'shortAddress'"
                         [incorrectValue]="openAnnotationArray[0].lineInputs[1]"
@@ -334,24 +212,8 @@
             <div
                 class="d-flex justify-content-center align-items-center instructions-bottom-container"
             >
-                <p
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#6C6C6C'
-                    }"
-                >
-                    <span class="ta-font-bold">Instructions:</span> When
-                    employed by motor carrier, a driver must report to the motor
-                    carrier all on-duty time working for other employers. The
-                    definition of on-duty time found in Section 395.2 paragraphs
-                    8 and 9 of the Federal Motor Carrier Safety Regulations
-                    includes time performing any other work in the capacity of,
-                    or in the employment or service of a common, contract or
-                    private motor carrier, also performing any compensated work
-                    for any non-motor carrier entity.
+                <p class="m-0 text-center ta-font-regular">
+                    {{ stringConstants.instructionsEmployedMotorCarrier }}
                 </p>
             </div>
 
@@ -439,18 +301,7 @@
                                 [formControlName]="
                                     question.formControlNameExplain
                                 "
-                                [inputConfig]="{
-                                    name: 'Explain',
-                                    type: 'text',
-                                    label: 'Please explain',
-                                    isRequired: true,
-                                    textTransform: 'capitalize',
-                                    placeholder: 'Please explain',
-                                    placeholderInsteadOfLabel: true,
-                                    isDisabled: selectedMode === 'REVIEW_MODE',
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
+                                [inputConfig]="explainInputConfig"
                                 [incorrectValue]="
                                     openAnnotationArray[i + 1].lineInputs[0]
                                 "
@@ -514,38 +365,14 @@
                 <app-ta-checkbox
                     formControlName="isValidAnotherEmployer"
                     [name]="'isValidAnotherEmployer'"
-                    [label]="
-                        'I hereby certify that the information given above is true and I understand that once I begin'
-                    "
-                    [customClass]="'bold-12'"
+                    [label]="stringConstants.isValidAnotherEmployer"
+                    [customClass]="'bold-14 text-align-center line-height-18'"
                     [disabledStillCheckMark]="
                         selectedMode === 'REVIEW_MODE' ||
                         selectedMode === 'FEEDBACK_MODE'
                     "
                 >
                 </app-ta-checkbox>
-                <p
-                    class="m-0 text-center ta-font-bold"
-                    [ngStyle]="{
-                        color: !sevenDaysHosForm.get('isValidAnotherEmployer')
-                            .value
-                            ? '#6c6c6c'
-                            : '#2f2f2f',
-                        cursor:
-                            selectedMode === 'REVIEW_MODE' ||
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? 'auto'
-                                : 'pointer'
-                    }"
-                    (click)="
-                        handleCheckboxParagraphClick('isValidAnotherEmployer')
-                    "
-                >
-                    driving for this company, if I begin working for any
-                    additional employer(s) for compensation that <br />
-                    I must inform this company immediately of such employment
-                    activity.
-                </p>
             </div>
         </form>
     </div>

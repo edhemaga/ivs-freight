@@ -128,3 +128,9 @@ body {
 .text-right {
     text-align: right !important;
 }
+
+// Need to override to get scroll
+html body .repair-shop-card .ta-custom-card  .content-holder.openedCardClass {
+    overflow-x: scroll !important;
+    scrollbar-width: thin !important;
+}

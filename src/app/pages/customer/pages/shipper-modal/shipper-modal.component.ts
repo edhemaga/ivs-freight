@@ -40,8 +40,10 @@ import {
     SignInResponse,
     UpdateReviewCommand,
     ShipperResponse,
+    ReviewResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
+import { Tabs } from '@shared/models/tabs.model';
 
 // Services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -73,6 +75,16 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// Enums
+import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums/shipper-modal-string.enum';
+
+//Constants
+import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants/shipper-modal-configuration.constants';
+
+//Config
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs/shipper-modal.config';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -110,17 +122,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public shipperForm: UntypedFormGroup;
 
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Details',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Contact',
-        },
-    ];
+    public tabs: Tabs[] = [...ShipperModalConfiguration.shipperTabs];
 
     public animationObject = {
         value: this.selectedTab,
@@ -159,10 +161,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public shipperName: string = '';
 
+    public physicalAddressTabs: Tabs[] = [
+        ...ShipperModalConfiguration.physicalAddressTabs,
+    ];
+
+    public selectedPhysicalAddressTab: number = 1;
+
     private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        //Services
         private inputService: TaInputService,
         private shipperService: ShipperService,
         private modalService: ModalService,
@@ -188,6 +198,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             email: [null],
             address: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
+            longitude: [null],
+            latitude: [null],
+            countryStateAddress: [null, [...addressValidation]],
             receivingAppointment: [false],
             receivingOpenTwentyFourHours: [false],
             receivingFrom: [null],
@@ -474,15 +487,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     .subscribe({
                         next: (res: ShipperResponse) => {
                             if (res.ratingReviews.length) {
-                                this.reviews = res.ratingReviews.map((item: any) => ({
-                                    ...item,
-                                    companyUser: {
-                                        ...item.companyUser,
-                                        avatar: item.companyUser.avatar,
-                                    },
-                                    commentContent: item.comment,
-                                    rating: item.ratingFromTheReviewer,
-                                }));
+                                this.reviews = res.ratingReviews.map(
+                                    (item: ReviewResponse) => ({
+                                        ...item,
+                                        companyUser: {
+                                            ...item.companyUser,
+                                            avatar: item.companyUser.avatar,
+                                        },
+                                        commentContent: item.comment,
+                                        rating: item.ratingFromTheReviewer,
+                                    })
+                                );
 
                                 const reviewIndex = this.reviews.findIndex(
                                     (item) =>
@@ -557,7 +572,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
 
     private addShipper() {
-        const { addressUnit, shipperContacts, ...form } =
+        const { addressUnit, shipperContacts, longitude, latitude, ...form } =
             this.shipperForm.value;
         let receivingShipping = this.receivingShippingObject();
 
@@ -582,8 +597,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingFrom: receivingShipping.shipping.shippingFrom,
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents,
-            longitude: this.longitude,
-            latitude: this.latitude,
+            longitude: longitude,
+            latitude: latitude,
+            locationType:
+                this.selectedPhysicalAddressTab === 1
+                    ? ShipperModalString.ADDRESS
+                    : ShipperModalString.COORDINATES,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -705,8 +724,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             shippingTo: receivingShipping.shipping.shippingTo,
             files: documents ? documents : this.shipperForm.value.files,
             filesForDeleteIds: this.filesForDelete,
-            longitude: this.longitude,
-            latitude: this.latitude,
+            // longitude: this.longitude,
+            // latitude: this.latitude, leave this commented because api missing
+            locationType:
+                this.selectedPhysicalAddressTab === 1
+                    ? ShipperModalString.ADDRESS
+                    : ShipperModalString.COORDINATES,
         };
 
         for (let index = 0; index < shipperContacts.length; index++) {
@@ -837,6 +860,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                   ),
                         note: res.note,
                         shipperContacts: [],
+                        // longitude: res.longitude,
+                        // latitude: res.latitude, leave this commented because api is missing
                     });
 
                     this.shipperName = res.businessName;
@@ -907,6 +932,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         currentCompanyUserRating: res.currentCompanyUserRating,
                     });
 
+                    this.physicalAddressTabs = this.physicalAddressTabs.map(
+                        (item) => {
+                            return {
+                                ...item,
+                                checked: item.id == res.locationType.id,
+                            };
+                        }
+                    );
+
+                    this.selectedPhysicalAddressTab = res.locationType.id;
+
                     this.startFormChanges();
                     setTimeout(() => {
                         this.disableCardAnimation = false;
@@ -954,7 +990,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         }
                     }
                     this.tabs = this.tabs.map((tab) => {
-                        if (this.editData?.openedTab && tab.name === this.editData.openedTab) {
+                        if (
+                            this.editData?.openedTab &&
+                            tab.name === this.editData.openedTab
+                        ) {
                             return { ...tab, checked: true };
                         } else {
                             return { ...tab, checked: false };
@@ -1085,6 +1124,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         }
     }
 
+    public tabPhysicalAddressChange(event: Tabs): void {
+        this.selectedPhysicalAddressTab = event.id;
+
+        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
+            return {
+                ...item,
+                checked: item.id === this.selectedPhysicalAddressTab,
+            };
+        });
+    }
+
     private startFormChanges() {
         this.formService.checkFormChange(this.shipperForm);
         this.formService.formValueChange$
@@ -1092,6 +1142,26 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    get getAddressInputConfig(): ITaInput {
+        return ShipperModalConfig.getAddressInputConfig();
+    }
+
+    get getAddressUnitInputConfig(): ITaInput {
+        return ShipperModalConfig.getAddressUnitInputConfig();
+    }
+
+    get getLongitudeInputConfig(): ITaInput {
+        return ShipperModalConfig.getLongitudeInputConfig();
+    }
+
+    get getLatitudeInputConfig(): ITaInput {
+        return ShipperModalConfig.getLatitudeInputConfig();
+    }
+
+    get getCountryStateInputConfig(): ITaInput {
+        return ShipperModalConfig.getCountryStateInputConfig();
     }
 
     ngOnDestroy(): void {

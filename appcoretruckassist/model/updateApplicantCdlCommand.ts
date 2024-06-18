@@ -21,6 +21,7 @@ export interface UpdateApplicantCdlCommand {
     stateId?: number;
     classType?: ClassType;
     expDate?: string;
+    issueDate?: string;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;
     files?: Array<Blob> | null;

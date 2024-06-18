@@ -1,0 +1,99 @@
+<div
+    class="d-flex flex-column justify-content-center license-view-container"
+    [ngStyle]="{
+        'margin-bottom':
+            selectedMode === 'APPLICANT_MODE'
+                ? '32px'
+                : '22px'
+    }"
+>
+    <div
+        class="d-flex align-items-center"
+        [ngClass]="
+            selectedMode === 'FEEDBACK_MODE'
+                ? 'title-container title-container-feedback'
+                : 'title-container'
+        "
+    >   
+    
+        <div
+            class="d-flex align-items-center text-uppercase license-detail"
+        >
+            <p class="m-0 ta-font-bold">
+                license detail
+            </p>
+        </div>
+        <div
+            class="d-flex align-items-center text-uppercase state-class"
+        >
+            <p class="m-0 ta-font-bold">
+                State & Date
+            </p>
+        </div>
+        <div
+            class="d-flex align-items-center text-uppercase additional-detail"
+        >
+            <p class="m-0 ta-font-bold">
+                Additional detail
+            </p>
+        </div>
+    </div>
+
+    <ng-container
+        *ngFor="
+            let license of licenses;
+            let i = index;
+        "
+    >
+        <div
+            class="d-flex align-items-center"
+            [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                    ? 'license-info-container license-info-container-feedback'
+                    : 'license-info-container'
+            "
+        >
+            <div
+                class="d-flex flex-column license-detail"
+            >
+                <p class="m-0 ta-font-bold text-ta-black">
+                    {{ license?.license }}
+                </p>
+                <p class="m-0 ta-font-medium">
+                    Class {{ license?.classType }}
+                </p>
+            </div>
+            <div
+                class="d-flex flex-column state-class"
+            >
+                <p class="m-0 ta-font-bold text-ta-black">
+                    {{ license?.state }} ({{ license?.stateShort }})
+                </p>
+                <p class="m-0 ta-font-medium">
+                    {{ license?.expDate }} - {{ license?.expDate }}
+                </p>
+            </div>
+            <div
+                class="d-flex flex-column state-class"
+            >
+                <div class="d-flex">
+                    <p class="m-0 ta-font-bold restrictions-text text-ta-black">
+                        Restrictions:
+                    </p>
+                    <p class="m-0 ta-font-medium">
+                        {{ license?.restrictions }}
+                    </p>
+                </div>
+
+                <div class="d-flex">
+                    <p class="m-0 ta-font-bold endorsments-text text-ta-black">
+                        Endorsments:
+                    </p>
+                    <p class="m-0 ta-font-medium">
+                        {{ license?.endorsments }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

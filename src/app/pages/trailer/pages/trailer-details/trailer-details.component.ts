@@ -24,6 +24,7 @@ import { TrailersDetailsListQuery } from '@pages/trailer/state/trailer-details-l
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 
 // models
 import { TrailerConfigData } from '@pages/trailer/pages/trailer-details/models/trailer-config-data.model';
@@ -109,8 +110,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 1,
-                name: 'Registration',
-                template: 'registration',
+                name: TruckDetailsEnum.REGISTRATION,
+                template: TruckDetailsEnum.REGISTRATION_2,
                 data: data.registrations,
                 length: data?.registrations?.length
                     ? data.registrations.length
@@ -119,26 +120,18 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             },
             {
                 id: 2,
-                name: 'FHWA Inspection',
-                template: 'fhwa-inspection',
+                name: TruckDetailsEnum.FHWA_INSPECTION,
+                template: TruckDetailsEnum.FHWA_INSPECTION_2,
                 data: data.inspections,
                 length: data?.inspections?.length ? data.inspections.length : 0,
                 status: data?.status == 0 ? true : false,
             },
             {
                 id: 3,
-                name: 'Title',
-                template: 'title',
+                name: TruckDetailsEnum.TITLE_2,
+                template: TruckDetailsEnum.TITLE,
                 data: data.titles,
                 length: data?.titles?.length ? data.titles.length : 0,
-                status: data?.status == 0 ? true : false,
-            },
-            {
-                id: 4,
-                name: 'Lease / Purchase',
-                template: 'lease-purchase',
-                length: 1,
-                data: data,
                 status: data?.status == 0 ? true : false,
             },
         ];
@@ -166,71 +159,69 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    svg: TruckDetailsEnum.EDIT_SVG_2,
+                    iconName: TableStringEnum.EDIT,
                     show: true,
                     disabled: data.status == 0 ? true : false,
-                    iconName: 'edit',
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'Add New',
-                    svg: 'assets/svg/common/dropdown-arrow.svg',
+                    title: TableStringEnum.ADD_NEW_2,
+                    svg: TruckDetailsEnum.DROPDOWN_ARROW_SVG,
+                    iconName: TableStringEnum.ADD_NEW,
                     disabled: data.status == 0 ? true : false,
                     subType: [
-                        { subName: 'Registration', actionName: 'Registration' },
                         {
-                            subName: 'FHWA Inspection',
-                            actionName: 'FHWA Inspection',
+                            subName: TruckDetailsEnum.REGISTRATION,
+                            actionName: TruckDetailsEnum.REGISTRATION,
                         },
-                        { subName: 'Title', actionName: 'Title' },
-                        { subName: 'Lease / Rent', actionName: 'Lease / Rent' },
+                        {
+                            subName: TruckDetailsEnum.FHWA_INSPECTION,
+                            actionName: TruckDetailsEnum.FHWA_INSPECTION,
+                        },
+                        {
+                            subName: TruckDetailsEnum.TITLE_2,
+                            actionName: TruckDetailsEnum.TITLE_2,
+                        },
+                        {
+                            subName: TruckDetailsEnum.LEASE_RENT,
+                            actionName: TruckDetailsEnum.LEASE_RENT,
+                        },
                     ],
-                    iconName: 'add-new',
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print-truck',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: data.status == 0 ? 'Activate' : 'Deactivate',
-                    name: data.status == 0 ? 'activate' : 'deactivate',
-                    svg: 'assets/svg/common/ic_deactivate.svg',
+                    title:
+                        data.status == 0
+                            ? TableStringEnum.ACTIVATE_2
+                            : TableStringEnum.DEACTIVATE_2,
+                    name:
+                        data.status == 0
+                            ? TableStringEnum.ACTIVATE
+                            : TableStringEnum.DEACTIVATE,
+                    svg: TruckDetailsEnum.DEACTIVATE_SVG,
+                    iconName: TableStringEnum.ACTIVATE_ITEM,
                     activate: data.status == 0 ? true : false,
                     deactivate: data.status == 1 ? true : false,
                     show: data.status == 1 || data.status == 0 ? true : false,
                     redIcon: data.status == 1 ? true : false,
                     blueIcon: data.status == 0 ? true : false,
-                    iconName: 'activate-item',
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.TRUCK,
+                    svg: TruckDetailsEnum.TRASH_UPDATE_SVG,
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
                 },
             ],
             export: true,
@@ -281,7 +272,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
     public onTrailerActions(event: { id: number; type: string }): void {
         const trailerData = this.trailerObject ?? this.trailerConfData;
-
         this.dropService.dropActionHeaderTruck(
             event,
             trailerData,
@@ -296,41 +286,41 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             ...this.trailerItemStore?.getValue()?.entities[dataId],
         };
         switch (action.toLowerCase()) {
-            case 'registration': {
+            case TruckDetailsEnum.REGISTRATION_2: {
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: trailer.id,
                         payload: trailer,
-                        type: 'add-registration',
-                        modal: 'trailer',
+                        type: TableStringEnum.ADD_REGISTRATION,
+                        modal: TableStringEnum.TRAILER_2,
                     }
                 );
                 break;
             }
-            case 'fhwa inspection': {
+            case TruckDetailsEnum.FHWA_INSPECTION_3: {
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: trailer.id,
                         payload: trailer,
-                        type: 'add-inspection',
-                        modal: 'trailer',
+                        type: TableStringEnum.ADD_INSPECTION,
+                        modal: TableStringEnum.TRAILER_2,
                     }
                 );
                 break;
             }
-            case 'title': {
+            case TruckDetailsEnum.TITLE: {
                 this.modalService.openModal(
                     TtTitleModalComponent,
-                    { size: 'small' },
+                    { size: TableStringEnum.SMALL },
                     {
                         id: trailer.id,
                         payload: trailer,
-                        type: 'add-title',
-                        modal: 'trailer',
+                        type: TruckDetailsEnum.ADD_TITLE,
+                        modal: TableStringEnum.TRAILER_2,
                     }
                 );
                 break;

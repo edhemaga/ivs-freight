@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -18,15 +18,20 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
     providers: [NameInitialsPipe],
     standalone: true,
     imports: [
+        // modules
         CommonModule,
         FormsModule,
-        TaAppTooltipV2Component,
-        NgbModule,
-        NameInitialsPipe,
         ReactiveFormsModule,
+        NgbModule,
+
+        // components
+        TaAppTooltipV2Component,
+
+        // pipes
+        NameInitialsPipe,
     ],
 })
-export class TaProfileImagesComponent implements OnInit {
+export class TaProfileImagesComponent implements OnChanges {
     textColors: string[] = [
         '#6D82C7',
         '#4DB6A2',
@@ -43,33 +48,33 @@ export class TaProfileImagesComponent implements OnInit {
     ];
 
     imageColor: string[] = [
-        '#6D82C780',
-        '#4DB6A280',
-        '#E5737380',
-        '#E3B00F80',
-        '#BA68C880',
-        '#BEAB8080',
-        '#81C78480',
-        '#FF8A6580',
-        '#64B5F680',
-        '#F26EC280',
-        '#A1887F80',
-        '#91919180',
+        '#2724D666',
+        '#1AB5E666',
+        '#259F9466',
+        '#50AC2566',
+        '#DF3C3C66',
+        '#FF704366',
+        '#9E47EC66',
+        '#DF3D8566',
+        '#F89B2E66',
+        '#CF961D66',
+        '#865E3A66',
+        '#91919166',
     ];
 
     backgroundColors: string[] = [
-        '#DAE0F1',
-        '#D2EDE8',
-        '#F9DCDC',
-        '#F8EBC2',
-        '#EED9F1',
-        '#EFEADF',
-        '#DFF1E0',
-        '#FFE2D8',
-        '#D8ECFD',
-        '#FCDAF0',
-        '#E7E1DF',
-        '#E3E3E3',
+        '#B7B6F1',
+        '#B2E6F7',
+        '#B6DFDB',
+        '#C5E3B6',
+        '#F4BEBE',
+        '#FFCFC0',
+        '#DFC2F9',
+        '#F4BED6',
+        '#FDDEB9',
+        '#EFDCB4',
+        '#D6C9BD',
+        '#DADADA',
     ];
 
     @Input() indx: number;
@@ -79,7 +84,27 @@ export class TaProfileImagesComponent implements OnInit {
     @Input() showHoverAnimation: boolean = true;
     @Input() withTooltip: boolean = false;
 
+    public profileImageColor: string;
+    public profileImageBackgroundColor: string;
+
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes?.indx) {
+            this.getProfileImageColors();
+        }
+    }
+
+    public getProfileImageColors(): void {
+        this.profileImageColor = this.imageColor[this.indx];
+        this.profileImageBackgroundColor = this.backgroundColors[this.indx];
+
+        if (this.indx > 11) {
+            const randomIndex = Math.floor(Math.random() * 12);
+
+            this.profileImageColor = this.imageColor[randomIndex];
+            this.profileImageBackgroundColor =
+                this.backgroundColors[randomIndex];
+        }
+    }
 }

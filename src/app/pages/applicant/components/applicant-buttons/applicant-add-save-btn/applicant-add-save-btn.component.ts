@@ -1,9 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+
+// modules
+import { SharedModule } from '@shared/shared.module';
 
 @Component({
     selector: 'app-applicant-add-save-btn',
     templateUrl: './applicant-add-save-btn.component.html',
     styleUrls: ['./applicant-add-save-btn.component.scss'],
+    standalone: true,
+    imports: [
+        CommonModule,
+        SharedModule
+    ]
 })
 export class ApplicantAddSaveBtnComponent implements OnInit {
     @Input() btnText?: string;
@@ -12,6 +21,7 @@ export class ApplicantAddSaveBtnComponent implements OnInit {
     @Input() cancelBtn?: boolean = false;
     @Input() saveBtn?: boolean = false;
     @Input() reviewBtn?: boolean = false;
+    @Input() sizeSmall?: boolean = false;
 
     @Output() clickValueEmitter = new EventEmitter<any>();
 

@@ -26,11 +26,33 @@ import {
     UpdateDriverRightsCommand,
     CreateDriverRightsReviewCommand,
 } from 'appcoretruckassist/model/models';
+import { StringConstantsStep9 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+
+// modules
+import { CommonModule } from '@angular/common';
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+
+// constants
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
     selector: 'app-step9',
     templateUrl: './step9.component.html',
     styleUrls: ['./step9.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaCheckboxComponent,
+    ],
 })
 export class Step9Component implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -40,6 +62,9 @@ export class Step9Component implements OnInit, OnDestroy {
     public applicantId: number;
 
     public driverRightsForm: UntypedFormGroup;
+
+    public stringConstants: StringConstantsStep9 =
+        ApplicantApplicationConstants.stringConstantsStep9;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

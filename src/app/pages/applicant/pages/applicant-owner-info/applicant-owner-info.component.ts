@@ -32,7 +32,6 @@ import {
     bankValidation,
     einNumberRegex,
     phoneFaxRegex,
-    routingBankValidation,
     truckTrailerModelValidation,
     vinNumberValidation,
     yearValidation,
@@ -71,7 +70,7 @@ import {
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
@@ -89,6 +88,7 @@ import { ApplicantTrailerDetailsComponent } from '@pages/applicant/pages/applica
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // configs
 import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-info/utils/configs/applicant-owner-info.config';
@@ -104,6 +104,7 @@ import { BusinessDetailsConfig } from '@pages/applicant/pages/applicant-owner-in
         CommonModule,
         SharedModule,
         ApplicantModule,
+        AngularSvgIconModule,
 
         // components
         TaInputAddressDropdownComponent,

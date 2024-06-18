@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 //Services
 import { DriverCdlService } from '@pages/driver/pages/driver-modals/driver-cdl-modal/services/driver-cdl.service';
@@ -27,6 +28,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -81,11 +83,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public cdlForm: UntypedFormGroup;
+    public cdl: CdlResponse;
 
     public isFormDirty: boolean;
     public isCardAnimationDisabled: boolean = false;
 
     public modalName: string;
+
+    private driverStatus: number;
 
     // dropdowns
     public stateDropdownList: StateResponse[] = [];
@@ -112,7 +117,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         private cdlService: DriverCdlService,
         private inputService: TaInputService,
         private modalService: ModalService,
-        private formService: FormService
+        private formService: FormService,
+
+        // bootstrap
+        private ngbActiveModal: NgbActiveModal
     ) {}
 
     ngOnInit(): void {
@@ -156,6 +164,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             case DriverCdlModalStringEnum.SAVE:
                 if (this.cdlForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.cdlForm);
+
                     return;
                 }
 
@@ -178,6 +187,51 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         close: false,
                     });
                 }
+
+                break;
+            case DriverCdlModalStringEnum.DELETE:
+                this.ngbActiveModal.close();
+
+                const mappedEvent = {
+                    data: {
+                        ...this.cdl,
+                        driverName: this.modalName,
+                    },
+                };
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverCdlModalStringEnum.SMALL },
+                    {
+                        ...mappedEvent,
+                        template: DriverCdlModalStringEnum.CDL,
+                        type: DriverCdlModalStringEnum.DELETE,
+                        image: false,
+                        modalHeaderTitle:
+                            DriverCdlModalStringEnum.DELETE_CDL_TITLE,
+                    }
+                );
+
+                break;
+            case DriverCdlModalStringEnum.VOID:
+                this.ngbActiveModal.close();
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: DriverCdlModalStringEnum.SMALL },
+                    {
+                        data: {
+                            ...this.cdl,
+                            state: this.cdl.state.stateShortName,
+                            driverName: this.modalName,
+                        },
+                        template: DriverCdlModalStringEnum.CDL,
+                        type: DriverCdlModalStringEnum.INFO,
+                        subType: DriverCdlModalStringEnum.VOID_CDL,
+                        modalHeader: true,
+                        modalHeaderTitle: DriverCdlModalStringEnum.VOID_CDL_2,
+                    }
+                );
 
                 break;
             default:
@@ -333,9 +387,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.driverService
             .getDriverById(id)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const { firstName, lastName } = res;
+            .subscribe((driver) => {
+                const { firstName, lastName, status } = driver;
 
+                this.driverStatus = status;
                 this.modalName = firstName.concat(
                     DriverCdlModalStringEnum.EMPTY_STRING,
                     lastName
@@ -348,7 +403,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: CdlResponse) => {
+                next: (cdl) => {
                     const {
                         cdlNumber,
                         issueDate,
@@ -359,7 +414,9 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
                         cdlEndorsements,
                         files,
                         note,
-                    } = res;
+                    } = cdl;
+
+                    this.cdl = cdl;
 
                     // state
                     this.selectedState = {
@@ -450,6 +507,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             ...form,
 
             driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             stateId: this.selectedState.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
@@ -464,13 +522,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         };
 
         if (this.editData.type === DriverCdlModalStringEnum.RENEW_LICENCE) {
-            const { driverId, ...renewData } = newData;
+            // eslint-disable-next-line no-unused-vars
+            const renewData = {
+                ...newData,
+                id: this.editData?.renewData?.id,
+            };
 
             this.cdlService
-                .renewCdlUpdate({
-                    ...renewData,
-                    id: this.editData.renewData.id,
-                })
+                .renewCdlUpdate(renewData)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: () => {
@@ -534,6 +593,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             ...form,
 
             id: this.editData.file_id,
+            driverId: this.editData?.id,
+            driverStatus: this.driverStatus,
             stateId: this.selectedState.id,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
@@ -569,7 +630,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public populateCdlFormOnRenew(id: any): void {
+    public populateCdlFormOnRenew(id: number): void {
         this.cdlService
             .getCdlById(id)
             .pipe(takeUntil(this.destroy$))

@@ -32,6 +32,7 @@ import { TaModalTableContactComponent } from '@shared/components/ta-modal-table/
 import { TaModalTablePmComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-pm/ta-modal-table-pm.component';
 import { TaModalTableOffDutyLocationComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-off-duty-location/ta-modal-table-off-duty-location.component';
 import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-fuel-card/ta-modal-table-fuel-card.component';
+import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -75,6 +76,7 @@ import {
     EnumValue,
     GetDriverModalResponse,
     DriverDetailsOffDutyLocationResponse,
+    RepairShopContactResponse,
 } from 'appcoretruckassist';
 import { RepairItemResponse } from 'appcoretruckassist';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models/repair-subtotal.model';
@@ -103,6 +105,7 @@ import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
         TaModalTablePmComponent,
         TaModalTableOffDutyLocationComponent,
         TaModalTableFuelCardComponent,
+        TaModalTablePreviousAddressesComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -272,6 +275,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         return this.tableType === ModalTableTypeEnum.FUEL_CARD;
     }
 
+    get isPreviousAddressesTable() {
+        return this.tableType === ModalTableTypeEnum.PREVIOUS_ADDRESSES;
+    }
+
     public trackByIdentity = (_: number, item: string): string => item;
 
     private createForm(): void {
@@ -284,6 +291,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             pmTableItems: this.formBuilder.array([]),
             offDutyLocationTableItems: this.formBuilder.array([]),
             fuelCardTableItems: this.formBuilder.array([]),
+            previousAddressesTableItems: this.formBuilder.array([]),
         });
     }
 
@@ -554,6 +562,11 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.FUEL_CARD_TABLE_HEADER_ITEMS;
 
                 break;
+            case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
+                this.modalTableHeaders =
+                    ModalTableConstants.PREVIOUS_ADDRESSES_TABLE_HEADER_ITEMS;
+
+                break;
             default:
                 break;
         }
@@ -585,7 +598,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             );
         }
 
-        if (this.isOffDutyLocationTable) {
+        if (this.isOffDutyLocationTable || this.isPreviousAddressesTable) {
             modalTableDataValue = modalTableDataValue.map(
                 (
                     itemRow: DriverDetailsOffDutyLocationResponse,
@@ -639,6 +652,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.FUEL_CARD:
                 return this.modalTableForm?.get(
                     TaModalTableStringEnum.FUEL_CARD_TABLE_ITEMS
+                ) as UntypedFormArray;
+            case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
+                return this.modalTableForm?.get(
+                    TaModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS
                 ) as UntypedFormArray;
             default:
                 break;
@@ -697,9 +714,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             case ModalTableTypeEnum.CONTACT:
                 newFormArrayRow = this.formBuilder.group({
                     fullName: [null, [Validators.required]],
-                    departmant: [null, [Validators.required]],
+                    department: [null, [Validators.required]],
                     phone: [null, [Validators.required, phoneFaxRegex]],
-                    ext: [null, phoneExtension],
+                    phoneExt: [null, phoneExtension],
                     email: [null, [Validators.required]],
                 });
 
@@ -748,12 +765,21 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 });
 
                 break;
+            case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
+                newFormArrayRow = this.formBuilder.group({
+                    address: [
+                        null,
+                        [Validators.required, Validators.maxLength(256)],
+                    ],
+                    unit: [null, Validators.maxLength(50)],
+                });
+
+                break;
             default:
                 break;
         }
 
         this.isInputHoverRows = [...this.isInputHoverRows, newIsInputHoverRow];
-
         this.getFormArray().push(newFormArrayRow);
     }
 
@@ -776,6 +802,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
                 break;
             case ModalTableTypeEnum.OFF_DUTY_LOCATION:
+            case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
                 this.selectedAddress.splice(index, 1);
 
                 break;
@@ -827,6 +854,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     ModalTableConstants.IS_INPUT_HOVER_ROW_FUEL_CARD;
 
                 break;
+            case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
+                isInputHoverRow =
+                    ModalTableConstants.IS_INPUT_HOVER_ROW_PREVIOUS_ADDRESSES;
+                break;
         }
 
         return JSON.parse(JSON.stringify(isInputHoverRow));
@@ -855,6 +886,10 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.createFormArrayRow();
 
             switch (this.tableType) {
+                case ModalTableTypeEnum.CONTACT:
+                    this.handleContactData(data, i);
+
+                    break;
                 case ModalTableTypeEnum.PHONE:
                     this.handlePhoneData(data, i);
 
@@ -880,6 +915,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.handleOffDutyLocationData(data, i);
 
                     break;
+                case ModalTableTypeEnum.PREVIOUS_ADDRESSES:
+                    const addressData = data as AddressEntity;
+                    const formGroup = this.getFormArray().at(i);
+
+                    formGroup.patchValue({
+                        unit: addressData?.addressUnit,
+                        address: addressData?.address,
+                    });
+            
+                    this.selectedAddress[i] = addressData;
+                    break;
                 default:
                     break;
             }
@@ -896,6 +942,19 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             setTimeout(() => {
                 this.calculateRepairBillSubtotal();
             }, 300);
+    }
+    handleContactData(contact: RepairShopContactResponse, i: number) {
+        const formGroup = this.getFormArray().at(i); 
+        formGroup.patchValue({
+            phone: contact.phone,
+            phoneExt: contact.phoneExt,
+            department: contact.department?.name,
+            fullName: contact.fullName,
+            email: contact.email
+        });
+
+        // IF WE DON'T SET THIS LAST VALUE WILL ALWAYS BE NULL 
+        this.modalTableValueEmitter.emit(this.getFormArray().value);
     }
 
     private handlePhoneData(

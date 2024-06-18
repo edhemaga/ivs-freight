@@ -6,23 +6,71 @@ import {
     SimpleChanges,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 import { OnDestroy } from '@angular/core';
 
-//Models
-import { UpdateCommentCommand } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
-//Services
+// modules
+import { SharedModule } from '@shared/shared.module';
+
+// services
 import { CommentsService } from '@shared/services/comments.service';
 
-//Components
+// components
+import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
+import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
+import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
+import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
 import { ReviewComment } from '@shared/models/review-comment.model';
+
+// pipes
+import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+// models
+import { UpdateCommentCommand } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-details-item',
     templateUrl: './load-details-item.component.html',
     styleUrls: ['./load-details-item.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+
+        // components
+        TaProfileImagesComponent,
+        TaCopyComponent,
+        TaCustomCardComponent,
+        TaUploadFilesComponent,
+        TaInputNoteComponent,
+        TaCommonCardComponent,
+        TaProgressExpirationComponent,
+        TaCounterComponent,
+
+        TaDetailsHeaderComponent,
+        TaDetailsHeaderCardComponent,
+        TaChartComponent,
+        TaMapsComponent,
+        LoadDetailsCardComponent,
+
+        // pipes
+        FormatCurrencyPipe,
+        FormatDatePipe,
+    ],
 })
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input() loadData: any;

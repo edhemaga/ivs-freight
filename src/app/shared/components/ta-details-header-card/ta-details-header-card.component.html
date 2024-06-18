@@ -14,12 +14,6 @@
                 position="top"
                 [tooltipBackground]="options.length > 1 ? '#424242' : '#eeeeee'"
             >
-                <!-- header name with pipe-->
-                <!--
-                <p class="current-active-name">
-                    {{ (options | detailActiveItem).name }}
-                </p>
-                -->
                 <!-- header name new -->
                 <ng-container *ngIf="deactivate">
                     <div
@@ -73,21 +67,23 @@
             <!-- Input dropdown -->
             <app-ta-input-dropdown
                 *ngIf="selectedDropdown && options.length > 1"
+                [template]="'details-template'"
                 class="dropInput"
                 [formControl]="inputFormControl"
                 [inputConfig]="{
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass:
-                        statusInactive === 0 ? 'w-col-366' : 'w-col-366',
+                    dropdownWidthClass: 'w-col-366',
                     textTransform: 'capitalize',
+                    blackInput: true,
                     customClass: 'input-32-font-20 details-pages'
                 }"
                 [options]="options"
                 [sort]="sortOptions"
-                [template]="'details-template'"
                 [isDetailsPages]="selectedDropdown"
+                [canAddNew]="true"
+                [canOpenModal]="true"
                 (selectedItem)="onSelecItem($event)"
             >
             </app-ta-input-dropdown>
@@ -96,7 +92,7 @@
             <span
                 ngbTooltip
                 [mainTooltip]="tooltipPrevious"
-                position="top"
+                position="bottom"
                 [tooltipBackground]="
                     !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
                 "
@@ -113,7 +109,7 @@
                 ngbTooltip
                 [mainTooltip]="tooltipNext"
                 [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#424242'"
-                position="top"
+                position="bottom"
                 class="nextArrow"
                 (click)="onAction('next')"
             >
@@ -217,9 +213,9 @@
             <span>
                 <div
                     class="details-header-wrapper-data-item bottom"
-                    tooltipBackground="#6C6C6C"
+                    tooltipBackground="#424242"
                     ngbTooltip
-                    mainTooltip="Date Added"
+                    mainTooltip="Added"
                     position="bottom"
                 >
                     <svg-icon
@@ -232,15 +228,12 @@
             <span
                 style="margin-left: 130px"
                 *ngIf="statusInactive == 0"
-                tooltipBackground="#6C6C6C"
+                tooltipBackground="#424242"
                 ngbTooltip
-                mainTooltip="Date Terminated"
+                mainTooltip="Terminated"
                 position="bottom"
             >
-                <div
-                    *ngIf="statusInactive == 0"
-                    class="details-header-wrapper-data-item bottom"
-                >
+                <div class="details-header-wrapper-data-item bottom">
                     <svg-icon
                         class="date-terminated"
                         src="assets/svg/common/ic_terminated.svg"
@@ -251,7 +244,7 @@
             <ng-container *ngIf="deactivate">
                 <span
                     style="margin-left: 130px"
-                    tooltipBackground="#6C6C6C"
+                    tooltipBackground="#424242"
                     ngbTooltip
                     mainTooltip="Deactivated"
                     position="bottom"

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { TrailerService } from '@shared/services/trailer.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { TrailerCardsModalService } from '@pages/trailer/pages/trailer-card-modal/services/trailer-cards-modal.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -24,6 +25,11 @@ import { TrailerActiveState } from '@pages/trailer/state/trailer-active-state/tr
 import { TrailerInactiveQuery } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
+import { Store, select } from '@ngrx/store';
+import {
+    selectActiveTabCards,
+    selectInactiveTabCards,
+} from '@pages/trailer/pages/trailer-card-modal/state/trailer-card-modal.selectors';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
@@ -36,9 +42,10 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
 
 // configuration
-import { trailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
+import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -77,39 +84,54 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public trailerActive: TrailerActiveState[] = [];
     public trailerInactive: TrailerInactiveState[] = [];
     public activeTableData: string;
-    public backFilterQuery: TrailerBackFilterQueryInterface =
-        TableDropdownComponentConstants.BACK_FILTER_QUERY;
+    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
+    );
 
     //Data to display from model Truck Active
+    public displayRowsFront: CardRows[] =
+    TrailerCardDataConstants.displayRowsFrontActive;
+    public displayRowsBack: CardRows[] =
+        TrailerCardsModalConfig.displayRowsBackActive;
+
     public displayRowsFrontActive: CardRows[] =
-        trailerCardDataConstants.displayRowsFrontActive;
+        TrailerCardDataConstants.displayRowsFrontActive;
     public displayRowsBackActive: CardRows[] =
-        trailerCardDataConstants.displayRowsBackActive;
+        TrailerCardDataConstants.displayRowsBackActive;
 
     public displayRowsFrontInactive: CardRows[] =
-        trailerCardDataConstants.displayRowsFrontInactive;
+        TrailerCardDataConstants.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
-        trailerCardDataConstants.displayRowsBackInactive;
+        TrailerCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = trailerCardDataConstants.cardTitle;
-    public page: string = trailerCardDataConstants.page;
-    public rows: number = trailerCardDataConstants.rows;
+    public cardTitle: string = TrailerCardDataConstants.cardTitle;
+    public page: string = TrailerCardDataConstants.page;
+    public rows: number = TrailerCardDataConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
+        private router: Router,
+        //Services
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+        private trailerService: TrailerService,
+        private confirmationService: ConfirmationService,
+        private trailerCardsModalService: TrailerCardsModalService,
+        private confirmationActivationService: ConfirmationActivationService,
+
+        //Store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
-        private trailerService: TrailerService,
-        public datePipe: DatePipe,
-        private router: Router,
-        private thousandSeparator: ThousandSeparatorPipe,
-        private confirmationService: ConfirmationService,
         private trailerInactiveStore: TrailerInactiveStore,
-        private confirmationActivationService: ConfirmationActivationService
+        private store: Store,
+
+        //Pipes
+        public datePipe: DatePipe,
+        private thousandSeparator: ThousandSeparatorPipe
     ) {}
 
     ngOnInit(): void {
@@ -144,13 +166,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .subscribe((res) => {
                 if (res?.filterType) {
                     if (res.action === TableStringEnum.SET) {
-                        this.viewData = this.trailerData?.filter(
-                            (customerData) =>
-                                res.queryParams.some(
-                                    (filterData) =>
-                                        filterData === customerData.id
-                                )
-                        );
+                        if (res.action === TableStringEnum.SET) {
+                            this.backFilterQuery.trailerTypeIds =
+                                res.queryParams;
+                            this.trailerBackFilter(this.backFilterQuery);
+                        }
                     }
 
                     if (res.action === TableStringEnum.CLEAR)
@@ -475,6 +495,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+        this.updateCardView();
         this.setTrailerData(td);
     }
 
@@ -544,158 +565,170 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapTrailerData(data: TrailerMapped): TrailerMapped {
+    private mapTrailerData(data: TrailerMapped): any {
+        const {
+            id,
+            assignedTo,
+            axles,
+            color,
+            createdAt,
+            doorType,
+            emptyWeight,
+            fhwaExp,
+            fhwaInspection,
+            fileCount,
+            inspectionExpirationDays,
+            inspectionPercentage,
+            insurancePolicy,
+            licensePlate,
+            mileage,
+            model,
+            note,
+            owner,
+            purchaseDate,
+            purchasePrice,
+            reeferUnit,
+            registrationExpirationDays,
+            updatedAt,
+            registrationPercentage,
+            registrationState,
+            status,
+            suspension,
+            tireSize,
+            title,
+            trailerLength,
+            trailerMake,
+            trailerNumber,
+            trailerType,
+            vin,
+            files,
+            volume,
+            year,
+        } = data;
+
         return {
-            ...data,
+            id,
+            status,
+            trailerNumber,
+            year,
+            note,
             isSelected: false,
-            tableTrailerTypeIcon: data.trailerType.logoName,
-            tableTrailerName: data.trailerType.name,
-            tableTrailerColor: this.setTrailerTooltipColor(
-                data.trailerType.name
-            ),
+            tableTrailerTypeIcon: trailerType.logoName,
+            tableTrailerName: trailerType.name,
+            tableTrailerColor: this.setTrailerTooltipColor(trailerType.name),
             tableVin: {
-                regularText: data?.vin
-                    ? data.vin.substr(0, data.vin.length - 6)
+                regularText: vin
+                    ? vin.substr(0, vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                boldText: data?.vin
-                    ? data.vin.substr(data.vin.length - 6)
+                boldText: vin
+                    ? vin.substr(vin.length - 6)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
-            tableTrailerTypeClass: data.trailerType.logoName.replace(
+            tableTrailerTypeClass: trailerType.logoName.replace(
                 TableStringEnum.SVG,
                 TableStringEnum.EMPTY_STRING_PLACEHOLDER
             ),
-            tableMake:
-                data?.trailerMake?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableModel: data?.model ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableColor:
-                data?.color?.code ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            colorName:
-                data?.color?.name ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tabelLength: data?.trailerLength?.name
-                ? DataFilterHelper.getLengthNumber(data?.trailerLength?.name)
+            tableMake: trailerMake?.name,
+            tableModel: model,
+            tableColor: color?.code,
+            colorName: color?.name,
+            tabelLength: trailerLength?.name
+                ? DataFilterHelper.getLengthNumber(trailerLength?.name)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDriver: data.assignedTo?.driver
-                ? data.assignedTo?.driver?.firstName +
-                  data.assignedTo?.driver?.lastName
-                    ? data.assignedTo?.driver?.lastName
+            tableDriver: assignedTo?.driver
+                ? assignedTo?.driver?.firstName + assignedTo?.driver?.lastName
+                    ? assignedTo?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruck:
-                data.assignedTo?.truck?.truckNumber ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTruckType:
-                data.assignedTo?.truck?.truckType?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableOwner:
-                data?.owner?.name ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWeightEmpty: data?.emptyWeight
-                ? this.thousandSeparator.transform(data.emptyWeight) +
+            tableTruck: assignedTo?.truck?.truckNumber,
+            tableTruckType: assignedTo?.truck?.truckType?.name,
+            tableOwner: owner?.name,
+            tableWeightEmpty: emptyWeight
+                ? this.thousandSeparator.transform(emptyWeight) +
                   TableStringEnum.POUNDS_2
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableWeightVolume:
-                data.volume ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableAxle: data?.axles ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableSuspension:
-                data?.suspension?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTireSize:
-                data?.tireSize?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableReeferUnit:
-                data?.reeferUnit?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableDoorType:
-                data?.doorType?.name ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableInsPolicy:
-                data?.insurancePolicy ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableMileage: data?.mileage
-                ? this.thousandSeparator.transform(data.mileage)
+            tableWeightVolume: volume,
+            tableAxle: axles,
+            tableSuspension: suspension?.name,
+            tableTireSize: tireSize?.name,
+            tableReeferUnit: reeferUnit?.name,
+            tableDoorType: doorType?.name,
+            tableInsPolicy: insurancePolicy,
+            tableMileage: mileage
+                ? this.thousandSeparator.transform(mileage)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailNumber:
-                data?.licensePlate ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableLicencePlateDetailST:
-                data.registrationState?.stateShortName ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableLicencePlateDetailNumber: licensePlate,
+            tableLicencePlateDetailST: registrationState?.stateShortName,
             tableLicencePlateDetailExpiration: {
-                expirationDays: data?.registrationExpirationDays
-                    ? data.registrationExpirationDays
+                expirationDays: registrationExpirationDays
+                    ? registrationExpirationDays
                     : null,
-                expirationDaysText: data?.registrationExpirationDays
+                expirationDaysText: registrationExpirationDays
                     ? this.thousandSeparator.transform(
-                          data.registrationExpirationDays
+                          registrationExpirationDays
                       )
                     : null,
                 percentage:
-                    data?.registrationPercentage ||
-                    data?.registrationPercentage === 0
-                        ? 100 - data.registrationPercentage
+                    registrationPercentage || registrationPercentage === 0
+                        ? 100 - registrationPercentage
                         : null,
             },
-            tableFHWAInspectionTerm: data?.fhwaExp
-                ? data?.fhwaExp + TableStringEnum.MONTHS
+            tableFHWAInspectionTerm: fhwaExp
+                ? fhwaExp + TableStringEnum.MONTHS
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableFHWAInspectionExpiration: {
-                expirationDays: data?.inspectionExpirationDays
-                    ? data.inspectionExpirationDays
+                expirationDays: inspectionExpirationDays
+                    ? inspectionExpirationDays
                     : null,
-                expirationDaysText: data?.inspectionExpirationDays
-                    ? this.thousandSeparator.transform(
-                          data.inspectionExpirationDays
-                      )
+                expirationDaysText: inspectionExpirationDays
+                    ? this.thousandSeparator.transform(inspectionExpirationDays)
                     : null,
                 percentage:
-                    data?.inspectionPercentage ||
-                    data?.inspectionPercentage === 0
-                        ? 100 - data.inspectionPercentage
+                    inspectionPercentage || inspectionPercentage === 0
+                        ? 100 - inspectionPercentage
                         : null,
             },
-            tableTitleNumber:
-                data.title?.number ?? TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitleST:
-                data.title?.state?.stateShortName ??
-                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitlePurchase: data.title?.purchaseDate
+            tableFHWAInspectionIssues: fhwaInspection,
+            tableTitleNumber: title?.number,
+            tableTitleST: title?.state?.stateShortName,
+            tableTitlePurchase: title?.purchaseDate
                 ? this.datePipe.transform(
-                      data.title?.purchaseDate,
+                      title?.purchaseDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableTitleIssued: data.title?.issueDate
+            tableTitleIssued: title?.issueDate
                 ? this.datePipe.transform(
-                      data.title.issueDate,
+                      title.issueDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePurchasePrice: data?.purchasePrice
+            tablePurchasePrice: purchasePrice
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.purchasePrice)
+                  this.thousandSeparator.transform(purchasePrice)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tablePurchaseDate: data.purchaseDate
+            tablePurchaseDate: purchaseDate
                 ? this.datePipe.transform(
-                      data.purchaseDate,
+                      purchaseDate,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableTerminated: TableStringEnum.NA,
-            tableAdded: data.createdAt
+            tableAdded: createdAt
                 ? this.datePipe.transform(
-                      data.createdAt,
+                      createdAt,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            tableEdited: data.updatedAt
+            tableEdited: updatedAt
                 ? this.datePipe.transform(
-                      data.updatedAt,
+                      updatedAt,
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
 
-            tableAttachments: data?.files ? data.files : [],
-            fileCount: data?.fileCount,
+            tableAttachments: files ? files : [],
+            fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownTrailerContent(),
@@ -862,6 +895,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.viewData = [...newData];
                 }
+                this.backFilterQuery = JSON.parse(
+                    JSON.stringify(
+                        TableDropdownComponentConstants.BACK_FILTER_QUERY
+                    )
+                );
             });
     }
 
@@ -956,13 +994,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: TrailerBodyResponse): void {
+    public onTableBodyActions(event: any): void {
         const mappedEvent = {
             ...event,
             data: {
                 ...event.data,
                 number: event.data?.trailerNumber,
-                avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
+                vin:
+                    event.data?.tableVin?.boldText +
+                    event?.data?.tableVin?.regularText,
+
+                avatar: `/assets/svg/common/trailers/${event.data?.tableTrailerTypeIcon}`,
             },
         };
 
@@ -985,8 +1027,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     { size: TableStringEnum.SMALL },
                     {
                         ...event,
-                        type: TableStringEnum.ADD,
-                        disableButton: true,
+                        type: TableStringEnum.EDIT,
                         tabSelected: this.selectedTab,
                     }
                 );
@@ -1168,6 +1209,25 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.tableService.sendRowsSelected([]);
                 this.tableService.sendResetSelectedColumns(true);
             });
+    }
+
+    public updateCardView(): void {
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.INACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.trailerCardsModalService.updateTab(this.selectedTab);
     }
 
     ngOnDestroy(): void {

@@ -8,4 +8,5 @@ export interface Violation {
     description: string;
     isEditingViolation: boolean;
     trafficViolationItemReview: any;
+    tempId?: number
 }

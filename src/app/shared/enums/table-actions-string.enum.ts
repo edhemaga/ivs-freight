@@ -24,4 +24,5 @@ export enum TableActionsStringEnum {
     TABLE_CONTAINER = 'table-container',
     INACTIVE = 'inactive',
     OWNER_TABLE_COUNT = 'ownerTableCount',
+    CLOSED_ARRAY = 'closedArray',
 }

@@ -6,6 +6,7 @@ import {
     OnDestroy,
     Input,
     ViewChildren,
+    type SimpleChanges,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
@@ -15,20 +16,14 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckTrailerService } from '@shared/components/ta-shared-modals/truck-trailer-modals/services/truck-trailer.service';
+import { TrailerService } from '@shared/services/trailer.service';
 
 // components
 import { DropActionNameHelper } from '@shared/utils/helpers/drop-action-name.helper';
 
 // animations
-import {
-    animate,
-    style,
-    transition,
-    trigger,
-    state,
-    keyframes,
-} from '@angular/animations';
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
+import { cardAnimation } from '@shared/animations/card.animation';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -39,6 +34,12 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // moment
 import moment from 'moment';
 
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
+import { TrailerDetailsConfig } from '../../models/trailer-details-config.model';
+import { RegistrationResponse } from 'appcoretruckassist';
+
 @Titles()
 @Component({
     selector: 'app-trailer-details-item',
@@ -47,27 +48,7 @@ import moment from 'moment';
     encapsulation: ViewEncapsulation.None,
     animations: [
         cardComponentAnimation('showHideCardBody'),
-        trigger('cardAnimation', [
-            state('in', style({ opacity: 1, 'max-height': '0px' })),
-            transition(':enter', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 0, 'max-height': '0px' }),
-                        style({ opacity: 1, 'max-height': '600px' }),
-                    ])
-                ),
-            ]),
-            transition(':leave', [
-                animate(
-                    5100,
-                    keyframes([
-                        style({ opacity: 1, 'max-height': '600px' }),
-                        style({ opacity: 0, 'max-height': '0px' }),
-                    ])
-                ),
-            ]),
-        ]),
+        cardAnimation('cardAnimation'),
     ],
 })
 export class TrailerDetailsItemComponent
@@ -84,46 +65,85 @@ export class TrailerDetailsItemComponent
     public titleNote: UntypedFormControl = new UntypedFormControl();
     public svgColorVar: string;
     public trailerName: string;
-    public dataTest;
+    public dataRegistration;
     public dataFHWA;
     public toggler: boolean[] = [];
     public currentDate: string;
+    public isVoidActive: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private commonTrailerService: TruckTrailerService,
-        private dropDownService: DropDownService
+        private dropDownService: DropDownService,
+        private trailerService: TrailerService
     ) {}
 
     ngOnInit(): void {
         this.note?.patchValue(this.trailer[0]?.data?.note);
         // Confirmation Subscribe
+
+        this.confirmationData();
+
+        this.initTableOptions();
+
+        this.currentDate = moment(new Date()).format();
+    }
+
+    public confirmationData(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: any) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'registration') {
+                        case TableStringEnum.DELETE: {
+                            if (
+                                res.template === TruckDetailsEnum.REGISTRATION_2
+                            ) {
                                 this.deleteRegistrationByIdFunction(res?.id);
-                            } else if (res.template === 'inspection') {
+                            } else if (
+                                res.template === TruckDetailsEnum.INSPECTION
+                            ) {
                                 this.deleteInspectionByIdFunction(res?.id);
-                            } else if (res.template === 'title') {
+                            } else if (
+                                res.template === TruckDetailsEnum.TITLE
+                            ) {
                                 this.deleteTitleByIdFunction(res?.id);
                             }
                             break;
                         }
+                        case TruckDetailsEnum.VOID_2:
+                            let voidedReg;
+                            let unVoidedReg;
+
+                            if (res.array.length) {
+                                voidedReg = res?.array[0]?.id;
+                                unVoidedReg = res.data.id;
+                            } else {
+                                voidedReg = res.data.id;
+                            }
+
+                            this.trailerService
+                                .voidRegistration(voidedReg, unVoidedReg)
+
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
+                            break;
+
+                        case TruckDetailsEnum.ACTIVATE:
+                            this.trailerService
+                                .voidRegistration(null, res.data.id)
+                                .pipe(takeUntil(this.destroy$))
+                                .subscribe();
+                            break;
+
                         default: {
                             break;
                         }
                     }
                 },
             });
-        this.initTableOptions();
-        this.currentDate = moment(new Date()).format();
     }
-
     /**Function for toggle page in cards */
     public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
@@ -131,7 +151,7 @@ export class TrailerDetailsItemComponent
 
     /**Function for dots in cards */
     public initTableOptions(): void {
-        this.dataTest = {
+        this.dataRegistration = {
             disabledMutedStyle: null,
             toolbarActions: {
                 hideViewMode: false,
@@ -145,77 +165,37 @@ export class TrailerDetailsItemComponent
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    svg: TruckDetailsEnum.EDIT_SVG,
+                    iconName: TableStringEnum.EDIT,
                     show: true,
-                    iconName: 'edit',
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
-                },
-                {
-                    title: 'Renew',
-                    name: 'renew',
-                    svg: 'assets/svg/common/ic_retry_white.svg',
-                    show: true,
-                    iconName: 'renew',
-                },
-                {
-                    title: 'Transfer',
-                    name: 'transfer',
-                    svg: 'assets/svg/common/dropdown-transfer-icon.svg',
-                    show: true,
-                    iconName: 'transfer',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Void',
-                    name: 'activate-item',
-                    svg: 'assets/svg/common/ic_cancel_violation.svg',
+                    title: TruckDetailsEnum.VOID,
+                    name: TruckDetailsEnum.VOID_2,
+                    svg: TruckDetailsEnum.CANCEL_VIOLATION_SVG,
                     redIcon: true,
-                    iconName: 'deactivate-item',
+                    iconName: TruckDetailsEnum.DEACTIVATE_ITEM,
                 },
                 {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
+                    text: TruckDetailsEnum.ARE_YOU_WANT_TO_DELETE_DRIVERS,
+                    svg: TruckDetailsEnum.TRASH_UPDATE_SVG,
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
                 },
             ],
             export: true,
         };
+
         this.dataFHWA = {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -230,52 +210,25 @@ export class TrailerDetailsItemComponent
             },
             actions: [
                 {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+                    title: TableStringEnum.EDIT_2,
+                    name: TableStringEnum.EDIT,
+                    svg: TruckDetailsEnum.EDIT_SVG,
+                    iconName: TableStringEnum.EDIT,
                     show: true,
-                    iconName: 'edit',
                 },
                 {
-                    title: 'border',
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
-                    title: 'View Details',
-                    name: 'view-details',
-                    svg: 'assets/svg/common/ic_hazardous-info.svg',
-                    show: true,
-                    iconName: 'view-details',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
+                    title: TableStringEnum.DELETE_2,
+                    name: TableStringEnum.DELETE_ITEM,
+                    type: TableStringEnum.DRIVER,
+                    text: TruckDetailsEnum.ARE_YOU_WANT_TO_DELETE_DRIVERS,
+                    svg: TruckDetailsEnum.TRASH_UPDATE_SVG,
+                    iconName: TableStringEnum.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
                 },
             ],
             export: true,
@@ -293,6 +246,7 @@ export class TrailerDetailsItemComponent
             file,
             action
         );
+
         this.dropDownService.dropActions(
             file,
             name,
@@ -330,7 +284,7 @@ export class TrailerDetailsItemComponent
 
     public downloadAllFiles(type: string, index: number): void {
         switch (type) {
-            case 'fhwa': {
+            case TruckDetailsEnum.FHWA: {
                 if (
                     this.fhwaUpload._results[index] &&
                     this.fhwaUpload._results[index].downloadAllFiles
@@ -339,7 +293,7 @@ export class TrailerDetailsItemComponent
                 }
                 break;
             }
-            case 'registration': {
+            case TruckDetailsEnum.REGISTRATION_2: {
                 if (
                     this.registrationUpload._results[index] &&
                     this.registrationUpload._results[index].downloadAllFiles
@@ -348,7 +302,7 @@ export class TrailerDetailsItemComponent
                 }
                 break;
             }
-            case 'title': {
+            case TruckDetailsEnum.TITLE: {
                 if (
                     this.titleUpload._results[index] &&
                     this.titleUpload._results[index].downloadAllFiles
@@ -372,6 +326,55 @@ export class TrailerDetailsItemComponent
         this.destroy$.next();
         this.destroy$.complete();
     }
+    public checkVoidedAndNotExpired(objects: TrailerDetailsConfig[]): boolean {
+        const currentDate = moment().valueOf();
+        return objects.some((object) => {
+            const expDate = moment(object.expDate).valueOf();
+            const isExpiredOrVoided = expDate < currentDate || object.voidedOn;
+            return isExpiredOrVoided;
+        });
+    }
 
-    ngOnChanges(): void {}
+    private chechVoidStatus(
+        id: number,
+        data: TrailerDetailsConfig[],
+        action: string
+    ) {
+        const isVoided = data.find((registration) => registration.voidedOn);
+        const cdlsArray = data
+            .map((registration: RegistrationResponse) => {
+                const currentDate = moment().valueOf();
+
+                const expDate = moment(registration.expDate).valueOf();
+                if (isVoided) {
+                    if (expDate > currentDate && !registration.voidedOn) {
+                        return {
+                            id: registration.id,
+                            name: registration.licensePlate,
+                        };
+                    }
+                }
+            })
+            .filter((registration) => registration !== undefined);
+
+        cdlsArray.length
+            ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
+            : this.optionsEvent(
+                  { id: id, type: 'activate' },
+                  data,
+                  'registration'
+              );
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.trailer.map((object: TrailerDetailsConfig) => {
+            if (object.name === TruckDetailsEnum.REGISTRATION) {
+                this.isVoidActive = this.checkVoidedAndNotExpired(object.data);
+            }
+        });
+        if (changes.truck?.currentValue != changes.truck?.previousValue) {
+            //this.truck = changes.truck?.currentValue;
+            //his.initTableOptions();
+        }
+    }
 }

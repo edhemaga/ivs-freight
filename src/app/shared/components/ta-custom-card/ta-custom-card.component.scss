@@ -96,31 +96,18 @@
                 position: relative;
                 bottom: 1px;
 
-                &:hover {
+                &:not(.header-svg-bank) {
                     svg {
                         path {
-                            fill: #6c6c6c;
+                            fill: $bw5;
                         }
                     }
-                }
-            }
 
-            .header-svg-bank {
-                margin-left: 12px !important;
-                svg {
-                    path {
-                        fill: #cccccc;
-                    }
                     &:hover {
-                        path {
-                            fill: #cccccc !important;
-                        }
-                    }
-                }
-                &:hover {
-                    svg {
-                        path {
-                            fill: #cccccc;
+                        svg {
+                            path {
+                                fill: $ta-black;
+                            }
                         }
                     }
                 }
@@ -412,6 +399,10 @@
             cursor: default;
             .header-arrow {
                 display: none !important;
+            }
+
+            .show-pointer {
+                cursor: pointer !important;
             }
         }
 

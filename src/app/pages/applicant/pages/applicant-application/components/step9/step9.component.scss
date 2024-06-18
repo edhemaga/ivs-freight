@@ -23,23 +23,24 @@
     .step-subtitle {
         font-size: 14px;
         height: 40px;
-        width: 820px;
-        line-height: 22px;
+        width: 616px;
+        line-height: 18px;
         margin-bottom: 12px !important;
+        color: $ta-black-2;
 
         &::-moz-selection {
-            color: $bw6-2;
+            color: $ta-black-2;
             background: rgb(108, 108, 108, 0.2);
         }
 
         &::selection {
-            color: $bw6-2;
+            color: $ta-black-2;
             background: rgb(108, 108, 108, 0.2);
         }
     }
 
     .group-text {
-        width: 820px;
+        width: 616px;
 
         .group-title {
             font-size: 14px;
@@ -60,14 +61,16 @@
         p {
             font-size: 14px;
             margin-bottom: 12px !important;
+            line-height: 18px;
+            color: $ta-black-2;
 
             &::-moz-selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
             &::selection {
-                color: $bw6-2;
+                color: $ta-black-2;
                 background: rgb(108, 108, 108, 0.2);
             }
 
@@ -84,6 +87,10 @@
             }
         }
     }
+}
+
+.agreement-container {
+    margin-top: 12px;
 }
 
 .next-btn-container {

@@ -29,7 +29,7 @@ import { ChartApiCall } from '@shared/components/ta-chart/models/chart-api-call.
 import { LegendAttributes } from '@shared/components/ta-chart/models/legend-attributes.model';
 import { BarChartAxes } from '@pages/dashboard/models/dashboard-chart-models/bar-chart.model';
 import { BrokerDropdown } from '@pages/customer/pages/broker-details/models/broker-dropdown.model';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 
 //Constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
@@ -43,7 +43,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
 //Enums
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
-import { BrokerTabStringEnum } from '@pages/customer/pages/broker-details/enums/broker-tab-string.enum';
+import { ChartTabStringEnum } from '@shared/enums/chart-tab-string.enum';
 
 // Svg routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/broker-details-svg-routes';
@@ -164,32 +164,32 @@ export class BrokerDetailsCardComponent
         this.tabsBroker = [
             {
                 id: 223,
-                name: BrokerTabStringEnum.ONE_MONTH,
+                name: ChartTabStringEnum.ONE_MONTH,
                 checked: true,
             },
             {
                 id: 313,
-                name: BrokerTabStringEnum.THREE_MONTHS,
+                name: ChartTabStringEnum.THREE_MONTHS,
                 checked: false,
             },
             {
                 id: 412,
-                name: BrokerTabStringEnum.SIX_MONTHS,
+                name: ChartTabStringEnum.SIX_MONTHS,
                 checked: false,
             },
             {
                 id: 515,
-                name: BrokerTabStringEnum.ONE_YEAR,
+                name: ChartTabStringEnum.ONE_YEAR,
                 checked: false,
             },
             {
                 id: 1210,
-                name: BrokerTabStringEnum.YEAR_TO_DATE,
+                name: ChartTabStringEnum.YEAR_TO_DATE,
                 checked: false,
             },
             {
                 id: 1011,
-                name: BrokerTabStringEnum.ALL,
+                name: ChartTabStringEnum.ALL,
                 checked: false,
             },
         ];

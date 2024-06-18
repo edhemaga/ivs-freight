@@ -7,6 +7,7 @@ export enum TaModalTableStringEnum {
     PM_TABLE_ITEMS = 'pmTableItems',
     OFF_DUTY_LOCATION_TABLE_ITEMS = 'offDutyLocationTableItems',
     FUEL_CARD_TABLE_ITEMS = 'fuelCardTableItems',
+    PREVIOUS_ADDRESSES_TABLE_ITEMS = 'previousAddressesTableItems',
 
     PRICE = 'price',
 

@@ -275,6 +275,12 @@ export class AccidentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -339,9 +345,17 @@ export class AccidentService {
             throw new Error('Required parameter id was null or undefined when calling apiAccidentFilesIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -383,6 +397,7 @@ export class AccidentService {
         return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -405,9 +420,17 @@ export class AccidentService {
             throw new Error('Required parameter id was null or undefined when calling apiAccidentIdDelete.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -449,6 +472,7 @@ export class AccidentService {
         return this.httpClient.request<any>('delete', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -471,9 +495,17 @@ export class AccidentService {
             throw new Error('Required parameter id was null or undefined when calling apiAccidentIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -515,6 +547,7 @@ export class AccidentService {
         return this.httpClient.request<AccidentResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -545,6 +578,12 @@ export class AccidentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -721,6 +760,12 @@ export class AccidentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -806,6 +851,12 @@ export class AccidentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -926,6 +977,12 @@ export class AccidentService {
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -990,9 +1047,17 @@ export class AccidentService {
             throw new Error('Required parameter id was null or undefined when calling apiAccidentMediesIdGet.');
         }
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1034,6 +1099,7 @@ export class AccidentService {
         return this.httpClient.request<Array<FileResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1052,9 +1118,17 @@ export class AccidentService {
     public apiAccidentModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AccidentModalResponse>>;
     public apiAccidentModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1096,6 +1170,7 @@ export class AccidentService {
         return this.httpClient.request<AccidentModalResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1188,9 +1263,17 @@ export class AccidentService {
     public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, federallyRecordable?: boolean, stateRedordable?: boolean, longitude?: number, latitude?: number, date?: string, time?: string, vehicleNo?: number, towing?: boolean, hazMat?: boolean, fatality?: number, injury?: number, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, authorityPhoneNumber?: string, fax?: string, policeOfficer?: string, phoneOfficer?: string, bagdeNo?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiAccidentPost(report?: string, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, federallyRecordable?: boolean, stateRedordable?: boolean, longitude?: number, latitude?: number, date?: string, time?: string, vehicleNo?: number, towing?: boolean, hazMat?: boolean, fatality?: number, injury?: number, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, authorityPhoneNumber?: string, fax?: string, policeOfficer?: string, phoneOfficer?: string, bagdeNo?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, medies?: Array<Blob>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1485,6 +1568,7 @@ export class AccidentService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1579,9 +1663,17 @@ export class AccidentService {
     public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, hazMat?: boolean, fatality?: number, injury?: number, vehicleNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, authorityPhoneNumber?: string, fax?: string, policeOfficer?: string, phoneOfficer?: string, bagdeNo?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
     public apiAccidentPut(id?: number, report?: string, reported?: boolean, towing?: boolean, hazMat?: boolean, fatality?: number, injury?: number, vehicleNo?: number, addressAccidentCity?: string, addressAccidentState?: string, addressAccidentCounty?: string, addressAccidentAddress?: string, addressAccidentStreet?: string, addressAccidentStreetNumber?: string, addressAccidentCountry?: string, addressAccidentZipCode?: string, addressAccidentStateShortName?: string, addressAccidentAddressUnit?: string, longitude?: number, latitude?: number, date?: string, time?: string, driverId?: number, coDriverId?: number, truckId?: number, trailerId?: number, citations?: Array<CitationCommand>, insuranceType?: Array<InsuranceTypeCommand>, roadwayTrafficway?: string, weatherCondition?: string, roadAccessControl?: string, roadSurfaceCondition?: string, lightCondition?: string, reportingAgency?: string, addressAuthorityCity?: string, addressAuthorityState?: string, addressAuthorityCounty?: string, addressAuthorityAddress?: string, addressAuthorityStreet?: string, addressAuthorityStreetNumber?: string, addressAuthorityCountry?: string, addressAuthorityZipCode?: string, addressAuthorityStateShortName?: string, addressAuthorityAddressUnit?: string, authorityPhoneNumber?: string, fax?: string, policeOfficer?: string, phoneOfficer?: string, bagdeNo?: string, originCity?: string, originState?: string, originCounty?: string, originAddress?: string, originStreet?: string, originStreetNumber?: string, originCountry?: string, originZipCode?: string, originStateShortName?: string, originAddressUnit?: string, destinationCity?: string, destinationState?: string, destinationCounty?: string, destinationAddress?: string, destinationStreet?: string, destinationStreetNumber?: string, destinationCountry?: string, destinationZipCode?: string, destinationStateShortName?: string, destinationAddressUnit?: string, brokerId?: number, boL?: string, cargo?: string, files?: Array<Blob>, filesForDeleteIds?: Array<number>, medies?: Array<Blob>, mediesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1886,6 +1978,7 @@ export class AccidentService {
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -1904,9 +1997,17 @@ export class AccidentService {
     public apiAccidentStartPost(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
     public apiAccidentStartPost(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
         let localVarHeaders = this.defaultHeaders;
 
         let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
         // authentication (bearer) required
         localVarCredential = this.configuration.lookupCredential('bearer');
         if (localVarCredential) {
@@ -1948,6 +2049,7 @@ export class AccidentService {
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

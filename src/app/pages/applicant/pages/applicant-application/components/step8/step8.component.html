@@ -1,6 +1,6 @@
 <div class="d-flex flex-column align-items-center step-container">
     <h1 class="m-0 step-title text-center noselect ta-font-bold">
-        Drug & alcohol statement
+        {{ stringConstants.title }}
     </h1>
 
     <!-- INFO -->
@@ -10,14 +10,8 @@
     >
         <p
             class="m-0 text-center ta-font-regular"
-            [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
-            }"
         >
-            Section 40.25(j) of the Federal Motor Carrier Safety Regulations,
-            requires each motor carrier to inquire to prospective drivers and
-            prospective drivers are required to respond to the information in
-            the question below.
+            {{ stringConstants.federalMotorCarrierSafetyRegulations }}
         </p>
     </div>
 
@@ -28,14 +22,14 @@
         [formGroup]="drugTestForm"
     >
         <p
-            class="m-0 text-center ta-font-regular"
+            class="m-0 text-center ta-font-extra-bold"
             [ngClass]="
                 selectedMode === 'FEEDBACK_MODE'
                     ? 'question-title question-title-feedback'
                     : 'question-title'
             "
         >
-            {{ question.title }} <span>*</span>
+            {{ question.title }} 
         </p>
 
         <div class="radios-box">
@@ -62,18 +56,7 @@
                     <div class="group motor-carrier-group">
                         <app-ta-input
                             formControlName="motorCarrier"
-                            [inputConfig]="{
-                                name: 'Motor Carrier',
-                                type: 'text',
-                                label: 'Motor Carrier',
-                                isRequired: true,
-                                textTransform: 'capitalize',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isCarrierValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="motorCarrierInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[0].lineInputs[0]
                             "
@@ -83,20 +66,7 @@
                     <div class="group phone-group">
                         <app-ta-input
                             formControlName="phone"
-                            [inputConfig]="{
-                                name: 'Phone',
-                                type: 'text',
-                                label: 'Phone',
-                                isRequired: true,
-                                placeholderIcon: 'phone',
-                                mask: '(000) 000-0000',
-                                maxLength: 14,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isPhoneValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="phoneInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[0].lineInputs[1]
                             "
@@ -143,22 +113,7 @@
                     <div class="group address-group">
                         <app-ta-input-address-dropdown
                             formControlName="address"
-                            [inputConfig]="{
-                                name: 'Address',
-                                type: 'text',
-                                label: 'Address, City, State Zip',
-                                isRequired: true,
-                                placeholderIcon: 'address',
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-481',
-                                minLength: 6,
-                                maxLength: 256,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isAddressValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="addressInputConfig"
                             [placeholderType]="'longAddress'"
                             [activeAddress]="selectedAddress"
                             [incorrectValue]="
@@ -173,19 +128,7 @@
                     <div class="group unit-group">
                         <app-ta-input
                             formControlName="addressUnit"
-                            [inputConfig]="{
-                                name: 'address-unit',
-                                type: 'text',
-                                label: 'Unit #',
-                                minLength: 1,
-                                maxLength: 10,
-                                textTransform: 'uppercase',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isAddressUnitValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="addressUnitInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[1].lineInputs[1]
                             "
@@ -232,18 +175,9 @@
                     class="d-flex justify-content-center align-items-center sap-info-container"
                 >
                     <p
-                        class="m-0 ta-font-regular"
-                        [ngStyle]="{
-                            color:
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? '#919191'
-                                    : '#6C6C6C'
-                        }"
+                        class="m-0 ta-font-regular text-center"
                     >
-                        In addition, if the answer to the above question is YES,
-                        please list the name and contact information for the
-                        Substance Abuse Professional (SAP) who completes you
-                        evaluation:
+                        {{ stringConstants.inAdditionSubstanceAbuseProfessional }}
                     </p>
                 </div>
 
@@ -253,18 +187,7 @@
                     <div class="group sap-name-group">
                         <app-ta-input
                             formControlName="sapName"
-                            [inputConfig]="{
-                                name: 'Name of SAP',
-                                type: 'text',
-                                label: 'Name of SAP',
-                                isRequired: true,
-                                textTransform: 'capitalize',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isSapValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="sapNameInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[2].lineInputs[0]
                             "
@@ -274,20 +197,7 @@
                     <div class="group phone-group">
                         <app-ta-input
                             formControlName="sapPhone"
-                            [inputConfig]="{
-                                name: 'Phone',
-                                type: 'text',
-                                label: 'Phone',
-                                isRequired: true,
-                                placeholderIcon: 'phone',
-                                mask: '(000) 000-0000',
-                                maxLength: 14,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isSapPhoneValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="sapPhoneInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[2].lineInputs[1]
                             "
@@ -334,22 +244,7 @@
                     <div class="group sap-address-group">
                         <app-ta-input-address-dropdown
                             formControlName="sapAddress"
-                            [inputConfig]="{
-                                name: 'Address',
-                                type: 'text',
-                                label: 'Address, City, State Zip',
-                                isRequired: true,
-                                placeholderIcon: 'address',
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-481',
-                                minLength: 6,
-                                maxLength: 256,
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isSapAddressValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="sapAddressInputConfig"
                             [placeholderType]="'longAddress'"
                             [activeAddress]="selectedSapAddress"
                             [incorrectValue]="
@@ -364,19 +259,7 @@
                     <div class="group sap-unit-group">
                         <app-ta-input
                             formControlName="sapAddressUnit"
-                            [inputConfig]="{
-                                name: 'address-unit',
-                                type: 'text',
-                                label: 'Unit #',
-                                minLength: 1,
-                                maxLength: 10,
-                                textTransform: 'uppercase',
-                                isDisabled:
-                                    selectedMode === 'REVIEW_MODE' ||
-                                    (selectedMode === 'FEEDBACK_MODE' &&
-                                        stepFeedbackValues?.isSapAddressUnitValid),
-                                incorrectInput: selectedMode === 'REVIEW_MODE'
-                            }"
+                            [inputConfig]="sapAddressUnitInputConfig"
                             [incorrectValue]="
                                 openAnnotationArray[3].lineInputs[1]
                             "
@@ -423,10 +306,8 @@
                     <app-ta-checkbox
                         formControlName="isAgreement"
                         [name]="'isAgreement'"
-                        [label]="
-                            'I certify that the information provided on this document is true and correct.'
-                        "
-                        [customClass]="'bold-12'"
+                        [label]="stringConstants.informationTrueAndCorrect"
+                        [customClass]="'bold-14'"
                         [disabledStillCheckMark]="
                             selectedMode === 'REVIEW_MODE' ||
                             selectedMode === 'FEEDBACK_MODE'

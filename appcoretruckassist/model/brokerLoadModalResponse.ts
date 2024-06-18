@@ -23,5 +23,6 @@ export interface BrokerLoadModalResponse {
     ban?: boolean;
     status?: number;
     loadsCount?: number;
+    revenue?: number | null;
 }
 

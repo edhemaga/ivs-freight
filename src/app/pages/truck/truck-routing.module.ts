@@ -17,10 +17,10 @@ const routes: Routes = [
     },
     {
         path: ':id/details',
-        loadComponent: () =>
+        loadChildren: () =>
             import(
-                '@pages/truck/pages/truck-details/truck-details.component'
-            ).then((m) => m.TruckDetailsComponent),
+                '@pages/truck/pages/truck-details/truck-details.module'
+            ).then((m) => m.TruckDetailsModule),
         resolve: {
             truck: TruckItemsResolver,
             truckMinimal: TruckMinimalResolver,

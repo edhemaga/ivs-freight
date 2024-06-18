@@ -50,6 +50,22 @@
 
                         <div class="name d-flex ta-font-bold">
                             <span class="title" (click)="goToDetailsPage(card)">
+                                <svg-icon
+                                    *ngIf="card.businessName.hasBanDnu"
+                                    class="me-1"
+                                    [src]="
+                                        card.businessName.isDnu
+                                            ? 'assets/svg/truckassist-table/dnu-icon.svg'
+                                            : card.businessName.isClosed
+                                            ? 'assets/svg/common/ic_closed_broker.svg'
+                                            : 'assets/svg/truckassist-table/ban-icon.svg'
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': '18',
+                                        'height.px': '18'
+                                    }"
+                                ></svg-icon>
+
                                 <span
                                     class="title-tooltip"
                                     type="button"
@@ -59,7 +75,11 @@
                                     position="bottom"
                                     customClass="mt-1"
                                 >
-                                    {{ card.businessName }}
+                                    {{
+                                        !card.businessName.hasBanDnu
+                                            ? card.businessName
+                                            : card.businessName.name
+                                    }}
                                 </span>
                             </span>
                         </div>

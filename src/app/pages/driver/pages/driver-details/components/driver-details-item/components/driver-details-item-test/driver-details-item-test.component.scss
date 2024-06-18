@@ -1,0 +1,42 @@
+@import 'src/assets/scss/details_page_ske.scss';
+@import 'src/theme/variables.scss';
+
+.test-card-container {
+    .test-card-inner-container {
+        display: grid;
+        grid-template-columns: repeat(2, 150px);
+        grid-gap: 12px;
+        padding: 4px 6px;
+
+        .test-card-box {
+            p {
+                font-size: 11px;
+                line-height: 14px;
+            }
+
+            span {
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            p,
+            span {
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(47, 47, 47, 0.2);
+                }
+            }
+        }
+    }
+
+    .note-documents-container {
+        padding: 0 6px;
+    }
+}

@@ -14,6 +14,7 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateCompanyOwnerInfoCommand { 
+    id?: number;
     ownerType?: OwnerType;
     businessName?: string | null;
     ein?: string | null;
@@ -29,6 +30,10 @@ export interface UpdateCompanyOwnerInfoCommand {
     truckModel?: string | null;
     truckYear?: number;
     truckColorId?: number | null;
+    truckLicenceFiles?: Array<Blob> | null;
+    truckLicenceFilesForDeleteIds?: Array<number> | null;
+    truckFHWAFiles?: Array<Blob> | null;
+    truckFHWAFilesForDeleteIds?: Array<number> | null;
     hasTrailer?: boolean;
     trailerTypeId?: number | null;
     trailerLengthId?: number | null;
@@ -37,6 +42,10 @@ export interface UpdateCompanyOwnerInfoCommand {
     trailerModel?: string | null;
     trailerYear?: number | null;
     trailerColorId?: number | null;
+    trailerLicenceFiles?: Array<Blob> | null;
+    trailerLicenceFilesForDeleteIds?: Array<number> | null;
+    trailerFHWAFiles?: Array<Blob> | null;
+    trailerFHWAFilesForDeleteIds?: Array<number> | null;
     applicantId?: number;
 }
 

@@ -90,6 +90,8 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() reviewMode: string;
     @Input() feedbackText: string;
     @Input() categoryTag: string;
+    @Input() isFooterHidden: boolean = false;
+    @Input() isActionsHidden: boolean = false;
 
     public documentReviewInputControl: UntypedFormControl =
         new UntypedFormControl(null);
