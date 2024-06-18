@@ -6,14 +6,10 @@
     <div class="d-flex text-center top-section">
         <p
             class="m-0 ta-font-regular"
-            [ngStyle]="{
-                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#2F2F2F'
-            }"
         >
             Please list all motor vehicle collisions in which you were
-            involved<br />
-            (both commercial and private vehicle) during the past 3 years prior
-            to the application date.
+            involved (both commercial and private vehicle) during the past 
+            3 years prior to the application date.
         </p>
     </div>
 
@@ -27,7 +23,7 @@
             formControlName="hasPastAccident"
             [name]="'hasPastAccident'"
             [label]="'No accidents for past 3 years'"
-            [customClass]="'bold-12'"
+            [customClass]="'bold-14 text-align-center line-height-18'"
             [disabledStillCheckMark]="selectedMode !== 'APPLICANT_MODE'"
         ></app-ta-checkbox>
     </div>
@@ -42,6 +38,10 @@
                     [formGroup]="accidentForm"
                 >
                     <div class="align-items-center title-container">
+                        <div class="align-items-center d-flex justify-content-center statistics-title-box">
+                            <p class="m-0 ta-font-bold">#</p>
+                        </div>
+
                         <div class="align-items-center date-state-title-box">
                             <p class="m-0 ta-font-bold">DATE & LOCATION</p>
                         </div>
@@ -54,7 +54,7 @@
                             class="align-items-center hazmat-description-title-box"
                         >
                             <p class="m-0 ta-font-bold">
-                                H. SPILL & DESCRIPTION
+                                VEHICLE, DESCRIPTION
                             </p>
                         </div>
                     </div>
@@ -79,8 +79,17 @@
                                     "
                                 >
                                     <div
+                                        class="d-flex flex-column justify-content-center align-items-center index-box"
+                                    >
+                                        <p class="m-0 ta-font-bold">
+                                            {{ i+1 }}
+                                        </p>
+                                    </div>
+                                    <div
                                         class="d-flex flex-column justify-content-center"
                                     >
+
+                                        
                                         <div
                                             class="d-flex align-items-center state-box"
                                         >
@@ -89,12 +98,12 @@
                                                 style="max-width: 126px"
                                                 ngbTooltip
                                                 [mainTooltip]="
-                                                    accident.location
+                                                    accident.location.state
                                                 "
                                                 tooltipBackground="#2F2F2F"
                                                 position="bottom-left"
                                             >
-                                                {{ accident.location }}
+                                                {{ accident.location.state }} ({{ accident.location.stateShortName }})
                                             </p>
                                         </div>
 
@@ -108,64 +117,119 @@
                                     </div>
 
                                     <div
-                                        class="d-flex flex-column justify-content-center"
+                                        class="d-flex flex-column justify-content-center statistics-box"
                                     >
                                         <div
-                                            class="d-flex align-items-center fatalities-box"
+                                            class="d-flex align-items-center number-box"
                                         >
-                                            <div
-                                                class="d-flex justify-content-center align-items-center number-box"
-                                            >
-                                                <p class="m-0 ta-font-bold">
-                                                    {{ accident.fatalities }}
-                                                </p>
-                                            </div>
-
-                                            <p class="m-0 ta-font-regular">
-                                                Fatalities
-                                            </p>
-                                        </div>
-
-                                        <div
-                                            class="d-flex align-items-center injuries-box"
-                                        >
-                                            <div
-                                                class="d-flex justify-content-center align-items-center number-box"
-                                            >
-                                                <p class="m-0 ta-font-bold">
+                                            <div class="d-flex">
+                                                <svg-icon
+                                                    class="accident-icon"
+                                                    [src]="'assets/svg/common/ic_injury.svg'"
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon>
+                                                <p 
+                                                    class="m-0 ta-font-medium"
+                                                    [ngStyle]="{
+                                                        'color':
+                                                            accident.injuries ? '#2F2F2F' : '#919191'
+                                                    }"
+                                                >
                                                     {{ accident.injuries }}
                                                 </p>
                                             </div>
-
-                                            <p class="m-0 ta-font-regular">
-                                                Injuries
-                                            </p>
+                                            <div class="d-flex">
+                                                <svg-icon
+                                                    class="accident-icon"
+                                                    [src]="'assets/svg/common/ic_fatality.svg'"
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon>
+                                                <p 
+                                                    class="m-0 ta-font-medium"
+                                                    [ngStyle]="{
+                                                        'color':
+                                                            accident.fatalities ? '#2F2F2F' : '#919191'
+                                                    }"
+                                                >
+                                                    {{ accident.fatalities }}
+                                                </p>
+                                            </div>
                                         </div>
+
+                                        <div
+                                            class="d-flex align-items-center number-box"
+                                        >
+                                            <div class="d-flex">
+                                                <svg-icon
+                                                    class="accident-icon"
+                                                    [src]="'assets/svg/common/ic_collision.svg'"
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon>
+                                                <p 
+                                                    class="m-0 ta-font-medium"
+                                                    [ngStyle]="{
+                                                        'color':
+                                                            accident.collisions ? '#2F2F2F' : '#919191'
+                                                    }"
+                                                >
+                                                    {{ accident.collisions }}
+                                                </p>
+
+                                                <svg-icon
+                                                    class="accident-icon"
+                                                    [src]="'assets/svg/common/ic_accident_hazmat.svg'"
+                                                    [svgStyle]="{
+                                                        'width.px': '14',
+                                                        'height.px': '14'
+                                                    }"
+                                                ></svg-icon>
+                                                <p 
+                                                    class="m-0 ta-font-medium"
+                                                    [ngStyle]="{
+                                                        'color':
+                                                            accident.hazmatSpill ? '#2F2F2F' : '#919191'
+                                                    }"
+                                                >
+                                                    {{
+                                                        accident.hazmatSpill
+                                                            ? 'Yes'
+                                                            : 'No'
+                                                    }}
+                                                </p>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div
                                         class="d-flex flex-column justify-content-center"
                                     >
                                         <div
-                                            class="d-flex align-items-center hazmat-box"
+                                            class="d-flex align-items-center vehicle-box"
                                         >
                                             <svg-icon
-                                                class="hazmat-icon"
+                                                class="truck-icon"
                                                 [src]="
-                                                    'assets/svg/common/ic_hazmat.svg'
+                                                    'assets/svg/common/trucks/' +
+                                                    accident.vehicleTypeLogoName
                                                 "
                                                 [svgStyle]="{
-                                                    'width.px': '14',
+                                                    'width.px': '34',
                                                     'height.px': '12'
                                                 }"
                                             ></svg-icon>
 
-                                            <p class="m-0 ta-font-semi-bold">
-                                                {{
-                                                    accident.hazmatSpill
-                                                        ? 'Yes'
-                                                        : 'No'
-                                                }}
+                                            <p class="m-0 ta-font-medium">
+                                                {{ accident.vehicleType }}
                                             </p>
                                         </div>
 
@@ -174,7 +238,7 @@
                                         >
                                             <p
                                                 class="m-0 ta-font-medium d-inline-block text-truncate"
-                                                style="max-width: 250px"
+                                                style="max-width: 308px"
                                                 ngbTooltip
                                                 [mainTooltip]="
                                                     accident.description
@@ -278,6 +342,7 @@
                                     (radioRequiredNoteEmitter)="
                                         onGetRadioRequiredNoteEmit($event)
                                     "
+                                    (onDeleteAccidentClick)="onDeleteAccident($event)"
                                 ></app-step4-form>
                             </div>
                         </ng-container>
@@ -319,16 +384,23 @@
                     (radioRequiredNoteEmitter)="
                         onGetRadioRequiredNoteEmit($event)
                     "
+                    (onDeleteAccidentClick)="onDeleteAccident($event)"
                 ></app-step4-form>
             </ng-container>
 
             <ng-container *ngIf="displayButtonInsteadOfForm">
                 <div
-                    class="d-flex justify-content-center align-items-center btn-instead-form-container"
+                    class="d-flex justify-content-between align-items-center accident-btn-container"
                 >
+                    <h5 class="m-0 ta-font-extra-bold accident-title">
+                        List any additional accidents in past 3 years
+                    </h5>
+                
                     <app-applicant-add-save-btn
                         [addBtn]="true"
-                        [btnText]="'Add Another Accident'"
+                        [sizeSmall]="true"
+                        [btnText]="'Add Accident'"
+                        [disabledValue]="accidentForm.invalid"
                         (clickValueEmitter)="onGetBtnClickValue($event)"
                     ></app-applicant-add-save-btn>
                 </div>

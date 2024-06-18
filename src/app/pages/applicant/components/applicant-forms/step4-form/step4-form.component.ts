@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     Component,
@@ -16,6 +17,8 @@ import {
     UntypedFormGroup,
     UntypedFormBuilder,
     Validators,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 
 import {
@@ -51,19 +54,52 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 // models
 import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
-import { ApplicantModalResponse, TruckTypeResponse } from 'appcoretruckassist';
+import {
+    AddressEntity,
+    ApplicantModalResponse,
+    TruckTypeResponse,
+} from 'appcoretruckassist';
 import { Accident } from '@pages/applicant/pages/applicant-application/models/accident.model';
 
 // components
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '@shared/shared.module';
 
 @Component({
     selector: 'app-step4-form',
     templateUrl: './step4-form.component.html',
     styleUrls: ['./step4-form.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+
+        // components
+        TaInputComponent,
+        TaInputDropdownComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+        TaInputAddressDropdownComponent,
+        TaInputArrowsComponent,
+        TaInputRadiobuttonsComponent,
+    ],
 })
 export class Step4FormComponent
     implements OnInit, OnDestroy, OnChanges, AfterViewInit
@@ -91,6 +127,7 @@ export class Step4FormComponent
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
     @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
+    @Output() onDeleteAccidentClick = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -101,6 +138,7 @@ export class Step4FormComponent
     public accidentForm: UntypedFormGroup;
 
     public selectedVehicleType: any = null;
+    public selectedAddress: AddressEntity = null;
 
     public isAccidentEdited: boolean;
 
@@ -156,6 +194,8 @@ export class Step4FormComponent
     ];
     public isCardReviewedIncorrect: boolean = false;
 
+    public applicantSvgRoutes = ApplicantSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -186,7 +226,10 @@ export class Step4FormComponent
                     takeUntil(this.destroy$)
                 )
                 .subscribe((res) => {
-                    this.lastFormValuesEmitter.emit(res);
+                    this.lastFormValuesEmitter.emit({
+                        ...res,
+                        location: this.selectedAddress
+                    });
                 });
         }
 
@@ -246,6 +289,8 @@ export class Step4FormComponent
         ) {
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
+                this.selectedAddress =
+                    changes.formValuesToPatch.currentValue.location;
 
                 if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
@@ -258,8 +303,9 @@ export class Step4FormComponent
         this.accidentForm = this.formBuilder.group({
             location: [null, [Validators.required, ...addressValidation]],
             date: [null, Validators.required],
-            fatalities: [0],
-            injuries: [0],
+            collisions: [null, Validators.required],
+            fatalities: [null, Validators.required],
+            injuries: [null, Validators.required],
             hazmatSpill: [null, Validators.required],
             vehicleType: [null, Validators.required],
             description: [
@@ -339,6 +385,7 @@ export class Step4FormComponent
             hazmatSpill: formValue?.hazmatSpill,
             fatalities: formValue?.fatalities,
             injuries: formValue?.injuries,
+            collisions: formValue?.collisions,
             vehicleType: formValue?.vehicleType,
             description: formValue?.description,
         });
@@ -377,6 +424,7 @@ export class Step4FormComponent
                     accidentStateShort,
                     isEditingAccident,
                     accidentItemReview,
+                    vehicleTypeLogoName,
                     id,
                     reviewId,
                     ...previousFormValues
@@ -418,6 +466,17 @@ export class Step4FormComponent
 
                 break;
 
+            case InputSwitchActions.ADDRESS:
+                this.selectedAddress = event.address;
+
+                if (!event.valid) {
+                    this.accidentForm
+                        .get('location')
+                        .setErrors({ invalid: true });
+                }
+
+                break;
+
             default:
                 break;
         }
@@ -445,7 +504,12 @@ export class Step4FormComponent
         const saveData: Accident = {
             ...accidentForm,
             isEditingAccident: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === accidentForm.vehicleType
+            ).logoName,
+            location: this.selectedAddress,
         };
+        console.log('saveData: ', saveData);
 
         this.formValuesEmitter.emit(saveData);
 
@@ -481,6 +545,10 @@ export class Step4FormComponent
         const saveData: Accident = {
             ...accidentForm,
             isEditingAccident: false,
+            vehicleTypeLogoName: this.vehicleType.find(
+                (item) => item.name === accidentForm.vehicleType
+            ).logoName,
+            location: this.selectedAddress,
         };
 
         this.saveFormEditingEmitter.emit(saveData);
@@ -657,6 +725,10 @@ export class Step4FormComponent
         );
 
         this.isCardReviewedIncorrect = false;
+    }
+
+    public onDeleteAccident(): void {
+        this.onDeleteAccidentClick.emit(true);
     }
 
     ngOnDestroy(): void {

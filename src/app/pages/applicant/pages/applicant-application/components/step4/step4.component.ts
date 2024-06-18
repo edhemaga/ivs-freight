@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -40,10 +41,35 @@ import {
     TruckTypeResponse,
 } from 'appcoretruckassist/model/models';
 
+// components
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { Step4FormComponent } from '@pages/applicant/components/applicant-forms/step4-form/step4-form.component';
+
+// modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
 @Component({
     selector: 'app-step4',
     templateUrl: './step4.component.html',
     styleUrls: ['./step4.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaCheckboxComponent,
+        Step4FormComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+    ],
 })
 export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     private destroy$ = new Subject<void>();
@@ -176,8 +202,10 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         ).replace(/-/g, '/'),
                         hazmatSpill: item.hazmatSpill,
                         fatalities: item.fatalities,
+                        collisions: item.collisions,
                         injuries: item.injuries,
                         vehicleType: item.vehicleType.name,
+                        vehicleTypeLogoName: item.vehicleType.logoName,
                         description: item.description,
                         accidentItemReview: item.accidentItemReview
                             ? item.accidentItemReview
@@ -196,8 +224,10 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 ).replace(/-/g, '/'),
                 hazmatSpill: lastItemInAccidentArray.hazmatSpill,
                 fatalities: lastItemInAccidentArray.fatalities,
+                collisions: lastItemInAccidentArray.collisions,
                 injuries: lastItemInAccidentArray.injuries,
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
+                vehicleTypeLogoName: lastItemInAccidentArray.vehicleType.logoName,
                 description: lastItemInAccidentArray.description,
                 accidentItemReview: lastItemInAccidentArray.accidentItemReview
                     ? lastItemInAccidentArray.accidentItemReview
@@ -344,6 +374,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                             date: this.lastAccidentCard?.date,
                             hazmatSpill: this.lastAccidentCard?.hazmatSpill,
                             fatalities: this.lastAccidentCard?.fatalities,
+                            collisions: this.lastAccidentCard?.collisions,
                             injuries: this.lastAccidentCard?.injuries,
                             vehicleType: this.lastAccidentCard?.vehicleType,
                             description: this.lastAccidentCard?.description,
@@ -355,12 +386,46 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
             });
     }
 
-    public onDeleteAccident(index: number): void {
-        if (this.isEditing) {
-            return;
+    public onDeleteAccident(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
         }
 
-        this.accidentArray.splice(index, 1);
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.accidentArray.length === 1) {
+            const selectedAccident = this.accidentArray[0];
+
+            this.formValuesToPatch = selectedAccident;
+
+            this.accidentArray = [];
+        } else {
+            if (this.selectedAccidentIndex >= 0) {
+                this.accidentArray[
+                    this.selectedAccidentIndex
+                ].isEditingAccident = false;
+            }
+
+            this.accidentArray.splice(this.selectedAccidentIndex, 1);
+
+            this.formValuesToPatch = {
+                location: null,
+                date: null,
+                hazmatSpill: null,
+                collisions: null,
+                fatalities: null,
+                injuries: null,
+                vehicleType: null,
+                description: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedAccidentIndex = -1;
     }
 
     public getAccidentFormValues(event: any): void {
@@ -372,8 +437,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
             location: null,
             date: null,
             hazmatSpill: null,
-            fatalities: 0,
-            injuries: 0,
+            collisions: null,
+            fatalities: null,
+            injuries: null,
             vehicleType: null,
             description: null,
         };
@@ -438,8 +504,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 location: null,
                 date: null,
                 hazmatSpill: null,
-                fatalities: 0,
-                injuries: 0,
+                collisions: null,
+                fatalities: null,
+                injuries: null,
                 vehicleType: null,
                 description: null,
             };
@@ -474,8 +541,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
             location: null,
             date: null,
             hazmatSpill: null,
-            fatalities: 0,
-            injuries: 0,
+            collisions: null,
+            fatalities: null,
+            injuries: null,
             vehicleType: null,
             description: null,
         };
@@ -493,8 +561,9 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 location: null,
                 date: null,
                 hazmatSpill: null,
-                fatalities: 0,
-                injuries: 0,
+                collisions: null,
+                fatalities: null,
+                injuries: null,
                 vehicleType: null,
                 description: null,
             };
@@ -888,6 +957,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 date: MethodsCalculationsHelper.convertDateToBackend(item.date),
                 fatalities: item.fatalities,
                 injuries: item.injuries,
+                collisions: item.collisions,
                 hazmatSpill: item.hazmatSpill,
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) => vehicleItem.name === item.vehicleType
@@ -920,6 +990,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 ),
                 fatalities: this.lastAccidentCard.fatalities,
                 injuries: this.lastAccidentCard.injuries,
+                collisions: this.lastAccidentCard.collisions,
                 hazmatSpill: this.lastAccidentCard.hazmatSpill,
                 vehicleTypeId: this.vehicleType.find(
                     (vehicleItem) =>

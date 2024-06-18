@@ -20,6 +20,7 @@ export interface AccidentItemResponse {
     date?: string;
     fatalities?: number;
     injuries?: number;
+    collisions?: number;
     hazmatSpill?: boolean;
     vehicleType?: TruckTypeResponse;
     description?: string | null;

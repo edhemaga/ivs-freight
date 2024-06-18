@@ -1,23 +1,47 @@
 <div [ngClass]="{ 'accident-border-container': isEditing }">
     <ng-container *ngIf="isEditing">
         <div class="d-flex align-items-center accident-header">
-            <p class="m-0 ta-font-medium">ACCIDENT</p>
+            <div
+                class="d-flex justify-content-center align-items-center icon-delete-container"
+                ngbTooltip
+                mainTooltip="Delete Accident"
+                tooltipBackground="#424242"
+                position="top"
+                (click)="onDeleteAccident()"
+            >
+                <svg-icon
+                    class="delete-icon"
+                    [src]="applicantSvgRoutes.trashIcon"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                ></svg-icon>
+            </div>
+            <p class="m-0 ta-font-medium required-label">ACCIDENT</p>
+        </div>
+    </ng-container>
+
+    <div class="divider"></div>
+
+    <ng-container *ngIf="!isEditing">
+        <div
+            class="d-flex align-self-start accident-detail"
+        >
+            <p class="m-0 ta-font-extra-bold">
+                Accident Detail
+            </p>
         </div>
     </ng-container>
 
     <div class="d-flex flex-column step-form" [formGroup]="accidentForm">
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
-                class="group"
+                class="group location-group"
                 [ngStyle]="{
-                    width: isEditing ? '433px' : '445px',
                     'margin-right': isEditing ? '8px' : '12px'
                 }"
             >
-                <app-ta-input
+                <app-ta-input-address-dropdown
                     formControlName="location"
                     [inputConfig]="{
                         name: 'Address',
@@ -27,15 +51,21 @@
                         maxLength: 256,
                         isRequired: true,
                         placeholderIcon: 'address',
+                        dropdownWidthClass: 'w-col-445',
                         isDisabled:
                             selectedMode === 'REVIEW_MODE' ||
                             (selectedMode === 'FEEDBACK_MODE' &&
                                 stepFeedbackValues?.isLocationValid),
                         incorrectInput: selectedMode === 'REVIEW_MODE'
                     }"
+                    [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
                     [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 10)"
-                ></app-ta-input>
+                    (selectedAddress)="
+                        handleInputSelect($event, 'ADDRESS')
+                    "
+                ></app-ta-input-address-dropdown>
             </div>
 
             <div class="group date-group">
@@ -96,51 +126,66 @@
 
         <div
             class="d-flex justify-content-between"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div class="d-flex align-items-center fatalities-injuries-group">
-                <div class="d-flex align-items-center fatalities-group">
-                    <app-ta-input-arrows
+                <div 
+                    class="d-flex align-items-center fatalities-group"
+                    [ngStyle]="{
+                        'margin-right': isEditing ? '8px' : '12px'
+                    }"
+                >
+                    <app-ta-input
+                        formControlName="collisions"
+                        [inputConfig]="{
+                            name: 'Collision',
+                            type: 'number',
+                            label: 'Collision',
+                            minLength: 1,
+                            maxLength: 160,
+                            textTransform: 'capitalize',
+                            placeholderIcon: 'collision',
+                            isRequired: true,
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
+                        }"
+                    ></app-ta-input>
+                </div>
+                <div 
+                    class="d-flex align-items-center fatalities-group"
+                    [ngStyle]="{
+                        'margin-right': isEditing ? '8px' : '12px'
+                    }"
+                >
+                    <app-ta-input
                         formControlName="fatalities"
                         [inputConfig]="{
-                            name: 'FatalInjuries',
-                            type: 'text',
-                            blackInput: true,
-                            hideRequiredCheck: true,
-                            hideClear: true,
-                            hideErrorMessage: true,
-                            textAlign: 'center',
-                            isDisabled: selectedMode !== 'APPLICANT_MODE'
+                            name: 'Fatality',
+                            type: 'number',
+                            label: 'Fatality',
+                            minLength: 1,
+                            maxLength: 160,
+                            textTransform: 'capitalize',
+                            placeholderIcon: 'fatality',
+                            isRequired: true,
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [name]="'Fatalities #'"
-                        [elementOrder]="1"
-                        [minimum]="0"
-                        [type]="'applicant'"
-                        [selectedMode]="selectedMode"
-                        [disabledArrow]="selectedMode !== 'APPLICANT_MODE'"
-                    ></app-ta-input-arrows>
+                    ></app-ta-input>
                 </div>
 
                 <div class="d-flex align-items-center injuries-group">
-                    <app-ta-input-arrows
+                    <app-ta-input
                         formControlName="injuries"
                         [inputConfig]="{
-                            name: 'FatalInjuries',
-                            type: 'text',
-                            blackInput: true,
-                            hideRequiredCheck: true,
-                            hideClear: true,
-                            hideErrorMessage: true,
-                            textAlign: 'center',
-                            isDisabled: selectedMode !== 'APPLICANT_MODE'
+                            name: 'Injured',
+                            type: 'number',
+                            label: 'Injured',
+                            minLength: 1,
+                            maxLength: 160,
+                            textTransform: 'capitalize',
+                            isRequired: true,
+                            placeholderIcon: 'injury',
+                            incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
-                        [name]="'Injuries #'"
-                        [elementOrder]="2"
-                        [minimum]="0"
-                        [type]="'applicant'"
-                        [selectedMode]="selectedMode"
-                        [disabledArrow]="selectedMode !== 'APPLICANT_MODE'"
-                    ></app-ta-input-arrows>
+                    ></app-ta-input>
                 </div>
             </div>
 
@@ -149,25 +194,10 @@
             >
                 <div class="d-flex flex-column title-box">
                     <p
-                        class="m-0 ta-font-regular"
-                        [ngStyle]="{
-                            color:
-                                selectedMode === 'FEEDBACK_MODE'
-                                    ? '#919191'
-                                    : '#6C6C6C'
-                        }"
+                        class="m-0 ta-font-medium"
                     >
                         Hazmat spill
-                        <span
-                            class="required-star"
-                            [ngStyle]="{
-                                color:
-                                    selectedMode === 'FEEDBACK_MODE'
-                                        ? '#919191'
-                                        : '#ff5d5d'
-                            }"
-                            >*</span
-                        >
+                        <span class="required">*</span>
                     </p>
 
                     <ng-container *ngIf="displayRadioRequiredNote">
@@ -191,7 +221,6 @@
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="group truck-type-group"
@@ -230,9 +259,6 @@
             </div>
             <div
                 class="group description-group"
-                [ngStyle]="{
-                    width: isEditing ? '361px' : '373px'
-                }"
             >
                 <app-ta-input
                     formControlName="description"
@@ -299,12 +325,21 @@
             <ng-container
                 *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
             >
-                <app-applicant-add-save-btn
-                    [addBtn]="true"
-                    [btnText]="'Add Another Accident'"
-                    [disabledValue]="accidentForm.invalid"
-                    (clickValueEmitter)="onGetBtnClickValue($event)"
-                ></app-applicant-add-save-btn>
+                <div
+                    class="d-flex justify-content-between align-items-center accident-btn-container"
+                >
+                    <h5 class="m-0 ta-font-extra-bold accident-title">
+                        List any additional accidents in past 3 years
+                    </h5>
+                
+                    <app-applicant-add-save-btn
+                        [addBtn]="true"
+                        [sizeSmall]="true"
+                        [btnText]="'Add Accident'"
+                        [disabledValue]="accidentForm.invalid"
+                        (clickValueEmitter)="onGetBtnClickValue($event)"
+                    ></app-applicant-add-save-btn>
+                </div>
             </ng-container>
 
             <ng-container *ngIf="isEditing">
