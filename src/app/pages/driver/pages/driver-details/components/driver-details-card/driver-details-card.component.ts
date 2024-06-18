@@ -144,8 +144,6 @@ export class DriverDetailsCardComponent
         this.getStoreData(true);
 
         this.getCurrentIndex();
-
-        this.getDriversDropdown();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -345,7 +343,7 @@ export class DriverDetailsCardComponent
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
-        if (event && event.id !== this.driver.id) {
+        if (event?.id !== this.driver.id) {
             this.driversDropdownList = this.driverMinimalQuery
                 .getAll()
                 .map((driver) => {
@@ -357,9 +355,9 @@ export class DriverDetailsCardComponent
                         +lastName;
 
                     return {
-                        id: id,
+                        id,
                         name: fullname,
-                        status: status,
+                        status,
                         svg: owner
                             ? DriverDetailsCardSvgRoutes.ownerStatusRoute
                             : null,

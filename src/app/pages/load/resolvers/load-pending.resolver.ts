@@ -28,20 +28,34 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
     resolve(): Observable<LoadPandingState | boolean> {
         return this.loadService
             .getLoadList(
-                undefined,
+                null,
                 1,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
-                undefined,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
                 1,
-                25
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
             )
             .pipe(
                 catchError(() => {
@@ -58,7 +72,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                         })
                     );
 
-                    // this.loadPandingStore.set(loadPagination.pagination.data);
+                    this.loadPandingStore.set(loadPagination.pagination.data);
                 })
             );
     }

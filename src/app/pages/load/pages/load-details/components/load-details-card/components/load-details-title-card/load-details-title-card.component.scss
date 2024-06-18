@@ -1,0 +1,26 @@
+@import 'src/theme/variables.scss';
+
+.load-title-card-container {
+    .reference-number-container {
+        margin-bottom: 8px;
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+        }
+    }
+
+    .main-container {
+    }
+}

@@ -657,7 +657,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
-        console.log('load', data);
         let commentsWithAvatarColor;
 
         if (data.comments) {
