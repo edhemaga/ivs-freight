@@ -882,7 +882,7 @@
                             _options[0].name === 'No Results',
                         active: option.id === _activeItem?.id
                     }"
-                    class="dropdown-option dropdown-double-column"
+                    class="dropdown-option dropdown-double-column load-dispatches-ttd-template"
                 >
                     <!-- No Results -->
                     <div
@@ -890,16 +890,7 @@
                             _options.length === 1 &&
                             _options[0].name === 'No Results'
                         "
-                        [innerHtml]="
-                            option?.name
-                                | taHighlight
-                                    : [
-                                          {
-                                              index: 45632,
-                                              text: getSuperControl.value
-                                          }
-                                      ]
-                        "
+                        [innerHtml]=""
                     ></div>
                     <!-- Truck -->
                     <div
