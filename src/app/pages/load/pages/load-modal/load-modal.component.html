@@ -1773,13 +1773,12 @@
 
                         <div class="load-financial-invoice">
                             <app-ta-input
-                                formControlName="invoiced"
+                                formControlName="invoicedDate"
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
                                     isDropdown: true,
                                     label: 'Invoiced',
-                                    isDisabled: true,
                                     placeholderIcon: 'date',
                                     isRequired: true,
                                     customClass: 'datetimeclass'
@@ -1792,7 +1791,7 @@
 
             <!-- Comments -->
 
-            <!-- <div class="load-modal-row">
+            <div class="load-modal-row" *ngIf="editData?.type?.includes('edit')">
                 <app-ta-custom-card
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"
@@ -1825,7 +1824,7 @@
                         ></app-ta-comment>
                     </ng-container>
                 </app-ta-custom-card>
-            </div> -->
+            </div> 
 
             <!-- Documents -->
 

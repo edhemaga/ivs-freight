@@ -57,4 +57,5 @@ export interface Load {
     totalHours: number;
     totalMinutes: number;
     pays: Array<LoadPaymentPayResponse> | null;
+    invoicedDate: string;
 }

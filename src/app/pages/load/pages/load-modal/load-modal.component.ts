@@ -114,6 +114,7 @@ import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-
 
 // Svg Routes
 import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
+import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 @Component({
     selector: 'app-load-modal',
@@ -143,6 +144,7 @@ import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
         TaCommentComponent,
         LoadModalStopItemsComponent,
         LoadModalHazardousComponent,
+        TaProgresBarComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -318,7 +320,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegHours: number = null;
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
-    selectedPayType: any;
+    public selectedPayType: any = null;
     public paymentMethodsDropdownList: EnumValue[];
     public paymentTypesDropdownList: EnumValue[];
     public orginalPaymentTypesDropdownList: EnumValue[];
@@ -344,6 +346,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
+        console.log(this.editData)
     }
 
     ngDoCheck(): void {
@@ -429,9 +432,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalPayments: this.formBuilder.array([]),
             paymentDropdown: [null],
             billingDropdown: [null],
-            invoiced: [null],
+            invoicedDate: [null],
             payType: [null],
             paymentDate: [null],
+            ageUnpaid: [null],
 
             // note, files
             note: [null],
@@ -3088,7 +3092,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // legs
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
-            totalMinutes: this.totalLegMinutes,
+            totalMinutes: this.totalLegMinutes
         };
     }
 
@@ -3394,6 +3398,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate,
             advancePay,
             pickuplegMiles,
+            invoicedDate
         } = this.loadForm.value;
 
         const adjustedRate =
@@ -3489,6 +3494,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
+            invoicedDate
         };
         this.loadService
             .createLoad(newData)
@@ -3533,6 +3539,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // eslint-disable-next-line no-unused-vars
             pickuplegMiles,
             paymentDate,
+            invoicedDate
         } = this.loadForm.value;
         
         const adjustedRate = this.adjustedRate;
@@ -3635,6 +3642,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
+            invoicedDate
         };
 
         this.loadService
@@ -3787,6 +3795,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             additionalBillingRates,
             pays,
             adjustedRate,
+            invoicedDate,
+            ageUnpaid
         } = loadModalData;
 
         const loadRequirements = {
@@ -3882,6 +3892,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadMiles: loadedMiles,
             totalMiles: totalMiles,
             totalHours: totalTimeHours,
+            invoicedDate,
+            ageUnpaid: ageUnpaid,
+            daysToPay: 60
         });
 
         // load number
