@@ -52,7 +52,10 @@ const routes: Routes = [
             },
             {
                 path: '4',
-                component: Step4Component,
+                loadComponent: () =>
+                    import(
+                        '@pages/applicant/pages/applicant-application/components/step4/step4.component'
+                    ).then((m) => m.Step4Component),
                 data: {
                     title: 'Accident records',
                     depth: 4,
