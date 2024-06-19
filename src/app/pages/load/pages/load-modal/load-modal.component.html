@@ -1504,7 +1504,7 @@
                         !additionalBillingTypes?.length
                     "
                     [adjusted]="
-                        loadForm.get('adjustedRate').value ||
+                        adjustedRate ||
                         loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
@@ -1619,8 +1619,8 @@
                                                 priceSeparator: true,
                                                 priceSeparatorLimitation: 6,
                                                 placeholderIconRightSide:
-                                                    'dollar-additional-load',
-                                                placeholderIconColor: 'blue',
+                                                additional.get('id').value === 6 ? 'dollar' : 'dollar-additional-load',
+                                                placeholderIconColor: additional.get('id').value === 6 ? 'purple' : 'blue',
                                                 inputCursorOnRightSide: true,
                                                 removeInput: true,
                                                 isRequired: true,

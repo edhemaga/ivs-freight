@@ -449,22 +449,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (isFormChange: boolean) => {
-                    console.log(isFormChange, this.isEachStopItemsRowValid, this.loadForm.valid);
-                    this.isFormDirty = isFormChange;
-                }
-            );
-
-        this.loadForm.get('advancePay').valueChanges.subscribe((value) => {
-            const payType = this.loadForm.get('payType');
-            if (value) {
-                payType.addValidators(Validators.required);
-            } else {
-                payType.clearValidators();
-            }
-            payType.updateValueAndValidity();
-        });
+            .subscribe((isFormChange: boolean) =>this.isFormDirty = isFormChange);
     }
 
     private getCompanyUser(): void {
@@ -1919,23 +1904,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 (item) => item.id !== event.id
             );
 
-            if (event.id !== 6) {
-                this.additionalBillings().push(
-                    this.createAdditionaBilling({
-                        id: event.id,
-                        name: event.name,
-                        billingValue: event?.billingValue,
-                    })
-                );
-
-                setTimeout(() => {
-                    this.inputService.changeValidators(
-                        this.additionalBillings().at(
-                            this.additionalBillings().length - 1
-                        )
-                    );
-                }, 150);
-            }
+            this.additionalBillings().push(
+                this.createAdditionaBilling({
+                    id: event.id,
+                    name: event.name,
+                    billingValue: event?.billingValue,
+                })
+            );
         }
 
         this.isVisibleBillDropdown = false;
@@ -2014,14 +1989,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.originalAdditionalBillingTypes.filter(
                             (billing) =>
                                 !this.additionalBillings().value.find(
-                                    (rate) =>
-                                        rate.name ===
-                                        billing.name
+                                    (rate) => rate.name === billing.name
                                 )
                         );
 
-                        if(this.additionalBillingTypes.length) 
-                            this.isVisibleBillDropdown = true;
+                    if (this.additionalBillingTypes.length)
+                        this.isVisibleBillDropdown = true;
 
                     break;
                 case LoadModalStringEnum.PAYMENT:
@@ -2137,7 +2110,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalPayment,
                         advance: value,
                     };
- 
 
                     if (
                         MethodsCalculationsHelper.convertThousanSepInNumber(
@@ -3419,11 +3391,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverMessage,
             note,
             baseRate,
-            adjustedRate,
             driverRate,
             advancePay,
             pickuplegMiles,
         } = this.loadForm.value;
+
+        const adjustedRate =
+            this.additionalBillings().value.find((billing) => billing.id === 6)
+                ?.billingValue ?? null;
 
         let documents: Blob[] = [];
         let tagsArray: Tags[] = [];
@@ -3536,6 +3511,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
     }
 
+    public get adjustedRate(): string | null {
+        return this.additionalBillings().value.find((billing) => billing.id === 6)
+        ?.billingValue ?? null;
+    }
+
     private updateLoad(): void {
         const { id, dateCreated, status, loadRequirements } = this.editData
             .data as LoadResponse;
@@ -3547,7 +3527,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverMessage,
             note,
             baseRate,
-            adjustedRate,
             driverRate,
             // eslint-disable-next-line no-unused-vars
             advancePay,
@@ -3555,6 +3534,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegMiles,
             paymentDate,
         } = this.loadForm.value;
+        
+        const adjustedRate = this.adjustedRate;
 
         let documents: Blob[] = [];
         let tagsArray: Tags[] = [];
@@ -3805,17 +3786,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             baseRate,
             additionalBillingRates,
             pays,
+            adjustedRate,
         } = loadModalData;
 
         const loadRequirements = {
             truckType: loadModalData.dispatch.truck as any,
             trailerType: loadModalData.dispatch.trailer as any,
             year: loadModalData.dispatch.truck.year,
-            liftgate: loadModalData.loadRequirements.liftgate,
-            driverMessage: loadModalData.loadRequirements.driverMessage,
-            trailierLength: loadModalData.loadRequirements.trailerLength,
-            doorType: loadModalData.loadRequirements.doorType,
-            suspension: loadModalData.loadRequirements.suspension,
+            liftgate: loadModalData.loadRequirements?.liftgate,
+            driverMessage: loadModalData.loadRequirements?.driverMessage,
+            trailierLength: loadModalData.loadRequirements?.trailerLength,
+            doorType: loadModalData.loadRequirements?.doorType,
+            suspension: loadModalData.loadRequirements?.suspension,
         };
 
         const pickupStop = stops[0];
@@ -3992,6 +3974,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
         });
+
+        if (adjustedRate) {
+            this.additionalBillings().push(
+                this.createAdditionaBilling({
+                    id: 6,
+                    name: LoadModalStringEnum.ADJUSTED,
+                    billingValue: adjustedRate,
+                })
+            );
+        }
 
         this.isEachStopItemsRowValid = true;
 
