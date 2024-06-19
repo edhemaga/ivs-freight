@@ -934,8 +934,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // ---------------------------- Table Actions ------------------------------
     public onToolBarAction(event: TableToolbarActions): void {
-        console.log('onToolBarAction event', event);
-
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
@@ -986,7 +984,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableDropdownService.openModal$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('onDropdownActions res', res);
                 this.onTableBodyActions(res);
             });
     }
