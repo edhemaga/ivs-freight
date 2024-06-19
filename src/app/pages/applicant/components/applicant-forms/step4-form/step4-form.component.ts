@@ -64,6 +64,7 @@ import {
     TruckTypeResponse,
 } from 'appcoretruckassist';
 import { Accident } from '@pages/applicant/pages/applicant-application/models/accident.model';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // components
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -77,6 +78,9 @@ import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-in
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { SharedModule } from '@shared/shared.module';
+
+// configs
+import { Step4FormConfig } from '@pages/applicant/components/applicant-forms/step4-form/config/step4-form.config'
 
 @Component({
     selector: 'app-step4-form',
@@ -203,6 +207,52 @@ export class Step4FormComponent
         private applicantQuery: ApplicantQuery
     ) {}
 
+    get locationInputConfig(): ITaInput {
+        return Step4FormConfig.getLocationInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get dateInputConfig(): ITaInput {
+        return Step4FormConfig.getDateInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+    
+      get collisionInputConfig(): ITaInput {
+        return Step4FormConfig.getCollisionInputConfig({
+          selectedMode: this.selectedMode,
+        });
+      }
+    
+      get fatalityInputConfig(): ITaInput {
+        return Step4FormConfig.getFatalityInputConfig({
+          selectedMode: this.selectedMode,
+        });
+      }
+    
+      get injuriesInputConfig(): ITaInput {
+        return Step4FormConfig.getInjuriesInputConfig({
+          selectedMode: this.selectedMode,
+        });
+      }
+    
+      get vehicleTypeInputConfig(): ITaInput {
+        return Step4FormConfig.getVehicleTypeInputConfig({
+          selectedMode: this.selectedMode,
+          selectedVehicleType: this.selectedVehicleType,
+        });
+      }
+    
+      get descriptionInputConfig(): ITaInput {
+        return Step4FormConfig.getDescriptionInputConfig({
+          selectedMode: this.selectedMode,
+          stepFeedbackValues: this.stepFeedbackValues,
+        });
+      }
+
     ngOnInit(): void {
         this.createForm();
 
@@ -228,7 +278,7 @@ export class Step4FormComponent
                 .subscribe((res) => {
                     this.lastFormValuesEmitter.emit({
                         ...res,
-                        location: this.selectedAddress
+                        location: this.selectedAddress,
                     });
                 });
         }
@@ -509,7 +559,6 @@ export class Step4FormComponent
             ).logoName,
             location: this.selectedAddress,
         };
-        console.log('saveData: ', saveData);
 
         this.formValuesEmitter.emit(saveData);
 

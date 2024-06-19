@@ -29,6 +29,7 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 // models
 import { Accident } from '@pages/applicant/pages/applicant-application/models/accident.model';
@@ -119,6 +120,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
     public stepFeedbackValues: any;
     public feedbackValuesToPatch: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public applicantSvgRoutes = ApplicantSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
