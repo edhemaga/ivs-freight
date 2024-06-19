@@ -12,9 +12,7 @@
     [isModalValid]="
         loadForm.valid &&
         isFormDirty &&
-        isEachStopItemsRowValid &&
-        !isCommenting
-    "
+        isEachStopItemsRowValid"
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -497,7 +495,7 @@
 
                     <!-- Pickup Stop  -->
 
-                    <app-load-modal-stop 
+                    <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
                         [isDelivery]="false"
@@ -714,7 +712,7 @@
 
                         <!-- Stop Items -->
 
-                        <div class="stop-items-wrapper ">
+                        <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
                                 [isCardOpen]="pickupStopItems.length"
@@ -1664,61 +1662,112 @@
 
                         <div>
                             <ng-container *ngIf="isVisiblePayment">
-                                <div class="load-financial-payment">
-                                    <app-ta-input
-                                        formControlName="advancePay"
-                                        [inputConfig]="{
-                                            name: 'price-separator',
-                                            type: 'text',
-                                            label: 'Advance',
-                                            labelInInput: true,
-                                            priceSeparator: true,
-                                            priceSeparatorLimitation: 6,
-                                            placeholderIconRightSide: 'dollar',
-                                            placeholderIconColor: 'green',
-                                            inputCursorOnRightSide: true,
-                                            hideErrorMessage: true,
-                                            hideRequiredCheck: true,
-                                            hideDangerMark: true,
-                                            removeInput: true
-                                        }"
-                                        (clear)="removeAdditionalPayment()"
-                                    ></app-ta-input>
-
-                                    <app-ta-input-dropdown
-                                        formControlName="payType"
-                                        [inputConfig]="{
-                                            name: 'payType',
-                                            type: 'text',
-                                            label: 'Pay Type',
-                                            labelInInput: true,
-                                            placeholderIconRightSide: 'billing',
-                                            placeholderIconColor: 'blue',
-                                            inputCursorOnRightSide: true,
-                                            hideErrorMessage: true,
-                                            hideRequiredCheck: true,
-                                            hideDangerMark: true,
-                                            removeInput: true
-                                        }"
-                                        [canOpenModal]="true"
-                                        [options]="payTypeDropdownList"
-                                        [activeItem]="selectedPayType"
-                                        (selectedItem)="
-                                            onSelectDropdown($event, 'pay-type')
+                                <div formArrayName="additionalPayments">
+                                    <div
+                                        *ngFor="
+                                            let additional of additionalPayments()
+                                                .controls;
+                                            let indx = index;
+                                            trackBy: trackByIdentity
                                         "
-                                    ></app-ta-input-dropdown>
+                                        [ngStyle]="{ 'margin-bottom': '4px' }"
+                                    >
+                                        <div [formGroupName]="indx">
+                                            <div class="load-financial-payment">
+                                                <app-ta-input
+                                                    formControlName="pay"
+                                                    [inputConfig]="{
+                                                        name: 'price-separator',
+                                                        type: 'text',
+                                                        label: additional.get(
+                                                            'name'
+                                                        ).value,
+                                                        labelInInput: true,
+                                                        priceSeparator: true,
+                                                        priceSeparatorLimitation: 6,
+                                                        placeholderIconRightSide:
+                                                            'dollar-additional-load',
+                                                        placeholderIconColor:
+                                                            'blue',
+                                                        inputCursorOnRightSide: true,
+                                                        removeInput: true,
+                                                        isRequired: true,
+                                                        hideErrorMessage: true,
+                                                        hideRequiredCheck: true,
+                                                        hideDangerMark: true
+                                                    }"
+                                                    (clear)="
+                                                        removePaymentBilling(
+                                                            indx
+                                                        )
+                                                    "
+                                                ></app-ta-input>
 
-                                    <app-ta-input
-                                        formControlName="paymentDate"
-                                        [inputConfig]="{
-                                            name: 'datepicker',
-                                            type: 'text',
-                                            label: 'Date',
-                                            placeholderIcon: 'date',
-                                            customClass: 'datetimeclass'
-                                        }"
-                                    ></app-ta-input>
+                                                <app-ta-input-dropdown
+                                                    formControlName="displayPaymentType"
+                                                    [inputConfig]="{
+                                                        name: 'payType',
+                                                        type: 'text',
+                                                        label: 'Pay Type',
+                                                        labelInInput: true,
+                                                        placeholderIconRightSide:
+                                                            'billing',
+                                                        placeholderIconColor:
+                                                            'blue',
+                                                        inputCursorOnRightSide: true,
+                                                        hideErrorMessage: true,
+                                                        hideRequiredCheck: true,
+                                                        hideDangerMark: true,
+                                                        removeInput: true
+                                                    }"
+                                                    [canOpenModal]="true"
+                                                    [options]="
+                                                        paymentMethodsDropdownList
+                                                    "
+                                                    (selectedItem)="
+                                                        onSelectDropdown(
+                                                            $event,
+                                                            'pay-type',
+                                                            indx
+                                                        )
+                                                    "
+                                                ></app-ta-input-dropdown>
+
+                                                <app-ta-input
+                                                    formControlName="payDate"
+                                                    [inputConfig]="{
+                                                        name: 'datepicker',
+                                                        type: 'text',
+                                                        label: 'Date',
+                                                        labelInInput: true,
+                                                        placeholderIcon: 'date',
+                                                        customClass:
+                                                            'datetimeclass'
+                                                    }"
+                                                ></app-ta-input>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="showPaymentArray">
+                                <app-ta-input-dropdown
+                                    formControlName="paymentDropdown"
+                                    [inputConfig]="{
+                                        name: 'Input Dropdown',
+                                        type: 'text',
+                                        label: 'Additional',
+                                        isDropdown: true,
+                                        labelInInput: true,
+                                        autoFocus: true,
+                                        dropdownWidthClass: 'w-col-198',
+                                        readOnly: true
+                                    }"
+                                    [options]="paymentTypesDropdownList"
+                                    [activeItem]="null"
+                                    (selectedItem)="addPaymentBilling($event)"
+                                ></app-ta-input-dropdown>
                             </ng-container>
                         </div>
 

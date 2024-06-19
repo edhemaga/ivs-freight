@@ -196,7 +196,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public labelsDispatches: any[] = [];
     public originLabelsDispatches: any[] = [];
     public labelsGeneralCommodity: EnumValue[] = [];
-    public payTypeDropdownList = [];
 
     // broker labels
     public labelsBroker: any[] = [];
@@ -282,7 +281,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isAvailableAdvanceRate: boolean = false;
     public isVisibleBillDropdown: boolean = false;
     public isVisiblePayment: boolean = false;
-
+    public showPaymentArray: boolean = false;
 
     // documents
     public documents: any[] = [];
@@ -320,6 +319,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
     selectedPayType: any;
+    public paymentMethodsDropdownList: EnumValue[];
+    public paymentTypesDropdownList: EnumValue[];
+    public orginalPaymentTypesDropdownList: EnumValue[];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -424,6 +426,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate: [null],
             advancePay: [null],
             additionalBillings: this.formBuilder.array([]),
+            additionalPayments: this.formBuilder.array([]),
+            paymentDropdown: [null],
             billingDropdown: [null],
             invoiced: [null],
             payType: [null],
@@ -446,12 +450,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe(
-                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+                (isFormChange: boolean) => {
+                    console.log(isFormChange, this.isEachStopItemsRowValid, this.loadForm.valid);
+                    this.isFormDirty = isFormChange;
+                }
             );
 
         this.loadForm.get('advancePay').valueChanges.subscribe((value) => {
             const payType = this.loadForm.get('payType');
-            console.log(value);
             if (value) {
                 payType.addValidators(Validators.required);
             } else {
@@ -717,6 +723,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
+            case 'pay-type':
+                const value = this.additionalPayments().at(index);
+                value.patchValue({
+                    ...value,
+                    paymentType: event.id,
+                });
+                break;
             case LoadModalStringEnum.DISPATCHER:
                 this.selectedDispatcher = event;
 
@@ -1812,6 +1825,60 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public additionalPayments(): UntypedFormArray {
+        return this.loadForm.get(
+            LoadModalStringEnum.ADDITIONAL_PAYMENTS
+        ) as UntypedFormArray;
+    }
+
+    public addPaymentBilling(event: any): void {
+        if (event && this.paymentTypesDropdownList.length) {
+            this.additionalPayments().push(
+                this.createAdditionPaymentBilling({
+                    id: null,
+                    pay: null,
+                    paymentType: null,
+                    displayPaymentType: null,
+                    payType: event.id,
+                    payDate: event?.billingValue,
+                    paymentMethod: event.id,
+                    name: event.name,
+                })
+            );
+
+            this.showPaymentArray = false;
+            this.isVisiblePayment = true;
+            this.loadForm.get('paymentDropdown').patchValue(null);
+        }
+    }
+
+    public removePaymentBilling(index: number) {
+        this.additionalPayments().removeAt(index);
+    }
+
+    public createAdditionPaymentBilling(data: {
+        id: null | number;
+        pay: number;
+        payType: any;
+        payDate: string;
+        paymentType: number;
+        paymentMethod: number;
+        name: string;
+        displayPaymentType: string;
+    }): UntypedFormGroup {
+        return this.formBuilder.group({
+            id: [data.id ?? null],
+            name: [data.name],
+            pay: [data.pay ?? null],
+            advancePay: [null],
+            payType: [null],
+            payDate: [data?.payDate ? data.payDate : null],
+            paymentType: [data.paymentMethod ?? null],
+            paymentMethod: [data.paymentMethod ?? null],
+            displayPaymentType: [data.displayPaymentType],
+        });
+    }
+
     public additionalBillings(): UntypedFormArray {
         return this.loadForm.get(
             LoadModalStringEnum.ADDITIONAL_BILLINGS
@@ -1943,11 +2010,30 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (data.action) {
             switch (data.type) {
                 case LoadModalStringEnum.BILLING:
-                    this.isVisibleBillDropdown = true;
+                    this.additionalBillingTypes =
+                        this.originalAdditionalBillingTypes.filter(
+                            (billing) =>
+                                !this.additionalBillings().value.find(
+                                    (rate) =>
+                                        rate.name ===
+                                        billing.name
+                                )
+                        );
+
+                        if(this.additionalBillingTypes.length) 
+                            this.isVisibleBillDropdown = true;
 
                     break;
                 case LoadModalStringEnum.PAYMENT:
-                    this.isVisiblePayment = true;
+                    this.paymentTypesDropdownList =
+                        this.orginalPaymentTypesDropdownList.filter(
+                            (item) =>
+                                !this.additionalPayments().value.find(
+                                    (value) => item.id === value.paymentType
+                                )
+                        );
+                    if (this.paymentTypesDropdownList.length)
+                        this.showPaymentArray = true;
                     break;
                 default:
                     break;
@@ -2051,6 +2137,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ...this.loadModalPayment,
                         advance: value,
                     };
+ 
 
                     if (
                         MethodsCalculationsHelper.convertThousanSepInNumber(
@@ -3051,7 +3138,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         };
                     });
 
-                    this.payTypeDropdownList = res.paymentMethods;
+                    this.paymentMethodsDropdownList = res.paymentMethods;
+                    this.orginalPaymentTypesDropdownList = res.paymentTypes;
+                    this.paymentTypesDropdownList = res.paymentTypes;
 
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
@@ -3424,7 +3513,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
-            pays: [],
+            pays: this.additionalPayments().value,
         };
         this.loadService
             .createLoad(newData)
@@ -3564,13 +3653,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
-            pays: [
-                {
-                    pay: advancePay,
-                    paymentType: this.selectedPayType,
-                    payDate: paymentDate,
-                },
-            ],
+            pays: this.additionalPayments().value,
         };
 
         this.loadService
@@ -3721,6 +3804,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             comments,
             baseRate,
             additionalBillingRates,
+            pays,
         } = loadModalData;
 
         const loadRequirements = {
@@ -3908,6 +3992,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
         });
+
+        this.isEachStopItemsRowValid = true;
+
+        pays.forEach((pay) => {
+            this.additionalPayments().push(
+                this.createAdditionPaymentBilling({
+                    id: pay.id,
+                    pay: pay.pay,
+                    payType: pay.paymentType,
+                    payDate: pay.payDate,
+                    paymentType: pay.paymentType.id,
+                    paymentMethod: pay.paymentMethod.id,
+                    name: pay.paymentType.name,
+                    displayPaymentType: pay.paymentType.name,
+                })
+            );
+        });
+
+        this.isVisiblePayment = !!pays.length;
 
         this.pickupDateRange = pickupStop.dateTo ? true : false;
         this.deliveryDateRange = deliveryStop.dateTo ? true : false;

@@ -32,6 +32,7 @@ export enum LoadModalStringEnum {
     DELIVERY_SHIPPER_CONTACT_ID = 'deliveryShipperContactId',
     SHIPPER_CONTACT_ID = 'shipperContactId',
     ADDITIONAL_BILLINGS = 'additionalBillings',
+    ADDITIONAL_PAYMENTS= 'additionalPayments',
     BILLING_DROPDOWN = 'billingDropdown',
     BILLING = 'billing',
     BILLING_VALUE = 'billingValue',
