@@ -23,60 +23,104 @@
                 Ref. {{ cardData.referenceNumber }}
             </p>
         </div>
-    </div>
 
-    <div class="d-flex flex-column justify-content-center main-container"></div>
+        <div class="d-flex flex-column justify-content-center main-container">
+            <div class="align-items-center main-container-inner">
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.halfCircleRoute"
+                    ></svg-icon>
 
-    <!--  <div class="load-status-driver-container">
-            <div class="load-status-time">
-                <div class="load-status-item-status">
-                    {{ load?.status?.statusString?.toUpperCase() }}
-                </div>
-                <div class="load-status-item-days">
-                    <span class="days" *ngIf="load?.lastStatusPassed?.days > 0"
-                        >{{ load?.lastStatusPassed?.days }}
-                        <span class="days">{{
-                            load?.lastStatusPassed?.days == 1 ? 'day' : 'days'
-                        }}</span></span
-                    >
-                    <span
-                        class="days"
-                        *ngIf="load?.lastStatusPassed?.hours > 0"
-                    >
-                        {{ load?.lastStatusPassed?.hours }} hour</span
-                    >
-                    <span
-                        class="days"
-                        *ngIf="load?.lastStatusPassed?.days <= 0"
-                    >
-                        {{ load?.lastStatusPassed?.minutes }} minutes
-                    </span>
-                </div>
-            </div>
-            <div class="driver-reg" *ngIf="load?.dispatch?.driver">
-                <div class="driver-avatar">
-                    <img
-                        [src]="
-                            load?.dispatch?.driver?.avatar
-                                ? imageBase64Service.sanitizer(
-                                      load?.dispatch?.driver?.avatar
-                                  )
-                                : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+                    <ng-container
+                        *ngIf="
+                            cardData.status.statusValue.id === 53 ||
+                            cardData.status.statusValue.id === 54 ||
+                            cardData.status.statusValue.id === 55
                         "
-                        alt="Avatar Driver"
-                        class="avatar"
-                    />
-                    <div class="load-item-driver-name">
-                        {{
-                            load?.dispatch?.driver?.firstName +
-                                ' ' +
-                                load?.dispatch?.driver?.lastName
-                        }}
-                    </div>
+                    >
+                        <div class="repair-box">
+                            <p class="m-0 ta-font-semi-bold">R</p>
+                        </div>
+                    </ng-container>
+
+                    <p
+                        class="m-0 ta-font-bold"
+                        [ngStyle]="
+                            loadStatusEnum[cardData.status.statusValue.id]
+                                | loadStatusColor
+                        "
+                    >
+                        {{ cardData.status.statusString?.toUpperCase() }}
+                    </p>
                 </div>
-                <div class="load-item-driver-ref">
-                    Ref: {{ load?.referenceNumber }}
+
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.companyRoute"
+                    ></svg-icon>
+
+                    <p class="m-0">
+                        {{ cardData.company.companyName }}
+                    </p>
                 </div>
             </div>
-        </div> -->
+
+            <div class="align-items-center main-container-inner">
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.timeRoute"
+                    ></svg-icon>
+
+                    <p class="m-0">
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.days > 0"
+                        >
+                            {{ cardData.lastStatusPassed?.days }}
+
+                            <span>
+                                {{
+                                    cardData.lastStatusPassed?.days === 1
+                                        ? 'day'
+                                        : 'days'
+                                }}
+                            </span>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.hours > 0"
+                        >
+                            <span>
+                                {{ cardData.lastStatusPassed?.hours }} hour
+                            </span>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.days <= 0"
+                        >
+                            <span>
+                                {{ cardData.lastStatusPassed?.minutes }} minutes
+                            </span>
+                        </ng-container>
+                    </p>
+                </div>
+
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <ng-container *ngIf="cardData.dispatch?.driver">
+                        <svg-icon
+                            class="icon"
+                            [src]="loadDetailsCardSvgRoutes.userRoute"
+                        ></svg-icon>
+
+                        <p class="m-0">
+                            {{ cardData.dispatch?.driver?.firstName }}
+                            {{ cardData.dispatch?.driver?.lastName }}
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
 </app-ta-details-header-card>

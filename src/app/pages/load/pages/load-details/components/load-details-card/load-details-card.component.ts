@@ -37,6 +37,12 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { LoadDetailsTitleCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-title-card/load-details-title-card.component';
+import { LoadDetailsBrokerDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-broker-details-card/load-details-broker-details-card.component';
+import { LoadDetailsAssignedToCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-assigned-to-card/load-details-assigned-to-card.component';
+import { LoadDetailsRequirementCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-requirement-card/load-details-requirement-card.component';
+import { LoadDetailsBillingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-billing-card/load-details-billing-card.component';
+import { LoadDetailsPaymentCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-payment-card/load-details-payment-card.component';
+import { LoadDetailsInvoiceAgingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-invoice-aging-card/load-details-invoice-aging-card.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -74,6 +80,12 @@ import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
         TaChartComponent,
         TaMapsComponent,
         LoadDetailsTitleCardComponent,
+        LoadDetailsBrokerDetailsCardComponent,
+        LoadDetailsAssignedToCardComponent,
+        LoadDetailsRequirementCardComponent,
+        LoadDetailsBillingCardComponent,
+        LoadDetailsPaymentCardComponent,
+        LoadDetailsInvoiceAgingCardComponent,
 
         // pipes
         FormatCurrencyPipe,
@@ -90,7 +102,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     public loadNote: UntypedFormControl = new UntypedFormControl();
 
     // note card
-    public noteForm: UntypedFormGroup;
+    public cardForm: UntypedFormGroup;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -117,8 +129,14 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     }
 
     private createForm(): void {
-        this.noteForm = this.formBuilder.group({
+        this.cardForm = this.formBuilder.group({
+            driverMessage: [null],
             note: [null],
+        });
+
+        this.cardForm.patchValue({
+            driverMessage: this.load.loadRequirements?.driverMessage,
+            note: this.load.note,
         });
     }
 
