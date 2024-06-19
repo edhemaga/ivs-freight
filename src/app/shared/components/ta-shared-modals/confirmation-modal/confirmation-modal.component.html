@@ -934,6 +934,74 @@
                                 </p>
                             </div>
                         </ng-container>
+
+                        <!-- Load -->
+
+                        <ng-container *ngSwitchCase="'load'">
+                            <div class="confirmation-info">
+                                <div class="d-flex align-items-center gap-1">
+                                    <p
+                                        class="m-0 confirmation-text-1 large-text-1"
+                                    >
+                                        {{ editData?.data?.loadNumber }}
+                                    </p>
+
+                                    <ng-container
+                                        *ngIf="
+                                            editData?.data?.loadType?.name ===
+                                            'LTL'
+                                        "
+                                    >
+                                        <svg-icon
+                                            class="shuffle-icon d-flex align-items-center justify-center"
+                                            [src]="
+                                                editData?.data?.loadType
+                                                    ?.name === 'LTL'
+                                                    ? 'assets/svg/detail-cards/left-arrows.svg'
+                                                    : 'assets/svg/detail-cards/shuffle.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': '18',
+                                                'height.px': '18'
+                                            }"
+                                        ></svg-icon>
+                                    </ng-container>
+                                </div>
+
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ editData?.data?.broker?.businessName }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Comment -->
+
+                        <ng-container *ngSwitchCase="'comment'">
+                            <div class="confirmation-info">
+                                <p class="m-0 confirmation-text-1 large-text-1">
+                                    {{ editData?.data?.commentContent }}
+                                </p>
+
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{
+                                        editData?.data?.createdAt
+                                            | formatDateP : 'date-time'
+                                    }}
+                                </p>
+
+                                <ng-container
+                                    *ngIf="editData?.data?.loadNumber"
+                                >
+                                    <div
+                                        class="item-card mt-2 d-flex align-items-center justify-content-center"
+                                    >
+                                        <p class="uppercase ta-font-bold">
+                                            {{ editData?.data?.loadNumber }}
+                                        </p>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
 
@@ -1275,6 +1343,43 @@
                                     class="m-0 confirmation-text-2 large-text-2 limit-text"
                                 >
                                     {{ item?.data?.billingAddress?.address }}
+                                </p>
+                            </div>
+                        </ng-container>
+
+                        <!-- Load -->
+
+                        <ng-container *ngSwitchCase="'load'">
+                            <div class="confirmation-info">
+                                <div class="d-flex align-items-center gap-1">
+                                    <p
+                                        class="m-0 confirmation-text-1 large-text-1"
+                                    >
+                                        {{ item?.data?.loadNumber }}
+                                    </p>
+
+                                    <ng-container
+                                        *ngIf="
+                                            item?.data?.loadType?.name === 'LTL'
+                                        "
+                                    >
+                                        <svg-icon
+                                            class="shuffle-icon d-flex align-items-center justify-center"
+                                            [src]="
+                                                item?.data?.loadType?.name ===
+                                                'LTL'
+                                                    ? 'assets/svg/detail-cards/left-arrows.svg'
+                                                    : 'assets/svg/detail-cards/shuffle.svg'
+                                            "
+                                            [svgStyle]="{
+                                                'width.px': '18',
+                                                'height.px': '18'
+                                            }"
+                                        ></svg-icon>
+                                    </ng-container>
+                                </div>
+                                <p class="m-0 confirmation-text-2 large-text-2">
+                                    {{ item?.data?.broker?.businessName }}
                                 </p>
                             </div>
                         </ng-container>

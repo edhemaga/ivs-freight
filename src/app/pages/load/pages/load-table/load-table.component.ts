@@ -57,6 +57,8 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
 // Enum
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // Store
@@ -64,6 +66,7 @@ import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { LoadModalStringEnum } from '../load-modal/enums/load-modal-string.enum';
 
 @Component({
     selector: 'app-load-table',
@@ -386,6 +389,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
+                    const loadTab =
+                        this.selectedTab === TableStringEnum.TEMPLATE
+                            ? TableStringEnum.TEMPLATE_2
+                            : this.selectedTab === TableStringEnum.ACTIVE
+                            ? TableStringEnum.ACTIVE_2
+                            : this.selectedTab === TableStringEnum.CLOSED
+                            ? TableStringEnum.CLOSED_2
+                            : TableStringEnum.PENDING_2;
+
+                    const modalTitle =
+                        TableStringEnum.DELETE_2 +
+                        LoadModalStringEnum.EMPTY_SPACE_STRING +
+                        loadTab +
+                        LoadModalStringEnum.EMPTY_SPACE_STRING +
+                        TableStringEnum.LOAD_2;
+
                     const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
@@ -403,7 +422,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             array: mappedRes,
                             template: TableStringEnum.LOAD,
                             type: TableStringEnum.MULTIPLE_DELETE,
-                            image: true,
+                            subType: this.selectedTab,
+                            modalHeaderTitle: modalTitle,
                         }
                     );
                 }
@@ -657,7 +677,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapLoadData(data: LoadModel) /* : LoadModel */ {
-        console.log('load', data);
         let commentsWithAvatarColor;
 
         if (data.comments) {
@@ -915,6 +934,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // ---------------------------- Table Actions ------------------------------
     public onToolBarAction(event: TableToolbarActions): void {
+        console.log('onToolBarAction event', event);
+
         if (event.action === TableStringEnum.OPEN_MODAL) {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
@@ -965,11 +986,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableDropdownService.openModal$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('onDropdownActions res', res);
                 this.onTableBodyActions(res);
             });
     }
 
-    private onTableBodyActions(event: { type: string; id?: number }): void {
+    private onTableBodyActions(event: {
+        type: string;
+        id?: number;
+        data?: any;
+    }): void {
         if (event.type === TableStringEnum.SHOW_MORE) {
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === TableStringEnum.TEMPLATE
@@ -984,11 +1010,31 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             this.loadBackFilter(this.backLoadFilterQuery, true);
         } else if (event.type === TableStringEnum.DELETE) {
+            const loadTab =
+                this.selectedTab === TableStringEnum.TEMPLATE
+                    ? TableStringEnum.TEMPLATE_2
+                    : this.selectedTab === TableStringEnum.ACTIVE
+                    ? TableStringEnum.ACTIVE_2
+                    : this.selectedTab === TableStringEnum.CLOSED
+                    ? TableStringEnum.CLOSED_2
+                    : TableStringEnum.PENDING_2;
+
+            const modalTitle =
+                TableStringEnum.DELETE_2 +
+                LoadModalStringEnum.EMPTY_SPACE_STRING +
+                loadTab +
+                LoadModalStringEnum.EMPTY_SPACE_STRING +
+                TableStringEnum.LOAD_2;
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
-                { size: TableStringEnum.DELETE },
+                { size: TableStringEnum.SMALL },
                 {
+                    ...event,
                     type: TableStringEnum.DELETE,
+                    template: TableStringEnum.LOAD,
+                    subType: this.selectedTab,
+                    modalHeaderTitle: modalTitle,
                 }
             );
 
