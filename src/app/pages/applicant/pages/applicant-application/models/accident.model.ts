@@ -5,6 +5,7 @@ export interface Accident {
     date: string;
     fatalities: number;
     injuries: number;
+    collisions?: number;
     hazmatSpill?: boolean;
     vehicleType: string;
     description: string;

@@ -226,7 +226,10 @@ export class Step5FormComponent
                     takeUntil(this.destroy$)
                 )
                 .subscribe((res) => {
-                    this.lastFormValuesEmitter.emit(res);
+                    this.lastFormValuesEmitter.emit({
+                        ...res,
+                        location: this.selectedAddress
+                    });
                 });
         }
 
