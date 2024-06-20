@@ -446,6 +446,6 @@
         [filterTitle]="'Repair Filter'"
         [dataArray]="this.activeTableData.repairArray"
         (setFilter)="onSpecialFilter($event, 'repairArray')"
-        [selectedFilter]="this.activeTableData.repairArray.selectedFilter"
+        [selectedFilter]="this.activeTableData?.repairArray?.selectedFilter"
     ></app-ta-special-filter>
 </div>
