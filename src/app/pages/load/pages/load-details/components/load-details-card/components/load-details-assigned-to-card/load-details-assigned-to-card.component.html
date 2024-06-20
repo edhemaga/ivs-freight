@@ -1,0 +1,167 @@
+<div class="assign-to-container">
+    <app-ta-custom-card
+        [cardName]="'Assigned To'"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [disabledCard]="true"
+        [hasArrow]="false"
+        [hasHeaderSvg]="loadDetailsCardSvgRoutes.halfTimeRoute"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+    >
+        <div
+            class="d-flex flex-column justify-content-center assign-to-main-container"
+        >
+            <div
+                class="align-items-center assign-to-main-container-inner vehicle-container"
+            >
+                <ng-container
+                    *ngIf="cardData.dispatch?.truck?.id; else noTruckAssigned"
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-between box"
+                    >
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="icon"
+                                [src]="
+                                    loadDetailsCardSvgRoutes.trucksRoute +
+                                    cardData.dispatch?.truck?.truckType
+                                        ?.logoName
+                                "
+                            >
+                            </svg-icon>
+
+                            <span class="ta-font-medium">{{
+                                cardData.dispatch.truck.truckNumber
+                            }}</span>
+                        </div>
+
+                        <span
+                            ngbTooltip
+                            mainTooltip="View Details"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                        >
+                            <svg-icon
+                                class="open-modal-icon"
+                                [src]="loadDetailsCardSvgRoutes.arrowTopRoute"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </ng-container>
+
+                <ng-template #noTruckAssigned>
+                    <div class="d-flex align-items-center box no-value">
+                        <span class="ta-font-medium">No Truck</span>
+                    </div>
+                </ng-template>
+
+                <ng-container
+                    *ngIf="
+                        cardData.dispatch?.trailer?.id;
+                        else noTrailerAssigned
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center justify-content-between box"
+                    >
+                        <div class="d-flex align-items-center">
+                            <svg-icon
+                                class="icon"
+                                [src]="
+                                    loadDetailsCardSvgRoutes.trailersRoute +
+                                    cardData.dispatch?.trailer?.trailerType
+                                        .logoName
+                                "
+                            ></svg-icon>
+
+                            <span class="ta-font-medium">
+                                {{ cardData.dispatch?.trailer?.trailerNumber }}
+                            </span>
+                        </div>
+
+                        <span
+                            ngbTooltip
+                            mainTooltip="View Details"
+                            tooltipBackground="#424242"
+                            position="bottom"
+                        >
+                            <svg-icon
+                                class="open-modal-icon"
+                                [src]="loadDetailsCardSvgRoutes.arrowTopRoute"
+                            ></svg-icon>
+                        </span>
+                    </div>
+                </ng-container>
+
+                <ng-template #noTrailerAssigned>
+                    <div class="d-flex align-items-center box no-value">
+                        <span class="ta-font-medium">No Trailer</span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <div
+                class="align-items-center"
+                [ngClass]="{
+                    'd-flex': !cardData.dispatch?.coDriver,
+                    'assign-to-container-inner': cardData.dispatch?.coDriver
+                }"
+            >
+                <ng-container
+                    *ngIf="cardData.dispatch?.driver; else noDriverAssigned"
+                >
+                    <div class="d-flex align-items-center box w-100">
+                        <img
+                            [src]="
+                                cardData.dispatch?.driver?.avatar
+                                    ? imageBase64Service.sanitizer(
+                                          cardData?.dispatch?.driver?.avatar
+                                      )
+                                    : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+                            "
+                            class="driver-avatar"
+                        />
+
+                        <span class="ta-font-medium">{{
+                            cardData.dispatch?.driver?.firstName +
+                                ' ' +
+                                cardData.dispatch?.driver?.lastName
+                        }}</span>
+                    </div>
+
+                    <ng-container *ngIf="cardData.dispatch?.coDriver">
+                        <div class="d-flex align-items-center box w-100">
+                            <img
+                                [src]="
+                                    cardData.dispatch?.coDriver?.avatar
+                                        ? imageBase64Service.sanitizer(
+                                              cardData?.dispatch?.coDriver
+                                                  ?.avatar
+                                          )
+                                        : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+                                "
+                                class="driver-avatar"
+                            />
+
+                            <span class="ta-font-medium">{{
+                                cardData.dispatch?.coDriver?.firstName +
+                                    ' ' +
+                                    cardData.dispatch?.coDriver?.lastName
+                            }}</span>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+                <ng-template #noDriverAssigned>
+                    <div class="d-flex align-items-center box no-value w-100">
+                        <span class="ta-font-medium">No Driver</span>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </app-ta-custom-card>
+</div>

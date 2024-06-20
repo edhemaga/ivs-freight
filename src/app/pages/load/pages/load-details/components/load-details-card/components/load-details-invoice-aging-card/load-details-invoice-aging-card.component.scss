@@ -1,0 +1,41 @@
+@import 'src/theme/variables.scss';
+
+.invoice-aging-container {
+    padding: 2px 2px 0 4px;
+
+    .invoice-aging-main-container {
+        &-inner {
+            display: grid;
+            grid-template-columns: repeat(2, 202px);
+            grid-gap: 12px;
+
+            .box {
+                p {
+                    margin-bottom: 2px !important;
+                    font-size: 11px;
+                    line-height: 14px;
+                }
+
+                span {
+                    font-size: 14px;
+                    line-height: 18px;
+                }
+
+                p,
+                span {
+                    color: $ta-black;
+
+                    &::-moz-selection {
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black-2;
+                        background: rgb(47, 47, 47, 0.2);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -50,7 +50,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaPayrollStatusesComponent,
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
-        TaAppTooltipV2Component
+        TaAppTooltipV2Component,
     ],
 })
 export class TaCustomCardComponent implements OnInit {
@@ -68,6 +68,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() hasHeaderSvg: string = null;
     @Input() hasActionSvg: string = null;
     @Input() subText: string = null;
+    @Input() subTextClass: string = null;
     @Input() hasDivider: boolean = true;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
