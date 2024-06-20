@@ -57,6 +57,14 @@ export class ConfirmationModalTextPipe implements PipeTransform {
             textEnd = ConfirmationModalStringEnum.REPAIR_SHOP_REVIEW;
         } else if (template === DropActionsStringEnum.CDL) {
             textEnd = DropActionsStringEnum.CDL_2;
+        } else if (template === TableStringEnum.LOAD) {
+            const loadText =
+                subType +
+                ' ' +
+                (type === TableStringEnum.MULTIPLE_DELETE
+                    ? TableStringEnum.LOADS
+                    : TableStringEnum.LOAD);
+            textEnd = loadText;
         } else if (type === TableStringEnum.MULTIPLE_DELETE) {
             textEnd = template + 's';
         } else {
