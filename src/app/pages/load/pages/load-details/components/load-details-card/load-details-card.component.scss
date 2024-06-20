@@ -1,68 +1,7 @@
-@import 'src/app/pages/load/pages/load-details/components/load-details-item/load-details-item.component.scss';
-
 .load-details-card {
     .driver-message-container,
     .documents-container,
     .note-container {
         padding: 2px 4px 0 4px;
-    }
-}
-
-.note-item {
-    margin-left: 4px;
-    margin-right: 7px;
-    .note-body {
-        .note-textarea {
-            padding-bottom: 12px !important;
-        }
-    }
-}
-
-.phone-ext-item-wrapper-last {
-    margin-bottom: 10px !important;
-}
-
-.flex-load {
-    display: flex;
-}
-.load-details-container {
-    padding: 0 4px;
-    .load-details-wrapper {
-        display: grid;
-        grid-template-columns: 210px 150px;
-        row-gap: 12px;
-        margin-bottom: 10px;
-        .load-details-header {
-            font-size: 12px;
-            font-weight: 600;
-            color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-        .load-details-value {
-            font-size: 14px;
-            font-weight: 400;
-            color: #6c6c6c;
-            &::-moz-selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-            &::selection {
-                color: #6c6c6c;
-                background: rgb(108, 108, 108, 0.2);
-            }
-        }
-    }
-}
-
-.card_files_holder {
-    &.active {
-        min-height: 448px;
     }
 }

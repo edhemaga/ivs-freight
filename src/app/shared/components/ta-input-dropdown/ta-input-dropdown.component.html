@@ -227,7 +227,7 @@
                         'add-new': option.name === 'ADD NEW',
                         active: option.id === _activeItem?.id,
                         'all-assigned':
-                            option.name.toLowerCase() === 'all assigned',
+                            option?.name?.toLowerCase() === 'all assigned',
                         trailerContainer: option.name === 'Container',
                         lowboyrgn: option.name === 'Low Boy / RGN'
                     }"
@@ -480,7 +480,7 @@
                             _options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
                         'all-assigned':
-                            option.name.toLowerCase() === 'all assigned'
+                            option?.name?.toLowerCase() === 'all assigned'
                     }"
                     class="dropdown-option details-template"
                 >

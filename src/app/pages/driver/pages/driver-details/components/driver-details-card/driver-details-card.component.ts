@@ -16,9 +16,6 @@ import {
 
 import { Subject, takeUntil } from 'rxjs';
 
-// animations
-import { cardComponentAnimation } from '@shared/animations/card-component.animation';
-
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
@@ -40,6 +37,7 @@ import { DriverBankInfoCardComponent } from '@pages/driver/pages/driver-details/
 import { DriverOffDutyLocationCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-off-duty-location-card/driver-off-duty-location-card.component';
 import { DriverEmergencyContactCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-emergency-contact-card/driver-emergency-contact-card.component';
 import { DriverNotificationCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-notification-card/driver-notification-card.component';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 // constants
 import { ChartConstants } from '@shared/components/ta-chart/utils/constants/chart.constants';
@@ -67,13 +65,11 @@ import {
     DriverResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 
 @Component({
     selector: 'app-driver-details-card',
     templateUrl: './driver-details-card.component.html',
     styleUrls: ['./driver-details-card.component.scss'],
-    animations: [cardComponentAnimation('showHideCardBody')],
     standalone: true,
     imports: [
         // modules
@@ -144,6 +140,8 @@ export class DriverDetailsCardComponent
         this.getStoreData(true);
 
         this.getCurrentIndex();
+
+        this.getDriversDropdown();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -160,7 +158,7 @@ export class DriverDetailsCardComponent
 
     private createForm(): void {
         this.noteForm = this.formBuilder.group({
-            note: [null],
+            note: [this.driver.note],
         });
     }
 

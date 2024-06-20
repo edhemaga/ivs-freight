@@ -133,15 +133,21 @@
 
                 <!-- Note Card -->
 
-                <app-ta-input-note
-                    formControlName="note"
-                    [isVisibleNote]="
-                        load?.note && load?.note !== 'null' ? load?.note : false
-                    "
-                    [note]="
-                        load?.note && load?.note !== 'null' ? load?.note : ''
-                    "
-                ></app-ta-input-note>
+                <div class="note-container">
+                    <app-ta-input-note
+                        formControlName="note"
+                        [isVisibleNote]="
+                            load?.note && load?.note !== 'null'
+                                ? load?.note
+                                : false
+                        "
+                        [note]="
+                            load?.note && load?.note !== 'null'
+                                ? load?.note
+                                : ''
+                        "
+                    ></app-ta-input-note>
+                </div>
             </div>
         </div>
     </div>

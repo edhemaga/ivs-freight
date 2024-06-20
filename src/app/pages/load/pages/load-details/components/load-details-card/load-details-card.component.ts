@@ -2,7 +2,6 @@ import {
     Component,
     Input,
     OnInit,
-    ViewEncapsulation,
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
@@ -10,32 +9,19 @@ import { CommonModule } from '@angular/common';
 import {
     ReactiveFormsModule,
     UntypedFormBuilder,
-    UntypedFormControl,
     UntypedFormGroup,
 } from '@angular/forms';
-
-// modules
-import { SharedModule } from '@shared/shared.module';
 
 // store
 import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.query';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // components
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { LoadDetailsTitleCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-title-card/load-details-title-card.component';
 import { LoadDetailsBrokerDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-broker-details-card/load-details-broker-details-card.component';
 import { LoadDetailsAssignedToCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-assigned-to-card/load-details-assigned-to-card.component';
@@ -43,10 +29,6 @@ import { LoadDetailsRequirementCardComponent } from '@pages/load/pages/load-deta
 import { LoadDetailsBillingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-billing-card/load-details-billing-card.component';
 import { LoadDetailsPaymentCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-payment-card/load-details-payment-card.component';
 import { LoadDetailsInvoiceAgingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-invoice-aging-card/load-details-invoice-aging-card.component';
-
-// pipes
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // enums
 import { LoadDetailsCardStringEnum } from '@pages/load/pages/load-details/components/load-details-card/enums/load-details-card-string.enum';
@@ -59,26 +41,16 @@ import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
     selector: 'app-load-details-card',
     templateUrl: './load-details-card.component.html',
     styleUrls: ['./load-details-card.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         // modules
         CommonModule,
         ReactiveFormsModule,
-        SharedModule,
 
         // components
-        TaProfileImagesComponent,
-        TaCopyComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-        TaDetailsHeaderComponent,
-        TaChartComponent,
-        TaMapsComponent,
         LoadDetailsTitleCardComponent,
         LoadDetailsBrokerDetailsCardComponent,
         LoadDetailsAssignedToCardComponent,
@@ -86,30 +58,22 @@ import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
         LoadDetailsBillingCardComponent,
         LoadDetailsPaymentCardComponent,
         LoadDetailsInvoiceAgingCardComponent,
-
-        // pipes
-        FormatCurrencyPipe,
-        FormatDatePipe,
     ],
 })
 export class LoadDetailsCardComponent implements OnInit, OnChanges {
     @Input() load: LoadResponse;
 
+    public cardForm: UntypedFormGroup;
+
     public loadsDropdownList: LoadResponse[] = [];
 
     public loadCurrentIndex: number;
-
-    public loadNote: UntypedFormControl = new UntypedFormControl();
-
-    // note card
-    public cardForm: UntypedFormGroup;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
 
         // services
         private detailsPageDriverService: DetailsPageService,
-        public imageBase64Service: ImageBase64Service,
 
         // store
         private loadMinimalListQuery: LoadMinimalListQuery
@@ -130,13 +94,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
     private createForm(): void {
         this.cardForm = this.formBuilder.group({
-            driverMessage: [null],
-            note: [null],
-        });
-
-        this.cardForm.patchValue({
-            driverMessage: this.load.loadRequirements?.driverMessage,
-            note: this.load.note,
+            driverMessage: [this.load.loadRequirements?.driverMessage],
+            note: [this.load.note],
         });
     }
 
