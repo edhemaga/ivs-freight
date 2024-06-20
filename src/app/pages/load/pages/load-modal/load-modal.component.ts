@@ -326,7 +326,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public paymentMethodsDropdownList: EnumValue[];
     public paymentTypesDropdownList: EnumValue[];
     public orginalPaymentTypesDropdownList: EnumValue[];
-
+    public isRequirementVisible:boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
