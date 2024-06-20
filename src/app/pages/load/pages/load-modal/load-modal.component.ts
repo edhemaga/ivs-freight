@@ -3805,9 +3805,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = loadModalData;
 
         const loadRequirements = {
-            truckType: loadModalData.dispatch.truck as any,
-            trailerType: loadModalData.dispatch.trailer as any,
-            year: loadModalData.dispatch.truck.year,
+            truckType: loadModalData.dispatch?.truck,
+            trailerType: loadModalData.dispatch?.trailer,
+            year: loadModalData.dispatch?.truck.year,
             liftgate: loadModalData.loadRequirements?.liftgate,
             driverMessage: loadModalData.loadRequirements?.driverMessage,
             trailierLength: loadModalData.loadRequirements?.trailerLength,
@@ -3940,7 +3940,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
         this.onSelectDropdown(company, LoadModalStringEnum.COMPANY);
         this.onSelectDropdown(
-            loadRequirements?.truckType.truckType,
+            loadRequirements?.truckType?.truckType,
             LoadModalStringEnum.TRUCK_REQ
         );
         this.onSelectDropdown(
@@ -3976,8 +3976,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectedCompany = company;
         this.selectedDispatcher = editedDispatcher;
         this.selectedGeneralCommodity = generalCommodity;
-        this.selectedTruckReq = loadRequirements?.truckType.truckType;
-        this.selectedTrailerReq = loadRequirements?.trailerType.trailerType;
+        this.selectedTruckReq = loadRequirements?.truckType?.truckType;
+        this.selectedTrailerReq = loadRequirements?.trailerType?.trailerType;
         this.selectedYear = this.labelsYear.find(
             (year) => year.name == loadRequirements?.year
         );
