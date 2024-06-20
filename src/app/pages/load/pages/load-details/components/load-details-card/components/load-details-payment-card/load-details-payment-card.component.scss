@@ -1,0 +1,56 @@
+@import 'src/theme/variables.scss';
+
+.payment-container {
+    padding: 2px 2px 0 4px;
+
+    .payment-main-container {
+        &-box {
+            margin-bottom: 8px;
+            display: grid;
+            grid-template-columns: 202px 105px 97px;
+            grid-gap: 12px;
+
+            p,
+            span {
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            p {
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+
+            span {
+                color: $ta-black-2;
+
+                &::-moz-selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+
+                &::selection {
+                    color: $ta-black-2;
+                    background: rgb(66, 66, 66, 0.2);
+                }
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .last-box {
+                padding-right: 12px;
+            }
+        }
+    }
+}

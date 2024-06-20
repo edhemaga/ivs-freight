@@ -1,0 +1,50 @@
+<div class="biling-container">
+    <app-ta-custom-card
+        [cardName]="'Billing'"
+        [subText]="!isBillingCardOpen ? '$' + cardData.baseRate : ''"
+        [hasCounter]="cardData.billingCount + 1"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+        (onOpenCard)="handleBillingCardOpen($event)"
+    >
+        <div
+            class="d-flex flex-column jutify-content-center biling-main-container"
+        >
+            <ng-container
+                *ngFor="
+                    let billingData of billingDataArray;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div
+                    class="d-flex align-items-center justify-content-between biling-main-container-box"
+                >
+                    <p
+                        class="m-0 ta-font-medium"
+                        [ngClass]="{
+                            'ta-font-semi-bold':
+                                billingData.title.includes('TOTAL')
+                        }"
+                    >
+                        {{ billingData.title }}
+                    </p>
+
+                    <span
+                        class="m-0"
+                        [ngClass]="{
+                            'ta-font-semi-bold':
+                                billingData.title.includes('TOTAL')
+                        }"
+                    >
+                        ${{ billingData.value }}
+                    </span>
+                </div>
+            </ng-container>
+        </div>
+    </app-ta-custom-card>
+</div>

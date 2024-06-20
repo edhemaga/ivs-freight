@@ -69,9 +69,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 
         Step2Component,
         Step3Component,
-        Step4Component,
 
-        Step4FormComponent,
         Step3FormComponent,
         Step2FormComponent,
     ],

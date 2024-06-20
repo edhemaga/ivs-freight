@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
 import { LoadDetailsResolver } from '@pages/load/resolvers/load-details.resolver';
-import { LoadDetailsMinimalResolver } from '@pages/load/resolvers/laod-details-minimal.resolver';
+import { LoadDetailsMinimalResolver } from '@pages/load/resolvers/load-details-minimal.resolver';
 
 // components
 import { LoadTableComponent } from '@pages/load/pages/load-table/load-table.component';

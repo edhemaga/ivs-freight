@@ -1,0 +1,76 @@
+@import 'src/theme/variables.scss';
+
+.broker-details-card-container {
+    padding: 2px 4px 0 4px;
+
+    .company-name-container {
+        margin-bottom: 8px;
+
+        p {
+            font-size: 18px;
+            line-height: 22px;
+            color: $ta-black;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+    }
+
+    .info-container {
+        &-inner {
+            display: grid;
+            grid-template-columns: repeat(2, 202px);
+            grid-gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .icon {
+            margin-right: 4px;
+
+            svg {
+                path {
+                    fill: $bw5;
+                }
+            }
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 18px;
+            color: $ta-black-2;
+
+            &::-moz-selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black-2;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+
+        span {
+            font-size: 14px;
+            line-height: 18px;
+            color: $bw5;
+
+            &::-moz-selection {
+                color: $bw5;
+                background: rgb(47, 47, 47, 0.2);
+            }
+
+            &::selection {
+                color: $bw5;
+                background: rgb(47, 47, 47, 0.2);
+            }
+        }
+    }
+}
