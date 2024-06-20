@@ -22,6 +22,5 @@ export interface MedicalCertificateFeedbackResponse {
     applicantId?: number;
     files?: Array<FileResponse> | null;
     medicalCertificateReview?: MedicalCertificateReviewResponse;
-    review: any;
 }
 
