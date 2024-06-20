@@ -1784,6 +1784,10 @@
                                     customClass: 'datetimeclass'
                                 }"
                             ></app-ta-input>
+
+                            <ng-container *ngIf="invoicePercent.daysToPay">
+                                <app-ta-progres-bar [type]="'days'" [text]="invoicePercent.daysLeft" [daysToPay]="invoicePercent.daysToPay" [percents]="invoicePercent.percent" [daysExpired]="true"> </app-ta-progres-bar>
+                            </ng-container>
                         </div>
                     </div>
                 </app-load-modal-financial>

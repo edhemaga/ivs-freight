@@ -359,6 +359,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public get invoicePercent() {
+        if (this.loadForm.value) {
+            const daysLeft = Math.abs(this.loadForm.get(LoadModalStringEnum.AGE_UNPAID).value);
+            const daysToPay = this.loadForm.get(LoadModalStringEnum.DAYS_TO_PAY).value;
+            return {
+                daysLeft: daysLeft,
+                daysToPay,
+                percent: (daysLeft / daysToPay) * 100,
+            };
+        }
+    }
+
     public trackByIdentity(_, index: number): number {
         return index;
     }
@@ -437,6 +449,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             payType: [null],
             paymentDate: [null],
             ageUnpaid: [null],
+            daysToPay: [null],
 
             // note, files
             note: [null],
@@ -1848,7 +1861,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.additionalPayments().removeAt(index);
     }
 
-    public createAdditionPaymentBilling(data: LoadAdditionalPayment): UntypedFormGroup {
+    public createAdditionPaymentBilling(
+        data: LoadAdditionalPayment
+    ): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data.id ?? null],
             name: [data.name],
@@ -2000,7 +2015,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.orginalPaymentTypesDropdownList.filter(
                             (item) =>
                                 !this.additionalPayments().value.find(
-                                    (value: LoadAdditionalPayment) => item.id === value.paymentType
+                                    (value: LoadAdditionalPayment) =>
+                                        item.id === value.paymentType
                                 )
                         );
                     if (this.paymentTypesDropdownList.length)
@@ -2102,9 +2118,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.additionalPayments()
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value: LoadAdditionalPayment[]) => {
-                const paidInFull = value.find((val) => val.paymentType === LoadModalPaymentEnum.PAID_IN_FULL)?.pay ?? 0;
-                const shortPaid = value.find((val) => val.paymentType === LoadModalPaymentEnum.SHORT_PAID)?.pay ?? 0;
-                const advance = value.find((val) => val.paymentType === LoadModalPaymentEnum.ADVANCE_PAYMENT)?.pay ?? 0;
+                const paidInFull =
+                    value.find(
+                        (val) =>
+                            val.paymentType ===
+                            LoadModalPaymentEnum.PAID_IN_FULL
+                    )?.pay ?? 0;
+                const shortPaid =
+                    value.find(
+                        (val) =>
+                            val.paymentType === LoadModalPaymentEnum.SHORT_PAID
+                    )?.pay ?? 0;
+                const advance =
+                    value.find(
+                        (val) =>
+                            val.paymentType ===
+                            LoadModalPaymentEnum.ADVANCE_PAYMENT
+                    )?.pay ?? 0;
                 this.loadModalPayment = {
                     paidInFull,
                     shortPaid,
@@ -3771,6 +3801,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             adjustedRate,
             invoicedDate,
             ageUnpaid,
+            daysToPay
         } = loadModalData;
 
         const loadRequirements = {
@@ -3868,7 +3899,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: totalTimeHours,
             invoicedDate,
             ageUnpaid: ageUnpaid,
-            daysToPay: 60,
+            daysToPay,
         });
 
         // load number
