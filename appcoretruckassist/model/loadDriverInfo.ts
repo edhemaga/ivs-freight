@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerTypeResponse } from './trailerTypeResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
 export interface LoadDriverInfo { 
@@ -16,6 +18,8 @@ export interface LoadDriverInfo {
     firstName?: string | null;
     lastName?: string | null;
     truckNumber?: string | null;
+    truckType?: TruckTypeResponse;
     trailerNumber?: string | null;
+    trailerType?: TrailerTypeResponse;
 }
 
