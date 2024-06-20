@@ -55,8 +55,9 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 //Helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 
-// Enum
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -66,7 +67,6 @@ import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
-import { LoadModalStringEnum } from '../load-modal/enums/load-modal-string.enum';
 
 @Component({
     selector: 'app-load-table',
