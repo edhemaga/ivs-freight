@@ -466,8 +466,8 @@
             <ng-container *ngSwitchCase="'details-template'">
                 <div
                     (click)="onActiveItem(option)"
-                    (mouseenter)="driverHoveringIndex = i"
-                    (mouseleave)="driverHoveringIndex = -1"
+                    (mouseenter)="hoveringIndex = i"
+                    (mouseleave)="hoveringIndex = -1"
                     *ngFor="
                         let option of _options;
                         let i = index;
@@ -506,13 +506,15 @@
                     <!-- Svg -->
 
                     <svg-icon
-                        [src]="option.svg | taSvg : option.folder"
+                        [src]="option?.svg | taSvg : option?.folder"
                         class="details-template-logo"
                     ></svg-icon>
 
                     <!-- Driver Details Template -->
 
-                    <ng-container *ngIf="option?.address?.address">
+                    <ng-container
+                        *ngIf="option?.address?.address || option?.statusString"
+                    >
                         <div
                             class="d-flex align-items-center driver-details-template-container"
                         >
@@ -520,25 +522,41 @@
                                 <p class="m-0">
                                     <ng-container
                                         *ngIf="
-                                            i === driverHoveringIndex;
+                                            i === hoveringIndex;
                                             else notHoveringLeft
                                         "
                                     >
-                                        {{ option?.totalMiles }} mi
+                                        <ng-container
+                                            *ngIf="option?.address?.address"
+                                        >
+                                            {{ option?.totalMiles }} mi
+                                        </ng-container>
                                     </ng-container>
 
                                     <ng-template #notHoveringLeft>
-                                        {{ option?.address?.city }},
-                                        {{ option?.address?.stateShortName }}
+                                        <ng-container
+                                            *ngIf="option?.address?.address"
+                                        >
+                                            {{ option?.address?.city }},
+                                            {{
+                                                option?.address?.stateShortName
+                                            }}
+                                        </ng-container>
                                     </ng-template>
                                 </p>
                             </div>
 
-                            <div class="d-flex align-items-center right-box">
+                            <div
+                                class="d-flex align-items-center right-box"
+                                [ngStyle]="
+                                    loadStatusEnum[option?.statusId]
+                                        | dropdownLoadStatusColor
+                                "
+                            >
                                 <p class="m-0">
                                     <ng-container
                                         *ngIf="
-                                            i === driverHoveringIndex;
+                                            i === hoveringIndex;
                                             else notHoveringRight
                                         "
                                     >
@@ -546,7 +564,18 @@
                                     </ng-container>
 
                                     <ng-template #notHoveringRight>
-                                        {{ option?.hiredAt }}
+                                        <ng-container
+                                            *ngIf="
+                                                option?.address?.address;
+                                                else statusString
+                                            "
+                                        >
+                                            {{ option?.hiredAt }}
+                                        </ng-container>
+
+                                        <ng-template #statusString>
+                                            {{ option?.statusString }}
+                                        </ng-template>
                                     </ng-template>
                                 </p>
                             </div>

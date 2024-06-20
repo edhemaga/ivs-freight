@@ -107,21 +107,19 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
         this.loadsDropdownList = this.loadMinimalListQuery
             .getAll()
             .map((load) => {
-                console.log('load', load);
-                const { id, loadNumber, status, type } = load;
+                const { id, loadNumber, status, statusType } = load;
 
                 return {
                     id,
-                    name:
-                        LoadDetailsCardStringEnum.INVOICE +
-                        LoadDetailsCardStringEnum.EMPTY_STRING +
-                        loadNumber,
-                    svg: type?.name === 'LTL' ? 'ic_ltl-status.svg' : null,
-                    folder: LoadDetailsCardStringEnum.COMMON,
+                    name: loadNumber,
                     status: status,
                     active: id === this.load.id,
+                    statusString: statusType.name,
+                    statusId: statusType.id,
                 };
             });
+
+        console.log('this.loadsDropdownLis', this.loadsDropdownList);
     }
 
     private getCurrentIndex(): void {
@@ -136,23 +134,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
     public onSelectLoad(event: LoadMinimalResponse): void {
         if (event?.id !== this.load.id) {
-            this.loadsDropdownList = this.loadMinimalListQuery
-                .getAll()
-                .map((load) => {
-                    const { id, loadNumber, status, type } = load;
-
-                    return {
-                        id,
-                        name:
-                            LoadDetailsCardStringEnum.INVOICE +
-                            LoadDetailsCardStringEnum.EMPTY_STRING +
-                            loadNumber,
-                        svg: type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
-                        folder: LoadDetailsCardStringEnum.COMMON,
-                        status,
-                        active: id === event.id,
-                    };
-                });
+            this.getLoadsDropdown();
 
             this.detailsPageDriverService.getDataDetailId(event.id);
 

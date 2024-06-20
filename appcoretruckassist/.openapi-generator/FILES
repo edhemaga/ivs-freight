@@ -927,6 +927,8 @@ model/trailerAccidentResponse.ts
 model/trailerAutocompleteModelResponse.ts
 model/trailerDispatchModalResponse.ts
 model/trailerFilterResponse.ts
+model/trailerFuelConsumptionChartResponse.ts
+model/trailerFuelConsumptionResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts

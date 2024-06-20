@@ -11,10 +11,10 @@
  */
 
 
-export type ParkingSlotType = 'Standard' | 'Full';
+export type ParkingSlotType = 'Solo' | 'Full';
 
 export const ParkingSlotType = {
-    Standard: 'Standard' as ParkingSlotType,
+    Solo: 'Solo' as ParkingSlotType,
     Full: 'Full' as ParkingSlotType
 };
 

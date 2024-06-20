@@ -3,9 +3,6 @@ export enum LoadDetailsCardStringEnum {
     CHANGE_LOAD = 'change-load',
 
     COMMON = 'common',
-    INVOICE = 'Invoice',
-
-    EMPTY_STRING = ' ',
 
     YES = 'Yes',
     NO = 'No',
