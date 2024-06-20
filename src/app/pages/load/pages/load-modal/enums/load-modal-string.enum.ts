@@ -101,7 +101,7 @@ export enum LoadModalStringEnum {
     CONTACT = 'Contact',
     PHONE = 'Phone',
     SHIPPER = 'Shipper',
-    CITY_STATE_ZIP = 'City, State, Zip',
+    CITY_STATE_ZIP = 'Address',
     LOADS = 'Loads',
 
     TRUCK_REQ = 'truck-req',

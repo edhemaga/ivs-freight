@@ -1297,10 +1297,20 @@ app-load-modal-stop
     height: 29px !important;
 }
 
-app-load-modal .load-broker {
-    grid-template-columns: 285px 92px !important;
+app-load-modal {
+    .load-broker {
+        grid-template-columns: 285px 92px !important;
 
-    span:nth-child(3) {
-        display: none !important;
+        span:nth-child(3) {
+            display: none !important;
+        }
+    }
+}
+
+.load-shipper-stops{
+    grid-template-columns: 350px 200px;
+
+    div:nth-child(3) {
+        display: none;
     }
 }

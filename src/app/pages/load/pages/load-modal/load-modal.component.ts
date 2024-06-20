@@ -2221,8 +2221,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             multipleLabel: {
                 labels: [
                     LoadModalStringEnum.SHIPPER,
-                    LoadModalStringEnum.CITY_STATE_ZIP,
-                    LoadModalStringEnum.LOADS,
+                    LoadModalStringEnum.CITY_STATE_ZIP
                 ],
                 customClass: LoadModalStringEnum.LOAD_SHIPPER,
             },
@@ -2230,7 +2229,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             isRequired: true,
             blackInput: true,
             textTransform: LoadModalStringEnum.UPPERCASE,
-            dropdownWidthClass: LoadModalStringEnum.DROPDOWN_WIDTH_1,
+            dropdownWidthClass: `${LoadModalStringEnum.DROPDOWN_WIDTH_1} load-shipper-stops`,
         });
 
         // shipper contact config

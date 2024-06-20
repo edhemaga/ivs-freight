@@ -53,7 +53,7 @@ export class LoadModalConfig {
         isRequired: true,
         blackInput: true,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-608',
+        dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
     static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
@@ -81,7 +81,7 @@ export class LoadModalConfig {
         isRequired: true,
         blackInput: true,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-608',
+        dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
     static LOAD_DELIVERY_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
