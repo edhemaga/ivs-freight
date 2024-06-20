@@ -287,7 +287,17 @@
     }
 
     &.details-pages {
-        background-color: $default-focus-input;
+        height: 32px;
+        background: $default-focus-input;
+        color: $default-focus-placeholder;
+
+        .input-dropdown-arrow:hover {
+            background: $default-focus-input;
+        }
+
+        &:hover {
+            background: $default-focus-input;
+        }
 
         &::-webkit-input-placeholder {
             color: $default-focus-placeholder;
