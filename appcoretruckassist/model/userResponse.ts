@@ -20,7 +20,6 @@ export interface UserResponse {
     address?: AddressEntity;
     email?: string | null;
     phone?: string | null;
-    avatar?: string | null;
     avatarFile?: FileResponse;
 }
 

@@ -15,6 +15,7 @@ export interface LoadBrokerInfo {
     id?: number;
     businessName?: string | null;
     contact?: string | null;
+    email?: string | null;
     phone?: string | null;
     phoneExt?: string | null;
     dnu?: boolean;

@@ -205,7 +205,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                         ).replace(/-/g, '/'),
                         hazmatSpill: item.hazmatSpill,
                         fatalities: item.fatalities,
-                        collisions: item.collisions,
+                        /*  collisions: item.collisions, */
                         injuries: item.injuries,
                         vehicleType: item.vehicleType.name,
                         vehicleTypeLogoName: item.vehicleType.logoName,
@@ -227,10 +227,11 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 ).replace(/-/g, '/'),
                 hazmatSpill: lastItemInAccidentArray.hazmatSpill,
                 fatalities: lastItemInAccidentArray.fatalities,
-                collisions: lastItemInAccidentArray.collisions,
+                /*  collisions: lastItemInAccidentArray.collisions, */
                 injuries: lastItemInAccidentArray.injuries,
                 vehicleType: lastItemInAccidentArray.vehicleType.name,
-                vehicleTypeLogoName: lastItemInAccidentArray.vehicleType.logoName,
+                vehicleTypeLogoName:
+                    lastItemInAccidentArray.vehicleType.logoName,
                 description: lastItemInAccidentArray.description,
                 accidentItemReview: lastItemInAccidentArray.accidentItemReview
                     ? lastItemInAccidentArray.accidentItemReview

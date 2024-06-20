@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    userId?: number;
-    fullName?: string | null;
-    avatarFile?: FileResponse;
-    departmentId?: number | null;
+export interface TrailerFuelConsumptionChartResponse { 
+    milesPerGallon?: number | null;
+    costPerGallon?: number | null;
+    day?: number | null;
+    month?: number | null;
+    year?: number | null;
 }
 

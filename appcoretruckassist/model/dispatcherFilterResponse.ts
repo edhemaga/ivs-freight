@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface DispatcherFilterResponse { 
     id?: number;
     fullName?: string | null;
-    avatar?: string | null;
+    avatar?: FileResponse;
     loadCount?: number | null;
 }
 

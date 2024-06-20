@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { TrailerFuelConsumptionChartResponse } from './trailerFuelConsumptionChartResponse';
 
 
-export interface CompanyUserShortResponse { 
-    id?: number;
-    userId?: number;
-    fullName?: string | null;
-    avatarFile?: FileResponse;
-    departmentId?: number | null;
+export interface TrailerFuelConsumptionResponse { 
+    milesPerGallon?: number | null;
+    costPerGallon?: number | null;
+    trailerFuelConsumptionCharts?: Array<TrailerFuelConsumptionChartResponse> | null;
 }
 

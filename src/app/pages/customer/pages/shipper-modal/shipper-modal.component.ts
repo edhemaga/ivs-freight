@@ -445,7 +445,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     ' ',
                     this.companyUser.lastName
                 ),
-                avatar: this.companyUser.avatar,
+                /* avatar: this.companyUser.avatar, */
             },
             commentContent: '',
             createdAt: new Date().toISOString(),
@@ -492,7 +492,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                         ...item,
                                         companyUser: {
                                             ...item.companyUser,
-                                            avatar: item.companyUser.avatar,
+                                            /*  avatar: item.companyUser.avatar, */
                                         },
                                         commentContent: item.comment,
                                         rating: item.ratingFromTheReviewer,

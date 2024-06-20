@@ -46,10 +46,7 @@
 
                     <p
                         class="m-0 ta-font-bold"
-                        [ngStyle]="
-                            loadStatusEnum[cardData.status.statusValue.id]
-                                | loadStatusColor
-                        "
+                        [ngStyle]="loadStatusEnum[statusId] | loadStatusColor"
                     >
                         {{ cardData.status.statusString?.toUpperCase() }}
                     </p>

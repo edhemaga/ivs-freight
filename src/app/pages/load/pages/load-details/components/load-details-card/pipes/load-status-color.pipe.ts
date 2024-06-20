@@ -91,7 +91,7 @@ export class LoadStatusColorPipe implements PipeTransform {
             };
         } else if (statusDarkRed3ColorCondition) {
             return {
-                color: '#DF3C3C',
+                color: '#C20C0C',
             };
         }
     }

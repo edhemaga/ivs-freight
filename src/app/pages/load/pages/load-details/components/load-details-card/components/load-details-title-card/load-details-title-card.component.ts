@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -15,7 +22,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { LoadStatusColorPipe } from '@pages/load/pages/load-details/components/load-details-card/pipes/load-status-color.pipe';
 
 // enums
-import { LoadStatusEnum } from '@pages/load/enums/load-status.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
@@ -38,7 +45,7 @@ import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
         LoadStatusColorPipe,
     ],
 })
-export class LoadDetailsTitleCardComponent {
+export class LoadDetailsTitleCardComponent implements OnChanges {
     @Input() cardData: LoadResponse;
     @Input() loadCurrentIndex: number;
     @Input() loadsDropdownList: LoadResponse[];
@@ -51,7 +58,24 @@ export class LoadDetailsTitleCardComponent {
     public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
     public loadStatusEnum = LoadStatusEnum;
 
+    public statusId: number;
+
     constructor() {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.cardData?.currentValue)
+            this.handleStatusIdChange(
+                changes.cardData?.currentValue.status?.statusValue?.id
+            );
+    }
+
+    private handleStatusIdChange(statusId: number): void {
+        this.statusId = null;
+
+        setTimeout(() => {
+            this.statusId = statusId;
+        }, 200);
+    }
 
     public handleCardChanges(event: LoadMinimalResponse, type: string): void {
         this.cardValuesEmitter.emit({ event, type });
