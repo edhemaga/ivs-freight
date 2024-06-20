@@ -2924,7 +2924,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             companyUser: {
                 id: this.companyUser.userId,
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                avatar: this.companyUser.avatar,
+                avatar: null /*  this.companyUser.avatar */,
             },
             commentContent: null,
             commentDate: null,
@@ -3111,7 +3111,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...item,
                             name: item?.fullName,
-                            logoName: item?.avatar,
+                            /*     logoName: item?.avatar, */
                         };
                     });
 
@@ -3914,7 +3914,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 companyUser: {
                     id: comment.companyUser.id,
                     name: comment.companyUser.fullName,
-                    avatar: comment.companyUser.avatar,
+                    avatar: '' /* comment.companyUser.avatar */,
                 },
                 commentId: comment.id,
                 commentContent: comment.commentContent,

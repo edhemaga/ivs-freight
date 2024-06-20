@@ -84,7 +84,10 @@
             <!-- Sub Text -->
 
             <ng-container *ngIf="subText">
-                <div class="d-flex align-items-center subtext-container">
+                <div
+                    class="d-flex align-items-center subtext-container"
+                    [ngClass]="subTextClass"
+                >
                     <p class="m-0 ta-font-medium">
                         {{ subText }}
                     </p>
@@ -178,7 +181,7 @@
                 *ngIf="hasPlusHeader || stayOpen"
                 class="arrow-down-plus"
             >
-                <div 
+                <div
                     class="add-custom-card"
                     [ngClass]="{ 'show-pointer': stayOpen }"
                     (click)="onAction($event, 'add')"

@@ -286,9 +286,9 @@ export class RepairShopDetailsItemComponent implements OnInit, OnChanges {
                 ...item,
                 companyUser: {
                     ...item.companyUser,
-                    avatar: item.companyUser.avatar
+                    avatar: /*  item.companyUser.avatar
                         ? item.companyUser.avatar
-                        : 'assets/svg/common/ic_profile.svg',
+                        : */ 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
                 rating: item.thumb, // item.ratingFromTheReviewer doesn't exist in response

@@ -63,7 +63,7 @@ export class NavigationUserCompanyComponent implements OnInit {
                     );
                     user = {
                         ...user,
-                        avatar: res.avatar,
+                        /*  avatar: res.avatar, */
                         companyName: res.companyName,
                         companyUserId: res.companyUserId,
                         driverId: res.driverId,

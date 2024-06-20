@@ -14,6 +14,7 @@ export enum InputSwitchActions {
     RESTRICTIONS = 'RESTRICTIONS',
     PERMIT = 'PERMIT',
     HAZMAT_SPILL = 'HAZMAT-SPILL',
+    VEHICLE_TYPE = 'VEHICLE-TYPE',
 
     NOT_BEEN_CONVICTED = 'notBeenConvicted',
     CERTIFY = 'certify',

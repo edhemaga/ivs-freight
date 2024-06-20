@@ -855,6 +855,8 @@ export * from './trailerAccidentResponse';
 export * from './trailerAutocompleteModelResponse';
 export * from './trailerDispatchModalResponse';
 export * from './trailerFilterResponse';
+export * from './trailerFuelConsumptionChartResponse';
+export * from './trailerFuelConsumptionResponse';
 export * from './trailerLengthResponse';
 export * from './trailerListResponse';
 export * from './trailerMakeResponse';

@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, take, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 
 // moment
 import moment from 'moment';
@@ -39,62 +37,11 @@ import { TruckDetailsConfigData } from '@pages/truck/pages/truck-details/models/
 // helpers
 import { TruckSortByDateHelper } from '@pages/truck/pages/truck-details/utils/helpers/truck-sort-by-date.helper';
 
-// modules
-import { SharedModule } from '@shared/shared.module';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
-// components
-import { TruckDetailsItemComponent } from '@pages/truck/pages/truck-details/components/truck-details-item/truck-details-item.component';
-import { TruckDetailsCardComponent } from '@pages/truck/pages/truck-details/components/truck-details-card/truck-details-card.component';
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-
-// pipes
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-
 @Component({
     selector: 'app-truck-details',
     templateUrl: './truck-details.component.html',
     styleUrls: ['./truck-details.component.scss'],
     providers: [DetailsPageService],
-    standalone: true,
-    imports: [
-        CommonModule,
-        SharedModule,
-        ReactiveFormsModule,
-        FormatDatePipe,
-        TaProfileImagesComponent,
-        TaCopyComponent,
-        TaCustomCardComponent,
-        TaUploadFilesComponent,
-        TaInputNoteComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-        FormatDatePipe,
-        TaDetailsHeaderComponent,
-        TaDetailsHeaderCardComponent,
-        TaChartComponent,
-        TaTabSwitchComponent,
-        AngularSvgIconModule,
-        TruckDetailsComponent,
-        TruckDetailsItemComponent,
-        TruckDetailsCardComponent,
-
-        // PIPES
-        ThousandSeparatorPipe,
-    ],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -113,7 +60,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         private truckTService: TruckService,
         private notificationService: NotificationService,
         private activated_route: ActivatedRoute,
-        private detailsPageSer: DetailsPageService,
+        private detailsPageDriverSer: DetailsPageService,
         private modalService: ModalService,
         private router: Router,
         private cdRef: ChangeDetectorRef,
@@ -146,21 +93,44 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         };
         this.initTableOptions(truckData);
 
-        this.confirmationSubscribe();
-
-        this.curentAnimation();
-
-        this.detailsPageList();
-
-        this.truckConf(truckData);
-    }
-
-    public isEmpty(obj: Record<string, any>): boolean {
-        return Object.keys(obj).length === 0;
-    }
-
-    private detailsPageList(): void {
-        this.detailsPageSer.pageDetailChangeId$
+        this.tableService.currentActionAnimation
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res: any) => {
+                if (res?.animation) {
+                    this.truckConf(res.data);
+                    this.initTableOptions(res.data);
+                    this.cdRef.detectChanges();
+                }
+            });
+        // Confirmation Subscribe
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: any) => {
+                    switch (res.type) {
+                        case TableStringEnum.DELETE: {
+                            if (res.template === TableStringEnum.TRUCK) {
+                                this.deleteTruckById(res?.id);
+                            }
+                            break;
+                        }
+                        case TableStringEnum.ACTIVATE: {
+                            if (res.template !== TruckDetailsEnum.VOID_2) {
+                                this.changeTruckStatus(res?.id);
+                            }
+                            break;
+                        }
+                        case TableStringEnum.DEACTIVATE: {
+                            this.changeTruckStatus(res?.id);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                },
+            });
+        this.detailsPageDriverSer.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
                 let query;
@@ -191,48 +161,12 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                     this.cdRef.detectChanges();
                 }
             });
+
+        this.truckConf(truckData);
     }
 
-    private curentAnimation(): void {
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation) {
-                    this.truckConf(res.data);
-                    this.initTableOptions(res.data);
-                    this.cdRef.detectChanges();
-                }
-            });
-    }
-
-    private confirmationSubscribe(): void {
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (res: any) => {
-                    switch (res.type) {
-                        case TableStringEnum.DELETE: {
-                            if (res.template === TableStringEnum.TRUCK) {
-                                this.deleteTruckById(res?.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.ACTIVATE: {
-                            if (res.template !== TruckDetailsEnum.VOID_2) {
-                                this.changeTruckStatus(res?.id);
-                            }
-                            break;
-                        }
-                        case TableStringEnum.DEACTIVATE: {
-                            this.changeTruckStatus(res?.id);
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
-                    }
-                },
-            });
+    public isEmpty(obj: Record<string, any>): boolean {
+        return Object.keys(obj).length === 0;
     }
 
     /**Function retrun id */
@@ -350,7 +284,14 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                             subName: TruckDetailsEnum.TITLE_2,
                             actionName: TruckDetailsEnum.TITLE_2,
                         },
+                        {
+                            subName: TruckDetailsEnum.LEASE_RENT,
+                            actionName: TruckDetailsEnum.LEASE_RENT,
+                        },
                     ],
+                },
+                {
+                    title: TruckDetailsEnum.BORDER,
                 },
                 {
                     title: TruckDetailsEnum.BORDER,

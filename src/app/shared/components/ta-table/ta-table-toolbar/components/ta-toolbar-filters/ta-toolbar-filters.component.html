@@ -195,7 +195,7 @@
         "
         [type]="'truckFilter'"
         [icon]="'truck'"
-        [filterTitle]="'Truck Filter'"
+        [filterTitle]="'Truck Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
@@ -211,7 +211,7 @@
         "
         [type]="'trailerFilter'"
         [icon]="'trailer'"
-        [filterTitle]="'Trailer Filter'"
+        [filterTitle]="'Trailer Type Filter'"
         [defFilterHolder]="true"
         [noLeftIcon]="true"
         (setFilter)="onFilter($event)"
@@ -390,7 +390,7 @@
     <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showBrokerFilter &&
-            this.activeTableData.bannedArray.filteredArray.length > 0
+            this.activeTableData?.bannedArray?.filteredArray?.length > 0
         "
         [type]="'archiveFilter'"
         [icon]="'ic_banned_broker'"
@@ -403,7 +403,7 @@
     <app-ta-special-filter
         *ngIf="
             options.toolbarActions.showBrokerFilter &&
-            this.activeTableData.dnuArray.filteredArray.length > 0
+            this.activeTableData?.dnuArray?.filteredArray?.length > 0
         "
         [type]="'broker-filter'"
         [icon]="'ic_dnu_broker'"
@@ -419,7 +419,7 @@
                 options.toolbarActions.showRepairShop ||
                 options.toolbarActions.showBrokerFilterClosed ||
                 options.toolbarActions.showFuelPermanentlyClosed) &&
-            this.activeTableData.closedArray.filteredArray.length > 0
+            this.activeTableData?.closedArray?.filteredArray?.length > 0
         "
         [type]="'broker-filter'"
         [icon]="'ic_closed_broker'"
@@ -446,6 +446,6 @@
         [filterTitle]="'Repair Filter'"
         [dataArray]="this.activeTableData.repairArray"
         (setFilter)="onSpecialFilter($event, 'repairArray')"
-        [selectedFilter]="this.activeTableData.repairArray.selectedFilter"
+        [selectedFilter]="this.activeTableData?.repairArray?.selectedFilter"
     ></app-ta-special-filter>
 </div>

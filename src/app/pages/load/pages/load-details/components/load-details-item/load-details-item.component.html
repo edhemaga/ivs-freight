@@ -1,18 +1,21 @@
 <div
     class="details-component"
     [ngClass]="{
-        'details-closed-items': loadData[0]?.data?.statusType?.name === 'Closed'
+        'details-closed-items': [0]?.data?.statusType?.name === 'Closed'
     }"
 >
     <div
         *ngFor="let loadItem of loadData; trackBy: identity"
         [ngSwitch]="loadItem.template"
     >
+        <!-- General -->
+
         <div *ngSwitchCase="'general'">
             <app-load-details-card
                 [load]="loadItem?.data"
             ></app-load-details-card>
         </div>
+
         <div *ngSwitchCase="'finance'">
             <div
                 class="finance-container"

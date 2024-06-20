@@ -673,7 +673,9 @@
                                     'medical',
                                     'test',
                                     'mvr',
-                                    'cdl'
+                                    'cdl',
+                                    'load',
+                                    'comment'
                                 ].includes(confirmationData?.template)
                             }"
                             type="button"
@@ -724,6 +726,9 @@
                             [ngClass]="{
                                 'modal-gray-btn': ['reset'].includes(
                                     confirmationData?.type
+                                ),
+                                'modal-red-btn': ['load', 'comment'].includes(
+                                    confirmationData.template
                                 ),
                                 'not-clickable': disableDelete
                             }"

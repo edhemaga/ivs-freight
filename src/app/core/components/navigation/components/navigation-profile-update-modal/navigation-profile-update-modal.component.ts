@@ -337,7 +337,7 @@ export class NavigationProfileUpdateModalComponent
                         email: res.email,
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
-                        avatar: res.avatar ? res.avatar : null,
+                        /*  avatar: res.avatar ? res.avatar : null, */
                     });
                     this.selectedAddress = res.address;
                     setTimeout(() => {

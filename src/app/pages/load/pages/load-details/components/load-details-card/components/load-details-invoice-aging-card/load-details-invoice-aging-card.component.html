@@ -1,0 +1,53 @@
+<div class="invoice-aging-container">
+    <app-ta-custom-card
+        [cardName]="'Invoice Aging'"
+        [isCardOpen]="!!cardData.invoicedDate || !!cardData.broker?.payTerm"
+        [bodyTemplate]="'card'"
+        [disabledCard]="true"
+        [hasArrow]="false"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+    >
+        <ng-container *ngIf="cardData.invoicedDate || cardData.broker?.payTerm">
+            <div
+                class="d-flex flex-column jutify-content-center invoice-aging-main-container"
+            >
+                <div
+                    class="align-items-center invoice-aging-main-container-inner"
+                >
+                    <div
+                        class="d-flex flex-column justify-content-center box"
+                        [ngStyle]="{
+                            'margin-bottom': cardData.invoicedDate ? 0 : '18px'
+                        }"
+                    >
+                        <p class="m-0 ta-font-bold">Invoiced</p>
+
+                        <span>{{
+                            cardData.invoicedDate
+                                ? (cardData.invoicedDate | formatDateP)
+                                : ''
+                        }}</span>
+                    </div>
+
+                    <div
+                        class="d-flex flex-column justify-content-center box"
+                        [ngStyle]="{
+                            'margin-bottom': cardData.broker?.payTerm?.name
+                                ? 0
+                                : '18px'
+                        }"
+                    >
+                        <p class="m-0 ta-font-bold">Pay Term</p>
+
+                        <span>
+                            {{ cardData.broker?.payTerm?.name ?? '' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </app-ta-custom-card>
+</div>

@@ -1,6 +1,8 @@
+@import '/src/theme/variables';
+
 app-trailer-details-card {
     .custom-card-single {
-        background-color: #ffffff;
+        background-color: $white;
         border-radius: 3px;
         padding-left: 4px;
         padding-top: 1px;
@@ -26,8 +28,13 @@ app-trailer-details-card {
     .cards-item-wrapper-1 {
         overflow: hidden;
     }
+    .assignTo .assignTo-value {
+        font-size: 14px !important;
+        color: $ta-black !important;
+        padding-left: 0 !important;
+    }
     .details-cards {
-        background-color: #ffffff;
+        background-color: $white;
         width: 440px;
         padding: 9px 6px;
     }
@@ -72,5 +79,5 @@ app-trailer-details-card {
     padding-top: 12px;
 }
 .no-truck {
-    color: #2f2f2f !important;
+    color: $ta-light-grey-2 !important;
 }

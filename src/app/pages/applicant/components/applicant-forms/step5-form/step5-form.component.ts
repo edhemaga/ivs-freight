@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { CommonModule } from '@angular/common';
 
 import {
     AfterViewInit,
@@ -13,6 +14,8 @@ import {
 } from '@angular/core';
 
 import {
+    FormsModule,
+    ReactiveFormsModule,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -50,18 +53,52 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
 // models
 import { Violation } from '@pages/applicant/pages/applicant-application/models/violation.model';
 import {
+    AddressEntity,
     ApplicantModalResponse,
     TruckTypeResponse,
-} from 'appcoretruckassist/model/models';
+    } from 'appcoretruckassist/model/models';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// components
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '@shared/shared.module';
+
+// config
+import { Step5FormConfig } from '@pages/applicant/components/applicant-forms/step5-form/configs/step5-form.config';
 
 @Component({
     selector: 'app-step5-form',
     templateUrl: './step5-form.component.html',
     styleUrls: ['./step5-form.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+
+        // components
+        TaInputComponent,
+        TaInputDropdownComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+        TaInputAddressDropdownComponent,
+    ],
 })
 export class Step5FormComponent
     implements OnInit, OnDestroy, OnChanges, AfterViewInit
@@ -83,6 +120,7 @@ export class Step5FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() onDeleteViolationClick = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -95,6 +133,7 @@ export class Step5FormComponent
     public isViolationEdited: boolean;
 
     public selectedVehicleType: any = null;
+    public selectedAddress: AddressEntity = null;
 
     public vehicleType: TruckTypeResponse[] = [];
 
@@ -129,12 +168,42 @@ export class Step5FormComponent
     ];
     public isCardReviewedIncorrect: boolean = false;
 
+    public applicantSvgRoutes = ApplicantSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery
     ) {}
+
+    get addressInputConfig(): ITaInput {
+        return Step5FormConfig.getAddressInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get dateInputConfig(): ITaInput {
+        return Step5FormConfig.getDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get vehicleTypeInputConfig(): ITaInput {
+        return Step5FormConfig.getVehicleTypeInputConfig({
+            selectedMode: this.selectedMode,
+            selectedVehicleType: this.selectedVehicleType,
+        });
+    }
+
+    get descriptionInputConfig(): ITaInput {
+        return Step5FormConfig.getDescriptionInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -157,7 +226,10 @@ export class Step5FormComponent
                     takeUntil(this.destroy$)
                 )
                 .subscribe((res) => {
-                    this.lastFormValuesEmitter.emit(res);
+                    this.lastFormValuesEmitter.emit({
+                        ...res,
+                        location: this.selectedAddress
+                    });
                 });
         }
 
@@ -200,6 +272,8 @@ export class Step5FormComponent
         ) {
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
+                this.selectedAddress =
+                    changes.formValuesToPatch.currentValue.location;
 
                 if (this.selectedMode !== SelectedMode.REVIEW) {
                     this.startValueChangesMonitoring();
@@ -328,8 +402,26 @@ export class Step5FormComponent
             });
     }
 
-    public handleInputSelect(event: any): void {
-        this.selectedVehicleType = event;
+    public handleInputSelect(event: any, action: string): void {
+        switch (action) {
+            case InputSwitchActions.VEHICLE_TYPE:
+                this.selectedVehicleType = event;
+
+                break;
+            case InputSwitchActions.ADDRESS:
+                this.selectedAddress = event.address;
+
+                if (!event.valid) {
+                    this.violationsForm
+                        .get('location')
+                        .setErrors({ invalid: true });
+                }
+
+                break;
+
+            default:
+                break;
+        }
     }
 
     public onAddViolation(): void {
@@ -347,6 +439,7 @@ export class Step5FormComponent
             vehicleTypeLogoName: this.vehicleType.find(
                 (item) => item.name === violationsForm.vehicleType
             ).logoName,
+            location: this.selectedAddress,
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -386,6 +479,7 @@ export class Step5FormComponent
             vehicleTypeLogoName: this.vehicleType.find(
                 (item) => item.name === violationsForm.vehicleType
             ).logoName,
+            location: this.selectedAddress,
         };
 
         this.saveFormEditingEmitter.emit(saveData);
@@ -562,6 +656,10 @@ export class Step5FormComponent
         );
 
         this.isCardReviewedIncorrect = false;
+    }
+
+    public onDeleteViolation(): void {
+        this.onDeleteViolationClick.emit(true);
     }
 
     ngOnDestroy(): void {

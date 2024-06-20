@@ -21,7 +21,7 @@ export class TaInputService {
      * @param formGroup FormGroup - The form group to touch
      */
     public markInvalid(formGroup: UntypedFormGroup): boolean {
-        if (formGroup.invalid) {
+        if (formGroup?.invalid) {
             Object.keys(formGroup.controls).forEach((key: any) => {
                 formGroup.get(key).markAsTouched();
                 formGroup.get(key).updateValueAndValidity();

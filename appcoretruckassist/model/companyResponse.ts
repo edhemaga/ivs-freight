@@ -52,7 +52,6 @@ export interface CompanyResponse {
     insurancePolicies?: Array<InsurancePolicyResponse> | null;
     divisions?: Array<CompanyShortResponse> | null;
     files?: Array<FileResponse> | null;
-    logo?: string | null;
     logoFile?: FileResponse;
     createdAt?: string;
     updatedAt?: string;

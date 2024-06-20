@@ -233,7 +233,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             ...form,
             issueDate:
                 MethodsCalculationsHelper.convertDateToBackend(issueDate),
-            expDate: MethodsCalculationsHelper.convertDateToBackend(expDate),
+            expDate: expDate
+                ? MethodsCalculationsHelper.convertDateToBackend(expDate)
+                : null,
             stateId: this.selectedStateType ? this.selectedStateType.id : null,
             trailerId:
                 this.editData.modal === 'trailer'

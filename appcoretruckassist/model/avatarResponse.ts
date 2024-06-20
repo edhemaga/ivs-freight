@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface AvatarResponse { 
-    avatar?: string | null;
+    avatar?: FileResponse;
 }
 

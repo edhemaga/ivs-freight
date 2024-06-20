@@ -267,6 +267,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.getTrailerDropdowns();
         this.isCompanyOwned();
         this.vinDecoder();
+        console.log(this.editData, 'test');
     }
 
     private createForm() {
