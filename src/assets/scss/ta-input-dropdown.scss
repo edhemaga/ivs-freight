@@ -1008,7 +1008,9 @@
                 grid-template-columns: 232px 82px 39px;
                 -moz-column-gap: 29px;
                 column-gap: 29px;
-
+                &.hide-loads {
+                    grid-template-columns: 333px 92px !important;
+                }
                 .load-broker-status-text {
                     display: flex;
                     align-items: center;

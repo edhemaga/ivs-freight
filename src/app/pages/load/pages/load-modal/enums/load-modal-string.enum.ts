@@ -34,6 +34,7 @@ export enum LoadModalStringEnum {
     ADDITIONAL_BILLINGS = 'additionalBillings',
     ADDITIONAL_PAYMENTS= 'additionalPayments',
     BILLING_DROPDOWN = 'billingDropdown',
+    PAYMENT_DROPDOWN = 'paymentDropdown',
     BILLING = 'billing',
     BILLING_VALUE = 'billingValue',
     PAYMENT = 'payment',

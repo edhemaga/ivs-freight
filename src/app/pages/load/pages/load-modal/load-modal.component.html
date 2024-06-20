@@ -240,16 +240,7 @@
                 <app-ta-input-dropdown
                     formControlName="brokerId"
                     [template]="'load-broker'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Broker',
-                        isDropdown: true,
-                        isRequired: true,
-                        blackInput: true,
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-400'
-                    }"
+                    [inputConfig]="loadBrokerInputConfig"
                     [canAddNew]="true"
                     [canOpenModal]="true"
                     [options]="labelsBroker"

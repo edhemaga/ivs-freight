@@ -259,3 +259,9 @@
         color: $datetime-dark-label-default;
     }
 }
+
+.hide-loads{
+    .load-broker{
+        grid-template-columns: 333px 92px !important;
+    }
+}

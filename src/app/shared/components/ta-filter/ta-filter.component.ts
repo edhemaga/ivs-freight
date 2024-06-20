@@ -2170,7 +2170,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'userFilter': {
-                console.log(this)
                 this.filterService.getDispatchData();
                 break;
             }

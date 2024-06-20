@@ -76,7 +76,7 @@ import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
-import { LoadModalPaymentEnum } from './enums/load-modal-payments.enum';
+import { LoadModalPaymentEnum } from '@pages/load/pages/load-modal/enums/load-modal-payments.enum';
 
 // models
 import {
@@ -1853,7 +1853,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.showPaymentArray = false;
             this.isVisiblePayment = true;
-            this.loadForm.get('paymentDropdown').patchValue(null);
+            this.loadForm.get(LoadModalStringEnum.PAYMENT_DROPDOWN).patchValue(null);
         }
     }
 
@@ -3217,6 +3217,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...item,
                             name: item?.businessName,
+                            creditLimit: item?.creditLimit,
+                            second_value: item?.creditLimit,
                             status: item.availableCreditType?.name,
                             logoName:
                                 item?.dnu || item?.ban
@@ -3226,7 +3228,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     : null,
                         };
                     });
-
+  
                     // broker contacts
                     this.labelsBrokerContacts = this.originBrokerContacts =
                         res.brokerContacts.map((item) => {
@@ -3404,7 +3406,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = this.loadForm.value;
 
         const adjustedRate =
-            this.additionalBillings().value.find((billing) => billing.id === 6)
+            this.additionalBillings().value.find((billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY)
                 ?.billingValue ?? null;
 
         let documents: Blob[] = [];
@@ -3521,7 +3523,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get adjustedRate(): string | null {
         return (
-            this.additionalBillings().value.find((billing) => billing.id === 6)
+            this.additionalBillings().value.find((billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY)
                 ?.billingValue ?? null
         );
     }
@@ -3776,7 +3778,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private populateLoadModalData(loadModalData: LoadResponse): void {
-        console.log(loadModalData);
         const {
             loadNumber,
             type,
@@ -3819,7 +3820,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const deliveryStop = stops[stops.length - 1];
 
         const editedBroker = {
-            ...broker,
+            ...this.labelsBroker.find(b =>b.id === broker.id),
             name: broker.businessName,
         };
 
@@ -3996,7 +3997,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (adjustedRate) {
             this.additionalBillings().push(
                 this.createAdditionaBilling({
-                    id: 6,
+                    id: LoadModalPaymentEnum.ADVANCE_PAY,
                     name: LoadModalStringEnum.ADJUSTED,
                     billingValue: adjustedRate,
                 })

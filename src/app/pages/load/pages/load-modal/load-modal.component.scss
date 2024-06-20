@@ -152,5 +152,7 @@
 .load-financial-payment {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    .input-custom-group .input-control {
+        height: 29px !important;
+    }
 }

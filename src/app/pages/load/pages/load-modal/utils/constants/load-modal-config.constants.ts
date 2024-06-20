@@ -18,8 +18,8 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Broker', 'Avail. Credit', 'Loads'],
-            customClass: 'load-broker',
+            labels: ['Broker', 'Credit'],
+            customClass: 'load-broker hide-loads',
         },
         isDropdown: true,
         isRequired: true,

@@ -890,7 +890,15 @@
                             _options.length === 1 &&
                             _options[0].name === 'No Results'
                         "
-                        [innerHtml]=""
+                        [innerHtml]="
+                        option?.name
+                            | taHighlight
+                                : [
+                                      {
+                                          index: 45632,
+                                          text: getSuperControl.value
+                                      }
+                                  ]"
                     ></div>
                     <!-- Truck -->
                     <div
