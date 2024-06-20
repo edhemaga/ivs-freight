@@ -76,6 +76,7 @@ import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadModalPaymentEnum } from './enums/load-modal-payments.enum';
 
 // models
 import {
@@ -111,10 +112,11 @@ import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
 import { LoadAdditionalBilling } from '@pages/load/pages/load-modal/models/load-additional-billing.model';
 import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-dropdown.model';
+import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
+import { LoadAdditionalPayment } from './models/load-additional-payment.model';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
-import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 
 @Component({
     selector: 'app-load-modal',
@@ -346,7 +348,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
-        console.log(this.editData)
     }
 
     ngDoCheck(): void {
@@ -453,7 +454,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((isFormChange: boolean) =>this.isFormDirty = isFormChange);
+            .subscribe(
+                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+            );
     }
 
     private getCompanyUser(): void {
@@ -716,7 +719,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const value = this.additionalPayments().at(index);
                 value.patchValue({
                     ...value,
-                    paymentType: event.id,
+                    paymentMethod: event.id,
                 });
                 break;
             case LoadModalStringEnum.DISPATCHER:
@@ -1845,16 +1848,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.additionalPayments().removeAt(index);
     }
 
-    public createAdditionPaymentBilling(data: {
-        id: null | number;
-        pay: number;
-        payType: any;
-        payDate: string;
-        paymentType: number;
-        paymentMethod: number;
-        name: string;
-        displayPaymentType: string;
-    }): UntypedFormGroup {
+    public createAdditionPaymentBilling(data: LoadAdditionalPayment): UntypedFormGroup {
         return this.formBuilder.group({
             id: [data.id ?? null],
             name: [data.name],
@@ -2006,7 +2000,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.orginalPaymentTypesDropdownList.filter(
                             (item) =>
                                 !this.additionalPayments().value.find(
-                                    (value) => item.id === value.paymentType
+                                    (value: LoadAdditionalPayment) => item.id === value.paymentType
                                 )
                         );
                     if (this.paymentTypesDropdownList.length)
@@ -2105,39 +2099,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             });
 
         // advance rate
-        this.loadForm
-            .get(LoadModalStringEnum.ADVANCE_PAY)
+        this.additionalPayments()
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) {
-                    this.loadModalPayment = {
-                        ...this.loadModalPayment,
-                        advance: value,
-                    };
-
-                    if (
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            value
-                        ) >
-                        this.financialCalculationPipe.transform(
-                            this.loadModalBill,
-                            LoadModalStringEnum.BILLING
-                        )
-                    ) {
-                        this.loadForm
-                            .get(LoadModalStringEnum.ADVANCE_PAY)
-                            .setErrors({ invalid: true });
-                    } else {
-                        this.loadForm
-                            .get(LoadModalStringEnum.ADVANCE_PAY)
-                            .setErrors(null);
-                    }
-                } else {
-                    this.loadModalPayment = {
-                        ...this.loadModalPayment,
-                        advance: 0,
-                    };
-                }
+            .subscribe((value: LoadAdditionalPayment[]) => {
+                const paidInFull = value.find((val) => val.paymentType === LoadModalPaymentEnum.PAID_IN_FULL)?.pay ?? 0;
+                const shortPaid = value.find((val) => val.paymentType === LoadModalPaymentEnum.SHORT_PAID)?.pay ?? 0;
+                const advance = value.find((val) => val.paymentType === LoadModalPaymentEnum.ADVANCE_PAYMENT)?.pay ?? 0;
+                this.loadModalPayment = {
+                    paidInFull,
+                    shortPaid,
+                    advance,
+                };
             });
 
         // additional billings
@@ -3092,7 +3064,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // legs
             totalMiles: this.totalLegMiles,
             totalHours: this.totalLegHours,
-            totalMinutes: this.totalLegMinutes
+            totalMinutes: this.totalLegMinutes,
         };
     }
 
@@ -3398,7 +3370,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             driverRate,
             advancePay,
             pickuplegMiles,
-            invoicedDate
+            invoicedDate,
         } = this.loadForm.value;
 
         const adjustedRate =
@@ -3494,7 +3466,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
-            invoicedDate
+            invoicedDate,
         };
         this.loadService
             .createLoad(newData)
@@ -3518,8 +3490,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get adjustedRate(): string | null {
-        return this.additionalBillings().value.find((billing) => billing.id === 6)
-        ?.billingValue ?? null;
+        return (
+            this.additionalBillings().value.find((billing) => billing.id === 6)
+                ?.billingValue ?? null
+        );
     }
 
     private updateLoad(): void {
@@ -3539,9 +3513,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // eslint-disable-next-line no-unused-vars
             pickuplegMiles,
             paymentDate,
-            invoicedDate
+            invoicedDate,
         } = this.loadForm.value;
-        
+
         const adjustedRate = this.adjustedRate;
 
         let documents: Blob[] = [];
@@ -3642,7 +3616,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
-            invoicedDate
+            invoicedDate,
         };
 
         this.loadService
@@ -3796,7 +3770,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pays,
             adjustedRate,
             invoicedDate,
-            ageUnpaid
+            ageUnpaid,
         } = loadModalData;
 
         const loadRequirements = {
@@ -3894,7 +3868,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: totalTimeHours,
             invoicedDate,
             ageUnpaid: ageUnpaid,
-            daysToPay: 60
+            daysToPay: 60,
         });
 
         // load number
