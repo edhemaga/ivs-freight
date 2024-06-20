@@ -1,0 +1,38 @@
+<div class="load-requirement-container">
+    <app-ta-custom-card
+        [cardName]="'Load Detail & Requirement'"
+        [isCardOpen]="requirementDataArray.length"
+        [bodyTemplate]="'card'"
+        [disabledCard]="!requirementDataArray.length"
+        [hasArrow]="requirementDataArray.length"
+        [animationMarginParams]="{
+            marginTop: '6px',
+            marginBottom: '6px'
+        }"
+    >
+        <div class="align-items-center load-requirement-container-inner">
+            <ng-container
+                *ngFor="
+                    let requirement of requirementDataArray;
+                    let i = index;
+                    trackBy: trackByIdentity
+                "
+            >
+                <div class="d-flex flex-column justify-content-center box">
+                    <p class="m-0 ta-font-bold">{{ requirement.title }}</p>
+
+                    <div class="d-flex align-items-center">
+                        <span class="m-0">{{ requirement.value }}</span>
+
+                        <ng-container *ngIf="requirement.value === 'Hazardous'">
+                            <svg-icon
+                                class="icon"
+                                [src]="loadDetailsCardSvgRoutes.hazardousRoute"
+                            ></svg-icon>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </app-ta-custom-card>
+</div>

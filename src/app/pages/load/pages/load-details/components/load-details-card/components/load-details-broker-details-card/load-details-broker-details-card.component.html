@@ -1,0 +1,64 @@
+<div class="d-flex flex-column broker-details-card-container">
+    <app-ta-custom-card
+        [cardName]="'Broker Detail'"
+        [hasDivider]="false"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [disabledCard]="true"
+        [hasArrow]="false"
+        [animationMarginParams]="{
+            marginTop: '4px',
+            marginBottom: '0'
+        }"
+    >
+        <div class="d-flex align-items-center company-name-container">
+            <p class="m-0 ta-font-medium">
+                {{ cardData.broker?.businessName }}
+            </p>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center info-container">
+            <div class="align-items-center info-container-inner">
+                <ng-container *ngIf="cardData.brokerContact">
+                    <div class="d-flex align-items-center">
+                        <svg-icon
+                            class="icon"
+                            [src]="loadDetailsCardSvgRoutes.brokerUser"
+                        ></svg-icon>
+
+                        <p class="m-0">
+                            {{ cardData.brokerContact.contactName }}
+                        </p>
+                    </div>
+                </ng-container>
+
+                <div class="d-flex align-items-center">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.phoneRoute"
+                    ></svg-icon>
+
+                    <p class="m-0">
+                        {{ cardData.brokerContact?.phone
+                        }}<!--  ?? cardData.broker?.phone  -->
+                    </p>
+
+                    <span> {{ cardData?.brokerContact?.extensionPhone }}</span
+                    ><!--  ?? cardData.broker?.extensionPhone  -->
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <svg-icon
+                    class="icon"
+                    [src]="loadDetailsCardSvgRoutes.emailRoute"
+                ></svg-icon>
+
+                <p class="m-0">
+                    {{ cardData.brokerContact?.email
+                    }}<!--  ?? cardData.broker?.email  -->
+                </p>
+            </div>
+        </div>
+    </app-ta-custom-card>
+</div>
