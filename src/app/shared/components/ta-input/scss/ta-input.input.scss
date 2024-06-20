@@ -287,7 +287,9 @@
     }
 
     &.details-pages {
+        height: 32px;
         background-color: $default-focus-input;
+        color: $default-focus-placeholder;
 
         &::-webkit-input-placeholder {
             color: $default-focus-placeholder;

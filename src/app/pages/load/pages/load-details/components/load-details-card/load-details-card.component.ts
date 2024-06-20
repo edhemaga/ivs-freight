@@ -4,6 +4,7 @@ import {
     OnInit,
     OnChanges,
     SimpleChanges,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -71,6 +72,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private cdRef: ChangeDetectorRef,
 
         // services
         private detailsPageDriverService: DetailsPageService,
@@ -85,6 +87,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
         this.createForm();
 
         this.getCurrentIndex();
+
+        this.getLoadsDropdown();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -103,6 +107,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
         this.loadsDropdownList = this.loadMinimalListQuery
             .getAll()
             .map((load) => {
+                console.log('load', load);
                 const { id, loadNumber, status, type } = load;
 
                 return {
@@ -150,6 +155,8 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                 });
 
             this.detailsPageDriverService.getDataDetailId(event.id);
+
+            this.cdRef.detectChanges();
         }
     }
 

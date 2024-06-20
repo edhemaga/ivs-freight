@@ -65,6 +65,7 @@
                 </span>
             </div>
             <!-- Input dropdown -->
+
             <app-ta-input-dropdown
                 *ngIf="selectedDropdown && options.length > 1"
                 [template]="'details-template'"
@@ -77,7 +78,8 @@
                     dropdownWidthClass: 'w-col-366',
                     textTransform: 'capitalize',
                     blackInput: true,
-                    customClass: 'input-32-font-20 details-pages'
+                    customClass: 'input-32-font-20 details-pages',
+                    placeholder: 'asd'
                 }"
                 [options]="options"
                 [sort]="sortOptions"
@@ -141,8 +143,9 @@
                 ngbTooltip
                 [mainTooltip]="'Search Store'"
                 position="top"
+                tooltipBackground="#6C6C6C"
             >
-                tooltipBackground="#6C6C6C" >
+                >
                 <p class="current-active-name">
                     {{ (optionsSecondInput | detailActiveItem).name }}
                 </p>
