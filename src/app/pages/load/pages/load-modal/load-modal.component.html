@@ -365,6 +365,7 @@
                     [hasCounter]="loadExtraStops().length + 2"
                     [hasActionSvg]="true"
                     [hasBodyData]="true"
+                    [hasArrow]="false"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '12px'
@@ -374,8 +375,16 @@
                     <!-- Stops Header -->
 
                     <div class="align-items-center stops-header-bar">
-                        <p class="m-0 ta-font-semi-bold">#</p>
-                        <p class="m-0 ta-font-semi-bold">SHIPPER, LOCATION</p>
+                        <p class="m-0 ta-font-bold">
+                            <svg-icon
+                                [src]="loadModalSvgRoutes.sorting"
+                            ></svg-icon>
+                        </p>
+                        <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
+                        <p class="m-0 ta-font-bold">DATE & TIME</p>
+                        <p class="m-0 ta-font-bold text-right">
+                            LEG, CONTACT
+                        </p>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -912,7 +921,11 @@
 
                                         <app-ta-input
                                             formControlName="timeTo"
-                                            [inputConfig]="getExtraStopsDateToTimeToInputConfig(selectedExtraStopTime[indx])"
+                                            [inputConfig]="
+                                                getExtraStopsDateToTimeToInputConfig(
+                                                    selectedExtraStopTime[indx]
+                                                )
+                                            "
                                             (blurInput)="
                                                 loadExtraStops()
                                                     .at(indx)
@@ -1364,7 +1377,11 @@
                                     <div [formGroupName]="indx">
                                         <app-ta-input
                                             formControlName="billingValue"
-                                            [inputConfig]="getBillingValueInputConfig(additional)"
+                                            [inputConfig]="
+                                                getBillingValueInputConfig(
+                                                    additional
+                                                )
+                                            "
                                             (clear)="
                                                 removeAdditionalBilling(
                                                     'billing',
@@ -1408,7 +1425,11 @@
                                         <div class="load-financial-payment">
                                             <app-ta-input
                                                 formControlName="pay"
-                                                [inputConfig]="getPaymentInputConfig(additional)"
+                                                [inputConfig]="
+                                                    getPaymentInputConfig(
+                                                        additional
+                                                    )
+                                                "
                                                 (clear)="
                                                     removePaymentBilling(indx)
                                                 "

@@ -1092,7 +1092,7 @@
             //------------------------ Load Shipper Contact Template -----------------------
             .load-shipper-template {
                 display: grid;
-                grid-template-columns: 305px 166px 87px;
+                grid-template-columns: 405px 166px;
                 align-items: center;
                 padding-right: 25px;
 
@@ -1127,6 +1127,7 @@
 
                         &.active {
                             color: #6f9ee0;
+                            font-weight: bold;
                         }
                     }
                 }

@@ -578,8 +578,13 @@
         }
     }
 
+    
+    &.load-shipper-contact {    
+        grid-template-columns: 283px 38px;
+    }
+
     &.load-shipper {
-        grid-template-columns: 331px 143px 80px;
+        grid-template-columns: 394px 180px;
         -moz-column-gap: 2px;
         column-gap: 2px;
         padding-right: 25px;
@@ -593,11 +598,15 @@
             &:nth-child(2),
             &:nth-child(3) {
                 justify-content: flex-end;
+                font-size: 11px;
+                color: $valid-placholderText !important;
+                font-weight: 400;
+                
             }
 
             &:nth-child(2) {
                 span {
-                    color: #919191;
+                    color: $valid-placholderText !important;
 
                     &.focusable-text {
                         color: #6f9ee0;
@@ -644,7 +653,7 @@
             }
         }
     }
-
+ 
     &.cursor-on-right-side {
         text-align: right;
         padding-right: 32px;
