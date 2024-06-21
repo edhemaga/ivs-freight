@@ -746,7 +746,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                         [Validators.required, ...descriptionValidation],
                     ],
                     mileage: [null, [Validators.required]],
-                    defaultMileage: [null, [Validators.required]],
+                    defaultMileage: [null],
                     status: [null],
                     value: [null],
                 });
