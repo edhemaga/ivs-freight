@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface DriverFilterResponse { 
     id?: number;
     driverFullName?: string | null;
-    avatar?: string | null;
+    avatarFile?: FileResponse;
 }
 

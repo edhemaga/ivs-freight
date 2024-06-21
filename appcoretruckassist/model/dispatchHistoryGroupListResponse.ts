@@ -9,16 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { DispatchHistoryGroupResponsePagination } from './dispatchHistoryGroupResponsePagination';
 
 
-export interface DriverDispatchResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    owner?: number | null;
-    status?: number;
-    vacation?: boolean;
-    avatarFile?: FileResponse;
+export interface DispatchHistoryGroupListResponse { 
+    pagination?: DispatchHistoryGroupResponsePagination;
 }
 

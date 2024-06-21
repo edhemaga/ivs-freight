@@ -31,7 +31,6 @@ export interface DriverResponse {
     phone?: string | null;
     email?: string | null;
     status?: number;
-    avatar?: string | null;
     assignedTo?: DriverDetailsDispatchResponse;
     address?: AddressEntity;
     dateOfBirth?: string;

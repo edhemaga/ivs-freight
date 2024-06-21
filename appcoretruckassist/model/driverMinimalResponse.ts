@@ -20,7 +20,6 @@ export interface DriverMinimalResponse {
     lastName?: string | null;
     owner?: number | null;
     status?: number;
-    avatar?: string | null;
     avatarFile?: FileResponse;
     address?: AddressEntity;
     totalMiles?: number | null;

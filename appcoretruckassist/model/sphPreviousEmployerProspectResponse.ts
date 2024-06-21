@@ -29,7 +29,7 @@ export interface SphPreviousEmployerProspectResponse {
     employeeDoB?: string;
     inviteDate?: string | null;
     dateFrom?: string;
-    dateTo?: string;
+    dateTo?: string | null;
     vehicleType?: TruckTypeResponse;
     reasonForLeaving?: EnumValue;
     sphAccidentHistory?: SphAccidentHistoryResponse;

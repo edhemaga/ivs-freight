@@ -9,16 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { AddressEntity } from './addressEntity';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
-export interface DriverDispatchResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    owner?: number | null;
-    status?: number;
-    vacation?: boolean;
-    avatarFile?: FileResponse;
+export interface DispatchHistoryGroupItemResponse { 
+    status?: DispatchStatusResponse;
+    startDate?: string;
+    endDate?: string | null;
+    totalTime?: string | null;
+    location?: AddressEntity;
 }
 

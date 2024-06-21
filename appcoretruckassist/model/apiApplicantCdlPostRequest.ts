@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileResponse } from './fileResponse';
+import { UpdateApplicantCdlCommand } from './updateApplicantCdlCommand';
 
 
-export interface DriverDispatchResponse { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    owner?: number | null;
-    status?: number;
-    vacation?: boolean;
-    avatarFile?: FileResponse;
+export interface ApiApplicantCdlPostRequest { 
+    CdlDenied?: boolean;
+    CdlDeniedExplanation?: string;
+    ApplicantId?: number;
+    Licences?: Array<UpdateApplicantCdlCommand>;
 }
 
