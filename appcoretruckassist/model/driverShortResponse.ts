@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { CdlResponse } from './cdlResponse';
@@ -27,7 +28,7 @@ export interface DriverShortResponse {
     ssn?: string | null;
     status?: number;
     note?: string | null;
-    avatar?: string | null;
+    avatarFile?: FileResponse;
     address?: AddressEntity;
     dateOfBirth?: string | null;
     bank?: BankResponse;
