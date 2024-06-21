@@ -16,6 +16,7 @@ import {
     Validators,
     AbstractControl,
     ReactiveFormsModule,
+    FormControl,
 } from '@angular/forms';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
@@ -257,6 +258,31 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadPickupShipperContactsInputConfig: ITaInput;
     public loadDeliveryShipperInputConfig: ITaInput;
     public loadDeliveryShipperContactsInputConfig: ITaInput;
+    public loadCompanyInputConfig = LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG;
+    public loadCommodityInputConfig = LoadModalConfig.LOAD_COMMODITY_CONFIG;
+    public loadWeightInputConfig = LoadModalConfig.LOAD_WEIGHT_CONFIG;
+    public loadTrailerLengthInputConfig =
+        LoadModalConfig.LOAD_TRAILER_LENGTH_CONFIG;
+    public loadDoorTypeInputConfig = LoadModalConfig.LOAD_DOOR_TYPE_CONFIG;
+    public loadSuspensionInputConfig = LoadModalConfig.LOAD_SUSPENSION_CONFIG;
+    public loadYearInputConfig = LoadModalConfig.LOAD_YEAR_CONFIG;
+    public loadTemplateInputConfig = LoadModalConfig.LOAD_TEMPLATE_CONFIG;
+    public loadMainCompanyInputConfig =
+        LoadModalConfig.LOAD_MAIN_COMPANY_CONFIG;
+    public loadPickupEndDateInputConfig = LoadModalConfig.LOAD_PICKUP_END_DATE;
+    public loadExtraStopsToDateInputConfig =
+        LoadModalConfig.LOAD_EXTRA_STOPS_TO_DATE;
+    public loadDeliveryDateToInputConfig =
+        LoadModalConfig.LOAD_DELIVERY_DATE_TO;
+    public loadBaseRateInputConfig = LoadModalConfig.LOAD_BASE_RATE;
+    public loadBillingDropdownInputConfig =
+        LoadModalConfig.LOAD_BILLING_DROPDOWN;
+    public loadPaymentTypeInputConfig = LoadModalConfig.LOAD_PAYMENT_TYPE;
+    public loadPaydateInputConfig = LoadModalConfig.LOAD_PAYDATE;
+    public loadPaymentDropdownInputConfig =
+        LoadModalConfig.LOAD_PAYMENT_DROPDOWN;
+    public loadInvoiceDateInputConfig = LoadModalConfig.LOAD_INVOICE_DATE;
+    public loadReferenceInputConfig = LoadModalConfig.LOAD_REFERENCE_NUMBER;
 
     // extra Stop configuration
     public selectedExtraStopShipper: any[] = [];
@@ -327,7 +353,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public paymentMethodsDropdownList: EnumValue[];
     public paymentTypesDropdownList: EnumValue[];
     public orginalPaymentTypesDropdownList: EnumValue[];
-    public isRequirementVisible:boolean = false;
+    public isRequirementVisible: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -360,16 +386,99 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public get getPickupTimeToInputConfig(): ITaInput {
+        return LoadModalConfig.getPickupTimeToInputConfig(
+            this.selectedStopTimePickup
+        );
+    }
+
+    public get getPickupDateFromInputConfig(): ITaInput {
+        return LoadModalConfig.getPickupDateFromInputConfig(
+            this.pickupDateRange
+        );
+    }
+
+    public get getPickupTimeFromInputConfig(): ITaInput {
+        return LoadModalConfig.getPickupTimeFromInputConfig(
+            this.selectedStopTimePickup
+        );
+    }
+
+    public get getDeliveryDateFromInputConfig(): ITaInput {
+        return LoadModalConfig.getDeliveryDateFromInputConfig(
+            this.deliveryDateRange
+        );
+    }
+
+    public get getDeliveryTimeFromInputConfig(): ITaInput {
+        return LoadModalConfig.getDeliveryTimeFromInputConfig(
+            this.selectedStopTimeDelivery
+        );
+    }
+
+    public get getDeliveryTimeToInputConfig(): ITaInput {
+        return LoadModalConfig.getDeliveryTimeToInputConfig(
+            this.selectedStopTimeDelivery
+        );
+    }
+
+    public getExtraStopsDateFromInputConfig(label: boolean): ITaInput {
+        return LoadModalConfig.getExtraStopsDateFromInputConfig(label);
+    }
+
+    public getExtraStopsDateFromTimeFromInputConfig(label: string): ITaInput {
+        return LoadModalConfig.getExtraStopsDateFromTimeFromInputConfig(label);
+    }
+
+    public getDispatcherInputConfig(): ITaInput {
+        return LoadModalConfig.getDispatcherInputConfig(
+            this.selectedDispatcher?.logoName,
+            this.selectedDispatcher?.name
+        );
+    }
+
+    public get getTruckTypeIdInputConfig(): ITaInput {
+        return LoadModalConfig.getTruckTypeIdInputConfig(this.selectedTruckReq);
+    }
+
+    public get getTrailerInputConfig(): ITaInput {
+        return LoadModalConfig.getTrailerInputConfig(this.selectedTrailerReq);
+    }
+
+    public getExtraStopsDateToTimeToInputConfig(label: string): ITaInput {
+        return LoadModalConfig.getExtraStopsDateToTimeToInputConfig(label);
+    }
+
+    public getBillingValueInputConfig(additional: FormControl): ITaInput {
+        return LoadModalConfig.getBillingValueInputConfig(additional);
+    }
+
+    public getPaymentInputConfig(additional: FormControl): ITaInput {
+        return LoadModalConfig.getPaymentInputConfig(additional);
+    }
+
     public get invoicePercent(): LoadModalInvoiceProgress {
         if (this.loadForm.value) {
-            const daysLeft = Math.abs(this.loadForm.get(LoadModalStringEnum.AGE_UNPAID).value);
-            const daysToPay = this.loadForm.get(LoadModalStringEnum.DAYS_TO_PAY).value;
+            const daysLeft = Math.abs(
+                this.loadForm.get(LoadModalStringEnum.AGE_UNPAID).value
+            );
+            const daysToPay = this.loadForm.get(
+                LoadModalStringEnum.DAYS_TO_PAY
+            ).value;
             return {
                 daysLeft: daysLeft,
                 daysToPay,
                 percent: (daysLeft / daysToPay) * 100,
             };
         }
+    }
+
+    public get adjustedRate(): string | null {
+        return (
+            this.additionalBillings().value.find(
+                (billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY
+            )?.billingValue ?? null
+        );
     }
 
     public trackByIdentity(_, index: number): number {
@@ -1355,7 +1464,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             {
                                 value: this.selectedPickupShipper.address,
                                 logoName: null,
-                            }
+                            },
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -1490,7 +1599,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             {
                                 value: this.selectedDeliveryShipper.address,
                                 logoName: null,
-                            }
+                            },
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -1844,7 +1953,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.showPaymentArray = false;
             this.isVisiblePayment = true;
-            this.loadForm.get(LoadModalStringEnum.PAYMENT_DROPDOWN).patchValue(null);
+            this.loadForm
+                .get(LoadModalStringEnum.PAYMENT_DROPDOWN)
+                .patchValue(null);
         }
     }
 
@@ -2212,7 +2323,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             multipleLabel: {
                 labels: [
                     LoadModalStringEnum.SHIPPER,
-                    LoadModalStringEnum.CITY_STATE_ZIP
+                    LoadModalStringEnum.CITY_STATE_ZIP,
                 ],
                 customClass: LoadModalStringEnum.LOAD_SHIPPER,
             },
@@ -3218,7 +3329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     : null,
                         };
                     });
-  
+
                     // broker contacts
                     this.labelsBrokerContacts = this.originBrokerContacts =
                         res.brokerContacts.map((item) => {
@@ -3396,8 +3507,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         } = this.loadForm.value;
 
         const adjustedRate =
-            this.additionalBillings().value.find((billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY)
-                ?.billingValue ?? null;
+            this.additionalBillings().value.find(
+                (billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY
+            )?.billingValue ?? null;
 
         let documents: Blob[] = [];
         let tagsArray: Tags[] = [];
@@ -3509,13 +3621,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     });
                 },
             });
-    }
-
-    public get adjustedRate(): string | null {
-        return (
-            this.additionalBillings().value.find((billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY)
-                ?.billingValue ?? null
-        );
     }
 
     private updateLoad(): void {
@@ -3792,7 +3897,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             adjustedRate,
             invoicedDate,
             ageUnpaid,
-            daysToPay
+            daysToPay,
         } = loadModalData;
 
         const loadRequirements = {
@@ -3810,7 +3915,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const deliveryStop = stops[stops.length - 1];
 
         const editedBroker = {
-            ...this.labelsBroker.find(b =>b.id === broker.id),
+            ...this.labelsBroker.find((b) => b.id === broker.id),
             name: broker.businessName,
         };
 
