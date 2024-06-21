@@ -7,7 +7,7 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
-            labels: ['Truck', 'Trailer', 'Driver', 'Driver Pay'],
+            labels: ['Truck', 'Trailer', 'Driver', 'Rate'],
             customClass: 'load-dispatches-ttd',
         },
         isDropdown: true,

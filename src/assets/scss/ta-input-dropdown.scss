@@ -999,13 +999,21 @@
                         width: 80px;
                     }
                 }
+
+                &.active {
+                    .load-dispatch-driver,
+                    .load-dispatch-truck,
+                    .load-dispatch-trailer {
+                        font-weight: 700;
+                    }
+                }
             }
 
             //------------------------ Load Broker Template ------------------------
             .load-broker-template {
                 display: grid;
                 align-items: center;
-                grid-template-columns: 232px 82px 39px;
+                grid-template-columns: 276px 92px;
                 -moz-column-gap: 29px;
                 column-gap: 29px;
                 &.hide-loads {

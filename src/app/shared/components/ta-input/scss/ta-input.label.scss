@@ -112,12 +112,11 @@
     // Load Dispatched TTD
     .load-dispatches-ttd {
         display: grid;
-        grid-template-columns: 92px 89px 151px 1fr;
+        grid-template-columns: 92px 89px 182px 53px;
         align-items: center;
         -moz-column-gap: 65px;
         grid-column-gap: 65px;
         column-gap: 65px;
-
         span {
             &:nth-child(4) {
                 color: $default-label !important;
@@ -132,7 +131,7 @@
             span {
                 &:nth-child(4) {
                     transition-delay: 300ms;
-                    color: $default-label !important;
+                    color: $default-removed-background-text !important;
                     opacity: 1;
                     top: -19px;
                 }
@@ -185,9 +184,10 @@
                     &:nth-child(2),
                     &:nth-child(3) {
                         transition-delay: 300ms;
-                        color: $default-label !important;
+                        color: $valid-placholderText !important;
                         opacity: 1;
                         top: -19px;
+                        text-align: right;
                     }
                 }
             }
@@ -242,9 +242,9 @@
             span {
                 &:nth-child(2) {
                     transition-delay: 300ms;
-                    color: $default-label !important;
                     opacity: 1;
                     top: -19px;
+                    color: $default-removed-background-text !important;
                 }
             }
         }
@@ -260,8 +260,8 @@
     }
 }
 
-.hide-loads{
-    .load-broker{
-        grid-template-columns: 333px 92px !important;
+.hide-loads {
+    .load-broker {
+        grid-template-columns: 365px 92px;
     }
 }

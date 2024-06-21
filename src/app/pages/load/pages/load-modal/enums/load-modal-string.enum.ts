@@ -76,7 +76,7 @@ export enum LoadModalStringEnum {
     TRUCK = 'Truck',
     TRAILER = 'Trailer',
     DRIVER = 'Driver',
-    DRIVER_PAY = 'Driver Pay',
+    DRIVER_PAY = 'Rate',
     FLAT_RATE = 'Flat Rate',
     ADJUSTED = 'Adjusted',
     ADJUSTED_2 = 'adjusted',
