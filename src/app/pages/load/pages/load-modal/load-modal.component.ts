@@ -2673,7 +2673,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
                     legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
                     legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value,
-                    items: this.extraStopItems[index],
+                    items: this.pickupStopItems,
                 });
             });
         }
@@ -3994,7 +3994,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadNumber = loadNumber ?? this.loadNumber;
 
         // documents
-        this.documents = files;
+        this.documents = files || [];
 
         // comments
         this.comments = comments.map((comment) => {
