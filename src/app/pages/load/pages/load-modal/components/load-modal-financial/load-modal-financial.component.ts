@@ -15,6 +15,7 @@ import { cardModalAnimation } from '@shared/animations/card-modal.animation';
 
 //Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { LoadModalHelper } from '../../utils/helpers/load-modal.helper';
 
 //Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -115,11 +116,6 @@ export class LoadModalFinancialComponent implements OnChanges {
     }
 
     public toNumber(value: string | number): number {
-        if (typeof value === 'string') {
-            const sanitizedValue = value.replace(/,/g, '');
-            return Number(sanitizedValue);
-        }
-    
-        return value;
+        return LoadModalHelper.toNumber(value);
     }
 }

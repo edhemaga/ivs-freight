@@ -9,10 +9,7 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="
-        loadForm.valid &&
-        isFormDirty &&
-        isEachStopItemsRowValid"
+    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -297,7 +294,7 @@
             <div
                 class="d-flex flex-column justify-content-center requirement-container"
             >
-            <app-ta-custom-card
+                <app-ta-custom-card
                     [cardName]="'Requirement'"
                     [isCardOpen]="isRequirementVisible"
                     [hasBodyData]="true"
@@ -307,137 +304,152 @@
                         marginBottom: '12px'
                     }"
                 >
-                <div class="pt-2">
-                    <div class="load-requirements-load-first-row">
-                        <app-ta-input-dropdown
-                            formControlName="truckTypeId"
-                            [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Truck Requirement',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTruckReq?.logoName,
-                                    template: 'truck',
-                                    class: selectedTruckReq?.name
-                                        ?.trim()
-                                        .replace(' ', '')
-                                        .toLowerCase()
-                                },
-                                dropdownWidthClass: 'w-col-302',
-                                customClass: 'truck-trailer-dropdown'
-                            }"
-                            [options]="labelsTruckReq"
-                            [activeItem]="selectedTruckReq"
-                            (selectedItem)="onSelectDropdown($event, 'truck-req')"
-                        ></app-ta-input-dropdown>
-    
-                        <app-ta-input-dropdown
-                            formControlName="trailerTypeId"
-                            [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Trailer Requirement',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTrailerReq?.logoName,
-                                    template: 'trailer',
-                                    class: ['Tanker', 'Tanker Pneumatic'].includes(
-                                        selectedTrailerReq?.name
-                                    )
-                                        ? 'tanker'
-                                        : selectedTrailerReq?.name
-                                              ?.toLowerCase()
-                                              ?.includes('rgn')
-                                        ? 'low-boy-rgn'
-                                        : selectedTrailerReq?.name
-                                              ?.trim()
-                                              .replace(' ', '')
-                                              .toLowerCase()
-                                },
-                                dropdownWidthClass: 'w-col-302',
-                                customClass: 'truck-trailer-dropdown'
-                            }"
-                            [options]="labelsTrailerReq"
-                            [activeItem]="selectedTrailerReq"
-                            (selectedItem)="onSelectDropdown($event, 'trailer-req')"
-                        ></app-ta-input-dropdown>
-                    </div>
-    
-                    <div class="load-requirements-load-second-row">
-                        <app-ta-input-dropdown
-                            formControlName="trailerLengthId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Length',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-100'
-                            }"
-                            [options]="labelsTrailerLength"
-                            [activeItem]="selectedTrailerLength"
-                            (selectedItem)="onSelectDropdown($event, 'length')"
-                        ></app-ta-input-dropdown>
-    
-                        <app-ta-input-dropdown
-                            formControlName="doorType"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Door Type',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-120'
-                            }"
-                            [options]="labelsDoorType"
-                            [activeItem]="selectedDoorType"
-                            (selectedItem)="onSelectDropdown($event, 'door-type')"
-                        ></app-ta-input-dropdown>
-    
-                        <app-ta-input-dropdown
-                            formControlName="suspension"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Suspension',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-150'
-                            }"
-                            [options]="labelsSuspension"
-                            [activeItem]="selectedSuspension"
-                            (selectedItem)="onSelectDropdown($event, 'suspension')"
-                        ></app-ta-input-dropdown>
-    
-                        <app-ta-input-dropdown
-                            formControlName="year"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Year',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-90'
-                            }"
-                            [options]="labelsYear"
-                            [activeItem]="selectedYear"
-                            (selectedItem)="onSelectDropdown($event, 'year')"
-                        ></app-ta-input-dropdown>
-    
-                        <div class="d-flex align-items-center justify-content-end">
-                            <app-ta-checkbox
-                                formControlName="liftgate"
-                                [customClass]="'medium'"
-                                [label]="'Lifgate'"
-                            ></app-ta-checkbox>
+                    <div class="pt-2">
+                        <div class="load-requirements-load-first-row">
+                            <app-ta-input-dropdown
+                                formControlName="truckTypeId"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Truck Requirement',
+                                    isDropdown: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: selectedTruckReq?.logoName,
+                                        template: 'truck',
+                                        class: selectedTruckReq?.name
+                                            ?.trim()
+                                            .replace(' ', '')
+                                            .toLowerCase()
+                                    },
+                                    dropdownWidthClass: 'w-col-302',
+                                    customClass: 'truck-trailer-dropdown'
+                                }"
+                                [options]="labelsTruckReq"
+                                [activeItem]="selectedTruckReq"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'truck-req')
+                                "
+                            ></app-ta-input-dropdown>
+
+                            <app-ta-input-dropdown
+                                formControlName="trailerTypeId"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Trailer Requirement',
+                                    isDropdown: true,
+                                    dropdownImageInput: {
+                                        withText: true,
+                                        svg: true,
+                                        image: false,
+                                        url: selectedTrailerReq?.logoName,
+                                        template: 'trailer',
+                                        class: [
+                                            'Tanker',
+                                            'Tanker Pneumatic'
+                                        ].includes(selectedTrailerReq?.name)
+                                            ? 'tanker'
+                                            : selectedTrailerReq?.name
+                                                  ?.toLowerCase()
+                                                  ?.includes('rgn')
+                                            ? 'low-boy-rgn'
+                                            : selectedTrailerReq?.name
+                                                  ?.trim()
+                                                  .replace(' ', '')
+                                                  .toLowerCase()
+                                    },
+                                    dropdownWidthClass: 'w-col-302',
+                                    customClass: 'truck-trailer-dropdown'
+                                }"
+                                [options]="labelsTrailerReq"
+                                [activeItem]="selectedTrailerReq"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'trailer-req')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
+
+                        <div class="load-requirements-load-second-row">
+                            <app-ta-input-dropdown
+                                formControlName="trailerLengthId"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Length',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-100'
+                                }"
+                                [options]="labelsTrailerLength"
+                                [activeItem]="selectedTrailerLength"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'length')
+                                "
+                            ></app-ta-input-dropdown>
+
+                            <app-ta-input-dropdown
+                                formControlName="doorType"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Door Type',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-120'
+                                }"
+                                [options]="labelsDoorType"
+                                [activeItem]="selectedDoorType"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'door-type')
+                                "
+                            ></app-ta-input-dropdown>
+
+                            <app-ta-input-dropdown
+                                formControlName="suspension"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Suspension',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-150'
+                                }"
+                                [options]="labelsSuspension"
+                                [activeItem]="selectedSuspension"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'suspension')
+                                "
+                            ></app-ta-input-dropdown>
+
+                            <app-ta-input-dropdown
+                                formControlName="year"
+                                [inputConfig]="{
+                                    name: 'Input Dropdown',
+                                    type: 'text',
+                                    label: 'Year',
+                                    isDropdown: true,
+                                    dropdownWidthClass: 'w-col-90'
+                                }"
+                                [options]="labelsYear"
+                                [activeItem]="selectedYear"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'year')
+                                "
+                            ></app-ta-input-dropdown>
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <app-ta-checkbox
+                                    formControlName="liftgate"
+                                    [customClass]="'medium'"
+                                    [label]="'Lifgate'"
+                                ></app-ta-checkbox>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </app-ta-custom-card>
             </div>
 
@@ -1502,8 +1514,7 @@
                         !additionalBillingTypes?.length
                     "
                     [adjusted]="
-                        adjustedRate ||
-                        loadForm.get('driverRate').value
+                        adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
                     [payment]="
@@ -1617,8 +1628,15 @@
                                                 priceSeparator: true,
                                                 priceSeparatorLimitation: 6,
                                                 placeholderIconRightSide:
-                                                additional.get('id').value === 6 ? 'dollar' : 'dollar-additional-load',
-                                                placeholderIconColor: additional.get('id').value === 6 ? 'purple' : 'blue',
+                                                    additional.get('id')
+                                                        .value === 6
+                                                        ? 'dollar'
+                                                        : 'dollar-additional-load',
+                                                placeholderIconColor:
+                                                    additional.get('id')
+                                                        .value === 6
+                                                        ? 'purple'
+                                                        : 'blue',
                                                 inputCursorOnRightSide: true,
                                                 removeInput: true,
                                                 isRequired: true,
@@ -1659,95 +1677,93 @@
                         </div>
 
                         <div>
-                            <ng-container *ngIf="isVisiblePayment">
-                                <div formArrayName="additionalPayments">
-                                    <div
-                                        *ngFor="
-                                            let additional of additionalPayments()
-                                                .controls;
-                                            let indx = index;
-                                            trackBy: trackByIdentity
-                                        "
-                                        [ngStyle]="{ 'margin-bottom': '4px' }"
-                                    >
-                                        <div [formGroupName]="indx">
-                                            <div class="load-financial-payment">
-                                                <app-ta-input
-                                                    formControlName="pay"
-                                                    [inputConfig]="{
-                                                        name: 'price-separator',
-                                                        type: 'text',
-                                                        label: additional.get(
-                                                            'name'
-                                                        ).value,
-                                                        labelInInput: true,
-                                                        priceSeparator: true,
-                                                        priceSeparatorLimitation: 6,
-                                                        placeholderIconRightSide:
-                                                            'dollar-additional-load',
-                                                        placeholderIconColor:
-                                                            'blue',
-                                                        inputCursorOnRightSide: true,
-                                                        removeInput: true,
-                                                        isRequired: true,
-                                                        hideErrorMessage: true,
-                                                        hideRequiredCheck: true,
-                                                        hideDangerMark: true
-                                                    }"
-                                                    (clear)="
-                                                        removePaymentBilling(
-                                                            indx
-                                                        )
-                                                    "
-                                                ></app-ta-input>
+                            <div
+                                formArrayName="additionalPayments"
+                                *ngIf="isVisiblePayment"
+                            >
+                                <div
+                                    *ngFor="
+                                        let additional of additionalPayments()
+                                            .controls;
+                                        let indx = index;
+                                        trackBy: trackByIdentity
+                                    "
+                                    [ngStyle]="{ 'margin-bottom': '4px' }"
+                                >
+                                    <div [formGroupName]="indx">
+                                        <div class="load-financial-payment">
+                                            <app-ta-input
+                                                formControlName="pay"
+                                                [inputConfig]="{
+                                                    name: 'price-separator',
+                                                    type: 'text',
+                                                    label: additional.get(
+                                                        'name'
+                                                    ).value,
+                                                    labelInInput: true,
+                                                    priceSeparator: true,
+                                                    priceSeparatorLimitation: 6,
+                                                    placeholderIconRightSide:
+                                                        'dollar-additional-load',
+                                                    placeholderIconColor:
+                                                        'blue',
+                                                    inputCursorOnRightSide: true,
+                                                    removeInput: true,
+                                                    isRequired: true,
+                                                    hideErrorMessage: true,
+                                                    hideRequiredCheck: true,
+                                                    hideDangerMark: true
+                                                }"
+                                                (clear)="
+                                                    removePaymentBilling(indx)
+                                                "
+                                            ></app-ta-input>
 
-                                                <app-ta-input-dropdown
-                                                    formControlName="displayPaymentType"
-                                                    [inputConfig]="{
-                                                        name: 'payType',
-                                                        type: 'text',
-                                                        label: 'Pay Type',
-                                                        labelInInput: true,
-                                                        placeholderIconRightSide:
-                                                            'billing',
-                                                        placeholderIconColor:
-                                                            'blue',
-                                                        inputCursorOnRightSide: true,
-                                                        hideErrorMessage: true,
-                                                        hideRequiredCheck: true,
-                                                        hideDangerMark: true,
-                                                        removeInput: true
-                                                    }"
-                                                    [canOpenModal]="true"
-                                                    [options]="
-                                                        paymentMethodsDropdownList
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectDropdown(
-                                                            $event,
-                                                            'pay-type',
-                                                            indx
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
+                                            <app-ta-input-dropdown
+                                                formControlName="displayPaymentType"
+                                                [inputConfig]="{
+                                                    name: 'payType',
+                                                    type: 'text',
+                                                    label: 'Pay Type',
+                                                    labelInInput: true,
+                                                    placeholderIconRightSide:
+                                                        'billing',
+                                                    placeholderIconColor:
+                                                        'blue',
+                                                    inputCursorOnRightSide: true,
+                                                    hideErrorMessage: true,
+                                                    hideRequiredCheck: true,
+                                                    hideDangerMark: true,
+                                                    removeInput: true
+                                                }"
+                                                [canOpenModal]="true"
+                                                [options]="
+                                                    paymentMethodsDropdownList
+                                                "
+                                                (selectedItem)="
+                                                    onSelectDropdown(
+                                                        $event,
+                                                        'pay-type',
+                                                        indx
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
 
-                                                <app-ta-input
-                                                    formControlName="payDate"
-                                                    [inputConfig]="{
-                                                        name: 'datepicker',
-                                                        type: 'text',
-                                                        label: 'Date',
-                                                        labelInInput: true,
-                                                        placeholderIcon: 'date',
-                                                        customClass:
-                                                            'datetimeclass'
-                                                    }"
-                                                ></app-ta-input>
-                                            </div>
+                                            <app-ta-input
+                                                formControlName="payDate"
+                                                [inputConfig]="{
+                                                    name: 'datepicker',
+                                                    type: 'text',
+                                                    label: 'Date',
+                                                    labelInInput: true,
+                                                    placeholderIcon: 'date',
+                                                    customClass: 'datetimeclass'
+                                                }"
+                                            ></app-ta-input>
                                         </div>
                                     </div>
                                 </div>
-                            </ng-container>
+                            </div>
 
                             <ng-container *ngIf="showPaymentArray">
                                 <app-ta-input-dropdown
@@ -1784,7 +1800,14 @@
                             ></app-ta-input>
 
                             <ng-container *ngIf="invoicePercent.daysToPay">
-                                <app-ta-progres-bar [type]="'days'" [text]="invoicePercent.daysLeft" [daysToPay]="invoicePercent.daysToPay" [percents]="invoicePercent.percent" [daysExpired]="true"> </app-ta-progres-bar>
+                                <app-ta-progres-bar
+                                    [type]="'days'"
+                                    [text]="invoicePercent.daysLeft"
+                                    [daysToPay]="invoicePercent.daysToPay"
+                                    [percents]="invoicePercent.percent"
+                                    [daysExpired]="true"
+                                >
+                                </app-ta-progres-bar>
                             </ng-container>
                         </div>
                     </div>
@@ -1793,7 +1816,10 @@
 
             <!-- Comments -->
 
-            <div class="load-modal-row" *ngIf="editData?.type?.includes('edit')">
+            <div
+                class="load-modal-row"
+                *ngIf="editData?.type?.includes('edit')"
+            >
                 <app-ta-custom-card
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"
@@ -1826,7 +1852,7 @@
                         ></app-ta-comment>
                     </ng-container>
                 </app-ta-custom-card>
-            </div> 
+            </div>
 
             <!-- Documents -->
 

@@ -50,7 +50,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
-import { LoadModalHazardousComponent } from './components/load-modal-hazardous/load-modal-hazardous.component';
+import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -113,10 +113,11 @@ import { FileEvent } from '@shared/models/file-event.model';
 import { LoadAdditionalBilling } from '@pages/load/pages/load-modal/models/load-additional-billing.model';
 import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-dropdown.model';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { LoadAdditionalPayment } from './models/load-additional-payment.model';
+import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
+import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
 
 // Svg Routes
-import { LoadModalSvgRoutes } from './utils/svg-routes/load-modal-svg-routes';
+import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
 
 @Component({
     selector: 'app-load-modal',
@@ -359,7 +360,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public get invoicePercent() {
+    public get invoicePercent(): LoadModalInvoiceProgress {
         if (this.loadForm.value) {
             const daysLeft = Math.abs(this.loadForm.get(LoadModalStringEnum.AGE_UNPAID).value);
             const daysToPay = this.loadForm.get(LoadModalStringEnum.DAYS_TO_PAY).value;
@@ -728,7 +729,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
-            case 'pay-type':
+            case LoadModalStringEnum.PAYMENT_TYPE:
                 const value = this.additionalPayments().at(index);
                 value.patchValue({
                     ...value,
@@ -1354,12 +1355,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             {
                                 value: this.selectedPickupShipper.address,
                                 logoName: null,
-                            },
-                            // {
-                            //     value: this.selectedPickupShipper.loadsCount,
-                            //     logoName: null,
-                            //     isCounter: true,
-                            // },
+                            }
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -1494,12 +1490,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             {
                                 value: this.selectedDeliveryShipper.address,
                                 logoName: null,
-                            },
-                            // {
-                            //     value: this.selectedDeliveryShipper.loadsCount,
-                            //     logoName: null,
-                            //     isCounter: true,
-                            // },
+                            }
                         ],
                         customClass: LoadModalStringEnum.LOAD_SHIPPER,
                     },
@@ -3889,9 +3880,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // billing & payment
             baseRate: baseRate,
             advancePay: advancePay,
-            /*  driverRate: driverRate,
-            adjustedRate: adjustedRate,
-            , */
 
             // total
             loadMiles: loadedMiles,

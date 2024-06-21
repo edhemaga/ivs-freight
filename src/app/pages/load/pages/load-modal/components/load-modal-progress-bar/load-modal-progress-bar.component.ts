@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+// Pipes
 import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
 
 @Component({
@@ -12,6 +14,8 @@ import { NFormatterPipe } from '@shared/pipes/n-formatter.pipe';
         // Module
         CommonModule,
         FormsModule,
+
+        // Pipes
         NFormatterPipe
     ],
 })
