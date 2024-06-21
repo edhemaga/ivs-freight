@@ -349,7 +349,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegHours: number = null;
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
-    public selectedPayType: any = null;
     public paymentMethodsDropdownList: EnumValue[];
     public paymentTypesDropdownList: EnumValue[];
     public orginalPaymentTypesDropdownList: EnumValue[];
@@ -862,10 +861,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.labelsDispatches = this.originLabelsDispatches;
                 }
-
-                break;
-            case LoadModalStringEnum.PAYMENT_TYPE:
-                this.selectedPayType = event;
 
                 break;
             case LoadModalStringEnum.COMPANY:
