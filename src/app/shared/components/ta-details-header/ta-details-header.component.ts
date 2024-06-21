@@ -71,7 +71,6 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() totalCost: any;
     @Input() businessOpen: boolean;
     @Input() showClosedBadge: boolean;
-    @Input() loadNames: boolean;
     @Input() secondNameHeader: string = '';
     @Input() countViolation: number;
     @Input() hideCounter: boolean;

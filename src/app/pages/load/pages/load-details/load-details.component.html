@@ -1,20 +1,21 @@
-<div
-    class="details-container-items"
-    [ngClass]="{ 'details-closed-items': statusIsClosed }"
->
+<div class="details-container-items">
     <ng-container
-        *ngFor="let item of loadConfig; let i = index; trackBy: identity"
+        *ngFor="
+            let item of loadDetailsConfig;
+            let i = index;
+            trackBy: trackByIdentity
+        "
     >
         <div>
             <app-ta-details-header
                 [options]="dataTest"
                 [route]="'/list/load'"
-                [tooltipHeaderName]="'Back to Load List'"
+                [tooltipHeaderName]="'Back to List'"
                 [headerText]="item.name"
                 [hasDateArrow]="item.hasArrow"
                 [counterData]="item.length"
+                [danger]="item.hasDanger"
                 [statusInactive]="item.hide"
-                [loadNames]="item.pl"
             >
             </app-ta-details-header>
         </div>
@@ -22,7 +23,7 @@
 
     <div class="load-details-container">
         <app-load-details-item
-            [loadData]="loadConfig"
+            [loadData]="loadDetailsConfig"
             [routeData]="loadStopRoutes"
         ></app-load-details-item>
     </div>

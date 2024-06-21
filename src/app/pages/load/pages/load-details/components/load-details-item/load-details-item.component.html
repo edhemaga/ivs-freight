@@ -16,7 +16,7 @@
             ></app-load-details-card>
         </div>
 
-        <div *ngSwitchCase="'finance'">
+        <!--      <div *ngSwitchCase="'finance'">
             <div
                 class="finance-container"
                 [ngStyle]="{
@@ -27,12 +27,12 @@
                 }"
             >
                 <div class="finance-wrapper">
-                    <div class="balance-container">
+                   <div class="balance-container">
                         <div class="balance-wrapper">
                             <div class="balance-item-wrapper">
                                 <span class="header">Balance</span>
                                 <span class="value">{{
-                                    loadItem?.data.broker.availableCredit
+                                    loadItem?.data.broker?.availableCredit
                                         | formatCurrency
                                 }}</span>
                             </div>
@@ -288,7 +288,7 @@
                     </app-ta-custom-card>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div *ngSwitchCase="'stop'">
             <div class="stop-container">
                 <div

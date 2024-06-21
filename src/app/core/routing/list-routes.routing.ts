@@ -33,7 +33,7 @@ export class ListRoutes {
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: {
                 loadTemplate: LoadTemplateResolver,
-                loadPanding: LoadPendingResolver,
+                /* loadPanding: LoadPendingResolver, */
                 loadActive: LoadActiveResolver,
                 loadClosed: LoadClosedResolver,
             },

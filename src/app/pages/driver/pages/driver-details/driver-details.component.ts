@@ -49,7 +49,7 @@ import { DriversItemStore } from '@pages/driver/state/driver-details-state/drive
 
 // models
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
-import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
 import { DriverResponse } from 'appcoretruckassist';
 
 @Component({
@@ -71,7 +71,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
-    public driverDetailsConfig: DriverDetailsConfig[] = [];
+    public driverDetailsConfig: DetailsConfig[] = [];
 
     public currentIndex: number = 0;
 
@@ -105,7 +105,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         // store
         private driverMinimimalListStore: DriversMinimalListStore,
         private driverMinimalQuery: DriversMinimalListQuery,
-        private driverDQuery: DriversDetailsListQuery,
+        private driverDetailsQuery: DriversDetailsListQuery,
         private driversItemStore: DriversItemStore,
 
         // pipes
@@ -239,8 +239,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
                 this.newDriverId = id;
 
-                if (this.driverDQuery.hasEntity(id)) {
-                    query = this.driverDQuery.selectEntity(id).pipe(take(1));
+                if (this.driverDetailsQuery.hasEntity(id)) {
+                    query = this.driverDetailsQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
 
                     query.subscribe((res: DriverResponse) => {
                         this.currentIndex = this.driversList.findIndex(

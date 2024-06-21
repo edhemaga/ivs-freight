@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { EnumValue } from './enumValue';
 import { AddressEntity } from './addressEntity';
 
 
@@ -25,5 +26,6 @@ export interface DriverMinimalResponse {
     totalMiles?: number | null;
     totalEarnings?: number | null;
     hiredAt?: string | null;
+    payType?: EnumValue;
 }
 

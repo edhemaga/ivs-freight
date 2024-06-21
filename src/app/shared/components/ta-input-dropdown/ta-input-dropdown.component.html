@@ -480,7 +480,8 @@
                             _options[0].name === 'No Results',
                         'add-new': option.name === 'ADD NEW',
                         'all-assigned':
-                            option?.name?.toLowerCase() === 'all assigned'
+                            option?.name?.toLowerCase() === 'all assigned',
+                        'load-details-template': option?.statusString
                     }"
                     class="dropdown-option details-template"
                 >
@@ -505,12 +506,31 @@
 
                     <!-- Svg -->
 
-                    <svg-icon
-                        [src]="option?.svg | taSvg : option?.folder"
-                        class="details-template-logo"
-                    ></svg-icon>
+                    <ng-container *ngIf="option?.svg">
+                        <svg-icon
+                            [src]="option?.svg | taSvg : option?.folder"
+                            class="details-template-logo"
+                        ></svg-icon>
+                    </ng-container>
 
-                    <!-- Driver Details Template -->
+                    <ng-container *ngIf="option?.statusString">
+                        <p class="m-0 additional-text">
+                            <ng-container
+                                *ngIf="
+                                    i === hoveringIndex;
+                                    else notHoveringLeft
+                                "
+                            >
+                                ${{ option?.totalBill }}K
+                            </ng-container>
+
+                            <ng-template #notHoveringLeft>
+                                {{ option?.referenceNumber }}
+                            </ng-template>
+                        </p>
+                    </ng-container>
+
+                    <!-- Driver & Load Details Template -->
 
                     <ng-container
                         *ngIf="option?.address?.address || option?.statusString"
@@ -560,7 +580,18 @@
                                             else notHoveringRight
                                         "
                                     >
-                                        ${{ option?.totalEarnings }}K
+                                        <ng-container
+                                            *ngIf="
+                                                option?.address?.address;
+                                                else brokerName
+                                            "
+                                        >
+                                            ${{ option?.totalEarnings }}K
+                                        </ng-container>
+
+                                        <ng-template #brokerName>
+                                            {{ option?.brokerName }}
+                                        </ng-template>
                                     </ng-container>
 
                                     <ng-template #notHoveringRight>
@@ -581,8 +612,6 @@
                             </div>
                         </div>
                     </ng-container>
-
-                    <!-- Plus Icon -->
 
                     <!-- Additional Text -->
 
