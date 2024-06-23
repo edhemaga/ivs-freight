@@ -128,6 +128,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
             value: 'ASSIGN',
         },
         {
+            api: 'pm',
+            value: 'PM',
+        },
+        {
             api: 'trailer',
             value: 'TRAILER',
         },
