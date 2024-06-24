@@ -159,7 +159,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         // pipes
         private thousandSeparator: ThousandSeparatorPipe,
         private nameInitialsPipe: NameInitialsPipe
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.sendDriverData();
@@ -791,12 +791,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapDriverData(data: any): any {
+        
         const {
             id,
             status,
             owner,
             name,
-            avatar,
+            avatarFile,
             dateOfBirth,
             ssn,
             phone,
@@ -827,7 +828,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             trailerType,
             truckType,
         } = data;
-        if (!avatar) this.mapingIndex++;
+
+        if (!avatarFile?.url) this.mapingIndex++;
 
         return {
             id,
@@ -836,8 +838,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isOwner: !!owner,
             textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
-            avatarImg: avatar
-                ? this.imageBase64Service.sanitizer(avatar)
+            avatarImg: avatarFile
+                ? avatarFile.url
                 : null,
             fullName: name,
             tableDOB:
@@ -891,8 +893,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableEmergContactPhone: emergencyContact?.phone,
             tableTwicExp: twicExpirationDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                      twicExpirationDate
-                  )
+                    twicExpirationDate
+                )
                 : null,
             tableFuelCardDetailNumber: fuelCardNumber,
             tableCdlDetailNumber: cdl?.number,
@@ -941,32 +943,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : null,
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
-            tabelNotificationGeneral: `${
-                general?.mail
+            tabelNotificationGeneral: `${general?.mail
                     ? TableStringEnum.EMAIL
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.push
+                }${general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                general?.sms
+                }${general?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
-            tabelNotificationPayroll: `${
-                payroll?.mail
+                }`,
+            tabelNotificationPayroll: `${payroll?.mail
                     ? TableStringEnum.EMAIL
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.push
+                }${payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }${
-                payroll?.sms
+                }${payroll?.sms
                     ? TableStringEnum.SMS
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
-            }`,
+                }`,
             tabelHired:
                 MethodsCalculationsHelper.convertDateFromBackend(hiredAt),
             tableTerminated:
@@ -1676,7 +1672,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(interval);
                     }, 900);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
