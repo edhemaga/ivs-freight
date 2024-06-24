@@ -17,14 +17,15 @@ export interface CreateWorkExperienceItemCommand {
     employer?: string | null;
     jobDescription?: string | null;
     from?: string;
-    to?: string;
+    to?: string | null;
     phone?: string | null;
     email?: string | null;
     fax?: string | null;
     address?: AddressEntity;
     isDrivingPosition?: boolean;
-    reasonForLeaving?: number;
+    reasonForLeaving?: number | null;
     accountForPeriodBetween?: string | null;
+    currentEmployment?: boolean;
     classesOfEquipment?: Array<CreateClassOfEquipmentCommand> | null;
 }
 

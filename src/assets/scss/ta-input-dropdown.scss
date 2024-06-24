@@ -595,6 +595,15 @@
                     align-items: center;
                     justify-content: space-between;
 
+                    &.load-details-template {
+                        grid-template-columns: 30px 130px 1fr;
+                        grid-gap: 4px;
+                    }
+
+                    &.add-new {
+                        grid-template-columns: 1fr 1fr;
+                    }
+
                     &.dropdown-option {
                         position: relative;
                     }

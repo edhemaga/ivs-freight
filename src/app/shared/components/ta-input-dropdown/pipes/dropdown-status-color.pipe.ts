@@ -5,29 +5,29 @@ import { Pipe, PipeTransform } from '@angular/core';
     standalone: true,
 })
 export class DropdownStatusPipe implements PipeTransform {
-    transform(status: string): any {
+    transform(status: string): { background: string } {
         const statusGreyColorCondition = ['Booked', 'Unassigned'].includes(
             status
         );
-        const statusTurquoiseColorCondition = status === 'Assigned';
+        const statusTurquoiseColorCondition = status === 'Pending';
         const statusBlueColorCondition = status === 'Dispatched';
         const statusGreenColorCondition = status === 'Loaded';
 
         if (statusGreyColorCondition) {
             return {
-                color: '#6C6C6C99',
+                background: '#6C6C6C99',
             };
         } else if (statusTurquoiseColorCondition) {
             return {
-                color: '#00849699',
+                background: '#00849699',
             };
         } else if (statusBlueColorCondition) {
             return {
-                color: '#3074D399',
+                background: '#3074D399',
             };
         } else if (statusGreenColorCondition) {
             return {
-                color: '#26A69099',
+                background: '#26A69099',
             };
         }
     }
