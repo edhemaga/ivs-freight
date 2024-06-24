@@ -9,17 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { ParkingSlotDispatchModalResponse } from './parkingSlotDispatchModalResponse';
 
 
-export interface LoadMinimalResponse { 
-    id?: number;
-    loadNumber?: string | null;
-    type?: EnumValue;
-    statusType?: EnumValue;
-    status?: EnumValue;
-    referenceNumber?: string | null;
-    totalBill?: number | null;
-    brokerName?: string | null;
+export interface ParkingDispatchModalResponse { 
+    name?: string | null;
+    parkingSlots?: Array<ParkingSlotDispatchModalResponse> | null;
 }
 

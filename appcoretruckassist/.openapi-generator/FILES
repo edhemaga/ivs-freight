@@ -408,6 +408,7 @@ model/driverDetailsNotificationResponse.ts
 model/driverDetailsOffDutyLocationResponse.ts
 model/driverDetailsOwnerResponse.ts
 model/driverDetailsPayrollResponse.ts
+model/driverDispatchModalResponse.ts
 model/driverDispatchResponse.ts
 model/driverFilterListResponse.ts
 model/driverFilterResponse.ts
@@ -549,6 +550,7 @@ model/intervalLabelResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
+model/invoiceAgingProgressBarResponse.ts
 model/itemFuel.ts
 model/legResponse.ts
 model/liveTrackingBaseResponse.ts
@@ -676,11 +678,13 @@ model/pMTruckShortResponse.ts
 model/pMTruckUnitListResponse.ts
 model/pMTruckUnitResponse.ts
 model/pMTruckUnitResponsePagination.ts
+model/parkingDispatchModalResponse.ts
 model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
 model/parkingShortResponse.ts
 model/parkingSlotCommand.ts
+model/parkingSlotDispatchModalResponse.ts
 model/parkingSlotResponse.ts
 model/parkingSlotShortResponse.ts
 model/parkingSlotType.ts

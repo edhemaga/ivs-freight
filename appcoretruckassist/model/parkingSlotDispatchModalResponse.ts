@@ -12,14 +12,9 @@
 import { EnumValue } from './enumValue';
 
 
-export interface LoadMinimalResponse { 
+export interface ParkingSlotDispatchModalResponse { 
     id?: number;
-    loadNumber?: string | null;
-    type?: EnumValue;
-    statusType?: EnumValue;
-    status?: EnumValue;
-    referenceNumber?: string | null;
-    totalBill?: number | null;
-    brokerName?: string | null;
+    slotNumber?: number;
+    parkingSlotType?: EnumValue;
 }
 

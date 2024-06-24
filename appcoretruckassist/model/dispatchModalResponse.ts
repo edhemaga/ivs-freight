@@ -12,17 +12,19 @@
 import { TrailerDispatchModalResponse } from './trailerDispatchModalResponse';
 import { DispatchBoardResponse } from './dispatchBoardResponse';
 import { EnumValue } from './enumValue';
+import { ParkingDispatchModalResponse } from './parkingDispatchModalResponse';
 import { TruckDispatchModalResponse } from './truckDispatchModalResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
+import { DriverDispatchModalResponse } from './driverDispatchModalResponse';
 import { LoadShortResponse } from './loadShortResponse';
 
 
 export interface DispatchModalResponse { 
     trucks?: Array<TruckDispatchModalResponse> | null;
     trailers?: Array<TrailerDispatchModalResponse> | null;
-    drivers?: Array<DriverMinimalResponse> | null;
+    drivers?: Array<DriverDispatchModalResponse> | null;
     dispatchBoards?: Array<DispatchBoardResponse> | null;
     loads?: Array<LoadShortResponse> | null;
+    parkings?: Array<ParkingDispatchModalResponse> | null;
     dispatchStatuses?: Array<EnumValue> | null;
 }
 

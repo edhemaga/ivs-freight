@@ -17,6 +17,7 @@ export interface TrailerDispatchModalResponse {
     trailerNumber?: string | null;
     status?: number;
     owner?: string | null;
+    year?: number | null;
     trailerType?: TrailerTypeResponse;
     allowedTruckIds?: Array<number> | null;
 }

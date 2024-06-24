@@ -9,17 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { CdlEndorsementResponse } from './cdlEndorsementResponse';
 
 
-export interface LoadMinimalResponse { 
+export interface DriverDispatchModalResponse { 
     id?: number;
-    loadNumber?: string | null;
-    type?: EnumValue;
-    statusType?: EnumValue;
-    status?: EnumValue;
-    referenceNumber?: string | null;
-    totalBill?: number | null;
-    brokerName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    owner?: number | null;
+    status?: number;
+    cdlEndorsements?: Array<CdlEndorsementResponse> | null;
 }
 

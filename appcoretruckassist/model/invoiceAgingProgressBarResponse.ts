@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 
 
-export interface LoadMinimalResponse { 
-    id?: number;
-    loadNumber?: string | null;
-    type?: EnumValue;
-    statusType?: EnumValue;
-    status?: EnumValue;
-    referenceNumber?: string | null;
-    totalBill?: number | null;
-    brokerName?: string | null;
+export interface InvoiceAgingProgressBarResponse { 
+    expirationInDays?: number | null;
+    percentage?: number | null;
 }
 

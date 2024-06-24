@@ -68,7 +68,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
     public cardForm: UntypedFormGroup;
 
-    public loadsDropdownList: LoadResponse[] = [];
+    public loadsDropdownList: LoadMinimalResponse[] = [];
 
     public loadCurrentIndex: number;
 
