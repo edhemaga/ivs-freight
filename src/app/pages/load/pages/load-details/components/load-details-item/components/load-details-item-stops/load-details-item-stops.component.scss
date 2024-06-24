@@ -1,0 +1,300 @@
+@import 'src/theme/variables';
+
+.stops-container {
+    background: #eeeeee;
+
+    /* Header */
+
+    .stops-header {
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 3px;
+        background: $white;
+
+        &-top {
+            p {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw6-2;
+
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            .icon {
+                margin-left: 4px;
+                position: relative;
+                bottom: 1px;
+
+                svg {
+                    path {
+                        fill: $ta-red-10;
+                    }
+                }
+            }
+        }
+
+        &-progress-bar {
+            &-top {
+                margin-bottom: 5px;
+
+                p {
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: $ta-black;
+
+                    &::-moz-selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+            }
+
+            .progress-bar,
+            .progress-bar-inner {
+                height: 8px;
+                border-radius: 2px 0 0 2px;
+            }
+        }
+    }
+
+    /* Main */
+
+    .stops-main {
+        padding: 6px;
+        border-radius: 3px;
+        background: $white;
+
+        &-header {
+            display: grid;
+            grid-template-columns: 18px 1fr 1fr 1fr 1fr 76px;
+            grid-gap: 12px;
+            margin-bottom: 6px;
+            padding: 6px 8px 12px 8px;
+            border-bottom: 1px $bw-9 solid;
+
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1fr 1fr 1fr 1fr 1fr 76px;
+            }
+
+            p {
+                font-size: 11px;
+                line-height: 14px;
+                color: $bw6-2;
+
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+        }
+
+        &-item {
+            display: grid;
+            grid-template-columns: 18px 1fr 1fr 1fr 1fr 76px;
+            grid-gap: 12px;
+            padding: 2px 8px;
+            margin-bottom: 2px;
+            transition: background 0.2s ease-in;
+
+            &.includes-check-in-grid {
+                grid-template-columns: 18px 1fr 1fr 1fr 1fr 1fr 76px;
+            }
+
+            &.active {
+                background: $ta-light-grey-5;
+                margin-bottom: 0;
+
+                &:hover {
+                    background: $ta-light-grey-5;
+                }
+            }
+
+            &:hover {
+                background: $bw2;
+            }
+
+            .stop-order-box {
+                width: 18px;
+                height: 18px;
+                border-radius: 1px;
+
+                p {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white;
+
+                    &::-moz-selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
+
+                    &::selection {
+                        color: $white;
+                        background: rgb(255, 255, 255, 0.2);
+                    }
+                }
+            }
+
+            .stop-box {
+                &:first-child,
+                &:last-child {
+                    p {
+                        color: $ta-black;
+
+                        &::-moz-selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+
+                        &::selection {
+                            color: $ta-black;
+                            background: rgb(66, 66, 66, 0.2);
+                        }
+                    }
+                }
+
+                p {
+                    font-size: 14px;
+                    line-height: 18px;
+                    color: $ta-black-2;
+
+                    &::-moz-selection {
+                        color: $ta-black-2;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+
+                    &::selection {
+                        color: $ta-black-2;
+                        background: rgb(66, 66, 66, 0.2);
+                    }
+                }
+
+                span {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $bw5;
+
+                    &::-moz-selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+
+                    &::selection {
+                        color: $bw5;
+                        background: rgb(145, 145, 145, 0.2);
+                    }
+                }
+            }
+        }
+
+        &-item-dropdown {
+            max-height: 0;
+            overflow: hidden;
+            background: $ta-light-grey-5;
+            border-bottom-left-radius: 2px;
+            border-bottom-right-radius: 2px;
+            transition: max-height 0.1s ease-out;
+
+            &.expanded {
+                max-height: 610px;
+                transition: max-height 0.1s ease-in;
+            }
+
+            &-inner {
+                border-top: 1px $bw-9 solid;
+                margin: 0 4px;
+                padding: 4px;
+
+                .stop-items-item {
+                    padding: 4px 0;
+                    border-radius: 1px;
+                    transition: background 0.2s ease-in;
+
+                    &:hover {
+                        background: $dark-2;
+                    }
+                }
+
+                .stop-items-header,
+                .stop-items-item {
+                    display: grid;
+                    grid-template-columns: 170px 74px 34px 50px repeat(4, 34px) 56px 80px 90px repeat(
+                            2,
+                            60px
+                        );
+                    grid-gap: 17.33px;
+                    margin-bottom: 2px;
+
+                    .first-box {
+                        display: grid;
+                        grid-template-columns: 18px 1fr;
+                        grid-gap: 12px;
+                    }
+
+                    .box {
+                        &.header-box {
+                            p {
+                                color: $bw5;
+
+                                &::-moz-selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+
+                                &::selection {
+                                    color: $bw5;
+                                    background: rgb(145, 145, 145, 0.2);
+                                }
+                            }
+                        }
+
+                        .icon {
+                            position: relative;
+                            bottom: 1px;
+
+                            svg {
+                                path {
+                                    fill: $bw5;
+                                }
+                            }
+                        }
+
+                        p {
+                            font-size: 11px;
+                            line-height: 14px;
+                            color: $ta-black;
+
+                            &::-moz-selection {
+                                color: $ta-black;
+                                background: rgb(66, 66, 66, 0.2);
+                            }
+
+                            &::selection {
+                                color: $ta-black;
+                                background: rgb(66, 66, 66, 0.2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

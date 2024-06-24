@@ -201,10 +201,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             DriverDetailsHelper.getDetailsDropdownOptions(status);
     }
 
-    public getDetailsConfig(driverData: DriverResponse): void {
+    public getDetailsConfig(driver: DriverResponse): void {
         let driverStatus: boolean;
 
-        if (!driverData?.status) {
+        if (!driver?.status) {
             driverStatus = true;
 
             this.isInactive = true;
@@ -214,16 +214,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             this.isInactive = false;
         }
 
-        this.driverId = driverData?.id;
-        this.driverObject = driverData;
+        this.driverId = driver?.id;
+        this.driverObject = driver;
 
-        this.detailsDataService.setNewData(driverData);
+        this.detailsDataService.setNewData(driver);
 
-        this.getDetailsOptions(driverData.status);
-        this.checkExpiration(driverData);
+        this.getDetailsOptions(driver.status);
+        this.checkExpiration(driver);
 
         this.driverDetailsConfig = DriverDetailsHelper.getDriverDetailsConfig(
-            driverData,
+            driver,
             driverStatus,
             this.hasDangerCdl,
             this.hasDangerMedical,
@@ -280,7 +280,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             data: {
                 ...this.driverObject,
                 name,
-                avatarImg: this.driverObject.avatar,
+                /*  avatarImg: this.driverObject.avatar, */
                 textShortName: this.nameInitialsPipe.transform(name),
                 avatarColor: AvatarColorsHelper.getAvatarColors(
                     this.currentIndex

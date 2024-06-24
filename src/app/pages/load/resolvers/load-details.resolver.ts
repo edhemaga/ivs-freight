@@ -23,8 +23,8 @@ export class LoadDetailsResolver implements Resolve<LoadResponse[]> {
         // store
         private loadService: LoadService,
         private loadItemStore: LoadItemStore,
-        private ldlStore: LoadDetailsListStore,
-        private ldlQuery: LoadDetailsListQuery
+        private loadDetailsListStore: LoadDetailsListStore,
+        private loadMinimalListQuery: LoadDetailsListQuery
     ) {}
     resolve(
         route: ActivatedRouteSnapshot
@@ -33,8 +33,8 @@ export class LoadDetailsResolver implements Resolve<LoadResponse[]> {
 
         const id = parseInt(loadId);
 
-        if (this.ldlQuery.hasEntity(id)) {
-            return this.ldlQuery.selectEntity(id).pipe(
+        if (this.loadMinimalListQuery.hasEntity(id)) {
+            return this.loadMinimalListQuery.selectEntity(id).pipe(
                 tap((loadResponse: LoadResponse) => {
                     this.loadItemStore.set([loadResponse]);
                 }),
@@ -43,7 +43,7 @@ export class LoadDetailsResolver implements Resolve<LoadResponse[]> {
         } else {
             return this.loadService.getLoadById(id).pipe(
                 tap((loadResponse: LoadResponse) => {
-                    this.ldlStore.add(loadResponse);
+                    this.loadDetailsListStore.add(loadResponse);
                     this.loadItemStore.set([loadResponse]);
                 }),
                 catchError(() => {

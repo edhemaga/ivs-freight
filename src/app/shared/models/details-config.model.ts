@@ -17,6 +17,7 @@ export interface DetailsConfig {
     length?: number;
     hide?: boolean;
     hasArrow?: boolean;
+    isMapDisplayed?: boolean;
     data?:
         | DriverResponse
         | CdlResponse

@@ -66,7 +66,7 @@ import {
     TrailerLengthResponse,
     ApplicantResponse,
     ApplicantModalResponse,
-    CreateCompanyOwnerInfoCommand,
+    /*   CreateCompanyOwnerInfoCommand, */
     CompanyOwnerInfoFeedbackResponse,
     CreateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist';
@@ -1933,7 +1933,7 @@ export class ApplicantOwnerInfoComponent implements OnInit, OnDestroy {
             county: '',
         };
 
-        const saveData: CreateCompanyOwnerInfoCommand = {
+        const saveData /* : CreateCompanyOwnerInfoCommand  */ = {
             ...ownerInfoForm,
             applicantId: this.applicantId,
             address: selectedAddress,

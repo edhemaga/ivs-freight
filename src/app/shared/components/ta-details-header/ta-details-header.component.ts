@@ -50,20 +50,15 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() route: string = '';
     @Input() options: any = [];
     @Input() counterData: number = 0;
-    @Output() openModalAction = new EventEmitter<any>();
     @Input() hasIcon: boolean = false;
     @Input() hasDateArrow: boolean = false;
     @Input() hidePlus: boolean = true;
     @Input() customText: string = '';
-    @Output() changeDataArrowUp = new EventEmitter<any>();
-    @Output() changeDataArrowDown = new EventEmitter<any>();
     @Input() hasRequest: boolean;
-    @Output() makeRequest = new EventEmitter<any>();
     @Input() arrayIcons: any[] = [];
     @Input() statusInactive: boolean = true;
     @Input() danger: boolean = false;
     @Input() isInactive: boolean = false;
-    @Output() public dropActions = new EventEmitter<any>();
     @Input() public optionsId: number;
     @Input() hasDateNav: boolean = true;
     @Input() counterViolation: number;
@@ -84,6 +79,16 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() brokerLoadDrop: boolean = false;
     @Input() hasSearch: boolean = false;
     @Input() searchPlaceholder: string;
+    @Input() subText: string;
+    @Input() capsulaText: string;
+    @Input() isMapBtn: boolean;
+
+    @Output() openModalAction = new EventEmitter<any>();
+    @Output() changeDataArrowUp = new EventEmitter<any>();
+    @Output() changeDataArrowDown = new EventEmitter<any>();
+    @Output() makeRequest = new EventEmitter<any>();
+    @Output() mapBtnEmitter = new EventEmitter<boolean>();
+    @Output() dropActions = new EventEmitter<any>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
     public icDangerSvgIcon: string = 'assets/svg/common/ic_danger.svg';
@@ -92,6 +97,8 @@ export class TaDetailsHeaderComponent implements OnInit {
     public dropOpened: boolean = false;
     public tooltip: any;
     public activeTemplate: any = 'All Load';
+    public isMapBtnClicked: boolean = false;
+
     constructor(private routes: ActivatedRoute) {}
 
     ngOnInit(): void {}
@@ -278,5 +285,11 @@ export class TaDetailsHeaderComponent implements OnInit {
 
     dropdownClosed() {
         this.dropOpened = false;
+    }
+
+    public handleMapBtnClick(): void {
+        this.isMapBtnClicked = !this.isMapBtnClicked;
+
+        this.mapBtnEmitter.emit(this.isMapBtnClicked);
     }
 }

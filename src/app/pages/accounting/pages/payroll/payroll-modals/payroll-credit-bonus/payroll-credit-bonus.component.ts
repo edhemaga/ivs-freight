@@ -352,12 +352,12 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
                                 ' ',
                                 res.driver.lastName
                             ),
-                            logoName:
-                                res.driver.avatar === null ||
+                            /*logoName:
+                                 res.driver.avatar === null ||
                                 res.driver.avatar === undefined ||
                                 res.driver.avatar === ''
                                     ? null
-                                    : res.driver.avatar,
+                                    : res.driver.avatar, */
                             isDriver: true,
                         };
                     }
@@ -403,12 +403,12 @@ export class PayrollCreditBonusComponent implements OnInit, OnDestroy {
                         return {
                             id: item.id,
                             name: item.firstName.concat(' ', item.lastName),
-                            logoName:
+                            /*   logoName:
                                 item.avatar === null ||
                                 item.avatar === undefined ||
                                 item.avatar === ''
                                     ? null
-                                    : item.avatar,
+                                    : item.avatar, */
                             isDriver: true,
                         };
                     });

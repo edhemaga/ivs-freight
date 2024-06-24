@@ -31,7 +31,7 @@ import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-head
 import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
-import { ReviewComment } from '@shared/models/review-comment.model';
+import { LoadDetailsItemStopsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/load-details-item-stops.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -39,6 +39,8 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 
 // models
 import { UpdateCommentCommand } from 'appcoretruckassist';
+import { ReviewComment } from '@shared/models/review-comment.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
 
 @Component({
     selector: 'app-load-details-item',
@@ -66,6 +68,7 @@ import { UpdateCommentCommand } from 'appcoretruckassist';
         TaChartComponent,
         TaMapsComponent,
         LoadDetailsCardComponent,
+        LoadDetailsItemStopsComponent,
 
         // pipes
         FormatCurrencyPipe,
@@ -73,27 +76,40 @@ import { UpdateCommentCommand } from 'appcoretruckassist';
     ],
 })
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() loadData: any;
+    @Input() detailsConfig: DetailsConfig;
     @Input() routeData: any;
-    public comments: any[] = [];
+
     private destroy$ = new Subject<void>();
+
+    public comments: any[] = [];
     public totalLegMiles: any;
     public totalLegTime: any;
     public status = null;
     public activePercntage: any;
+
     constructor(private commentsService: CommentsService) {}
+
+    ngOnInit(): void {
+        // this.getLegMilesLegTime(this.detailsConfig[0].data);
+        this.getActivePertange(this.detailsConfig[0]?.data.pendingPercentage);
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.loadData.firstChange && changes.loadData.currentValue) {
-            changes.loadData.currentValue[0].data;
+        if (
+            !changes.detailsConfig.firstChange &&
+            changes.detailsConfig.currentValue
+        ) {
+            changes.detailsConfig.currentValue[0].data;
             this.getActivePertange(
-                changes?.loadData?.currentValue[0]?.data?.pendingPercentage
+                changes?.detailsConfig?.currentValue[0]?.data?.pendingPercentage
             );
         }
     }
-    ngOnInit(): void {
-        // this.getLegMilesLegTime(this.loadData[0].data);
-        this.getActivePertange(this.loadData[0]?.data.pendingPercentage);
+
+    public trackByIdentity(_: number, item: DetailsConfig): number {
+        return item.id;
     }
+
     public getActivePertange(data: any) {
         this.activePercntage = data;
         if (this.activePercntage > 0 && this.activePercntage < 30) {
@@ -125,10 +141,6 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    /**Function retrun id */
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
     changeCommentEvent(comments: ReviewComment) {
         switch (comments.action) {
             case 'delete': {
