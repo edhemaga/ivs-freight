@@ -45,8 +45,8 @@
 
     &.in-label {
         top: 4px !important;
-        font-size: 14px !important;
-        font-weight: 400 !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
         transition: none !important;
 
         &.in-label-focus {
@@ -73,35 +73,15 @@
     &.load-shipper {
         .load-shipper {
             display: grid;
-            grid-template-columns: 395px 93px 70px;
+            grid-template-columns: 455px 120px;
             align-items: center;
 
             span {
-                &:nth-child(3) {
+                &:nth-child(2) {
                     text-align: right;
-                }
-            }
-
-            span {
-                &:nth-child(2),
-                &:nth-child(3) {
-                    color: $default-label !important;
-                    opacity: 0;
-                    top: -19px;
+                    color: $default-removed-background-text;
                     font-size: 11px;
                     font-weight: $input-label-font-weight-600;
-                }
-            }
-
-            &.multiple-labels-position-on-focus {
-                span {
-                    &:nth-child(2),
-                    &:nth-child(3) {
-                        transition-delay: 300ms;
-                        color: $default-label !important;
-                        opacity: 1;
-                        top: -19px;
-                    }
                 }
             }
         }
@@ -135,12 +115,11 @@
     // Load Dispatched TTD
     .load-dispatches-ttd {
         display: grid;
-        grid-template-columns: 92px 89px 151px 1fr;
+        grid-template-columns: 92px 89px 182px 53px;
         align-items: center;
         -moz-column-gap: 65px;
         grid-column-gap: 65px;
         column-gap: 65px;
-
         span {
             &:nth-child(4) {
                 color: $default-label !important;
@@ -155,7 +134,7 @@
             span {
                 &:nth-child(4) {
                     transition-delay: 300ms;
-                    color: $default-label !important;
+                    color: $default-removed-background-text !important;
                     opacity: 1;
                     top: -19px;
                 }
@@ -208,9 +187,10 @@
                     &:nth-child(2),
                     &:nth-child(3) {
                         transition-delay: 300ms;
-                        color: $default-label !important;
+                        color: $valid-placholderText !important;
                         opacity: 1;
                         top: -19px;
+                        text-align: right;
                     }
                 }
             }
@@ -265,12 +245,16 @@
             span {
                 &:nth-child(2) {
                     transition-delay: 300ms;
-                    color: $default-label !important;
                     opacity: 1;
                     top: -19px;
+                    color: $default-removed-background-text !important;
                 }
             }
         }
+    }
+
+    &.load-shipper-contact .load-shipper-contact{
+        grid-template-columns:  295px 38px;
     }
 
     //------------------------- Custom class -------------------------
@@ -280,5 +264,11 @@
 
     &.datetimeclass.dark {
         color: $datetime-dark-label-default;
+    }
+}
+
+.hide-loads {
+    .load-broker {
+        grid-template-columns: 365px 92px;
     }
 }

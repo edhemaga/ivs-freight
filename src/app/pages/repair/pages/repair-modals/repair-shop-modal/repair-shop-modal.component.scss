@@ -26,12 +26,9 @@
     &__contact-table {
         width: 600px;
         overflow-x: scroll;
-        margin-left: 196px;
         overflow-x: visible;
         padding: 0;
         scrollbar-width: thin !important;
-        .modal-table-container {
-        }
         .contact-table-header {
             .table-header-box {
                 &:nth-child(1),

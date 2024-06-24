@@ -130,7 +130,34 @@ body {
 }
 
 // Need to override to get scroll
-html body .repair-shop-card .ta-custom-card  .content-holder.openedCardClass {
+html body .content-holder .stop-items-wrapper app-load-modal-stop-items {
+    scrollbar-width: thin !important; 
+}
+
+html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     overflow-x: scroll !important;
     scrollbar-width: thin !important;
+    overflow-x: scroll;
+    margin-left: 196px;
+    overflow-x: visible;
+    padding: 0;
+    scrollbar-width: thin !important;
+}
+
+.stop-items-number {
+    position: absolute;
+    width: 26px;
+    left: 26px;
+    top: auto;
+    border-top-width: 1px;
+    margin-top: -1px;
+}
+
+.stop-items-desc {
+    position: absolute;
+    width: 150px;
+    left: 60px;
+    top: auto;
+    border-top-width: 1px;
+    margin-top: -1px;
 }

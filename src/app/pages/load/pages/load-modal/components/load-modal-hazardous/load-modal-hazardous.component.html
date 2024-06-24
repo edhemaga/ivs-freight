@@ -18,7 +18,7 @@
             <!-- Explanation Main -->
             <div class="load-m-hazardous-explanation-main">
                 <div class="load-m-hazardous-explanation-main-type">
-                    <p>{{ hazardousType.type }}</p>
+                    <p class="ta-font-semi-bold">{{ hazardousType.type }}</p>
                 </div>
                 <div class="load-m-hazardous-explanation-main-title">
                     <p>{{ hazardousType.title }}</p>
@@ -46,7 +46,7 @@
 
     <!-------------------------- Second Section -------------------------->
     <div class="load-m-hazardous-container-title segregation-title-container">
-        <p class="load-m-hazardous-title">
+        <p class="load-m-hazardous-title load-m-hazardous-title-second">
             Segregation Table for Hazardous Materials
         </p>
     </div>
@@ -129,39 +129,6 @@
         </div>
     </div>
 
-    <!-------------------------- Third Section -------------------------->
-    <div
-        class="load-m-hazardous-container-title load-m-hazardous-container-title-no-mb additional-title-container"
-    >
-        <p class="load-m-hazardous-title">ADDITIONAL NOTES</p>
-    </div>
-    <!-- Hazardous Explanations 1 -->
-    <div
-        class="load-m-hazardous-container-explanations load-m-hazardous-container-explanations-mt-0"
-    >
-        <div
-            class="load-m-hazardous-explanation"
-            *ngFor="
-                let hazardousType of additional_note_section;
-                trackBy: trackByIdentity
-            "
-        >
-            <!-- Explanation Main -->
-            <div
-                class="load-m-hazardous-explanation-main load-m-hazardous-explanation-main-segregation-table"
-            >
-                <div class="load-m-hazardous-explanation-main-empty"></div>
-                <div class="load-m-hazardous-explanation-main-tableContext">
-                    <svg-icon [src]="hazardousType.type"></svg-icon>
-                </div>
-
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-------------------------- Fourth Section -------------------------->
     <div class="load-m-hazardous-container-title compatibility-title-container">
         <p class="load-m-hazardous-title">
@@ -237,10 +204,17 @@
                         {{ hazardousType?.tableContextText }}
                     </p>
                 </div>
-                <div class="load-m-hazardous-explanation-main-title">
-                    <p>{{ hazardousType.title }}</p>
+                <div class="load-m-hazardous-explanation-main-title" 
+                >
+                    <p [ngClass]="hazardousType?.className">{{ hazardousType.title }}</p>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="load-m-hazardous-container-footer d-flex align-items-center justify-content-center flex-column">
+        <h3 class="load-m-hazardous-container-footer-title ta-font-bold">NOTE</h3>
+        <p class="load-m-hazardous-container-footer-desc">For Federal Register citations affecting § 177.848, see the List of CFR Sections Affected,
+            which appears in the Finding Aids section of the printed volume and at <a href="https://www.govinfo.gov" target="_blank">www.govinfo.gov.</a></p>
     </div>
 </div>
