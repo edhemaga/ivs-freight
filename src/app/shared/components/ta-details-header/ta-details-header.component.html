@@ -11,9 +11,7 @@
                 'Shipper Detail',
                 'Broker Detail',
                 'Roadside Insp. Detail',
-                'Active Load Detail',
-                'Pending Load Detail',
-                'Closed Load Detail'
+                'Load Detail'
             ].includes(headerText)
         "
     >
@@ -43,6 +41,22 @@
                 CLOSED
             </div>
 
+            <ng-container *ngIf="subText">
+                <div
+                    class="d-flex align-items-center subtext-container"
+                    [ngStyle]="{
+                        background:
+                            subText === 'PENDING'
+                                ? '#919191'
+                                : subText === 'ACTIVE'
+                                ? '#6692F1'
+                                : '#56B4AC'
+                    }"
+                >
+                    <p class="m-0 ta-font-bold">{{ subText }}</p>
+                </div>
+            </ng-container>
+
             <app-ta-details-dropdown
                 (click)="toggleDropdownActions()"
                 [customClassDropDown]="'drop-down-header'"
@@ -70,9 +84,7 @@
                     'Shipper Detail',
                     'Broker Detail',
                     'Roadside Insp. Detail',
-                    'Active Load Detail',
-                    'Pending Load Detail',
-                    'Closed Load Detail'
+                    'Load Detail'
                 ].includes(headerText)
             "
         >
@@ -120,7 +132,6 @@
                     </ng-container>
                     <div class="header-text-arrow-down">
                         <p
-                            [ngClass]="{ 'pl-6-header': loadNames }"
                             class="header-name disable-selection"
                             #t2="ngbPopover"
                             [ngbPopover]="eventsDatePopover"
@@ -147,7 +158,6 @@
                             </app-ta-counter>
                         </div>
                         <p
-                            [ngClass]="{ 'pl-6-header': loadNames }"
                             class="header-name disable-selection second-name-header-l"
                         >
                             {{ secondNameHeader }}
@@ -166,6 +176,16 @@
                         [customClass]="'circle_counter'"
                     >
                     </app-ta-counter>
+
+                    <ng-container *ngIf="capsulaText">
+                        <div
+                            class="d-flex align-items-center justify-content-center capsula-wrapper"
+                        >
+                            <p class="m-0 ta-font-bold">
+                                {{ capsulaText }}
+                            </p>
+                        </div>
+                    </ng-container>
                 </div>
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
@@ -242,6 +262,19 @@
                     <div class="violation-counter" *ngIf="counterViolation">
                         {{ counterViolation }}
                     </div>
+
+                    <ng-container *ngIf="isMapBtn">
+                        <div
+                            class="d-flex align-items-center justify-content-center map-btn-container"
+                            [ngClass]="{ active: isMapBtnClicked }"
+                            (click)="handleMapBtnClick()"
+                        >
+                            <svg-icon
+                                class="map-icon"
+                                src="assets/svg/common/load/ic_load_map.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
                 <div class="hide-buttons" *ngIf="!statusInactive">
                     <div

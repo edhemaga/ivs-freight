@@ -18,6 +18,7 @@ export interface TruckDispatchModalResponse {
     truckNumber?: string | null;
     status?: number;
     owner?: string | null;
+    year?: number | null;
     color?: ColorResponse;
     truckType?: TruckTypeResponse;
     allowedTrailerIds?: Array<number> | null;

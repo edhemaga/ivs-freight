@@ -1023,6 +1023,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 LoadModalStringEnum.EMPTY_SPACE_STRING +
                 TableStringEnum.LOAD_2;
 
+            console.log('tableEvent', event);
+
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
@@ -1038,7 +1040,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.confiramtionService.confirmationData$.subscribe((response) => {
                 if (response.type === TableStringEnum.DELETE) {
                     this.loadServices
-                        .deleteLoadById(event.id)
+                        .deleteLoadById(event.id, loadTab)
                         .pipe(takeUntil(this.destroy$))
 
                         .subscribe();

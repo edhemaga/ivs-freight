@@ -23,13 +23,13 @@
             <!-- Avatar -->
 
             <div class="d-flex justify-content-center driver-avatar">
-                <ng-container *ngIf="cardData?.avatar; else noAvatar">
+                <!--  <ng-container *ngIf="cardData?.avatar; else noAvatar">
                     <img
                         class="driver-avatar-svg"
                         [src]="imageBase64Service.sanitizer(cardData?.avatar)"
                         alt="driver-image"
                     />
-                </ng-container>
+                </ng-container> -->
 
                 <ng-template #noAvatar>
                     <app-ta-profile-images

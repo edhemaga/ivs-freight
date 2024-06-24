@@ -3298,7 +3298,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         LoadModalStringEnum.EMPTY_SPACE_STRING,
                                         item.driver?.lastName
                                     ),
-                                    logoName: item.driver?.avatar,
+                                    /*  logoName: item.driver?.avatar, */
                                     owner: !!item.driver?.owner,
                                 },
                                 coDriver: {
@@ -3307,7 +3307,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         LoadModalStringEnum.EMPTY_SPACE_STRING,
                                         item.coDriver?.lastName
                                     ),
-                                    logoName: item.coDriver?.avatar,
+                                    /* logoName: item.coDriver?.avatar, */
                                 },
                                 truck: {
                                     ...item.truck,

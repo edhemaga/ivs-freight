@@ -12,7 +12,7 @@ import { DriverDetailsItemMedicalComponent } from '@pages/driver/pages/driver-de
 import { DriverDetailsItemMvrComponent } from '@pages/driver/pages/driver-details/components/driver-details-item/components/driver-details-item-mvr/driver-details-item-mvr.component';
 
 // models
-import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
 
 @Titles()
 @Component({
@@ -33,7 +33,7 @@ import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/d
     ],
 })
 export class DriverDetailsItemComponent implements OnChanges {
-    @Input() detailsConfig: DriverDetailsConfig;
+    @Input() detailsConfig: DetailsConfig;
 
     constructor() {}
 

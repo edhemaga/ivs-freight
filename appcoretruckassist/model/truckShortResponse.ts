@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { TruckMakeResponse } from './truckMakeResponse';
 import { EnumValue } from './enumValue';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
@@ -74,8 +75,9 @@ export interface TruckShortResponse {
     titleState?: string | null;
     titlePurchaseDate?: string | null;
     titleIssueDate?: string | null;
+    driverId?: number | null;
     driver?: string | null;
-    driverAvatar?: string | null;
+    driverAvatarFile?: FileResponse;
     trailerNumber?: string | null;
     note?: string | null;
     status?: number;

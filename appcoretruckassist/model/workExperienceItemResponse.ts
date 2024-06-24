@@ -20,7 +20,7 @@ export interface WorkExperienceItemResponse {
     employer?: string | null;
     jobDescription?: string | null;
     from?: string;
-    to?: string;
+    to?: string | null;
     phone?: string | null;
     fax?: string | null;
     email?: string | null;
@@ -28,6 +28,7 @@ export interface WorkExperienceItemResponse {
     isDrivingPosition?: boolean;
     reasonForLeaving?: EnumValue;
     accountForPeriodBetween?: string | null;
+    currentEmployment?: boolean;
     classesOfEquipment?: Array<ClassOfEquipmentResponse> | null;
     workExperienceItemReview?: WorkExperienceItemReviewResponse;
     readonly fullAddress?: string | null;

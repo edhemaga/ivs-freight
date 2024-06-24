@@ -5,6 +5,17 @@ import { Observable, Subject, tap } from 'rxjs';
 // services
 import { FormDataService } from '@shared/services/form-data.service';
 
+// enum
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// store
+import { LoadDetailsListStore } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.store';
+import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
+import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
+import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active.store';
+import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
+import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
+
 // models
 import {
     CreateResponse,
@@ -21,7 +32,6 @@ import {
     RoutingResponse,
     CreateLoadTemplateCommand,
 } from 'appcoretruckassist';
-
 import {
     Comment,
     DeleteComment,
@@ -43,7 +53,15 @@ export class LoadService {
     constructor(
         private loadService: LoadBackendService,
         private formDataService: FormDataService,
-        private routingService: RoutingService
+        private routingService: RoutingService,
+
+        // store
+        private loadDetailsListStore: LoadDetailsListStore,
+        private loadItemStore: LoadItemStore,
+        private loadMinimalListStore: LoadMinimalListStore,
+        private loadActiveStore: LoadActiveStore,
+        private loadPendingStore: LoadPendingStore,
+        private loadClosedStore: LoadClosedStore
     ) {}
 
     public addData(data: Comment): void {
@@ -150,8 +168,45 @@ export class LoadService {
         );
     }
 
-    public deleteLoadById(id: number): Observable<void> {
-        return this.loadService.apiLoadIdDelete(id);
+    public deleteLoadById(
+        loadId: number,
+        loadStatus: string
+    ): Observable<void> {
+        return this.loadService.apiLoadIdDelete(loadId).pipe(
+            tap(() => {
+                const loadCount = JSON.parse(
+                    localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+                );
+
+                this.loadDetailsListStore.remove(({ id }) => id === loadId);
+                this.loadItemStore.remove(({ id }) => id === loadId);
+                this.loadMinimalListStore.remove(({ id }) => id === loadId);
+
+                if (loadStatus === TableStringEnum.ACTIVE) {
+                    this.loadActiveStore.remove(({ id }) => id === loadId);
+
+                    loadCount.activeCount--;
+                } else if (loadStatus === TableStringEnum.CLOSED) {
+                    this.loadClosedStore.remove(({ id }) => id === loadId);
+
+                    loadCount.closedCount--;
+                } else if (loadStatus === TableStringEnum.PENDING) {
+                    this.loadPendingStore.remove(({ id }) => id === loadId);
+
+                    loadCount.pendingCount--;
+                }
+
+                localStorage.setItem(
+                    TableStringEnum.LOAD_TABLE_COUNT,
+                    JSON.stringify({
+                        activeCount: loadCount.activeCount,
+                        closedCount: loadCount.closedCount,
+                        pendingCount: loadCount.pendingCount,
+                        templateCount: loadCount.templateCount,
+                    })
+                );
+            })
+        );
     }
 
     public getLoadById(id: number): Observable<LoadResponse> {

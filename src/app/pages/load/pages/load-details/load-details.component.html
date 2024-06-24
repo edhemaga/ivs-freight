@@ -1,28 +1,35 @@
-<div
-    class="details-container-items"
-    [ngClass]="{ 'details-closed-items': statusIsClosed }"
->
+<div class="details-container-items">
     <ng-container
-        *ngFor="let item of loadConfig; let i = index; trackBy: identity"
+        *ngFor="
+            let item of loadDetailsConfig;
+            let i = index;
+            trackBy: trackByIdentity
+        "
     >
-        <div>
-            <app-ta-details-header
-                [options]="dataTest"
-                [route]="'/list/load'"
-                [tooltipHeaderName]="'Back to Load List'"
-                [headerText]="item.name"
-                [hasDateArrow]="item.hasArrow"
-                [counterData]="item.length"
-                [statusInactive]="item.hide"
-                [loadNames]="item.pl"
-            >
-            </app-ta-details-header>
-        </div>
+        <app-ta-details-header
+            [options]="detailsDropdownOptions"
+            [optionsId]="loadId"
+            [route]="'/list/load'"
+            [tooltipHeaderName]="'Back to List'"
+            [headerText]="item.name"
+            [counterData]="item.length"
+            [statusInactive]="item.hide"
+            [danger]="item.hasDanger"
+            [subText]="detailsDropdownOptions.actions[i].subText"
+            [capsulaText]="
+                i === 1 &&
+                (item.length === 2 ? false : item.length - 2 + ' EXTRA')
+            "
+            [isMapBtn]="i === 1"
+            (dropActions)="onLoadActions($event)"
+            (mapBtnEmitter)="onMapBtnClick($event)"
+        >
+        </app-ta-details-header>
     </ng-container>
 
     <div class="load-details-container">
         <app-load-details-item
-            [loadData]="loadConfig"
+            [detailsConfig]="loadDetailsConfig"
             [routeData]="loadStopRoutes"
         ></app-load-details-item>
     </div>
