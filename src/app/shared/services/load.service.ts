@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -167,8 +167,8 @@ export class LoadService {
     }
 
     // modal operations
-    public getLoadDropdowns(): Observable<LoadModalResponse> {
-        return this.loadService.apiLoadModalGet();
+    public getLoadDropdowns(loadEditId?: number): Observable<LoadModalResponse> {
+        return this.loadService.apiLoadModalGet(loadEditId);
     }
 
     public getRouting(location: string): Observable<RoutingResponse> {
@@ -177,14 +177,20 @@ export class LoadService {
 
     public createLoad(data: Load): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-
-        return this.loadService.apiLoadPost();
+        return this.loadService.apiLoadPost().pipe(
+            tap(() => {
+                
+            })
+        );
     }
 
     public updateLoad(data: Load): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-
-        return this.loadService.apiLoadPut();
+        return this.loadService.apiLoadPut().pipe(
+            tap(() => {
+                
+            })
+        );
     }
 
     // modal operations - template

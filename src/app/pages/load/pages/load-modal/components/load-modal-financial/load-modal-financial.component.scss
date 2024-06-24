@@ -3,11 +3,9 @@
 .load-financial-card {
     .load-financial-card-header {
         display: grid;
-        grid-template-columns: 192px 193px 187px;
-        -moz-column-gap: 16px;
-        column-gap: 16px;
-        padding: 0 5px;
+        grid-template-columns: 200px 208px 1fr;
         margin: 4px 0px;
+        column-gap: 13px;
 
         .load-financial-header {
             .load-financial-title {

@@ -973,9 +973,11 @@
     margin-top: 26px;
     margin-bottom: 32px;
 
-    &.template-row {
-        grid-template-columns: 94px repeat(2, 249px);
+    &.edit-load{
+        grid-template-columns: 132px repeat(2, 230px);
+    }
 
+    &.template-row {
         .company-template-name-container {
             order: 2;
         }

@@ -226,6 +226,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public selectedCompany: any = null;
     public selectedDispatches: any = null;
     public selectedGeneralCommodity: EnumValue = null;
+    public selectedStatus: EnumValue = null;
 
     // broker
     public selectedBroker: any = null;
@@ -249,6 +250,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     // load stop item labels
     public stopItemDropdownLists: LoadStopItemDropdownLists;
+    public statusDropDownList: EnumValue[];
 
     // input configurations
     public loadDispatchesTTDInputConfig: ITaInput;
@@ -281,9 +283,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public loadPaydateInputConfig = LoadModalConfig.LOAD_PAYDATE;
     public loadPaymentDropdownInputConfig =
         LoadModalConfig.LOAD_PAYMENT_DROPDOWN;
-    public loadInvoiceDateInputConfig = LoadModalConfig.LOAD_INVOICE_DATE;
     public loadReferenceInputConfig = LoadModalConfig.LOAD_REFERENCE_NUMBER;
-
+    public getStatusInputConfig = LoadModalConfig.STATUS_INPUT_CONFIG;
     // extra Stop configuration
     public selectedExtraStopShipper: any[] = [];
     public selectedExtraStopShipperContact: any[] = [];
@@ -456,6 +457,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getPaymentInputConfig(additional);
     }
 
+    public loadInvoiceDateInputConfig(): ITaInput {
+        return LoadModalConfig.getInvoiceDate(!this.isPendingStatus);
+    };
+
     public get invoicePercent(): LoadModalInvoiceProgress {
         if (this.loadForm.value) {
             const daysLeft = Math.abs(
@@ -480,6 +485,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
     }
 
+    public get modalTitle(): string {
+        const isEdit = this.editData?.type?.includes('edit'); 
+
+        if(this.isConvertedToTemplate) {
+            return 'Create Load Template';
+        } else if(!isEdit) {
+            return 'Create Load';
+        } else {
+            	return `Edit ${(this.editData.data as LoadResponse).statusType.name} Load`
+        }
+    }
+
+    public get getLoadStatus():  number{
+        return (this.editData?.data as LoadResponse).statusType.id;
+    }
+
+    public get isPendingStatus() : boolean {
+        return this.getLoadStatus === 1; 
+    }
+
     public trackByIdentity(_, index: number): number {
         return index;
     }
@@ -492,6 +517,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ],
             loadTemplateId: [null],
             dispatcherId: [null],
+            status: [null],
             companyId: [this.companyUser.companyName, Validators.required],
             brokerId: [null, Validators.required],
             brokerContactId: [null],
@@ -579,6 +605,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe(
                 (isFormChange: boolean) => (this.isFormDirty = isFormChange)
             );
+
+            if(this.isPendingStatus) {
+                this.loadForm.get('invoicedDate').setValidators(Validators.required);
+            }
     }
 
     private getCompanyUser(): void {
@@ -3196,7 +3226,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     private getLoadDropdowns(): void {
         this.loadService
-            .getLoadDropdowns()
+            .getLoadDropdowns(this.editData?.data?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: LoadModalResponse) => {
@@ -3215,6 +3245,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.paymentMethodsDropdownList = res.paymentMethods;
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
+                    this.selectedStatus = (
+                        this.editData?.data as LoadModalResponse
+                    ).status.statusValue;
+                    this.statusDropDownList = [
+                        this.selectedStatus,
+                        ...res.loadPossibleNextStatuses.map(
+                            (r) => r.statusValue
+                        ),
+                    ];
 
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
