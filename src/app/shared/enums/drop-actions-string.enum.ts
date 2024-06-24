@@ -40,6 +40,8 @@ export enum DropActionsStringEnum {
     COMPANY_OFFICE = 'Company Office',
     COMPANY_REPAIR_SHOP = 'Company Repair Shop',
     COMPANY_TERMINAL = 'Company Terminal',
+    TEMPLATE = 'template',
+    TEMPLATES = 'templates',
 
     // Delete titles
     DELETE_MEDICAL_TITLE = 'Delete Medical',
@@ -88,6 +90,7 @@ export enum DropActionsStringEnum {
     VOID_CDL = 'void cdl',
     NEW = 'New',
     RENEW_2 = 'Renew',
+    EMPTY_SPACE_STRING = ' ',
 
     // Size
     SMALL = 'small',
