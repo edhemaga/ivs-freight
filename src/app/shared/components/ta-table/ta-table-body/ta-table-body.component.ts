@@ -201,6 +201,11 @@ export class TaTableBodyComponent
     public companyUser: SignInResponse;
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
+
+    // Scroll Lines
+    public isLeftScrollLineShown = false;
+    public isRightScrollLineShown = false;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -480,15 +485,34 @@ export class TaTableBodyComponent
     // Horizontal Scroll
     onHorizontalScroll(scrollEvent: any) {
         if (scrollEvent.eventAction === 'scrolling') {
+            let isMaxScroll = false;
+
             document
                 .querySelectorAll('#table-not-pined-scroll-container')
                 .forEach((el) => {
                     el.scrollLeft = scrollEvent.scrollPosition;
+
+                    if (
+                        Math.round(scrollEvent.scrollPosition) ===
+                        Math.round(el.scrollWidth - el.clientWidth)
+                    ) {
+                        isMaxScroll = true;
+                    }
                 });
 
             this.horizontalScrollPosition = scrollEvent.scrollPosition;
 
             this.tableService.sendScroll(scrollEvent.scrollPosition);
+
+            if (scrollEvent.scrollPosition > 0) {
+                this.isLeftScrollLineShown = true;
+
+                this.isRightScrollLineShown = !isMaxScroll;
+            } else {
+                this.isLeftScrollLineShown = false;
+            }
+
+            this.changeDetectorRef.detectChanges();
         } else if (
             scrollEvent.eventAction === 'isScrollShowing' &&
             this.showScrollSectionBorder !== scrollEvent.isScrollBarShowing
@@ -496,6 +520,13 @@ export class TaTableBodyComponent
             this.showScrollSectionBorder = scrollEvent.isScrollBarShowing;
 
             this.tableService.sendIsScrollShownig(this.showScrollSectionBorder);
+
+            if (!scrollEvent.isScrollBarShowing) {
+                this.isLeftScrollLineShown = false;
+                this.isRightScrollLineShown = false;
+            } else {
+                this.isRightScrollLineShown = true;
+            }
 
             this.changeDetectorRef.detectChanges();
         }

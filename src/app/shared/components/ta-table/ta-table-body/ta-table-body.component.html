@@ -2487,12 +2487,14 @@
                         </div>
 
                         <!-- Border -->
+
                         <div class="table-border-scroll-section-container">
                             <div
                                 class="table-border-scroll-section table-border-left"
                                 [ngClass]="{
                                     'table-border-left-show':
-                                        showScrollSectionBorder
+                                        showScrollSectionBorder,
+                                    hidden: !isLeftScrollLineShown
                                 }"
                             ></div>
                         </div>
@@ -4590,7 +4592,8 @@
                                 class="table-border-scroll-section table-border-right"
                                 [ngClass]="{
                                     'table-border-right-show':
-                                        showScrollSectionBorder
+                                        showScrollSectionBorder,
+                                    hidden: !isRightScrollLineShown
                                 }"
                             ></div>
                         </div>
