@@ -57,7 +57,6 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
             this.tableService.getTableConfig(3),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
-                console.log('loadPagination', loadPagination);
                 localStorage.setItem(
                     'loadTableCount',
                     JSON.stringify({

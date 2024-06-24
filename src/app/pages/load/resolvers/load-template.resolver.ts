@@ -59,7 +59,7 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                     );
                 }
 
-                this.loadTemplateStore.set(loadPagination.pagination.data);
+                this.loadTemplateStore.set(loadPagination?.pagination?.data);
             })
         );
     }

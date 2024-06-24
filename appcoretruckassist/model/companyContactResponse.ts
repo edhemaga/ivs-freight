@@ -25,7 +25,6 @@ export interface CompanyContactResponse {
     email?: string | null;
     address?: AddressEntity;
     shared?: boolean;
-    avatar?: string | null;
     companyContactLabel?: CompanyContactLabelResponse;
     departmentContacts?: Array<DepartmentResponse> | null;
     contactPhones?: Array<ContactPhoneResponse> | null;

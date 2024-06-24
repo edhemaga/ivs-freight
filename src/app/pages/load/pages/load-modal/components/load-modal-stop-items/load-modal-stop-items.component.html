@@ -1,5 +1,5 @@
 <ng-container *ngIf="getStopItems().length">
-    <div class="d-flex flex-column stop-items-container">
+    <div class="d-flex flex-column stop-items-container table-inner-modal scrollable">
         <div class="align-items-center stop-items-header">
             <ng-container
                 *ngFor="
@@ -9,10 +9,11 @@
                 "
             >
                 <div
-                    class="d-flex align-items-center stop-items-header-box"
+                    class="d-flex align-items-center stop-items-header-box stop-items-counter"
                     [ngClass]="{
-                        'justify-content-center': i === 0,
-                        'gradient-border-container': i === 1 || i === 5
+                        'justify-content-center stop-items-number': i === 0,
+                        'gradient-border-container': i === 1 || i === 5,
+                        'stop-items-desc': i === 1
                     }"
                 >
                     <p class="m-0 ta-font-bold">
@@ -36,7 +37,7 @@
             >
                 <div class="align-items-center stop-item" [formGroupName]="i">
                     <div
-                        class="d-flex justify-content-center align-items-center stop-item-number"
+                        class="d-flex justify-content-center align-items-center stop-items-number stop-items-counter"
                     >
                         <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
@@ -52,7 +53,7 @@
                     </div>
 
                     <div
-                        class="gradient-border-container"
+                        class="gradient-border-container stop-items-desc"
                         (mouseenter)="handleInputHover(true, i, 0)"
                         (mouseleave)="handleInputHover(false, i, 0)"
                     >
@@ -107,9 +108,9 @@
                         <app-ta-input
                             formControlName="tmp"
                             [inputConfig]="{
-                                name: 'TMP',
+                                name: 'BOL NO',
                                 type: 'text',
-                                label: 'TMP',
+                                label: 'BOL NO',
                                 placeholderInsteadOfLabel: true,
                                 blackInput:
                                     getStopItems().at(i).get('tmp').value &&
@@ -131,7 +132,8 @@
                                 placeholderInsteadOfLabel: true,
                                 blackInput:
                                     getStopItems().at(i).get('weight').value &&
-                                    !isInputHoverRows[i][3]
+                                    !isInputHoverRows[i][3],
+                                    fixedPlacholder:'lbs'
                             }"
                         ></app-ta-input>
                     </div>
@@ -150,7 +152,8 @@
                                 placeholderInsteadOfLabel: true,
                                 blackInput:
                                     getStopItems().at(i).get('length').value &&
-                                    !isInputHoverRows[i][4]
+                                    !isInputHoverRows[i][4],
+                                fixedPlacholder:'ft'
                             }"
                         ></app-ta-input>
                     </div>
@@ -168,7 +171,8 @@
                                 placeholderInsteadOfLabel: true,
                                 blackInput:
                                     getStopItems().at(i).get('height').value &&
-                                    !isInputHoverRows[i][5]
+                                    !isInputHoverRows[i][5],
+                                    fixedPlacholder:'ft'
                             }"
                         ></app-ta-input>
                     </div>

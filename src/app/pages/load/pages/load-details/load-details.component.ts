@@ -1,42 +1,43 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subject, takeUntil, take } from 'rxjs';
-
-// modules
-import { SharedModule } from '@shared/shared.module';
+import { Subject, takeUntil, take, tap } from 'rxjs';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { LoadService } from '@shared/services/load.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
 
 // components
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { LoadDetailsItemComponent } from '@pages/load/pages/load-details/components/load-details-item/load-details-item.component';
-import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
-
-// pipes
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // store
 import { LoadDetailsListQuery } from '@pages/load/state/load-details-state/load-details-list-state/load-details-list.query';
+import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.query';
+import {
+    LoadMinimalListState,
+    LoadMinimalListStore,
+} from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.store';
+import { LoadItemStore } from '@pages/load/state/load-details-state/load-details.store';
+
+// enums
+import { LoadDetailsStringEnum } from '@pages/load/pages/load-details/enums/load-details-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// helpers
+import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/load-details.helper';
 
 // models
 import { LoadResponse } from 'appcoretruckassist';
 import { MapRoute } from '@shared/models/map-route.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
+import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 
 interface IStopRoutes {
     longitude: number;
@@ -54,189 +55,132 @@ interface IStopRoutes {
     imports: [
         // modules
         CommonModule,
-        SharedModule,
 
         // components
-        TaProfileImagesComponent,
-        TaCopyComponent,
-        TaCustomCardComponent,
-        TaUploadFilesComponent,
-        TaInputNoteComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-
-        TaDetailsHeaderComponent,
-        TaDetailsHeaderCardComponent,
-        TaChartComponent,
-        TaMapsComponent,
         LoadDetailsItemComponent,
-        LoadDetailsCardComponent,
-
-        // pipes
-        FormatCurrencyPipe,
-        FormatDatePipe,
+        TaDetailsHeaderComponent,
     ],
     providers: [DetailsPageService],
 })
 export class LoadDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
-    public loadConfig: any;
+    public currentIndex: number = 0;
 
-    public statusIsClosed: boolean;
-    public dataTest: any;
+    public loadDetailsConfig: DetailsConfig;
+
+    public detailsDropdownOptions: DetailsDropdownOptions;
+
     public loadStopRoutes: MapRoute[] = [];
 
+    public loadsList: LoadMinimalListState;
+    public loadObject: LoadResponse;
+
+    public loadId: number;
+    public newLoadId: number;
+
     constructor(
-        private activated_route: ActivatedRoute,
-        private detailsPageService: DetailsPageService,
+        private cdRef: ChangeDetectorRef,
+
+        // router
         private router: Router,
+        private activatedRoute: ActivatedRoute,
+
+        // services
+        private detailsPageService: DetailsPageService,
+        private modalService: ModalService,
+        private confirmationService: ConfirmationService,
         private loadService: LoadService,
-        private ldlQuery: LoadDetailsListQuery
+        private detailsDataService: DetailsDataService,
+
+        // store
+        private loadMinimalListStore: LoadMinimalListStore,
+        private loadMinimalListQuery: LoadMinimalListQuery,
+        private loadDetailsListQuery: LoadDetailsListQuery,
+        private loadItemStore: LoadItemStore
     ) {}
+
     ngOnInit(): void {
-        this.detailsPageService.pageDetailChangeId$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((id) => {
-                let query;
-                if (this.ldlQuery.hasEntity(id)) {
-                    query = this.ldlQuery.selectEntity(id).pipe(take(1));
-                } else {
-                    query = this.loadService.getLoadById(id);
-                }
-                query.pipe(takeUntil(this.destroy$)).subscribe({
-                    next: (res: LoadResponse) => {
-                        this.detailCongif(res);
-                        this.router.navigate([`/list/load/${res.id}/details`]);
-                    },
-                    error: () => {},
-                });
-            });
+        this.getLoadData();
 
-        this.detailCongif(this.activated_route.snapshot.data.loadItem);
-        this.initTableOptions(this.activated_route.snapshot.data.loadItem);
-    }
-    /**Function template and names for header and other options in header */
-    public detailCongif(data: LoadResponse) {
-        if (data?.statusType?.name === 'Closed') {
-            this.statusIsClosed = true;
-        } else {
-            this.statusIsClosed = false;
-        }
+        this.getStoreData();
 
-        this.loadConfig = [
-            {
-                id: 0,
-                name: `${data?.statusType?.name} Load Detail`,
-                template: 'general',
-                data: data,
-            },
-            {
-                id: 1,
-                name: 'Finance',
-                template: 'finance',
-                req: false,
-                hide: true,
-                data: data,
-                pl: true,
-            },
-            {
-                id: 2,
-                name: 'Stop',
-                template: 'stop',
-                req: false,
-                hide: true,
-                data: data,
-                pl: false,
-                length: data?.stops?.length ? data.stops.length : 0,
-            },
-            {
-                id: 3,
-                name: 'Comment',
-                template: 'comment',
-                hide: false,
-                hasArrow: true,
-                data: data,
-                pl: false,
-                length: data?.comments?.length ? data.commentsCount : 0,
-            },
-        ];
+        this.getLoadsMinimalList();
+
+        this.getConfigAndOptions();
+
+        this.confirmationSubscribe();
+
+        this.handleLoadIdRouteChange();
     }
-    /**Function retrun id */
-    public identity(index: number): number {
+
+    public trackByIdentity(index: number): number {
         return index;
     }
 
-    public initTableOptions(data: any): void {
-        this.dataTest = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: 'edit',
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    disabled: data.status == 0 ? true : false,
-                    iconName: 'edit',
+    public isEmpty(obj: Record<string, any>): boolean {
+        return !Object.keys(obj).length;
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    if (
+                        res?.template === TableStringEnum.LOAD &&
+                        res.type === TableStringEnum.DELETE
+                    )
+                        this.deleteLoadById(res.data.id);
                 },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Create Load',
-                    name: 'create-load',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
-                    iconName: 'assets/svg/common/ic_plus.svg',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    iconName: 'share',
-                    show: true,
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    iconName: 'print',
-                    show: data.status == 1 || data.status == 0 ? true : false,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'driver',
-                    text: 'Are you sure you want to delete driver(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
-                    danger: true,
-                    show: data.status == 1 || data.status == 0 ? true : false,
-                    redIcon: true,
-                },
-            ],
+            });
+    }
+
+    private getStoreData(): void {
+        const storeData$ = this.loadItemStore._select((state) => state);
+
+        storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
+            const newLoadData = { ...state.entities[this.newLoadId] };
+
+            if (!this.isEmpty(newLoadData)) {
+                this.detailsDataService.setNewData(newLoadData);
+
+                this.getDetailsConfig(newLoadData);
+                this.getDetailsOptions(newLoadData);
+            }
+        });
+    }
+
+    private getLoadsMinimalList(): void {
+        this.loadsList = this.loadMinimalListQuery.getAll();
+    }
+
+    private getLoadData(): void {
+        const dataId = this.activatedRoute.snapshot.params.id;
+
+        const loadData = {
+            ...this.loadItemStore?.getValue()?.entities[dataId],
         };
+
+        this.newLoadId = dataId;
+
+        this.getDetailsConfig(loadData);
+    }
+
+    public getDetailsConfig(load: LoadResponse): void {
+        this.loadDetailsConfig = LoadDetailsHelper.getLoadDetailsConfig(load);
+
+        this.loadId = load.id;
+        this.loadObject = load;
+    }
+
+    public getDetailsOptions(load: LoadResponse): void {
+        this.detailsDropdownOptions =
+            LoadDetailsHelper.getDetailsDropdownOptions(load.statusType.name);
 
         const routes: IStopRoutes[] = [];
 
-        data.stops.map((stop: any, index: number) => {
+        /*   data.stops.map((stop: any, index: number) => {
             routes[index] = {
                 longitude: stop.shipper.longitude,
                 latitude: stop.shipper.latitude,
@@ -244,7 +188,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                 delivery: stop.stopType.name == 'Delivery' ? true : false,
                 stopNumber: index,
             };
-        });
+        }); */
 
         this.loadStopRoutes[0] = {
             routeColor: '#919191',
@@ -262,6 +206,143 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                 };
             }),
         };
+    }
+
+    private getConfigAndOptions(): void {
+        this.getDetailsConfig(this.activatedRoute.snapshot.data.loadItem);
+        this.getDetailsOptions(this.activatedRoute.snapshot.data.loadItem);
+    }
+
+    public onLoadActions(event: { id: number; type: string }): void {
+        switch (event.type) {
+            case LoadDetailsStringEnum.EDIT:
+                this.loadService
+                    .getLoadById(event.id)
+                    .pipe(
+                        takeUntil(this.destroy$),
+                        tap((load) => {
+                            const editData = {
+                                data: {
+                                    ...load,
+                                },
+                                type: event.type,
+                            };
+
+                            this.modalService.openModal(
+                                LoadModalComponent,
+                                { size: TableStringEnum.LOAD },
+                                {
+                                    ...editData,
+                                    disableButton: false,
+                                }
+                            );
+                        })
+                    )
+                    .subscribe();
+
+                break;
+            case LoadDetailsStringEnum.DELETE_ITEM:
+                const loadTab = this.loadObject.statusType.name;
+
+                const modalTitle =
+                    TableStringEnum.DELETE_2 +
+                    LoadDetailsStringEnum.EMPTY_SPACE +
+                    loadTab +
+                    LoadDetailsStringEnum.EMPTY_SPACE +
+                    TableStringEnum.LOAD_2;
+
+                this.modalService.openModal(
+                    ConfirmationModalComponent,
+                    { size: TableStringEnum.SMALL },
+                    {
+                        data: { ...this.loadObject },
+                        type: TableStringEnum.DELETE,
+                        template: TableStringEnum.LOAD,
+                        subType: loadTab,
+                        modalHeaderTitle: modalTitle,
+                    }
+                );
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public onMapBtnClick(isClicked: boolean): void {
+        this.loadDetailsConfig[1] = {
+            ...this.loadDetailsConfig[1],
+            isMapDisplayed: isClicked,
+        };
+    }
+
+    private handleLoadIdRouteChange(): void {
+        this.detailsPageService.pageDetailChangeId$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((id) => {
+                let query;
+
+                this.newLoadId = id;
+
+                if (this.loadDetailsListQuery.hasEntity(id)) {
+                    query = this.loadDetailsListQuery
+                        .selectEntity(id)
+                        .pipe(take(1));
+
+                    query.subscribe((load: LoadResponse) => {
+                        this.currentIndex = this.loadsList.findIndex(
+                            (driver: LoadResponse) => driver.id === load.id
+                        );
+
+                        this.getDetailsOptions(load);
+                        this.getDetailsConfig(load);
+
+                        if (
+                            this.router.url.includes(
+                                LoadDetailsStringEnum.DETAILS
+                            )
+                        ) {
+                            this.router.navigate([
+                                `/list/load/${load.id}/details`,
+                            ]);
+                        }
+                    });
+                } else {
+                    this.router.navigate([`/list/load/${id}/details`]);
+                }
+
+                this.cdRef.detectChanges();
+            });
+    }
+
+    private deleteLoadById(id: number): void {
+        const last = this.loadsList.at(-1);
+        const loadStatus = this.loadObject.statusType.name;
+
+        if (
+            last.id ===
+            this.loadMinimalListStore.getValue().ids[this.currentIndex]
+        ) {
+            this.currentIndex = --this.currentIndex;
+        } else {
+            this.currentIndex = ++this.currentIndex;
+        }
+
+        this.loadService
+            .deleteLoadById(id, loadStatus)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.router.navigate([
+                        LoadDetailsStringEnum.LIST_LOAD_ROUTE,
+                    ]);
+                },
+                error: () => {
+                    this.router.navigate([
+                        LoadDetailsStringEnum.LIST_LOAD_ROUTE,
+                    ]);
+                },
+            });
     }
 
     ngOnDestroy(): void {

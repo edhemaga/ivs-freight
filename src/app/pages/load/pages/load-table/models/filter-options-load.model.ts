@@ -2,6 +2,7 @@ export interface FilterOptionsLoad {
     loadType: number;
     statusType: number;
     status: number;
+    dispatchersId: number[];
     dispatcherId: number;
     dispatchId: number;
     brokerId: number;
@@ -14,6 +15,14 @@ export interface FilterOptionsLoad {
     pageIndex: number;
     pageSize: number;
     companyId: number;
+    rateFrom?: number;
+    rateTo?: number;
+    paidFrom?: number;
+    paidTo?: number;
+    dueFrom?: number;
+    dueTo?: number;
+    pickup?: boolean;
+    delivery?: boolean;
     sort: string;
     searchOne: string;
     searchTwo: string;

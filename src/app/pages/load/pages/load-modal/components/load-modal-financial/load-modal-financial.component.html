@@ -38,7 +38,7 @@
 
                     <ng-container *ngIf="adjusted">
                         <p class="m-0 load-financial-adjusted">
-                            {{ adjusted?.replaceAll(',', '') | currency }}
+                            {{ toNumber(adjusted)  | currency }}
                         </p>
                     </ng-container>
                 </div>

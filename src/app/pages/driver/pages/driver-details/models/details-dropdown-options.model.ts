@@ -3,7 +3,7 @@ export interface DetailsDropdownOptions {
     toolbarActions: {
         hideViewMode: boolean;
     };
-    export: boolean;
+    export?: boolean;
     config: {
         showSort: boolean;
         sortBy: string;
@@ -29,6 +29,7 @@ interface Action {
     type?: string;
     text?: string;
     danger?: boolean;
+    subText?: string;
 }
 
 interface SubType {
