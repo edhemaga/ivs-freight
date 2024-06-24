@@ -29,7 +29,6 @@ export interface DriverListItemResponse {
     id?: number;
     name?: string | null;
     status?: number;
-    avatar?: string | null;
     avatarFile?: FileResponse;
     note?: string | null;
     fileCount?: number | null;

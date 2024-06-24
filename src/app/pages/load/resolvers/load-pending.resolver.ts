@@ -22,7 +22,7 @@ import {
 export class LoadPendingResolver implements Resolve<LoadPandingState> {
     constructor(
         private loadService: LoadService,
-        private loadPandingStore: LoadPendingStore
+        private loadPendingStore: LoadPendingStore
     ) {}
 
     resolve(): Observable<LoadPandingState | boolean> {
@@ -72,7 +72,7 @@ export class LoadPendingResolver implements Resolve<LoadPandingState> {
                         })
                     );
 
-                    this.loadPandingStore.set(loadPagination.pagination.data);
+                    this.loadPendingStore.set(loadPagination.pagination.data);
                 })
             );
     }

@@ -97,7 +97,7 @@ export class LoadModalHazardousComponent {
 
     public segregation_section_3 = [
         {
-            type: '(d)',
+            type: '(f)',
             title: 'Class 1 (explosive) materials shall not be loaded, transported, or stored together, except as provided in this section, and in accordance with the following table:',
             subType: [],
         },
@@ -113,7 +113,7 @@ export class LoadModalHazardousComponent {
 
     public compatibility_section_1 = [
         {
-            type: '(e)',
+            type: '(g)',
             title: 'Instructions for using the compatibility table for Class 1 (explosive) materials are as follows:',
             subType: [],
         },
@@ -139,6 +139,7 @@ export class LoadModalHazardousComponent {
             title: 'The numbers in the table mean the following:',
         },
         {
+            className: 'color-red',
             type: '(I)',
             tableContextSvg: '',
             tableContextText: '1',

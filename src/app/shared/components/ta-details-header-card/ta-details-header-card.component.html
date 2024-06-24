@@ -81,7 +81,7 @@
                     customClass: 'input-32-font-20 details-pages'
                 }"
                 [options]="options"
-                [activeItem]="options[0]"
+                [activeItem]="activeItem ?? options[0]"
                 [sort]="sortOptions"
                 [isDetailsPages]="selectedDropdown"
                 [canAddNew]="true"

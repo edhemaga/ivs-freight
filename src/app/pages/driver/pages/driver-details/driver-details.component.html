@@ -8,6 +8,7 @@
     >
         <app-ta-details-header
             [options]="detailsDropdownOptions"
+            [optionsId]="driverId"
             [route]="'/list/driver'"
             [tooltipHeaderName]="'Back to List'"
             [headerText]="item.name"
@@ -15,7 +16,6 @@
             [isInactive]="isInactive"
             [hasRequest]="item.req"
             [statusInactive]="item.status"
-            [optionsId]="driverId"
             [danger]="item.hasDanger"
             (dropActions)="onDriverActions($event)"
             (openModalAction)="onModalAction($event)"

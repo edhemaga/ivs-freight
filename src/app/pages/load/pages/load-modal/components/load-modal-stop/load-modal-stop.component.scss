@@ -217,6 +217,18 @@
                 }
             }
         }
+    
+        &.destination-disabled {
+            background-color: $ta-light-grey-5;
+
+            .load-stop-header-bar-title{
+                color: $ta-light-grey-2 !important;
+            }
+
+            .load-stop-header-badge{
+                background-color: $ta-red-20;
+            }
+        }
     }
 
     // Stop Body

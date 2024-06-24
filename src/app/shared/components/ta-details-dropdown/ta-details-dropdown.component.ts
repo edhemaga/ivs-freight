@@ -97,7 +97,7 @@ export class TaDetailsDropdownComponent
     @Input() customClassDropDown: string;
     @Input() hasVericalDots: boolean;
     @Input() data: any;
-    @Input() leftIcon: any = false;
+    @Input() leftIcon: any = true;
     @Input() public placement: string = 'bottom-right';
     @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
     @Output() openModalAction: EventEmitter<any> = new EventEmitter();

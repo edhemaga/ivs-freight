@@ -13,4 +13,7 @@ export enum LoadDetailsCardStringEnum {
     ADVANCE = 'Advance',
     DUE = 'DUE',
     PAID_IN_FULL = 'PAID IN FULL',
+
+    ADD_NEW = 'ADD NEW',
+    MEDIUM = 'medium',
 }

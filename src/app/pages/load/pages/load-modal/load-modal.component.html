@@ -9,12 +9,7 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="
-        loadForm.valid &&
-        isFormDirty &&
-        isEachStopItemsRowValid &&
-        !isCommenting
-    "
+    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -138,30 +133,14 @@
                     <app-ta-input-dropdown
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Dispatcher',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: false,
-                                image: true,
-                                url: selectedDispatcher?.logoName,
-                                nameInitialsInsteadUrl:
-                                    !selectedDispatcher?.logoName
-                                        ? selectedDispatcher?.name
-                                        : null,
-                                template: 'user'
-                            },
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-230'
-                        }"
+                        [inputConfig]="getDispatcherInputConfig"
                         [options]="labelsDispatcher"
                         [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                     ></app-ta-input-dropdown>
                 </div>
+
+                <!-- Truck -->
 
                 <div class="company-template-name-container">
                     <!-- Template Name -->
@@ -169,12 +148,7 @@
                     <ng-container *ngIf="isConvertedToTemplate">
                         <app-ta-input
                             formControlName="templateName"
-                            [inputConfig]="{
-                                name: 'Template Name',
-                                type: 'text',
-                                label: 'Template Name',
-                                isRequired: true
-                            }"
+                            [inputConfig]="loadTemplateInputConfig"
                         ></app-ta-input>
                     </ng-container>
 
@@ -184,14 +158,7 @@
                         <app-ta-input
                             *ngIf="labelsCompanies.length <= 1"
                             formControlName="companyId"
-                            [inputConfig]="{
-                                name: 'Company',
-                                type: 'text',
-                                label: 'Company',
-                                isDisabled: true,
-                                isRequired: true,
-                                textTransform: 'uppercase'
-                            }"
+                            [inputConfig]="loadMainCompanyInputConfig"
                         ></app-ta-input>
 
                         <!-- Multiple Companies -->
@@ -199,13 +166,7 @@
                         <app-ta-input-dropdown
                             *ngIf="labelsCompanies.length > 1"
                             formControlName="companyId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Company',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-226'
-                            }"
+                            [inputConfig]="loadCompanyInputConfig"
                             [options]="labelsCompanies"
                             [activeItem]="selectedCompany"
                             (selectedItem)="onSelectDropdown($event, 'company')"
@@ -213,88 +174,6 @@
                     </ng-container>
                 </div>
             </div>
-
-            <!-- Broker -->
-
-            <div class="load-ftl-second-row">
-                <app-ta-input-dropdown
-                    formControlName="brokerId"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Broker',
-                        isDropdown: true,
-                        isRequired: true,
-                        blackInput: true,
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-320'
-                    }"
-                    [canAddNew]="true"
-                    [canOpenModal]="true"
-                    [options]="labelsBroker"
-                    [activeItem]="selectedBroker"
-                    (selectedItem)="onSelectDropdown($event, 'broker')"
-                ></app-ta-input-dropdown>
-
-                <app-ta-input-dropdown
-                    formControlName="brokerContactId"
-                    [template]="'load-broker-contact'"
-                    [inputConfig]="loadBrokerContactsInputConfig"
-                    [canAddNew]="true"
-                    [canOpenModal]="true"
-                    [options]="labelsBrokerContacts"
-                    [activeItem]="selectedBrokerContact"
-                    (selectedItem)="onSelectDropdown($event, 'broker-contact')"
-                ></app-ta-input-dropdown>
-            </div>
-
-            <!-- Reference No, General Commodity, Weight -->
-
-            <div class="load-ftl-third-row">
-                <app-ta-input
-                    formControlName="referenceNumber"
-                    [inputConfig]="{
-                        name: 'Ref Number',
-                        type: 'text',
-                        label: 'Reference No.',
-                        isRequired: true,
-                        textTransform: 'uppercase'
-                    }"
-                ></app-ta-input>
-
-                <app-ta-input-dropdown
-                    formControlName="generalCommodity"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'General Commodity',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-200',
-                        blackInput: true,
-                        customClass: 'hazardous-dropdown'
-                    }"
-                    [options]="labelsGeneralCommodity"
-                    [activeItem]="selectedGeneralCommodity"
-                    (selectedItem)="
-                        onSelectDropdown($event, 'general-commodity')
-                    "
-                ></app-ta-input-dropdown>
-
-                <app-ta-input
-                    formControlName="weight"
-                    [inputConfig]="{
-                        name: 'Weight',
-                        type: 'text',
-                        label: 'Weight',
-                        placeholderIcon: 'weight',
-                        thousandSeparator: true
-                    }"
-                ></app-ta-input>
-            </div>
-
-            <!-- Truck -->
 
             <div class="load-ftl-fourth-row">
                 <app-ta-input-dropdown
@@ -307,146 +186,146 @@
                 ></app-ta-input-dropdown>
             </div>
 
+            <!-- Broker -->
+            <div class="load-ftl-second-row">
+                <app-ta-input
+                    formControlName="referenceNumber"
+                    [inputConfig]="loadReferenceInputConfig"
+                ></app-ta-input>
+                <app-ta-input-dropdown
+                    formControlName="brokerId"
+                    [template]="'load-broker'"
+                    [inputConfig]="loadBrokerInputConfig"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
+                    [options]="labelsBroker"
+                    [activeItem]="selectedBroker"
+                    (selectedItem)="onSelectDropdown($event, 'broker')"
+                ></app-ta-input-dropdown>
+            </div>
+
+            <!-- Reference No, General Commodity, Weight -->
+
+            <div class="load-ftl-third-row">
+                <app-ta-input-dropdown
+                    formControlName="brokerContactId"
+                    [template]="'load-broker-contact'"
+                    [inputConfig]="loadBrokerContactsInputConfig"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
+                    [options]="labelsBrokerContacts"
+                    [activeItem]="selectedBrokerContact"
+                    (selectedItem)="onSelectDropdown($event, 'broker-contact')"
+                ></app-ta-input-dropdown>
+                <app-ta-input-dropdown
+                    formControlName="generalCommodity"
+                    [template]="'svgtext-template'"
+                    [inputConfig]="loadCommodityInputConfig"
+                    [options]="labelsGeneralCommodity"
+                    [activeItem]="selectedGeneralCommodity"
+                    (selectedItem)="
+                        onSelectDropdown($event, 'general-commodity')
+                    "
+                ></app-ta-input-dropdown>
+
+                <app-ta-input
+                    formControlName="weight"
+                    [inputConfig]="loadWeightInputConfig"
+                ></app-ta-input>
+            </div>
             <!-- Requirement -->
 
             <div
                 class="d-flex flex-column justify-content-center requirement-container"
             >
-                <div
-                    class="d-flex align-items-center requirement-container-header"
+                <app-ta-custom-card
+                    [cardName]="'Requirement'"
+                    [isCardOpen]="isRequirementVisible"
+                    [hasBodyData]="true"
+                    [hasDivider]="false"
+                    [animationMarginParams]="{
+                        marginTop: '10px',
+                        marginBottom: '12px'
+                    }"
                 >
-                    <p class="m-0 ta-font-extra-bold">Requirement</p>
-                </div>
+                    <div class="pt-2">
+                        <div class="load-requirements-load-first-row">
+                            <app-ta-input-dropdown
+                                formControlName="truckTypeId"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="getTruckTypeIdInputConfig"
+                                [options]="labelsTruckReq"
+                                [activeItem]="selectedTruckReq"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'truck-req')
+                                "
+                            ></app-ta-input-dropdown>
 
-                <div class="load-requirements-load-first-row">
-                    <app-ta-input-dropdown
-                        formControlName="truckTypeId"
-                        [template]="'svgtext-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Truck Requirement',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: true,
-                                image: false,
-                                url: selectedTruckReq?.logoName,
-                                template: 'truck',
-                                class: selectedTruckReq?.name
-                                    ?.trim()
-                                    .replace(' ', '')
-                                    .toLowerCase()
-                            },
-                            dropdownWidthClass: 'w-col-302',
-                            customClass: 'truck-trailer-dropdown'
-                        }"
-                        [options]="labelsTruckReq"
-                        [activeItem]="selectedTruckReq"
-                        (selectedItem)="onSelectDropdown($event, 'truck-req')"
-                    ></app-ta-input-dropdown>
+                            <app-ta-input-dropdown
+                                formControlName="trailerTypeId"
+                                [template]="'svgtext-template'"
+                                [inputConfig]="getTrailerInputConfig"
+                                [options]="labelsTrailerReq"
+                                [activeItem]="selectedTrailerReq"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'trailer-req')
+                                "
+                            ></app-ta-input-dropdown>
+                        </div>
 
-                    <app-ta-input-dropdown
-                        formControlName="trailerTypeId"
-                        [template]="'svgtext-template'"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Trailer Requirement',
-                            isDropdown: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: true,
-                                image: false,
-                                url: selectedTrailerReq?.logoName,
-                                template: 'trailer',
-                                class: ['Tanker', 'Tanker Pneumatic'].includes(
-                                    selectedTrailerReq?.name
-                                )
-                                    ? 'tanker'
-                                    : selectedTrailerReq?.name
-                                          ?.toLowerCase()
-                                          ?.includes('rgn')
-                                    ? 'low-boy-rgn'
-                                    : selectedTrailerReq?.name
-                                          ?.trim()
-                                          .replace(' ', '')
-                                          .toLowerCase()
-                            },
-                            dropdownWidthClass: 'w-col-302',
-                            customClass: 'truck-trailer-dropdown'
-                        }"
-                        [options]="labelsTrailerReq"
-                        [activeItem]="selectedTrailerReq"
-                        (selectedItem)="onSelectDropdown($event, 'trailer-req')"
-                    ></app-ta-input-dropdown>
-                </div>
+                        <div class="load-requirements-load-second-row">
+                            <app-ta-input-dropdown
+                                formControlName="trailerLengthId"
+                                [inputConfig]="loadTrailerLengthInputConfig"
+                                [options]="labelsTrailerLength"
+                                [activeItem]="selectedTrailerLength"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'length')
+                                "
+                            ></app-ta-input-dropdown>
 
-                <div class="load-requirements-load-second-row">
-                    <app-ta-input-dropdown
-                        formControlName="trailerLengthId"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Length',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-100'
-                        }"
-                        [options]="labelsTrailerLength"
-                        [activeItem]="selectedTrailerLength"
-                        (selectedItem)="onSelectDropdown($event, 'length')"
-                    ></app-ta-input-dropdown>
+                            <app-ta-input-dropdown
+                                formControlName="doorType"
+                                [inputConfig]="loadDoorTypeInputConfig"
+                                [options]="labelsDoorType"
+                                [activeItem]="selectedDoorType"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'door-type')
+                                "
+                            ></app-ta-input-dropdown>
 
-                    <app-ta-input-dropdown
-                        formControlName="doorType"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Door Type',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-120'
-                        }"
-                        [options]="labelsDoorType"
-                        [activeItem]="selectedDoorType"
-                        (selectedItem)="onSelectDropdown($event, 'door-type')"
-                    ></app-ta-input-dropdown>
+                            <app-ta-input-dropdown
+                                formControlName="suspension"
+                                [inputConfig]="loadSuspensionInputConfig"
+                                [options]="labelsSuspension"
+                                [activeItem]="selectedSuspension"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'suspension')
+                                "
+                            ></app-ta-input-dropdown>
 
-                    <app-ta-input-dropdown
-                        formControlName="suspension"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Suspension',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-150'
-                        }"
-                        [options]="labelsSuspension"
-                        [activeItem]="selectedSuspension"
-                        (selectedItem)="onSelectDropdown($event, 'suspension')"
-                    ></app-ta-input-dropdown>
+                            <app-ta-input-dropdown
+                                formControlName="year"
+                                [inputConfig]="loadYearInputConfig"
+                                [options]="labelsYear"
+                                [activeItem]="selectedYear"
+                                (selectedItem)="
+                                    onSelectDropdown($event, 'year')
+                                "
+                            ></app-ta-input-dropdown>
 
-                    <app-ta-input-dropdown
-                        formControlName="year"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Year',
-                            isDropdown: true,
-                            dropdownWidthClass: 'w-col-90'
-                        }"
-                        [options]="labelsYear"
-                        [activeItem]="selectedYear"
-                        (selectedItem)="onSelectDropdown($event, 'year')"
-                    ></app-ta-input-dropdown>
-
-                    <div class="d-flex align-items-center justify-content-end">
-                        <app-ta-checkbox
-                            formControlName="liftgate"
-                            [customClass]="'medium'"
-                            [label]="'Lifgate'"
-                        ></app-ta-checkbox>
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <app-ta-checkbox
+                                    formControlName="liftgate"
+                                    [customClass]="'medium'"
+                                    [label]="'Lifgate'"
+                                ></app-ta-checkbox>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </app-ta-custom-card>
             </div>
 
             <!-- Driver Message -->
@@ -486,6 +365,7 @@
                     [hasCounter]="loadExtraStops().length + 2"
                     [hasActionSvg]="true"
                     [hasBodyData]="true"
+                    [hasArrow]="false"
                     [animationMarginParams]="{
                         marginTop: '10px',
                         marginBottom: '12px'
@@ -495,8 +375,16 @@
                     <!-- Stops Header -->
 
                     <div class="align-items-center stops-header-bar">
-                        <p class="m-0 ta-font-semi-bold">#</p>
-                        <p class="m-0 ta-font-semi-bold">SHIPPER, LOCATION</p>
+                        <p class="m-0 ta-font-bold">
+                            <svg-icon
+                                [src]="loadModalSvgRoutes.sorting"
+                            ></svg-icon>
+                        </p>
+                        <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
+                        <p class="m-0 ta-font-bold">DATE & TIME</p>
+                        <p class="m-0 ta-font-bold text-right">
+                            LEG, CONTACT
+                        </p>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -571,12 +459,12 @@
                                             .get('pickupShipper')
                                             .markAsTouched()
                                     "
-                                ></app-ta-input-dropdown>
+                                >
+                                </app-ta-input-dropdown>
                             </div>
                         </div>
 
                         <!-- Work Hours, Appointment, Shipper Contact -->
-
                         <div class="load-shipper-contact-row">
                             <app-ta-tab-switch
                                 [tabs]="stopTimeTabsPickup"
@@ -613,17 +501,7 @@
                         >
                             <app-ta-input
                                 formControlName="pickupDateFrom"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    label: pickupDateRange
-                                        ? 'Start Date'
-                                        : 'Date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getPickupDateFromInputConfig"
                                 (blurInput)="
                                     loadForm
                                         .get('pickupDateFrom')
@@ -653,14 +531,7 @@
                             <app-ta-input
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    label: 'End Date',
-                                    placeholderIcon: 'date',
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="loadPickupEndDateInputConfig"
                                 (blurInput)="
                                     loadForm.get('pickupDateTo').markAsTouched()
                                 "
@@ -668,19 +539,7 @@
 
                             <app-ta-input
                                 formControlName="pickupTimeFrom"
-                                [inputConfig]="{
-                                    name: 'timepicker',
-                                    type: 'text',
-                                    label:
-                                        selectedStopTimePickup === 8
-                                            ? 'At'
-                                            : 'From',
-                                    placeholderIcon: 'time',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    isFromDate: true,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getPickupTimeFromInputConfig"
                                 (blurInput)="
                                     loadForm
                                         .get('pickupTimeFrom')
@@ -690,22 +549,19 @@
 
                             <app-ta-input
                                 formControlName="pickupTimeTo"
-                                [inputConfig]="{
-                                    name: 'timepicker',
-                                    type: 'text',
-                                    label: 'To',
-                                    placeholderIcon: 'time',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    isDisabled:
-                                        selectedStopTimePickup === 6 ||
-                                        selectedStopTimePickup === 2,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getPickupTimeToInputConfig"
                                 (blurInput)="
                                     loadForm.get('pickupTimeTo').markAsTouched()
                                 "
                             ></app-ta-input>
+                        </div>
+
+                        <div class="stop-load-date-time-driver">
+                            <app-ta-checkbox
+                                formControlName="pickupInvolveDriver"
+                                [customClass]="'medium'"
+                                [label]="'Involve driver in loading the cargo'"
+                            ></app-ta-checkbox>
                         </div>
 
                         <!-- Stop Items -->
@@ -717,7 +573,7 @@
                                 [hasCounter]="pickupStopItems.length"
                                 [hasActionSvg]="true"
                                 [hasBodyData]="true"
-                                [hasArrow]="true"
+                                [hasArrow]="false"
                                 [animationMarginParams]="{
                                     marginTop: '10px',
                                     marginBottom: '12px'
@@ -726,6 +582,7 @@
                                 (onActionEvent)="
                                     createNewStopItemsRow('pickup')
                                 "
+                                [customClass]="'scrollable'"
                             >
                                 <app-load-modal-stop-items
                                     [createNewStopItemsRow]="
@@ -984,19 +841,13 @@
                                     >
                                         <app-ta-input
                                             formControlName="dateFrom"
-                                            [inputConfig]="{
-                                                name: 'datepicker',
-                                                type: 'text',
-                                                isDropdown: true,
-                                                label: loadExtraStopsDateRange[
-                                                    indx
-                                                ]
-                                                    ? 'Date From'
-                                                    : 'Date',
-                                                placeholderIcon: 'date',
-                                                isRequired: true,
-                                                customClass: 'datetimeclass'
-                                            }"
+                                            [inputConfig]="
+                                                getExtraStopsDateFromInputConfig(
+                                                    loadExtraStopsDateRange[
+                                                        indx
+                                                    ]
+                                                )
+                                            "
                                             (blurInput)="
                                                 loadExtraStops()
                                                     .at(indx)
@@ -1042,14 +893,9 @@
                                                 loadExtraStopsDateRange[indx]
                                             "
                                             formControlName="dateTo"
-                                            [inputConfig]="{
-                                                name: 'datepicker',
-                                                type: 'text',
-                                                isDropdown: true,
-                                                label: 'Date To',
-                                                placeholderIcon: 'date',
-                                                customClass: 'datetimeclass'
-                                            }"
+                                            [inputConfig]="
+                                                loadExtraStopsToDateInputConfig
+                                            "
                                             (blurInput)="
                                                 loadExtraStops()
                                                     .at(indx)
@@ -1060,22 +906,11 @@
 
                                         <app-ta-input
                                             formControlName="timeFrom"
-                                            [inputConfig]="{
-                                                name: 'timepicker',
-                                                type: 'text',
-                                                label: selectedExtraStopTime[
-                                                    indx
-                                                ]
-                                                    ?.toString()
-                                                    ?.startsWith('9')
-                                                    ? 'At'
-                                                    : 'From',
-                                                placeholderIcon: 'time',
-                                                isFromDate: true,
-                                                isDropdown: true,
-                                                isRequired: true,
-                                                customClass: 'datetimeclass'
-                                            }"
+                                            [inputConfig]="
+                                                getExtraStopsDateFromTimeFromInputConfig(
+                                                    selectedExtraStopTime[indx]
+                                                )
+                                            "
                                             (blurInput)="
                                                 loadExtraStops()
                                                     .at(indx)
@@ -1086,22 +921,11 @@
 
                                         <app-ta-input
                                             formControlName="timeTo"
-                                            [inputConfig]="{
-                                                name: 'timepicker',
-                                                type: 'text',
-                                                label: 'To',
-                                                placeholderIcon: 'time',
-                                                isDropdown: true,
-                                                isRequired: true,
-                                                isDisabled:
+                                            [inputConfig]="
+                                                getExtraStopsDateToTimeToInputConfig(
                                                     selectedExtraStopTime[indx]
-                                                        ?.toString()
-                                                        ?.startsWith('9') ||
-                                                    selectedExtraStopTime[
-                                                        indx
-                                                    ] === 2,
-                                                customClass: 'datetimeclass'
-                                            }"
+                                                )
+                                            "
                                             (blurInput)="
                                                 loadExtraStops()
                                                     .at(indx)
@@ -1195,6 +1019,7 @@
                         [shipperContact]="{
                             fullName: selectedDeliveryShipperContact?.name
                         }"
+                        [isDestinationTab]="true"
                         [disabledCard]="!selectedPickupShipper"
                         [isCardOpen]="isActiveDeliveryStop"
                         [state]="
@@ -1292,17 +1117,7 @@
                         >
                             <app-ta-input
                                 formControlName="deliveryDateFrom"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    label: deliveryDateRange
-                                        ? 'Date From'
-                                        : 'Date',
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getDeliveryDateFromInputConfig"
                                 (blurInput)="
                                     loadForm
                                         .get('deliveryDateFrom')
@@ -1332,14 +1147,7 @@
                             <app-ta-input
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    label: 'Date To',
-                                    placeholderIcon: 'date',
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="loadDeliveryDateTo"
                                 (blurInput)="
                                     loadForm
                                         .get('deliveryDateTo')
@@ -1349,19 +1157,7 @@
 
                             <app-ta-input
                                 formControlName="deliveryTimeFrom"
-                                [inputConfig]="{
-                                    name: 'timepicker',
-                                    type: 'text',
-                                    label:
-                                        selectedStopTimeDelivery === 8
-                                            ? 'At'
-                                            : 'From',
-                                    placeholderIcon: 'time',
-                                    isDropdown: true,
-                                    isFromDate: true,
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getDeliveryTimeFromInputConfig"
                                 (blurInput)="
                                     loadForm
                                         .get('deliveryTimeFrom')
@@ -1371,18 +1167,7 @@
 
                             <app-ta-input
                                 formControlName="deliveryTimeTo"
-                                [inputConfig]="{
-                                    name: 'timepicker',
-                                    type: 'text',
-                                    label: 'To',
-                                    placeholderIcon: 'time',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    isDisabled:
-                                        selectedStopTimeDelivery === 8 ||
-                                        selectedStopTimeDelivery === 2,
-                                    customClass: 'datetimeclass'
-                                }"
+                                [inputConfig]="getDeliveryTimeToInputConfig"
                                 (blurInput)="
                                     loadForm
                                         .get('deliveryTimeTo')
@@ -1439,9 +1224,10 @@
                         <div
                             class="d-flex align-items-center stops-footer-bar-left-side"
                         >
-                            <p class="m-0 ta-font-bold stops-footer-bar-text">
-                                LOADED
-                            </p>
+                            <svg-icon
+                                [src]="loadModalSvgRoutes.loadIcon"
+                                class="load-modal-icon"
+                            ></svg-icon>
 
                             <span class="m-0 ta-font-bold loaded-miles-value"
                                 >{{
@@ -1455,17 +1241,30 @@
                         <div
                             class="d-flex align-items-center stops-footer-bar-right-side"
                         >
-                            <p class="m-0 ta-font-bold stops-footer-bar-text">
-                                TOTAL
-                            </p>
+                            <div>
+                                <svg-icon
+                                    [src]="loadModalSvgRoutes.milesIcon"
+                                    class="load-modal-icon"
+                                ></svg-icon>
 
-                            <span class="m-0 ta-font-bold total-miles-value"
-                                >{{
-                                    loadForm.get('totalMiles').value
-                                        | number : '1.2-2'
-                                }}
-                                <span>mi</span>
-                            </span>
+                                <span class="m-0 ta-font-bold total-miles-value"
+                                    >{{
+                                        loadForm.get('totalMiles').value
+                                            | number : '1.2-2'
+                                    }}
+                                    <span>mi</span>
+                                </span>
+                            </div>
+
+                            <div class="load-modal-time">
+                                <svg-icon
+                                    [src]="loadModalSvgRoutes.timeIcon"
+                                    class="load-modal-icon"
+                                ></svg-icon>
+                                <span class="m-0 ta-font-bold total-miles-value"
+                                    >≈ 0m</span
+                                >
+                            </div>
                         </div>
                     </div>
                 </app-ta-custom-card>
@@ -1486,8 +1285,7 @@
                         !additionalBillingTypes?.length
                     "
                     [adjusted]="
-                        loadForm.get('adjustedRate').value ||
-                        loadForm.get('driverRate').value
+                        adjustedRate || loadForm.get('driverRate').value
                     "
                     [secondHeaderTitle]="'Payment'"
                     [payment]="
@@ -1510,20 +1308,7 @@
 
                             <app-ta-input
                                 formControlName="baseRate"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Base Rate',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'green',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true
-                                }"
+                                [inputConfig]="loadBaseRateInputConfig"
                             ></app-ta-input>
 
                             <!-- Driver Rate -->
@@ -1532,7 +1317,7 @@
                                 selectedDispatches.payType === 'Flat Rate'
                             "
  -->
-                            <app-ta-input
+                            <!-- <app-ta-input
                                 formControlName="driverRate"
                                 [inputConfig]="{
                                     name: 'price-separator',
@@ -1548,7 +1333,7 @@
                                     hideErrorMessage: true,
                                     hideRequiredCheck: true
                                 }"
-                            ></app-ta-input>
+                            ></app-ta-input>  -->
 
                             <!-- Adjusted Rate -->
                             <!--  *ngIf="
@@ -1559,7 +1344,7 @@
                                         ?.checked &&
                                     this.selectedAdditionalBillings[0]?.id === 6
                                 " -->
-                            <app-ta-input
+                            <!-- <app-ta-input
                                 formControlName="adjustedRate"
                                 [inputConfig]="{
                                     name: 'price-separator',
@@ -1577,7 +1362,7 @@
                                     hideDangerMark: true
                                 }"
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
-                            ></app-ta-input>
+                            ></app-ta-input> -->
 
                             <div formArrayName="additionalBillings">
                                 <div
@@ -1592,24 +1377,11 @@
                                     <div [formGroupName]="indx">
                                         <app-ta-input
                                             formControlName="billingValue"
-                                            [inputConfig]="{
-                                                name: 'price-separator',
-                                                type: 'text',
-                                                label: additional.get('name')
-                                                    .value,
-                                                labelInInput: true,
-                                                priceSeparator: true,
-                                                priceSeparatorLimitation: 6,
-                                                placeholderIconRightSide:
-                                                    'dollar-additional-load',
-                                                placeholderIconColor: 'blue',
-                                                inputCursorOnRightSide: true,
-                                                removeInput: true,
-                                                isRequired: true,
-                                                hideErrorMessage: true,
-                                                hideRequiredCheck: true,
-                                                hideDangerMark: true
-                                            }"
+                                            [inputConfig]="
+                                                getBillingValueInputConfig(
+                                                    additional
+                                                )
+                                            "
                                             (clear)="
                                                 removeAdditionalBilling(
                                                     'billing',
@@ -1620,64 +1392,107 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- 
-                                *ngIf="isVisibleBillDropdown" -->
-                            <app-ta-input-dropdown
-                                formControlName="billingDropdown"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Additional',
-                                    isDropdown: true,
-                                    labelInInput: true,
-                                    autoFocus: true,
-                                    dropdownWidthClass: 'w-col-198',
-                                    readOnly: true
-                                }"
-                                [options]="additionalBillingTypes"
-                                [activeItem]="null"
-                                (selectedItem)="addAdditionalBilling($event)"
-                            ></app-ta-input-dropdown>
+                            <ng-container *ngIf="isVisibleBillDropdown">
+                                <app-ta-input-dropdown
+                                    formControlName="billingDropdown"
+                                    [inputConfig]="
+                                        loadBillingDropdownInputConfig
+                                    "
+                                    [options]="additionalBillingTypes"
+                                    [activeItem]="null"
+                                    (selectedItem)="
+                                        addAdditionalBilling($event)
+                                    "
+                                ></app-ta-input-dropdown>
+                            </ng-container>
                         </div>
-                        <!-- 
-                                *ngIf="isVisiblePayment" -->
-                        <div class="load-financial-payment">
-                            <app-ta-input
-                                formControlName="advancePay"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Advance',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'purple',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true,
-                                    removeInput: true
-                                }"
-                                (clear)="removeAdditionalPayment()"
-                            ></app-ta-input>
+
+                        <div>
+                            <div
+                                formArrayName="additionalPayments"
+                                *ngIf="isVisiblePayment"
+                            >
+                                <div
+                                    *ngFor="
+                                        let additional of additionalPayments()
+                                            .controls;
+                                        let indx = index;
+                                        trackBy: trackByIdentity
+                                    "
+                                    [ngStyle]="{ 'margin-bottom': '4px' }"
+                                >
+                                    <div [formGroupName]="indx">
+                                        <div class="load-financial-payment">
+                                            <app-ta-input
+                                                formControlName="pay"
+                                                [inputConfig]="
+                                                    getPaymentInputConfig(
+                                                        additional
+                                                    )
+                                                "
+                                                (clear)="
+                                                    removePaymentBilling(indx)
+                                                "
+                                            ></app-ta-input>
+
+                                            <app-ta-input-dropdown
+                                                formControlName="displayPaymentType"
+                                                [inputConfig]="
+                                                    loadPaymentTypeInputConfig
+                                                "
+                                                [canOpenModal]="true"
+                                                [options]="
+                                                    paymentMethodsDropdownList
+                                                "
+                                                (selectedItem)="
+                                                    onSelectDropdown(
+                                                        $event,
+                                                        'pay-type',
+                                                        indx
+                                                    )
+                                                "
+                                            ></app-ta-input-dropdown>
+
+                                            <app-ta-input
+                                                formControlName="payDate"
+                                                [inputConfig]="
+                                                    loadPaydateInputConfig
+                                                "
+                                            ></app-ta-input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ng-container *ngIf="showPaymentArray">
+                                <app-ta-input-dropdown
+                                    formControlName="paymentDropdown"
+                                    [inputConfig]="
+                                        loadPaymentDropdownInputConfig
+                                    "
+                                    [options]="paymentTypesDropdownList"
+                                    [activeItem]="null"
+                                    (selectedItem)="addPaymentBilling($event)"
+                                ></app-ta-input-dropdown>
+                            </ng-container>
                         </div>
 
                         <div class="load-financial-invoice">
                             <app-ta-input
-                                formControlName="invoiced"
-                                [inputConfig]="{
-                                    name: 'datepicker',
-                                    type: 'text',
-                                    isDropdown: true,
-                                    label: 'Invoiced',
-                                    isDisabled: true,
-                                    placeholderIcon: 'date',
-                                    isRequired: true,
-                                    customClass: 'datetimeclass'
-                                }"
+                                formControlName="invoicedDate"
+                                [inputConfig]="loadInvoiceDateInputConfig"
                             ></app-ta-input>
+
+                            <ng-container *ngIf="invoicePercent.daysToPay">
+                                <app-ta-progres-bar
+                                    [type]="'days'"
+                                    [text]="invoicePercent.daysLeft"
+                                    [daysToPay]="invoicePercent.daysToPay"
+                                    [percents]="invoicePercent.percent"
+                                    [daysExpired]="true"
+                                >
+                                </app-ta-progres-bar>
+                            </ng-container>
                         </div>
                     </div>
                 </app-load-modal-financial>
@@ -1685,7 +1500,10 @@
 
             <!-- Comments -->
 
-            <div class="load-modal-row">
+            <div
+                class="load-modal-row"
+                *ngIf="editData?.type?.includes('edit')"
+            >
                 <app-ta-custom-card
                     [cardName]="'Comment'"
                     [isCardOpen]="comments.length"

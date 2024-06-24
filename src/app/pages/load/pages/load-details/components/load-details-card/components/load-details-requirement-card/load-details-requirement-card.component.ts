@@ -78,6 +78,8 @@ export class LoadDetailsRequirementCardComponent implements OnChanges {
         const filteredRequirementData =
             LoadDetailsCardHelper.filterObjectProperties(requirementData);
 
+        this.requirementDataArray = [];
+
         Object.entries(filteredRequirementData).map((reqData) => {
             const data = {
                 title: LoadDetailsCardHelper.createRequirementProperties(

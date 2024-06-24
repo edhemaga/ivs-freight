@@ -1136,6 +1136,7 @@
     {{ _inputConfig.customClass }}
     "
         [ngClass]="{
+            'input-fixed-placehoder-input': _inputConfig.fixedPlacholder && input.value && !focusInput,
             focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
@@ -1305,7 +1306,7 @@
             onChange($event.target.value);
             transformText($event.target.value, false)
         "
-        [(ngModel)]="input.value"
+        [(ngModel)]="input.value" 
     />
 
     <!-- Input Label -->
@@ -1336,7 +1337,7 @@
             'in-label': _inputConfig.labelInInput
         }"
     >
-        <span *ngIf="_inputConfig.label">{{ _inputConfig.label }}</span>
+        <span *ngIf="_inputConfig.label">{{ _inputConfig.label }} </span>
         <div
             *ngIf="_inputConfig.multipleLabel?.labels?.length"
             [class]="_inputConfig.multipleLabel?.customClass"
@@ -1410,6 +1411,7 @@
     >
         {{ getSuperControl.errors | inputError : _inputConfig.name }}
     </span>
+    <span *ngIf="_inputConfig.fixedPlacholder && input.value" class="input-fixed-placehoder-label">{{_inputConfig.fixedPlacholder}}</span> 
 </div>
 
 <!-- Popover for DateTime Pickers -->

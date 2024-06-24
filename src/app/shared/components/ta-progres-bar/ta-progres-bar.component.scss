@@ -6,7 +6,15 @@
 
     .progress-text {
         color: $ta-black-2;
+        width: 100%;
 
+        &-title {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 12px;
+        }
+        
         &.table-progress-text {
             font-size: 14px;
             font-weight: 400;
@@ -73,6 +81,18 @@
         }
         .front-red {
             background: $ta-red-11;
+        }
+    }
+
+    
+
+    &-expired {
+        flex-direction: column-reverse;
+        margin-top: 6px;
+        gap: 0;
+        
+        .progress-bar-holder{
+            width: 100%;
         }
     }
 
