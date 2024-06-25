@@ -1031,8 +1031,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : LoadModalStringEnum.EMPTY_SPACE_STRING +
                       TableStringEnum.LOAD_2);
 
-            console.log('tableEvent', event);
-
             this.modalService.openModal(
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
