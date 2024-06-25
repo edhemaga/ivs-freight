@@ -268,7 +268,7 @@
         class="ta-card-body"
         [ngClass]="{
             scroll: hasScrollBody,
-            'scroll-x-axis': hasScrollBodyXAxis && _isCardOpen
+            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen
         }"
         [@.disabled]="disableAnimation"
     >

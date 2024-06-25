@@ -1,5 +1,6 @@
 import {
     LoadBillingAdditionalCommand,
+    LoadPaymentPayResponse,
     LoadStatus,
     LoadStopCommand,
     LoadType,
@@ -55,4 +56,6 @@ export interface Load {
     totalMiles: number;
     totalHours: number;
     totalMinutes: number;
+    pays: Array<LoadPaymentPayResponse> | null;
+    invoicedDate: string;
 }

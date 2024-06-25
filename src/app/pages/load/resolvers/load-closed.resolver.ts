@@ -38,21 +38,24 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                 undefined,
                 undefined,
                 undefined,
+                1, // hotfix
                 1,
                 25
             ),
             this.tableService.getTableConfig(2),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
-                localStorage.setItem(
-                    'loadTableCount',
-                    JSON.stringify({
-                        pendingCount: loadPagination.pendingCount,
-                        activeCount: loadPagination.activeCount,
-                        closedCount: loadPagination.closedCount,
-                        templateCount: loadPagination.templateCount,
-                    })
-                );
+                if (loadPagination) {
+                    localStorage.setItem(
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.templateCount,
+                        })
+                    );
+                }
 
                 if (tableConfig) {
                     const config = JSON.parse(tableConfig.config);
@@ -63,7 +66,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                     );
                 }
 
-                this.loadClosedStore.set(loadPagination.pagination.data);
+                this.loadClosedStore.set(loadPagination?.pagination?.data);
             })
         );
     }
