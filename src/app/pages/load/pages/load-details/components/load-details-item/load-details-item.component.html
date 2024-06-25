@@ -14,7 +14,10 @@
             <!-- Stops -->
 
             <ng-container *ngSwitchCase="'stop'">
-                <app-load-details-item-stops [load]="loadItem?.data">
+                <app-load-details-item-stops
+                    [load]="loadItem?.data"
+                    [isMapDisplayed]="loadItem?.isMapDisplayed"
+                >
                 </app-load-details-item-stops>
             </ng-container>
 

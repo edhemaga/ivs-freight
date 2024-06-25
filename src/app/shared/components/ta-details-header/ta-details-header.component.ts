@@ -1,5 +1,13 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -44,7 +52,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
         FormatCurrencyPipe,
     ],
 })
-export class TaDetailsHeaderComponent implements OnInit {
+export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() headerText: string = null;
     @Input() tooltipHeaderName: string = '';
     @Input() route: string = '';
@@ -82,6 +90,7 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() subText: string;
     @Input() capsulaText: string;
     @Input() isMapBtn: boolean;
+    @Input() isMapDisplayed: boolean;
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -97,11 +106,22 @@ export class TaDetailsHeaderComponent implements OnInit {
     public dropOpened: boolean = false;
     public tooltip: any;
     public activeTemplate: any = 'All Load';
-    public isMapBtnClicked: boolean = false;
+    public isMapBtnClicked: boolean = true;
 
-    constructor(private routes: ActivatedRoute) {}
+    constructor() {}
 
     ngOnInit(): void {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes?.isMapDisplayed?.currentValue !==
+            changes?.isMapDisplayed?.previousValue
+        ) {
+            this.isMapBtnClicked = changes?.isMapDisplayed?.currentValue;
+
+            console.log('  this.isMapBtnClicked', this.isMapBtnClicked);
+        }
+    }
 
     public openModal(val: string) {
         this.openModalAction.emit(val);

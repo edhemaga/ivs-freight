@@ -21,6 +21,7 @@
                 (item.length === 2 ? false : item.length - 2 + ' EXTRA')
             "
             [isMapBtn]="i === 1"
+            [isMapDisplayed]="isMapDisplayed"
             (dropActions)="onLoadActions($event)"
             (mapBtnEmitter)="onMapBtnClick($event)"
         >
@@ -30,7 +31,6 @@
     <div class="load-details-container">
         <app-load-details-item
             [detailsConfig]="loadDetailsConfig"
-            [routeData]="loadStopRoutes"
         ></app-load-details-item>
     </div>
 </div>

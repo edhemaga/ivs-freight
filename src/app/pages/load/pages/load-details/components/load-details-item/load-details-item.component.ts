@@ -77,7 +77,6 @@ import { DetailsConfig } from '@shared/models/details-config.model';
 })
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input() detailsConfig: DetailsConfig;
-    @Input() routeData: any;
 
     private destroy$ = new Subject<void>();
 

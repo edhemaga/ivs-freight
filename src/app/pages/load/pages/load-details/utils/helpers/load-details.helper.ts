@@ -76,7 +76,7 @@ export class LoadDetailsHelper {
                 req: false,
                 hide: true,
                 data: load,
-                isMapDisplayed: false,
+                isMapDisplayed: true,
                 length: load.stops?.length,
             },
             {
