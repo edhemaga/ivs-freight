@@ -31,9 +31,6 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-//Components
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
-
 // Svg-Routes
 import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/load-card-svg-routes';
 
@@ -126,25 +123,6 @@ export class LoadCardComponent implements OnInit, OnDestroy {
 
     public trackCard(item: number): number {
         return item;
-    }
-
-    public onCardActions(event: any): void {
-        if (event.type === TableStringEnum.EDIT) {
-            this.modalService.openModal(
-                LoadModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.EDIT,
-                    openedTab:
-                        event.type === TableStringEnum.ADD_CONTRACT
-                            ? TableStringEnum.CONTRACT
-                            : event.type === TableStringEnum.WRITE_REVIEW
-                            ? TableStringEnum.REVIEW
-                            : TableStringEnum.DETAIL,
-                }
-            );
-        }
     }
 
     ngOnDestroy() {
