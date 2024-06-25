@@ -1068,7 +1068,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public updateCardView(): void {
-        console.log(this.selectedTab, 'selected tabbb')
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
                 this.displayRows$ = this.store.pipe(
