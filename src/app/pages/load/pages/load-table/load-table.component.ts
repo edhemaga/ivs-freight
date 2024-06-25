@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
-import { Subject, Subscription, takeUntil, tap } from 'rxjs';
+import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
@@ -12,6 +12,7 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
+import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 
 // Models
 import {
@@ -19,7 +20,6 @@ import {
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
-import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,
     DropdownItem,
@@ -61,6 +61,8 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
+import { Store, select } from '@ngrx/store';
+import { selectActiveTabCards, selectInactiveTabCards } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
@@ -100,6 +102,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public mapingIndex: number = 0;
     public dataSubscription: Subscription;
 
+    public displayRows$: Observable<any>; //leave this as any for now
+
     constructor(
         private tableService: TruckassistTableService,
         private modalService: ModalService,
@@ -115,12 +119,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private confiramtionService: ConfirmationService,
         private nameInitialsPipe: NameInitialsPipe,
         private loadQuery: LoadQuery,
-        private cardsModalService: CardsModalConfigService
+        private cardsModalService: CardsModalConfigService,
+        private loadCardsModalService: LoadCardModalService,
+
+        //store
+        private store: Store,
     ) {}
 
     ngOnInit(): void {
-        this.updateCardView();
-
         this.sendLoadData();
 
         this.resetColumns();
@@ -148,31 +154,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
-    }
-
-    private updateCardView(): void {
-        switch (this.selectedTab) {
-            case TableStringEnum.PENDING:
-                this.pendingTabCardsConfig();
-                break;
-
-            case TableStringEnum.TEMPLATE:
-                this.templateTabCardsConfig();
-                break;
-
-            case TableStringEnum.ACTIVE:
-                this.activeTabCardsConfig();
-                break;
-
-            case TableStringEnum.CLOSED:
-                this.closedTabCardsConfig();
-                break;
-
-            default:
-                break;
-        }
-
-        this.cardsModalService.updateTab(this.selectedTab);
     }
 
     private pendingTabCardsConfig(): void {
@@ -1039,6 +1020,26 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onTableBodyActions({
             type: TableStringEnum.SHOW_MORE,
         });
+    }
+
+    public updateCardView(): void {
+        console.log(this.selectedTab, 'selected tabbb')
+        switch (this.selectedTab) {
+            case TableStringEnum.ACTIVE:
+                this.displayRows$ = this.store.pipe(
+                    select(selectActiveTabCards)
+                );
+                break;
+
+            case TableStringEnum.PENDING:
+                this.displayRows$ = this.store.pipe(
+                    select(selectInactiveTabCards)
+                );
+                break;
+            default:
+                break;
+        }
+        this.loadCardsModalService.updateTab(this.selectedTab);
     }
 
     public ngOnDestroy(): void {

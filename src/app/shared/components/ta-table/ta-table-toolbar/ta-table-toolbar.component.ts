@@ -83,7 +83,6 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TaToolbarFiltersComponent,
         TruckCardModalComponent,
         TaInputDropdownComponent,
-        LoadCardModalComponent,
         ConfirmationResetModalComponent,
     ],
 })
