@@ -65,7 +65,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 import { Store, select } from '@ngrx/store';
-import { selectActiveTabCards, selectInactiveTabCards } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
+import { selectActiveTabCards, selectPendingTabCards } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
@@ -1077,7 +1077,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             case TableStringEnum.PENDING:
                 this.displayRows$ = this.store.pipe(
-                    select(selectInactiveTabCards)
+                    select(selectPendingTabCards)
                 );
                 break;
             default:

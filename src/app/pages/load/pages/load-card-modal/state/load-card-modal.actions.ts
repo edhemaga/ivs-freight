@@ -6,7 +6,7 @@ export const setActiveTabCards = createAction(
     props<LoadCardTypes>()
 );
 
-export const setInactiveTabCards = createAction(
-    '[Load Card Modal] Set Inactive Tab Cards',
+export const setPendingTabCards = createAction(
+    '[Load Card Modal] Set Pending Tab Cards',
     props<LoadCardTypes>()
 );

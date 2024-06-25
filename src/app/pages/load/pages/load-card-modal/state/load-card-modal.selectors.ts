@@ -10,12 +10,12 @@ export const selectLoadCardDataState =
     createFeatureSelector<LoadCardData>('loadCardData');
 
 export const selectActiveModalTabs = (
-    type: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE
+    type: TableStringEnum.ACTIVE | TableStringEnum.PENDING
 ) => createSelector(selectLoadCardDataState, (state) => state[type]);
 
-export const selectInactiveModalTabs = createSelector(
+export const selectPendingModalTabs = createSelector(
     selectLoadCardDataState,
-    (state) => state.inactive
+    (state) => state.pending
 );
 
 export const selectActiveTabCards = createSelector(
@@ -35,15 +35,15 @@ export const selectActiveTabCards = createSelector(
     }
 );
 
-export const selectInactiveTabCards = createSelector(
+export const selectPendingTabCards = createSelector(
     selectLoadCardDataState,
     (state) => {
-        if (state.inactive) {
+        if (state.pending) {
             const filteredCardRowsFront =
-                state.inactive.front_side.filter(Boolean);
+                state.pending.front_side.filter(Boolean);
 
             const filteredCardRowsBack =
-                state.inactive.back_side.filter(Boolean);
+                state.pending.back_side.filter(Boolean);
 
             return {
                 displayRowsFront: filteredCardRowsFront,

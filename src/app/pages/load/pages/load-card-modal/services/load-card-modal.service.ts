@@ -8,7 +8,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 import { Store } from '@ngrx/store';
 import {
     setActiveTabCards,
-    setInactiveTabCards,
+    setPendingTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
 
 //Enums
@@ -55,8 +55,8 @@ export class LoadCardModalService {
                 this.store.dispatch(setActiveTabCards(sendToStore));
                 break;
 
-            case TableStringEnum.INACTIVE:
-                this.store.dispatch(setInactiveTabCards(sendToStore));
+            case TableStringEnum.PENDING:
+                this.store.dispatch(setPendingTabCards(sendToStore));
                 break;
             default:
                 break;

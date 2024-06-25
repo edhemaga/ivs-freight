@@ -2,7 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {
     setActiveTabCards,
-    setInactiveTabCards,
+    setPendingTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.actions';
 
 //Constants
@@ -18,11 +18,11 @@ export const loadState: LoadCardData = {
         front_side: LoadCardModalConfig.displayRowsFrontActive,
         back_side: LoadCardModalConfig.displayRowsBackActive,
     },
-    inactive: {
+    pending: {
         numberOfRows: 4,
         checked: true,
-        front_side: LoadCardModalConfig.displayRowsFrontInactive,
-        back_side: LoadCardModalConfig.displayRowsBackInactive,
+        front_side: LoadCardModalConfig.displayRowsFrontPending,
+        back_side: LoadCardModalConfig.displayRowsBackPending,
     },
 };
 
@@ -32,8 +32,8 @@ export const loadCardModalReducer = createReducer(
         ...state,
         active,
     })),
-    on(setInactiveTabCards, (state, inactive) => ({
+    on(setPendingTabCards, (state, pending) => ({
         ...state,
-        inactive,
+        pending,
     }))
 );

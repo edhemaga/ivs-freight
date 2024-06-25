@@ -406,6 +406,19 @@
                             </app-ta-note>
                         </div>
 
+                        <ng-container *ngIf="selectedTab !== 'template'">
+                            <div class="right-side-svg">
+                                <app-ta-input-dropdown-table
+                                    [data]="card"
+                                    [type]="'comment'"
+                                    [searchPlaceholder]="'Find Title'"
+                                    [svg]="
+                                        'assets/svg/detail-cards/comment - count.svg'
+                                    "
+                                ></app-ta-input-dropdown-table>
+                            </div>
+                        </ng-container>
+
                         <ng-container *ngIf="card.fileCount">
                             <div
                                 class="card-attachments-icon-container d-flex flex-column align-items-center"

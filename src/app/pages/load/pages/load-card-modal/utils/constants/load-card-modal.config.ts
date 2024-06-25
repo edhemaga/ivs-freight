@@ -59,7 +59,7 @@ export class LoadCardModalConfig {
         null,
     ];
 
-    static displayRowsFrontInactive: CardRows[] = [
+    static displayRowsFrontPending: CardRows[] = [
         {
             title: 'Status',
             key: 'status',
@@ -87,7 +87,7 @@ export class LoadCardModalConfig {
         null,
     ];
 
-    static displayRowsBackInactive: CardRows[] = [
+    static displayRowsBackPending: CardRows[] = [
         {
             title: 'Assigned • Driver',
             key: 'driver',

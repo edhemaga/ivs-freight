@@ -250,7 +250,7 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
         this.modalService.tabObservable$
             .pipe(takeUntil(this.destroy$))
             .subscribe(
-                (res: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE) => {
+                (res: TableStringEnum.ACTIVE | TableStringEnum.PENDING) => {
                     this.tabSelected = res;
                     this.setDefaultValues(res);
                 }
@@ -369,7 +369,7 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
     }
 
     private setDefaultValues(
-        type: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE
+        type: TableStringEnum.ACTIVE | TableStringEnum.PENDING
     ): void {
         this.displayData$ = this.store.select(selectActiveModalTabs(type));
         this.subscription.add(
