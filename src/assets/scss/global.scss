@@ -131,7 +131,7 @@ body {
 
 // Need to override to get scroll
 html body .content-holder .stop-items-wrapper app-load-modal-stop-items {
-    scrollbar-width: thin !important; 
+    scrollbar-width: thin !important;
 }
 
 html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
@@ -160,4 +160,37 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
     top: auto;
     border-top-width: 1px;
     margin-top: -1px;
+}
+
+.dropdown-option {
+    &.booked {
+        .svgtext-template-text  {
+            color: $ta-light-grey-2;
+        }
+    }
+    &.cancelled {
+        .svgtext-template-text  {
+            color: $ta-red-14;
+        }
+    }
+    &.assigned {
+        .svgtext-template-text {
+            color: $ta-green-1;
+        }
+    }
+    &.unassigned {
+        .svgtext-template-text  {
+            color:$muted ;
+        }
+    }
+    &.dispatched{
+        .svgtext-template-text  {
+            color: $ta-blue-13;
+        }
+    }
+    &.split {
+        .svgtext-template-text {
+            color: $ta-red-17;
+        }
+    }
 }

@@ -459,7 +459,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public loadInvoiceDateInputConfig(): ITaInput {
         return LoadModalConfig.getInvoiceDate(!this.isPendingStatus);
-    };
+    }
 
     public get invoicePercent(): LoadModalInvoiceProgress {
         if (this.loadForm.value) {
@@ -486,23 +486,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get modalTitle(): string {
-        const isEdit = this.editData?.type?.includes('edit'); 
+        const isEdit = this.editData?.type?.includes('edit');
 
-        if(this.isConvertedToTemplate) {
+        if (this.isConvertedToTemplate) {
             return 'Create Load Template';
-        } else if(!isEdit) {
+        } else if (!isEdit) {
             return 'Create Load';
         } else {
-            	return `Edit ${(this.editData.data as LoadResponse).statusType.name} Load`
+            return `Edit ${
+                (this.editData.data as LoadResponse).statusType.name
+            } Load`;
         }
     }
 
-    public get getLoadStatus():  number{
+    public get getLoadStatus(): number {
         return (this.editData?.data as LoadResponse).statusType.id;
     }
 
-    public get isPendingStatus() : boolean {
-        return this.getLoadStatus === 1; 
+    public get isPendingStatus(): boolean {
+        return this.getLoadStatus === 1;
     }
 
     public trackByIdentity(_, index: number): number {
@@ -606,9 +608,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 (isFormChange: boolean) => (this.isFormDirty = isFormChange)
             );
 
-            if(this.isPendingStatus) {
-                this.loadForm.get('invoicedDate').setValidators(Validators.required);
-            }
+        // if(this.isPendingStatus) {
+        //     this.loadForm.get('invoicedDate').setValidators(Validators.required);
+        // }
     }
 
     private getCompanyUser(): void {
@@ -867,6 +869,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public onSelectDropdown(event: any, action: string, index?: number): void {
         switch (action) {
+            case LoadModalStringEnum.STATUS:
+                this.selectedStatus = event;
+                break;
             case LoadModalStringEnum.PAYMENT_TYPE:
                 const value = this.additionalPayments().at(index);
                 value.patchValue({
@@ -2494,7 +2499,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public loadExtraStops(): UntypedFormArray {
         return this.loadForm.get(
-            LoadModalStringEnum.EXTRA_sTOPS_2
+            LoadModalStringEnum.EXTRA_STOPS_2
         ) as UntypedFormArray;
     }
 
@@ -2703,7 +2708,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
                     legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
                     legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value,
-                    items: this.pickupStopItems,
+                    items: this.extraStopItems[index],
                 });
             });
         }
@@ -3781,23 +3786,27 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
 
         this.loadService
-            .updateLoad(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
+            .updateLoadStatus(this.editData.data.id, this.selectedStatus.name as LoadStatus)
+            .subscribe((res) => {
+                this.loadService
+                    .updateLoad(newData)
+                    .pipe(takeUntil(this.destroy$))
+                    .subscribe({
+                        next: () => {
+                            this.modalService.setModalSpinner({
+                                action: null,
+                                status: true,
+                                close: true,
+                            });
+                        },
+                        error: () => {
+                            this.modalService.setModalSpinner({
+                                action: null,
+                                status: false,
+                                close: false,
+                            });
+                        },
                     });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
             });
     }
 
@@ -4034,7 +4043,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // documents
         this.documents = files || [];
-
+        this.handleOpenCloseDocumentsCard(!!this.documents.length);
+        
         // comments
         this.comments = comments.map((comment) => {
             return {

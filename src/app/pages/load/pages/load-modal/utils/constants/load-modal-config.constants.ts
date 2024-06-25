@@ -527,6 +527,6 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Status',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-132',
+        dropdownWidthClass: 'w-col-132 dropdown-status'
     };
 }

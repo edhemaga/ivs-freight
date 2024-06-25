@@ -31,6 +31,7 @@ import {
     RoutingService,
     RoutingResponse,
     CreateLoadTemplateCommand,
+    LoadStatus,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -232,20 +233,16 @@ export class LoadService {
 
     public createLoad(data: Load): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.loadService.apiLoadPost().pipe(
-            tap(() => {
-                
-            })
-        );
+        return this.loadService.apiLoadPost();
     }
 
     public updateLoad(data: Load): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-        return this.loadService.apiLoadPut().pipe(
-            tap(() => {
-                
-            })
-        );
+        return this.loadService.apiLoadPut();
+    }
+
+    public updateLoadStatus(loadId: number, loadStatus: LoadStatus) {
+        return this.loadService.apiLoadStatusPut({id: loadId, status: loadStatus});
     }
 
     // modal operations - template

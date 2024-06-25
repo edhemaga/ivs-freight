@@ -96,7 +96,7 @@ export enum LoadModalStringEnum {
     SHIPPER_CONTACT_EXTRA_STOPS = 'shipper-contact-extra-stops',
     EXTRA_STOP_SHIPPER = 'extra-stop-shipper',
     EXTRA_STOP_SHIPPER_CONTACT = 'extra-stop-shipper-contact',
-    EXTRA_sTOPS_2 = 'extraStops',
+    EXTRA_STOPS_2 = 'extraStops',
 
     CONTACT = 'Contact',
     PHONE = 'Phone',
@@ -176,4 +176,5 @@ export enum LoadModalStringEnum {
     CREATE = 'create',
     AGE_UNPAID = 'ageUnpaid',
     DAYS_TO_PAY = 'daysToPay',
+    STATUS = 'status'
 }

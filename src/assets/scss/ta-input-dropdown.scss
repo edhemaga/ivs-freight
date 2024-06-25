@@ -925,6 +925,13 @@
                 }
             }
 
+            &.dropdown-status {
+                .dropdown-option {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+
             //------------------------ Load Dispatcher Template ------------------------
             .load-dispatcher-template {
                 display: flex;
@@ -1828,3 +1835,4 @@
         }
     }
 }
+ 
