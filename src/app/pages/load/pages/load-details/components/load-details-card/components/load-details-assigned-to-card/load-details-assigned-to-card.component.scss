@@ -1,0 +1,84 @@
+@import 'src/theme/variables.scss';
+
+.assign-to-container {
+    padding: 2px 4px 0 4px;
+
+    .assign-to-main-container {
+        left: unset;
+
+        &-inner {
+            display: grid;
+            grid-template-columns: repeat(2, 202px);
+            grid-gap: 12px;
+
+            &.vehicle-container {
+                margin-bottom: 12px;
+            }
+        }
+
+        .box {
+            border-radius: 2px;
+            padding: 4px 6px;
+            background: $bw2;
+
+            &:hover {
+                .open-modal-icon {
+                    display: flex;
+                }
+            }
+
+            &.no-value {
+                background: $ta-light-grey-5;
+
+                span {
+                    color: $ta-light-grey-2;
+                }
+
+                &:hover {
+                    .open-modal-icon {
+                        display: none;
+                    }
+                }
+            }
+
+            .icon {
+                margin-right: 4px;
+
+                svg {
+                    path {
+                        fill: $bw5;
+                    }
+                }
+            }
+
+            span {
+                font-size: 14px;
+                line-height: 18px;
+                color: $ta-black;
+
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            }
+
+            .open-modal-icon {
+                display: none;
+            }
+
+            .driver-avatar {
+                vertical-align: middle;
+                width: 18px;
+                height: 20px;
+                border-radius: 2px;
+                margin-right: 4px;
+                user-select: none;
+            }
+        }
+    }
+}

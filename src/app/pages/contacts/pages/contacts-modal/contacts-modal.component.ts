@@ -362,7 +362,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                         companyContactLabelId: res.companyContactLabel
                             ? res.companyContactLabel.name
                             : null,
-                        avatar: res.avatar ? res.avatar : null,
+                        /*  avatar: res.avatar ? res.avatar : null, */
                         address: res.address ? res.address.address : null,
                         addressUnit: res.address
                             ? res.address.addressUnit

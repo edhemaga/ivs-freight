@@ -5,7 +5,8 @@
             'first-or-last': firstOrLast && isCardOpen,
             'not-first-or-last': !firstOrLast,
             'origin-destination-no-filled': !shipper || !state,
-            'not-active-stop': !isCardOpen
+            'not-active-stop': !isCardOpen,
+            'destination-disabled': isDestinationTab && disabledCard
         }"
         (click)="toggleStop($event)"
     >
@@ -45,7 +46,7 @@
                 <div
                     class="origin-destination-no-filled-container first-container-required"
                 >
-                    <p class="m-0 ta-font-semi-bold">
+                    <p class="m-0 ta-font-semi-bold load-stop-header-bar-title">
                         {{
                             firstOrLast
                                 ? isDelivery

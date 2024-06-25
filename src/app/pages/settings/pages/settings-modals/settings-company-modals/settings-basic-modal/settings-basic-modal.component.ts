@@ -1252,9 +1252,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                 this.editData.company.currency?.id !== 0
                     ? this.editData.company.currency.name
                     : null,
-            logo: this.editData.company.logo
+            logo: /* this.editData.company.logo
                 ? this.editData.company.logo
-                : null,
+                : */ null,
         });
 
         this.selectedAddress = this.editData.company.address;

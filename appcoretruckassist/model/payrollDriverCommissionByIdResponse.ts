@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCommissionTotalSum } from './payrollCommissionTotalSum';
@@ -21,7 +22,7 @@ export interface PayrollDriverCommissionByIdResponse {
     id?: number;
     driverId?: number;
     driverName?: string | null;
-    driverAvatar?: string | null;
+    driverAvatar?: FileResponse;
     payrollNumber?: string | null;
     period?: string;
     daysUntilPayment?: number;

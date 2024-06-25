@@ -84,7 +84,10 @@
             <!-- Sub Text -->
 
             <ng-container *ngIf="subText">
-                <div class="d-flex align-items-center subtext-container">
+                <div
+                    class="d-flex align-items-center subtext-container"
+                    [ngClass]="subTextClass"
+                >
                     <p class="m-0 ta-font-medium">
                         {{ subText }}
                     </p>
@@ -178,7 +181,7 @@
                 *ngIf="hasPlusHeader || stayOpen"
                 class="arrow-down-plus"
             >
-                <div 
+                <div
                     class="add-custom-card"
                     [ngClass]="{ 'show-pointer': stayOpen }"
                     (click)="onAction($event, 'add')"
@@ -265,7 +268,7 @@
         class="ta-card-body"
         [ngClass]="{
             scroll: hasScrollBody,
-            'scroll-x-axis': hasScrollBodyXAxis && _isCardOpen
+            'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen
         }"
         [@.disabled]="disableAnimation"
     >

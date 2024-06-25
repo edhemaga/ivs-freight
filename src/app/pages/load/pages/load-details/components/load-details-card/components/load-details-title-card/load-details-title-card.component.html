@@ -1,0 +1,123 @@
+<app-ta-details-header-card
+    [ngClass]="{
+        disabedPreviousArrow: [0, -1].includes(loadCurrentIndex),
+        disableNextArrow: loadCurrentIndex === loadsDropdownList.length - 1
+    }"
+    [tooltipNext]="
+        loadCurrentIndex === loadsDropdownList.length - 1 ? '' : 'Next'
+    "
+    [tooltipPrevious]="[0, -1].includes(loadCurrentIndex) ? '' : 'Previous'"
+    [cardDetailsDate]="cardData.dateCreated | formatDateP"
+    [searchInputName]="'Search Load'"
+    [options]="loadsDropdownList"
+    [currentName]="'Load ' + cardData.loadNumber"
+    [haveDropSVG]="true"
+    (selectValue)="handleCardChanges($event, 'select-load')"
+    (changeEvent)="handleCardChanges($event, 'change-load')"
+>
+    <div
+        class="d-flex flex-column justify-content-center load-title-card-container"
+    >
+        <div class="d-flex align-items-center reference-number-container">
+            <p class="m-0 ta-font-semi-bold">
+                Ref. {{ cardData.referenceNumber }}
+            </p>
+        </div>
+
+        <div class="d-flex flex-column justify-content-center main-container">
+            <div class="align-items-center main-container-inner">
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.halfCircleRoute"
+                    ></svg-icon>
+
+                    <ng-container
+                        *ngIf="
+                            cardData.status.statusValue.id === 53 ||
+                            cardData.status.statusValue.id === 54 ||
+                            cardData.status.statusValue.id === 55
+                        "
+                    >
+                        <div class="repair-box">
+                            <p class="m-0 ta-font-semi-bold">R</p>
+                        </div>
+                    </ng-container>
+
+                    <p
+                        class="m-0 ta-font-bold"
+                        [ngStyle]="loadStatusEnum[statusId] | loadStatusColor"
+                    >
+                        {{ cardData.status.statusString?.toUpperCase() }}
+                    </p>
+                </div>
+
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.companyRoute"
+                    ></svg-icon>
+
+                    <p class="m-0">
+                        {{ cardData.company.companyName }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="align-items-center main-container-inner">
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <svg-icon
+                        class="icon"
+                        [src]="loadDetailsCardSvgRoutes.timeRoute"
+                    ></svg-icon>
+
+                    <p class="m-0">
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.days > 0"
+                        >
+                            {{ cardData.lastStatusPassed?.days }}
+
+                            <span>
+                                {{
+                                    cardData.lastStatusPassed?.days === 1
+                                        ? 'day'
+                                        : 'days'
+                                }}
+                            </span>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.hours > 0"
+                        >
+                            <span>
+                                {{ cardData.lastStatusPassed?.hours }} hour
+                            </span>
+                        </ng-container>
+
+                        <ng-container
+                            *ngIf="cardData.lastStatusPassed?.days <= 0"
+                        >
+                            <span>
+                                {{ cardData.lastStatusPassed?.minutes }} minutes
+                            </span>
+                        </ng-container>
+                    </p>
+                </div>
+
+                <div class="d-flex align-items-center main-container-inner-box">
+                    <ng-container *ngIf="cardData.dispatch?.driver">
+                        <svg-icon
+                            class="icon"
+                            [src]="loadDetailsCardSvgRoutes.userRoute"
+                        ></svg-icon>
+
+                        <p class="m-0">
+                            {{ cardData.dispatch?.driver?.firstName }}
+                            {{ cardData.dispatch?.driver?.lastName }}
+                        </p>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-ta-details-header-card>

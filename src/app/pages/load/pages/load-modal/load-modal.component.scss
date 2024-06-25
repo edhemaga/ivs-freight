@@ -48,7 +48,7 @@
 // stops
 .stops-header-bar {
     display: grid;
-    grid-template-columns: 11px 1fr;
+    grid-template-columns: 19px 216px 147px 170px;
     grid-gap: 13px;
     padding: 0 18px;
     margin-bottom: 4px;
@@ -96,7 +96,7 @@
         .total-miles-value {
             font-size: 11px;
             line-height: 14px;
-            color: $ta-black;
+            color: $muted;
 
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -113,7 +113,7 @@
 // billing
 .load-financial-container {
     display: grid;
-    grid-template-columns: 198px 196px 1fr;
+    grid-template-columns: 200px 208px 1fr;
     -moz-column-gap: 13px;
     column-gap: 13px;
     align-items: flex-start;
@@ -134,7 +134,25 @@
 
     &.load-hazardous-container {
         padding: 12px !important;
-        padding-left: 0px !important;
         height: 781px;
+        background-color: $ta-light-grey-5;
+    }
+}
+
+.load-modal {
+    &-time {
+        margin-left: 12px;
+    }
+
+    &-icon {
+        margin-right: 6px;
+    }
+}
+
+.load-financial-payment {
+    display: flex;
+    flex-direction: column;
+    .input-custom-group .input-control {
+        height: 29px !important;
     }
 }

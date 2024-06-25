@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 
 
 export interface DriverDispatchResponse { 
@@ -18,6 +19,6 @@ export interface DriverDispatchResponse {
     owner?: number | null;
     status?: number;
     vacation?: boolean;
-    avatar?: string | null;
+    avatarFile?: FileResponse;
 }
 

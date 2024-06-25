@@ -50,8 +50,8 @@ import {
     UpdateEducationReviewCommand,
     UpdateTrafficViolationReviewCommand,
     UpdateAccidentRecordReviewCommand,
-    CreateApplicantCdlInformationCommand,
-    UpdateApplicantCdlInformationCommand,
+    /*  CreateApplicantCdlInformationCommand,
+    UpdateApplicantCdlInformationCommand, */
     CreateApplicantCdlInformationReviewCommand,
     UpdateApplicantCdlInformationReviewCommand,
     UpdateWorkExperienceReviewCommand,
@@ -62,8 +62,8 @@ import {
     UpdateMedicalCertificateReviewCommand,
     CreateMvrAuthReviewCommand,
     UpdateMvrAuthReviewCommand,
-    CreateCompanyOwnerInfoCommand,
-    UpdateCompanyOwnerInfoCommand,
+    /*  CreateCompanyOwnerInfoCommand,
+    UpdateCompanyOwnerInfoCommand, */
     CreateCompanyOwnerInfoReviewCommand,
     UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
@@ -104,7 +104,7 @@ export class ApplicantService {
     }
 
     public createCdlInformation(
-        data: CreateApplicantCdlInformationCommand
+        data /* : CreateApplicantCdlInformationCommand */
     ): Observable<object> {
         return this.applicantService.apiApplicantCdlPost(data);
     }
@@ -138,7 +138,7 @@ export class ApplicantService {
     }
 
     public createOwnerInfoCompany(
-        data: CreateCompanyOwnerInfoCommand
+        data /* : CreateCompanyOwnerInfoCommand */
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
     }
@@ -172,7 +172,7 @@ export class ApplicantService {
     }
 
     public updateCdlInformation(
-        data: UpdateApplicantCdlInformationCommand
+        data /* : UpdateApplicantCdlInformationCommand */
     ): Observable<object> {
         return this.applicantService.apiApplicantCdlPut(data);
     }
@@ -224,7 +224,7 @@ export class ApplicantService {
     }
 
     public updateOwnerInfoCompany(
-        data: UpdateCompanyOwnerInfoCommand
+        data /* : UpdateCompanyOwnerInfoCommand */
     ): Observable<object> {
         return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }

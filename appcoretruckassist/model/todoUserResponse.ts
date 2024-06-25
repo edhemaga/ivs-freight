@@ -18,7 +18,6 @@ export interface TodoUserResponse {
     userId?: number;
     firstName?: string | null;
     lastName?: string | null;
-    avatar?: string | null;
     avatarFile?: FileResponse;
     todoId?: number;
 }

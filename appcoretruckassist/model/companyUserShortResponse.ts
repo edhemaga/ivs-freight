@@ -16,7 +16,6 @@ export interface CompanyUserShortResponse {
     id?: number;
     userId?: number;
     fullName?: string | null;
-    avatar?: string | null;
     avatarFile?: FileResponse;
     departmentId?: number | null;
 }

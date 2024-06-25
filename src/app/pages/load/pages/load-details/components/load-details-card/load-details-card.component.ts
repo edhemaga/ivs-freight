@@ -2,159 +2,204 @@ import {
     Component,
     Input,
     OnInit,
-    ViewEncapsulation,
     OnChanges,
+    SimpleChanges,
+    ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UntypedFormControl } from '@angular/forms';
-
-// modules
-import { SharedModule } from '@shared/shared.module';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // store
 import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-minimal-list-state/load-details-minimal.query';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
-import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
-import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
-import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
-import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
-import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
-import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component';
-import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
+import { LoadDetailsTitleCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-title-card/load-details-title-card.component';
+import { LoadDetailsBrokerDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-broker-details-card/load-details-broker-details-card.component';
+import { LoadDetailsAssignedToCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-assigned-to-card/load-details-assigned-to-card.component';
+import { LoadDetailsRequirementCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-requirement-card/load-details-requirement-card.component';
+import { LoadDetailsBillingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-billing-card/load-details-billing-card.component';
+import { LoadDetailsPaymentCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-payment-card/load-details-payment-card.component';
+import { LoadDetailsInvoiceAgingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-invoice-aging-card/load-details-invoice-aging-card.component';
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
-// pipes
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+// enums
+import { LoadDetailsCardStringEnum } from '@pages/load/pages/load-details/components/load-details-card/enums/load-details-card-string.enum';
+import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
 
 // models
-import { LoadResponse } from 'appcoretruckassist';
+import { LoadMinimalResponse, LoadResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-details-card',
     templateUrl: './load-details-card.component.html',
     styleUrls: ['./load-details-card.component.scss'],
-    encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
         // modules
         CommonModule,
-        SharedModule,
+        ReactiveFormsModule,
 
         // components
-        TaProfileImagesComponent,
-        TaCopyComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaCommonCardComponent,
-        TaProgressExpirationComponent,
-        TaCounterComponent,
-
-        TaDetailsHeaderComponent,
-        TaDetailsHeaderCardComponent,
-        TaChartComponent,
-        TaMapsComponent,
-
-        // pipes
-        FormatCurrencyPipe,
-        FormatDatePipe,
+        LoadDetailsTitleCardComponent,
+        LoadDetailsBrokerDetailsCardComponent,
+        LoadDetailsAssignedToCardComponent,
+        LoadDetailsRequirementCardComponent,
+        LoadDetailsBillingCardComponent,
+        LoadDetailsPaymentCardComponent,
+        LoadDetailsInvoiceAgingCardComponent,
     ],
 })
 export class LoadDetailsCardComponent implements OnInit, OnChanges {
-    @Input() load: LoadResponse | any;
-    @Input() templateCard: boolean;
-    public loadNote: UntypedFormControl = new UntypedFormControl();
-    public loadDropdowns: any[] = [];
-    public loadList: any[] = this.lmquery.getAll();
-    public currentLoadIndex: any;
+    @Input() load: LoadResponse;
+
+    public cardForm: UntypedFormGroup;
+
+    public loadsDropdownList: LoadMinimalResponse[] = [];
+
+    public loadCurrentIndex: number;
+
     constructor(
-        private lmquery: LoadMinimalListQuery,
-        private detailsPageDriverSer: DetailsPageService,
-        public imageBase64Service: ImageBase64Service
+        private formBuilder: UntypedFormBuilder,
+        private cdRef: ChangeDetectorRef,
+
+        // services
+        private detailsPageDriverService: DetailsPageService,
+        private modalService: ModalService,
+
+        // store
+        private loadMinimalListQuery: LoadMinimalListQuery
     ) {}
 
-    ngOnChanges(): void {
-        this.getLoadDropdown();
-    }
     ngOnInit(): void {
-        this.loadNote.patchValue(this.load?.note);
-        let currentIndex = this.loadList.findIndex(
-            (brokerId) => brokerId.id === this.load.id
-        );
-        this.currentLoadIndex = currentIndex;
+        this.createForm();
+
+        this.getCurrentIndex();
+
+        this.getLoadsDropdown();
     }
-    public getLoadDropdown() {
-        this.loadDropdowns = this.lmquery.getAll().map((item) => {
-            return {
-                id: item.id,
-                name: 'Invoice' + ' ' + item.loadNumber,
-                svg: item?.type?.name === 'LTL' ? 'ic_ltl-status.svg' : null,
-                folder: 'common',
-                status: item.status,
-                active: item.id === this.load.id,
-            };
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes?.load?.firstChange && changes?.load.currentValue)
+            this.getLoadsDropdown();
+    }
+
+    private createForm(): void {
+        this.cardForm = this.formBuilder.group({
+            driverMessage: [this.load.loadRequirements?.driverMessage],
+            note: [this.load.note],
         });
     }
-    public onSelectLoad(event: any) {
-        if (event.id !== this.load.id) {
-            this.loadList = this.lmquery.getAll().map((item) => {
+
+    public getLoadsDropdown(): void {
+        this.loadsDropdownList = this.loadMinimalListQuery
+            .getAll()
+            .map((load) => {
+                const { id, loadNumber, statusType, ...loadData } = load;
+
                 return {
-                    id: item.id,
-                    name: 'Invoice' + ' ' + item.loadNumber,
-                    // svg: item.type.name === 'LTL' ? 'ic_ltl-status.svg' : null,
-                    // folder: 'common',
-                    status: item.status,
-                    active: item.id === event.id,
+                    ...loadData,
+                    id,
+                    name: loadNumber,
+                    active: id === this.load.id,
+                    statusString: statusType.name,
+                    statusId: statusType.id,
                 };
             });
-            this.detailsPageDriverSer.getDataDetailId(event.id);
+    }
+
+    private getCurrentIndex(): void {
+        setTimeout(() => {
+            const currentIndex = this.loadsDropdownList.findIndex(
+                (load) => load.id === this.load.id
+            );
+
+            this.loadCurrentIndex = currentIndex;
+        }, 300);
+    }
+
+    public onSelectLoad(event: LoadMinimalResponse): void {
+        if (event && event?.id !== this.load.id) {
+            this.getLoadsDropdown();
+
+            this.detailsPageDriverService.getDataDetailId(event.id);
+
+            this.cdRef.detectChanges();
         }
     }
-    public onChangeLoad(action: string) {
-        let currentIndex = this.loadList.findIndex(
+
+    public onChangeLoad(action: string): void {
+        let currentIndex = this.loadsDropdownList.findIndex(
             (brokerId) => brokerId.id === this.load.id
         );
 
         switch (action) {
-            case 'previous': {
+            case ArrowActionsStringEnum.PREVIOUS:
                 currentIndex = --currentIndex;
-                if (currentIndex != -1) {
-                    this.detailsPageDriverSer.getDataDetailId(
-                        this.loadList[currentIndex].id
+
+                if (currentIndex !== -1) {
+                    this.detailsPageDriverService.getDataDetailId(
+                        this.loadsDropdownList[currentIndex].id
                     );
-                    this.onSelectLoad({ id: this.loadList[currentIndex].id });
-                    this.currentLoadIndex = currentIndex;
+
+                    this.loadCurrentIndex = currentIndex;
                 }
+
                 break;
-            }
-            case 'next': {
+
+            case ArrowActionsStringEnum.NEXT:
                 currentIndex = ++currentIndex;
+
                 if (
                     currentIndex !== -1 &&
-                    this.loadList.length > currentIndex
+                    this.loadsDropdownList.length > currentIndex
                 ) {
-                    this.detailsPageDriverSer.getDataDetailId(
-                        this.loadList[currentIndex].id
+                    this.detailsPageDriverService.getDataDetailId(
+                        this.loadsDropdownList[currentIndex].id
                     );
-                    this.onSelectLoad({ id: this.loadList[currentIndex].id });
-                    this.currentLoadIndex = currentIndex;
-                }
-                break;
-            }
 
-            default: {
+                    this.loadCurrentIndex = currentIndex;
+                }
+
                 break;
-            }
+            default:
+                break;
+        }
+    }
+
+    public handleDriverDetailsTitleCardEmit(event: any): void {
+        switch (event.type) {
+            case LoadDetailsCardStringEnum.SELECT_LOAD:
+                if (event.event.name === LoadDetailsCardStringEnum.ADD_NEW) {
+                    this.modalService.openModal(LoadModalComponent, {
+                        size: LoadDetailsCardStringEnum.MEDIUM,
+                    });
+
+                    return;
+                }
+
+                this.onSelectLoad(event.event);
+
+                break;
+            case LoadDetailsCardStringEnum.CHANGE_LOAD:
+                this.onChangeLoad(event.event);
+
+                break;
+            default:
+                break;
         }
     }
 }

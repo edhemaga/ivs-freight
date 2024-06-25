@@ -86,6 +86,9 @@ export class TaDetailsHeaderCardComponent {
     public hideRightArrow: boolean;
     public driverId: number = this.driverItemStore.getValue().ids[0];
     showDropdownTooltip: boolean = true;
+
+    public activeItem: any;
+
     constructor(
         private driverItemStore: DriversItemStore,
         private driverMinimalQuery: DriversMinimalListQuery,
@@ -146,6 +149,8 @@ export class TaDetailsHeaderCardComponent {
     }
     public onSelecItem(value: any): void {
         if (this.options.length > 1) {
+            this.activeItem = value;
+
             this.selectedDropdown = !this.selectedDropdown;
             this.selectValue.emit(value);
         }

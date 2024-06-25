@@ -80,6 +80,18 @@
             .subtext-container {
                 margin-left: 4px;
 
+                &.red {
+                    p {
+                        color: $ta-red-10;
+                    }
+                }
+
+                &.green {
+                    p {
+                        color: $ta-green;
+                    }
+                }
+
                 p {
                     font-size: 11px;
                     line-height: 15px;

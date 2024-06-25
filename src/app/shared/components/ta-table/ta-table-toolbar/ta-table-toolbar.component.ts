@@ -63,6 +63,9 @@ import { TableToolbarConstants } from './utils/constants/table-toolbar.constants
 import { TableType } from 'appcoretruckassist';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
+// Pipes
+import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
+
 @Titles()
 @Component({
     selector: 'app-ta-table-toolbar',
@@ -84,6 +87,9 @@ import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolba
         TruckCardModalComponent,
         TaInputDropdownComponent,
         ConfirmationResetModalComponent,
+
+        // Pipes
+        ListNameCasePipe,
     ],
 })
 export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -123,6 +129,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
     public selectedTableData: any = {};
 
     public flipAllCards: boolean = false;
+    public isUpperCaseTitle: boolean = false;
 
     constructor(
         private tableService: TruckassistTableService,
@@ -176,6 +183,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             const td = this.tableData.find((t) => t.field === this.selectedTab);
 
             this.listName = td.gridNameTitle;
+
+            if (td.isUpperCaseTitle) this.isUpperCaseTitle = true;
+            else this.isUpperCaseTitle = false;
         }
     }
 

@@ -9,13 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FileResponse } from './fileResponse';
 import { EnumValue } from './enumValue';
 
 
 export interface PayrollDriverMileageListResponse { 
     id?: number;
+    driverId?: number | null;
     driverName?: string | null;
-    driverAvatar?: string | null;
+    driverAvatarFile?: FileResponse;
     payroll?: string | null;
     period?: string;
     status?: EnumValue;

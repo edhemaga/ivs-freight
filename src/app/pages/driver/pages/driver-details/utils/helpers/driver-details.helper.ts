@@ -1,5 +1,5 @@
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
-import { DriverDetailsConfig } from '@pages/driver/pages/driver-details/models/driver-details-config.model';
+import { DetailsConfig } from '@shared/models/details-config.model';
 
 export class DriverDetailsHelper {
     static getDetailsDropdownOptions(status: number): DetailsDropdownOptions {
@@ -120,7 +120,7 @@ export class DriverDetailsHelper {
         hasDangerCdl: boolean,
         hasDangerMedical: boolean,
         hasDangerMvr: boolean
-    ): DriverDetailsConfig[] {
+    ): DetailsConfig[] {
         return [
             {
                 id: 0,

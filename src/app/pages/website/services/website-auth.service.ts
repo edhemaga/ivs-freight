@@ -200,7 +200,7 @@ export class WebsiteAuthService {
     public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
         return this.accountService.apiAccountAvatarCodeGet(data).pipe(
             tap((res: AvatarResponse) => {
-                this.websiteActionsService.setAvatarImageSubject(res.avatar);
+                /*  this.websiteActionsService.setAvatarImageSubject(res.avatar); */
             })
         );
     }

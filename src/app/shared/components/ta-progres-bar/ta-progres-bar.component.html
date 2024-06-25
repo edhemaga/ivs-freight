@@ -1,6 +1,7 @@
 <div
     class="progress-bar-parent d-flex align-items-center"
     [class.disable-hover]="text === '/'"
+    [class.progress-bar-parent-expired]="daysExpired"
     #ngbProgress="ngbPopover"
     [autoClose]="true"
     [ngbPopover]="milesProgressPopover"
@@ -35,7 +36,7 @@
                     'front-yellow': percents > 20 && percents <= 50,
                     'front-red': percents <= 20
                 }"
-                [style.width.%]="percents"
+                [style.width.%]="daysExpired ? 100 - percents : percents"
             ></div>
         </div>
     </ng-container>
@@ -44,9 +45,15 @@
     <ng-container *ngIf="percents && text !== '/'">
         <span class="progress-text" [class.table-progress-text]="isTable">
             <ng-container *ngIf="type === 'days'">
-                in
-                {{ text }}
-                days
+                <ng-container *ngIf="!daysExpired"
+                    >in {{ text }} days</ng-container
+                >
+                <ng-container *ngIf="daysExpired">
+                    <div class="progress-text-title">
+                        <span>{{ text }} {{daysPluralization}} left</span>
+                        <span>{{ daysToPay }} days</span>
+                    </div></ng-container
+                >
             </ng-container>
 
             <ng-container *ngIf="type === 'miles'">
@@ -65,8 +72,15 @@
             [class.table-progress-text]="isTable"
         >
             <ng-container *ngIf="type === 'days'">
-                {{ text }}
-                days ago
+                <ng-container *ngIf="!daysExpired"
+                    >{{ text }}days ago</ng-container
+                >
+                <ng-container *ngIf="daysExpired">
+                    <div class="progress-text-title">
+                        <span>{{ text }} {{daysPluralization}} over</span>
+                        <span>{{ daysToPay }} days</span>
+                    </div>
+                </ng-container>
             </ng-container>
 
             <ng-container *ngIf="type === 'miles'">

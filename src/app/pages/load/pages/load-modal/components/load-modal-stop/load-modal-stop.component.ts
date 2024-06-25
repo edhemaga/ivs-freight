@@ -58,7 +58,7 @@ export class LoadModalStopComponent {
     @Input() isCardOpen: boolean;
     @Input() state: LoadStatusStringEnum.VALID | LoadStatusStringEnum.INVALID;
     @Input() animationMarginParams = LoadModalConstants.ANIMATION_MARGIN_PARAMS;
-
+    @Input() isDestinationTab = false;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
