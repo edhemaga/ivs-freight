@@ -118,8 +118,6 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
             changes?.isMapDisplayed?.previousValue
         ) {
             this.isMapBtnClicked = changes?.isMapDisplayed?.currentValue;
-
-            console.log('  this.isMapBtnClicked', this.isMapBtnClicked);
         }
     }
 
