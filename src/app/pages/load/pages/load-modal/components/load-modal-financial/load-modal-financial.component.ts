@@ -49,9 +49,9 @@ export class LoadModalFinancialComponent implements OnChanges {
     @Input() billing: string;
     @Input() adjusted: number;
     @Input() payment: string;
-    @Input() tonu: string;
+    @Input() tonu: number;
     @Input() baseRate: string;
-    @Input() revised: string;
+    @Input() revised: number;
     @Input() disableBillAction: boolean = false;
     @Input() disablePaymentAction: boolean = false;
     @Input() set isCardOpen(value: boolean) {
@@ -78,15 +78,16 @@ export class LoadModalFinancialComponent implements OnChanges {
     public paymentDifference: number = 0;
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.payment?.currentValue !== changes.payment?.previousValue) {
-            const pay = MethodsCalculationsHelper.convertThousanSepInNumber(
-                changes.payment?.currentValue.substring(1)
-            );
+        const pay = MethodsCalculationsHelper.convertThousanSepInNumber(
+            this.payment.substring(1)
+        );
 
-            const bill = MethodsCalculationsHelper.convertThousanSepInNumber(
-                this.billing.substring(1)
-            );
-
+        const bill = MethodsCalculationsHelper.convertThousanSepInNumber(
+            this.billing.substring(1)
+        );
+        if(this.tonu) {
+            this.paymentDifference = pay - this.tonu;
+        } else {
             this.paymentDifference = pay - bill;
         }
     }

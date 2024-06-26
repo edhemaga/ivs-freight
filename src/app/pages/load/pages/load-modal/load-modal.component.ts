@@ -2233,7 +2233,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate: value,
+                        baseRate:  MethodsCalculationsHelper.convertThousanSepInNumber(value),
                     };
                 }
             });
