@@ -221,7 +221,7 @@ export class LoadModalConfig {
         isDropdown: true,
         labelInInput: true,
         autoFocus: true,
-        dropdownWidthClass: 'w-col-208',
+        dropdownWidthClass: 'w-col-200',
         readOnly: true,
     };
 
@@ -237,6 +237,7 @@ export class LoadModalConfig {
         hideRequiredCheck: true,
         hideDangerMark: true,
         removeInput: true,
+        dropdownWidthClass: 'w-col-208',
     };
 
     static LOAD_PAYDATE: ITaInput = {
@@ -255,7 +256,7 @@ export class LoadModalConfig {
         isDropdown: true,
         labelInInput: true,
         autoFocus: true,
-        dropdownWidthClass: 'w-col-198',
+        dropdownWidthClass: 'w-col-208',
         readOnly: true,
     };
  

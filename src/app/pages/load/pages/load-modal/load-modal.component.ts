@@ -96,6 +96,7 @@ import {
     TagResponse,
     AddressEntity,
     LoadStopItemResponse,
+    DispatchLoadModalResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -387,6 +388,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    public get showAdjustedRate(): boolean {
+        const selectedDispatcher: DispatchLoadModalResponse =
+            this.selectedDispatches;
+
+        if (selectedDispatcher) {
+            return !!selectedDispatcher.driver.owner;
+        }
+
+        return false;
+    }
+
+    public get showDriverRate(): boolean {
+        return (
+            this.selectedDispatches &&
+            this.selectedDispatches.payType === 'Flat Rate'
+        );
+    }
+
     public get getPickupTimeToInputConfig(): ITaInput {
         return LoadModalConfig.getPickupTimeToInputConfig(
             this.selectedStopTimePickup
@@ -479,11 +498,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get adjustedRate(): string | null {
-        return (
-            this.additionalBillings().value.find(
-                (billing) => billing.id === LoadModalPaymentEnum.ADVANCE_PAY
-            )?.billingValue ?? null
-        );
+        return this.loadForm.get('adjustedRate').value;
     }
 
     public get modalTitle(): string {
@@ -1277,17 +1292,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.loadForm.get(LoadModalStringEnum.DRIVER_RATE),
                     false
                 );
-
-                if (
-                    this.selectedDispatches.payType &&
-                    !this.additionalBillingTypes.find((item) => item.id === 6)
-                ) {
-                    this.additionalBillingTypes.unshift({
-                        id: 6,
-                        name: LoadModalStringEnum.ADJUSTED,
-                        checked: false,
-                    });
-                }
             }
         } else {
             this.loadDispatchesTTDInputConfig = {
@@ -2619,7 +2623,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    private remapStopItems(stopItems: LoadStopItemCommand[] |any) {
+    private remapStopItems(stopItems: LoadStopItemCommand[] | any) {
         let _pickupStopItems = stopItems;
 
         if (this.pickupStopItems.length) {
@@ -2631,16 +2635,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ).id;
                 }
                 if (item.secure) {
-                item.secure =
-                    this.stopItemDropdownLists.secureDropdownList.find(
-                        (q) => q.name === item.secure
-                    ).id;
+                    item.secure =
+                        this.stopItemDropdownLists.secureDropdownList.find(
+                            (q) => q.name === item.secure
+                        ).id;
                 }
                 if (item.stack) {
-                item.stack = this.stopItemDropdownLists.stackDropdownList.find(
-                    (q) => q.name === item.stack
-                ).id;
-            }
+                    item.stack =
+                        this.stopItemDropdownLists.stackDropdownList.find(
+                            (q) => q.name === item.stack
+                        ).id;
+                }
 
                 return item;
             });
@@ -3975,6 +3980,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             invoicedDate,
             ageUnpaid,
             daysToPay,
+            driverRate,
         } = loadModalData;
 
         const loadRequirements = {
@@ -4062,6 +4068,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             // billing & payment
             baseRate: baseRate,
             advancePay: advancePay,
+            driverRate,
+            adjustedRate,
 
             // total
             loadMiles: loadedMiles,
@@ -4164,15 +4172,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
         });
 
-        if (adjustedRate) {
-            this.additionalBillings().push(
-                this.createAdditionaBilling({
-                    id: LoadModalPaymentEnum.ADVANCE_PAY,
-                    name: LoadModalStringEnum.ADJUSTED,
-                    billingValue: adjustedRate,
-                })
-            );
-        }
 
         this.isEachStopItemsRowValid = true;
 
@@ -4201,15 +4200,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
 
-        stops.forEach((stop, index) =>{
-            if(index === 0) {
+        stops.forEach((stop, index) => {
+            if (index === 0) {
                 this.pickupStopItems = [stop.items];
-            } else if(index !== stops.length - 1) {
+            } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = [stop.items];
             } else {
                 this.deliveryStopItems = [stop.items];
             }
-        })
+        });
 
         // extra stops
         if (editedStops.length) {
