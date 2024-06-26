@@ -3438,21 +3438,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 contacts: item.contacts.map((item) => {
                                     return {
                                         ...item,
-                                        name: item?.contactName,
+                                        name: item?.fullName,
                                         phone: item?.phone?.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.extensionPhone
-                                                ? `x${item.extensionPhone}`
+                                            item?.phoneExt
+                                                ? `x${item.phoneExt}`
                                                 : LoadModalStringEnum.EMPTY_STRING
                                         ),
                                         originalPhone: item.phone,
-                                        phoneExtension: item.extensionPhone,
-                                        fullName: item?.contactName.concat(
+                                        phoneExtension: item.phoneExt,
+                                        fullName: item?.fullName.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
                                             item?.phone?.concat(
                                                 LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                                item?.extensionPhone
-                                                    ? `x${item.extensionPhone}`
+                                                item?.phoneExt
+                                                    ? `x${item.phoneExt}`
                                                     : LoadModalStringEnum.EMPTY_STRING
                                             )
                                         ),

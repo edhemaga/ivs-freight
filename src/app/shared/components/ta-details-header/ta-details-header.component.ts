@@ -1,12 +1,20 @@
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import {
+    Component,
+    Input,
+    OnInit,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // bootstrap
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
-//components
+// components
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
@@ -16,8 +24,11 @@ import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v
 // icon
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//pipes
+// pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+
+// models
+import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -44,7 +55,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
         FormatCurrencyPipe,
     ],
 })
-export class TaDetailsHeaderComponent implements OnInit {
+export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() headerText: string = null;
     @Input() tooltipHeaderName: string = '';
     @Input() route: string = '';
@@ -82,6 +93,9 @@ export class TaDetailsHeaderComponent implements OnInit {
     @Input() subText: string;
     @Input() capsulaText: string;
     @Input() isMapBtn: boolean;
+    @Input() isMapDisplayed: boolean;
+    @Input() hasMultipleDetailsSelectDropdown: boolean;
+    @Input() multipleDetailsSelectDropdown: MultipleSelectDetailsDropdownItem[];
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -97,11 +111,20 @@ export class TaDetailsHeaderComponent implements OnInit {
     public dropOpened: boolean = false;
     public tooltip: any;
     public activeTemplate: any = 'All Load';
-    public isMapBtnClicked: boolean = false;
+    public isMapBtnClicked: boolean = true;
 
-    constructor(private routes: ActivatedRoute) {}
+    constructor() {}
 
     ngOnInit(): void {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (
+            changes?.isMapDisplayed?.currentValue !==
+            changes?.isMapDisplayed?.previousValue
+        ) {
+            this.isMapBtnClicked = changes?.isMapDisplayed?.currentValue;
+        }
+    }
 
     public openModal(val: string) {
         this.openModalAction.emit(val);

@@ -31,6 +31,8 @@ export class LoadDetailsBillingCardComponent implements OnChanges {
 
     public billingDataArray: CreatedData[] = [];
 
+    public billingCount: number = 0;
+
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -54,18 +56,65 @@ export class LoadDetailsBillingCardComponent implements OnChanges {
             value: this.cardData.totalRate,
         };
 
+        let totalAdjusted: CreatedData;
+
         this.billingDataArray = [];
         this.billingDataArray = [baseRate];
 
-        this.cardData.additionalBillingRates?.forEach((billingRate) => {
-            const rate = {
-                title: billingRate.additionalBillingType.name,
-                value: billingRate.rate,
+        // commission
+        if (this.cardData.adjustedRate) {
+            const adjustedRate = {
+                title: LoadDetailsCardStringEnum.ADJUSTED,
+                value: this.cardData.adjustedRate,
             };
 
-            this.billingDataArray = [...this.billingDataArray, rate];
-        });
+            totalAdjusted = {
+                title: LoadDetailsCardStringEnum.TOTAL_ADJUSTED,
+                value: this.cardData.totalAdjustedRate,
+            };
+
+            this.billingDataArray = [...this.billingDataArray, adjustedRate];
+        }
+
+        // flat rate
+        if (this.cardData.driverRate) {
+            const driverRate = {
+                title: LoadDetailsCardStringEnum.DRIVER_RATE,
+                value: this.cardData.driverRate,
+            };
+
+            this.billingDataArray = [...this.billingDataArray, driverRate];
+        }
+
+        this.cardData.additionalBillingRates
+            ?.filter(({ rate }) => rate > 0)
+            .forEach((billingRate) => {
+                const rate = {
+                    title: billingRate.additionalBillingType.name,
+                    value: billingRate.rate,
+                };
+
+                this.billingDataArray = [...this.billingDataArray, rate];
+            });
 
         this.billingDataArray = [...this.billingDataArray, totalRate];
+
+        // commission
+        if (this.cardData.adjustedRate)
+            this.billingDataArray = [...this.billingDataArray, totalAdjusted];
+
+        // tonu rate
+        if (this.cardData.tonuRate) {
+            const tonuRate = {
+                title: LoadDetailsCardStringEnum.TONU_RATE,
+                value: this.cardData.tonuRate,
+            };
+
+            this.billingDataArray = [...this.billingDataArray, tonuRate];
+        }
+
+        // billing count
+        this.billingCount =
+            this.billingDataArray.length - (this.cardData.adjustedRate ? 2 : 1);
     }
 }

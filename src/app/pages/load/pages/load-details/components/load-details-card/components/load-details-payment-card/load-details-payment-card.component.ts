@@ -34,6 +34,8 @@ export class LoadDetailsPaymentCardComponent implements OnChanges {
 
     public paymentDataArray: CreatedData[] = [];
 
+    public paymentCount: number = 0;
+
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -56,11 +58,12 @@ export class LoadDetailsPaymentCardComponent implements OnChanges {
             title: this.cardData.totalDue
                 ? LoadDetailsCardStringEnum.DUE
                 : LoadDetailsCardStringEnum.PAID_IN_FULL,
-            value: this.cardData.totalDue ?? this.cardData.totalPaid,
+            value: this.cardData.totalDue || this.cardData.totalPaid,
         };
 
         this.paymentDataArray = [];
-        this.paymentDataArray = [advanceRate];
+
+        if (this.cardData.advancePay) this.paymentDataArray = [advanceRate];
 
         this.cardData.pays?.forEach((paymentRate) => {
             const rate = {
@@ -78,5 +81,8 @@ export class LoadDetailsPaymentCardComponent implements OnChanges {
         });
 
         this.paymentDataArray = [...this.paymentDataArray, total];
+
+        // payment count
+        this.paymentCount = this.paymentDataArray.length - 1;
     }
 }

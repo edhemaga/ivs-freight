@@ -15,6 +15,7 @@ import { EnumValue } from './enumValue';
 export interface BrokerShortResponse { 
     id?: number;
     businessName?: string | null;
+    contactName?: string | null;
     phone?: string | null;
     email?: string | null;
     availableCredit?: number | null;

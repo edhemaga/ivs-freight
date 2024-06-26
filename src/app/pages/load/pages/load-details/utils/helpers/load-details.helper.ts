@@ -1,6 +1,10 @@
+import { LoadDetailsConstants } from '@pages/load/pages/load-details/utils/constants/load-details.constants';
+
+// models
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { LoadResponse } from 'appcoretruckassist';
+import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 
 export class LoadDetailsHelper {
     static getDetailsDropdownOptions(
@@ -67,6 +71,8 @@ export class LoadDetailsHelper {
                 id: 0,
                 name: 'Load Detail',
                 template: 'general',
+                capsulaText: false,
+                hasMultipleDetailsSelectDropdown: false,
                 data: load,
             },
             {
@@ -75,8 +81,15 @@ export class LoadDetailsHelper {
                 template: 'stop',
                 req: false,
                 hide: true,
+
+                isMapDisplayed: true,
+                isMapBtn: true,
+                capsulaText:
+                    load.stops?.length === 2
+                        ? false
+                        : load.stops?.length - 2 + ' EXTRA',
+                hasMultipleDetailsSelectDropdown: false,
                 data: load,
-                isMapDisplayed: false,
                 length: load.stops?.length,
             },
             {
@@ -84,11 +97,31 @@ export class LoadDetailsHelper {
                 name: 'Comment',
                 template: 'comment',
                 hide: false,
+                hasDanger: false,
                 hasArrow: true,
+                capsulaText: false,
+                hasMultipleDetailsSelectDropdown: true,
+                multipleDetailsSelectDropdown:
+                    this.getMultipleSelectDetailsDropdown(load),
                 data: load,
                 length: load?.comments?.length,
-                hasDanger: false,
             },
         ];
+    }
+
+    static getMultipleSelectDetailsDropdown(
+        load: LoadResponse
+    ): MultipleSelectDetailsDropdownItem[] {
+        return LoadDetailsConstants.MULTIPLE_SELECT_DETAILS_DROPDOWN.map(
+            (dropdownItem, index) => {
+                return {
+                    ...dropdownItem,
+                    length:
+                        index === 0
+                            ? load?.comments?.length
+                            : load?.statusHistory?.length,
+                };
+            }
+        );
     }
 }

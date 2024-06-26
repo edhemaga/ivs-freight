@@ -1,0 +1,34 @@
+<div
+    class="d-flex flex-column justify-content-center comments-search-container"
+>
+    <div class="d-flex align-items-center search-container"></div>
+
+    <div class="d-flex flex-column justify-content-center comments-container">
+        <div
+            class="d-flex align-items-center justify-content-between comments-container-header"
+        >
+            <p class="m-0 ta-font-bold">SORT BY</p>
+
+            <div class="d-flex align-items-center">
+                <span class="ta-font-medium"> Date </span>
+
+                <svg-icon
+                    class="icon"
+                    [src]="commentsSearchSvgRoutes.arrowSortRoute"
+                    (click)="handleSortClick()"
+                ></svg-icon>
+            </div>
+        </div>
+
+        <ng-container *ngFor="let comment of commentsData; let i = index">
+            <app-ta-comment
+                [isDeatilsCommentLayout]="true"
+                [commentData]="comment"
+                [commentIndex]="i"
+                [isMe]="comment.isMe"
+                [isEditButtonDisabled]="isCommented || isCommentEdited"
+                (btnActionEmitter)="handleCommentActionEmit($event)"
+            ></app-ta-comment>
+        </ng-container>
+    </div>
+</div>

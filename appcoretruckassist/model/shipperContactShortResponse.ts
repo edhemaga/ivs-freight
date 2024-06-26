@@ -15,7 +15,7 @@ export interface ShipperContactShortResponse {
     id?: number;
     shipperId?: number;
     phone?: string | null;
-    contactName?: string | null;
-    extensionPhone?: string | null;
+    fullName?: string | null;
+    phoneExt?: string | null;
 }
 

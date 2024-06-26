@@ -569,11 +569,22 @@
                             <div
                                 class="d-flex align-items-center right-box"
                                 [ngStyle]="
-                                    loadStatusEnum[option?.statusId]
-                                        | dropdownLoadStatusColor
+                                    option?.statusString && i === hoveringIndex
+                                        ? {}
+                                        : (loadStatusEnum[option?.statusId]
+                                          | dropdownLoadStatusColor : false)
                                 "
                             >
-                                <p class="m-0">
+                                <p
+                                    class="m-0"
+                                    [ngStyle]="
+                                        option?.statusString &&
+                                        i === hoveringIndex
+                                            ? {}
+                                            : (loadStatusEnum[option?.statusId]
+                                              | dropdownLoadStatusColor : true)
+                                    "
+                                >
                                     <ng-container
                                         *ngIf="
                                             i === hoveringIndex;
