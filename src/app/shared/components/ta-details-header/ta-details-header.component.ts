@@ -91,6 +91,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() capsulaText: string;
     @Input() isMapBtn: boolean;
     @Input() isMapDisplayed: boolean;
+    @Input() hasMultipleDetailsSelectDropdown: boolean;
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();

@@ -297,4 +297,18 @@
             }
         }
     }
+
+    /* Map */
+
+    .stops-map {
+        padding: 6px;
+        background: $white;
+        width: auto;
+        height: 480px;
+        border-radius: 3px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

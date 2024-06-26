@@ -128,8 +128,6 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
             this.getConstantData();
 
             this.getLoadStopRoutes();
-
-            console.log('load', this.load);
         }
     }
 

@@ -67,6 +67,8 @@ export class LoadDetailsHelper {
                 id: 0,
                 name: 'Load Detail',
                 template: 'general',
+                capsulaText: false,
+                hasMultipleDetailsSelectDropdown: false,
                 data: load,
             },
             {
@@ -75,8 +77,15 @@ export class LoadDetailsHelper {
                 template: 'stop',
                 req: false,
                 hide: true,
-                data: load,
+
                 isMapDisplayed: true,
+                isMapBtn: true,
+                capsulaText:
+                    load.stops?.length === 2
+                        ? false
+                        : load.stops?.length - 2 + ' EXTRA',
+                hasMultipleDetailsSelectDropdown: false,
+                data: load,
                 length: load.stops?.length,
             },
             {
@@ -84,10 +93,12 @@ export class LoadDetailsHelper {
                 name: 'Comment',
                 template: 'comment',
                 hide: false,
+                hasDanger: false,
                 hasArrow: true,
+                capsulaText: false,
+                hasMultipleDetailsSelectDropdown: true,
                 data: load,
                 length: load?.comments?.length,
-                hasDanger: false,
             },
         ];
     }

@@ -202,16 +202,13 @@
                 <!-- Location, Type -->
 
                 <div class="d-flex flex-column justify-content-center stop-box">
-                    <p
-                        class="m-0 ta-font-semi-bold d-inline-block text-truncate"
-                        style="max-width: 200px"
-                    >
+                    <p class="m-0 ta-font-semi-bold">
                         {{
                             stop?.shipper?.address?.city +
                                 ', ' +
                                 stop?.shipper?.address?.stateShortName +
                                 ' ' +
-                                stop?.shipper?.address?.zipCode
+                                stop?.shipper?.address?.zipCode.split('-')[0]
                         }}
                     </p>
 
@@ -232,7 +229,9 @@
                 <!-- Shipper, Address -->
 
                 <div class="d-flex flex-column justify-content-center stop-box">
-                    <p class="m-0">{{ stop?.shipper?.businessName }}</p>
+                    <p class="m-0">
+                        {{ stop?.shipper?.businessName }}
+                    </p>
 
                     <span>
                         {{ stop?.shipper?.address?.streetNumber }}
@@ -363,7 +362,8 @@
                         </p>
 
                         <span class="ta-font-medium">
-                            ≈ {{ stop?.legHours }}h {{ stop?.legMinutes }}m
+                            ≈ {{ stop?.legHours ? stop?.legHours + 'h' : '' }}
+                            {{ stop?.legMinutes }}m
                         </span>
                     </div>
                 </ng-container>
@@ -490,16 +490,17 @@
                 </div>
             </div>
         </ng-container>
-    </div>
 
-    <!-- Map -->
-    <ng-container *ngIf="isMapDisplayed">
-        <div class="map-load-container">
-            <app-ta-maps
-                [mapType]="'routing'"
-                [routes]="loadStopRoutes"
-                [ngStyle]="{ width: '100%', height: '100%' }"
-            ></app-ta-maps>
-        </div>
-    </ng-container>
+        <!-- Map -->
+
+        <ng-container *ngIf="isMapDisplayed">
+            <div class="stops-map">
+                <app-ta-maps
+                    [mapType]="'routing'"
+                    [routes]="loadStopRoutes"
+                    [ngStyle]="{ width: '100%', height: '100%' }"
+                ></app-ta-maps>
+            </div>
+        </ng-container>
+    </div>
 </div>

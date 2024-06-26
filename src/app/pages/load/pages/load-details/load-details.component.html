@@ -16,12 +16,10 @@
             [statusInactive]="item.hide"
             [danger]="item.hasDanger"
             [subText]="detailsDropdownOptions.actions[i].subText"
-            [capsulaText]="
-                i === 1 &&
-                (item.length === 2 ? false : item.length - 2 + ' EXTRA')
-            "
-            [isMapBtn]="i === 1"
+            [capsulaText]="item.capsulaText"
+            [isMapBtn]="item.isMapBtn"
             [isMapDisplayed]="isMapDisplayed"
+            [hasMultipleDetailsSelectDropdown]="i === 2"
             (dropActions)="onLoadActions($event)"
             (mapBtnEmitter)="onMapBtnClick($event)"
         >

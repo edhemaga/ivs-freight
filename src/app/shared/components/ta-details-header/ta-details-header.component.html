@@ -96,7 +96,7 @@
                 }"
             >
                 <div
-                    class="counter-holder-all"
+                    class="d-flex align-items-center counter-holder-all"
                     [class.openDropdownClass]="brokerLoadDrop"
                     #t2="ngbPopover"
                     (click)="showDropdown(t2)"
@@ -186,7 +186,36 @@
                             </p>
                         </div>
                     </ng-container>
+
+                    <!-- [class.openDropdownClass]="brokerLoadDrop"
+                    #t2="ngbPopover"
+                    (click)="showDropdown(t2)"
+                    (hidden)="dropdownClosed()"
+                    [ngbPopover]="dropdownPopover"
+                    [placement]="'bottom-left'"
+                    [container]="'body'"
+                    triggers="manual"
+                    [autoClose]="'outside'" -->
+
+                    <ng-container *ngIf="hasMultipleDetailsSelectDropdown">
+                        <div
+                            class="multiple-details-select-dropdown-container"
+                            [class.active]="t3?.isOpen()"
+                            #t3="ngbPopover"
+                            [ngbPopover]="multipleDetailsSelectDropdown"
+                            [placement]="'bottom'"
+                            [container]="'body'"
+                            triggers="manual"
+                            [autoClose]="'outside'"
+                        >
+                            <svg-icon
+                                class="icon"
+                                src="assets/svg/common/ic_arrow-box.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
                 </div>
+
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
                     <span class="ic-hed" *ngIf="timeFilter">
@@ -240,6 +269,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="header-plus-button">
                 <div class="date-arrow-repair">
                     <p *ngIf="customText" class="date-repair">
@@ -288,7 +318,9 @@
                         </svg-icon>
                     </div>
 
-                    <div class="header-divider"></div>
+                    <ng-container *ngIf="hasRequest">
+                        <div class="header-divider"></div>
+                    </ng-container>
 
                     <div
                         ngbTooltip
@@ -381,5 +413,9 @@
                 </div>
             </div>
         </div>
+    </ng-template>
+
+    <ng-template #multipleDetailsSelectDropdown>
+        <div>asdasd</div>
     </ng-template>
 </div>

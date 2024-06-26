@@ -17,7 +17,10 @@ export interface DetailsConfig {
     length?: number;
     hide?: boolean;
     hasArrow?: boolean;
+    capsulaText?: boolean | string;
+    isMapBtn?: boolean;
     isMapDisplayed?: boolean;
+    hasMultipleDetailsSelectDropdown?: boolean;
     data?:
         | DriverResponse
         | CdlResponse
