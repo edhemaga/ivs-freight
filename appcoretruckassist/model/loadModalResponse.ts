@@ -57,8 +57,5 @@ export interface LoadModalResponse {
     hazardousMaterials?: Array<HazardousMaterialResponse> | null;
     loadPossibleNextStatuses?: Array<LoadStatusResponse> | null;
     tags?: Array<TagResponse> | null;
-    status: {
-        statusValue:EnumValue 
-    }
 }
 

@@ -26,7 +26,7 @@ export interface LoadStopCommand {
     timeType?: number;
     timeFrom?: string | null;
     timeTo?: string | null;
-    arive?: string | null;
+    arrive?: string | null;
     depart?: string | null;
     legMiles?: number | null;
     legHours?: number | null;

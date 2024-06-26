@@ -2716,7 +2716,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegMiles,
             deliverylegHours,
             deliverylegMinutes,
-            arive,
+            arrive,
             depart,
         } = this.loadForm.value;
 
@@ -2747,7 +2747,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : 1,
                 timeFrom: pickupTimeFrom,
                 timeTo: pickupTimeTo,
-                arive: arive,
+                arrive: arrive,
                 depart: depart,
                 legMiles: pickuplegMiles,
                 legHours: pickuplegHours,
@@ -2781,7 +2781,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             : 1,
                     timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
                     timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
-                    arive: item.get(LoadModalStringEnum.ARIVE).value,
+                    arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
                     legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
@@ -2818,7 +2818,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : 1,
                 timeFrom: deliveryTimeFrom,
                 timeTo: deliveryTimeTo,
-                arive: null,
+                arrive: null,
                 depart: null,
                 legMiles: deliverylegMiles,
                 legHours: deliverylegHours,
@@ -3329,7 +3329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.orginalPaymentTypesDropdownList = res.paymentTypes;
                     this.paymentTypesDropdownList = res.paymentTypes;
                     this.selectedStatus = (
-                        this.editData?.data as LoadModalResponse
+                        this.editData?.data as LoadResponse
                     ).status.statusValue;
                     this.statusDropDownList = [
                         this.selectedStatus,
@@ -3560,21 +3560,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 contacts: item.contacts.map((item) => {
                                     return {
                                         ...item,
-                                        name: item?.contactName,
+                                        name: item?.fullName,
                                         phone: item?.phone?.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                            item?.extensionPhone
-                                                ? `x${item.extensionPhone}`
+                                            item?.phoneExt
+                                                ? `x${item.phoneExt}`
                                                 : LoadModalStringEnum.EMPTY_STRING
                                         ),
                                         originalPhone: item.phone,
-                                        phoneExtension: item.extensionPhone,
-                                        fullName: item?.contactName?.concat(
+                                        phoneExtension: item.phoneExt,
+                                        fullName: item?.fullName?.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
                                             item?.phone?.concat(
                                                 LoadModalStringEnum.EMPTY_SPACE_STRING,
-                                                item?.extensionPhone
-                                                    ? `x${item.extensionPhone}`
+                                                item?.phoneExt
+                                                    ? `x${item.phoneExt}`
                                                     : LoadModalStringEnum.EMPTY_STRING
                                             )
                                         ),
@@ -4295,7 +4295,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         timeType: extraStop.timeType.name.toUpperCase(),
                         timeFrom: extraStop.timeFrom,
                         timeTo: extraStop.timeTo,
-                        arive: extraStop.arive,
+                        arive: extraStop.arrive,
                         depart: extraStop.depart,
                         legMiles: extraStop.legMiles,
                         legHours: extraStop.legHours,

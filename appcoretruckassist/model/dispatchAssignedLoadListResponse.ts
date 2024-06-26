@@ -9,19 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
+import { LoadShortResponse } from './loadShortResponse';
 
 
-export interface BrokerShortResponse { 
-    id?: number;
-    businessName?: string | null;
-    contactName?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    availableCredit?: number | null;
-    availableCreditType?: EnumValue;
-    payTerm?: EnumValue;
-    dnu?: boolean;
-    ban?: boolean;
+export interface DispatchAssignedLoadListResponse { 
+    pending?: Array<LoadShortResponse> | null;
+    closed?: Array<LoadShortResponse> | null;
+    active?: Array<LoadShortResponse> | null;
 }
 
