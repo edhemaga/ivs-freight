@@ -15,6 +15,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { Subject, Subscription, takeUntil } from 'rxjs';
 
@@ -52,11 +53,44 @@ import {
     CreateApplicantCdlInformationReviewCommand,
     EnumValue,
 } from 'appcoretruckassist/model/models';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { AnnotationItem } from '@pages/applicant/pages/applicant-application/models/annotation-item.model';
+
+// components
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { Step3FormComponent } from '@pages/applicant/components/applicant-forms/step3-form/step3-form.component';
+
+// modules
+import { ApplicantModule } from '@pages/applicant/applicant.module';
+import { SharedModule } from '@shared/shared.module';
+
+// configs
+import { Step3Config } from '@pages/applicant/pages/applicant-application/components/step3/config/step3.config';
+
+// constants
+import { ApplicantApplicationConstants } from '@pages/applicant/pages/applicant-application/utils/constants/applicant-application.constants';
 
 @Component({
     selector: 'app-step3',
     templateUrl: './step3.component.html',
     styleUrls: ['./step3.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        ApplicantModule,
+
+        // components
+        TaInputComponent,
+        TaInputRadiobuttonsComponent,
+        Step3FormComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+    ],
 })
 export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
     @ViewChildren('cmp') set content(content: QueryList<any>) {
@@ -114,50 +148,11 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
 
     public displayRadioRequiredNote = false;
 
-    public answerChoices: AnswerChoices[] = [
-        {
-            id: 1,
-            label: 'YES',
-            value: 'permitYes',
-            name: 'permitYes',
-            checked: false,
-        },
-        {
-            id: 2,
-            label: 'NO',
-            value: 'permitNo',
-            name: 'permitNo',
-            checked: false,
-        },
-    ];
+    public answerChoices: AnswerChoices[] =
+        ApplicantApplicationConstants.answerChoicesStep3;
 
-    public openAnnotationArray: {
-        lineIndex?: number;
-        lineInputs?: boolean[];
-        displayAnnotationButton?: boolean;
-        displayAnnotationTextArea?: boolean;
-    }[] = [
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {},
-        {
-            lineIndex: 14,
-            lineInputs: [false],
-            displayAnnotationButton: false,
-            displayAnnotationTextArea: false,
-        },
-    ];
+    public openAnnotationArray: AnnotationItem[] =
+        ApplicantApplicationConstants.openAnnotationArrayStep3;
     public questionsHaveIncorrectFields: boolean = false;
     public hasIncorrectFields: boolean = false;
     public cardsWithIncorrectFields: boolean = false;
@@ -177,6 +172,13 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
         private applicantQuery: ApplicantQuery,
         private changeDetectorRef: ChangeDetectorRef
     ) {}
+
+    get permitExplainInputConfig(): ITaInput {
+        return Step3Config.getPermitExplainInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -253,17 +255,26 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                     expDate: MethodsCalculationsHelper.convertDateFromBackend(
                         item.expDate
                     ).replace(/-/g, '/'),
+                    issueDate: MethodsCalculationsHelper.convertDateFromBackend(
+                        item.issueDate
+                    ).replace(/-/g, '/'),
                     restrictions: item.cdlRestrictions,
                     endorsments: item.cdlEndorsements,
                     restrictionsCode: item.cdlRestrictions
-                        .map((resItem) => resItem.code)
-                        .join(', '),
+                        ? item.cdlRestrictions
+                              .map((resItem) => resItem.code)
+                              .join(', ')
+                        : [],
                     endorsmentsCode: item.cdlEndorsements
-                        .map((resItem) => resItem.code)
-                        .join(', '),
+                        ? item.cdlEndorsements
+                              .map((resItem) => resItem.code)
+                              .join(', ')
+                        : [],
                     licenseReview: item.licenseReview
                         ? item.licenseReview
                         : null,
+                    files: JSON.stringify(item.files),
+                    documents: item.files,
                 };
             }
         );
@@ -280,6 +291,9 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             expDate: MethodsCalculationsHelper.convertDateFromBackend(
                 lastItemInLicenseArray.expDate
             ).replace(/-/g, '/'),
+            issueDate: MethodsCalculationsHelper.convertDateFromBackend(
+                lastItemInLicenseArray.issueDate
+            ).replace(/-/g, '/'),
             restrictions: lastItemInLicenseArray.cdlRestrictions,
             endorsments: lastItemInLicenseArray.cdlEndorsements,
             restrictionsCode: lastItemInLicenseArray.cdlRestrictions
@@ -291,6 +305,8 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             licenseReview: lastItemInLicenseArray.licenseReview
                 ? lastItemInLicenseArray.licenseReview
                 : null,
+            files: JSON.stringify(lastItemInLicenseArray.files),
+            documents: lastItemInLicenseArray.files,
         };
 
         this.lastLicenseCard = {
@@ -523,12 +539,48 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
         }
     }
 
-    public onDeleteLicense(index: number): void {
-        if (this.isEditing) {
-            return;
+    public onDeleteCdl(): void {
+        if (this.selectedMode === SelectedMode.FEEDBACK) {
+            this.feedbackValuesToPatch =
+                this.stepFeedbackValues[this.stepFeedbackValues.length - 1];
         }
 
-        this.licenseArray.splice(index, 1);
+        this.isEditing = false;
+
+        this.hideFormOnEdit = false;
+
+        if (this.licenseArray.length === 1) {
+            const selectedLicence = this.licenseArray[0];
+
+            this.formValuesToPatch = selectedLicence;
+
+            this.licenseArray = [];
+        } else {
+            if (
+                this.selectedLicenseIndex >= 0 &&
+                this.selectedLicenseIndex !== undefined
+            ) {
+                this.licenseArray[this.selectedLicenseIndex].isEditingLicense =
+                    false;
+                this.licenseArray.splice(this.selectedLicenseIndex, 1);
+            }
+
+            this.formValuesToPatch = {
+                licenseNumber: null,
+                country: null,
+                state: null,
+                classType: null,
+                expDate: null,
+                issueDate: null,
+                restrictions: null,
+                endorsments: null,
+                documents: null,
+            };
+
+            this.displayButtonInsteadOfForm = true;
+        }
+
+        this.selectedLicenseIndex = -1;
     }
 
     public getLicenseFormValues(event: any): void {
@@ -542,8 +594,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             state: null,
             classType: null,
             expDate: null,
+            issueDate: null,
             restrictions: null,
             endorsments: null,
+            documents: null,
         };
 
         if (this.lastLicenseCard.id) {
@@ -607,8 +661,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 state: null,
                 classType: null,
                 expDate: null,
+                issueDate: null,
                 restrictions: null,
                 endorsments: null,
+                documents: null,
             };
 
             this.displayButtonInsteadOfForm = true;
@@ -643,8 +699,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
             state: null,
             classType: null,
             expDate: null,
+            issueDate: null,
             restrictions: null,
             endorsments: null,
+            documents: null,
         };
 
         this.selectedLicenseIndex = -1;
@@ -662,8 +720,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 state: null,
                 classType: null,
                 expDate: null,
+                issueDate: null,
                 restrictions: null,
                 endorsments: null,
+                documents: null,
             };
         }
     }
@@ -1089,6 +1149,13 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 (stateItem) => stateItem.name === item.stateShort
             );
 
+            let documents = [];
+            item.documents.map((item) => {
+                if (item.realFile) {
+                    documents.push(item.realFile);
+                }
+            });
+
             const stateId = filteredStateType
                 ? filteredStateType.id
                 : this.canadaStates.find(
@@ -1105,6 +1172,10 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                               applicantCdlId: item.id ? item.id : null,
                           }
                         : null,
+                    ...(item.filesForDeleteIds?.length &&
+                        item.filesForDeleteIds[0] && {
+                            filesForDeleteIds: item.filesForDeleteIds,
+                        }),
                 }),
                 licenseNumber: item.licenseNumber,
                 country: item.country as CountryType,
@@ -1113,8 +1184,16 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 expDate: MethodsCalculationsHelper.convertDateToBackend(
                     item.expDate
                 ),
-                restrictions: item.restrictions.map((item) => item.id),
-                endorsements: item.endorsments.map((item) => item.id),
+                issueDate: MethodsCalculationsHelper.convertDateToBackend(
+                    item.issueDate
+                ),
+                restrictions: item.restrictions
+                    ? item.restrictions.map((item) => item.id)
+                    : [],
+                endorsements: item.endorsments
+                    ? item.endorsments.map((item) => item.id)
+                    : [],
+                files: documents,
             };
         });
 
@@ -1133,6 +1212,13 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                           stateItem.name === this.lastLicenseCard.stateShort
                   ).id;
 
+            let documents = [];
+            this.lastLicenseCard.documents.map((item) => {
+                if (item.realFile) {
+                    documents.push(item.realFile);
+                }
+            });
+
             filteredLastLicenseCard = {
                 ...((this.stepHasValues ||
                     this.selectedMode === SelectedMode.FEEDBACK) && {
@@ -1147,6 +1233,11 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                                   : null,
                           }
                         : null,
+                    ...(this.lastLicenseCard.filesForDeleteIds?.length &&
+                        this.lastLicenseCard.filesForDeleteIds[0] && {
+                            filesForDeleteIds:
+                                this.lastLicenseCard.filesForDeleteIds,
+                        }),
                 }),
                 licenseNumber: this.lastLicenseCard.licenseNumber,
                 country: this.lastLicenseCard.country,
@@ -1155,12 +1246,16 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                 expDate: MethodsCalculationsHelper.convertDateToBackend(
                     this.lastLicenseCard.expDate
                 ),
+                issueDate: MethodsCalculationsHelper.convertDateToBackend(
+                    this.lastLicenseCard.issueDate
+                ),
                 restrictions: this.lastLicenseCard.restrictions.map(
                     (item) => item.id
                 ),
                 endorsements: this.lastLicenseCard.endorsments.map(
                     (item) => item.id
                 ),
+                files: documents,
             };
         }
 
@@ -1201,6 +1296,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
                     (classItem) => classItem.name === item.classType
                 ),
                 expDate: item.expDate,
+                issueDate: item.issueDate,
                 cdlRestrictions: this.restrictionsList.filter((resItem) =>
                     item.restrictions.includes(resItem.id)
                 ),

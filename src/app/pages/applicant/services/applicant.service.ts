@@ -50,8 +50,6 @@ import {
     UpdateEducationReviewCommand,
     UpdateTrafficViolationReviewCommand,
     UpdateAccidentRecordReviewCommand,
-    CreateApplicantCdlInformationCommand,
-    UpdateApplicantCdlInformationCommand,
     CreateApplicantCdlInformationReviewCommand,
     UpdateApplicantCdlInformationReviewCommand,
     UpdateWorkExperienceReviewCommand,
@@ -62,8 +60,6 @@ import {
     UpdateMedicalCertificateReviewCommand,
     CreateMvrAuthReviewCommand,
     UpdateMvrAuthReviewCommand,
-    CreateCompanyOwnerInfoCommand,
-    UpdateCompanyOwnerInfoCommand,
     CreateCompanyOwnerInfoReviewCommand,
     UpdateCompanyOwnerInfoReviewCommand,
 } from 'appcoretruckassist/model/models';
@@ -104,8 +100,10 @@ export class ApplicantService {
     }
 
     public createCdlInformation(
-        data: CreateApplicantCdlInformationCommand
+        data: any
     ): Observable<object> {
+        this.formDataService.extractFormDataFromFunction(data);
+
         return this.applicantService.apiApplicantCdlPost(data);
     }
 
@@ -138,7 +136,7 @@ export class ApplicantService {
     }
 
     public createOwnerInfoCompany(
-        data: CreateCompanyOwnerInfoCommand
+        data: any
     ): Observable<CreateResponse> {
         return this.applicantService.apiApplicantOwnerinfoCompanyPost(data);
     }
@@ -172,8 +170,10 @@ export class ApplicantService {
     }
 
     public updateCdlInformation(
-        data: UpdateApplicantCdlInformationCommand
-    ): Observable<object> {
+        data: any
+    ): Observable<any> {
+        this.formDataService.extractFormDataFromFunction(data);
+
         return this.applicantService.apiApplicantCdlPut(data);
     }
 
@@ -224,7 +224,7 @@ export class ApplicantService {
     }
 
     public updateOwnerInfoCompany(
-        data: UpdateCompanyOwnerInfoCommand
+        data: any
     ): Observable<object> {
         return this.applicantService.apiApplicantOwnerinfoCompanyPut(data);
     }

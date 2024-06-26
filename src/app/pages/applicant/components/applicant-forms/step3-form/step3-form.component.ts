@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     Component,
@@ -12,9 +13,11 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import {
-    UntypedFormBuilder,
     UntypedFormGroup,
+    UntypedFormBuilder,
     Validators,
+    FormsModule,
+    ReactiveFormsModule,
 } from '@angular/forms';
 
 import {
@@ -44,6 +47,7 @@ import {
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 // models
 import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
@@ -53,11 +57,44 @@ import {
     CdlRestrictionResponse,
     EnumValue,
 } from 'appcoretruckassist/model/models';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// components
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
+import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '@shared/shared.module';
+
+// configs
+import { Step3Config } from '@pages/applicant/pages/applicant-application/components/step3/config/step3.config';
 
 @Component({
     selector: 'app-step3-form',
     templateUrl: './step3-form.component.html',
     styleUrls: ['./step3-form.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+
+        // components
+        TaInputComponent,
+        TaInputDropdownComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+        TaUploadFilesComponent,
+        TaCounterComponent,
+    ],
 })
 export class Step3FormComponent
     implements OnInit, OnDestroy, OnChanges, AfterViewInit
@@ -79,6 +116,7 @@ export class Step3FormComponent
     @Output() openAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
+    @Output() onDeleteCdlClick = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -140,12 +178,76 @@ export class Step3FormComponent
     ];
     public isCardReviewedIncorrect: boolean = false;
 
+    public applicantSvgRoutes = ApplicantSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private formService: FormService,
         private applicantQuery: ApplicantQuery
     ) {}
+
+    get licenseNumberInputConfig(): ITaInput {
+        return Step3Config.getLicenseNumberInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get countryInputConfig(): ITaInput {
+        return Step3Config.getCountryInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
+
+    get stateInputConfig(): ITaInput {
+        return Step3Config.getStateInputConfig({
+            selectedMode: this.selectedMode,
+            licenseForm: this.licenseForm,
+            isEditing: this.isEditing,
+        });
+    }
+
+    get classTypeInputConfig(): ITaInput {
+        return Step3Config.getClassTypeInputConfig({
+            selectedMode: this.selectedMode,
+        });
+    }
+
+    get issueDateInputConfig(): ITaInput {
+        return Step3Config.getIssueDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get expDateInputConfig(): ITaInput {
+        return Step3Config.getExpDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get restrictionsInputConfig(): ITaInput {
+        return Step3Config.getRestrictionsInputConfig({
+            selectedMode: this.selectedMode,
+            isEditing: this.isEditing,
+        });
+    }
+
+    get endorsmentsInputConfig(): ITaInput {
+        return Step3Config.getEndorsmentsInputConfig({
+            selectedMode: this.selectedMode,
+            isEditing: this.isEditing,
+        });
+    }
+
+    get permitExplainInputConfig(): ITaInput {
+        return Step3Config.getPermitExplainInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -173,7 +275,13 @@ export class Step3FormComponent
 
                     res.restrictions = this.selectedRestrictions;
                     res.endorsments = this.selectedEndorsments;
-
+                    res.documents = this.documents;
+                    if (
+                        this.documentsForDeleteIds.length &&
+                        this.documentsForDeleteIds[0]
+                    ) {
+                        res.filesForDeleteIds = this.documentsForDeleteIds;
+                    }
                     this.lastFormValuesEmitter.emit(res);
                 });
         }
@@ -232,11 +340,12 @@ export class Step3FormComponent
             state: [null, Validators.required],
             classType: [null, Validators.required],
             expDate: [null, Validators.required],
+            issueDate: [null, Validators.required],
             restrictions: [null],
             endorsments: [null],
             restrictionsSubscription: [null],
             endorsmentsSubscription: [null],
-            /*  files: [null, Validators.required], */
+            files: [null, Validators.required],
 
             firstRowReview: [null],
             secondRowReview: [null],
@@ -300,6 +409,8 @@ export class Step3FormComponent
             state: formValue?.stateShort ?? null,
             classType: formValue?.classType,
             expDate: formValue?.expDate,
+            issueDate: formValue?.issueDate,
+            files: JSON.stringify(formValue?.files),
         });
 
         setTimeout(() => {
@@ -307,6 +418,14 @@ export class Step3FormComponent
                 this.stateTypes = this.usStates;
             } else {
                 this.stateTypes = this.canadaStates;
+            }
+
+            if (formValue?.documents) {
+                this.documents = formValue?.documents;
+            }
+
+            if (formValue?.filesForDeleteIds) {
+                this.documentsForDeleteIds = formValue.filesForDeleteIds;
             }
 
             this.selectedCountryType = this.countryTypes.find(
@@ -359,6 +478,7 @@ export class Step3FormComponent
                     isEditingLicense,
                     licenseReview,
                     expDate,
+                    issueDate,
                     id,
                     reviewId,
                     restrictionsCode,
@@ -376,9 +496,12 @@ export class Step3FormComponent
                     ...newFormValues
                 } = updatedFormValues;
 
-                previousFormValues.expDate = moment(new Date(expDate)).format(
-                    'MM/DD/YY'
-                );
+                previousFormValues.issueDate = moment(
+                    new Date(issueDate)
+                ).format('MM/DD/YY');
+                previousFormValues.issueDate = moment(
+                    new Date(issueDate)
+                ).format('MM/DD/YY');
 
                 previousFormValues.licenseNumber =
                     previousFormValues.licenseNumber?.toUpperCase();
@@ -462,28 +585,33 @@ export class Step3FormComponent
         }
     }
 
-    public onFilesAction(event: any): void {
-        this.documents = event.files;
+    public onFilesAction(fileActionEvent: {
+        files: File[];
+        action: 'add' | 'delete';
+        deleteId?: number;
+    }): void {
+        this.documents = fileActionEvent.files;
 
         this.displayDocumentsRequiredNote = false;
 
-        switch (event.action) {
+        switch (fileActionEvent.action) {
             case 'add':
                 this.licenseForm
                     .get('files')
-                    .patchValue(JSON.stringify(event.files));
-
+                    .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
             case 'delete':
                 this.licenseForm
                     .get('files')
                     .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
+                        fileActionEvent.files.length
+                            ? JSON.stringify(fileActionEvent.files)
+                            : null
                     );
 
                 this.documentsForDeleteIds = [
                     ...this.documentsForDeleteIds,
-                    event.deleteId,
+                    fileActionEvent.deleteId,
                 ];
 
                 break;
@@ -517,12 +645,23 @@ export class Step3FormComponent
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
             restrictionsCode: this.selectedRestrictions
-                .map((resItem) => resItem.code)
-                .join(', '),
+                ? this.selectedRestrictions
+                      .map((resItem) => resItem.code)
+                      .join(', ')
+                : [],
             endorsmentsCode: this.selectedEndorsments
-                .map((resItem) => resItem.code)
-                .join(', '),
+                ? this.selectedEndorsments
+                      .map((resItem) => resItem.code)
+                      .join(', ')
+                : [],
             isEditingLicense: false,
+            documents: this.documents,
+            ...((
+                this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0]
+            ) && {
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -575,12 +714,23 @@ export class Step3FormComponent
             restrictions: this.selectedRestrictions,
             endorsments: this.selectedEndorsments,
             restrictionsCode: this.selectedRestrictions
-                .map((resItem) => resItem.code)
-                .join(', '),
+                ? this.selectedRestrictions
+                      .map((resItem) => resItem.code)
+                      .join(', ')
+                : [],
             endorsmentsCode: this.selectedEndorsments
-                .map((resItem) => resItem.code)
-                .join(', '),
+                ? this.selectedEndorsments
+                      .map((resItem) => resItem.code)
+                      .join(', ')
+                : [],
             isEditingLicense: false,
+            documents: this.documents,
+            ...((
+                this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0]
+            ) && {
+                filesForDeleteIds: this.documentsForDeleteIds,
+            }),
         };
 
         this.saveFormEditingEmitter.emit(saveData);
@@ -788,6 +938,10 @@ export class Step3FormComponent
         );
 
         this.isCardReviewedIncorrect = false;
+    }
+
+    public onDeleteCdl(): void {
+        this.onDeleteCdlClick.emit(true);
     }
 
     ngOnDestroy(): void {

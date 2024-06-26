@@ -9,6 +9,7 @@ import {
     StringConstantsStep8,
     StringConstantsStep9,
 } from '@pages/applicant/pages/applicant-application/models/string-constants.model';
+import { AnswerChoices } from '@pages/applicant/pages/applicant-application/models/answer-choices.model';
 
 export class ApplicantApplicationConstants {
     public static displayRadioRequiredNoteArray: {
@@ -299,6 +300,45 @@ export class ApplicantApplicationConstants {
                     fmCSA: false,
                 },
             ],
+        },
+    ];
+
+    public static answerChoicesStep3: AnswerChoices[] = [
+        {
+            id: 1,
+            label: 'YES',
+            value: 'permitYes',
+            name: 'permitYes',
+            checked: false,
+        },
+        {
+            id: 2,
+            label: 'NO',
+            value: 'permitNo',
+            name: 'permitNo',
+            checked: false,
+        },
+    ];
+    public static openAnnotationArrayStep3: AnnotationItem[] = [
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {
+            lineIndex: 14,
+            lineInputs: [false],
+            displayAnnotationButton: false,
+            displayAnnotationTextArea: false,
         },
     ];
 
