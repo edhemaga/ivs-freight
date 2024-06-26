@@ -12,7 +12,6 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 
 // Services
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // Models
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models/confirmation-activation.model';
@@ -42,7 +41,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 })
 export class ConfirmationActivationModalComponent {
     @Input() editData: ConfirmationActivation;
-    
+
     public confirmationImageRoutes = ConfirmationActivationModalSvgRoutes;
 
     constructor(
@@ -50,8 +49,7 @@ export class ConfirmationActivationModalComponent {
 
         // services
         private confirmationActivationService: ConfirmationActivationService,
-        public imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     public onModalAction(data: ConfirmationActivation): void {
         this.confirmationActivationService.setConfirmationActivationData(data);

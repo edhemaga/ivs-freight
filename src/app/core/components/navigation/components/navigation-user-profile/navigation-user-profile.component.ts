@@ -1,4 +1,3 @@
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -67,17 +66,14 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         private navigationService: NavigationService,
         private modalService: ModalService,
         private userProfileUpdateService: UserProfileUpdateService,
-        private imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.loggedUser = JSON.parse(localStorage.getItem('user'));
 
         this.loggedUser = {
             ...this.loggedUser,
-            avatar: this.loggedUser.avatar
-                ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
-                : null,
+            avatar: this.loggedUser?.avatarFile?.url ?? null,
         };
         this.userProfileUpdateService.updateUserProfile$
             .pipe(debounceTime(1000), takeUntil(this.destroy$))
@@ -87,10 +83,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser.avatar
-                            ? this.imageBase64Service.sanitizer(
-                                  this.loggedUser.avatar
-                              )
+                        avatar: this.loggedUser?.avatarFile?.url
+                            ? this.loggedUser.avatarFile.url
                             : 'assets/svg/common/ic_profile.svg',
                     };
                 }
@@ -142,7 +136,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    private changeMyStatus() {}
+    private changeMyStatus() { }
 
     ngOnDestroy(): void {
         this.destroy$.next();

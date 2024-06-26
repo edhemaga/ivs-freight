@@ -8,7 +8,6 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
@@ -19,7 +18,6 @@ import {
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
-import { LoadListResponse } from 'appcoretruckassist';
 import {
     DeleteComment,
     DropdownItem,
@@ -108,7 +106,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private loadServices: LoadService,
         private tableDropdownService: TableCardDropdownActionsService,
-        private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
         private loadPandinQuery: LoadPendingQuery,
@@ -119,7 +116,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private nameInitialsPipe: NameInitialsPipe,
         private loadQuery: LoadQuery,
         private cardsModalService: CardsModalConfigService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.updateCardView();
@@ -361,10 +358,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.TEMPLATE
                             ? undefined
                             : this.selectedTab === TableStringEnum.ACTIVE
-                            ? 2
-                            : this.selectedTab === TableStringEnum.CLOSED
-                            ? 3
-                            : 1;
+                                ? 2
+                                : this.selectedTab === TableStringEnum.CLOSED
+                                    ? 3
+                                    : 1;
                     this.backLoadFilterQuery.pageIndex = 1;
 
                     const searchEvent = MethodsGlobalHelper.tableSearch(
@@ -393,10 +390,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.selectedTab === TableStringEnum.TEMPLATE
                             ? TableStringEnum.TEMPLATE_2
                             : this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.ACTIVE_2
-                            : this.selectedTab === TableStringEnum.CLOSED
-                            ? TableStringEnum.CLOSED_2
-                            : TableStringEnum.PENDING_2;
+                                ? TableStringEnum.ACTIVE_2
+                                : this.selectedTab === TableStringEnum.CLOSED
+                                    ? TableStringEnum.CLOSED_2
+                                    : TableStringEnum.PENDING_2;
 
                     const modalTitle =
                         TableStringEnum.DELETE_2 +
@@ -695,7 +692,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             );
         }
-
         return {
             ...data,
             isSelected: false,
@@ -711,18 +707,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: data?.dispatcher?.fullName
                     ? data.dispatcher.fullName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                avatar: data?.dispatcher?.avatar
-                    ? this.imageBase64Service.sanitizer(data.dispatcher.avatar)
-                    : null,
+                avatar: data?.dispatcher?.avatarFile?.url
             },
             loadTotal: {
                 total: data?.totalRate
                     ? TableStringEnum.DOLLAR_SIGN +
-                      this.thousandSeparator.transform(data.totalRate)
+                    this.thousandSeparator.transform(data.totalRate)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 subTotal: data?.totalAdjustedRate
                     ? TableStringEnum.DOLLAR_SIGN +
-                      this.thousandSeparator.transform(data.totalAdjustedRate)
+                    this.thousandSeparator.transform(data.totalAdjustedRate)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadBroker: {
@@ -749,15 +743,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 location:
                     data?.stops &&
                     data?.stops[0]?.shipper?.address?.city +
-                        TableStringEnum.COMA +
-                        data?.stops[0]?.shipper?.address?.stateShortName,
+                    TableStringEnum.COMA +
+                    data?.stops[0]?.shipper?.address?.stateShortName,
                 date:
                     data?.stops &&
                     (data?.stops[0]?.dateFrom
                         ? this.datePipe.transform(
-                              data.stops[0].dateFrom,
-                              TableStringEnum.DATE_FORMAT
-                          )
+                            data.stops[0].dateFrom,
+                            TableStringEnum.DATE_FORMAT
+                        )
                         : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
                 time:
                     data?.stops &&
@@ -773,16 +767,16 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 location:
                     data?.stops &&
                     data?.stops[data.stops.length - 1]?.shipper?.address?.city +
-                        TableStringEnum.COMA +
-                        data?.stops[data.stops.length - 1]?.shipper?.address
-                            ?.stateShortName,
+                    TableStringEnum.COMA +
+                    data?.stops[data.stops.length - 1]?.shipper?.address
+                        ?.stateShortName,
                 date:
                     data?.stops &&
                     (data?.stops[data.stops.length - 1]?.dateFrom
                         ? this.datePipe.transform(
-                              data.stops[data.stops.length - 1].dateFrom,
-                              TableStringEnum.DATE_FORMAT
-                          )
+                            data.stops[data.stops.length - 1].dateFrom,
+                            TableStringEnum.DATE_FORMAT
+                        )
                         : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
                 time:
                     data?.stops &&
@@ -812,27 +806,27 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textBase: data?.baseRate
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.baseRate)
+                this.thousandSeparator.transform(data.baseRate)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textAdditional: data?.additionalBillingRatesTotal
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(
-                      data?.additionalBillingRatesTotal
-                  )
+                this.thousandSeparator.transform(
+                    data?.additionalBillingRatesTotal
+                )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textAdvance: data?.advancePay
                 ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.advancePay)
+                this.thousandSeparator.transform(data.advancePay)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textPayTerms: data?.broker?.payTerm?.name
                 ? data.broker.payTerm?.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textDriver:
                 data?.dispatch?.driver?.firstName &&
-                data?.dispatch?.driver?.lastName
+                    data?.dispatch?.driver?.lastName
                     ? data?.dispatch?.driver?.firstName.charAt(0) +
-                      TableStringEnum.DOT +
-                      data?.dispatch?.driver?.lastName
+                    TableStringEnum.DOT +
+                    data?.dispatch?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             comments: commentsWithAvatarColor,
             tableAttachments: data?.files ? data.files : [],
@@ -943,10 +937,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? 2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? 3
-                    : 1;
+                        ? 2
+                        : this.selectedTab === TableStringEnum.CLOSED
+                            ? 3
+                            : 1;
 
             this.backLoadFilterQuery.pageIndex = 1;
 
@@ -966,10 +960,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.selectedTab === TableStringEnum.TEMPLATE
                         ? undefined
                         : this.selectedTab === TableStringEnum.ACTIVE
-                        ? 2
-                        : this.selectedTab === TableStringEnum.CLOSED
-                        ? 3
-                        : 1;
+                            ? 2
+                            : this.selectedTab === TableStringEnum.CLOSED
+                                ? 3
+                                : 1;
                 this.backLoadFilterQuery.pageIndex = 1;
                 this.backLoadFilterQuery.sort = event.direction;
 
@@ -998,10 +992,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? undefined
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? 2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? 3
-                    : 1;
+                        ? 2
+                        : this.selectedTab === TableStringEnum.CLOSED
+                            ? 3
+                            : 1;
 
             this.backLoadFilterQuery.pageIndex++;
 
@@ -1011,10 +1005,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedTab === TableStringEnum.TEMPLATE
                     ? TableStringEnum.TEMPLATE_2
                     : this.selectedTab === TableStringEnum.ACTIVE
-                    ? TableStringEnum.ACTIVE_2
-                    : this.selectedTab === TableStringEnum.CLOSED
-                    ? TableStringEnum.CLOSED_2
-                    : TableStringEnum.PENDING_2;
+                        ? TableStringEnum.ACTIVE_2
+                        : this.selectedTab === TableStringEnum.CLOSED
+                            ? TableStringEnum.CLOSED_2
+                            : TableStringEnum.PENDING_2;
 
             const modalTitle =
                 TableStringEnum.DELETE_2 +

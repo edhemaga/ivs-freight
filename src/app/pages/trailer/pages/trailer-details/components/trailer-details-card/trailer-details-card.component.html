@@ -166,18 +166,14 @@
                         <svg-icon class="assign-to-vehicle"></svg-icon>
 
                         <svg-icon
-                            *ngIf="!trailer.assignedTo.driver.avatar"
+                            *ngIf="!trailer.assignedTo?.driver.avatarFile?.url"
                             class="assign-to-vehicle"
                             src="assets/svg/common/user-image.svg"
                         ></svg-icon>
                         <img
-                            *ngIf="trailer.assignedTo.driver.avatar"
+                            *ngIf="trailer.assignedTo?.driver.avatarFile?.url"
                             class="driverAvatarImg"
-                            [src]="
-                                imageBase64Service.sanitizer(
-                                    trailer.assignedTo.driver.avatar
-                                )
-                            "
+                            [src]="trailer.assignedTo?.driver.avatarFile?.url"
                             alt="driver-image"
                         />
 

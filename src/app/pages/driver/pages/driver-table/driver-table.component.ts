@@ -19,7 +19,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ApplicantService } from '@shared/services/applicant.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
 
@@ -145,7 +144,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private driverService: DriverService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
-        private imageBase64Service: ImageBase64Service,
         private driverCardsModalService: DriverCardsModalService,
 
         // store
@@ -791,7 +789,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapDriverData(data: any): any {
-        
+
         const {
             id,
             status,
@@ -944,8 +942,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 percentage: mvr?.percentage ? 100 - mvr?.percentage : null,
             },
             tabelNotificationGeneral: `${general?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 }${general?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
@@ -954,8 +952,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 }`,
             tabelNotificationPayroll: `${payroll?.mail
-                    ? TableStringEnum.EMAIL
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                ? TableStringEnum.EMAIL
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 }${payroll?.push
                     ? TableStringEnum.PUSH
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
