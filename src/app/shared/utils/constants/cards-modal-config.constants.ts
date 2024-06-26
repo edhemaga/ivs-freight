@@ -1,6 +1,6 @@
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-export class LoadCardsModalConstants {
+export class CardsModalConstants {
     static defaultCardsValues: CardsModalData = {
         numberOfRows: 4,
         checked: true,

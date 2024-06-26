@@ -34,7 +34,7 @@ export class ListRoutes {
             resolve: {
                 loadTemplate: LoadTemplateResolver,
                 loadPanding: LoadPendingResolver,
-                loadActive: LoadActiveResolver, 
+                loadActive: LoadActiveResolver,
                 loadClosed: LoadClosedResolver,
             },
         },
