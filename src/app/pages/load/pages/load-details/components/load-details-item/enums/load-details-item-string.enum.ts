@@ -4,4 +4,6 @@ export enum LoadDetailsItemStringEnum {
     CANCEL = 'Cancel',
     CONFIRM = 'Confirm',
     DELETE = 'Delete',
+
+    ASC = 'asc',
 }

@@ -248,14 +248,14 @@
                         <p
                             class="m-0"
                             [ngStyle]="{
-                                color: stop?.shipperContact?.contactName
+                                color: stop?.shipperContact?.fullName
                                     ? '#2f2f2f'
                                     : '#919191'
                             }"
                         >
                             {{
                                 stop?.shipperContact
-                                    ? stop?.shipperContact?.contactName ??
+                                    ? stop?.shipperContact?.fullName ??
                                       'Shipper Contact'
                                     : 'No Contact'
                             }}
@@ -264,8 +264,8 @@
                         <span>
                             {{ stop?.shipperContact?.phone ?? '123' }}
                             {{
-                                stop?.shipperContact?.extensionPhone
-                                    ? 'x' + stop?.shipperContact?.extensionPhone
+                                stop?.shipperContact?.phoneExt
+                                    ? 'x' + stop?.shipperContact?.phoneExt
                                     : ''
                             }}
                         </span>

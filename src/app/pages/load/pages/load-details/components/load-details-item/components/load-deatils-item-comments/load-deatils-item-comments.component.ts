@@ -146,4 +146,17 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 break;
         }
     }
+
+    public handleSortActionEmit(sortDirection: string): void {
+        this.comments = this.comments.sort((a, b) => {
+            const dateA = new Date(a.commentDate).getTime();
+            const dateB = new Date(b.commentDate).getTime();
+
+            if (sortDirection === LoadDetailsItemStringEnum.ASC) {
+                return dateA - dateB;
+            } else {
+                return dateB - dateA;
+            }
+        });
+    }
 }
