@@ -50,7 +50,7 @@ export class LoadModalFinancialComponent implements OnChanges {
     @Input() adjusted: number;
     @Input() payment: string;
     @Input() tonu: number;
-    @Input() baseRate: string;
+    @Input() baseRate: number;
     @Input() revised: number;
     @Input() disableBillAction: boolean = false;
     @Input() disablePaymentAction: boolean = false;
@@ -76,19 +76,28 @@ export class LoadModalFinancialComponent implements OnChanges {
     public zoneTriger: boolean = false;
 
     public paymentDifference: number = 0;
+    public revisedDifference: number = 0;
 
     ngOnChanges(changes: SimpleChanges): void {
         const pay = MethodsCalculationsHelper.convertThousanSepInNumber(
-            this.payment.substring(1)
+            this.payment?.substring(1)
         );
 
         const bill = MethodsCalculationsHelper.convertThousanSepInNumber(
-            this.billing.substring(1)
+            this.billing?.substring(1)
         );
-        if(this.tonu) {
+        if (this.tonu) {
             this.paymentDifference = pay - this.tonu;
         } else {
             this.paymentDifference = pay - bill;
+        }
+
+        if (this.revised) {
+            this.revisedDifference =
+                this.toNumber(bill) -
+                this.toNumber(this.baseRate) +
+                this.toNumber(this.revised);
+            this.paymentDifference = pay - this.revisedDifference;
         }
     }
 
