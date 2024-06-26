@@ -40,7 +40,7 @@ import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/o
 
 // Constants
 import { OwnerCardsModalData } from '@pages/owner/pages/owner-card-modal/constants/owner-cards-modal.constants';
-import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
+import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
 @Component({
     selector: 'app-owner-card-modal',
@@ -71,7 +71,7 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
-        LoadCardsModalConstants.defaultCardsValues;
+        CardsModalConstants.defaultCardsValues;
 
     public cardsAllData: CardRows[] = OwnerCardsModalData.allDataLoad;
 
@@ -336,15 +336,23 @@ export class OwnerCardModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private filterTitlesFromForm(valuesInform: CardRows[]): void {
-        this.titlesInForm = valuesInform
-            .map((item) => {
-                if (item && typeof item.title === CardsModalStringEnum.STRING) {
-                    return item.title;
-                }
-                return;
-            })
-            .filter((title) => title);
+    private filterTitlesFromForm(valuesInform: any): void {
+        //leave this as any for now
+        this.titlesInForm = valuesInform.flatMap(
+            (
+                item: any //leave this as any for now
+            ) =>
+                Array.isArray(item)
+                    ? item
+                          .filter(
+                              (titles) =>
+                                  titles &&
+                                  typeof titles.inputItem.title ===
+                                      CardsModalStringEnum.STRING
+                          )
+                          .map((titles) => titles.inputItem.title)
+                    : []
+        );
     }
 
     private compareDataInStoreAndDefaultData(): void {
