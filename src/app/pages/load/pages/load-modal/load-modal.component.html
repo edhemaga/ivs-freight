@@ -1324,40 +1324,14 @@
                             <app-ta-input
                                 *ngIf="showDriverRate"
                                 formControlName="driverRate"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Driver Rate',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'orange',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true
-                                }"
+                                [inputConfig]="getDriverRateInputConfig"
                             ></app-ta-input>
 
                             <!-- Adjusted Rate -->
                             <app-ta-input
                                 *ngIf="showAdjustedRate"
                                 formControlName="adjustedRate"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Adjusted',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'purple',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true
-                                }"
+                                [inputConfig]="getAdjustedRateInputConfig"
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
                             ></app-ta-input>
 

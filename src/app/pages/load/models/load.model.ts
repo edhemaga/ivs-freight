@@ -16,7 +16,7 @@ export interface Load {
     companyId?: number;
     dispatchId: number;
     dateCreated: string;
-    status?: LoadStatus;
+    status?: string;
     brokerId: number;
     brokerContactId: number;
     referenceNumber: string;

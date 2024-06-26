@@ -28,7 +28,7 @@ export interface LoadStopResponse {
     timeType?: EnumValue;
     timeFrom?: string | null;
     timeTo?: string | null;
-    arrive?: string | null;
+    arive?: string | null;
     depart?: string | null;
     wait?: { [key: string]: number; } | null;
     items?: Array<LoadStopItemResponse> | null;

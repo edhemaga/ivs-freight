@@ -530,4 +530,34 @@ export class LoadModalConfig {
         isDropdown: true,
         dropdownWidthClass: 'w-col-132 dropdown-status'
     };
+
+    static DRIVE_RATE_INPUT_CONFIG : ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Driver Rate',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'orange',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true
+    }
+
+    static ADJUSTED_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Adjusted',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'purple',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true
+    }
 }

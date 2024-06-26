@@ -287,6 +287,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         LoadModalConfig.LOAD_PAYMENT_DROPDOWN;
     public loadReferenceInputConfig = LoadModalConfig.LOAD_REFERENCE_NUMBER;
     public getStatusInputConfig = LoadModalConfig.STATUS_INPUT_CONFIG;
+    public getDriverRateInputConfig = LoadModalConfig.DRIVE_RATE_INPUT_CONFIG;
+    public getAdjustedRateInputConfig = LoadModalConfig.ADJUSTED_RATE_INPUT_CONFIG;
     // extra Stop configuration
     public selectedExtraStopShipper: any[] = [];
     public selectedExtraStopShipperContact: any[] = [];
@@ -2466,7 +2468,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             timeType: [null],
             timeFrom: [null, Validators.required],
             timeTo: [null, Validators.required],
-            arrive: [null],
+            arive: [null],
             depart: [null],
             longitude: [null],
             latitude: [null],
@@ -2676,6 +2678,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             deliverylegMiles,
             deliverylegHours,
             deliverylegMinutes,
+            arive,
+            depart
         } = this.loadForm.value;
 
         // pickup
@@ -2705,8 +2709,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : 1,
                 timeFrom: pickupTimeFrom,
                 timeTo: pickupTimeTo,
-                arrive: null,
-                depart: null,
+                arive: arive,
+                depart: depart,
                 legMiles: pickuplegMiles,
                 legHours: pickuplegHours,
                 legMinutes: pickuplegMinutes,
@@ -2739,8 +2743,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             : 1,
                     timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
                     timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
-                    arrive: null,
-                    depart: null,
+                    arive: item.get(LoadModalStringEnum.ARIVE).value,
+                    depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
                     legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
                     legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value,
@@ -2776,7 +2780,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : 1,
                 timeFrom: deliveryTimeFrom,
                 timeTo: deliveryTimeTo,
-                arrive: null,
+                arive: null,
                 depart: null,
                 legMiles: deliverylegMiles,
                 legHours: deliverylegHours,
@@ -3741,7 +3745,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 ? this.selectedDispatcher.id
                 : null,
             dateCreated,
-            status: status.statusString as LoadStatus,
             dispatchId: this.selectedDispatches
                 ? this.selectedDispatches.id
                 : null,
@@ -3818,6 +3821,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
+            status: this.selectedStatus.name
             // invoicedDate,
         };
 
@@ -4242,7 +4246,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         timeType: extraStop.timeType.name.toUpperCase(),
                         timeFrom: extraStop.timeFrom,
                         timeTo: extraStop.timeTo,
-                        arrive: extraStop.arrive,
+                        arive: extraStop.arive,
                         depart: extraStop.depart,
                         legMiles: extraStop.legMiles,
                         legHours: extraStop.legHours,
