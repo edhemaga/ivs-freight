@@ -938,12 +938,16 @@
                         <!-- Load -->
 
                         <ng-container *ngSwitchCase="'load'">
-                            <div class="confirmation-info">
+                            <div class="confirmation-info w-100">
                                 <div class="d-flex align-items-center gap-1">
                                     <p
-                                        class="m-0 confirmation-text-1 large-text-1"
+                                        class="m-0 confirmation-text-1 large-text-1 limit-text"
                                     >
-                                        {{ editData?.data?.loadNumber }}
+                                        {{
+                                            editData?.subType === 'template'
+                                                ? editData?.data?.name
+                                                : editData?.data?.loadNumber
+                                        }}
                                     </p>
 
                                     <ng-container
@@ -968,7 +972,9 @@
                                     </ng-container>
                                 </div>
 
-                                <p class="m-0 confirmation-text-2 large-text-2">
+                                <p
+                                    class="m-0 confirmation-text-2 large-text-2 limit-text"
+                                >
                                     {{ editData?.data?.broker?.businessName }}
                                 </p>
                             </div>
@@ -1355,7 +1361,11 @@
                                     <p
                                         class="m-0 confirmation-text-1 large-text-1"
                                     >
-                                        {{ item?.data?.loadNumber }}
+                                        {{
+                                            editData?.subType === 'template'
+                                                ? item?.data?.name
+                                                : item?.data?.loadNumber
+                                        }}
                                     </p>
 
                                     <ng-container
@@ -1452,7 +1462,7 @@
                 editData.subType !== 'cdl void' &&
                 editData.type !== 'void'
             "
-            class="confirmation-header"
+            class="confirmation-header pb-2"
         >
             <p class="m-0 ta-font-medium">
                 {{
