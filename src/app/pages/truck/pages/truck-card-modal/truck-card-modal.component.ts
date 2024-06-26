@@ -40,7 +40,7 @@ import { truckCardModalQuery } from '@pages/truck/pages/truck-card-modal/state/t
 
 // Constants
 import { TruckCardsModalData } from '@pages/truck/pages/truck-card-modal/constants/truck-cards-modal.constants';
-import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
+import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
 @Component({
     selector: 'app-truck-card-modal',
@@ -71,7 +71,7 @@ export class TruckCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
-        LoadCardsModalConstants.defaultCardsValues;
+        CardsModalConstants.defaultCardsValues;
 
     public cardsAllData: CardRows[] = TruckCardsModalData.allDataLoad;
 
@@ -199,47 +199,54 @@ export class TruckCardModalComponent implements OnInit, OnDestroy {
         this.cardsForm.patchValue({
             checked: this.cardsForm.get(CardsModalStringEnum.CHECKED).value,
 
-            numberOfRows: this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS)
-                .value,
+            numberOfRows: this.cardsForm.get(
+                CardsModalStringEnum.NUMBER_OF_ROWS
+            ).value,
 
             frontSelectedTitle_0: this.cardsForm.get(
                 CardsModalStringEnum.FRONT_SELECTED_0
             ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_0).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_0)
+                      .value
                 : this.dataFront[0],
 
             frontSelectedTitle_1: this.cardsForm.get(
                 CardsModalStringEnum.FRONT_SELECTED_1
             ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_1).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_1)
+                      .value
                 : this.dataFront[1],
 
             frontSelectedTitle_2: this.cardsForm.get(
                 CardsModalStringEnum.FRONT_SELECTED_2
             ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_2).value
+                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_2)
+                      .value
                 : this.dataFront[2],
 
             frontSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3)
+                    .value && this.defaultCardsValues.numberOfRows > 3
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataFront[3],
 
             frontSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4)
+                    .value && this.defaultCardsValues.numberOfRows > 4
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataFront[4],
 
             frontSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value
+                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5)
+                    .value && this.defaultCardsValues.numberOfRows > 5
+                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 6
                     ? null
                     : this.dataFront[5],
@@ -263,25 +270,28 @@ export class TruckCardModalComponent implements OnInit, OnDestroy {
                 : this.dataBack[2],
 
             backSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3)
+                    .value && this.defaultCardsValues.numberOfRows > 3
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 4
                     ? null
                     : this.dataBack[3],
 
             backSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4)
+                    .value && this.defaultCardsValues.numberOfRows > 4
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 5
                     ? null
                     : this.dataBack[4],
 
             backSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value
+                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5)
+                    .value && this.defaultCardsValues.numberOfRows > 5
+                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5)
+                          .value
                     : this.defaultCardsValues.numberOfRows < 6
                     ? null
                     : this.dataBack[5],
