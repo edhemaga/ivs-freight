@@ -1,49 +1,52 @@
+import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectorRef,
     Component,
-    OnDestroy,
     OnInit,
     ViewEncapsulation,
+    ChangeDetectorRef,
+    OnDestroy,
 } from '@angular/core';
 import {
-    FormGroup,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
+    FormGroup,
+    FormArray,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
 
-import { Subject, takeUntil } from 'rxjs';
-
-// models
-import { LoadCardsModuleConstants } from '@shared/components/ta-shared-modals/cards-modal/utils/constants/load-card.constants';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-
-// Configuration for modals
-import { LoadCardConfiguration } from '@pages/load/utils/constants/load-card-configuration.constants';
+// Enums
+import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
-import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
+import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 
-// store
-import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
+// Components
+import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 
-// helpers
+// Helpers
 import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
 
-// enums
-import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
+// Models
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
 
-// constants
-import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
+// Constants
+import { LoadCardModalData } from '@pages/load/pages/load-card-modal/utils/constants/load-card-modal.constants';
+import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
-// components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/cards-modal/components/modal-input-form.component';
+//Store
+import { Store } from '@ngrx/store';
+import { selectActiveModalTabs } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
+
+//Pipes
+import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
+import { NumberOrdinalPipe } from '@shared/pipes/number-ordinal.pipe';
 
 @Component({
     selector: 'app-load-card-modal',
@@ -62,11 +65,13 @@ import { ModalInputFormComponent } from '@shared/components/ta-shared-modals/car
         TaModalComponent,
         ModalInputFormComponent,
         TaCheckboxComponent,
+
+        // pipes
+        NgForLengthFilterPipe,
+        NumberOrdinalPipe,
     ],
 })
 export class LoadCardModalComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     public cardsForm: FormGroup;
 
     public dataFront: CardRows[];
@@ -76,9 +81,9 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
-        LoadCardsModalConstants.defaultCardsValues;
+        CardsModalConstants.defaultCardsValues;
 
-    public cardsAllData: CardRows[] = LoadCardsModuleConstants.allDataLoad;
+    public cardsAllData: CardRows[] = LoadCardModalData.allDataLoad;
 
     public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
@@ -87,18 +92,28 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
     public tabSelected: string;
 
     public titlesInForm: string[] = [];
+    public displayData$: Observable<CardsModalData>;
+    private subscription: Subscription = new Subscription();
+    public rowValues: number[] = LoadCardModalData.rowValues;
+    private destroy$ = new Subject<void>();
 
     constructor(
-        private formBuilder: UntypedFormBuilder,
-        private loadQuery: LoadQuery,
         private cdr: ChangeDetectorRef,
-        private modalService: CardsModalConfigService
+
+        //Form
+        private formBuilder: UntypedFormBuilder,
+
+        //Services
+        private modalService: LoadCardModalService,
+
+        //Store
+        private store: Store
     ) {}
 
     ngOnInit(): void {
-        this.getDataFromStore();
+        this.createFormData();
 
-        this.createForm();
+        this.getDataFromStore();
 
         this.getFormValueOnInit();
 
@@ -107,125 +122,139 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
         this.compareDataInStoreAndDefaultData();
     }
 
-    public createForm(): void {
+    public createFormData(): void {
         this.cardsForm = this.formBuilder.group({
-            numberOfRows: this.defaultCardsValues.numberOfRows,
+            numberOfRows: 4,
 
-            checked: this.defaultCardsValues.checked,
+            checked: false,
 
-            frontSelectedTitle_0: this.dataFront[0],
-            frontSelectedTitle_1: this.dataFront[1],
-            frontSelectedTitle_2: this.dataFront[2],
-            frontSelectedTitle_3: this.dataFront[3],
-            frontSelectedTitle_4: null,
-            frontSelectedTitle_5: null,
+            front_side: this.formBuilder.array([
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+            ]),
 
-            backSelectedTitle_0: this.dataBack[0],
-            backSelectedTitle_1: this.dataBack[1],
-            backSelectedTitle_2: this.dataBack[2],
-            backSelectedTitle_3: this.dataBack[3],
-            backSelectedTitle_4: null,
-            backSelectedTitle_5: null,
+            back_side: this.formBuilder.array([
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+                this.formBuilder.group({
+                    inputItem: {
+                        title: null,
+                        id: null,
+                        key: null,
+                    },
+                }),
+            ]),
         });
+    }
+
+    public createForm(dataState: CardsModalData): void {
+        this.cardsForm.patchValue({
+            numberOfRows: dataState.numberOfRows,
+            checked: dataState.checked,
+        });
+
+        dataState.front_side.map((item, index) => {
+            this.front_side_form.at(index).patchValue({
+                inputItem:
+                    !item || item.title == CardsModalStringEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
+            });
+        });
+
+        dataState.back_side.map((item, index) => {
+            this.back_side_form.at(index).patchValue({
+                inputItem:
+                    !item || item.title == CardsModalStringEnum.EMPTY
+                        ? { title: null, key: null }
+                        : item,
+            });
+        });
+        this.cdr.detectChanges();
     }
 
     public getDataFromStore(): void {
         this.modalService.tabObservable$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.tabSelected = res;
-
-                switch (res) {
-                    case CardsModalStringEnum.PENDING:
-                        this.pendingTabModalConfig();
-                        break;
-
-                    case CardsModalStringEnum.TEMPLATE:
-                        this.templateTabModalConfig();
-                        break;
-
-                    case CardsModalStringEnum.ACTIVE:
-                        this.activeTabModalConfig();
-                        break;
-
-                    case CardsModalStringEnum.CLOSED:
-                        this.closedTabModalConfig();
-                        break;
-
-                    default:
-                        break;
+            .subscribe(
+                (res: TableStringEnum.ACTIVE | TableStringEnum.PENDING) => {
+                    this.tabSelected = res;
+                    this.setDefaultValues(res);
                 }
-            });
-    }
-
-    private templateTabModalConfig(): void {
-        this.loadQuery.template$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: CardsModalData) => {
-                this.setDataForModal(data);
-
-                this.setDefaultDataFront =
-                    LoadCardConfiguration.displayRowsFrontTemplate;
-
-                this.setDefaultDataBack =
-                    LoadCardConfiguration.displayRowsBackTemplate;
-            });
-    }
-
-    private pendingTabModalConfig(): void {
-        this.loadQuery.pending$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: CardsModalData) => {
-                this.setDataForModal(data);
-
-                this.setDefaultDataFront =
-                    LoadCardConfiguration.displayRowsFrontPending;
-
-                this.setDefaultDataBack =
-                    LoadCardConfiguration.displayRowsBackPending;
-            });
-    }
-
-    private activeTabModalConfig(): void {
-        this.loadQuery.active$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: CardsModalData) => {
-                this.setDataForModal(data);
-
-                this.setDefaultDataFront =
-                    LoadCardConfiguration.displayRowsFrontPending;
-
-                this.setDefaultDataBack =
-                    LoadCardConfiguration.displayRowsBackActive;
-            });
-    }
-
-    private closedTabModalConfig(): void {
-        this.loadQuery.closed$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((data: CardsModalData) => {
-                this.setDataForModal(data);
-
-                this.setDefaultDataFront =
-                    LoadCardConfiguration.displayRowsFrontClosed;
-
-                this.setDefaultDataBack =
-                    LoadCardConfiguration.displayRowsBackClosed;
-            });
-    }
-
-    private setDataForModal(data: CardsModalData): void {
-        this.dataFront = data.front_side;
-
-        this.dataBack = data.back_side;
-
-        this.defaultCardsValues.checked = data.checked;
-
-        this.defaultCardsValues.numberOfRows = data.numberOfRows;
-
-        this.defaultCardsValues.front_side = data.front_side;
-
-        this.defaultCardsValues.back_side = data.back_side;
+            );
     }
 
     public onActionModal(event): void {
@@ -233,108 +262,23 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
             case CardsModalStringEnum.CARDS_MODAL:
                 this.updateStore();
                 break;
-
             case CardsModalStringEnum.RESET_TO_DEFAULT:
                 this.setTodefaultCards();
                 break;
-
             default:
                 break;
         }
     }
 
+    public get front_side_form(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.FRONT_SIDE) as FormArray;
+    }
+
+    public get back_side_form(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
+    }
+
     private updateStore(): void {
-        this.cardsForm.patchValue({
-            checked: this.cardsForm.get(CardsModalStringEnum.CHECKED).value,
-
-            numberOfRows: this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS)
-                .value,
-
-            frontSelectedTitle_0: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_0
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_0).value
-                : this.dataFront[0],
-
-            frontSelectedTitle_1: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_1
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_1).value
-                : this.dataFront[1],
-
-            frontSelectedTitle_2: this.cardsForm.get(
-                CardsModalStringEnum.FRONT_SELECTED_2
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_2).value
-                : this.dataFront[2],
-
-            frontSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_3).value
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.dataFront[3],
-
-            frontSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_4).value
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.dataFront[4],
-
-            frontSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.FRONT_SELECTED_5).value
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.dataFront[5],
-
-            backSelectedTitle_0: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_0
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_0).value
-                : this.dataBack[0],
-
-            backSelectedTitle_1: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_1
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_1).value
-                : this.dataBack[1],
-
-            backSelectedTitle_2: this.cardsForm.get(
-                CardsModalStringEnum.BACK_SELECTED_2
-            ).value
-                ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_2).value
-                : this.dataBack[2],
-
-            backSelectedTitle_3:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value &&
-                this.defaultCardsValues.numberOfRows > 3
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_3).value
-                    : this.defaultCardsValues.numberOfRows < 4
-                    ? null
-                    : this.dataBack[3],
-
-            backSelectedTitle_4:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value &&
-                this.defaultCardsValues.numberOfRows > 4
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_4).value
-                    : this.defaultCardsValues.numberOfRows < 5
-                    ? null
-                    : this.dataBack[4],
-
-            backSelectedTitle_5:
-                this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value &&
-                this.defaultCardsValues.numberOfRows > 5
-                    ? this.cardsForm.get(CardsModalStringEnum.BACK_SELECTED_5).value
-                    : this.defaultCardsValues.numberOfRows < 6
-                    ? null
-                    : this.dataBack[5],
-        });
-
         this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
     }
 
@@ -363,6 +307,7 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
     }
 
     public getFormValueOnInit(): void {
+        this.cardsAllData = LoadCardModalData.allDataLoad;
         const formValue = Object.values(this.cardsForm.value);
 
         this.filterTitlesFromForm(formValue);
@@ -376,24 +321,28 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
 
                 this.filterTitlesFromForm(valuesInform);
 
-                this.defaultCardsValues.numberOfRows = parseInt(
-                    value.numberOfRows
-                );
-
                 this.resetForm = true;
                 this.hasFormChanged = true;
             });
     }
 
-    private filterTitlesFromForm(valuesInform: CardRows[]): void {
-        this.titlesInForm = valuesInform
-            .map((item) => {
-                if (item && typeof item.title === CardsModalStringEnum.STRING) {
-                    return item.title;
-                }
-                return;
-            })
-            .filter((title) => title);
+    private filterTitlesFromForm(valuesInform: any): void {
+        //leave this as any for now
+        this.titlesInForm = valuesInform.flatMap(
+            (
+                item: any //leave this as any for now
+            ) =>
+                Array.isArray(item)
+                    ? item
+                          .filter(
+                              (titles) =>
+                                  titles &&
+                                  typeof titles.inputItem.title ===
+                                      CardsModalStringEnum.STRING
+                          )
+                          .map((titles) => titles.inputItem.title)
+                    : []
+        );
     }
 
     private compareDataInStoreAndDefaultData(): void {
@@ -410,13 +359,33 @@ export class LoadCardModalComponent implements OnInit, OnDestroy {
         if (
             isFrontSidesEqual &&
             areBackSidesEqual &&
-            this.defaultCardsValues.checked &&
-            this.defaultCardsValues.numberOfRows === 4
+            this.cardsForm.get(CardsModalStringEnum.CHECKED).value &&
+            this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS).value === 4
         ) {
             this.resetForm = false;
         } else {
             this.resetForm = true;
         }
+    }
+
+    private setDefaultValues(
+        type: TableStringEnum.ACTIVE | TableStringEnum.PENDING
+    ): void {
+        this.displayData$ = this.store.select(selectActiveModalTabs(type));
+        this.subscription.add(
+            this.displayData$
+                .pipe(takeUntil(this.destroy$), first())
+                .subscribe((data) => {
+                    this.createForm(data);
+                })
+        );
+        this.cardsAllData = LoadCardModalData.allDataLoad;
+        this.setDefaultDataFront = LoadCardModalData.frontDataLoad;
+        this.setDefaultDataBack = LoadCardModalData.backDataLoad;
+    }
+
+    public identity(item: CardRows): number {
+        return item.id;
     }
 
     ngOnDestroy(): void {

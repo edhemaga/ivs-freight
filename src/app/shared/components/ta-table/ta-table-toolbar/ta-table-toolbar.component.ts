@@ -86,7 +86,6 @@ import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/p
         TaToolbarFiltersComponent,
         TruckCardModalComponent,
         TaInputDropdownComponent,
-        LoadCardModalComponent,
         ConfirmationResetModalComponent,
 
         // Pipes
