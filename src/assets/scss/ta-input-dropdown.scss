@@ -942,7 +942,7 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 156px) 97px;
+                grid-template-columns: repeat(3, 155px) 97px;
                 align-items: center;
 
                 .load-dispatches-container {
@@ -950,6 +950,14 @@
                     align-items: center;
                     gap: 6px;
                     position: relative;
+
+                    .owner-avatar {
+                        position: absolute;
+                        left: 13px;
+                        bottom: -3px;
+                        width: 10px;
+                        height: 10px;
+                    }
 
                     .load-dispatch-driver,
                     .load-dispatch-truck,
@@ -1017,6 +1025,7 @@
                 }
 
                 &.active {
+                    .load-dispatch-driver-rate,
                     .load-dispatch-driver,
                     .load-dispatch-truck,
                     .load-dispatch-trailer {
@@ -1835,4 +1844,7 @@
         }
     }
 }
- 
+
+.hide-after-arrow .dropdown-option.active::after {
+    display: none !important;
+} 

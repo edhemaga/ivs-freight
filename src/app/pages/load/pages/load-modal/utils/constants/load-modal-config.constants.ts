@@ -13,7 +13,7 @@ export class LoadModalConfig {
         isDropdown: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-616',
+        dropdownWidthClass: 'w-col-616  hide-after-arrow',
     };
 
     static LOAD_BROKER_INPUT_CONFIG: ITaInput = {
