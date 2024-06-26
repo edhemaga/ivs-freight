@@ -30,6 +30,13 @@
                     -moz-user-select: none;
                     -ms-user-select: none;
                     user-select: none;
+                    &-override {
+                        text-decoration: line-through;
+                        color: $muted;
+                        &-value {
+                            color: $ta-black;
+                        }
+                    }
 
                     &.active {
                         color: $ta-black;

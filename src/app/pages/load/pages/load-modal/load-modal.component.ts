@@ -560,7 +560,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (!show) {
             this.loadForm.get(LoadModalStringEnum.REVISED).patchValue(null);
         }
-
         this.showRevisedRate = show;
     }
 
@@ -2316,7 +2315,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.loadModalPayment = {
                     paidInFull,
                     shortPaid,
-                    advance,
+                    advance
                 };
             });
 
@@ -3465,7 +3464,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         ),
                                         originalPhone: item.phone,
                                         phoneExtension: item.extensionPhone,
-                                        fullName: item?.contactName.concat(
+                                        fullName: item?.contactName?.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
                                             item?.phone?.concat(
                                                 LoadModalStringEnum.EMPTY_SPACE_STRING,
@@ -3570,7 +3569,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         ),
                                         originalPhone: item.phone,
                                         phoneExtension: item.extensionPhone,
-                                        fullName: item?.contactName.concat(
+                                        fullName: item?.contactName?.concat(
                                             LoadModalStringEnum.EMPTY_SPACE_STRING,
                                             item?.phone?.concat(
                                                 LoadModalStringEnum.EMPTY_SPACE_STRING,

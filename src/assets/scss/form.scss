@@ -1316,3 +1316,7 @@ app-load-modal {
         display: none;
     }
 }
+
+.load-financial-container-override input {
+    text-decoration: line-through;
+}

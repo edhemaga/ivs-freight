@@ -49,6 +49,9 @@ export class LoadModalFinancialComponent implements OnChanges {
     @Input() billing: string;
     @Input() adjusted: number;
     @Input() payment: string;
+    @Input() tonu: string;
+    @Input() baseRate: string;
+    @Input() revised: string;
     @Input() disableBillAction: boolean = false;
     @Input() disablePaymentAction: boolean = false;
     @Input() set isCardOpen(value: boolean) {

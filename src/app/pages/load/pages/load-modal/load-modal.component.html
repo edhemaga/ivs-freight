@@ -1302,6 +1302,9 @@
                             | financialCalculation : 'payment'
                             | currency
                     "
+                    [baseRate]="loadForm.get('baseRate').value"
+                    [revised]="loadForm.get('revisedRate').value"
+                    [tonu]="loadForm.get('tonuRate').value"
                     [disablePaymentAction]="!loadForm.get('baseRate').value"
                     [thirdHeaderTitle]="'Invoice Ageing'"
                     [isCardOpen]="true"
@@ -1318,6 +1321,11 @@
                             <app-ta-input
                                 formControlName="baseRate"
                                 [inputConfig]="loadBaseRateInputConfig"
+                                [ngClass]="{
+                                    'load-financial-container-override':
+                                        loadForm.get('tonuRate').value ||
+                                        loadForm.get('revisedRate').value
+                                }"
                             ></app-ta-input>
 
                             <!-- Driver Rate -->
@@ -1333,6 +1341,11 @@
                                 formControlName="adjustedRate"
                                 [inputConfig]="getAdjustedRateInputConfig"
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
+                                [ngClass]="{
+                                    'load-financial-container-override':
+                                        loadForm.get('tonuRate').value ||
+                                        loadForm.get('revisedRate').value
+                                }"
                             ></app-ta-input>
 
                             <!-- Tonu Rate -->
@@ -1346,7 +1359,7 @@
                             <app-ta-input
                                 *ngIf="showRevisedRate"
                                 formControlName="revisedRate"
-                                [inputConfig]="getRevisedRateInputConfig" 
+                                [inputConfig]="getRevisedRateInputConfig"
                             ></app-ta-input>
 
                             <div formArrayName="additionalBillings">
@@ -1361,6 +1374,11 @@
                                 >
                                     <div [formGroupName]="indx">
                                         <app-ta-input
+                                            [ngClass]="{
+                                                'load-financial-container-override':
+                                                    loadForm.get('tonuRate')
+                                                        .value
+                                            }"
                                             formControlName="billingValue"
                                             [inputConfig]="
                                                 getBillingValueInputConfig(
