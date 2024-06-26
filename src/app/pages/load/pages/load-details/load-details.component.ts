@@ -68,6 +68,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     public newLoadId: number;
 
     public isMapDisplayed: boolean = true;
+    public isAddNewComment: boolean = false;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -237,6 +238,16 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
             ...this.loadDetailsConfig[1],
             isMapDisplayed: this.isMapDisplayed,
         };
+    }
+
+    public onAddNewClick(detailsTitle: string): void {
+        if (detailsTitle === LoadDetailsStringEnum.COMMENT) {
+            this.isAddNewComment = true;
+
+            setTimeout(() => {
+                this.isAddNewComment = false;
+            }, 500);
+        }
     }
 
     private handleLoadIdRouteChange(): void {

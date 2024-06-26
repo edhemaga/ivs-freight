@@ -121,7 +121,21 @@ p {
         transition: transform 0.2s ease-in;
 
         &.active {
-            transform: rotate(-180deg);
+            transform: rotate(360deg);
+
+            &:hover {
+                .icon {
+                    svg {
+                        path {
+                            fill: $bw-9;
+                        }
+
+                        rect {
+                            fill: $ta-black;
+                        }
+                    }
+                }
+            }
 
             .icon {
                 svg {

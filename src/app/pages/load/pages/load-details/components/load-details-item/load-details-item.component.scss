@@ -3,13 +3,13 @@
 
 .load-details-item-container {
     display: grid;
-    grid-template-columns: 440px 1056px 280px !important;
+    grid-template-columns: 440px 1056px 300px !important;
 }
 
 app-load-details-item {
     .details-closed-items {
         display: grid;
-        grid-template-columns: 440px 536px 536px 280px !important;
+        grid-template-columns: 440px 1056px 312px !important;
     }
     .no-closed-load {
         display: flex !important;
@@ -276,7 +276,7 @@ app-load-details-item {
 }
 
 .comment-container {
-    width: 280px;
+    width: 312px;
     background-color: #ffffff;
     padding: 4px;
     border-radius: 3px;

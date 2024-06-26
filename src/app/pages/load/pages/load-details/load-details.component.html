@@ -19,7 +19,11 @@
             [capsulaText]="item.capsulaText"
             [isMapBtn]="item.isMapBtn"
             [isMapDisplayed]="isMapDisplayed"
-            [hasMultipleDetailsSelectDropdown]="i === 2"
+            [hasMultipleDetailsSelectDropdown]="
+                item.hasMultipleDetailsSelectDropdown
+            "
+            [multipleDetailsSelectDropdown]="item.multipleDetailsSelectDropdown"
+            (openModalAction)="onAddNewClick($event)"
             (dropActions)="onLoadActions($event)"
             (mapBtnEmitter)="onMapBtnClick($event)"
         >
@@ -29,6 +33,7 @@
     <div class="load-details-container">
         <app-load-details-item
             [detailsConfig]="loadDetailsConfig"
+            [isAddNewComment]="isAddNewComment"
         ></app-load-details-item>
     </div>
 </div>

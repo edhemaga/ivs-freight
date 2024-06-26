@@ -94,12 +94,15 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() isMe?: boolean = false;
     @Input() isEditButtonDisabled?: boolean = false;
 
+    @Input() isDeatilsCommentLayout?: boolean = false;
+
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() closeDropdown = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
     private placeholder: string = CommentStringEnum.WRITE_COMMENT_PLACEHOLDER;
+
     public commentAvatar: SafeResourceUrl;
 
     public isCommenting: boolean = true;
@@ -114,16 +117,19 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public editingCardComment: boolean = false;
 
     public loggedUserCommented: boolean;
+
     constructor(
+        private cdr: ChangeDetectorRef,
+        private sanitizer: DomSanitizer,
+
+        // services
         private imageBase64Service: ImageBase64Service,
         private formatDatePipe: FormatDatePipe,
         private commentsService: CommentsService,
         private loadService: LoadService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
-        private taInputDropdownTableService: TaInputDropdownTableService,
-        private cdr: ChangeDetectorRef,
-        private sanitizer: DomSanitizer
+        private taInputDropdownTableService: TaInputDropdownTableService
     ) {}
 
     ngOnInit(): void {
@@ -133,11 +139,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.checkIfNewCommentOpen();
 
-        if(this.commentCardsDataDropdown) {
+        if (this.commentCardsDataDropdown) {
             this.checkIfLoggedUserCommented(
                 this.commentCardsDataDropdown.companyUser.id
             );
-    
+
             this.transformDate(this.commentCardsDataDropdown.createdAt);
         }
     }

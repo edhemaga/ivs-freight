@@ -187,26 +187,16 @@
                         </div>
                     </ng-container>
 
-                    <!-- [class.openDropdownClass]="brokerLoadDrop"
-                    #t2="ngbPopover"
-                    (click)="showDropdown(t2)"
-                    (hidden)="dropdownClosed()"
-                    [ngbPopover]="dropdownPopover"
-                    [placement]="'bottom-left'"
-                    [container]="'body'"
-                    triggers="manual"
-                    [autoClose]="'outside'" -->
-
                     <ng-container *ngIf="hasMultipleDetailsSelectDropdown">
                         <div
                             class="multiple-details-select-dropdown-container"
-                            [class.active]="t3?.isOpen()"
-                            #t3="ngbPopover"
-                            [ngbPopover]="multipleDetailsSelectDropdown"
-                            [placement]="'bottom'"
+                            #popover="ngbPopover"
+                            autoClose="outside"
+                            [ngbPopover]="multipleDetailsSelect"
+                            [popoverClass]="'popover-main'"
+                            [placement]="['bottom']"
                             [container]="'body'"
-                            triggers="manual"
-                            [autoClose]="'outside'"
+                            [ngClass]="{ active: popover?.isOpen() }"
                         >
                             <svg-icon
                                 class="icon"
@@ -415,7 +405,33 @@
         </div>
     </ng-template>
 
-    <ng-template #multipleDetailsSelectDropdown>
-        <div>asdasd</div>
+    <ng-template #multipleDetailsSelect>
+        <div
+            class="d-flex flex-column justify-content-center popover-container multiple-details-container"
+        >
+            <ng-container
+                *ngFor="
+                    let dropdownItem of multipleDetailsSelectDropdown;
+                    trackBy: trackByIndex
+                "
+            >
+                <div
+                    class="popover-item justify-content-between"
+                    [ngClass]="{ active: dropdownItem.isActive }"
+                >
+                    <p class="m-0">
+                        {{ dropdownItem.title }}
+                    </p>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center counter-container"
+                    >
+                        <p class="m-0">
+                            {{ dropdownItem.length }}
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
     </ng-template>
 </div>

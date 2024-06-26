@@ -1,3 +1,4 @@
+import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-details/components/load-details-item/models/multiple-select-details-dropdown-item.model';
 import {
     CdlResponse,
     DriverResponse,
@@ -21,6 +22,7 @@ export interface DetailsConfig {
     isMapBtn?: boolean;
     isMapDisplayed?: boolean;
     hasMultipleDetailsSelectDropdown?: boolean;
+    multipleDetailsSelectDropdown?: MultipleSelectDetailsDropdownItem[];
     data?:
         | DriverResponse
         | CdlResponse

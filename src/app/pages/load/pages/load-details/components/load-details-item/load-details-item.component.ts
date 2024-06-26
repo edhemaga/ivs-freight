@@ -32,6 +32,7 @@ import { TaChartComponent } from '@shared/components/ta-chart/ta-chart.component
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { LoadDetailsCardComponent } from '@pages/load/pages/load-details/components/load-details-card/load-details-card.component';
 import { LoadDetailsItemStopsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/load-details-item-stops.component';
+import { LoadDeatilsItemCommentsComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-deatils-item-comments/load-deatils-item-comments.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -69,6 +70,7 @@ import { DetailsConfig } from '@shared/models/details-config.model';
         TaMapsComponent,
         LoadDetailsCardComponent,
         LoadDetailsItemStopsComponent,
+        LoadDeatilsItemCommentsComponent,
 
         // pipes
         FormatCurrencyPipe,
@@ -77,6 +79,7 @@ import { DetailsConfig } from '@shared/models/details-config.model';
 })
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input() detailsConfig: DetailsConfig;
+    @Input() isAddNewComment: boolean;
 
     private destroy$ = new Subject<void>();
 
@@ -95,10 +98,10 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (
-            !changes.detailsConfig.firstChange &&
-            changes.detailsConfig.currentValue
+            !changes.detailsConfig?.firstChange &&
+            changes.detailsConfig?.currentValue
         ) {
-            changes.detailsConfig.currentValue[0].data;
+            changes.detailsConfig?.currentValue[0].data;
             this.getActivePertange(
                 changes?.detailsConfig?.currentValue[0]?.data?.pendingPercentage
             );
