@@ -1335,6 +1335,20 @@
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
                             ></app-ta-input>
 
+                            <!-- Tonu Rate -->
+                            <app-ta-input
+                                *ngIf="showTonuRate"
+                                formControlName="tonuRate"
+                                [inputConfig]="getTonuRateInputConfig"
+                            ></app-ta-input>
+
+                            <!-- Adjusted Rate -->
+                            <app-ta-input
+                                *ngIf="showRevisedRate"
+                                formControlName="revisedRate"
+                                [inputConfig]="getRevisedRateInputConfig" 
+                            ></app-ta-input>
+
                             <div formArrayName="additionalBillings">
                                 <div
                                     *ngFor="

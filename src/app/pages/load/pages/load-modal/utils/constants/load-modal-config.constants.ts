@@ -560,4 +560,34 @@ export class LoadModalConfig {
         hideErrorMessage: true,
         hideRequiredCheck: true
     }
+
+    static REVISED_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Revised',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'gray',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true
+    }
+
+    static TONU_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Tonu',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'red',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true
+    }
 }

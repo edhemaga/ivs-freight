@@ -179,4 +179,8 @@ export enum LoadModalStringEnum {
     STATUS = 'status',
     ARIVE = 'arive',
     DEPART = 'depart',
+    TONU = 'tonuRate',
+    REVISED = 'revisedRate',
+    STATUS_CANCELLED = 'Cancelled',
+    STATUS_CLOSED = 'Closed',
 }
