@@ -331,6 +331,7 @@
         [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
         [moneyFilter]="true"
         [fuelType]="options.toolbarActions.fuelMoneyFilter"
+        [loadType]="options.toolbarActions.loadMoneyFilter"
         (setFilter)="onFilter($event)"
         [isRepairFilter]="
             options.toolbarActions.showTrailerPmFilter ||

@@ -1628,30 +1628,47 @@
                             class="form-header"
                             [class.hiddenFormTitle]="!showPart1"
                         >
-                            <div
-                                class="form-name"
-                                *ngIf="!fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Invoice Ageing
-                            </div>
-                            <div
-                                class="form-name"
-                                *ngIf="fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Last Price
-                            </div>
-                            <div
-                                class="clear-money-form"
+                            <ng-container *ngIf="!fuelType && !loadType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Invoice Ageing
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="fuelType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Last Price
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="loadType">
+                                <div
+                                    class="form-name-gray text-uppercase"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Rate
+                                </div>
+                            </ng-container>
+
+                            <ng-container
                                 *ngIf="
                                     moneyForm.value.multiFromFirstFrom &&
                                     moneyForm.value.multiFromFirstTo
                                 "
-                                (click)="clearForm('multiFromFirst')"
                             >
-                                CLEAR
-                            </div>
+                                <div
+                                    class="clear-money-form"
+                                    (click)="clearForm('multiFromFirst')"
+                                >
+                                    CLEAR
+                                </div>
+                            </ng-container>
+
                             <div
                                 class="hide-money-form"
                                 [ngClass]="{
@@ -1705,30 +1722,47 @@
                             class="form-header"
                             [class.hiddenFormTitle]="!showPart2"
                         >
-                            <div
-                                class="form-name"
-                                *ngIf="!fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Available Credit
-                            </div>
-                            <div
-                                class="form-name"
-                                *ngIf="fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Price Per Gallon
-                            </div>
-                            <div
-                                class="clear-money-form"
+                            <ng-container *ngIf="!fuelType && !loadType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Available Credit
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="fuelType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Price Per Gallon
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="loadType">
+                                <div
+                                    class="form-name-gray text-uppercase"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Paid
+                                </div>
+                            </ng-container>
+
+                            <ng-container
                                 *ngIf="
                                     moneyForm.value.multiFormSecondFrom &&
                                     moneyForm.value.multiFormSecondTo
                                 "
-                                (click)="clearForm('multiFormSecond')"
                             >
-                                CLEAR
-                            </div>
+                                <div
+                                    class="clear-money-form"
+                                    (click)="clearForm('multiFormSecond')"
+                                >
+                                    CLEAR
+                                </div>
+                            </ng-container>
+
                             <div
                                 class="hide-money-form"
                                 [ngClass]="{
@@ -1782,30 +1816,47 @@
                             class="form-header"
                             [class.hiddenFormTitle]="!showPart3"
                         >
-                            <div
-                                class="form-name"
-                                *ngIf="!fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Revenue
-                            </div>
-                            <div
-                                class="form-name"
-                                *ngIf="fuelType"
-                                [@showAnimation]="!!activeFilter"
-                            >
-                                Total Cost
-                            </div>
-                            <div
-                                class="clear-money-form"
+                            <ng-container *ngIf="!fuelType && !loadType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Revenue
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="fuelType">
+                                <div
+                                    class="form-name"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Total Cost
+                                </div>
+                            </ng-container>
+
+                            <ng-container *ngIf="loadType">
+                                <div
+                                    class="form-name-gray text-uppercase"
+                                    [@showAnimation]="!!activeFilter"
+                                >
+                                    Due
+                                </div>
+                            </ng-container>
+
+                            <ng-container
                                 *ngIf="
                                     moneyForm.value.multiFormThirdFrom &&
                                     moneyForm.value.multiFormThirdTo
                                 "
-                                (click)="clearForm('multiFormThird')"
                             >
-                                CLEAR
-                            </div>
+                                <div
+                                    class="clear-money-form"
+                                    (click)="clearForm('multiFormThird')"
+                                >
+                                    CLEAR
+                                </div>
+                            </ng-container>
+                            
                             <div
                                 class="hide-money-form"
                                 [ngClass]="{

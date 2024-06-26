@@ -58,6 +58,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -67,6 +68,7 @@ import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 @Component({
     selector: 'app-load-table',
@@ -292,6 +294,61 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                console.log('currentSetTableFilter res', res);
+                console.log('currentSetTableFilter viewData', this.viewData);
+
+                if (res?.queryParams?.length) {
+                    switch (res.filterType) {
+                        case LoadFilterStringEnum.USER_FILTER:
+                            this.backLoadFilterQuery.dispatchersId =
+                                res.queryParams;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+
+                            break;
+                        case LoadFilterStringEnum.STATUS_FILTER:
+                            this.backLoadFilterQuery.statusType =
+                                res.queryParams;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+
+                            break;
+                        case LoadFilterStringEnum.TIME_FILTER:
+                            const { fromDate, toDate } =
+                                RepairTableDateFormaterHelper.getDateRange(
+                                    res.queryParams?.timeSelected
+                                );
+                            this.backLoadFilterQuery.dateTo = toDate;
+                            this.backLoadFilterQuery.dateFrom = fromDate;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+
+                            break;
+                        case LoadFilterStringEnum.MONEY_FILTER:
+                            this.backLoadFilterQuery.rateFrom =
+                                res.queryParams?.firstFormFrom;
+                            this.backLoadFilterQuery.rateTo =
+                                res.queryParams?.firstFormTo;
+
+                            this.backLoadFilterQuery.paidFrom =
+                                res.queryParams?.secondFormFrom;
+                            this.backLoadFilterQuery.paidTo =
+                                res.queryParams?.secondFormTo;
+
+                            this.backLoadFilterQuery.dueFrom =
+                                res.queryParams?.thirdFormFrom;
+                            this.backLoadFilterQuery.dueTo =
+                                res.queryParams?.thirdFormTo;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
+
+                            break;
+                        default:
+                            this.sendLoadData();
+                            break;
+                    }
+                }
+
                 if (res?.filteredArray) {
                     if (!res.selectedFilter) {
                         this.viewData = this.loadTableData?.filter((loadData) =>
@@ -481,6 +538,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
+                showDispatcherFilter:
+                    this.selectedTab !== TableStringEnum.TEMPLATE,
+                loadMoneyFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,

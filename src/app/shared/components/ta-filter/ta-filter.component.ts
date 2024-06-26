@@ -118,6 +118,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() largeLeftIcon: boolean = false;
     @Input() moneyFilter: boolean = false;
     @Input() fuelType: boolean = false;
+    @Input() loadType: boolean = false;
     @Input() swipeFilter: boolean = false;
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
@@ -1599,7 +1600,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     queryParams = {
                         firstFormFrom:
                             this.moneyForm.get('multiFromFirstFrom')?.value,
-                        firstFormFTo:
+                        firstFormTo:
                             this.moneyForm.get('multiFromFirstTo')?.value,
                         secondFormFrom: this.moneyForm.get(
                             'multiFormSecondFrom'
