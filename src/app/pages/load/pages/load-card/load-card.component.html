@@ -227,7 +227,7 @@
                                         >
                                             <ng-container
                                                 *ngIf="
-                                                    card[cardRow.key][
+                                                    card[cardRow.key]?.[
                                                         cardRow.secondKey
                                                     ];
                                                     else noAvatar
@@ -245,29 +245,47 @@
                                             </ng-container>
 
                                             <ng-template #noAvatar>
-                                                <app-ta-profile-images
-                                                    [indx]="i"
-                                                    [size]="'small'"
-                                                    [type]="'driver'"
-                                                    [name]="
-                                                        cardRow.title !==
-                                                        'Dispatcher'
-                                                            ? card.driver
-                                                                  .firstName +
-                                                              ' ' +
-                                                              card.driver
-                                                                  .lastName
-                                                            : card.dispatcher
-                                                                  .fullName
+                                                <ng-container
+                                                    *ngIf="
+                                                        (cardRow.title ===
+                                                            'Assigned • Driver' &&
+                                                            card.driver) ||
+                                                        (cardRow.title ===
+                                                            'Dispatcher' &&
+                                                            card.dispatcher)
                                                     "
-                                                ></app-ta-profile-images>
+                                                >
+                                                    <app-ta-profile-images
+                                                        [indx]="i"
+                                                        [size]="'small'"
+                                                        [type]="'driver'"
+                                                        [name]="
+                                                            cardRow.title !==
+                                                            'Dispatcher'
+                                                                ? card.driver
+                                                                      .firstName +
+                                                                  ' ' +
+                                                                  card.driver
+                                                                      .lastName
+                                                                : card
+                                                                      .dispatcher
+                                                                      .fullName
+                                                        "
+                                                    ></app-ta-profile-images>
+                                                </ng-container>
                                             </ng-template>
                                             {{
-                                                cardRow.title !== 'Dispatcher'
-                                                    ? card.driver.firstName +
+                                                cardRow.title ===
+                                                    'Assigned • Driver' &&
+                                                card.driver
+                                                    ? card.driver?.firstName +
                                                       ' ' +
-                                                      card.driver.lastName
-                                                    : card.dispatcher.fullName
+                                                      card.driver?.lastName
+                                                    : cardRow.title ===
+                                                          'Dispatcher' &&
+                                                      card.dispatcher
+                                                    ? card.dispatcher?.fullName
+                                                    : '/'
                                             }}
                                         </div>
                                     </ng-container>

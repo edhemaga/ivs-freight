@@ -103,7 +103,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
-        const checkedCard = this.onCheckboxSelect(index, card);
+        const checkedCard = this.cardHelper.onCheckboxSelect(index, card);
 
         this.tableService.sendRowsSelected(checkedCard);
     }
