@@ -486,7 +486,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public loadInvoiceDateInputConfig(): ITaInput {
-        return LoadModalConfig.getInvoiceDate(!this.isPendingStatus);
+        return LoadModalConfig.getInvoiceDate(!this.isInvoicedStatus);
     }
 
     public get invoicePercent(): LoadModalInvoiceProgress {
@@ -523,12 +523,12 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
-    public get getLoadStatus(): number {
-        return (this.editData?.data as LoadResponse).statusType.id;
+    public get getLoadStatus(): string {
+        return (this.editData?.data as LoadResponse).status.statusString;
     }
 
-    public get isPendingStatus(): boolean {
-        return this.getLoadStatus === 1;
+    public get isInvoicedStatus(): boolean {
+        return this.getLoadStatus === LoadModalStringEnum.STATUS_INVOICED;
     }
 
     public trackByIdentity(_, index: number): number {

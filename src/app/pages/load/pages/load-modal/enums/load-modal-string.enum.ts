@@ -183,4 +183,5 @@ export enum LoadModalStringEnum {
     REVISED = 'revisedRate',
     STATUS_CANCELLED = 'Cancelled',
     STATUS_CLOSED = 'Closed',
+    STATUS_INVOICED = 'Invoiced'
 }
