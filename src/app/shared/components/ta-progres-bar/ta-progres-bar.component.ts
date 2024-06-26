@@ -32,11 +32,13 @@ import { ProgressDropdownData } from '@shared/components/ta-progres-bar/models/p
 })
 export class TaProgresBarComponent implements OnInit {
     @Input() type: string = 'days';
-    @Input() text: string;
+    @Input() text: string | number;
     @Input() percents: number;
     @Input() data: any;
     @Input() columnField: string;
     @Input() isTable: boolean = false;
+    @Input() daysExpired: boolean = false;
+    @Input() daysToPay: number;
 
     public progressTooltip: NgbPopover;
     public progressDropdownActive: number = -1;
@@ -44,6 +46,15 @@ export class TaProgresBarComponent implements OnInit {
     public progressDropdownData: ProgressDropdownData;
 
     ngOnInit() {}
+
+    get daysPluralization() {
+        const text = isNaN(this.text as number) ? this.text : this.text.toString();
+        if (text === '1') {
+            return 'Day';
+        }
+
+        return 'Days';
+    }
 
     // Toggle Progress Dropdown
     public toggleProgressDropdown(tooltip: NgbPopover): void {

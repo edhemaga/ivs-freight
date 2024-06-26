@@ -402,15 +402,21 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         TableStringEnum.DELETE_2 +
                         LoadModalStringEnum.EMPTY_SPACE_STRING +
                         loadTab +
-                        LoadModalStringEnum.EMPTY_SPACE_STRING +
-                        TableStringEnum.LOAD_2;
+                        (loadTab === TableStringEnum.TEMPLATE_2
+                            ? LoadModalStringEnum.EMPTY_STRING
+                            : LoadModalStringEnum.EMPTY_SPACE_STRING +
+                              TableStringEnum.LOAD_2);
 
                     const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
                             data: {
                                 ...item.tableData,
-                                name: item.tableData?.fullName,
+                                name:
+                                    this.selectedTab ===
+                                    TableStringEnum.TEMPLATE
+                                        ? item.tableData.name
+                                        : item.tableData?.fullName,
                             },
                         };
                     });
@@ -1020,8 +1026,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DELETE_2 +
                 LoadModalStringEnum.EMPTY_SPACE_STRING +
                 loadTab +
-                LoadModalStringEnum.EMPTY_SPACE_STRING +
-                TableStringEnum.LOAD_2;
+                (loadTab === TableStringEnum.TEMPLATE_2
+                    ? LoadModalStringEnum.EMPTY_STRING
+                    : LoadModalStringEnum.EMPTY_SPACE_STRING +
+                      TableStringEnum.LOAD_2);
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
@@ -1038,7 +1046,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.confiramtionService.confirmationData$.subscribe((response) => {
                 if (response.type === TableStringEnum.DELETE) {
                     this.loadServices
-                        .deleteLoadById(event.id)
+                        .deleteLoadById(event.id, loadTab)
                         .pipe(takeUntil(this.destroy$))
 
                         .subscribe();

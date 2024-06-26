@@ -133,11 +133,13 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.checkIfNewCommentOpen();
 
-        this.checkIfLoggedUserCommented(
-            this.commentCardsDataDropdown.companyUser.id
-        );
-
-        this.transformDate(this.commentCardsDataDropdown.createdAt);
+        if(this.commentCardsDataDropdown) {
+            this.checkIfLoggedUserCommented(
+                this.commentCardsDataDropdown.companyUser.id
+            );
+    
+            this.transformDate(this.commentCardsDataDropdown.createdAt);
+        }
     }
 
     ngAfterViewInit(): void {

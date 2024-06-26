@@ -482,7 +482,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     textShortName: this.nameInitialsPipe.transform(
                         this.driverFullName
                     ),
-                    avatarImg: this.editData.data.avatar,
+                    /*   avatarImg: this.editData.data.avatar, */
                     avatarColor: AvatarColorsHelper.getAvatarColors(
                         this.editData.avatarIndex ?? 0
                     ),
@@ -565,7 +565,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                     textShortName: this.nameInitialsPipe.transform(
                         this.driverFullName
                     ),
-                    avatarImg: this.editData.data.avatar,
+                    /* avatarImg: this.editData.data.avatar, */
                     avatarColor: AvatarColorsHelper.getAvatarColors(
                         this.editData.avatarIndex ?? 0
                     ),
@@ -1997,7 +1997,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files,
             note,
 
-            avatar,
+            /*     avatar, */
             twic,
             twicExpDate,
             mvrExpiration,
@@ -2116,7 +2116,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             files: files?.length ? JSON.stringify(files) : null,
             note,
 
-            avatar,
+            /*   avatar, */
             twic,
             twicExpDate: twicExpDate
                 ? MethodsCalculationsHelper.convertDateFromBackend(twicExpDate)

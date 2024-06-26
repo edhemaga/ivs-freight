@@ -18,6 +18,7 @@ import { LoadMinimalListQuery } from '@pages/load/state/load-details-state/load-
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -30,6 +31,7 @@ import { LoadDetailsRequirementCardComponent } from '@pages/load/pages/load-deta
 import { LoadDetailsBillingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-billing-card/load-details-billing-card.component';
 import { LoadDetailsPaymentCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-payment-card/load-details-payment-card.component';
 import { LoadDetailsInvoiceAgingCardComponent } from '@pages/load/pages/load-details/components/load-details-card/components/load-details-invoice-aging-card/load-details-invoice-aging-card.component';
+import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // enums
 import { LoadDetailsCardStringEnum } from '@pages/load/pages/load-details/components/load-details-card/enums/load-details-card-string.enum';
@@ -66,7 +68,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
     public cardForm: UntypedFormGroup;
 
-    public loadsDropdownList: LoadResponse[] = [];
+    public loadsDropdownList: LoadMinimalResponse[] = [];
 
     public loadCurrentIndex: number;
 
@@ -76,14 +78,13 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
         // services
         private detailsPageDriverService: DetailsPageService,
+        private modalService: ModalService,
 
         // store
         private loadMinimalListQuery: LoadMinimalListQuery
     ) {}
 
     ngOnInit(): void {
-        console.log('load', this.load);
-
         this.createForm();
 
         this.getCurrentIndex();
@@ -107,19 +108,17 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
         this.loadsDropdownList = this.loadMinimalListQuery
             .getAll()
             .map((load) => {
-                const { id, loadNumber, status, statusType } = load;
+                const { id, loadNumber, statusType, ...loadData } = load;
 
                 return {
+                    ...loadData,
                     id,
                     name: loadNumber,
-                    status: status,
                     active: id === this.load.id,
                     statusString: statusType.name,
                     statusId: statusType.id,
                 };
             });
-
-        console.log('this.loadsDropdownLis', this.loadsDropdownList);
     }
 
     private getCurrentIndex(): void {
@@ -133,7 +132,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     }
 
     public onSelectLoad(event: LoadMinimalResponse): void {
-        if (event?.id !== this.load.id) {
+        if (event && event?.id !== this.load.id) {
             this.getLoadsDropdown();
 
             this.detailsPageDriverService.getDataDetailId(event.id);
@@ -156,7 +155,6 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                         this.loadsDropdownList[currentIndex].id
                     );
 
-                    /*  this.onSelectLoad({ id: this.loadsDropdownList[currentIndex].id }); */
                     this.loadCurrentIndex = currentIndex;
                 }
 
@@ -164,6 +162,7 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
 
             case ArrowActionsStringEnum.NEXT:
                 currentIndex = ++currentIndex;
+
                 if (
                     currentIndex !== -1 &&
                     this.loadsDropdownList.length > currentIndex
@@ -172,7 +171,6 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
                         this.loadsDropdownList[currentIndex].id
                     );
 
-                    /*    this.onSelectLoad({ id: this.loadsDropdownList[currentIndex].id }); */
                     this.loadCurrentIndex = currentIndex;
                 }
 
@@ -185,13 +183,13 @@ export class LoadDetailsCardComponent implements OnInit, OnChanges {
     public handleDriverDetailsTitleCardEmit(event: any): void {
         switch (event.type) {
             case LoadDetailsCardStringEnum.SELECT_LOAD:
-                /*  if (event.event.name === DriverDetailsCardStringEnum.ADD_NEW) {
-                    this.modalService.openModal(DriverModalComponent, {
-                        size: DriverDetailsCardStringEnum.MEDIUM,
+                if (event.event.name === LoadDetailsCardStringEnum.ADD_NEW) {
+                    this.modalService.openModal(LoadModalComponent, {
+                        size: LoadDetailsCardStringEnum.MEDIUM,
                     });
 
                     return;
-                } */
+                }
 
                 this.onSelectLoad(event.event);
 

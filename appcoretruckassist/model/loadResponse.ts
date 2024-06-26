@@ -22,6 +22,7 @@ import { BrokerContactResponse } from './brokerContactResponse';
 import { LoadStatusResponse } from './loadStatusResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
+import { InvoiceAgingProgressBarResponse } from './invoiceAgingProgressBarResponse';
 import { LoadStopResponse } from './loadStopResponse';
 import { LoadStopProgressBarResponse } from './loadStopProgressBarResponse';
 import { AddressEntity } from './addressEntity';
@@ -88,6 +89,7 @@ export interface LoadResponse {
     pendingPercentage?: number | null;
     closedPercentage?: number | null;
     progressBar?: Array<LoadStopProgressBarResponse> | null;
+    invoiceAgingProgressBar?: InvoiceAgingProgressBarResponse;
     createdAt?: string;
     updatedAt?: string;
     files?: Array<FileResponse> | null;
