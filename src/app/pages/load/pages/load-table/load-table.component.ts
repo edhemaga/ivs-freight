@@ -402,15 +402,21 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         TableStringEnum.DELETE_2 +
                         LoadModalStringEnum.EMPTY_SPACE_STRING +
                         loadTab +
-                        LoadModalStringEnum.EMPTY_SPACE_STRING +
-                        TableStringEnum.LOAD_2;
+                        (loadTab === TableStringEnum.TEMPLATE_2
+                            ? LoadModalStringEnum.EMPTY_STRING
+                            : LoadModalStringEnum.EMPTY_SPACE_STRING +
+                              TableStringEnum.LOAD_2);
 
                     const mappedRes = response.map((item) => {
                         return {
                             id: item.id,
                             data: {
                                 ...item.tableData,
-                                name: item.tableData?.fullName,
+                                name:
+                                    this.selectedTab ===
+                                    TableStringEnum.TEMPLATE
+                                        ? item.tableData.name
+                                        : item.tableData?.fullName,
                             },
                         };
                     });
@@ -1020,10 +1026,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 TableStringEnum.DELETE_2 +
                 LoadModalStringEnum.EMPTY_SPACE_STRING +
                 loadTab +
-                LoadModalStringEnum.EMPTY_SPACE_STRING +
-                TableStringEnum.LOAD_2;
-
-            console.log('tableEvent', event);
+                (loadTab === TableStringEnum.TEMPLATE_2
+                    ? LoadModalStringEnum.EMPTY_STRING
+                    : LoadModalStringEnum.EMPTY_SPACE_STRING +
+                      TableStringEnum.LOAD_2);
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
