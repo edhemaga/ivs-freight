@@ -95,6 +95,7 @@ import {
     TrailerTypeResponse,
     TagResponse,
     AddressEntity,
+    LoadStopItemResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -295,8 +296,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public previousDeliveryStopOrder: number;
 
     // stop items
-    public pickupStopItems: LoadStopItemCommand[] = [];
-    public deliveryStopItems: LoadStopItemCommand[] = [];
+    public pickupStopItems: LoadStopItemResponse[] = [];
+    public deliveryStopItems: LoadStopItemResponse[] = [];
     public extraStopItems: LoadStopItemCommand[][] = [];
     public selectedAddress: AddressEntity = null;
 
@@ -2618,6 +2619,36 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
     }
 
+    private remapStopItems(stopItems: LoadStopItemCommand[] |any) {
+        let _pickupStopItems = stopItems;
+
+        if (this.pickupStopItems.length) {
+            _pickupStopItems = _pickupStopItems.map((item: any) => {
+                if (item.quantity) {
+                    item.quantity =
+                        this.stopItemDropdownLists.quantityDropdownList.find(
+                            (q) => q.name === item.quantity
+                        ).id;
+                }
+                if (item.secure) {
+                item.secure =
+                    this.stopItemDropdownLists.secureDropdownList.find(
+                        (q) => q.name === item.secure
+                    ).id;
+                }
+                if (item.stack) {
+                item.stack = this.stopItemDropdownLists.stackDropdownList.find(
+                    (q) => q.name === item.stack
+                ).id;
+            }
+
+                return item;
+            });
+        }
+
+        return _pickupStopItems;
+    }
+
     private premmapedStops(): LoadStopCommand[] {
         const stops: LoadStopCommand[] = [];
 
@@ -2674,7 +2705,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles: pickuplegMiles,
                 legHours: pickuplegHours,
                 legMinutes: pickuplegMinutes,
-                items: this.pickupStopItems,
+                items: this.remapStopItems(this.pickupStopItems),
             });
         }
 
@@ -2708,7 +2739,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
                     legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
                     legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value,
-                    items: this.extraStopItems[index],
+                    items: this.remapStopItems(this.extraStopItems[index]),
                 });
             });
         }
@@ -2745,7 +2776,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 legMiles: deliverylegMiles,
                 legHours: deliverylegHours,
                 legMinutes: deliverylegMinutes,
-                items: this.deliveryStopItems,
+                items: this.remapStopItems(this.deliveryStopItems),
             });
         }
 
@@ -3639,7 +3670,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
-            invoicedDate,
+            // invoicedDate,
         };
         this.loadService
             .createLoad(newData)
@@ -3782,11 +3813,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: this.totalLegHours,
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
-            invoicedDate,
+            // invoicedDate,
         };
 
         this.loadService
-            .updateLoadStatus(this.editData.data.id, this.selectedStatus.name as LoadStatus)
+            .updateLoadStatus(
+                this.editData.data.id,
+                this.selectedStatus.name as LoadStatus
+            )
             .subscribe((res) => {
                 this.loadService
                     .updateLoad(newData)
@@ -4033,7 +4067,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             loadMiles: loadedMiles,
             totalMiles: totalMiles,
             totalHours: totalTimeHours,
-            invoicedDate,
+            // invoicedDate,
             ageUnpaid: ageUnpaid,
             daysToPay,
         });
@@ -4044,7 +4078,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // documents
         this.documents = files || [];
         this.handleOpenCloseDocumentsCard(!!this.documents.length);
-        
+
         // comments
         this.comments = comments.map((comment) => {
             return {
@@ -4166,6 +4200,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             generalCommodity?.name.toLowerCase() ===
             LoadModalStringEnum.HAZARDOUS;
         if (!this.isHazardousPicked) this.isHazardousVisible = false;
+
+        stops.forEach((stop, index) =>{
+            if(index === 0) {
+                this.pickupStopItems = [stop.items];
+            } else if(index !== stops.length - 1) {
+                this.extraStopItems[index - 1] = [stop.items];
+            } else {
+                this.deliveryStopItems = [stop.items];
+            }
+        })
 
         // extra stops
         if (editedStops.length) {
