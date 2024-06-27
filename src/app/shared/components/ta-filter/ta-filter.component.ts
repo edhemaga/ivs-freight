@@ -1205,7 +1205,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
             this.unselectedUser = this.unselectedUser.filter(
                 (value, index, self) =>
-                    index === self.findIndex((t) => t.id === value.id)
+                    index === self.findIndex((user) => user.id === value.id)
             );
 
             this.selectedUser = [];
@@ -2160,7 +2160,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'userFilter': {
-                this.filterService.getDispatchData();
+                //this.filterService.getDispatchData(); - Disable for now
                 break;
             }
             case 'truckFilter': {
