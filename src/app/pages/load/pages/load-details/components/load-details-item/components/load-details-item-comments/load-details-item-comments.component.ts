@@ -1,5 +1,13 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import moment from 'moment';
@@ -9,6 +17,9 @@ import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+
+// services
+import { CommentsService } from '@shared/services/comments.service';
 
 // enums
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
@@ -31,10 +42,12 @@ import { CommentData } from '@shared/models/comment-data.model';
         TaCommentsSearchComponent,
     ],
 })
-export class LoadDetailsItemCommentsComponent implements OnChanges {
+export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
+
+    private destroy$ = new Subject<void>();
 
     public companyUser: SignInResponse;
 
@@ -48,16 +61,17 @@ export class LoadDetailsItemCommentsComponent implements OnChanges {
     private editedCommentId: number;
     private deletedCommentId: number;
 
-    constructor() {}
+    constructor(private commentsService: CommentsService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log('load', this.load);
         if (changes?.load?.currentValue) {
             this.getCompanyUser();
 
             this.createCommentsData(changes?.load?.currentValue);
         }
 
-        if (changes?.isAddNewComment?.currentValue) this.createComment();
+        if (changes?.isAddNewComment?.currentValue) this.createNewComment();
     }
 
     private getCompanyUser(): void {
@@ -91,7 +105,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges {
         this.commentsBeforeSearch = this.comments;
     }
 
-    public createComment(): void {
+    public createNewComment(): void {
         if (this.comments.some((comment) => comment.isCommenting)) return;
 
         const newComment: CommentCompanyUser = {
@@ -138,6 +152,18 @@ export class LoadDetailsItemCommentsComponent implements OnChanges {
 
                 this.isCommenting = false;
 
+                const commentContent =
+                    this.comments[commentData.commentIndex].commentContent;
+
+                if (this.isCommentEdited) {
+                    this.updateCommentById(
+                        this.editedCommentId,
+                        commentContent
+                    );
+                } else {
+                    this.createComment(commentContent);
+                }
+
                 break;
             case LoadDetailsItemStringEnum.DELETE:
                 this.comments.splice(commentData.commentIndex, 1);
@@ -146,6 +172,8 @@ export class LoadDetailsItemCommentsComponent implements OnChanges {
 
                 this.isCommented = false;
                 this.isCommenting = false;
+
+                this.deleteCommentById(this.deletedCommentId);
 
                 break;
             default:
@@ -182,5 +210,42 @@ export class LoadDetailsItemCommentsComponent implements OnChanges {
         } else {
             this.comments = this.commentsBeforeSearch;
         }
+    }
+
+    private createComment(commentContent: string): void {
+        const comment = {
+            entityTypeCommentId: 2,
+            entityTypeId: this.load?.id,
+            commentContent: commentContent,
+        };
+
+        this.commentsService
+            .createComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private updateCommentById(id: number, commentContent: string): void {
+        const comment = {
+            id,
+            commentContent,
+        };
+
+        this.commentsService
+            .updateComment(comment)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    private deleteCommentById(id: number): void {
+        this.commentsService
+            .deleteCommentById(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
