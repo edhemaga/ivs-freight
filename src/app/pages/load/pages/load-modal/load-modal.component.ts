@@ -52,6 +52,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
+import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -97,6 +98,7 @@ import {
     AddressEntity,
     LoadStopItemResponse,
     DispatchLoadModalResponse,
+    LoadStatusHistoryResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -118,6 +120,7 @@ import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
 import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
+import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
@@ -151,6 +154,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadModalStopItemsComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
+        LoadModalWaitTimeComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -364,6 +368,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isRequirementVisible: boolean = false;
     public showRevisedRate: boolean;
     public showTonuRate: boolean;
+    public pickupStatusHistory: LoadStatusHistoryResponse[] = [];
+    public deliveryStatusHistory: LoadStatusHistoryResponse[] = [];
+    public extraStopStatusHistory: LoadStatusHistoryResponse[][] = [];
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -373,7 +380,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         private ngbActiveModal: NgbActiveModal,
         private financialCalculationPipe: FinancialCalculationPipe,
         private cdRef: ChangeDetectorRef
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.getCompanyUser();
@@ -531,6 +538,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.getLoadStatus === LoadModalStringEnum.STATUS_INVOICED;
     }
 
+    public get isLoadClosed(): boolean {
+        return this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+    }
+
     public trackByIdentity(_, index: number): number {
         return index;
     }
@@ -550,8 +561,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private handleRevisedRateVisiblity(): void {
-        const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+        const show = this.isLoadClosed;
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.REVISED),
             show
@@ -607,6 +617,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegMinutes: [null],
             pickuplegCost: [null],
             pickupInvolveDriver: [null],
+            pickupStatusHistory: [null],
 
             // delivery stop
             deliveryStop: [LoadModalStringEnum.DELIVERY_2],
@@ -2233,7 +2244,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate:  MethodsCalculationsHelper.convertThousanSepInNumber(value),
+                        baseRate:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                value
+                            ),
                     };
                 }
             });
@@ -2249,10 +2263,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         MethodsCalculationsHelper.convertThousanSepInNumber(
                             value
                         ) >
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                .value
-                        ))
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
+                                    .value
+                            ))
                 ) {
                     this.loadForm
                         .get(LoadModalStringEnum.ADJUSTED_RATE)
@@ -2272,10 +2286,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         MethodsCalculationsHelper.convertThousanSepInNumber(
                             value
                         ) >
-                        MethodsCalculationsHelper.convertThousanSepInNumber(
-                            this.loadForm.get(LoadModalStringEnum.BASE_RATE)
-                                .value
-                        )
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                this.loadForm.get(LoadModalStringEnum.BASE_RATE)
+                                    .value
+                            )
                     ) {
                         this.loadForm
                             .get(LoadModalStringEnum.DRIVER_RATE)
@@ -2315,7 +2329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.loadModalPayment = {
                     paidInFull,
                     shortPaid,
-                    advance
+                    advance,
                 };
             });
 
@@ -2378,7 +2392,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     additionalBillingType: item.id,
                     rate: biilingRate
                         ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
-                            .value
+                              .value
                         : null,
                 };
             })
@@ -2390,8 +2404,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
-            id: `${this.loadExtraStops().length}-${LoadModalStringEnum.EXTRA_STOP_SHIPPER
-                }`,
+            id: `${this.loadExtraStops().length}-${
+                LoadModalStringEnum.EXTRA_STOP_SHIPPER
+            }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
             type: LoadModalStringEnum.TEXT,
             multipleLabel: {
@@ -2410,8 +2425,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // shipper contact config
         this.loadExtraStopsShipperContactsInputConfig.push({
-            id: `${this.loadExtraStops().length}-${LoadModalStringEnum.EXTRA_STOP_SHIPPER_CONTACT
-                }`,
+            id: `${this.loadExtraStops().length}-${
+                LoadModalStringEnum.EXTRA_STOP_SHIPPER_CONTACT
+            }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
             type: LoadModalStringEnum.TEXT,
             multipleLabel: {
@@ -2735,8 +2751,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ),
                 dateTo: pickupDateTo
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                        pickupDateTo
-                    )
+                          pickupDateTo
+                      )
                     : null,
                 timeType:
                     this.stopTimeTabsPickup.find((item) => item.checked)
@@ -2769,8 +2785,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ),
                     dateTo: item.get(LoadModalStringEnum.DATE_TO).value
                         ? MethodsCalculationsHelper.convertDateToBackend(
-                            item.get(LoadModalStringEnum.DATE_TO).value
-                        )
+                              item.get(LoadModalStringEnum.DATE_TO).value
+                          )
                         : null,
                     timeType:
                         this.stopTimeTabsPickup.find((item) => item.checked)
@@ -2806,8 +2822,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ),
                 dateTo: deliveryDateTo
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                        deliveryDateTo
-                    )
+                          deliveryDateTo
+                      )
                     : null,
                 timeType:
                     this.stopTimeTabsDelivery.find((item) => item.checked)
@@ -2826,6 +2842,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         return stops;
+    }
+    private remapStopWaitTime(): LoadStatusHistoryResponse[] {
+        const waitTime = this.pickupStatusHistory.concat(
+            ...this.extraStopStatusHistory,
+            ...this.deliveryStatusHistory
+        );
+
+        // This is patched value from form
+        waitTime.forEach((time: LoadModalWaitTimeFormField) => {
+            time.dateTimeFrom =
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    time.startDate,
+                    time.startTime
+                );
+            time.dateTimeTo =
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    time.endDate,
+                    time.endTime
+                );
+        });
+
+        return waitTime;
     }
 
     public drawStopOnMap(): void {
@@ -2914,8 +2952,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     stopColor: route.pickup
                                         ? LoadModalStringEnum.COLOR_5
                                         : route.delivery
-                                            ? LoadModalStringEnum.COLOR_6
-                                            : LoadModalStringEnum.COLOR_4,
+                                        ? LoadModalStringEnum.COLOR_6
+                                        : LoadModalStringEnum.COLOR_4,
                                     stopNumber: route.stopNumber.toString(),
                                     empty:
                                         this.selectedDispatches
@@ -3038,7 +3076,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegCost = res.totalCost;
                         }
                     },
-                    error: () => { },
+                    error: () => {},
                 });
         }
     }
@@ -3319,7 +3357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...item,
                             name: item?.fullName,
-                            /*     logoName: item?.avatar, */
+                            logoName: item?.avatarFile?.url,
                         };
                     });
 
@@ -3379,7 +3417,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         LoadModalStringEnum.EMPTY_SPACE_STRING,
                                         item.driver?.lastName
                                     ),
-                                    /*  logoName: item.driver?.avatar, */
+                                    logoName: item.driver?.avatarFile?.url,
                                     owner: !!item.driver?.owner,
                                 },
                                 coDriver: {
@@ -3440,8 +3478,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 item?.dnu || item?.ban
                                     ? LoadModalStringEnum.BROKER_OPEN_SVG
                                     : item?.status === 0
-                                        ? LoadModalStringEnum.BROKER_CLOSED_SVG
-                                        : null,
+                                    ? LoadModalStringEnum.BROKER_CLOSED_SVG
+                                    : null,
                         };
                     });
 
@@ -3603,7 +3641,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     };
                 },
 
-                error: () => { },
+                error: () => {},
             });
     }
 
@@ -3696,13 +3734,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 MethodsCalculationsHelper.convertThousanSepInNumber(baseRate),
             adjustedRate: adjustedRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    adjustedRate
-                )
+                      adjustedRate
+                  )
                 : null,
             driverRate: driverRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    driverRate
-                )
+                      driverRate
+                  )
                 : null,
             advancePay:
                 MethodsCalculationsHelper.convertThousanSepInNumber(advancePay),
@@ -3825,13 +3863,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 MethodsCalculationsHelper.convertThousanSepInNumber(baseRate),
             adjustedRate: adjustedRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    adjustedRate
-                )
+                      adjustedRate
+                  )
                 : null,
             driverRate: driverRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    driverRate
-                )
+                      driverRate
+                  )
                 : null,
             advancePay:
                 MethodsCalculationsHelper.convertThousanSepInNumber(advancePay),
@@ -3842,15 +3880,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 id: this.deletedCommentId
                     ? null
                     : this.editedCommentId ??
-                    this.comments[this.comments.length - 1]?.commentId,
+                      this.comments[this.comments.length - 1]?.commentId,
                 commentContent: this.deletedCommentId
                     ? null
                     : this.editedCommentId
-                        ? this.comments.find(
-                            (comment) =>
-                                comment.commentId === this.editedCommentId
-                        ).commentContent
-                        : this.comments[this.comments.length - 1]?.commentContent,
+                    ? this.comments.find(
+                          (comment) =>
+                              comment.commentId === this.editedCommentId
+                      ).commentContent
+                    : this.comments[this.comments.length - 1]?.commentContent,
             },
             deleteComment: {
                 id: this.deletedCommentId,
@@ -3864,6 +3902,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
             status: this.selectedStatus.name,
+            statusHistory: this.remapStopWaitTime(),
             tonuRate,
             revisedRate,
             // invoicedDate,
@@ -3961,13 +4000,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 MethodsCalculationsHelper.convertThousanSepInNumber(baseRate),
             adjustedRate: adjustedRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    adjustedRate
-                )
+                      adjustedRate
+                  )
                 : null,
             driverRate: driverRate
                 ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                    driverRate
-                )
+                      driverRate
+                  )
                 : null,
 
             advancePay:
@@ -4090,8 +4129,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ),
             pickupDateTo: pickupStop.dateTo
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                    pickupStop.dateTo
-                )
+                      pickupStop.dateTo
+                  )
                 : pickupStop.dateTo,
             pickupTimeFrom: pickupStop.timeFrom,
             pickupTimeTo: pickupStop.timeTo,
@@ -4105,8 +4144,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             ),
             deliveryDateTo: deliveryStop.dateTo
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                    deliveryStop.dateTo
-                )
+                      deliveryStop.dateTo
+                  )
                 : deliveryStop.dateTo,
             deliveryTimeFrom: deliveryStop.timeFrom,
             deliveryTimeTo: deliveryStop.timeTo,
@@ -4253,11 +4292,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         stops.forEach((stop, index) => {
             if (index === 0) {
+                this.pickupStatusHistory = stop.statusHistory;
                 this.pickupStopItems = [stop.items];
             } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = [stop.items];
+                this.extraStopStatusHistory[index - 1] = stop.statusHistory;
             } else {
                 this.deliveryStopItems = [stop.items];
+                this.deliveryStatusHistory = stop.statusHistory;
             }
         });
 
@@ -4287,19 +4329,20 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             ),
                         dateTo: extraStop.dateTo
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                extraStop.dateTo
-                            )
+                                  extraStop.dateTo
+                              )
                             : extraStop.dateTo,
                         timeType: extraStop.timeType.name.toUpperCase(),
                         timeFrom: extraStop.timeFrom,
                         timeTo: extraStop.timeTo,
-                        arive: extraStop.arrive,
+                        arrive: extraStop.arrive,
                         depart: extraStop.depart,
                         legMiles: extraStop.legMiles,
                         legHours: extraStop.legHours,
                         legMinutes: extraStop.legMinutes,
                         items: extraStop.items,
                         openClose: false,
+                        statusHistory: extraStop.statusHistory,
                     });
 
                 this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
@@ -4336,6 +4379,25 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         */
     }
 
+    public pickupStatusHistoryChange(
+        newHistory: LoadStatusHistoryResponse[],
+        action: string,
+        index: number
+    ): void {
+        switch (action) {
+            case LoadModalStringEnum.PICKUP:
+                this.pickupStatusHistory = newHistory;
+                break;
+
+            case LoadModalStringEnum.EXTRA_STOP:
+                this.extraStopStatusHistory[index] = newHistory;
+                break;
+
+            case LoadModalStringEnum.DELIVERY:
+                this.deliveryStatusHistory = newHistory;
+                break;
+        }
+    }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

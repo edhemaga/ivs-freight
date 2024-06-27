@@ -32,7 +32,7 @@ export enum LoadModalStringEnum {
     DELIVERY_SHIPPER_CONTACT_ID = 'deliveryShipperContactId',
     SHIPPER_CONTACT_ID = 'shipperContactId',
     ADDITIONAL_BILLINGS = 'additionalBillings',
-    ADDITIONAL_PAYMENTS= 'additionalPayments',
+    ADDITIONAL_PAYMENTS = 'additionalPayments',
     BILLING_DROPDOWN = 'billingDropdown',
     PAYMENT_DROPDOWN = 'paymentDropdown',
     BILLING = 'billing',
@@ -183,5 +183,10 @@ export enum LoadModalStringEnum {
     REVISED = 'revisedRate',
     STATUS_CANCELLED = 'Cancelled',
     STATUS_CLOSED = 'Closed',
-    STATUS_INVOICED = 'Invoiced'
+    STATUS_INVOICED = 'Invoiced',
+    STATUS_HISTORY = 'statusHistory',
+    WAIT_TIME_START_DATE = 'startDate',
+    WAIT_TIME_START_TIME = 'startTime',
+    WAIT_TIME_END_DATE = 'endDate',
+    WAIT_TIME_END_TIME = 'endTime',
 }

@@ -896,9 +896,7 @@
                         [ngClass]="{
                             active: option.id === _activeItem?.id
                         }"
-                        [src]="
-                            this.imageBase64Service.sanitizer(option.logoName)
-                        "
+                        [src]="option.logoName"
                         class="svg-template-logo"
                     />
                     <div
@@ -1062,11 +1060,7 @@
                                     option.driver?.id ===
                                     _activeItem?.driver?.id
                             }"
-                            [src]="
-                                this.imageBase64Service.sanitizer(
-                                    option?.driver?.logoName
-                                )
-                            "
+                            [src]="option?.driver?.logoName"
                             class="svg-template-logo"
                         />
                         <div

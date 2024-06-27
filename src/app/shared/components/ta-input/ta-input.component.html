@@ -456,7 +456,11 @@
 
     <!-- Input Placeholder Icon -->
     <div
-        *ngIf="_inputConfig.placeholderIcon"
+        *ngIf="
+            _inputConfig.placeholderIcon ||
+            _inputConfig.name === 'datepicker' ||
+            _inputConfig.name === 'timepicker'
+        "
         #t2="ngbPopover"
         [ngbPopover]="dateTimePopover"
         [disablePopover]="
@@ -944,7 +948,7 @@
                         'aspect-ratio': 1,
                         'border-radis': '2px'
                     }"
-                    [src]="imageBase64Service.sanitizer(item.logoName)"
+                    [src]="item.logoName"
                     [alt]="item.value"
                 />
                 <div
@@ -960,12 +964,9 @@
                 </div>
 
                 <!-- Owner Flag -->
-                <div
-                    *ngIf="item?.isOwner"
-                    class="load-dispatches-ttd-owner"
-                >
+                <div *ngIf="item?.isOwner" class="load-dispatches-ttd-owner">
                     <svg-icon
-                    src="assets/svg/common/owner-badge-blue.svg"
+                        src="assets/svg/common/owner-badge-blue.svg"
                     ></svg-icon>
                 </div>
             </span>
@@ -1046,7 +1047,7 @@
                         'aspect-ratio': 1,
                         'border-radis': '2px'
                     }"
-                    [src]="imageBase64Service.sanitizer(item.logoName)"
+                    [src]="item.logoName"
                     [alt]="item.value"
                 />
                 <div
@@ -1107,9 +1108,7 @@
         [name]="_inputConfig.name"
         [disabled]="_inputConfig.isDisabled"
         [autocomplete]="
-            _inputConfig.autocomplete
-                ? _inputConfig.autocomplete
-                : 'off'
+            _inputConfig.autocomplete ? _inputConfig.autocomplete : 'off'
         "
         [pattern]="_inputConfig.pattern"
         [placeholder]="
@@ -1309,7 +1308,9 @@
             transformText($event.target.value, false)
         "
         [(ngModel)]="input.value"
-        [ngStyle]="_inputConfig.statusStyle ? (input.value | loadStatusColor) : ''"
+        [ngStyle]="
+            _inputConfig.statusStyle ? (input.value | loadStatusColor) : ''
+        "
     />
 
     <!-- Input Label -->
