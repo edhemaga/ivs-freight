@@ -593,42 +593,51 @@ export class LoadModalConfig {
         hideRequiredCheck: true,
     };
 
-    static WAIT_TIME_START_DATE_CONFIG: ITaInput = {
-        name: 'datepicker',
-        type: 'text',
-        isDropdown: true,
-        label: 'Start Date',
-        labelInInput: true,
-    };
+    static getWaitTimeStartDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'Start Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
 
-    static WAIT_TIME_START_TIME_CONFIG: ITaInput = {
-        name: 'timepicker',
-        type: 'text',
-        label: 'Start time',
-        isFromDate: true,
-        isDropdown: true,
-        isRequired: true,
-        labelInInput: true,
-    };
+    static getWaitTimeStartTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'Start time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
 
-    static WAIT_TIME_END_DATE_CONFIG: ITaInput = {
-        name: 'datepicker',
-        type: 'text',
-        isDropdown: true,
-        label: 'Start Date',
-        // customClass: 'datetimeclass',
-        labelInInput: true,
-    };
+    static getWaitTimeEndDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'End Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
 
-    static WAIT_TIME_END_TIME_CONFIG: ITaInput = {
-        name: 'timepicker',
-        type: 'text',
-        label: 'End time',
-        isFromDate: true,
-        isDropdown: true,
-        isRequired: true,
-        labelInInput: true,
-        // placeholderIcon: 'time',
-        // customClass: 'datetimeclass',
-    };
+    static getWaitTimeEndTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'End time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
 }

@@ -12,6 +12,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // Models
 import { LoadStatusHistoryResponse } from 'appcoretruckassist';
 import { LoadModalWaitTime } from '@pages/load/pages/load-modal/models/load-modal-wait-time';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Pipes
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
@@ -45,19 +46,20 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 })
 export class LoadModalWaitTimeComponent implements OnInit {
     public waitTimeForm: UntypedFormGroup;
-    public startDateInputConfig = LoadModalConfig.WAIT_TIME_START_DATE_CONFIG;
-    public startTimeInputConfig = LoadModalConfig.WAIT_TIME_START_TIME_CONFIG;
-    public endDateInputConfig = LoadModalConfig.WAIT_TIME_END_DATE_CONFIG;
-    public endTimeInputConfig = LoadModalConfig.WAIT_TIME_END_TIME_CONFIG;
+    public startDateInputConfig: ITaInput = null;
+    public startTimeInputConfig: ITaInput = null;
+    public endDateInputConfig: ITaInput = null;
+    public endTimeInputConfig: ITaInput = null;
 
     @Input() statusHistory: Array<LoadStatusHistoryResponse> | null;
+    @Input() areFieldsDisabled: boolean;
     @Output() formChanged = new EventEmitter<
         Array<LoadStatusHistoryResponse>
     >();
 
-    show: boolean;
-    timeDifferences: Array<LoadModalWaitTime> = [];
-    totalWaitTime: LoadModalWaitTime;
+    public show: boolean;
+    public timeDifferences: Array<LoadModalWaitTime> = [];
+    public totalWaitTime: LoadModalWaitTime;
 
     constructor(private formBuilder: UntypedFormBuilder) {}
     ngOnInit(): void {
@@ -81,8 +83,23 @@ export class LoadModalWaitTimeComponent implements OnInit {
         // Initial calculation
         this.calculateTotalWaitTime();
 
-        // Show table after all the calculations
+        this.createFormFields();
         this.show = true;
+    }
+
+    private createFormFields() {
+        this.startDateInputConfig = LoadModalConfig.getWaitTimeStartDateConfig(
+            this.areFieldsDisabled
+        );
+        this.startTimeInputConfig = LoadModalConfig.getWaitTimeStartTimeConfig(
+            this.areFieldsDisabled
+        );
+        this.endDateInputConfig = LoadModalConfig.getWaitTimeEndDateConfig(
+            this.areFieldsDisabled
+        );
+        this.endTimeInputConfig = LoadModalConfig.getWaitTimeEndTimeConfig(
+            this.areFieldsDisabled
+        );
     }
 
     public mapHistoryStatus(

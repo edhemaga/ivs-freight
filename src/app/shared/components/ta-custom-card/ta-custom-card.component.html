@@ -161,6 +161,16 @@
             </ng-container>
 
             <!-- Plus Add New Things -->
+            <ng-container *ngIf="hasHistoryButton">
+                <div
+                    class="d-flex align-items-center justify-content-center action-plus-icon-container"
+                    (click)="onAction($event, 'add')"
+                >
+                    <svg-icon
+                        [src]="'assets/svg/common/ic_history.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
 
             <ng-container *ngIf="hasActionSvg && !disableMultipleReviews">
                 <div
