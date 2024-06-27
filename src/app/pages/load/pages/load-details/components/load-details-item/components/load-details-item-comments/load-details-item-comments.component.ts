@@ -80,6 +80,8 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     private createCommentsData(load: LoadResponse): void {
         const { comments } = load;
 
+        console.log('comments', comments);
+
         this.comments = comments.map((comment) => {
             return {
                 companyUser: {
@@ -138,11 +140,10 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                     commentContent: commentData.commentContent,
                     commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
                     isCommenting: false,
+                    isEdited: commentData.isEditConfirm,
                 };
 
                 this.editedCommentId = commentData.commentId;
-
-                commentData.isEditConfirm;
 
                 this.isCommenting = false;
 
@@ -155,7 +156,10 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                         commentContent
                     );
                 } else {
-                    this.createComment(commentContent);
+                    this.createComment(
+                        commentContent,
+                        commentData.commentIndex
+                    );
                 }
 
                 break;
@@ -205,7 +209,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         }
     }
 
-    private createComment(commentContent: string): void {
+    private createComment(commentContent: string, commentIndex: number): void {
         const comment = {
             entityTypeCommentId: 2,
             entityTypeId: this.load?.id,
@@ -215,7 +219,12 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         this.commentsService
             .createComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe((res) => {
+                this.comments[commentIndex] = {
+                    ...this.comments[commentIndex],
+                    commentId: res.id,
+                };
+            });
     }
 
     private updateCommentById(id: number, commentContent: string): void {
