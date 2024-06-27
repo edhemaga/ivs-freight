@@ -129,7 +129,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
         this.timeDifferences[index] = timeDifference;
 
         return this.formBuilder.group({
-            status: [status.status?.name],
+            status: [status.statusString],
             startDate: [startDate],
             startTime: [startTime],
             endDate: [endDate],

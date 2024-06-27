@@ -2844,26 +2844,30 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return stops;
     }
     private remapStopWaitTime(): LoadStatusHistoryResponse[] {
-        const waitTime = this.pickupStatusHistory.concat(
-            ...this.extraStopStatusHistory,
-            ...this.deliveryStatusHistory
-        );
+        if (this.isLoadClosed) {
+            const waitTime = this.pickupStatusHistory.concat(
+                ...this.extraStopStatusHistory,
+                ...this.deliveryStatusHistory
+            );
 
-        // This is patched value from form
-        waitTime.forEach((time: LoadModalWaitTimeFormField) => {
-            time.dateTimeFrom =
-                MethodsCalculationsHelper.combineDateAndTimeToBackend(
-                    time.startDate,
-                    time.startTime
-                );
-            time.dateTimeTo =
-                MethodsCalculationsHelper.combineDateAndTimeToBackend(
-                    time.endDate,
-                    time.endTime
-                );
-        });
+            // This is patched value from form
+            waitTime.forEach((time: LoadModalWaitTimeFormField) => {
+                time.dateTimeFrom =
+                    MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                        time.startDate,
+                        time.startTime
+                    );
+                time.dateTimeTo =
+                    MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                        time.endDate,
+                        time.endTime
+                    );
+            });
 
-        return waitTime;
+            return waitTime;
+        }
+
+        return [];
     }
 
     public drawStopOnMap(): void {
