@@ -55,8 +55,6 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     public commentsBeforeSearch: CommentCompanyUser[] = [];
 
     public isCommenting: boolean = false;
-    public isCommented: boolean = false;
-    public isCommentEdited: boolean = false;
 
     private editedCommentId: number;
     private deletedCommentId: number;
@@ -64,7 +62,6 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     constructor(private commentsService: CommentsService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('load', this.load);
         if (changes?.load?.currentValue) {
             this.getCompanyUser();
 
@@ -121,7 +118,6 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         };
 
         this.isCommenting = true;
-        this.isCommented = true;
 
         this.comments = [newComment, ...this.comments];
     }
@@ -131,8 +127,6 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
             case LoadDetailsItemStringEnum.CANCEL:
                 if (!commentData.isEditCancel) {
                     this.comments.splice(commentData.commentIndex, 1);
-
-                    this.isCommented = false;
                 }
 
                 this.isCommenting = false;
@@ -148,14 +142,14 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
 
                 this.editedCommentId = commentData.commentId;
 
-                commentData.isEditConfirm && (this.isCommentEdited = true);
+                commentData.isEditConfirm;
 
                 this.isCommenting = false;
 
                 const commentContent =
                     this.comments[commentData.commentIndex].commentContent;
 
-                if (this.isCommentEdited) {
+                if (commentData.isEditConfirm) {
                     this.updateCommentById(
                         this.editedCommentId,
                         commentContent
@@ -170,7 +164,6 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
 
                 this.deletedCommentId = commentData.commentId;
 
-                this.isCommented = false;
                 this.isCommenting = false;
 
                 this.deleteCommentById(this.deletedCommentId);

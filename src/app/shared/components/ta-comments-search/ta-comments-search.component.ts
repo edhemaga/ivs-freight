@@ -35,8 +35,6 @@ import { CommentData } from '@shared/models/comment-data.model';
 })
 export class TaCommentsSearchComponent {
     @Input() commentsData: CommentCompanyUser[];
-    @Input() isCommented: boolean;
-    @Input() isCommentEdited: boolean;
     @Input() isDisplaySearch: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
