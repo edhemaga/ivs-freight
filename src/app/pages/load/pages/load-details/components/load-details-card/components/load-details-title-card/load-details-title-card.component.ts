@@ -19,7 +19,7 @@ import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-head
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { LoadStatusColorPipe } from '@pages/load/pages/load-details/components/load-details-card/pipes/load-status-color.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';

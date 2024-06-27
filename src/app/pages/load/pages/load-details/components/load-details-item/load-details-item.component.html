@@ -14,20 +14,28 @@
             <!-- Stops -->
 
             <ng-container *ngSwitchCase="'stop'">
-                <app-load-details-item-stops [load]="loadItem?.data">
+                <app-load-details-item-stops
+                    [load]="loadItem?.data"
+                    [isMapDisplayed]="loadItem?.isMapDisplayed"
+                >
                 </app-load-details-item-stops>
             </ng-container>
 
             <!-- Comment -->
 
             <ng-container *ngSwitchCase="'comment'">
-                <div class="comment-container">
+                <app-load-deatils-item-comments
+                    [load]="loadItem?.data"
+                    [isAddNewComment]="isAddNewComment"
+                >
+                </app-load-deatils-item-comments>
+                <!--    <div class="comment-container">
                     <app-ta-user-review
                         (changeReviewsEvent)="changeCommentEvent($event)"
                         [reviewData]="loadItem?.data?.comments"
                     >
                     </app-ta-user-review>
-                </div>
+                </div> -->
             </ng-container>
         </ng-container>
     </ng-container>

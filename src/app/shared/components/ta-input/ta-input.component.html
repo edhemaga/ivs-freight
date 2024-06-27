@@ -958,6 +958,16 @@
                     >
                     </app-ta-profile-images>
                 </div>
+
+                <!-- Owner Flag -->
+                <div
+                    *ngIf="item?.isOwner"
+                    class="load-dispatches-ttd-owner"
+                >
+                    <svg-icon
+                    src="assets/svg/common/owner-badge-blue.svg"
+                    ></svg-icon>
+                </div>
             </span>
 
             <svg-icon
@@ -994,16 +1004,6 @@
                     >{{ item.second_value }}</span
                 >
             </span>
-
-            <!-- Owner Flag -->
-            <div
-                *ngIf="item?.isOwner"
-                [ngStyle]="{ position: 'relative', bottom: '1px' }"
-            >
-                <svg-icon
-                    src="assets/svg/common/load/ic_load_driver_owner.svg"
-                ></svg-icon>
-            </div>
 
             <!-- Load Broker ProgressBar -->
             <app-load-modal-progress-bar
@@ -1136,7 +1136,8 @@
     {{ _inputConfig.customClass }}
     "
         [ngClass]="{
-            'input-fixed-placehoder-input': _inputConfig.fixedPlacholder && input.value && !focusInput,
+            'input-fixed-placehoder-input':
+                _inputConfig.fixedPlacholder && input.value && !focusInput,
             focus: focusInput && !_inputConfig.isInvalidSearchInDropdown,
             'inactive-empty': !getSuperControl.value && _inputConfig.isDisabled,
             'inactive-filled': getSuperControl.value && _inputConfig.isDisabled,
@@ -1293,7 +1294,8 @@
             'cursor-on-right-side': _inputConfig?.inputCursorOnRightSide,
             'merge-dropdown-body-with-input':
                 _inputConfig.mergeDropdownBodyWithInput,
-            'dispatch-dropdown': template == 'svgtext-dispatch-template'
+            'dispatch-dropdown': template == 'svgtext-dispatch-template',
+            'ta-font-bold text-uppercase': _inputConfig.statusStyle
         }"
         (keypress)="onKeypress($event)"
         (keydown)="onKeydown($event)"
@@ -1306,7 +1308,8 @@
             onChange($event.target.value);
             transformText($event.target.value, false)
         "
-        [(ngModel)]="input.value" 
+        [(ngModel)]="input.value"
+        [ngStyle]="_inputConfig.statusStyle ? (input.value | loadStatusColor) : ''"
     />
 
     <!-- Input Label -->
@@ -1411,7 +1414,11 @@
     >
         {{ getSuperControl.errors | inputError : _inputConfig.name }}
     </span>
-    <span *ngIf="_inputConfig.fixedPlacholder && input.value" class="input-fixed-placehoder-label">{{_inputConfig.fixedPlacholder}}</span> 
+    <span
+        *ngIf="_inputConfig.fixedPlacholder && input.value"
+        class="input-fixed-placehoder-label"
+        >{{ _inputConfig.fixedPlacholder }}</span
+    >
 </div>
 
 <!-- Popover for DateTime Pickers -->
