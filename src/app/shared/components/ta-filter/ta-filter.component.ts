@@ -24,7 +24,8 @@ import { CommonModule } from '@angular/common';
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
-import { FilterTrailerColorPipe } from './pipes/filter-trailer-color.pipe';
+import { FilterTrailerColorPipe } from '@shared/components/ta-filter//pipes/filter-trailer-color.pipe';
+import { FilterLoadStatusPipe } from '@shared/components/ta-filter/pipes/filter-load-status-color.pipe';
 
 // validators
 import { addressValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -61,6 +62,10 @@ import { stateHeader } from '@shared/components/ta-filter/animations/state-heade
 // models
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 
+// Enums
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { LoadStatusEnum } from '@shared/enums/load-status.enum';
+
 @Component({
     selector: 'app-ta-filter',
     standalone: true,
@@ -85,6 +90,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
         // pipes
         TaSvgPipe,
         FilterTrailerColorPipe,
+        FilterLoadStatusPipe,
     ],
     templateUrl: './ta-filter.component.html',
     styleUrls: ['./ta-filter.component.scss'],
@@ -118,6 +124,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     @Input() largeLeftIcon: boolean = false;
     @Input() moneyFilter: boolean = false;
     @Input() fuelType: boolean = false;
+    @Input() loadType: boolean = false;
     @Input() swipeFilter: boolean = false;
     @Input() locationDefType: boolean = false;
     @Input() legendView: boolean = false;
@@ -143,6 +150,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         DirectiveConstants.ACTIVE_STATUS_ARRAY;
     public closedStatusArray: ArrayStatus[] =
         DirectiveConstants.CLOSED_STATUS_ARRAY;
+
+    public loadStatusOptionsArray = [];
+
     public pmFilterArray: ArrayStatus[];
     public categoryFuelArray: ArrayStatus[] = JSON.parse(
         JSON.stringify(DirectiveConstants.CATEGORY_FUEL_ARRAY)
@@ -169,6 +179,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
     public selectedDispatcher: any[] = [];
     public selectedTimeValue: any = '';
+    public selectedTimeYear: number = null;
     public expandSearch: boolean = false;
     public searchInputValue: any = '';
     public showPart1: any = true;
@@ -276,9 +287,13 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public isAscendingOrderPm: boolean = true;
     public isAscendingOrderTrailer: boolean = true;
     public isAscendingOrderTruck: boolean = true;
+    public isAscendingOrderStatus: boolean = true;
+    public isAscendingOrderUser: boolean = true;
     public resizeObserver: ResizeObserver;
 
     public isAnimated: any = false;
+
+    public loadStatusEnum = LoadStatusEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -309,6 +324,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         this.watchSearchFormValueChanges();
 
         this.watchTableServiceValueChanges();
+
+        this.watchLoadStatusFilterValueChanges();
     }
 
     private createForm(): void {
@@ -639,31 +656,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             return item;
                         });
                     } else if (this.type === 'statusFilter') {
-                        this.pendingStatusArray.map((item) => {
-                            item.hidden = true;
-                            if (
-                                item.name
-                                    .toLowerCase()
-                                    .includes(inputValue.toLowerCase())
-                            ) {
-                                item.hidden = false;
-                            }
-                            return item;
-                        });
-
-                        this.activeStatusArray.map((item) => {
-                            item.hidden = true;
-                            if (
-                                item.name
-                                    .toLowerCase()
-                                    .includes(inputValue.toLowerCase())
-                            ) {
-                                item.hidden = false;
-                            }
-                            return item;
-                        });
-
-                        this.closedStatusArray.map((item) => {
+                        this.loadStatusOptionsArray.map((item) => {
                             item.hidden = true;
                             if (
                                 item.name
@@ -765,15 +758,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             item.hidden = false;
                         });
                     } else if (this.type === 'statusFilter') {
-                        this.pendingStatusArray.map((item) => {
-                            item.hidden = false;
-                        });
-
-                        this.activeStatusArray.map((item) => {
-                            item.hidden = false;
-                        });
-
-                        this.closedStatusArray.map((item) => {
+                        this.loadStatusOptionsArray.map((item) => {
                             item.hidden = false;
                         });
                     } else if (this.type === 'truckFilter') {
@@ -913,12 +898,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 } else if (this.type === 'userFilter') {
                     if (res?.animation === 'dispatch-data-update') {
-                        const newData = res.data.map(
-                            (type: any) => {
-                                type['name'] = type.fullName;
-                                return type;
-                            }
-                        );
+                        const newData = res.data.map((type: any) => {
+                            type['name'] = type.fullName;
+                            type['count'] = type.loadCount;
+                            return type;
+                        });
 
                         this.unselectedUser = newData;
                     }
@@ -959,6 +943,16 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         }
                         this.trailerArray = newData;
                     }
+                }
+            });
+    }
+
+    private watchLoadStatusFilterValueChanges(): void {
+        this.tableService.currentLoadStatusFilterOptions
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res && this.type === LoadFilterStringEnum.STATUS_FILTER) {
+                    this.loadStatusOptionsArray = res.options;
                 }
             });
     }
@@ -1012,13 +1006,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         if (this.type === 'departmentFilter') {
             mainArray = this.departmentArray;
         } else if (this.type === 'statusFilter') {
-            if (subType === 'pending') {
-                mainArray = this.pendingStatusArray;
-            } else if (subType === 'active') {
-                mainArray = this.activeStatusArray;
-            } else {
-                mainArray = this.closedStatusArray;
-            }
+            mainArray = this.loadStatusOptionsArray;
         } else if (this.type === 'pmFilter') {
             mainArray = this.pmFilterArray;
         } else if (this.type === 'categoryFuelFilter') {
@@ -1085,19 +1073,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
             });
         } else if (this.type === 'statusFilter') {
-            const checkActiveStatusArray = this.activeStatusArray.indexOf(item);
-            const checkPendingStatusArray =
-                this.pendingStatusArray.indexOf(item);
-
-            let mainArray: any[] = [];
-
-            if (checkActiveStatusArray > -1) {
-                mainArray = this.activeStatusArray;
-            } else if (checkPendingStatusArray > -1) {
-                mainArray = this.pendingStatusArray;
-            } else {
-                mainArray = this.closedStatusArray;
-            }
+            const mainArray = this.loadStatusOptionsArray;
 
             mainArray.map((item) => {
                 if (item.id === id) {
@@ -1226,6 +1202,12 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 ...this.unselectedUser,
                 ...this.selectedUser,
             ];
+
+            this.unselectedUser = this.unselectedUser.filter(
+                (value, index, self) =>
+                    index === self.findIndex((user) => user.id === value.id)
+            );
+
             this.selectedUser = [];
             this.usaSelectedStates = [];
             this.canadaSelectedStates = [];
@@ -1238,20 +1220,11 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     });
                     break;
                 case 'statusFilter':
-                    this.pendingStatusArray.map((item) => {
+                    this.loadStatusOptionsArray.map((item) => {
                         item.isSelected = false;
                         item.currentSet = false;
                     });
 
-                    this.activeStatusArray.map((item) => {
-                        item.isSelected = false;
-                        item.currentSet = false;
-                    });
-
-                    this.closedStatusArray.map((item) => {
-                        item.isSelected = false;
-                        item.currentSet = false;
-                    });
                     break;
                 case 'pmFilter':
                     this.pmFilterArray.map((item) => {
@@ -1412,11 +1385,18 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         });
     }
 
-    public setTimeValue(mod): void {
+    public setTimeValue(mod: string, year?: number): void {
         if (this.selectedTimeValue === mod) {
             this.selectedTimeValue = '';
         } else {
             this.selectedTimeValue = mod;
+        }
+
+        if (year) {
+            if (this.selectedTimeYear === year) this.selectedTimeYear = null;
+            else this.selectedTimeYear = year;
+        } else {
+            this.selectedTimeYear = null;
         }
 
         if (this.filterActiveTime === mod) {
@@ -1429,6 +1409,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
     public removeTimeValue(event): void {
         event.stopPropagation();
         this.selectedTimeValue = '';
+        this.selectedTimeYear = null;
     }
 
     public showSearch(mod?): void {
@@ -1557,9 +1538,16 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     return false;
                 }
 
-                queryParams = {
-                    timeSelected: this.filterActiveTime,
-                };
+                if (this.selectedTimeYear) {
+                    queryParams = {
+                        timeSelected: this.filterActiveTime,
+                        year: this.selectedTimeYear,
+                    };
+                } else {
+                    queryParams = {
+                        timeSelected: this.filterActiveTime,
+                    };
+                }
             } else if (this.swipeFilter) {
                 this.swipeActiveRange = this.rangeValue;
             } else if (this.type === 'stateFilter') {
@@ -1599,7 +1587,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     queryParams = {
                         firstFormFrom:
                             this.moneyForm.get('multiFromFirstFrom')?.value,
-                        firstFormFTo:
+                        firstFormTo:
                             this.moneyForm.get('multiFromFirstTo')?.value,
                         secondFormFrom: this.moneyForm.get(
                             'multiFormSecondFrom'
@@ -2172,7 +2160,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 break;
             }
             case 'userFilter': {
-                this.filterService.getDispatchData();
+                //this.filterService.getDispatchData(); - Disable for now
                 break;
             }
             case 'truckFilter': {
@@ -2248,6 +2236,37 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 this.isAscendingOrderPm = !this.isAscendingOrderPm;
                 break;
             }
+            case 'statusFilter': {
+                this.loadStatusOptionsArray.sort((a, b) => {
+                    if (this.isAscendingOrderStatus) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+                this.isAscendingOrderStatus = !this.isAscendingOrderStatus;
+                break;
+            }
+            case 'userFilter': {
+                this.unselectedUser.sort((a, b) => {
+                    if (this.isAscendingOrderUser) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+
+                this.selectedUser.sort((a, b) => {
+                    if (this.isAscendingOrderUser) {
+                        return a.count - b.count;
+                    } else {
+                        return b.count - a.count;
+                    }
+                });
+
+                this.isAscendingOrderUser = !this.isAscendingOrderUser;
+                break;
+            }
         }
         return this.getSortOrder();
     }
@@ -2264,6 +2283,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 return this.isAscendingOrderTrailer;
             case 'pmFilter':
                 return this.isAscendingOrderPm;
+            case 'statusFilter':
+                return this.isAscendingOrderStatus;
+            case 'userFilter':
+                return this.isAscendingOrderUser;
             default:
                 return false;
         }

@@ -31,6 +31,8 @@ import {
     RoutingService,
     RoutingResponse,
     CreateLoadTemplateCommand,
+    LoadStatusType,
+    DispatcherFilterResponse,
     LoadStatus,
 } from 'appcoretruckassist';
 import {
@@ -254,5 +256,17 @@ export class LoadService {
 
     public getLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
         return this.loadService.apiLoadTemplateIdGet(id);
+    }
+
+    public getLoadStatusFilter(
+        loadStatusType?: LoadStatusType
+    ): Observable<DispatcherFilterResponse[]> {
+        return this.loadService.apiLoadStatusFilterGet(loadStatusType);
+    }
+
+    public getLoadDispatcherFilter(
+        loadStatusType?: LoadStatusType
+    ): Observable<DispatcherFilterResponse[]> {
+        return this.loadService.apiLoadDispatcherFilterGet(loadStatusType);
     }
 }
