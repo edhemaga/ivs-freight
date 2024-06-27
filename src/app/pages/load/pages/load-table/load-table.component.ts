@@ -424,13 +424,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res,
                         this.backLoadFilterQuery
                     );
+                    
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
                             this.loadBackFilter(searchEvent.query);
                         } else if (
                             searchEvent.action === TableStringEnum.STORE
                         ) {
-                            this.sendLoadData();
+                            this.backLoadFilterQuery.searchOne = null;
+                            this.backLoadFilterQuery.searchTwo = null;
+                            this.backLoadFilterQuery.searchThree = null;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
                         }
                     }
                 }
