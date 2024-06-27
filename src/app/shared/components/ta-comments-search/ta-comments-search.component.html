@@ -34,7 +34,6 @@
                 [commentData]="comment"
                 [commentIndex]="i"
                 [isMe]="comment.isMe"
-                [isEditButtonDisabled]="isCommented || isCommentEdited"
                 [commentHighlight]="lettersToHightlight"
                 (btnActionEmitter)="handleCommentActionEmit($event)"
             ></app-ta-comment>
