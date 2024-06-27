@@ -1,6 +1,7 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { LoadBroker } from '@shared/models/load-broker.model';
+import { FileResponse } from 'appcoretruckassist';
 
 export interface LoadModel {
     isSelected: boolean;
@@ -153,8 +154,9 @@ interface LastStatusPassed {
 
 interface Dispatcher {
     id: number;
+    userId: number;
     fullName: string;
-    avatar: string;
+    avatarFile: FileResponse;
     departmentId: number;
 }
 

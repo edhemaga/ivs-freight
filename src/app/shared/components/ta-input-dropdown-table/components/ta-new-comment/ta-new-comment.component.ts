@@ -25,7 +25,6 @@ import { TaInputDropdownTableStringEnum } from '@shared/components/ta-input-drop
 
 // services
 import { CommentsService } from '@shared/services/comments.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { TaInputDropdownTableService } from '@shared/components/ta-input-dropdown-table/services/ta-input-dropdown-table.service';
 import { LoadService } from '@shared/services/load.service';
 
@@ -56,10 +55,9 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
     constructor(
         private loadService: LoadService,
         private commentService: CommentsService,
-        public imageBase64Service: ImageBase64Service,
         private taInputDropdownTableService: TaInputDropdownTableService,
         private cdr: ChangeDetectorRef
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.checkIfNewCommentOpen();
@@ -71,8 +69,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
         );
 
         this.user = user;
-
-        this.sanitazeAvatar();
+        this.commentAvatar = this.user?.avatarFile?.url ?? null;
     }
 
     public newComment(type: string, loadId: number): void {
@@ -107,7 +104,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                                 cardId: loadId,
                                 createdAt: moment().format(),
                                 companyUser: {
-                                    avatar: this.user.avatar,
+                                    avatar: this.user.avatarFile?.url,
                                     fullName:
                                         this.user.firstName +
                                         ' ' +
@@ -161,18 +158,12 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
 
             return (this.isDisabled =
                 divContent ===
-                    TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER ||
+                TaInputDropdownTableStringEnum.WRITE_COMMENT_PLACEHOLDER ||
                 divContent ===
-                    TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER);
+                TaInputDropdownTableStringEnum.EMPTY_STRING_PLACEHOLDER);
         }
 
         return (this.isDisabled = false);
-    }
-
-    private sanitazeAvatar(): void {
-        this.commentAvatar = this.user?.avatar
-            ? this.imageBase64Service.sanitizer(this.user?.avatar)
-            : null;
     }
 
     private checkIfNewCommentOpen(): void {

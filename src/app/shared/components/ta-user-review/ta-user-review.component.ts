@@ -19,7 +19,6 @@ import { SignInResponse } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 
 // utils
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { FormsModule } from '@angular/forms';
 
 // components
@@ -66,9 +65,8 @@ export class TaUserReviewComponent implements OnChanges {
 
     constructor(
         private reviewSortPipe: ReviewsSortPipe,
-        public imageBase64Service: ImageBase64Service,
         private titlecasePipe: TitleCasePipe
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (
