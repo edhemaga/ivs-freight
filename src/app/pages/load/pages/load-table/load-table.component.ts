@@ -28,7 +28,6 @@ import { GridColumn } from '@shared/models/table-models/grid-column.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
-import { LoadModel } from './models/load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // Queries
@@ -58,6 +57,10 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string,enum';
+import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
+import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
+import { LoadModalStopItemsStringEnum } from '@pages/load/enums/load-modal-stop-items-string.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -65,7 +68,10 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 import { Store, select } from '@ngrx/store';
-import { selectActiveTabCards, selectPendingTabCards } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
+import {
+    selectActiveTabCards,
+    selectPendingTabCards,
+} from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
@@ -84,7 +90,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public viewData: any[] = [];
     public columns: GridColumn[] = [];
     public selectedTab: string = TableStringEnum.PENDING;
-    public activeViewMode: string = TableStringEnum.CARD;
+    public activeViewMode: string = TableStringEnum.LIST;
     public resizeObserver: ResizeObserver;
     public loadActive: LoadActiveState[] = [];
     public loadClosed: LoadClosedState[] = [];
@@ -126,7 +132,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadCardsModalService: LoadCardModalService,
 
         //store
-        private store: Store,
+        private store: Store
     ) {}
 
     ngOnInit(): void {
@@ -458,6 +464,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableOptions = {
             toolbarActions: {
                 hideActivationButton: true,
+                showDispatcherFilter:
+                    this.selectedTab !== TableStringEnum.TEMPLATE,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
@@ -663,12 +671,61 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loadTableData = this.viewData;
     }
 
-    private mapLoadData(data: LoadModel) /* : LoadModel */ {
-        let commentsWithAvatarColor;
+    private setTruckTooltipColor(truckName: string): string {
+        if (truckName === TruckNameStringEnum.SEMI_TRUCK) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (truckName === TruckNameStringEnum.SEMI_SLEEPER) {
+            return TooltipColorsStringEnum.YELLOW;
+        } else if (truckName === TruckNameStringEnum.BOX_TRUCK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (truckName === TruckNameStringEnum.CARGO_VAN) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (truckName === TruckNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (truckName === TruckNameStringEnum.TOW_TRUCK) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (truckName === TruckNameStringEnum.SPOTTER) {
+            return TooltipColorsStringEnum.BROWN;
+        }
+    }
 
+    private setTrailerTooltipColor(trailerName: string): string {
+        if (trailerName === TrailerNameStringEnum.REEFER) {
+            return TooltipColorsStringEnum.BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DRY_VAN) {
+            return TooltipColorsStringEnum.DARK_BLUE;
+        } else if (trailerName === TrailerNameStringEnum.DUMPER) {
+            return TooltipColorsStringEnum.PURPLE;
+        } else if (trailerName === TrailerNameStringEnum.TANKER) {
+            return TooltipColorsStringEnum.GREEN;
+        } else if (trailerName === TrailerNameStringEnum.PNEUMATIC_TANKER) {
+            return TooltipColorsStringEnum.LIGHT_GREEN;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CAR_HAULER_STINGER) {
+            return TooltipColorsStringEnum.PINK;
+        } else if (trailerName === TrailerNameStringEnum.CHASSIS) {
+            return TooltipColorsStringEnum.BROWN;
+        } else if (trailerName === TrailerNameStringEnum.LOW_BOY_RGN) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.STEP_DECK) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.FLAT_BED) {
+            return TooltipColorsStringEnum.RED;
+        } else if (trailerName === TrailerNameStringEnum.SIDE_KIT) {
+            return TooltipColorsStringEnum.ORANGE;
+        } else if (trailerName === TrailerNameStringEnum.CONESTOGA) {
+            return TooltipColorsStringEnum.GOLD;
+        } else if (trailerName === TrailerNameStringEnum.CONTAINER) {
+            return TooltipColorsStringEnum.YELLOW;
+        }
+    }
+
+    private mapLoadData(data: any) /* : LoadModel */ {
+        let commentsWithAvatarColor;
         if (data.comments) {
             commentsWithAvatarColor = Object.values(data?.comments).map(
-                (comment) => {
+                (comment: any) => {
                     this.mapingIndex++;
                     return {
                         ...comment,
@@ -683,29 +740,61 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
         }
 
+        const {
+            id,
+            billing,
+            broker,
+            createdAt,
+            delivery,
+            dispatcher,
+            driver,
+            fileCount,
+            lastStatusPassed,
+            loadDetails,
+            loadNumber,
+            loadRequirements,
+            baseRate,
+            additionalBillingRatesTotal,
+            loadType,
+            miles,
+            pickup,
+            status,
+            advancePay,
+            totalRate,
+            updatedAt,
+        } = data;
+
         return {
-            ...data,
+            id,
             isSelected: false,
             loadInvoice: {
-                invoice: data?.loadNumber
-                    ? data.loadNumber
+                invoice: loadNumber
+                    ? loadNumber
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                type: data?.type?.name
-                    ? data.type.name
+                type: loadType?.name
+                    ? loadType.name
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadDispatcher: {
-                name: data?.dispatcher?.fullName
-                    ? data.dispatcher.fullName
+                name: dispatcher?.fullName
+                    ? dispatcher.fullName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                avatar: data?.dispatcher?.avatar
-                    ? this.imageBase64Service.sanitizer(data.dispatcher.avatar)
+                avatar: dispatcher?.avatar
+                    ? this.imageBase64Service.sanitizer(dispatcher.avatar)
                     : null,
             },
+            avatarImg: driver?.avatar
+                ? this.imageBase64Service.sanitizer(driver?.avatar)
+                : null,
+            tableDriver: driver?.firstName
+                ? driver?.firstName + ' ' + driver?.lastName
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableTruck: driver?.truckNumber,
+            tableTrailer: driver?.trailerNumber,
             loadTotal: {
-                total: data?.totalRate
+                total: totalRate
                     ? TableStringEnum.DOLLAR_SIGN +
-                      this.thousandSeparator.transform(data.totalRate)
+                      this.thousandSeparator.transform(totalRate)
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
                 subTotal: data?.totalAdjustedRate
                     ? TableStringEnum.DOLLAR_SIGN +
@@ -713,106 +802,138 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
             loadBroker: {
-                hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
-                isDnu: data?.broker?.dnu,
-                name: data?.broker?.businessName
-                    ? data.broker.businessName
+                hasBanDnu: broker?.ban || broker?.dnu,
+                isDnu: broker?.dnu,
+                name: broker?.businessName
+                    ? broker.businessName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             },
-            loadTruckNumber: {
-                number: data?.dispatch?.truck?.truckNumber
-                    ? data.dispatch.truck.truckNumber
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            },
-            loadTrailerNumber: {
-                number: data?.dispatch?.trailer?.trailerNumber
-                    ? data.dispatch.trailer.trailerNumber
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            },
-            loadPickup: {
-                count: data?.stops && (data?.stops[0]?.stopLoadOrder ?? null),
-                location:
-                    data?.stops &&
-                    data?.stops[0]?.shipper?.address?.city +
-                        TableStringEnum.COMA +
-                        data?.stops[0]?.shipper?.address?.stateShortName,
-                date:
-                    data?.stops &&
-                    (data?.stops[0]?.dateFrom
-                        ? this.datePipe.transform(
-                              data.stops[0].dateFrom,
-                              TableStringEnum.DATE_FORMAT
-                          )
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
-                time:
-                    data?.stops &&
-                    (data?.stops[0]?.timeFrom
-                        ? data.stops[0].timeFrom
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
-            },
-            loadDelivery: {
-                count:
-                    data?.stops &&
-                    (data?.stops[data.stops.length - 1]?.stopLoadOrder ??
-                        TableStringEnum.EMPTY_STRING_PLACEHOLDER),
-                location:
-                    data?.stops &&
-                    data?.stops[data.stops.length - 1]?.shipper?.address?.city +
-                        TableStringEnum.COMA +
-                        data?.stops[data.stops.length - 1]?.shipper?.address
-                            ?.stateShortName,
-                date:
-                    data?.stops &&
-                    (data?.stops[data.stops.length - 1]?.dateFrom
-                        ? this.datePipe.transform(
-                              data.stops[data.stops.length - 1].dateFrom,
-                              TableStringEnum.DATE_FORMAT
-                          )
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
-                time:
-                    data?.stops &&
-                    (data?.stops[data.stops.length - 1]?.timeFrom
-                        ? data.stops[data.stops.length - 1].timeFrom
-                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
-            },
-            loadStatus: {
-                status: data?.status?.name
-                    ? data.status?.name
-                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                time:
-                    data?.lastStatusPassed?.hours +
-                    TableStringEnum.HOURS +
-                    data?.lastStatusPassed?.minutes +
-                    TableStringEnum.MINUTES,
-            },
-            textMiles: data?.totalMiles
-                ? data.totalMiles + TableStringEnum.MILES
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textCommodity: data?.generalCommodity?.name
-                ? data.generalCommodity.name
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textWeight: data?.weight
-                ? data.weight + TableStringEnum.POUNDS
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textBase: data?.baseRate
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.baseRate)
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textAdditional: data?.additionalBillingRatesTotal
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(
-                      data?.additionalBillingRatesTotal
+            contact: broker?.contact,
+            phone: broker?.phone,
+            referenceNumber: loadDetails?.referenceNumber,
+            textCommodity: loadDetails?.generalCommodityName,
+            textWeight: loadDetails?.weight,
+            tableTrailerColor: this.setTrailerTooltipColor(
+                loadDetails?.trailerType?.name
+            ),
+            tableTrailerName: loadRequirements?.trailerType?.name,
+            tableTruckColor: this.setTruckTooltipColor(
+                loadRequirements?.truckType?.name
+            ),
+            truckTypeClass: loadRequirements?.truckType?.logoName
+                ? loadRequirements?.truckType?.logoName.replace(
+                      TableStringEnum.SVG,
+                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textAdvance: data?.advancePay
-                ? TableStringEnum.DOLLAR_SIGN +
-                  this.thousandSeparator.transform(data.advancePay)
+            tableTrailerTypeClass: loadRequirements?.trailerType?.logoName
+                ? loadRequirements?.trailerType?.logoName.replace(
+                      TableStringEnum.SVG,
+                      TableStringEnum.EMPTY_STRING_PLACEHOLDER
+                  )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textPayTerms: data?.broker?.payTerm?.name
-                ? data.broker.payTerm?.name
+            tableTruckName: loadRequirements?.truckType?.name,
+            loadTrailerNumber: loadRequirements?.trailerType?.logoName,
+            loadTruckNumber:
+                loadRequirements?.truckType?.logoName ??
+                TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+
+            loadPickup: [
+                {
+                    count: pickup.count ?? null,
+                    location: pickup?.location,
+                    date: pickup?.date
+                        ? this.datePipe.transform(
+                              pickup?.date,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    time: pickup?.time
+                        ? pickup?.time
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    delivery: false,
+                },
+                {
+                    count: delivery.count ?? null,
+                    location: delivery?.location,
+                    date: delivery?.date
+                        ? this.datePipe.transform(
+                              delivery?.date,
+                              TableStringEnum.DATE_FORMAT
+                          )
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    time: delivery?.time
+                        ? delivery?.time
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                    delivery: true,
+                },
+            ],
+
+            loadStatus: {
+                status: status?.statusValue?.name
+                    ? status?.statusValue?.name
+                    : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                color: TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+                tab: this.selectedTab,
+                time:
+                    (lastStatusPassed?.days
+                        ? lastStatusPassed?.days +
+                          ' ' +
+                          TableStringEnum.DAY +
+                          ' '
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
+                    (lastStatusPassed?.hours
+                        ? lastStatusPassed?.hours +
+                          ' ' +
+                          TableStringEnum.HOURS +
+                          ' '
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER) +
+                    (lastStatusPassed?.minutes
+                        ? lastStatusPassed?.minutes +
+                          ' ' +
+                          TableStringEnum.MINUTES
+                        : TableStringEnum.EMPTY_STRING_PLACEHOLDER),
+            },
+            total: miles?.totalMiles,
+            empty: miles?.emptyMiles,
+            loaded: miles?.loaded,
+            tableDoorType: loadRequirements?.doorType?.name,
+            tableSuspension: loadRequirements?.suspension?.name,
+            year: loadRequirements?.year,
+            liftgate: loadRequirements?.liftgate
+                ? LoadModalStopItemsStringEnum.YES
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableAssignedUnitTruck: {
+                text: driver?.truckNumber,
+                type: driver?.truckType?.name,
+                color: this.setTruckTooltipColor(driver?.truckType?.name),
+                hover: false,
+            },
+            tableAssignedUnitTrailer: {
+                text: driver?.trailerNumber,
+                type: driver?.trailerType?.name,
+                color: this.setTrailerTooltipColor(driver?.trailerType?.name),
+                hover: false,
+            },
+            tabelLength: loadRequirements?.trailerLength?.name
+                ? DataFilterHelper.getLengthNumber(
+                      loadRequirements?.trailerLength?.name
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textBase: baseRate
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(baseRate)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAdditional: additionalBillingRatesTotal
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(additionalBillingRatesTotal)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAdvance: advancePay
+                ? TableStringEnum.DOLLAR_SIGN +
+                  this.thousandSeparator.transform(advancePay)
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textPayTerms: broker?.payTerm?.name
+                ? broker.payTerm?.name
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textDriver:
                 data?.dispatch?.driver?.firstName &&
@@ -822,8 +943,31 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       data?.dispatch?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             comments: commentsWithAvatarColor,
+            rate:
+                TableStringEnum.DOLLAR_SIGN +
+                ' ' +
+                this.thousandSeparator.transform(billing.rate),
+
+            paid:
+                billing.paid !== 0
+                    ? TableStringEnum.DOLLAR_SIGN +
+                      this.thousandSeparator.transform(billing.paid)
+                    : TableStringEnum.DOLLAR_SIGN + '0.00',
+
+            tableAdded: createdAt
+                ? this.datePipe.transform(
+                      createdAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableEdited: updatedAt
+                ? this.datePipe.transform(
+                      updatedAt,
+                      TableStringEnum.DATE_FORMAT
+                  )
+                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableAttachments: data?.files ? data.files : [],
-            fileCount: data?.fileCount,
+            fileCount: fileCount,
             tableDropdownContent: {
                 hasContent: true,
                 content: this.getDropdownLoadContent(),
@@ -880,7 +1024,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         /*  this.loadServices
             .getLoadList(
                 filter.loadType,
-                filter.statusType,
+                filter.statusType, 
                 filter.status,
                 filter.dispatcherId,
                 filter.dispatchId,

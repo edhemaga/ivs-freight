@@ -26,7 +26,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
     resolve(): Observable<any> {
         return forkJoin([
             this.loadService.getLoadList(
-                undefined,
+                null,
                 3,
                 undefined,
                 undefined,
@@ -40,9 +40,13 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                 undefined,
                 1, // hotfix
                 1,
-                25
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
             ),
-            this.tableService.getTableConfig(2),
         ]).pipe(
             tap(([loadPagination, tableConfig]) => {
                 if (loadPagination) {

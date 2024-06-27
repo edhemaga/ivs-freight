@@ -37,9 +37,8 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                 undefined,
                 undefined
             ),
-            this.tableService.getTableConfig(1),
         ]).pipe(
-            tap(([loadPagination, tableConfig]) => {
+            tap(([loadPagination]) => {
                 localStorage.setItem(
                     'loadTableCount',
                     JSON.stringify({
@@ -50,16 +49,7 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
                     })
                 );
 
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
-
-                this.loadTemplateStore.set(loadPagination?.pagination?.data);
+                this.loadTemplateStore.set(loadPagination.pagination.data);
             })
         );
     }

@@ -87,6 +87,7 @@ import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/mode
 // constants
 import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/ta-table-body/utils/repair-description-popover.constants';
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
+import { LoadTableStatusConstant } from '@pages/load/pages/load-table/utils/load-table.constants';
 
 @Titles()
 @Component({
@@ -199,6 +200,270 @@ export class TaTableBodyComponent
     public endorsement: boolean = false;
     public restriction: boolean = false;
     public companyUser: SignInResponse;
+    statusDetails: { previous: string | null; next: string[] } = {
+        previous: null,
+        next: [],
+    };
+    stops = {
+        stop1: {
+            id: 130,
+            stopType: { name: 'Pickup', id: 1 },
+            stopOrder: 1,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-20T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 9,
+            legMiles: 652.89,
+            legMinutes: 34,
+            milesType: { name: 'DeadHead', id: 2 },
+            shape: null,
+            shipper: {
+                id: 4,
+                businessName: 'SYSCO NORTH DAKOTA',
+                address: {
+                    city: 'Fargo',
+                    state: 'North Dakota',
+                    county: 'Cass County',
+                    address: '3225 12th Avenue North, Fargo, ND, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'ND',
+                    street: '12th Avenue North',
+                    streetNumber: '3225',
+                    zipCode: '58102',
+                },
+                latitude: 46.891717,
+                longitude: -96.831485,
+            },
+            shipperContact: {
+                id: 6,
+                shipperId: 4,
+                phone: '(111) 111-1111',
+                contactName: null,
+                extensionPhone: null,
+            },
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: '12:00',
+            timeType: { name: 'Work Hours', id: 1 },
+            wait: {},
+        },
+        stop2: {
+            id: 131,
+            stopType: { name: 'Delivery', id: 2 },
+            stopOrder: 2,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-19T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 12,
+            legMiles: 958.82,
+            legMinutes: 54,
+            milesType: { name: 'Leg', id: 1 },
+            shape: null,
+            shipper: {
+                id: 7,
+                businessName: 'AURORA CENTRAL HIGH SC',
+                address: {
+                    city: 'Aurora District',
+                    state: 'Colorado',
+                    county: 'Arapahoe County',
+                    address: '11700 East 11th Avenue, Aurora District, CO, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'CO',
+                    street: 'East 11th Avenue',
+                    streetNumber: '11700',
+                    zipCode: '80010-3708',
+                },
+                latitude: 39.732441,
+                longitude: -104.85192,
+            },
+            shipperContact: null,
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: null,
+            timeType: { name: 'Appointment', id: 2 },
+            wait: {},
+        },
+        stop3: {
+            id: 130,
+            stopType: { name: 'Pickup', id: 1 },
+            stopOrder: 1,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-20T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 9,
+            legMiles: 652.89,
+            legMinutes: 34,
+            milesType: { name: 'DeadHead', id: 2 },
+            shape: null,
+            shipper: {
+                id: 4,
+                businessName: 'SYSCO NORTH DAKOTA',
+                address: {
+                    city: 'Fargo',
+                    state: 'North Dakota',
+                    county: 'Cass County',
+                    address: '3225 12th Avenue North, Fargo, ND, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'ND',
+                    street: '12th Avenue North',
+                    streetNumber: '3225',
+                    zipCode: '58102',
+                },
+                latitude: 46.891717,
+                longitude: -96.831485,
+            },
+            shipperContact: {
+                id: 6,
+                shipperId: 4,
+                phone: '(111) 111-1111',
+                contactName: null,
+                extensionPhone: null,
+            },
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: '12:00',
+            timeType: { name: 'Work Hours', id: 1 },
+            wait: {},
+        },
+        stop4: {
+            id: 131,
+            stopType: { name: 'Delivery', id: 2 },
+            stopOrder: 2,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-19T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 12,
+            legMiles: 958.82,
+            legMinutes: 54,
+            milesType: { name: 'Leg', id: 1 },
+            shape: null,
+            shipper: {
+                id: 7,
+                businessName: 'AURORA CENTRAL HIGH SC',
+                address: {
+                    city: 'Aurora District',
+                    state: 'Colorado',
+                    county: 'Arapahoe County',
+                    address: '11700 East 11th Avenue, Aurora District, CO, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'CO',
+                    street: 'East 11th Avenue',
+                    streetNumber: '11700',
+                    zipCode: '80010-3708',
+                },
+                latitude: 39.732441,
+                longitude: -104.85192,
+            },
+            shipperContact: null,
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: null,
+            timeType: { name: 'Appointment', id: 2 },
+            wait: {},
+        },
+        stop5: {
+            id: 130,
+            stopType: { name: 'Pickup', id: 1 },
+            stopOrder: 1,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-20T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 9,
+            legMiles: 652.89,
+            legMinutes: 34,
+            milesType: { name: 'DeadHead', id: 2 },
+            shape: null,
+            shipper: {
+                id: 4,
+                businessName: 'SYSCO NORTH DAKOTA',
+                address: {
+                    city: 'Fargo',
+                    state: 'North Dakota',
+                    county: 'Cass County',
+                    address: '3225 12th Avenue North, Fargo, ND, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'ND',
+                    street: '12th Avenue North',
+                    streetNumber: '3225',
+                    zipCode: '58102',
+                },
+                latitude: 46.891717,
+                longitude: -96.831485,
+            },
+            shipperContact: {
+                id: 6,
+                shipperId: 4,
+                phone: '(111) 111-1111',
+                contactName: null,
+                extensionPhone: null,
+            },
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: '12:00',
+            timeType: { name: 'Work Hours', id: 1 },
+            wait: {},
+        },
+        stop6: {
+            id: 131,
+            stopType: { name: 'Delivery', id: 2 },
+            stopOrder: 2,
+            stopLoadOrder: 1,
+            arrive: null,
+            dateFrom: '2024-06-19T22:00:00',
+            dateTo: null,
+            depart: null,
+            items: [],
+            legHours: 12,
+            legMiles: 958.82,
+            legMinutes: 54,
+            milesType: { name: 'Leg', id: 1 },
+            shape: null,
+            shipper: {
+                id: 7,
+                businessName: 'AURORA CENTRAL HIGH SC',
+                address: {
+                    city: 'Aurora District',
+                    state: 'Colorado',
+                    county: 'Arapahoe County',
+                    address: '11700 East 11th Avenue, Aurora District, CO, USA',
+                    addressUnit: null,
+                    country: 'USA',
+                    stateShortName: 'CO',
+                    street: 'East 11th Avenue',
+                    streetNumber: '11700',
+                    zipCode: '80010-3708',
+                },
+                latitude: 39.732441,
+                longitude: -104.85192,
+            },
+            shipperContact: null,
+            statusHistory: [],
+            timeFrom: '12:15',
+            timeTo: null,
+            timeType: { name: 'Appointment', id: 2 },
+            wait: {},
+        },
+    };
     public popoverDescriptionItems: { title: string; className: string }[] =
         RepairDescriptionPopoverConstants.descriptionItems;
 
@@ -212,7 +477,8 @@ export class TaTableBodyComponent
         private changeDetectorRef: ChangeDetectorRef,
         private detailsDataService: DetailsDataService,
         private filesService: FilesService,
-        private sanitizer: DomSanitizer
+        private sanitizer: DomSanitizer,
+        private statusService: LoadTableStatusConstant
     ) {}
 
     // --------------------------------NgOnInit---------------------------------
@@ -295,7 +561,9 @@ export class TaTableBodyComponent
 
         this.getCompanyUser();
     }
-
+    getStopKeys() {
+        return Object.keys(this.stops);
+    }
     // --------------------------------NgOnChanges---------------------------------
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.viewData?.firstChange && changes?.viewData) {
@@ -802,17 +1070,35 @@ export class TaTableBodyComponent
     }
 
     // Toggle Status Dropdown
-    toggleStatusDropdown(tooltip: any, row: any) {
+    toggleStatusDropdown(
+        tooltip: any,
+        row: any,
+        status: string,
+        statusTab: string
+    ) {
         this.statusTooltip = tooltip;
-
         if (tooltip.isOpen()) {
             tooltip.close();
         } else {
             tooltip.open();
         }
-
+        this.statusDetails = this.statusService.getStatusDetails(
+            statusTab,
+            status
+        );
+        console.log(this.statusDetails);
         this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
         this.statusDropdownData = row;
+    }
+
+    public toggleStopsDropdown(tooltip: any, width: number): void {
+        this.statusTooltip = tooltip;
+        if (tooltip.isOpen()) {
+            tooltip.close();
+        } else {
+            tooltip.open();
+        }
+        this.widthPopover = width;
     }
 
     // Show Description Dropdown

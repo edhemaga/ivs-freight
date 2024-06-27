@@ -70,6 +70,14 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
             ? 'WEIGHT'
             : gridNameTitle === 'Driver' && index === 12
             ? 'PAY'
+            : tableHeadTitle === 'BUSSINESS NAME   '
+            ? 'Broker'
+            : tableHeadTitle === ' TRUCK '
+            ? 'REQUIREM'
+            : tableHeadTitle === ' LOADED '
+            ? 'MILES'
+            : tableHeadTitle === ' RATE '
+            ? 'BILLING'
             : 'MVR';
     }
 }

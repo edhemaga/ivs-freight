@@ -54,9 +54,8 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                 null,
                 null
             ),
-            this.tableService.getTableConfig(3),
         ]).pipe(
-            tap(([loadPagination, tableConfig]) => {
+            tap(([loadPagination]) => {
                 localStorage.setItem(
                     'loadTableCount',
                     JSON.stringify({
@@ -66,15 +65,6 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                         templateCount: loadPagination.templateCount,
                     })
                 );
-
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
 
                 this.loadActiveStore.set(loadPagination.pagination.data);
             })

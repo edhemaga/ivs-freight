@@ -608,7 +608,35 @@ table.truckassist-table-body-style {
                         .zero-vl-count {
                             font-weight: 400;
                         }
-
+                        .avatar-assign-container {
+                            width: fit-content;
+                            height: fit-content;
+                            margin-right: 6px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            padding: 3px 4px 3px 4px;
+                            gap: 4px;
+                            display: flex;
+                            transition: transform 0.2s;
+                            .avatar-assign-img {
+                                &:hover {
+                                    transform: scale(1.5);
+                                    transition: 0.2s;
+                                }
+                                img {
+                                    width: 18px;
+                                    height: 20px;
+                                }
+                            }
+                            .avatar-assign-text {
+                                font-family: Montserrat;
+                                font-size: 14px;
+                                font-weight: 400;
+                                line-height: 18px;
+                                text-align: left;
+                            }
+                        }
                         // AVATAR COLUMN
                         .avatar-container {
                             width: fit-content;
@@ -1443,6 +1471,7 @@ table.truckassist-table-body-style {
                         }
 
                         // PICKUP AND DELIVERY COLUMN
+                        // .pickup {
                         .pickup-delivery-counter {
                             user-select: none;
                             width: 18px;
@@ -1516,16 +1545,16 @@ table.truckassist-table-body-style {
                                 }
                             }
                         }
+                        // }
 
                         // STATUS COLUMN
-                        .status-container {
+                        .status-containers {
                             cursor: pointer;
-
+                            display: flex;
+                            flex-direction: column;
+                            height: fit-content;
                             .status,
                             .status-time {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
                                 overflow: hidden;
                                 white-space: nowrap;
                                 text-overflow: ellipsis;
@@ -1540,9 +1569,15 @@ table.truckassist-table-body-style {
                                 font-weight: 900;
                                 color: #508f91;
                             }
-
+                            &:hover {
+                                background: #91919133 !important;
+                                .status-time {
+                                    display: flex;
+                                }
+                            }
                             .status-time {
                                 font-size: 10px;
+                                display: none;
                                 font-weight: bold;
                                 color: $muted;
                                 height: 12px;
@@ -3175,7 +3210,19 @@ table.truckassist-table-body-style {
         background: #ffffff;
     }
 }
+.Dispatched {
+    color: #92b1f5 !important;
+}
+.Assigned {
+    color: #50ac25 !important;
+}
 
+.Unassigned {
+    color: #cccccc !important;
+}
+.Booked {
+    color: #919191 !important;
+}
 // Update Animation
 .update-animation {
     background: orange !important;

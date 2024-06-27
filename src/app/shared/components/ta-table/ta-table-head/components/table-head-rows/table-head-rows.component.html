@@ -206,7 +206,9 @@
                                 'border-left':
                                     tableHeadRowsData?.tableData[0]
                                         .gridNameTitle
-                                    | tableHeadBorder : column.tableHeadTitle
+                                    | tableHeadBorder : column.tableHeadTitle,
+                                'pickup-delivery':
+                                    column.tableHeadTitle === 'PICKUP DELIVERY'
                             }"
                             [innerHTML]="
                                 column.tableHeadTitle | tableDoubleHeadPayroll

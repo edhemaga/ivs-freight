@@ -64,6 +64,13 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 (tableHeadTitle === 'PHYSICAL' ||
                     tableHeadTitle === 'CREDIT LIMIT');
 
+            const loadTableColumnsCondition =
+                gridNameTitle === 'load' &&
+                (tableHeadTitle === 'BUSSINESS NAME   ' ||
+                    tableHeadTitle === 'DRIVER' ||
+                    tableHeadTitle === ' TRUCK ' ||
+                    tableHeadTitle === ' LOADED ' ||
+                    tableHeadTitle === ' RATE ');
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
@@ -71,7 +78,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 truckTableColumnsCondition ||
                 repairTableColumnsCondition ||
                 brokerTableColumnsCondition ||
-                trailerTableColumnsCondition
+                trailerTableColumnsCondition ||
+                loadTableColumnsCondition
             ) {
                 return true;
             }
@@ -135,6 +143,15 @@ export class TableDoubleHeadPipe implements PipeTransform {
                     tableHeadTitle !== ' NUMBER' &&
                     tableHeadTitle !== 'TYPE ' &&
                     tableHeadTitle !== 'TERM');
+
+            const LoadTableColumnsCondition =
+                gridNameTitle !== 'load' ||
+                (tableHeadTitle !== 'BUSSINESS NAME   ' &&
+                    tableHeadTitle !== 'DRIVER' &&
+                    tableHeadTitle !== ' TRUCK ' &&
+                    tableHeadTitle !== ' LOADED ' &&
+                    tableHeadTitle !== ' RATE ');
+
             return (
                 contactsTableColumnsCondition &&
                 pmTableColumnsCondition &&
@@ -143,7 +160,8 @@ export class TableDoubleHeadPipe implements PipeTransform {
                 brokerTableColumnsCondition &&
                 truckTableColumnsCondition &&
                 repairTableColumnsCondition &&
-                TrailerTableColumnsCondition
+                TrailerTableColumnsCondition &&
+                LoadTableColumnsCondition
             );
         }
     }

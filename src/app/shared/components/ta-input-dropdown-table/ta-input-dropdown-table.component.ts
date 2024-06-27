@@ -236,7 +236,7 @@ export class TaInputDropdownTableComponent
                 // If there is empty array in filteredComment set object value to default
                 if (!filteredCommentTitle.length) {
                     if (type === TaInputDropdownTableStringEnum.COMMENTS) {
-                        this.filteredData.comments = this._data.comments;
+                        this.filteredData.comments = [];
                     } else {
                         this.filteredData.rating = this._data.rating;
                     }

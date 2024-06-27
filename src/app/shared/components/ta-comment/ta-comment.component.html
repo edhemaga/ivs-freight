@@ -147,7 +147,9 @@
                             class="d-flex justify-content-between title-svg-holder"
                         >
                             <div class="d-flex align-items-center creds-holder">
-                                <ng-container *ngIf="loggedUserCommented">
+                                <ng-container
+                                    *ngIf="loggedUserCommented; else notLogged"
+                                >
                                     <span
                                         class="text-white ta-font-semi-bold"
                                         (click)="
@@ -166,40 +168,34 @@
                                     ></span>
                                 </ng-container>
 
-                                <ng-container
-                                    *ngIf="
-                                        !checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
-                                    <span
-                                        class="text-white ta-font-semi-bold"
-                                        (click)="
-                                            toogleComment(
+                                <ng-template #notLogged>
+                                    <ng-container
+                                        *ngIf="
+                                            !checkIfLoggedUserCommented(
                                                 commentCardsDataDropdown
+                                                    .companyUser.id
                                             )
                                         "
-                                        [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
-                                                commentCardsDataDropdown
-                                                    .companyUser.fullName
-                                            )
-                                        "
-                                    ></span>
-                                </ng-container>
-
+                                    >
+                                        <span
+                                            class="text-white ta-font-semi-bold"
+                                            (click)="
+                                                toogleComment(
+                                                    commentCardsDataDropdown
+                                                )
+                                            "
+                                            [innerHTML]="
+                                                higlitsPartOfCommentSearchValue(
+                                                    commentCardsDataDropdown
+                                                        .companyUser.fullName
+                                                )
+                                            "
+                                        ></span>
+                                    </ng-container>
+                                </ng-template>
                                 <!-- if owner of the card -->
 
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span class="card-user-me ta-font-bold"
                                         >(Me)</span
                                     >
@@ -235,14 +231,7 @@
                             </div>
 
                             <div class="user-icons d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span
                                         ngbTooltip
                                         mainTooltip="Edit"
