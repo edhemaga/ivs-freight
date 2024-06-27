@@ -19,6 +19,7 @@ import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/t
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // pipes
 import { MoneyFilterPipe } from '@shared/pipes/money-filter.pipe';
@@ -121,6 +122,20 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }
         });
+
+        const mappedEvent = {
+            action: LoadFilterStringEnum.SET,
+            filterType: LoadFilterStringEnum.LOAD_TYPE_FILTER,
+            queryParams: {
+                loadType:
+                    event === LoadFilterStringEnum.FTL
+                        ? 1
+                        : event === LoadFilterStringEnum.LTL
+                        ? 2
+                        : null,
+            },
+        };
+        this.tableSevice.sendCurrentSetTableFilter(mappedEvent);
     }
 
     // On Filter

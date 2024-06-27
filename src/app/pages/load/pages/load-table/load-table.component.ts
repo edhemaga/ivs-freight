@@ -66,11 +66,15 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // Store
 import { LoadQuery } from '@shared/components/ta-shared-modals/cards-modal/state/load-modal.query';
 import { Store, select } from '@ngrx/store';
-import { selectActiveTabCards, selectPendingTabCards } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
+import {
+    selectActiveTabCards,
+    selectPendingTabCards,
+} from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
+import { LoadListResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-load-table',
@@ -128,7 +132,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private loadCardsModalService: LoadCardModalService,
 
         //store
-        private store: Store,
+        private store: Store
     ) {}
 
     ngOnInit(): void {
@@ -153,6 +157,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.commentsUpdate();
 
         this.onDropdownActions();
+
+        this.getLoadStatusFilter();
+
+        this.getLoadDispatcherFilter();
     }
 
     ngAfterViewInit(): void {
@@ -275,59 +283,68 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentSetTableFilter res', res);
-                console.log('currentSetTableFilter viewData', this.viewData);
+                switch (res?.filterType) {
+                    case LoadFilterStringEnum.USER_FILTER:
+                        this.backLoadFilterQuery.dispatcherIds =
+                            res.queryParams ?? null;
 
-                if (res?.queryParams?.length) {
-                    switch (res.filterType) {
-                        case LoadFilterStringEnum.USER_FILTER:
-                            this.backLoadFilterQuery.dispatchersId =
-                                res.queryParams;
+                        this.loadBackFilter(this.backLoadFilterQuery);
 
-                            this.loadBackFilter(this.backLoadFilterQuery);
+                        break;
+                    case LoadFilterStringEnum.STATUS_FILTER:
+                        this.backLoadFilterQuery.status =
+                            res.queryParams?.[0] ?? null;
 
-                            break;
-                        case LoadFilterStringEnum.STATUS_FILTER:
-                            this.backLoadFilterQuery.statusType =
-                                res.queryParams;
+                        this.loadBackFilter(this.backLoadFilterQuery);
 
-                            this.loadBackFilter(this.backLoadFilterQuery);
-
-                            break;
-                        case LoadFilterStringEnum.TIME_FILTER:
+                        break;
+                    case LoadFilterStringEnum.TIME_FILTER:
+                        if (res.queryParams?.timeSelected) {
                             const { fromDate, toDate } =
                                 RepairTableDateFormaterHelper.getDateRange(
-                                    res.queryParams?.timeSelected
+                                    res.queryParams?.timeSelected,
+                                    res.queryParams.year ?? null
                                 );
+
                             this.backLoadFilterQuery.dateTo = toDate;
                             this.backLoadFilterQuery.dateFrom = fromDate;
+                        } else {
+                            this.backLoadFilterQuery.dateTo = null;
+                            this.backLoadFilterQuery.dateFrom = null;
+                        }
 
-                            this.loadBackFilter(this.backLoadFilterQuery);
+                        this.loadBackFilter(this.backLoadFilterQuery);
 
-                            break;
-                        case LoadFilterStringEnum.MONEY_FILTER:
-                            this.backLoadFilterQuery.rateFrom =
-                                res.queryParams?.firstFormFrom;
-                            this.backLoadFilterQuery.rateTo =
-                                res.queryParams?.firstFormTo;
+                        break;
+                    case LoadFilterStringEnum.MONEY_FILTER:
+                        this.backLoadFilterQuery.rateFrom =
+                            res.queryParams?.firstFormFrom ?? null;
+                        this.backLoadFilterQuery.rateTo =
+                            res.queryParams?.firstFormTo ?? null;
 
-                            this.backLoadFilterQuery.paidFrom =
-                                res.queryParams?.secondFormFrom;
-                            this.backLoadFilterQuery.paidTo =
-                                res.queryParams?.secondFormTo;
+                        this.backLoadFilterQuery.paidFrom =
+                            res.queryParams?.secondFormFrom ?? null;
+                        this.backLoadFilterQuery.paidTo =
+                            res.queryParams?.secondFormTo ?? null;
 
-                            this.backLoadFilterQuery.dueFrom =
-                                res.queryParams?.thirdFormFrom;
-                            this.backLoadFilterQuery.dueTo =
-                                res.queryParams?.thirdFormTo;
+                        this.backLoadFilterQuery.dueFrom =
+                            res.queryParams?.thirdFormFrom ?? null;
+                        this.backLoadFilterQuery.dueTo =
+                            res.queryParams?.thirdFormTo ?? null;
 
-                            this.loadBackFilter(this.backLoadFilterQuery);
+                        this.loadBackFilter(this.backLoadFilterQuery);
 
-                            break;
-                        default:
-                            this.sendLoadData();
-                            break;
-                    }
+                        break;
+                    case LoadFilterStringEnum.LOAD_TYPE_FILTER:
+                        this.backLoadFilterQuery.loadType =
+                            res.queryParams?.loadType ?? null;
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    default:
+                        this.sendLoadData();
+                        break;
                 }
 
                 if (res?.filteredArray) {
@@ -915,33 +932,43 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private loadBackFilter(
         filter: {
-            loadType: number | undefined;
-            statusType: number | undefined;
-            status: number | undefined;
-            dispatcherId: number | undefined;
-            dispatchId: number | undefined;
-            brokerId: number | undefined;
-            shipperId: number | undefined;
-            dateFrom: string | undefined;
-            dateTo: string | undefined;
-            revenueFrom: number | undefined;
-            revenueTo: number | undefined;
-            truckId: number | undefined;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
+            loadType?: number;
+            statusType?: number; // statusType -> 1 - pending, 2 - active, 3 - closed
+            status?: number;
+            dispatcherIds?: Array<number>;
+            dispatcherId?: number;
+            dispatchId?: number;
+            brokerId?: number;
+            shipperId?: number;
+            dateFrom?: string;
+            dateTo?: string;
+            revenueFrom?: number;
+            revenueTo?: number;
+            truckId?: number;
+            rateFrom?: number;
+            rateTo?: number;
+            paidFrom?: number;
+            paidTo?: number;
+            dueFrom?: number;
+            dueTo?: number;
+            pickup?: boolean;
+            delivery?: boolean;
+            pageIndex?: number;
+            pageSize?: number;
+            companyId?: number;
+            sort?: string;
+            searchOne?: string;
+            searchTwo?: string;
+            searchThree?: string;
         },
         isShowMore?: boolean
     ): void {
-        /*  this.loadServices
+        this.loadServices
             .getLoadList(
                 filter.loadType,
                 filter.statusType,
                 filter.status,
+                filter.dispatcherIds,
                 filter.dispatcherId,
                 filter.dispatchId,
                 filter.brokerId,
@@ -951,6 +978,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.rateFrom,
+                filter.rateTo,
+                filter.paidFrom,
+                filter.paidTo,
+                filter.dueFrom,
+                filter.dueTo,
+                filter.pickup,
+                filter.delivery,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -969,14 +1004,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 } else {
                     let newData = [...this.viewData];
-                    // TODO can't find modal for this data and when this function is called
+
                     loads.pagination.data.map((data: any) => {
                         newData.push(this.mapLoadData(data));
                     });
 
                     this.viewData = [...newData];
                 }
-            }); */
+            });
     }
 
     // ---------------------------- Table Actions ------------------------------
@@ -985,6 +1020,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
+            this.getLoadStatusFilter();
+            this.getLoadDispatcherFilter();
 
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === TableStringEnum.TEMPLATE
@@ -1150,6 +1187,62 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.loadCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private getLoadStatusFilter(): void {
+        const loadTab =
+            this.selectedTab === TableStringEnum.TEMPLATE
+                ? null
+                : this.selectedTab === TableStringEnum.ACTIVE
+                ? TableStringEnum.ACTIVE_2
+                : this.selectedTab === TableStringEnum.CLOSED
+                ? TableStringEnum.CLOSED_2
+                : TableStringEnum.PENDING_2;
+
+        if (loadTab) {
+            this.loadServices
+                .getLoadStatusFilter(loadTab)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    if (res) {
+                        const filterOptionsData = {
+                            selectedTab: this.selectedTab,
+                            options: [...res],
+                        };
+
+                        this.tableService.sendLoadStatusFilter(
+                            filterOptionsData
+                        );
+                    }
+                });
+        }
+    }
+
+    private getLoadDispatcherFilter(): void {
+        const loadTab =
+            this.selectedTab === TableStringEnum.TEMPLATE
+                ? null
+                : this.selectedTab === TableStringEnum.ACTIVE
+                ? TableStringEnum.ACTIVE_2
+                : this.selectedTab === TableStringEnum.CLOSED
+                ? TableStringEnum.CLOSED_2
+                : TableStringEnum.PENDING_2;
+
+        if (loadTab) {
+            this.loadServices
+                .getLoadDispatcherFilter(loadTab)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    if (res) {
+                        this.tableService.sendActionAnimation({
+                            animation:
+                                LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
+                            data: res,
+                            id: null,
+                        });
+                    }
+                });
+        }
     }
 
     public ngOnDestroy(): void {
