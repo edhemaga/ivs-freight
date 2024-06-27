@@ -94,4 +94,21 @@ export class LoadDetailsItemHelper {
 
         return keys.indexOf(a.key) - keys.indexOf(b.key);
     }
+
+    static removeNumbersFromStatusString(statusString: string) {
+        const regex = /\d+/g;
+
+        return statusString.replace(regex, '');
+    }
+
+    static checkStopOrderOrder(statusId: number): string {
+        if (statusId === 46 || statusId === 48 || statusId === 50)
+            return '#56B4AC';
+
+        if (statusId === 3) return '#259F94';
+
+        if (statusId === 47 || statusId === 49) return '#E66767';
+
+        if (statusId === 5) return '#DF3C3C';
+    }
 }

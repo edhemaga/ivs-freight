@@ -24,18 +24,25 @@
             <!-- Comment -->
 
             <ng-container *ngSwitchCase="'comment'">
-                <app-load-deatils-item-comments
-                    [load]="loadItem?.data"
-                    [isAddNewComment]="isAddNewComment"
+                <ng-container
+                    *ngIf="
+                        loadItem?.multipleDetailsSelectDropdown[0].isActive;
+                        else statusHistory
+                    "
                 >
-                </app-load-deatils-item-comments>
-                <!--    <div class="comment-container">
-                    <app-ta-user-review
-                        (changeReviewsEvent)="changeCommentEvent($event)"
-                        [reviewData]="loadItem?.data?.comments"
+                    <app-load-details-item-comments
+                        [load]="loadItem?.data"
+                        [isAddNewComment]="isAddNewComment"
+                        [isSearchComment]="isSearchComment"
                     >
-                    </app-ta-user-review>
-                </div> -->
+                    </app-load-details-item-comments>
+                </ng-container>
+
+                <ng-template #statusHistory>
+                    <app-load-details-item-status-history
+                        [load]="loadItem?.data"
+                    ></app-load-details-item-status-history>
+                </ng-template>
             </ng-container>
         </ng-container>
     </ng-container>

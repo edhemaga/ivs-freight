@@ -23,9 +23,14 @@
                 item.hasMultipleDetailsSelectDropdown
             "
             [multipleDetailsSelectDropdown]="item.multipleDetailsSelectDropdown"
+            [isSearchBtn]="item.isSearchBtn"
             (openModalAction)="onAddNewClick($event)"
             (dropActions)="onLoadActions($event)"
             (mapBtnEmitter)="onMapBtnClick($event)"
+            (searchBtnEmitter)="onSearchBtnClick($event)"
+            (multipleDetailsSelectDropdownEmitter)="
+                onDetailsSelectClick($event)
+            "
         >
         </app-ta-details-header>
     </ng-container>
@@ -34,6 +39,7 @@
         <app-load-details-item
             [detailsConfig]="loadDetailsConfig"
             [isAddNewComment]="isAddNewComment"
+            [isSearchComment]="isSearchComment"
         ></app-load-details-item>
     </div>
 </div>

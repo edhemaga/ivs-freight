@@ -93,7 +93,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() isMe?: boolean = false;
     @Input() isEditButtonDisabled?: boolean = false;
 
-    @Input() isDeatilsCommentLayout?: boolean = false;
+    @Input() isDetailsCommentLayout?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() closeDropdown = new EventEmitter<boolean>();
@@ -128,10 +128,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
-        this.commentAvatar = this.commentData?.companyUser?.avatarFile?.url ?? null;
+        this.commentAvatar =
+            this.commentData?.companyUser?.avatarFile?.url ?? null;
 
         this.commentData?.commentContent && this.patchCommentData();
 
@@ -202,7 +203,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.editingCardComment = false;
                     this.commentCardsDataDropdown.commentContent = editComment;
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 
@@ -233,7 +234,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                         next: () => {
                             this.loadService.removeComment(comment);
                         },
-                        error: () => { },
+                        error: () => {},
                     });
         });
     }
@@ -313,6 +314,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.isEditing = false;
                 }
+
+                console.log('this.isEdited', this.isEdited);
 
                 const dateAndTimeNow =
                     MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(

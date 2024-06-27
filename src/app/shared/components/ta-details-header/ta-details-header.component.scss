@@ -181,6 +181,47 @@ p {
         }
     }
 
+    .search-btn-container {
+        .border {
+            height: 18px;
+            width: 1px;
+            background: $ta-light-grey-6;
+            margin: 0 4px;
+        }
+
+        .search-btn-container {
+            width: 26px;
+            height: 26px;
+            border-radius: 2px;
+            transition: background 0.2s ease-in;
+            cursor: pointer;
+
+            &:hover {
+                background: $bw2;
+
+                .icon {
+                    svg {
+                        path {
+                            fill: $ta-black;
+                        }
+                    }
+                }
+            }
+
+            .icon {
+                svg {
+                    width: 16px;
+                    height: 16px;
+
+                    path {
+                        fill: $bw5;
+                        transition: fill 0.2s ease-in;
+                    }
+                }
+            }
+        }
+    }
+
     .header-plus-button {
         display: flex;
         align-items: center;

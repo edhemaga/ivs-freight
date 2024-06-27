@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// modules
+import moment from 'moment';
+
 // components
 import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search/ta-comments-search.component';
 
@@ -16,9 +19,9 @@ import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 
 @Component({
-    selector: 'app-load-deatils-item-comments',
-    templateUrl: './load-deatils-item-comments.component.html',
-    styleUrls: ['./load-deatils-item-comments.component.scss'],
+    selector: 'app-load-details-item-comments',
+    templateUrl: './load-details-item-comments.component.html',
+    styleUrls: ['./load-details-item-comments.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -28,13 +31,15 @@ import { CommentData } from '@shared/models/comment-data.model';
         TaCommentsSearchComponent,
     ],
 })
-export class LoadDeatilsItemCommentsComponent implements OnChanges {
+export class LoadDetailsItemCommentsComponent implements OnChanges {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
+    @Input() isSearchComment: boolean;
 
     public companyUser: SignInResponse;
 
     public comments: CommentCompanyUser[] = [];
+    public commentsBeforeSearch: CommentCompanyUser[] = [];
 
     public isCommenting: boolean = false;
     public isCommented: boolean = false;
@@ -43,10 +48,9 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     private editedCommentId: number;
     private deletedCommentId: number;
 
-    constructor() { }
+    constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('this.load', this.load);
         if (changes?.load?.currentValue) {
             this.getCompanyUser();
 
@@ -70,7 +74,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 companyUser: {
                     id: comment.companyUser.id,
                     name: comment.companyUser.fullName,
-                    avatarFile: null /* comment.companyUser.avatar */,
+                    avatarFile: this.companyUser.avatarFile,
                 },
                 commentId: comment.id,
                 commentContent: comment.commentContent,
@@ -83,6 +87,8 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 isMe: comment.companyUser.id === this.companyUser.userId,
             };
         });
+
+        this.commentsBeforeSearch = this.comments;
     }
 
     public createComment(): void {
@@ -93,7 +99,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
             companyUser: {
                 id: this.companyUser.userId,
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                avatarFile: null  /*  this.companyUser.avatar */,
+                avatarFile: this.companyUser.avatarFile,
             },
             commentContent: null,
             commentDate: null,
@@ -148,9 +154,11 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     }
 
     public handleSortActionEmit(sortDirection: string): void {
+        const dateFormat = LoadDetailsItemStringEnum.DATE_FORMAT;
+
         this.comments = this.comments.sort((a, b) => {
-            const dateA = new Date(a.commentDate).getTime();
-            const dateB = new Date(b.commentDate).getTime();
+            const dateA = moment(a.commentDate, dateFormat).valueOf();
+            const dateB = moment(b.commentDate, dateFormat).valueOf();
 
             if (sortDirection === LoadDetailsItemStringEnum.ASC) {
                 return dateA - dateB;
@@ -158,5 +166,21 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 return dateB - dateA;
             }
         });
+    }
+
+    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
+        if (searchHighlightValue) {
+            this.comments = this.comments.filter(
+                ({ commentContent, companyUser }) =>
+                    commentContent
+                        .toLowerCase()
+                        .includes(searchHighlightValue) ||
+                    companyUser.name
+                        .toLowerCase()
+                        .includes(searchHighlightValue)
+            );
+        } else {
+            this.comments = this.commentsBeforeSearch;
+        }
     }
 }

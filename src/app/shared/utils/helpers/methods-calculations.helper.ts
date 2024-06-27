@@ -118,7 +118,7 @@ export class MethodsCalculationsHelper {
         return moment
             .utc(date)
             .local()
-            .format(show_am_ap ? 'HH:mm a' : 'HH:mm:SS');
+            .format(show_am_ap ? 'HH:mm A' : 'HH:mm:SS');
     };
 
     //------------------------------- TIME FROM BACKEND -------------------------------
@@ -162,7 +162,7 @@ export class MethodsCalculationsHelper {
                 notation: 'compact',
                 compactDisplay: 'short',
             }).format(value);
-        else return '0'
+        else return '0';
     };
 
     //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------

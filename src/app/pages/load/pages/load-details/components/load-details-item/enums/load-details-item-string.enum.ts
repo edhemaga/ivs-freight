@@ -6,4 +6,12 @@ export enum LoadDetailsItemStringEnum {
     DELETE = 'Delete',
 
     ASC = 'asc',
+
+    DATE_FORMAT = 'MM/DD/YY, hh:mm A',
+
+    ON_GOING = 'On Going',
+
+    HOURS = 'h',
+    DAYS = 'd',
+    MINUTES = 'm',
 }
