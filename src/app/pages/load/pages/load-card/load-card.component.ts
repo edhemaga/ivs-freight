@@ -28,9 +28,6 @@ import { ImageBase64Service } from '@shared/services/image-base64.service';
 // Helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-
 // Svg-Routes
 import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/load-card-svg-routes';
 
@@ -116,9 +113,7 @@ export class LoadCardComponent implements OnInit, OnDestroy {
     public goToDetailsPage(card: CardDetails): void {
         this.detailsDataService.setNewData(card);
 
-        if (this.selectedTab === TableStringEnum.ACTIVE)
-            this.router.navigate([`/list/load/${card.id}/broker-details`]);
-        else this.router.navigate([`/list/load/${card.id}/shipper-details`]);
+        this.router.navigate([`/list/load/${card.id}/details`]);
     }
 
     public trackCard(item: number): number {

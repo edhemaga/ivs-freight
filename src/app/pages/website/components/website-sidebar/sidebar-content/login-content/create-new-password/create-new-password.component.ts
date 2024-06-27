@@ -11,7 +11,6 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
 import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // validations
 import { passwordValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
@@ -43,8 +42,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private websiteAuthService: WebsiteAuthService,
         private websiteActionsService: WebsiteActionsService,
-        private imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.createForm();
@@ -79,7 +77,7 @@ export class CreateNewPasswordComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: string) => {
                 if (res)
-                    this.userAvatar = this.imageBase64Service.sanitizer(res);
+                    this.userAvatar = res;
             });
     }
 

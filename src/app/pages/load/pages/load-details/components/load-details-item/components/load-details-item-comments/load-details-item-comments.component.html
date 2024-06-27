@@ -1,0 +1,13 @@
+<ng-container *ngIf="load?.comments?.length">
+    <div class="d-flex flex-column justify-content-center comments-container">
+        <app-ta-comments-search
+            [commentsData]="comments"
+            [isCommented]="isCommented"
+            [isCommentEdited]="isCommentEdited"
+            [isDisplaySearch]="isSearchComment"
+            (btnActionEmitter)="handleCommentActionEmit($event)"
+            (btnSortEmitter)="handleSortActionEmit($event)"
+            (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"
+        ></app-ta-comments-search>
+    </div>
+</ng-container>

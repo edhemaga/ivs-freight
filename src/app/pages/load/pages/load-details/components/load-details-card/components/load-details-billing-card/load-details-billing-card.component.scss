@@ -11,6 +11,11 @@
             span {
                 font-size: 14px;
                 line-height: 18px;
+
+                &.tonu-rate {
+                    color: $bw5 !important;
+                    text-decoration: line-through;
+                }
             }
 
             p {

@@ -304,6 +304,7 @@ export * from './departmentFilterResponse';
 export * from './departmentResponse';
 export * from './departmentShortResponse';
 export * from './disclosureReleaseFeedbackResponse';
+export * from './dispatchAssignedLoadListResponse';
 export * from './dispatchBoardListResponse';
 export * from './dispatchBoardResponse';
 export * from './dispatchBoardResponsePagination';

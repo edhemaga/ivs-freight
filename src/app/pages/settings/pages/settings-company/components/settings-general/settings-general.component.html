@@ -171,13 +171,13 @@
             </div>
             <div class="basic-header">
                 <img
-                    *ngIf="companyData.logo"
-                    [src]="imageBase64Service.sanitizer(companyData.logo)"
-                    [alt]="companyData.logo?.name?.substring(0, 1)"
+                    *ngIf="companyData?.logoFile?.url"
+                    [src]="companyData?.logoFile?.url"
+                    [alt]="companyData.logoFile?.fileName?.substring(0, 1)"
                     class="company-logo-img"
                 />
 
-                <ng-container *ngIf="!companyData.logo">
+                <ng-container *ngIf="!companyData?.logoFile?.url">
                     <div #logoBox class="no-company-logo-holder">
                         <div
                             #logoText

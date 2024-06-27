@@ -26,5 +26,7 @@ export interface LoadShortResponse {
     deliveryCount?: number;
     totalMiles?: number | null;
     totalRate?: number | null;
+    totalAdjustedRate?: number | null;
+    driverMessage?: string | null;
 }
 

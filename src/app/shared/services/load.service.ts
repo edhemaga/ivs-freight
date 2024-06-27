@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, Subject, of, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 
 // services
 import { FormDataService } from '@shared/services/form-data.service';
@@ -33,6 +33,7 @@ import {
     CreateLoadTemplateCommand,
     LoadStatusType,
     DispatcherFilterResponse,
+    LoadStatus,
 } from 'appcoretruckassist';
 import {
     Comment,
@@ -224,8 +225,8 @@ export class LoadService {
     }
 
     // modal operations
-    public getLoadDropdowns(): Observable<LoadModalResponse> {
-        return this.loadService.apiLoadModalGet();
+    public getLoadDropdowns(loadEditId?: number): Observable<LoadModalResponse> {
+        return this.loadService.apiLoadModalGet(loadEditId);
     }
 
     public getRouting(location: string): Observable<RoutingResponse> {
@@ -234,14 +235,16 @@ export class LoadService {
 
     public createLoad(data: Load): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-
         return this.loadService.apiLoadPost();
     }
 
     public updateLoad(data: Load): Observable<CreateWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
-
         return this.loadService.apiLoadPut();
+    }
+
+    public updateLoadStatus(loadId: number, loadStatus: LoadStatus) {
+        return this.loadService.apiLoadStatusPut({id: loadId, status: loadStatus});
     }
 
     // modal operations - template

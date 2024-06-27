@@ -13,7 +13,6 @@ import { Subject } from 'rxjs';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // animations
 import {
@@ -74,8 +73,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     ],
 })
 export class TrailerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @Input() trailer: any;
     @Input() templateCard: boolean = false;
     @ViewChild('payrollChart', { static: false }) public payrollChart: any;
@@ -190,10 +188,9 @@ export class TrailerDetailsCardComponent
         },
     };
     constructor(
-        public imageBase64Service: ImageBase64Service,
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -411,17 +408,17 @@ export class TrailerDetailsCardComponent
             item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : item?.miles
-                ? item.miles
-                : 0,
+                    ? item.milesPerGallon
+                    : item?.miles
+                        ? item.miles
+                        : 0,
             item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : item?.revenue
-                ? item.revenue
-                : 0,
+                    ? item.costPerGallon
+                    : item?.revenue
+                        ? item.revenue
+                        : 0,
             item?.totalCost ? item.totalCost : null,
         ];
 
@@ -429,29 +426,29 @@ export class TrailerDetailsCardComponent
             legend[0].value = item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : 0;
+                    ? item.milesPerGallon
+                    : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : 0;
+                    ? item.costPerGallon
+                    : 0;
             legend[2].value = item?.totalCost ? item.totalCost : null;
         } else {
             legend[0].value = item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : item?.miles
-                ? item.miles
-                : 0;
+                    ? item.milesPerGallon
+                    : item?.miles
+                        ? item.miles
+                        : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : item?.revenue
-                ? item.revenue
-                : 0;
+                    ? item.costPerGallon
+                    : item?.revenue
+                        ? item.revenue
+                        : 0;
         }
 
         let hasValue = false;
@@ -470,10 +467,10 @@ export class TrailerDetailsCardComponent
         const mapData = item?.truckExpensesCharts
             ? item.truckExpensesCharts
             : item?.truckFuelConsumptionCharts
-            ? item.truckFuelConsumptionCharts
-            : item?.truckRevenueCharts
-            ? item.truckRevenueCharts
-            : null;
+                ? item.truckFuelConsumptionCharts
+                : item?.truckRevenueCharts
+                    ? item.truckRevenueCharts
+                    : null;
         if (mapData?.length > 17) {
             config.dataProperties[0].defaultConfig.barThickness = 10;
             config.dataProperties[1].defaultConfig.barThickness = 10;

@@ -7,18 +7,21 @@
     <div class="ta-review-header" *ngIf="!data.isEditMode">
         <div class="ta-user-information">
             <img
-                *ngIf="data.companyUser?.avatar"
+                *ngIf="data.companyUser?.avatarFile?.url"
                 class="ta-user-image"
                 [src]="
-                    data.companyUser.avatar !=
+                    data.companyUser?.avatarFile?.url !=
                     'assets/svg/common/ic_profile.svg'
-                        ? imageBase64Service.sanitizer(data.companyUser.avatar)
-                        : data.companyUser.avatar
+                        ? data.companyUser?.avatarFile?.url
+                        : 'assets/svg/common/ic_profile.svg'
                 "
                 [alt]="data.companyUser.fullName.substring(0, 1)"
             />
 
-            <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
+            <div
+                *ngIf="!data.companyUser?.avatarFile?.url"
+                class="no-profile-image"
+            >
                 <app-ta-profile-images
                     [indx]="0"
                     [size]="'medium'"
@@ -32,7 +35,7 @@
                 <div class="ta-user-name-rating">
                     <p class="ta-user-fullname">
                         {{ data.companyUser.fullName }}
-                        
+
                         <ng-container *ngIf="data.isItCurrentCompanyUser">
                             <span class="current-user">(Me)</span>
                         </ng-container>

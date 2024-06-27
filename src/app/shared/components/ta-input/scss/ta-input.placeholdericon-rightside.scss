@@ -27,6 +27,22 @@
         }
     }
 
+    &.orange {
+        svg {
+            path {
+                fill: $default-placeholderIcon-orange;
+            }
+        }
+    }
+    
+    &.red {
+        svg {
+            path {
+                fill: $default-placeholderIcon-red;
+            }
+        }
+    }
+
     &::before {
         content: '';
         display: block;

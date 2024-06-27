@@ -35,17 +35,8 @@ import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/
 
 // models
 import { LoadResponse } from 'appcoretruckassist';
-import { MapRoute } from '@shared/models/map-route.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { DetailsDropdownOptions } from '@pages/driver/pages/driver-details/models/details-dropdown-options.model';
-
-interface IStopRoutes {
-    longitude: number;
-    latitude: number;
-    pickup?: boolean;
-    delivery?: boolean;
-    stopNumber?: number;
-}
 
 @Component({
     selector: 'app-load-details',
@@ -60,7 +51,6 @@ interface IStopRoutes {
         LoadDetailsItemComponent,
         TaDetailsHeaderComponent,
     ],
-    providers: [DetailsPageService],
 })
 export class LoadDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
@@ -71,13 +61,15 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     public detailsDropdownOptions: DetailsDropdownOptions;
 
-    public loadStopRoutes: MapRoute[] = [];
-
     public loadsList: LoadMinimalListState;
     public loadObject: LoadResponse;
 
     public loadId: number;
     public newLoadId: number;
+
+    public isMapDisplayed: boolean = true;
+    public isAddNewComment: boolean = false;
+    public isSearchComment: boolean = false;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -177,35 +169,6 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     public getDetailsOptions(load: LoadResponse): void {
         this.detailsDropdownOptions =
             LoadDetailsHelper.getDetailsDropdownOptions(load.statusType.name);
-
-        const routes: IStopRoutes[] = [];
-
-        /*   data.stops.map((stop: any, index: number) => {
-            routes[index] = {
-                longitude: stop.shipper.longitude,
-                latitude: stop.shipper.latitude,
-                pickup: stop.stopType.name == 'Pickup' ? true : false,
-                delivery: stop.stopType.name == 'Delivery' ? true : false,
-                stopNumber: index,
-            };
-        }); */
-
-        this.loadStopRoutes[0] = {
-            routeColor: '#919191',
-            stops: routes.map((route, index) => {
-                return {
-                    lat: route.latitude,
-                    long: route.longitude,
-                    stopColor: route.pickup
-                        ? '#26A690'
-                        : route.delivery
-                        ? '#EF5350'
-                        : '#919191',
-                    stopNumber: route?.stopNumber?.toString(),
-                    zIndex: 99 + index,
-                };
-            }),
-        };
     }
 
     private getConfigAndOptions(): void {
@@ -270,10 +233,33 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onMapBtnClick(isClicked: boolean): void {
+        this.isMapDisplayed = isClicked;
+
         this.loadDetailsConfig[1] = {
             ...this.loadDetailsConfig[1],
-            isMapDisplayed: isClicked,
+            isMapDisplayed: this.isMapDisplayed,
         };
+    }
+
+    public onSearchBtnClick(isSearch: boolean): void {
+        this.isSearchComment = isSearch;
+    }
+
+    public onAddNewClick(detailsTitle: string): void {
+        if (detailsTitle === LoadDetailsStringEnum.COMMENT) {
+            this.isAddNewComment = true;
+
+            setTimeout(() => {
+                this.isAddNewComment = false;
+            }, 500);
+        }
+    }
+
+    public onDetailsSelectClick(id: number): void {
+        this.loadDetailsConfig = LoadDetailsHelper.getLoadDetailsConfig(
+            this.loadObject,
+            id
+        );
     }
 
     private handleLoadIdRouteChange(): void {

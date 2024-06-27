@@ -17,7 +17,6 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 
 // services
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
 // bootstrap
@@ -74,11 +73,10 @@ export class ConfirmationModalComponent implements OnInit {
     selectedCdl: any;
     public confirmationImageRoutes = ConfirmationModalSvgRoutes;
     constructor(
-        public imageBase64Service: ImageBase64Service,
         private ngbActiveModal: NgbActiveModal,
         private confirmationDataSubject: ConfirmationService,
         private formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.cdlForm = this.formBuilder.group({

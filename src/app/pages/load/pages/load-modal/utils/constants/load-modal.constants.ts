@@ -84,7 +84,7 @@ export class LoadModalConstants {
         lumper: 0,
         fuelSurcharge: 0,
         escort: 0,
-        detention: 0,
+        detention: 0
     };
 
     static LOAD_MODAL_PAYMENT: LoadPayment = {

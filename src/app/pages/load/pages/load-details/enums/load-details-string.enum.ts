@@ -7,4 +7,6 @@ export enum LoadDetailsStringEnum {
     EDIT = 'edit',
 
     LIST_LOAD_ROUTE = '/list/load',
+
+    COMMENT = 'Comment',
 }
