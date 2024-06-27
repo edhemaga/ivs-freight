@@ -46,7 +46,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     private editedCommentId: number;
     private deletedCommentId: number;
 
-    constructor() {}
+    constructor() { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.load?.currentValue) {
@@ -72,7 +72,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 companyUser: {
                     id: comment.companyUser.id,
                     name: comment.companyUser.fullName,
-                    avatar: '' /* comment.companyUser.avatar */,
+                    avatarFile: null /* comment.companyUser.avatar */,
                 },
                 commentId: comment.id,
                 commentContent: comment.commentContent,
@@ -97,7 +97,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
             companyUser: {
                 id: this.companyUser.userId,
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                avatar: null /*  this.companyUser.avatar */,
+                avatarFile: null  /*  this.companyUser.avatar */,
             },
             commentContent: null,
             commentDate: null,

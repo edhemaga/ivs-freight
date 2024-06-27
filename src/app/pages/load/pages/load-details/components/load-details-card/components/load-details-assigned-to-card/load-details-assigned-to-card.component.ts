@@ -5,9 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// services
-import { ImageBase64Service } from '@shared/services/image-base64.service';
-
 // routes
 import { LoadDetailsCardSvgRoutes } from '@pages/load/pages/load-details/components/load-details-card/utils/svg-routes/load-details-card-svg-routes';
 
@@ -39,5 +36,5 @@ export class LoadDetailsAssignedToCardComponent {
 
     public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
 
-    constructor(public imageBase64Service: ImageBase64Service) {}
+    constructor() { }
 }

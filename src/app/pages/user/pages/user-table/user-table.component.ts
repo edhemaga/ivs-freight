@@ -4,7 +4,6 @@ import { Subject, takeUntil } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { UserService } from '@pages/user/services/user.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
@@ -88,12 +87,11 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private userQuery: UserQuery,
         private phoneFormater: FormatPhonePipe,
         private nameInitialsPipe: NameInitialsPipe,
-        private imageBase64Service: ImageBase64Service,
         private userService: UserService,
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     // ---------------------------  NgOnInit ----------------------------------
     ngOnInit(): void {
@@ -478,7 +476,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Map User Data
     mapUserData(data: any, dontMapIndex?: boolean) {
-        if (!data?.avatar && !dontMapIndex) {
+        if (!data.avatarFile?.url && !dontMapIndex) {
             this.mapingIndex++;
         }
 
@@ -490,9 +488,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     data?.firstName && data?.lastName
                         ? data.firstName + ' ' + data.lastName
                         : '',
-                avatar: data?.avatar
-                    ? this.imageBase64Service.sanitizer(data.avatar)
-                    : '',
+                avatar: data.avatarFile?.url ?? '',
                 avatarColor: this.getAvatarColors(),
                 textShortName: this.nameInitialsPipe.transform(
                     data?.firstName && data?.lastName
@@ -613,8 +609,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .updateUserStatus(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {},
-                error: () => {},
+                next: () => { },
+                error: () => { },
             });
     }
 
@@ -644,7 +640,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         clearInterval(inetval);
                     }, 900);
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -781,7 +777,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.userService
                 .userResetPassword(event.data.email)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
+                .subscribe(() => { });
         }
         // User Resend Ivitation
         else if (event.type === TableStringEnum.RESEND_INVITATION) {
@@ -791,7 +787,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     isResendConfirmation: true,
                 })
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {});
+                .subscribe(() => { });
         }
         // User Delete
         else if (event.type === TableStringEnum.DELETE) {

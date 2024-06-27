@@ -411,12 +411,12 @@
                                                 "
                                             >
                                                 <img
-                                                    *ngIf="user?.avatar"
+                                                    *ngIf="
+                                                        user?.avatarFile?.url
+                                                    "
                                                     class="user_avatar"
                                                     [src]="
-                                                        imageBase64Service.sanitizer(
-                                                            user?.avatar
-                                                        )
+                                                        user?.avatarFile?.url
                                                     "
                                                 />
                                                 <div

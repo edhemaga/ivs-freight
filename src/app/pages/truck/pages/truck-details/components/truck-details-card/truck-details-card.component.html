@@ -185,7 +185,7 @@
                     >
                         <ng-container
                             *ngIf="
-                                !truck.assignedTo.driver.avatar;
+                                !truck.assignedTo?.driver?.avatarFile?.url;
                                 else avatarImage
                             "
                         >
@@ -199,11 +199,7 @@
                         <ng-template #avatarImage>
                             <img
                                 class="driverAvatarImg"
-                                [src]="
-                                    imageBase64Service.sanitizer(
-                                        truck.assignedTo.driver.avatar
-                                    )
-                                "
+                                [src]="truck.assignedTo.driver.avatarFile.url"
                                 alt="driver-image"
                             />
                         </ng-template>

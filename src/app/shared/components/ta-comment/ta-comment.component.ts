@@ -27,7 +27,6 @@ import { NgbModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
 
 // services
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -123,17 +122,16 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private sanitizer: DomSanitizer,
 
         // services
-        private imageBase64Service: ImageBase64Service,
         private formatDatePipe: FormatDatePipe,
         private commentsService: CommentsService,
         private loadService: LoadService,
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
-        this.sanitazeAvatar();
+        this.commentAvatar = this.commentData?.companyUser?.avatarFile?.url ?? null;
 
         this.commentData?.commentContent && this.patchCommentData();
 
@@ -204,7 +202,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.editingCardComment = false;
                     this.commentCardsDataDropdown.commentContent = editComment;
                 },
-                error: () => {},
+                error: () => { },
             });
     }
 
@@ -235,7 +233,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                         next: () => {
                             this.loadService.removeComment(comment);
                         },
-                        error: () => {},
+                        error: () => { },
                     });
         });
     }
@@ -253,14 +251,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             this.commentHighlight,
             this.sanitizer
         );
-    }
-
-    private sanitazeAvatar(): void {
-        this.commentAvatar = this.commentData?.companyUser?.avatar
-            ? this.imageBase64Service.sanitizer(
-                  this.commentData.companyUser.avatar
-              )
-            : null;
     }
 
     public toogleComment(comment: Comment): void {

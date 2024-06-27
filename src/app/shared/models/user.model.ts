@@ -1,7 +1,9 @@
+import { FileResponse } from "appcoretruckassist";
+
 export interface User {
     companyUserId: any;
     areSettingsUpdated: boolean;
-    avatar: string;
+    avatarFile: FileResponse;
     companies: CompanyData[];
     driverId: number;
     firstName: string;

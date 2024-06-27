@@ -9,7 +9,6 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // service
 import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 
@@ -60,8 +59,7 @@ import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
     providers: [NameInitialsPipe],
 })
 export class ContactsTableComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+    implements OnInit, AfterViewInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public tableOptions: any = {};
@@ -101,9 +99,8 @@ export class ContactsTableComponent
         private contactQuery: ContactQuery,
         private nameInitialsPipe: NameInitialsPipe,
         private contactService: ContactsService,
-        private imageBase64Service: ImageBase64Service,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.sendContactData();
@@ -494,7 +491,7 @@ export class ContactsTableComponent
 
     // Map Contact Data
     public mapContactData(data: any, dontMapIndex?: boolean): void {
-        if (!data?.avatar && !dontMapIndex) {
+        if (!data?.avatarFile?.url && !dontMapIndex) {
             this.mapingIndex++;
         }
         return {
@@ -509,15 +506,13 @@ export class ContactsTableComponent
             textAddress: data?.address?.address ?? null,
             textShortName: this.nameInitialsPipe.transform(data.name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
-            avatarImg: data?.avatar
-                ? this.imageBase64Service.sanitizer(data.avatar)
-                : null,
+            avatarImg: data?.avatarFile?.url ?? null,
             isShared: data.shared,
             lable: data?.companyContactLabel
                 ? {
-                      name: data?.companyContactLabel?.name ?? null,
-                      color: data?.companyContactLabel?.code ?? null,
-                  }
+                    name: data?.companyContactLabel?.name ?? null,
+                    color: data?.companyContactLabel?.code ?? null,
+                }
                 : null,
             added: MethodsCalculationsHelper.convertDateFromBackend(
                 data?.createdAt
