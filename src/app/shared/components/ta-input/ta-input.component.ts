@@ -45,6 +45,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { InputTypePipe } from '@shared/components/ta-input/pipes/input-type.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { InputErrorPipe } from '@shared/components/ta-input/pipes/input-error.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -64,7 +65,6 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
 import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 @Component({
     selector: 'app-ta-input',
