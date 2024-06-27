@@ -8,7 +8,6 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { CardsModalConfigService } from '@shared/components/ta-shared-modals/cards-modal/services/cards-modal-config.service';
@@ -118,7 +117,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private loadServices: LoadService,
         private tableDropdownService: TableCardDropdownActionsService,
-        private imageBase64Service: ImageBase64Service,
         private loadActiveQuery: LoadActiveQuery,
         private loadClosedQuery: LoadClosedQuery,
         private loadPandinQuery: LoadPendingQuery,
@@ -779,13 +777,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 name: dispatcher?.fullName
                     ? dispatcher.fullName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                avatar: dispatcher?.avatar
-                    ? this.imageBase64Service.sanitizer(dispatcher.avatar)
-                    : null,
+                avatar: dispatcher?.avatarFile?.url,
             },
-            avatarImg: driver?.avatar
-                ? this.imageBase64Service.sanitizer(driver?.avatar)
-                : null,
+            avatarImg: driver?.avatarFile?.url,
             tableDriver: driver?.firstName
                 ? driver?.firstName + ' ' + driver?.lastName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,

@@ -35,7 +35,6 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 // services
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // pipes
 import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
@@ -85,8 +84,7 @@ import { ContactsData } from '@shared/components/ta-input-dropdown-table/models/
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent
-    implements OnInit, OnChanges, OnDestroy
-{
+    implements OnInit, OnChanges, OnDestroy {
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
@@ -132,10 +130,9 @@ export class TaInputDropdownTableComponent
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
-        public imageBase64Service: ImageBase64Service,
         private cdr: ChangeDetectorRef,
         private sanitizer: DomSanitizer
-    ) {}
+    ) { }
 
     ngOnInit() {
         if (this.checkForLoggedUser)

@@ -1,8 +1,10 @@
+import { FileResponse } from "appcoretruckassist";
+
 export interface CommentCompanyUser {
     companyUser: {
         id: number;
         name: string;
-        avatar: string;
+        avatarFile: FileResponse;
     };
     commentId: number;
     commentContent: string;
