@@ -62,15 +62,33 @@ export class LoadModalWaitTimeComponent implements OnInit {
     public totalWaitTime: LoadModalWaitTime;
 
     constructor(private formBuilder: UntypedFormBuilder) {}
+
     ngOnInit(): void {
+        this.generateForm();
+
+        this.mapFieldsToForm();
+
+        this.watchFormChanges();
+
+        // Initial calculation
+        this.calculateTotalWaitTime();
+
+        this.createFormFields();
+    }
+
+    private generateForm() {
         this.waitTimeForm = this.formBuilder.group({
             statusHistory: this.formBuilder.array([]),
         });
+    }
 
+    private mapFieldsToForm() {
         this.statusHistory.forEach((status, index) => {
             this.statusHistoryForm().push(this.mapHistoryStatus(status, index));
         });
+    }
 
+    private watchFormChanges() {
         this.statusHistoryForm().valueChanges.subscribe(() => {
             this.updateTimeDifferences();
             this.calculateTotalWaitTime();
@@ -79,12 +97,6 @@ export class LoadModalWaitTimeComponent implements OnInit {
                 this.updateStatusHistory();
             }
         });
-
-        // Initial calculation
-        this.calculateTotalWaitTime();
-
-        this.createFormFields();
-        this.show = true;
     }
 
     private createFormFields() {
@@ -100,6 +112,8 @@ export class LoadModalWaitTimeComponent implements OnInit {
         this.endTimeInputConfig = LoadModalConfig.getWaitTimeEndTimeConfig(
             this.areFieldsDisabled
         );
+
+        this.show = true;
     }
 
     public mapHistoryStatus(
@@ -130,9 +144,7 @@ export class LoadModalWaitTimeComponent implements OnInit {
         ) as UntypedFormArray;
     }
 
-    private splitDateTime(
-        dateTime: string | null
-    ): [string | null, string | null] {
+    private splitDateTime(dateTime: string): [string | null, string | null] {
         if (!dateTime) {
             return [null, null];
         }
@@ -143,8 +155,8 @@ export class LoadModalWaitTimeComponent implements OnInit {
     }
 
     private calculateTimeDifference(
-        dateTimeFrom: string | null,
-        dateTimeTo: string | null
+        dateTimeFrom: string,
+        dateTimeTo: string
     ): {
         displayString: string;
         totalMinutes: number;

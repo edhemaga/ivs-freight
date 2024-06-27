@@ -52,7 +52,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
-import { LoadModalWaitTimeComponent } from './components/load-modal-wait-time/load-modal-wait-time.component';
+import { LoadModalWaitTimeComponent } from '@pages/load/pages/load-modal/components/load-modal-wait-time/load-modal-wait-time.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -120,10 +120,10 @@ import { LoadYearDropdown } from '@pages/load/pages/load-modal/models/load-year-
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { LoadAdditionalPayment } from '@pages/load/pages/load-modal/models/load-additional-payment.model';
 import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/load-modal-invoice-progress';
+import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/load-modal-wait-time-form';
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import { LoadModalWaitTimeFormField } from './models/load-modal-wait-time-form';
 
 @Component({
     selector: 'app-load-modal',
@@ -2843,7 +2843,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         return stops;
     }
-    remapStopWaitTime(): LoadStatusHistoryResponse[] {
+    private remapStopWaitTime(): LoadStatusHistoryResponse[] {
         const waitTime = this.pickupStatusHistory.concat(
             ...this.extraStopStatusHistory,
             ...this.deliveryStatusHistory
@@ -3357,7 +3357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...item,
                             name: item?.fullName,
-                            // logoName: item?.avatarFile.url,
+                            logoName: item?.avatarFile?.url,
                         };
                     });
 
@@ -4383,7 +4383,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         newHistory: LoadStatusHistoryResponse[],
         action: string,
         index: number
-    ) {
+    ): void {
         switch (action) {
             case LoadModalStringEnum.PICKUP:
                 this.pickupStatusHistory = newHistory;

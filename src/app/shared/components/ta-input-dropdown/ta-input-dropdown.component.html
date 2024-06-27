@@ -896,9 +896,7 @@
                         [ngClass]="{
                             active: option.id === _activeItem?.id
                         }"
-                        [src]="
-                            this.imageBase64Service.sanitizer(option.logoName)
-                        "
+                        [src]="option.logoName"
                         class="svg-template-logo"
                     />
                     <div
