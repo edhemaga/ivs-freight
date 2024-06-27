@@ -1,11 +1,5 @@
 <app-ta-modal
-    [modalTitle]="
-        isConvertedToTemplate
-            ? 'Create Load Template'
-            : !editData?.type?.includes('edit')
-            ? 'Create Load'
-            : 'Edit Load'
-    "
+    [modalTitle]="modalTitle"
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
@@ -34,22 +28,40 @@
 
             <div
                 class="align-items-center load-ftl-first-row"
-                [ngClass]="{ 'template-row': isConvertedToTemplate }"
+                [ngClass]="{
+                    'template-row': isConvertedToTemplate,
+                    'edit-load': editLoad
+                }"
             >
                 <!-- FTL-LTL Switcher -->
 
                 <div class="tabs-container">
-                    <app-ta-tab-switch
-                        [tabs]="tabs"
-                        (switchClicked)="onTabChange($event, 'ftl-ltl')"
-                        [type]="'type2-modal-popup'"
+                    <ng-container
+                        *ngIf="!editData?.type?.includes('edit'); else editLoad"
                     >
-                    </app-ta-tab-switch>
+                        <app-ta-tab-switch
+                            [tabs]="tabs"
+                            (switchClicked)="onTabChange($event, 'ftl-ltl')"
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    </ng-container>
+
+                    <ng-template #editLoad>
+                        <app-ta-input-dropdown
+                            [template]="'svgtext-template'"
+                            formControlName="status"
+                            [inputConfig]="getStatusInputConfig"
+                            [options]="statusDropDownList"
+                            [activeItem]="selectedStatus"
+                            (selectedItem)="onSelectDropdown($event, 'status')"
+                        ></app-ta-input-dropdown>
+                    </ng-template>
                 </div>
 
                 <!-- Load Template Picker -->
 
-                <ng-container *ngIf="!isConvertedToTemplate">
+                <ng-container *ngIf="!isConvertedToTemplate && !editLoad">
                     <ng-container *ngIf="!isTemplateSelected">
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -133,7 +145,7 @@
                     <app-ta-input-dropdown
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
-                        [inputConfig]="getDispatcherInputConfig"
+                        [inputConfig]="getDispatcherInputConfig()"
                         [options]="labelsDispatcher"
                         [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
@@ -382,9 +394,7 @@
                         </p>
                         <p class="m-0 ta-font-bold">SHIPPER, LOCATION</p>
                         <p class="m-0 ta-font-bold">DATE & TIME</p>
-                        <p class="m-0 ta-font-bold text-right">
-                            LEG, CONTACT
-                        </p>
+                        <p class="m-0 ta-font-bold text-right">LEG, CONTACT</p>
                     </div>
 
                     <!-- Pickup Stop  -->
@@ -1177,7 +1187,6 @@
                         </div>
 
                         <!-- Stop Items -->
-
                         <div class="stop-items-wrapper">
                             <app-ta-custom-card
                                 [cardName]="'Item'"
@@ -1293,6 +1302,9 @@
                             | financialCalculation : 'payment'
                             | currency
                     "
+                    [baseRate]="loadForm.get('baseRate').value"
+                    [revised]="loadForm.get('revisedRate').value"
+                    [tonu]="loadForm.get('tonuRate').value"
                     [disablePaymentAction]="!loadForm.get('baseRate').value"
                     [thirdHeaderTitle]="'Invoice Ageing'"
                     [isCardOpen]="true"
@@ -1309,60 +1321,46 @@
                             <app-ta-input
                                 formControlName="baseRate"
                                 [inputConfig]="loadBaseRateInputConfig"
+                                [ngClass]="{
+                                    'load-financial-container-override':
+                                        loadForm.get('tonuRate').value ||
+                                        loadForm.get('revisedRate').value
+                                }"
                             ></app-ta-input>
 
                             <!-- Driver Rate -->
-                            <!--  *ngIf="
-                                selectedDispatches &&
-                                selectedDispatches.payType === 'Flat Rate'
-                            "
- -->
-                            <!-- <app-ta-input
+                            <app-ta-input
+                                *ngIf="showDriverRate"
                                 formControlName="driverRate"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Driver Rate',
-                                    labelInInput: true,
-                                    isRequired: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'purple',
-                                    inputCursorOnRightSide: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true
-                                }"
-                            ></app-ta-input>  -->
+                                [inputConfig]="getDriverRateInputConfig"
+                            ></app-ta-input>
 
                             <!-- Adjusted Rate -->
-                            <!--  *ngIf="
-                                    selectedDispatches &&
-                                    selectedDispatches.payType !==
-                                        'Flat Rate' &&
-                                    this.selectedAdditionalBillings[0]
-                                        ?.checked &&
-                                    this.selectedAdditionalBillings[0]?.id === 6
-                                " -->
-                            <!-- <app-ta-input
+                            <app-ta-input
+                                *ngIf="showAdjustedRate"
                                 formControlName="adjustedRate"
-                                [inputConfig]="{
-                                    name: 'price-separator',
-                                    type: 'text',
-                                    label: 'Adjusted',
-                                    labelInInput: true,
-                                    priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
-                                    placeholderIconRightSide: 'dollar',
-                                    placeholderIconColor: 'purple',
-                                    inputCursorOnRightSide: true,
-                                    removeInput: true,
-                                    hideErrorMessage: true,
-                                    hideRequiredCheck: true,
-                                    hideDangerMark: true
-                                }"
+                                [inputConfig]="getAdjustedRateInputConfig"
                                 (clear)="removeAdditionalBilling('adjusted', 0)"
-                            ></app-ta-input> -->
+                                [ngClass]="{
+                                    'load-financial-container-override':
+                                        loadForm.get('tonuRate').value ||
+                                        loadForm.get('revisedRate').value
+                                }"
+                            ></app-ta-input>
+
+                            <!-- Tonu Rate -->
+                            <app-ta-input
+                                *ngIf="showTonuRate"
+                                formControlName="tonuRate"
+                                [inputConfig]="getTonuRateInputConfig"
+                            ></app-ta-input>
+
+                            <!-- Adjusted Rate -->
+                            <app-ta-input
+                                *ngIf="showRevisedRate"
+                                formControlName="revisedRate"
+                                [inputConfig]="getRevisedRateInputConfig"
+                            ></app-ta-input>
 
                             <div formArrayName="additionalBillings">
                                 <div
@@ -1376,6 +1374,11 @@
                                 >
                                     <div [formGroupName]="indx">
                                         <app-ta-input
+                                            [ngClass]="{
+                                                'load-financial-container-override':
+                                                    loadForm.get('tonuRate')
+                                                        .value
+                                            }"
                                             formControlName="billingValue"
                                             [inputConfig]="
                                                 getBillingValueInputConfig(
@@ -1480,7 +1483,7 @@
                         <div class="load-financial-invoice">
                             <app-ta-input
                                 formControlName="invoicedDate"
-                                [inputConfig]="loadInvoiceDateInputConfig"
+                                [inputConfig]="loadInvoiceDateInputConfig()"
                             ></app-ta-input>
 
                             <ng-container *ngIf="invoicePercent.daysToPay">
@@ -1499,7 +1502,6 @@
             </div>
 
             <!-- Comments -->
-
             <div
                 class="load-modal-row"
                 *ngIf="editData?.type?.includes('edit')"

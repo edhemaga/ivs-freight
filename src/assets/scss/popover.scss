@@ -2207,6 +2207,45 @@
             text-transform: unset;
         }
     }
+
+    .multiple-details-container {
+        position: relative;
+        top: -4px;
+        width: 162px;
+        border-radius: 3px;
+        padding: 4px 7px;
+        background: $ta-black-2;
+
+        .popover-item {
+            text-transform: capitalize;
+
+            &:hover:not(.active) {
+                background: $ta-black;
+            }
+
+            &.active {
+                .counter-container {
+                    background: $ta-blue-13;
+
+                    p {
+                        color: $white;
+                    }
+                }
+            }
+
+            .counter-container {
+                padding: 2px 5px;
+                border-radius: 10px;
+                background: $ta-black;
+
+                p {
+                    font-size: 11px;
+                    line-height: 14px;
+                    color: $white-4;
+                }
+            }
+        }
+    }
 }
 
 .pickup-delivery-popover {
