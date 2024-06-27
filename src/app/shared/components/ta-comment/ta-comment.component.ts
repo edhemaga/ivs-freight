@@ -324,6 +324,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.isEditing = false;
                 }
 
+                console.log('this.isEdited', this.isEdited);
+
                 const dateAndTimeNow =
                     MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
                         new Date()

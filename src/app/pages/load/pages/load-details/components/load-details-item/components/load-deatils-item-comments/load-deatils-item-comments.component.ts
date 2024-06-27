@@ -14,6 +14,7 @@ import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/compon
 import { LoadResponse, SignInResponse } from 'appcoretruckassist';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
+import moment from 'moment';
 
 @Component({
     selector: 'app-load-deatils-item-comments',
@@ -149,8 +150,8 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
 
     public handleSortActionEmit(sortDirection: string): void {
         this.comments = this.comments.sort((a, b) => {
-            const dateA = new Date(a.commentDate).getTime();
-            const dateB = new Date(b.commentDate).getTime();
+            const dateA = moment(a.commentDate).valueOf();
+            const dateB = moment(b.commentDate).valueOf();
 
             if (sortDirection === LoadDetailsItemStringEnum.ASC) {
                 return dateA - dateB;
