@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// modules
+import moment from 'moment';
+
 // components
 import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search/ta-comments-search.component';
 
@@ -14,12 +17,11 @@ import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/compon
 import { LoadResponse, SignInResponse } from 'appcoretruckassist';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
-import moment from 'moment';
 
 @Component({
-    selector: 'app-load-deatils-item-comments',
-    templateUrl: './load-deatils-item-comments.component.html',
-    styleUrls: ['./load-deatils-item-comments.component.scss'],
+    selector: 'app-load-details-item-comments',
+    templateUrl: './load-details-item-comments.component.html',
+    styleUrls: ['./load-details-item-comments.component.scss'],
     standalone: true,
     imports: [
         // modules
@@ -29,7 +31,7 @@ import moment from 'moment';
         TaCommentsSearchComponent,
     ],
 })
-export class LoadDeatilsItemCommentsComponent implements OnChanges {
+export class LoadDetailsItemCommentsComponent implements OnChanges {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
     @Input() isSearchComment: boolean;
@@ -46,7 +48,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     private editedCommentId: number;
     private deletedCommentId: number;
 
-    constructor() { }
+    constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.load?.currentValue) {
@@ -72,7 +74,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 companyUser: {
                     id: comment.companyUser.id,
                     name: comment.companyUser.fullName,
-                    avatarFile: null /* comment.companyUser.avatar */,
+                    avatarFile: this.companyUser.avatarFile,
                 },
                 commentId: comment.id,
                 commentContent: comment.commentContent,
@@ -97,7 +99,7 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
             companyUser: {
                 id: this.companyUser.userId,
                 name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                avatarFile: null  /*  this.companyUser.avatar */,
+                avatarFile: this.companyUser.avatarFile,
             },
             commentContent: null,
             commentDate: null,

@@ -12,7 +12,7 @@
                 <!-- Regular Layout -->
 
                 <ng-container
-                    *ngIf="!isDeatilsCommentLayout; else deatilsLayout"
+                    *ngIf="!isDetailsCommentLayout; else detailsLayout"
                 >
                     <img
                         [src]="
@@ -51,8 +51,8 @@
 
                 <!-- Details layout -->
 
-                <ng-template #deatilsLayout>
-                    <div class="d-flex align-items-center deatils-container">
+                <ng-template #detailsLayout>
+                    <div class="d-flex align-items-center details-container">
                         <img
                             [ngStyle]="{ 'margin-bottom': !isMe ? '6px' : 0 }"
                             [src]="
@@ -201,11 +201,11 @@
                 [ngClass]="{
                     'no-value':
                         commentInput?.textContent === 'Write Comment...',
-                    details: isDeatilsCommentLayout
+                    details: isDetailsCommentLayout
                 }"
                 [ngStyle]="{
                     'margin-top':
-                        isDeatilsCommentLayout && !isCommenting
+                        isDetailsCommentLayout && !isCommenting
                             ? isMe
                                 ? '-8px'
                                 : '-6px'

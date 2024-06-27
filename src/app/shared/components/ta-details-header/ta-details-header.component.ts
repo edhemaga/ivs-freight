@@ -7,12 +7,17 @@ import {
     EventEmitter,
     OnChanges,
     SimpleChanges,
+    ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // bootstrap
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 // components
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
@@ -56,6 +61,8 @@ import { MultipleSelectDetailsDropdownItem } from '@pages/load/pages/load-detail
     ],
 })
 export class TaDetailsHeaderComponent implements OnInit, OnChanges {
+    @ViewChild('popover') multipleDetailsPopover: NgbPopover;
+
     @Input() headerText: string = null;
     @Input() tooltipHeaderName: string = '';
     @Input() route: string = '';
@@ -104,6 +111,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Output() makeRequest = new EventEmitter<any>();
     @Output() mapBtnEmitter = new EventEmitter<boolean>();
     @Output() searchBtnEmitter = new EventEmitter<boolean>();
+    @Output() multipleDetailsSelectDropdownEmitter = new EventEmitter<number>();
     @Output() dropActions = new EventEmitter<any>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
@@ -323,5 +331,11 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.isSearchBtnDisplayed = false;
 
         this.searchBtnEmitter.emit(true);
+    }
+
+    public handleMultipleDetailsSelectDropdownClick(id: number): void {
+        this.multipleDetailsSelectDropdownEmitter.emit(id);
+
+        this.multipleDetailsPopover.close();
     }
 }

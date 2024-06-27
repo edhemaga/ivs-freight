@@ -110,7 +110,9 @@
                     <ng-container
                         *ngIf="
                             (danger || !counterData) &&
-                            headerText !== 'Drug & Alcohol'
+                            headerText !== 'Drug & Alcohol' &&
+                            headerText !== 'Comment' &&
+                            headerText !== 'Status History'
                         "
                     >
                         <div
@@ -440,6 +442,11 @@
                 <div
                     class="popover-item justify-content-between"
                     [ngClass]="{ active: dropdownItem.isActive }"
+                    (click)="
+                        handleMultipleDetailsSelectDropdownClick(
+                            dropdownItem.id
+                        )
+                    "
                 >
                     <p class="m-0">
                         {{ dropdownItem.title }}

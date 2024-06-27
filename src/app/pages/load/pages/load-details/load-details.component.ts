@@ -255,6 +255,13 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
+    public onDetailsSelectClick(id: number): void {
+        this.loadDetailsConfig = LoadDetailsHelper.getLoadDetailsConfig(
+            this.loadObject,
+            id
+        );
+    }
+
     private handleLoadIdRouteChange(): void {
         this.detailsPageService.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))

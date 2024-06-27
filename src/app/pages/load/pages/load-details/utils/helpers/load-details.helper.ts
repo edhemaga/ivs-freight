@@ -65,7 +65,10 @@ export class LoadDetailsHelper {
         };
     }
 
-    static getLoadDetailsConfig(load: LoadResponse): DetailsConfig[] {
+    static getLoadDetailsConfig(
+        load: LoadResponse,
+        dropdownItemId: number = 0
+    ): DetailsConfig[] {
         return [
             {
                 id: 0,
@@ -81,7 +84,6 @@ export class LoadDetailsHelper {
                 template: 'stop',
                 req: false,
                 hide: true,
-
                 isMapDisplayed: true,
                 isMapBtn: true,
                 capsulaText:
@@ -94,7 +96,7 @@ export class LoadDetailsHelper {
             },
             {
                 id: 2,
-                name: 'Comment',
+                name: dropdownItemId === 0 ? 'Comment' : 'Status History',
                 template: 'comment',
                 hide: false,
                 hasDanger: false,
@@ -102,27 +104,47 @@ export class LoadDetailsHelper {
                 capsulaText: false,
                 hasMultipleDetailsSelectDropdown: true,
                 multipleDetailsSelectDropdown:
-                    this.getMultipleSelectDetailsDropdown(load),
-                isSearchBtn: true,
+                    this.getMultipleSelectDetailsDropdown(load, dropdownItemId),
+                isSearchBtn: !!load?.comments?.length,
                 data: load,
-                length: load?.comments?.length,
+                length:
+                    dropdownItemId === 0
+                        ? load?.comments?.length
+                        : load?.statusHistory?.length,
             },
         ];
     }
 
     static getMultipleSelectDetailsDropdown(
-        load: LoadResponse
+        load: LoadResponse,
+        dropdownItemId: number = 0
     ): MultipleSelectDetailsDropdownItem[] {
-        return LoadDetailsConstants.MULTIPLE_SELECT_DETAILS_DROPDOWN.map(
-            (dropdownItem, index) => {
-                return {
-                    ...dropdownItem,
-                    length:
-                        index === 0
-                            ? load?.comments?.length
-                            : load?.statusHistory?.length,
-                };
-            }
-        );
+        let multipleSelectDetailsDropdown: MultipleSelectDetailsDropdownItem[] =
+            JSON.parse(
+                JSON.stringify(
+                    LoadDetailsConstants.MULTIPLE_SELECT_DETAILS_DROPDOWN
+                )
+            );
+
+        if (dropdownItemId) {
+            multipleSelectDetailsDropdown = multipleSelectDetailsDropdown.map(
+                (dropdownItem) => {
+                    return {
+                        ...dropdownItem,
+                        isActive: dropdownItem.id === dropdownItemId,
+                    };
+                }
+            );
+        }
+
+        return multipleSelectDetailsDropdown.map((dropdownItem, index) => {
+            return {
+                ...dropdownItem,
+                length:
+                    index === 0
+                        ? load?.comments?.length
+                        : load?.statusHistory?.length,
+            };
+        });
     }
 }
