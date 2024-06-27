@@ -56,18 +56,13 @@
                             <div class="d-flex align-items-center">
                                 <ng-container
                                     *ngIf="
-                                        editData?.data?.avatarImg;
+                                        editData?.data?.avatarFile?.url;
                                         else noImage
                                     "
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="
-                                            imageBase64Service.sanitizer(
-                                                editData.data.avatar ||
-                                                    editData.data.avatarImg
-                                            )
-                                        "
+                                        [src]="editData?.data?.avatarFile?.url"
                                     />
                                 </ng-container>
 
@@ -127,12 +122,13 @@
                             <div class="d-flex align-items-center w-100 gap-1">
                                 <ng-container
                                     *ngIf="
-                                        editData?.svg && editData?.data?.avatar
+                                        editData?.svg &&
+                                        editData?.data?.avatarFile?.url
                                     "
                                 >
                                     <svg-icon
                                         class="confirmation-svg"
-                                        [src]="editData?.data?.avatar"
+                                        [src]="editData?.data?.avatarFile?.url"
                                     ></svg-icon>
                                 </ng-container>
 
@@ -194,11 +190,7 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="
-                                            imageBase64Service.sanitizer(
-                                                item.avatar || item.avatarImg
-                                            )
-                                        "
+                                        [src]="item.avatarImg"
                                     />
                                 </ng-container>
 
@@ -253,11 +245,14 @@
                         <ng-template #regularTemplate>
                             <div class="d-flex align-items-center w-100 gap-1">
                                 <ng-container
-                                    *ngIf="editData?.svg && item?.data?.avatar"
+                                    *ngIf="
+                                        editData?.svg &&
+                                        item?.data?.avatarFile?.url
+                                    "
                                 >
                                     <svg-icon
                                         class="confirmation-svg"
-                                        [src]="item?.data?.avatar"
+                                        [src]="item?.data?.avatarFile?.url"
                                     ></svg-icon>
                                 </ng-container>
 

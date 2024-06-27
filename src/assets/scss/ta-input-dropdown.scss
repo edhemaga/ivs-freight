@@ -602,6 +602,7 @@
 
                     &.add-new {
                         grid-template-columns: 1fr 1fr;
+                        margin-right: 6px;
                     }
 
                     &.dropdown-option {
@@ -925,6 +926,13 @@
                 }
             }
 
+            &.dropdown-status {
+                .dropdown-option {
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+            }
+
             //------------------------ Load Dispatcher Template ------------------------
             .load-dispatcher-template {
                 display: flex;
@@ -935,7 +943,7 @@
             //------------------------ Load Dispatches TTD Template ------------------------
             .load-dispatches-ttd-template {
                 display: grid;
-                grid-template-columns: repeat(3, 156px) 97px;
+                grid-template-columns: repeat(3, 155px) 97px;
                 align-items: center;
 
                 .load-dispatches-container {
@@ -943,6 +951,14 @@
                     align-items: center;
                     gap: 6px;
                     position: relative;
+
+                    .owner-avatar {
+                        position: absolute;
+                        left: 13px;
+                        bottom: -3px;
+                        width: 10px;
+                        height: 10px;
+                    }
 
                     .load-dispatch-driver,
                     .load-dispatch-truck,
@@ -989,7 +1005,7 @@
                 }
 
                 .load-dispatch-driver-rate {
-                    width: 115px;
+                    width: 130px;
                     text-align: right;
                     font-size: 11px;
                     font-weight: 400;
@@ -1010,6 +1026,7 @@
                 }
 
                 &.active {
+                    .load-dispatch-driver-rate,
                     .load-dispatch-driver,
                     .load-dispatch-truck,
                     .load-dispatch-trailer {
@@ -1726,7 +1743,7 @@
         .ic_trailer_dryvan {
             svg {
                 path {
-                    fill: $ta-blue-21;
+                    fill: $ta-blue-24;
                 }
             }
         }
@@ -1827,4 +1844,8 @@
             }
         }
     }
+}
+
+.hide-after-arrow .dropdown-option.active::after {
+    display: none !important;
 }

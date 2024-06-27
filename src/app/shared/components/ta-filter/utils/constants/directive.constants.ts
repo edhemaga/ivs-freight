@@ -154,12 +154,12 @@ export class DirectiveConstants {
             color: '#C1C1C1',
         },
         {
-            id: 2,
+            id: 3,
             name: 'UNASSIGNED',
             color: '#C1C1C1',
         },
         {
-            id: 3,
+            id: 2,
             name: 'ASSIGNED',
             color: '#9F9F9F',
         },

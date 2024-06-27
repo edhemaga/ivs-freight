@@ -12,7 +12,7 @@ export class CardDropdownHelper {
             new RegExp(commentHighlight, 'gi'),
             (match) => {
                 return (
-                    '<span class="highlighted" style="color:#92b1f5; background: #6f9ee033">' +
+                    '<span class="highlighted" style="color:#0B49D1; background: #3B73ED33">' +
                     match +
                     '</span>'
                 );

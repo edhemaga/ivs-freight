@@ -13,17 +13,23 @@ export class FormDataService {
         Object.entries(data).map((item: any) => {
             if (item[1] instanceof Array) {
                 item[1].forEach((element, ind) => {
-                    if (
-                        element instanceof Object &&
-                        !(item[1][0] instanceof Blob)
-                    ) {
+                    if (element instanceof Object && !(item[1][0] instanceof Blob)) {
                         Object.entries(element).map((it) => {
                             if (it[1] instanceof Array) {
-                                it[1].map((ita) => {
-                                    this.formData.append(
-                                        `${item[0]}[${ind}].${it[0]}`,
-                                        ita as any
-                                    );
+                                it[1].map((ita, mapIndex) => {
+                                    if (ita instanceof Object) {
+                                        Object.entries(ita).forEach(([subKey, subValue]) => {
+                                            this.formData.append(
+                                                `${item[0]}[${ind}].${it[0]}[${mapIndex}].${subKey}`,
+                                                subValue as any
+                                            );
+                                        });
+                                    } else {
+                                        this.formData.append(
+                                            `${item[0]}[${ind}].${it[0]}`,
+                                            ita as any
+                                        );
+                                    }
                                 });
                             } else if (it[1] instanceof Object) {
                                 Object.entries(it[1]).map((at) => {
@@ -54,7 +60,7 @@ export class FormDataService {
                         it[1] instanceof Object
                             ? JSON.stringify(it[1])
                             : (it[1] as any);
-
+    
                     insideData &&
                         this.formData.append(`${item[0]}.${it[0]}`, insideData);
                 });
@@ -65,6 +71,7 @@ export class FormDataService {
             }
         });
     }
+    
 
     get formDataValue() {
         return this.formData;

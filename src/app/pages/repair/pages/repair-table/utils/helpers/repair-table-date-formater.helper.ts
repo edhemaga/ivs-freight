@@ -97,6 +97,11 @@ export class RepairTableDateFormaterHelper {
                 );
                 toDate = moment(today);
                 break;
+            case RepairTableStringEnum.LAST_YEAR:
+            case RepairTableStringEnum.YEAR_BEFORE_LAST:
+                fromDate = moment(today).startOf(RepairTableStringEnum.YEAR);
+                toDate = moment(today).endOf(RepairTableStringEnum.YEAR);
+                break;
             default:
                 break;
         }
