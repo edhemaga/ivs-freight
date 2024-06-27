@@ -1062,11 +1062,7 @@
                                     option.driver?.id ===
                                     _activeItem?.driver?.id
                             }"
-                            [src]="
-                                this.imageBase64Service.sanitizer(
-                                    option?.driver?.logoName
-                                )
-                            "
+                            [src]="option?.driver?.logoName"
                             class="svg-template-logo"
                         />
                         <div

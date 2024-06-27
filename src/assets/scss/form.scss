@@ -973,7 +973,7 @@
     margin-top: 26px;
     margin-bottom: 32px;
 
-    &.edit-load{
+    &.edit-load {
         grid-template-columns: 132px repeat(2, 230px);
     }
 
@@ -1309,7 +1309,7 @@ app-load-modal {
     }
 }
 
-.load-shipper-stops{
+.load-shipper-stops {
     grid-template-columns: 310px 92px !important;
 
     div:nth-child(3) {
@@ -1319,4 +1319,48 @@ app-load-modal {
 
 .load-financial-container-override input {
     text-decoration: line-through;
+}
+
+.load-stop-wait-time-grid {
+    .valid-focus-out-filled {
+        background-color: $white !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0 !important;
+    }
+
+    // .input-custom-group .input-label {
+    //     left: 0;
+    //     width: 100%;
+    // }
+
+    // .input-icon {
+    //     display: none;
+
+    //     &:after {
+    //         display: none !important;
+    //     }
+    // }
+
+    .inactive-filled {
+        .input-label {
+            display: none;
+        }
+    }
+
+    .input-control {
+        background-color: $white !important;
+        text-align: center;
+    }
+
+    &-wrapper {
+        &:hover {
+            background-color: $bw2;
+
+            .input-control {
+                background-color: $bw2 !important;
+            }
+        }
+    }
 }

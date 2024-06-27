@@ -52,6 +52,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { LoadModalHazardousComponent } from '@pages/load/pages/load-modal/components/load-modal-hazardous/load-modal-hazardous.component';
+import { LoadModalWaitTimeComponent } from './components/load-modal-wait-time/load-modal-wait-time.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -97,6 +98,7 @@ import {
     AddressEntity,
     LoadStopItemResponse,
     DispatchLoadModalResponse,
+    LoadStatusHistoryResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -121,6 +123,7 @@ import { LoadModalInvoiceProgress } from '@pages/load/pages/load-modal/models/lo
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import { LoadModalWaitTimeFormField } from './models/load-modal-wait-time-form';
 
 @Component({
     selector: 'app-load-modal',
@@ -151,6 +154,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadModalStopItemsComponent,
         LoadModalHazardousComponent,
         TaProgresBarComponent,
+        LoadModalWaitTimeComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -364,6 +368,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isRequirementVisible: boolean = false;
     public showRevisedRate: boolean;
     public showTonuRate: boolean;
+    public pickupStatusHistory: LoadStatusHistoryResponse[] = [];
+    public deliveryStatusHistory: LoadStatusHistoryResponse[] = [];
+    public extraStopStatusHistory: LoadStatusHistoryResponse[][] = [];
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -531,6 +538,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.getLoadStatus === LoadModalStringEnum.STATUS_INVOICED;
     }
 
+    public get isLoadClosed(): boolean {
+        return this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+    }
+
     public trackByIdentity(_, index: number): number {
         return index;
     }
@@ -550,8 +561,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     private handleRevisedRateVisiblity(): void {
-        const show =
-            this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+        const show = this.isLoadClosed;
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.REVISED),
             show
@@ -607,6 +617,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             pickuplegMinutes: [null],
             pickuplegCost: [null],
             pickupInvolveDriver: [null],
+            pickupStatusHistory: [null],
 
             // delivery stop
             deliveryStop: [LoadModalStringEnum.DELIVERY_2],
@@ -2233,7 +2244,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.loadModalBill = {
                         ...this.loadModalBill,
-                        baseRate:  MethodsCalculationsHelper.convertThousanSepInNumber(value),
+                        baseRate:
+                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                                value
+                            ),
                     };
                 }
             });
@@ -2315,7 +2329,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.loadModalPayment = {
                     paidInFull,
                     shortPaid,
-                    advance
+                    advance,
                 };
             });
 
@@ -2829,6 +2843,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         return stops;
     }
+    remapStopWaitTime(): LoadStatusHistoryResponse[] {
+        const waitTime = this.pickupStatusHistory.concat(
+            ...this.extraStopStatusHistory,
+            ...this.deliveryStatusHistory
+        );
+
+        // This is patched value from form
+        waitTime.forEach((time: LoadModalWaitTimeFormField) => {
+            time.dateTimeFrom =
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    time.startDate,
+                    time.startTime
+                );
+            time.dateTimeTo =
+                MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                    time.endDate,
+                    time.endTime
+                );
+        });
+
+        return waitTime;
+    }
 
     public drawStopOnMap(): void {
         const routes: LoadStopRoutes[] = [];
@@ -3321,7 +3357,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         return {
                             ...item,
                             name: item?.fullName,
-                            /*     logoName: item?.avatar, */
+                            // logoName: item?.avatarFile.url,
                         };
                     });
 
@@ -3381,7 +3417,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         LoadModalStringEnum.EMPTY_SPACE_STRING,
                                         item.driver?.lastName
                                     ),
-                                    /*  logoName: item.driver?.avatar, */
+                                    logoName: item.driver?.avatarFile?.url,
                                     owner: !!item.driver?.owner,
                                 },
                                 coDriver: {
@@ -3866,6 +3902,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalMinutes: this.totalLegMinutes,
             pays: this.additionalPayments().value,
             status: this.selectedStatus.name,
+            statusHistory: this.remapStopWaitTime(),
             tonuRate,
             revisedRate,
             // invoicedDate,
@@ -4255,11 +4292,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         stops.forEach((stop, index) => {
             if (index === 0) {
+                this.pickupStatusHistory = stop.statusHistory;
                 this.pickupStopItems = [stop.items];
             } else if (index !== stops.length - 1) {
                 this.extraStopItems[index - 1] = [stop.items];
+                this.extraStopStatusHistory[index - 1] = stop.statusHistory;
             } else {
                 this.deliveryStopItems = [stop.items];
+                this.deliveryStatusHistory = stop.statusHistory;
             }
         });
 
@@ -4295,13 +4335,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         timeType: extraStop.timeType.name.toUpperCase(),
                         timeFrom: extraStop.timeFrom,
                         timeTo: extraStop.timeTo,
-                        arive: extraStop.arrive,
+                        arrive: extraStop.arrive,
                         depart: extraStop.depart,
                         legMiles: extraStop.legMiles,
                         legHours: extraStop.legHours,
                         legMinutes: extraStop.legMinutes,
                         items: extraStop.items,
                         openClose: false,
+                        statusHistory: extraStop.statusHistory,
                     });
 
                 this.loadExtraStopsDateRange[index] = !!extraStop.dateTo;
@@ -4338,6 +4379,26 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         */
     }
 
+    public pickupStatusHistoryChange(
+        newHistory: LoadStatusHistoryResponse[],
+        action: string,
+        index: number
+    ) {
+        console.log(newHistory);
+        switch (action) {
+            case LoadModalStringEnum.PICKUP:
+                this.pickupStatusHistory = newHistory;
+                break;
+
+            case LoadModalStringEnum.EXTRA_STOP:
+                this.extraStopStatusHistory[index] = newHistory;
+                break;
+
+            case LoadModalStringEnum.DELIVERY:
+                this.deliveryStatusHistory = newHistory;
+                break;
+        }
+    }
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

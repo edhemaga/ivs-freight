@@ -1,0 +1,91 @@
+<div>
+    <app-ta-custom-card
+        [cardName]="'Wait Time'"
+        [hasActionSvg]="true"
+        [hasBodyData]="true"
+        [hasArrow]="false"
+        [animationMarginParams]="{
+            marginTop: '10px',
+            marginBottom: '12px'
+        }"
+        [customClass]="'scrollable'"
+        [isCardOpen]="true"
+    >
+        <div class="load-stop-wait-time">
+            <div class="d-grid align-items-center load-stop-wait-time-grid">
+                <p class="m-0 ta-font-bold text-left">STATUS</p>
+                <p class="m-0 ta-font-bold">START DATE<span>*</span></p>
+                <p class="m-0 ta-font-bold">START TIME<span>*</span></p>
+                <p class="m-0 ta-font-bold">END DATE<span>*</span></p>
+                <p class="m-0 ta-font-bold">END TIME<span>*</span></p>
+                <p class="m-0 ta-font-bold text-right">DURATION</p>
+            </div>
+
+            <form [formGroup]="waitTimeForm" *ngIf="show">
+                <div formArrayName="statusHistory">
+                    <div
+                        class="d-grid load-stop-wait-time-grid load-stop-wait-time-grid-wrapper"
+                        *ngFor="
+                            let additional of statusHistoryForm().controls;
+                            let index = index
+                        "
+                        [formGroupName]="index"
+                    >
+                        <p
+                            class="m-0 ta-font-bold text-left d-flex align-items-center text-uppercase"
+                            [ngStyle]="
+                                statusHistoryForm().at(index).get('status')
+                                    .value | loadStatusColor
+                            "
+                        >
+                            {{
+                                statusHistoryForm().at(index).get('status')
+                                    .value
+                            }}
+                        </p>
+                        <div class="m-0 ta-font-bold">
+                            <app-ta-input
+                                formControlName="startDate"
+                                [inputConfig]="startDateInputConfig"
+                            ></app-ta-input>
+                        </div>
+                        <div class="m-0 ta-font-bold">
+                            <app-ta-input
+                                formControlName="startTime"
+                                [inputConfig]="startTimeInputConfig"
+                            ></app-ta-input>
+                        </div>
+                        <div class="m-0 ta-font-bold">
+                            <app-ta-input
+                                formControlName="endDate"
+                                [inputConfig]="endDateInputConfig"
+                            ></app-ta-input>
+                        </div>
+                        <div class="m-0 ta-font-bold">
+                            <app-ta-input
+                                formControlName="endTime"
+                                [inputConfig]="endTimeInputConfig"
+                            ></app-ta-input>
+                        </div>
+                        <p
+                            class="m-0 text-right load-stop-wait-time-footer-sum ta-font-medium d-flex align-items-center justify-content-end"
+                        >
+                            {{ timeDifferences[index].displayString }}
+                        </p>
+                    </div>
+                </div>
+            </form>
+
+            <div
+                class="load-stop-wait-time-footer d-flex justify-content-between"
+            >
+                <div class="load-stop-wait-time-footer-total ta-font-medium">
+                    Total
+                </div>
+                <div class="load-stop-wait-time-footer-sum ta-font-bold">
+                    {{ totalWaitTime.displayString }}
+                </div>
+            </div>
+        </div>
+    </app-ta-custom-card>
+</div>
