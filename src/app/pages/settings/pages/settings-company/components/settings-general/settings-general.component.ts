@@ -15,7 +15,6 @@ import { UntypedFormControl } from '@angular/forms';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
@@ -73,10 +72,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
 
     constructor(
         private settingsCompanyService: SettingsCompanyService,
-        public imageBase64Service: ImageBase64Service,
         private modalService: ModalService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.companyData?.currentValue?.divisions?.length < 1) {
@@ -275,5 +273,5 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
         this.currentCompanyIndex = activeIndex;
     }
 
-    ngOnDestroy(): void {}
+    ngOnDestroy(): void { }
 }

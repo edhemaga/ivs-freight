@@ -5,9 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// services
-import { ImageBase64Service } from '@shared/services/image-base64.service';
-
 // components
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
@@ -51,7 +48,7 @@ export class DriverDetailsTitleCardComponent {
         type: string;
     }>();
 
-    constructor(public imageBase64Service: ImageBase64Service) {}
+    constructor() { }
 
     public handleCardChanges(event: DriverMinimalResponse, type: string): void {
         this.cardValuesEmitter.emit({ event, type });
