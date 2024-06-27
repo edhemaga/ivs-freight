@@ -128,9 +128,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
         this.loggedUser = {
             ...this.loggedUser,
-            avatar: this.loggedUser?.avatarFile
-                ? this.loggedUser.avatarFile?.url
-                : 'assets/svg/common/ic_profile.svg',
+            avatar: this.loggedUser.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
         };
 
         this.footerData[2] = {
@@ -153,9 +151,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy, OnChanges {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser?.avatarFile
-                            ? this.loggedUser.avatarFile?.url
-                            : 'assets/svg/common/ic_profile.svg',
+                        avatar: this.loggedUser?.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
                     };
 
                     this.footerData[2] = {

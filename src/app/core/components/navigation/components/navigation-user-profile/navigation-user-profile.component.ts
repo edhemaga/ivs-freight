@@ -83,9 +83,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
                     this.loggedUser = {
                         ...this.loggedUser,
-                        avatar: this.loggedUser?.avatarFile?.url
-                            ? this.loggedUser.avatarFile.url
-                            : 'assets/svg/common/ic_profile.svg',
+                        avatar: this.loggedUser?.avatarFile?.url ?? 'assets/svg/common/ic_profile.svg',
                     };
                 }
             });

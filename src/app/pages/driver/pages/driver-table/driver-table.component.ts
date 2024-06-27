@@ -836,9 +836,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isOwner: !!owner,
             textShortName: this.nameInitialsPipe.transform(name),
             avatarColor: AvatarColorsHelper.getAvatarColors(this.mapingIndex),
-            avatarImg: avatarFile
-                ? avatarFile.url
-                : null,
+            avatarImg: avatarFile?.url ?? null,
             fullName: name,
             tableDOB:
                 MethodsCalculationsHelper.convertDateFromBackend(dateOfBirth),
