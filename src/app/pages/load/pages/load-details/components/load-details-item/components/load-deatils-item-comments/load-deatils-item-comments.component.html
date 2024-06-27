@@ -3,7 +3,9 @@
         [commentsData]="comments"
         [isCommented]="isCommented"
         [isCommentEdited]="isCommentEdited"
+        [isDisplaySearch]="isSearchComment"
         (btnActionEmitter)="handleCommentActionEmit($event)"
         (btnSortEmitter)="handleSortActionEmit($event)"
+        (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"
     ></app-ta-comments-search>
 </div>

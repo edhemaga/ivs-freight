@@ -64,9 +64,14 @@
 
                         <div class="d-flex flex-column justify-content-center">
                             <div class="d-flex align-items-center">
-                                <p class="m-0 ta-font-semi-bold">
-                                    {{ commentData.companyUser.name }}
-                                </p>
+                                <p
+                                    class="m-0 ta-font-semi-bold"
+                                    [innerHTML]="
+                                        higlitsPartOfCommentSearchValue(
+                                            commentData.companyUser.name
+                                        )
+                                    "
+                                ></p>
 
                                 <ng-container *ngIf="!isCommenting && isMe">
                                     <div class="me-container">
@@ -207,6 +212,9 @@
                             : '0'
                 }"
                 [attr.contenteditable]="isCommenting"
+                [innerHTML]="
+                    higlitsPartOfCommentSearchValue(commentData.commentContent)
+                "
                 spellcheck="false"
                 (focus)="handleCommentChange()"
                 (input)="handleCommentChange()"

@@ -32,10 +32,12 @@ import moment from 'moment';
 export class LoadDeatilsItemCommentsComponent implements OnChanges {
     @Input() load: LoadResponse;
     @Input() isAddNewComment: boolean;
+    @Input() isSearchComment: boolean;
 
     public companyUser: SignInResponse;
 
     public comments: CommentCompanyUser[] = [];
+    public commentsBeforeSearch: CommentCompanyUser[] = [];
 
     public isCommenting: boolean = false;
     public isCommented: boolean = false;
@@ -47,7 +49,6 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     constructor() {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('this.load', this.load);
         if (changes?.load?.currentValue) {
             this.getCompanyUser();
 
@@ -84,6 +85,8 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 isMe: comment.companyUser.id === this.companyUser.userId,
             };
         });
+
+        this.commentsBeforeSearch = this.comments;
     }
 
     public createComment(): void {
@@ -149,9 +152,11 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
     }
 
     public handleSortActionEmit(sortDirection: string): void {
+        const dateFormat = LoadDetailsItemStringEnum.DATE_FORMAT;
+
         this.comments = this.comments.sort((a, b) => {
-            const dateA = moment(a.commentDate).valueOf();
-            const dateB = moment(b.commentDate).valueOf();
+            const dateA = moment(a.commentDate, dateFormat).valueOf();
+            const dateB = moment(b.commentDate, dateFormat).valueOf();
 
             if (sortDirection === LoadDetailsItemStringEnum.ASC) {
                 return dateA - dateB;
@@ -159,5 +164,21 @@ export class LoadDeatilsItemCommentsComponent implements OnChanges {
                 return dateB - dateA;
             }
         });
+    }
+
+    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
+        if (searchHighlightValue) {
+            this.comments = this.comments.filter(
+                ({ commentContent, companyUser }) =>
+                    commentContent
+                        .toLowerCase()
+                        .includes(searchHighlightValue) ||
+                    companyUser.name
+                        .toLowerCase()
+                        .includes(searchHighlightValue)
+            );
+        } else {
+            this.comments = this.commentsBeforeSearch;
+        }
     }
 }

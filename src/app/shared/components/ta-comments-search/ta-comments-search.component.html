@@ -1,7 +1,15 @@
 <div
     class="d-flex flex-column justify-content-center comments-search-container"
 >
-    <div class="d-flex align-items-center search-container"></div>
+    <div class="search-container">
+        <ng-container *ngIf="isDisplaySearch">
+            <app-ta-search-v2
+                [isDetailsSearchLayout]="true"
+                [placeHolderText]="'Comment'"
+                (searchValueEmitter)="handleSearchValue($event)"
+            ></app-ta-search-v2>
+        </ng-container>
+    </div>
 
     <div class="d-flex flex-column justify-content-center comments-container">
         <div
@@ -27,6 +35,7 @@
                 [commentIndex]="i"
                 [isMe]="comment.isMe"
                 [isEditButtonDisabled]="isCommented || isCommentEdited"
+                [commentHighlight]="lettersToHightlight"
                 (btnActionEmitter)="handleCommentActionEmit($event)"
             ></app-ta-comment>
         </ng-container>

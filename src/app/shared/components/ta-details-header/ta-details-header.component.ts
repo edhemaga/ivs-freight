@@ -96,12 +96,14 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() isMapDisplayed: boolean;
     @Input() hasMultipleDetailsSelectDropdown: boolean;
     @Input() multipleDetailsSelectDropdown: MultipleSelectDetailsDropdownItem[];
+    @Input() isSearchBtn: boolean;
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
     @Output() changeDataArrowDown = new EventEmitter<any>();
     @Output() makeRequest = new EventEmitter<any>();
     @Output() mapBtnEmitter = new EventEmitter<boolean>();
+    @Output() searchBtnEmitter = new EventEmitter<boolean>();
     @Output() dropActions = new EventEmitter<any>();
 
     public icPlusSvgIcon: string = 'assets/svg/common/ic_plus.svg';
@@ -112,6 +114,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public tooltip: any;
     public activeTemplate: any = 'All Load';
     public isMapBtnClicked: boolean = true;
+    public isSearchBtnDisplayed: boolean = true;
 
     constructor() {}
 
@@ -314,5 +317,11 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         this.isMapBtnClicked = !this.isMapBtnClicked;
 
         this.mapBtnEmitter.emit(this.isMapBtnClicked);
+    }
+
+    public handleSearchBtnClick(): void {
+        this.isSearchBtnDisplayed = false;
+
+        this.searchBtnEmitter.emit(true);
     }
 }

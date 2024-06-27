@@ -69,6 +69,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     public isMapDisplayed: boolean = true;
     public isAddNewComment: boolean = false;
+    public isSearchComment: boolean = false;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -238,6 +239,10 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
             ...this.loadDetailsConfig[1],
             isMapDisplayed: this.isMapDisplayed,
         };
+    }
+
+    public onSearchBtnClick(isSearch: boolean): void {
+        this.isSearchComment = isSearch;
     }
 
     public onAddNewClick(detailsTitle: string): void {

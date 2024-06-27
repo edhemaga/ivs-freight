@@ -103,6 +103,7 @@ export class LoadDetailsHelper {
                 hasMultipleDetailsSelectDropdown: true,
                 multipleDetailsSelectDropdown:
                     this.getMultipleSelectDetailsDropdown(load),
+                isSearchBtn: true,
                 data: load,
                 length: load?.comments?.length,
             },

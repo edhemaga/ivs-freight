@@ -80,6 +80,7 @@ import { DetailsConfig } from '@shared/models/details-config.model';
 export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     @Input() detailsConfig: DetailsConfig;
     @Input() isAddNewComment: boolean;
+    @Input() isSearchComment: boolean;
 
     private destroy$ = new Subject<void>();
 
