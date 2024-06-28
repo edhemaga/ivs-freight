@@ -69,6 +69,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     public isMapDisplayed: boolean = true;
     public isAddNewComment: boolean = false;
+    public isSearchComment: boolean = false;
 
     constructor(
         private cdRef: ChangeDetectorRef,
@@ -240,6 +241,10 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         };
     }
 
+    public onSearchBtnClick(isSearch: boolean): void {
+        this.isSearchComment = isSearch;
+    }
+
     public onAddNewClick(detailsTitle: string): void {
         if (detailsTitle === LoadDetailsStringEnum.COMMENT) {
             this.isAddNewComment = true;
@@ -248,6 +253,13 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                 this.isAddNewComment = false;
             }, 500);
         }
+    }
+
+    public onDetailsSelectClick(id: number): void {
+        this.loadDetailsConfig = LoadDetailsHelper.getLoadDetailsConfig(
+            this.loadObject,
+            id
+        );
     }
 
     private handleLoadIdRouteChange(): void {

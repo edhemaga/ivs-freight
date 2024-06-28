@@ -4,6 +4,18 @@
     display: contents;
 }
 
+.title-tooltip {
+    &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}
+
 .load-span {
     width: 18px;
     height: 18px;
@@ -78,6 +90,10 @@
     color: $ta-green-1;
 }
 
+.unassigned {
+    color: $bw5;
+}
+
 .dispatched {
     color: $ta-blue-14;
 }
@@ -85,6 +101,16 @@
 .card-separate-container {
     margin-top: 3px;
     gap: 4px;
+
+    &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+    }
 }
 
 .total-adjusted-rate {

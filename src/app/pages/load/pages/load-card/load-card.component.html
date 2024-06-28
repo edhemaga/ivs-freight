@@ -316,34 +316,11 @@
                                     >
                                         <span
                                             class="status"
-                                            [ngClass]="{
-                                                assigned:
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Assigned',
-                                                dispatched:
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Dispatched',
-                                                loaded:
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Loaded',
-                                                paid:
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Short-paid' ||
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Unpaid' ||
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Paid',
-                                                tonu:
-                                                    card[cardRow.key][
-                                                        cardRow.secondKey
-                                                    ] === 'Tonu'
-                                            }"
+                                            [ngStyle]="
+                                                card[cardRow.key][
+                                                    cardRow.secondKey
+                                                ] | loadStatusColor
+                                            "
                                         >
                                             {{
                                                 card[cardRow.key][
@@ -360,37 +337,48 @@
                                             cardRow.title === 'Delivery'
                                         "
                                     >
-                                        <div
-                                            class="card-separate-container d-flex justify-content-center align-items-center"
+                                        <ng-container
+                                            *ngIf="
+                                            !card[cardRow.key]?.[
+                                            cardRow.secondKey
+                                        ]; else pickupDelivery
+                                            "
+                                            >/</ng-container
                                         >
-                                            <span
-                                                class="d-flex justify-content-center align-items-center"
-                                                [ngClass]="
-                                                    cardRow.title === 'Pickup'
-                                                        ? 'load-span pickup ta-font-bold'
-                                                        : '' ||
-                                                          cardRow.title ===
-                                                              'Delivery'
-                                                        ? 'load-span delivery ta-font-bold'
-                                                        : ''
-                                                "
+                                        <ng-template #pickupDelivery>
+                                            <div
+                                                class="card-separate-container d-flex justify-content-center align-items-center"
                                             >
+                                                <span
+                                                    class="d-flex justify-content-center align-items-center"
+                                                    [ngClass]="
+                                                        cardRow.title ===
+                                                        'Pickup'
+                                                            ? 'load-span pickup ta-font-bold'
+                                                            : '' ||
+                                                              cardRow.title ===
+                                                                  'Delivery'
+                                                            ? 'load-span delivery ta-font-bold'
+                                                            : ''
+                                                    "
+                                                >
+                                                    {{
+                                                        card[cardRow.key][
+                                                            cardRow.secondKey
+                                                        ]
+                                                    }}
+                                                </span>
                                                 {{
                                                     card[cardRow.key][
-                                                        cardRow.secondKey
+                                                        cardRow.thirdKey
                                                     ]
                                                 }}
-                                            </span>
-                                            {{
-                                                card[cardRow.key][
-                                                    cardRow.thirdKey
-                                                ]
-                                            }}
-                                            <span class="small-text">{{
-                                                card[cardRow.key]['date']
-                                                    | formatDateP
-                                            }}</span>
-                                        </div>
+                                                <span class="small-text">{{
+                                                    card[cardRow.key]['date']
+                                                        | formatDateP
+                                                }}</span>
+                                            </div>
+                                        </ng-template>
                                     </ng-container>
                                 </div>
                             </div>

@@ -110,7 +110,9 @@
                     <ng-container
                         *ngIf="
                             (danger || !counterData) &&
-                            headerText !== 'Drug & Alcohol'
+                            headerText !== 'Drug & Alcohol' &&
+                            headerText !== 'Comment' &&
+                            headerText !== 'Status History'
                         "
                     >
                         <div
@@ -202,6 +204,28 @@
                                 class="icon"
                                 src="assets/svg/common/ic_arrow-box.svg"
                             ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isSearchBtn && isSearchBtnDisplayed">
+                        <div
+                            class="d-flex align-items-center search-btn-container"
+                        >
+                            <div class="border"></div>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center search-btn-container"
+                                ngbTooltip
+                                mainTooltip="Search"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                (click)="handleSearchBtnClick()"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_search.svg"
+                                ></svg-icon>
+                            </div>
                         </div>
                     </ng-container>
                 </div>
@@ -418,6 +442,11 @@
                 <div
                     class="popover-item justify-content-between"
                     [ngClass]="{ active: dropdownItem.isActive }"
+                    (click)="
+                        handleMultipleDetailsSelectDropdownClick(
+                            dropdownItem.id
+                        )
+                    "
                 >
                     <p class="m-0">
                         {{ dropdownItem.title }}

@@ -2,7 +2,7 @@ export interface FilterOptionsLoad {
     loadType: number;
     statusType: number;
     status: number;
-    dispatchersId: number[];
+    dispatcherIds: number[];
     dispatcherId: number;
     dispatchId: number;
     brokerId: number;

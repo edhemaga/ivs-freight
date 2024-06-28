@@ -35,6 +35,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { LoadModel } from './models/load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { LoadListResponse } from 'appcoretruckassist';
 
 // Queries
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
@@ -63,6 +64,7 @@ import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
 
 // Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -77,6 +79,7 @@ import {
 
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
+import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 @Component({
     selector: 'app-load-table',
@@ -162,6 +165,10 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onDropdownActions();
 
         this.watchForLoadChanges();
+        
+        this.getLoadStatusFilter();
+
+        this.getLoadDispatcherFilter();
     }
 
     ngAfterViewInit(): void {
@@ -290,6 +297,70 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
+                switch (res?.filterType) {
+                    case LoadFilterStringEnum.USER_FILTER:
+                        this.backLoadFilterQuery.dispatcherIds =
+                            res.queryParams ?? null;
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    case LoadFilterStringEnum.STATUS_FILTER:
+                        this.backLoadFilterQuery.status =
+                            res.queryParams?.[0] ?? null;
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    case LoadFilterStringEnum.TIME_FILTER:
+                        if (res.queryParams?.timeSelected) {
+                            const { fromDate, toDate } =
+                                RepairTableDateFormaterHelper.getDateRange(
+                                    res.queryParams?.timeSelected,
+                                    res.queryParams.year ?? null
+                                );
+
+                            this.backLoadFilterQuery.dateTo = toDate;
+                            this.backLoadFilterQuery.dateFrom = fromDate;
+                        } else {
+                            this.backLoadFilterQuery.dateTo = null;
+                            this.backLoadFilterQuery.dateFrom = null;
+                        }
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    case LoadFilterStringEnum.MONEY_FILTER:
+                        this.backLoadFilterQuery.rateFrom =
+                            res.queryParams?.firstFormFrom ?? null;
+                        this.backLoadFilterQuery.rateTo =
+                            res.queryParams?.firstFormTo ?? null;
+
+                        this.backLoadFilterQuery.paidFrom =
+                            res.queryParams?.secondFormFrom ?? null;
+                        this.backLoadFilterQuery.paidTo =
+                            res.queryParams?.secondFormTo ?? null;
+
+                        this.backLoadFilterQuery.dueFrom =
+                            res.queryParams?.thirdFormFrom ?? null;
+                        this.backLoadFilterQuery.dueTo =
+                            res.queryParams?.thirdFormTo ?? null;
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    case LoadFilterStringEnum.LOAD_TYPE_FILTER:
+                        this.backLoadFilterQuery.loadType =
+                            res.queryParams?.loadType ?? null;
+
+                        this.loadBackFilter(this.backLoadFilterQuery);
+
+                        break;
+                    default:
+                        this.sendLoadData();
+                        break;
+                }
+
                 if (res?.filteredArray) {
                     if (!res.selectedFilter) {
                         this.viewData = this.loadTableData?.filter((loadData) =>
@@ -369,13 +440,18 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res,
                         this.backLoadFilterQuery
                     );
+                    
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
                             this.loadBackFilter(searchEvent.query);
                         } else if (
                             searchEvent.action === TableStringEnum.STORE
                         ) {
-                            this.sendLoadData();
+                            this.backLoadFilterQuery.searchOne = null;
+                            this.backLoadFilterQuery.searchTwo = null;
+                            this.backLoadFilterQuery.searchThree = null;
+
+                            this.loadBackFilter(this.backLoadFilterQuery);
                         }
                     }
                 }
@@ -479,6 +555,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showLtlFilter: true,
                 showMoneyFilter: true,
+                showDispatcherFilter:
+                    this.selectedTab !== TableStringEnum.TEMPLATE,
+                loadMoneyFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -869,34 +948,15 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private loadBackFilter(
-        filter: {
-            loadType: number | undefined;
-            statusType: number | undefined;
-            status: number | undefined;
-            dispatcherId: number | undefined;
-            dispatchId: number | undefined;
-            brokerId: number | undefined;
-            shipperId: number | undefined;
-            dateFrom: string | undefined;
-            dateTo: string | undefined;
-            revenueFrom: number | undefined;
-            revenueTo: number | undefined;
-            truckId: number | undefined;
-            pageIndex: number;
-            pageSize: number;
-            companyId: number | undefined;
-            sort: string | undefined;
-            searchOne: string | undefined;
-            searchTwo: string | undefined;
-            searchThree: string | undefined;
-        },
+        filter: FilterOptionsLoad,
         isShowMore?: boolean
     ): void {
-        /*  this.loadServices
+        this.loadServices
             .getLoadList(
                 filter.loadType,
                 filter.statusType,
                 filter.status,
+                filter.dispatcherIds,
                 filter.dispatcherId,
                 filter.dispatchId,
                 filter.brokerId,
@@ -906,6 +966,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 filter.revenueFrom,
                 filter.revenueTo,
                 filter.truckId,
+                filter.rateFrom,
+                filter.rateTo,
+                filter.paidFrom,
+                filter.paidTo,
+                filter.dueFrom,
+                filter.dueTo,
+                filter.pickup,
+                filter.delivery,
                 filter.pageIndex,
                 filter.pageSize,
                 filter.companyId,
@@ -924,14 +992,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     });
                 } else {
                     let newData = [...this.viewData];
-                    // TODO can't find modal for this data and when this function is called
+
                     loads.pagination.data.map((data: any) => {
                         newData.push(this.mapLoadData(data));
                     });
 
                     this.viewData = [...newData];
                 }
-            }); */
+            });
     }
 
     // ---------------------------- Table Actions ------------------------------
@@ -940,6 +1008,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.modalService.openModal(LoadModalComponent, { size: 'load' });
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             this.selectedTab = event.tabData.field;
+            this.getLoadStatusFilter();
+            this.getLoadDispatcherFilter();
 
             this.backLoadFilterQuery.statusType =
                 this.selectedTab === TableStringEnum.TEMPLATE
@@ -1105,6 +1175,62 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
         this.loadCardsModalService.updateTab(this.selectedTab);
+    }
+
+    private getLoadStatusFilter(): void {
+        const loadTab =
+            this.selectedTab === TableStringEnum.TEMPLATE
+                ? null
+                : this.selectedTab === TableStringEnum.ACTIVE
+                ? TableStringEnum.ACTIVE_2
+                : this.selectedTab === TableStringEnum.CLOSED
+                ? TableStringEnum.CLOSED_2
+                : TableStringEnum.PENDING_2;
+
+        if (loadTab) {
+            this.loadServices
+                .getLoadStatusFilter(loadTab)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    if (res) {
+                        const filterOptionsData = {
+                            selectedTab: this.selectedTab,
+                            options: [...res],
+                        };
+
+                        this.tableService.sendLoadStatusFilter(
+                            filterOptionsData
+                        );
+                    }
+                });
+        }
+    }
+
+    private getLoadDispatcherFilter(): void {
+        const loadTab =
+            this.selectedTab === TableStringEnum.TEMPLATE
+                ? null
+                : this.selectedTab === TableStringEnum.ACTIVE
+                ? TableStringEnum.ACTIVE_2
+                : this.selectedTab === TableStringEnum.CLOSED
+                ? TableStringEnum.CLOSED_2
+                : TableStringEnum.PENDING_2;
+
+        if (loadTab) {
+            this.loadServices
+                .getLoadDispatcherFilter(loadTab)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res) => {
+                    if (res) {
+                        this.tableService.sendActionAnimation({
+                            animation:
+                                LoadFilterStringEnum.DISPATCH_DATA_UPDATE,
+                            data: res,
+                            id: null,
+                        });
+                    }
+                });
+        }
     }
 
     public ngOnDestroy(): void {

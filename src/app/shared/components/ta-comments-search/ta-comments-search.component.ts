@@ -1,11 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -16,6 +9,7 @@ import { CommentsSearchSvgRoutes } from '@shared/components/ta-comments-search/u
 
 // components
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
+import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // enums
 import { CommentsSearchStringEnum } from '@shared/components/ta-comments-search/enums/comments-search-string.enum';
@@ -36,25 +30,24 @@ import { CommentData } from '@shared/models/comment-data.model';
 
         // components
         TaCommentComponent,
+        TaSearchV2Component,
     ],
 })
-export class TaCommentsSearchComponent implements OnChanges {
+export class TaCommentsSearchComponent {
     @Input() commentsData: CommentCompanyUser[];
-    @Input() isCommented: boolean;
-    @Input() isCommentEdited: boolean;
+    @Input() isDisplaySearch: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() btnSortEmitter = new EventEmitter<string>();
+    @Output() searchHightlightEmitter = new EventEmitter<string>();
 
     public commentsSearchSvgRoutes = CommentsSearchSvgRoutes;
 
     public sortDirection: string = CommentsSearchStringEnum.DSC;
 
-    constructor() {}
+    public lettersToHightlight: string;
 
-    ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes', changes);
-    }
+    constructor() {}
 
     public handleCommentActionEmit(commentData: CommentData): void {
         this.btnActionEmitter.emit(commentData);
@@ -67,5 +60,11 @@ export class TaCommentsSearchComponent implements OnChanges {
                 : CommentsSearchStringEnum.DSC;
 
         this.btnSortEmitter.emit(this.sortDirection);
+    }
+
+    public handleSearchValue(searchValue: string): void {
+        this.lettersToHightlight = searchValue;
+
+        this.searchHightlightEmitter.emit(searchValue);
     }
 }
