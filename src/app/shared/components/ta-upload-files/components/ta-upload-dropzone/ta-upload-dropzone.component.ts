@@ -60,6 +60,7 @@ export class TaUploadDropzoneComponent {
     @Input() dropzoneClose: boolean = false;
     @Input() dropzoneFocus: boolean = false;
     @Input() dropzoneColumn: boolean = false;
+    @Input() dropZoneIndex: number = 0;
 
     @Output() onFileEvent: EventEmitter<{
         files: UploadFile[];
