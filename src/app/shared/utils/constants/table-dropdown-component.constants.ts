@@ -18,7 +18,7 @@ export class TableDropdownComponentConstants {
         loadType: null,
         statusType: 1,
         status: null,
-        dispatchersId: null,
+        dispatcherIds: null,
         dispatcherId: null,
         dispatchId: null,
         brokerId: null,

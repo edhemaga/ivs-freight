@@ -29,16 +29,33 @@
                             adjusted
                     }"
                 >
+                    <ng-container *ngIf="tonu">
+                        <p
+                            class="m-0 ta-font-semi-bold load-financial-value text-right minus"
+                        >
+                            {{ toNumber(tonu) | currency }}
+                        </p>
+                    </ng-container>
+                    <ng-container *ngIf="revised">
+                        <p
+                            class="m-0 ta-font-semi-bold load-financial-value text-right load-financial-value-override-value"
+                        >
+                            {{ toNumber(revisedDifference) | currency }}
+                        </p>
+                    </ng-container>
                     <p
                         class="m-0 ta-font-semi-bold load-financial-value"
-                        [ngClass]="{ active: billing !== '$0.00' }"
+                        [ngClass]="{
+                            active: billing !== '$0.00' && !(tonu || revised),
+                            'load-financial-value-override ': tonu || revised
+                        }"
                     >
                         {{ billing }}
                     </p>
 
-                    <ng-container *ngIf="adjusted">
+                    <ng-container *ngIf="adjusted && !(tonu || revised)">
                         <p class="m-0 load-financial-adjusted">
-                            {{ toNumber(adjusted)  | currency }}
+                            {{ toNumber(adjusted) | currency }}
                         </p>
                     </ng-container>
                 </div>

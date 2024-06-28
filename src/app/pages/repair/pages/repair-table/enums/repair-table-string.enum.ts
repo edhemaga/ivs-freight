@@ -28,4 +28,6 @@ export enum RepairTableStringEnum {
     LAST_QUARTER = 'last quarter',
     THIS_YEAR = 'this year',
     ONE_YEAR = '1 year',
+    LAST_YEAR = 'last year',
+    YEAR_BEFORE_LAST = 'year before last'
 }

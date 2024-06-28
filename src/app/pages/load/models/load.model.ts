@@ -1,7 +1,7 @@
 import {
     LoadBillingAdditionalCommand,
     LoadPaymentPayResponse,
-    LoadStatus,
+    LoadStatusHistoryCommand,
     LoadStopCommand,
     LoadType,
 } from 'appcoretruckassist';
@@ -16,7 +16,7 @@ export interface Load {
     companyId?: number;
     dispatchId: number;
     dateCreated: string;
-    status?: LoadStatus;
+    status?: string;
     brokerId: number;
     brokerContactId: number;
     referenceNumber: string;
@@ -57,5 +57,8 @@ export interface Load {
     totalHours: number;
     totalMinutes: number;
     pays: Array<LoadPaymentPayResponse> | null;
-    invoicedDate: string;
+    tonuRate: number;
+    revisedRate: number;
+    statusHistory?: LoadStatusHistoryCommand[];
+    // invoicedDate: string;
 }

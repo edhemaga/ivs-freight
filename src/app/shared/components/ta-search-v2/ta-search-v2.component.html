@@ -2,7 +2,9 @@
     class="d-flex align-items-center search-container"
     [ngClass]="{
         focused: isInputFocused,
-        confirmed: isValueConfirmed
+        confirmed: isValueConfirmed,
+        'details-layout': isDetailsSearchLayout,
+        'details-layout-valid': isDetailsSearchLayoutValueValid
     }"
 >
     <!-- Icon -->
@@ -34,7 +36,9 @@
 
         <ng-container *ngIf="isDisplayingButtons">
             <div class="d-flex align-items-center btn-container">
-                <ng-container *ngIf="!isValueConfirmed">
+                <ng-container
+                    *ngIf="!isValueConfirmed && !isDetailsSearchLayout"
+                >
                     <svg-icon
                         class="confirm-icon"
                         ngbTooltip="Confirm"
@@ -45,14 +49,16 @@
                     ></svg-icon>
                 </ng-container>
 
-                <svg-icon
-                    class="clear-icon"
-                    ngbTooltip="Clear"
-                    placement="top"
-                    [src]="'assets/svg/ic_x.svg'"
-                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                    (click)="handleClearClick()"
-                ></svg-icon>
+                <ng-container *ngIf="searchInput.value">
+                    <svg-icon
+                        class="clear-icon"
+                        ngbTooltip="Clear"
+                        placement="top"
+                        [src]="'assets/svg/ic_x.svg'"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                        (click)="handleClearClick()"
+                    ></svg-icon>
+                </ng-container>
             </div>
         </ng-container>
     </div>

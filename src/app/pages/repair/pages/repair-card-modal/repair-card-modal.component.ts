@@ -39,7 +39,7 @@ import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/
 // Constants
 import { RepairCardsModalData } from '@pages/repair/pages/repair-card-modal/constants/repair-cards-modal.constants';
 import { RepairShopCardsModalData } from '@pages/repair/pages/repair-card-modal/constants/repair-shop-cards-modal.constants';
-import { LoadCardsModalConstants } from '@pages/load/pages/load-card-modal/utils/constants/load-modal.constants';
+import { CardsModalConstants } from '@shared/utils/constants/cards-modal-config.constants';
 
 //Store
 import { Store } from '@ngrx/store';
@@ -82,7 +82,7 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
     public setDefaultDataBack: CardRows[];
 
     public defaultCardsValues: CardsModalData =
-        LoadCardsModalConstants.defaultCardsValues;
+        CardsModalConstants.defaultCardsValues;
 
     public cardsAllData: CardRows[] = RepairCardsModalData.allDataLoad;
 
@@ -326,15 +326,23 @@ export class RepairCardModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private filterTitlesFromForm(valuesInform: CardRows[]): void {
-        this.titlesInForm = valuesInform
-            .map((item) => {
-                if (item && typeof item.title === CardsModalStringEnum.STRING) {
-                    return item.title;
-                }
-                return;
-            })
-            .filter((title) => title);
+    private filterTitlesFromForm(valuesInform: any): void {
+        //leave this as any for now
+        this.titlesInForm = valuesInform.flatMap(
+            (
+                item: any //leave this as any for now
+            ) =>
+                Array.isArray(item)
+                    ? item
+                          .filter(
+                              (titles) =>
+                                  titles &&
+                                  typeof titles.inputItem.title ===
+                                      CardsModalStringEnum.STRING
+                          )
+                          .map((titles) => titles.inputItem.title)
+                    : []
+        );
     }
 
     private compareDataInStoreAndDefaultData(): void {

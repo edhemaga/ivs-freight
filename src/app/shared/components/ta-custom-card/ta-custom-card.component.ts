@@ -104,7 +104,7 @@ export class TaCustomCardComponent implements OnInit {
         this.noActive = value ? 'active' : 'innactive';
         this._isCardOpen = value;
     }
-
+    @Input() hasHistoryButton: boolean = false;
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(

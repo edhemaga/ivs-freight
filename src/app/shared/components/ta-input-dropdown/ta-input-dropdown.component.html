@@ -569,11 +569,22 @@
                             <div
                                 class="d-flex align-items-center right-box"
                                 [ngStyle]="
-                                    loadStatusEnum[option?.statusId]
-                                        | dropdownLoadStatusColor
+                                    option?.statusString && i === hoveringIndex
+                                        ? {}
+                                        : (loadStatusEnum[option?.statusId]
+                                          | dropdownLoadStatusColor : false)
                                 "
                             >
-                                <p class="m-0">
+                                <p
+                                    class="m-0"
+                                    [ngStyle]="
+                                        option?.statusString &&
+                                        i === hoveringIndex
+                                            ? {}
+                                            : (loadStatusEnum[option?.statusId]
+                                              | dropdownLoadStatusColor : true)
+                                    "
+                                >
                                     <ng-container
                                         *ngIf="
                                             i === hoveringIndex;
@@ -885,9 +896,7 @@
                         [ngClass]="{
                             active: option.id === _activeItem?.id
                         }"
-                        [src]="
-                            this.imageBase64Service.sanitizer(option.logoName)
-                        "
+                        [src]="option.logoName"
                         class="svg-template-logo"
                     />
                     <div
@@ -949,14 +958,15 @@
                             _options[0].name === 'No Results'
                         "
                         [innerHtml]="
-                        option?.name
-                            | taHighlight
-                                : [
-                                      {
-                                          index: 45632,
-                                          text: getSuperControl.value
-                                      }
-                                  ]"
+                            option?.name
+                                | taHighlight
+                                    : [
+                                          {
+                                              index: 45632,
+                                              text: getSuperControl.value
+                                          }
+                                      ]
+                        "
                     ></div>
                     <!-- Truck -->
                     <div
@@ -968,7 +978,9 @@
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="option.truck?.logoName"
-                            [className]="option?.truck?.logoName.replace('.svg', '')"
+                            [className]="
+                                option?.truck?.logoName.replace('.svg', '')
+                            "
                         ></svg-icon>
                         <div
                             [innerHtml]="
@@ -1016,7 +1028,9 @@
                         <svg-icon
                             class="load-dispatches-svg"
                             [src]="option?.trailer?.logoName"
-                            [className]="option?.trailer?.logoName.replace('.svg', '')"
+                            [className]="
+                                option?.trailer?.logoName.replace('.svg', '')
+                            "
                         ></svg-icon>
                         <div
                             [innerHtml]="
@@ -1046,11 +1060,7 @@
                                     option.driver?.id ===
                                     _activeItem?.driver?.id
                             }"
-                            [src]="
-                                this.imageBase64Service.sanitizer(
-                                    option?.driver?.logoName
-                                )
-                            "
+                            [src]="option?.driver?.logoName"
                             class="svg-template-logo"
                         />
                         <div
@@ -1064,6 +1074,16 @@
                             >
                             </app-ta-profile-images>
                         </div>
+
+                        <img
+                            alt="avatar"
+                            src="assets/svg/truckassist-table/owner-badge-black.svg"
+                            *ngIf="
+                                _options[0].name !== 'No Results' &&
+                                option.driver?.owner
+                            "
+                            class="owner-avatar"
+                        />
                         <div
                             [innerHtml]="
                                 option.driver?.name
@@ -1077,14 +1097,6 @@
                             "
                             class="load-dispatch-driver"
                         ></div>
-                        <svg-icon
-                            *ngIf="
-                                _options[0].name !== 'No Results' &&
-                                option.driver?.owner
-                            "
-                            class="load-dipstaches-owner-flag"
-                            src="assets/svg/common/load/ic_load_driver_owner.svg"
-                        ></svg-icon>
                     </div>
                     <!-- Percentage is not driver owner -->
                     <span

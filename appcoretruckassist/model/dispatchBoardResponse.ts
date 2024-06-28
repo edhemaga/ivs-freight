@@ -22,5 +22,6 @@ export interface DispatchBoardResponse {
     truckCount?: number;
     trailerCount?: number;
     driverCount?: number;
+    canUnlock?: boolean;
 }
 

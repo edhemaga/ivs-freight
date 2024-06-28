@@ -13,7 +13,7 @@ export class LoadModalConfig {
         isDropdown: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-616',
+        dropdownWidthClass: 'w-col-616  hide-after-arrow',
     };
 
     static LOAD_BROKER_INPUT_CONFIG: ITaInput = {
@@ -41,7 +41,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-330',
+        dropdownWidthClass: 'w-col-308',
     };
 
     static LOAD_PICKUP_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -69,7 +69,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-330',
+        dropdownWidthClass: 'w-col-370',
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -97,7 +97,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: true,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-330',
+        dropdownWidthClass: 'w-col-370',
     };
 
     static LOAD_COMPANY_INPUT_CONFIG: ITaInput = {
@@ -105,7 +105,7 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Company',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-226',
+        dropdownWidthClass: 'w-col-230',
     };
 
     static LOAD_COMMODITY_CONFIG: ITaInput = {
@@ -113,7 +113,7 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Commodity',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-200',
+        dropdownWidthClass: 'w-col-142',
         blackInput: true,
         customClass: 'hazardous-dropdown',
     };
@@ -155,7 +155,7 @@ export class LoadModalConfig {
         type: 'text',
         label: 'Year',
         isDropdown: true,
-        dropdownWidthClass: 'w-col-90',
+        dropdownWidthClass: 'w-col-117',
     };
 
     static LOAD_TEMPLATE_CONFIG: ITaInput = {
@@ -221,7 +221,7 @@ export class LoadModalConfig {
         isDropdown: true,
         labelInInput: true,
         autoFocus: true,
-        dropdownWidthClass: 'w-col-198',
+        dropdownWidthClass: 'w-col-200',
         readOnly: true,
     };
 
@@ -237,6 +237,7 @@ export class LoadModalConfig {
         hideRequiredCheck: true,
         hideDangerMark: true,
         removeInput: true,
+        dropdownWidthClass: 'w-col-208',
     };
 
     static LOAD_PAYDATE: ITaInput = {
@@ -255,20 +256,22 @@ export class LoadModalConfig {
         isDropdown: true,
         labelInInput: true,
         autoFocus: true,
-        dropdownWidthClass: 'w-col-198',
+        dropdownWidthClass: 'w-col-208',
         readOnly: true,
     };
 
-    static LOAD_INVOICE_DATE: ITaInput = {
-        name: 'datepicker',
-        type: 'text',
-        isDropdown: true,
-        label: 'Invoiced',
-        placeholderIcon: 'date',
-        isRequired: true,
-        customClass: 'datetimeclass',
-    };
-
+    static getInvoiceDate(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'Invoiced',
+            placeholderIcon: 'date',
+            isRequired: !isDisabled,
+            isDisabled: isDisabled,
+            customClass: 'datetimeclass',
+        };
+    }
     static LOAD_REFERENCE_NUMBER: ITaInput = {
         name: 'Ref Number',
         type: 'text',
@@ -379,37 +382,30 @@ export class LoadModalConfig {
 
     static getExtraStopsDateFromTimeFromInputConfig(label: string): ITaInput {
         return {
-            
             name: 'timepicker',
             type: 'text',
-            label: label
-                ?.toString()
-                ?.startsWith('9')
-                ? 'At'
-                : 'From',
+            label: label?.toString()?.startsWith('9') ? 'At' : 'From',
             placeholderIcon: 'time',
             isFromDate: true,
             isDropdown: true,
             isRequired: true,
-            customClass: 'datetimeclass'
-        }
+            customClass: 'datetimeclass',
+        };
     }
 
-    static getExtraStopsDateToTimeToInputConfig(label: string | number): ITaInput {
+    static getExtraStopsDateToTimeToInputConfig(
+        label: string | number
+    ): ITaInput {
         return {
-                name: 'timepicker',
-                type: 'text',
-                label: 'To',
-                placeholderIcon: 'time',
-                isDropdown: true,
-                isRequired: true,
-                isDisabled:
-                    label
-                        ?.toString()
-                        ?.startsWith('9') ||
-                        label === 2,
-                customClass: 'datetimeclass'
-        }
+            name: 'timepicker',
+            type: 'text',
+            label: 'To',
+            placeholderIcon: 'time',
+            isDropdown: true,
+            isRequired: true,
+            isDisabled: label?.toString()?.startsWith('9') || label === 2,
+            customClass: 'datetimeclass',
+        };
     }
 
     static getDispatcherInputConfig(logoName: string, name: string): ITaInput {
@@ -423,18 +419,17 @@ export class LoadModalConfig {
                 svg: false,
                 image: true,
                 url: logoName,
-                nameInitialsInsteadUrl:
-                    !logoName
-                        ? name
-                        : null,
-                template: 'user'
+                nameInitialsInsteadUrl: !logoName ? name : null,
+                template: 'user',
             },
             textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-230'
-        }
+            dropdownWidthClass: 'w-col-230',
+        };
     }
 
-    static getTruckTypeIdInputConfig(selectedTruckReq: TruckTypeResponse): ITaInput {
+    static getTruckTypeIdInputConfig(
+        selectedTruckReq: TruckTypeResponse
+    ): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -449,14 +444,16 @@ export class LoadModalConfig {
                 class: selectedTruckReq?.name
                     ?.trim()
                     .replace(' ', '')
-                    .toLowerCase()
+                    .toLowerCase(),
             },
             dropdownWidthClass: 'w-col-302',
-            customClass: 'truck-trailer-dropdown'
-        }
+            customClass: 'truck-trailer-dropdown',
+        };
     }
 
-    static getTrailerInputConfig(selectedTrailerReq: TrailerTypeResponse): ITaInput {
+    static getTrailerInputConfig(
+        selectedTrailerReq: TrailerTypeResponse
+    ): ITaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -468,23 +465,20 @@ export class LoadModalConfig {
                 image: false,
                 url: selectedTrailerReq?.logoName,
                 template: 'trailer',
-                class: [
-                    'Tanker',
-                    'Tanker Pneumatic'
-                ].includes(selectedTrailerReq?.name)
+                class: ['Tanker', 'Tanker Pneumatic'].includes(
+                    selectedTrailerReq?.name
+                )
                     ? 'tanker'
-                    : selectedTrailerReq?.name
-                          ?.toLowerCase()
-                          ?.includes('rgn')
+                    : selectedTrailerReq?.name?.toLowerCase()?.includes('rgn')
                     ? 'low-boy-rgn'
                     : selectedTrailerReq?.name
                           ?.trim()
                           .replace(' ', '')
-                          .toLowerCase()
+                          .toLowerCase(),
             },
             dropdownWidthClass: 'w-col-302',
-            customClass: 'truck-trailer-dropdown'
-        }
+            customClass: 'truck-trailer-dropdown',
+        };
     }
 
     static getBillingValueInputConfig(additional: FormControl): ITaInput {
@@ -514,22 +508,136 @@ export class LoadModalConfig {
         return {
             name: 'price-separator',
             type: 'text',
-            label: additional.get(
-                'name'
-            ).value,
+            label: additional.get('name').value,
             labelInInput: true,
             priceSeparator: true,
             priceSeparatorLimitation: 6,
-            placeholderIconRightSide:
-                'dollar-additional-load',
+            placeholderIconRightSide: 'dollar',
             placeholderIconColor:
-                'blue',
+                additional.get('name').value === 'Advance' ? 'green' : 'blue',
             inputCursorOnRightSide: true,
             removeInput: true,
             isRequired: true,
             hideErrorMessage: true,
             hideRequiredCheck: true,
-            hideDangerMark: true
+            hideDangerMark: true,
+        };
+    }
+
+    static STATUS_INPUT_CONFIG: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Status',
+        isDropdown: true,
+        dropdownWidthClass: 'w-col-132 dropdown-status',
+        statusStyle: true,
+    };
+
+    static DRIVE_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Driver Rate',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'orange',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true,
+    };
+
+    static ADJUSTED_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Adjusted',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'purple',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true,
+    };
+
+    static REVISED_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Revised',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'gray',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true,
+    };
+
+    static TONU_RATE_INPUT_CONFIG: ITaInput = {
+        name: 'price-separator',
+        type: 'text',
+        label: 'Tonu',
+        labelInInput: true,
+        isRequired: true,
+        priceSeparator: true,
+        priceSeparatorLimitation: 6,
+        placeholderIconRightSide: 'dollar',
+        placeholderIconColor: 'red',
+        inputCursorOnRightSide: true,
+        hideErrorMessage: true,
+        hideRequiredCheck: true,
+    };
+
+    static getWaitTimeStartDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'Start Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeStartTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'Start time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeEndDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'End Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeEndTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'End time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
         };
     }
 }

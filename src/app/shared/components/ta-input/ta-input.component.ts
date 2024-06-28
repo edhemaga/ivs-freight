@@ -45,6 +45,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { InputTypePipe } from '@shared/components/ta-input/pipes/input-type.pipe';
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { InputErrorPipe } from '@shared/components/ta-input/pipes/input-error.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -99,6 +100,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         InputTypePipe,
         TaSvgPipe,
         InputErrorPipe,
+        LoadStatusColorPipe,
 
         // Directive
         HoverSvgDirective,
@@ -362,7 +364,11 @@ export class TaInputComponent
                 this.selectionInput = -1;
             }
 
-            this.t2.close();
+            if (this._inputConfig.placeholderIcon) {
+                this.t2.close();
+            } else {
+                this.t2.open();
+            }
         }
 
         // Dropdown

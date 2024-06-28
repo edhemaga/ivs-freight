@@ -23,7 +23,6 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckService } from '@shared/services/truck.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -392,8 +391,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
         private truckService: TruckService,
-        public imageBase64Service: ImageBase64Service
-    ) {}
+    ) { }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
@@ -807,17 +805,17 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : item?.miles
-                ? item.miles
-                : 0,
+                    ? item.milesPerGallon
+                    : item?.miles
+                        ? item.miles
+                        : 0,
             item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : item?.revenue
-                ? item.revenue
-                : 0,
+                    ? item.costPerGallon
+                    : item?.revenue
+                        ? item.revenue
+                        : 0,
             item?.totalCost ? item.totalCost : null,
         ];
 
@@ -825,29 +823,29 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             legend[0].value = item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : 0;
+                    ? item.milesPerGallon
+                    : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : 0;
+                    ? item.costPerGallon
+                    : 0;
             legend[2].value = item?.totalCost ? item.totalCost : null;
         } else {
             legend[0].value = item?.fuelCost
                 ? item.fuelCost
                 : item?.milesPerGallon
-                ? item.milesPerGallon
-                : item?.miles
-                ? item.miles
-                : 0;
+                    ? item.milesPerGallon
+                    : item?.miles
+                        ? item.miles
+                        : 0;
             legend[1].value = item?.repairCost
                 ? item.repairCost
                 : item?.costPerGallon
-                ? item.costPerGallon
-                : item?.revenue
-                ? item.revenue
-                : 0;
+                    ? item.costPerGallon
+                    : item?.revenue
+                        ? item.revenue
+                        : 0;
         }
 
         let hasValue = false;
@@ -866,10 +864,10 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         const mapData = item?.truckExpensesCharts
             ? item.truckExpensesCharts
             : item?.truckFuelConsumptionCharts
-            ? item.truckFuelConsumptionCharts
-            : item?.truckRevenueCharts
-            ? item.truckRevenueCharts
-            : null;
+                ? item.truckFuelConsumptionCharts
+                : item?.truckRevenueCharts
+                    ? item.truckRevenueCharts
+                    : null;
         if (mapData?.length > 17) {
             config.dataProperties[0].defaultConfig.barThickness = 10;
             config.dataProperties[1].defaultConfig.barThickness = 10;
@@ -883,17 +881,17 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             let dataVal1 = data?.fuelCost
                 ? data.fuelCost
                 : data?.milesPerGallon
-                ? data.milesPerGallon
-                : data?.miles
-                ? data.miles
-                : 0;
+                    ? data.milesPerGallon
+                    : data?.miles
+                        ? data.miles
+                        : 0;
             let dataVal2 = data?.repairCost
                 ? data.repairCost
                 : data?.costPerGallon
-                ? data.costPerGallon
-                : data?.revenue
-                ? data.revenue
-                : 0;
+                    ? data.costPerGallon
+                    : data?.revenue
+                        ? data.revenue
+                        : 0;
             fuelCost.push(dataVal1);
             repairCost.push(dataVal2);
             if (stacked && dataVal1 + dataVal2 > maxValue)

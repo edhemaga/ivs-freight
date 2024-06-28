@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 // models
 import {
     BrokerResponse,
+    DispatcherFilterResponse,
     DriverResponse,
     ShipperResponse,
     TableConfigResponse,
@@ -129,6 +130,11 @@ export class TruckassistTableService {
     /* Set Filter */
     private setTableFilter = new BehaviorSubject<any>(null);
     public currentSetTableFilter = this.setTableFilter.asObservable();
+
+    /* Set Load Status Filter Options */
+    private setLoadStatusFilterOptions = new BehaviorSubject<any>(null);
+    public currentLoadStatusFilterOptions =
+        this.setLoadStatusFilterOptions.asObservable();
 
     // Flip cards
     private resetSpecialFilters = new BehaviorSubject<boolean>(false);
@@ -283,5 +289,10 @@ export class TruckassistTableService {
     /* Reset Special Filters */
     public sendResetSpecialFilters(resetFilters: boolean): void {
         this.resetSpecialFilters.next(resetFilters);
+    }
+
+    /* Load Status Filter */
+    public sendLoadStatusFilter(statusFilterOptions): void {
+        this.setLoadStatusFilterOptions.next(statusFilterOptions);
     }
 }

@@ -96,7 +96,7 @@
                 }"
             >
                 <div
-                    class="counter-holder-all"
+                    class="d-flex align-items-center counter-holder-all"
                     [class.openDropdownClass]="brokerLoadDrop"
                     #t2="ngbPopover"
                     (click)="showDropdown(t2)"
@@ -110,7 +110,9 @@
                     <ng-container
                         *ngIf="
                             (danger || !counterData) &&
-                            headerText !== 'Drug & Alcohol'
+                            headerText !== 'Drug & Alcohol' &&
+                            headerText !== 'Comment' &&
+                            headerText !== 'Status History'
                         "
                     >
                         <div
@@ -186,7 +188,48 @@
                             </p>
                         </div>
                     </ng-container>
+
+                    <ng-container *ngIf="hasMultipleDetailsSelectDropdown">
+                        <div
+                            class="multiple-details-select-dropdown-container"
+                            #popover="ngbPopover"
+                            autoClose="outside"
+                            [ngbPopover]="multipleDetailsSelect"
+                            [popoverClass]="'popover-main'"
+                            [placement]="['bottom']"
+                            [container]="'body'"
+                            [ngClass]="{ active: popover?.isOpen() }"
+                        >
+                            <svg-icon
+                                class="icon"
+                                src="assets/svg/common/ic_arrow-box.svg"
+                            ></svg-icon>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="isSearchBtn && isSearchBtnDisplayed">
+                        <div
+                            class="d-flex align-items-center search-btn-container"
+                        >
+                            <div class="border"></div>
+
+                            <div
+                                class="d-flex align-items-center justify-content-center search-btn-container"
+                                ngbTooltip
+                                mainTooltip="Search"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                                (click)="handleSearchBtnClick()"
+                            >
+                                <svg-icon
+                                    class="icon"
+                                    src="assets/svg/common/ic_search.svg"
+                                ></svg-icon>
+                            </div>
+                        </div>
+                    </ng-container>
                 </div>
+
                 <div *ngIf="hasIcon" class="repair-header-icons">
                     <div class="border-line-left"></div>
                     <span class="ic-hed" *ngIf="timeFilter">
@@ -240,6 +283,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="header-plus-button">
                 <div class="date-arrow-repair">
                     <p *ngIf="customText" class="date-repair">
@@ -288,7 +332,9 @@
                         </svg-icon>
                     </div>
 
-                    <div class="header-divider"></div>
+                    <ng-container *ngIf="hasRequest">
+                        <div class="header-divider"></div>
+                    </ng-container>
 
                     <div
                         ngbTooltip
@@ -380,6 +426,41 @@
                     <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
                 </div>
             </div>
+        </div>
+    </ng-template>
+
+    <ng-template #multipleDetailsSelect>
+        <div
+            class="d-flex flex-column justify-content-center popover-container multiple-details-container"
+        >
+            <ng-container
+                *ngFor="
+                    let dropdownItem of multipleDetailsSelectDropdown;
+                    trackBy: trackByIndex
+                "
+            >
+                <div
+                    class="popover-item justify-content-between"
+                    [ngClass]="{ active: dropdownItem.isActive }"
+                    (click)="
+                        handleMultipleDetailsSelectDropdownClick(
+                            dropdownItem.id
+                        )
+                    "
+                >
+                    <p class="m-0">
+                        {{ dropdownItem.title }}
+                    </p>
+
+                    <div
+                        class="d-flex justify-content-center align-items-center counter-container"
+                    >
+                        <p class="m-0">
+                            {{ dropdownItem.length }}
+                        </p>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </ng-template>
 </div>

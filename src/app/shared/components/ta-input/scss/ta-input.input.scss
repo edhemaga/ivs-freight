@@ -413,9 +413,13 @@
     &.load-dispatches-ttd {
         grid-template-columns: repeat(2, 156px) 150px 122px;
         padding-top: 3px;
+        svg {
+            height: 16px;
+            width: 44px;
 
-        svg path {
-            fill: $valid-placholderText;
+            path {
+                fill: $valid-placholderText;
+            }
         }
 
         span {
@@ -460,6 +464,7 @@
 
             span {
                 line-height: 23px;
+                position: relative;
             }
         }
 
@@ -578,8 +583,7 @@
         }
     }
 
-    
-    &.load-shipper-contact {    
+    &.load-shipper-contact {
         grid-template-columns: 283px 38px;
     }
 
@@ -601,7 +605,6 @@
                 font-size: 11px;
                 color: $valid-placholderText !important;
                 font-weight: 400;
-                
             }
 
             &:nth-child(2) {
@@ -653,7 +656,7 @@
             }
         }
     }
- 
+
     &.cursor-on-right-side {
         text-align: right;
         padding-right: 32px;
@@ -726,4 +729,17 @@ input[type='number'] {
 input[type='number']:hover,
 input[type='number']:focus {
     -moz-appearance: textfield !important;
+}
+
+.load-dispatches-ttd-owner {
+    position: absolute;
+    left: 13px;
+    bottom: 7px;
+    width: 10px;
+    height: 10px;
+
+    svg {
+        width: 10px !important;
+        height: 10px !important;
+    }
 }
