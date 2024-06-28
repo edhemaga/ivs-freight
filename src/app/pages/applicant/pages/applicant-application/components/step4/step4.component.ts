@@ -407,10 +407,7 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
 
             this.accidentArray = [];
         } else {
-            if (
-                this.selectedAccidentIndex >= 0 &&
-                this.selectedAccidentIndex !== undefined
-            ) {
+            if (this.selectedAccidentIndex >= 0) {
                 this.accidentArray[
                     this.selectedAccidentIndex
                 ].isEditingAccident = false;

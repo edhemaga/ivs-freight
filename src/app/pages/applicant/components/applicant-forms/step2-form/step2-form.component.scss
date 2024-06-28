@@ -1,7 +1,7 @@
 @import 'src/theme/variables.scss';
 
 .work-experience-border-container {
-    border: 1px solid #00000026;
+    border: 1px solid $ta-border-grey;
     border-radius: 2px;
     padding: 4px 4px 12px 4px;
 }
@@ -232,12 +232,10 @@
 
                     .input-container .delete-index .delete-btn-group {
                         display: flex;
-                        transition: display 0.3s ease-in-out;
                     }
 
                     .input-container .delete-index .index-box {
                         display: none;
-                        transition: display 0.3s ease-in-out;
                     }
                 }
 
@@ -302,7 +300,6 @@
                     .delete-index {
                         .delete-btn-group {
                             display: none;
-                            transition: display 0.3s ease-in-out;
 
                             .delete-icon {
                                 svg {
@@ -315,7 +312,7 @@
 
                         .index-box {
                             display: flex;
-                            transition: display 0.3s ease-in-out;
+
                             p {
                                 color: $bw5;
                                 line-height: 18px;

@@ -556,10 +556,7 @@ export class Step3Component implements OnInit, OnDestroy, AfterContentChecked {
 
             this.licenseArray = [];
         } else {
-            if (
-                this.selectedLicenseIndex >= 0 &&
-                this.selectedLicenseIndex !== undefined
-            ) {
+            if (this.selectedLicenseIndex >= 0) {
                 this.licenseArray[this.selectedLicenseIndex].isEditingLicense =
                     false;
                 this.licenseArray.splice(this.selectedLicenseIndex, 1);

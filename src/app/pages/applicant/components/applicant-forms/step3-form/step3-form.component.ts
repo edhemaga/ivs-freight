@@ -47,6 +47,8 @@ import {
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+
+// routes
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 // models

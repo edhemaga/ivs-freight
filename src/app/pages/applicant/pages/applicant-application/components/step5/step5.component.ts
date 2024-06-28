@@ -1343,10 +1343,7 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
 
             this.violationsArray = [];
         } else {
-            if (
-                this.selectedViolationIndex >= 0 &&
-                this.selectedViolationIndex !== undefined
-            ) {
+            if (this.selectedViolationIndex >= 0) {
                 this.violationsArray[
                     this.selectedViolationIndex
                 ].isEditingViolation = false;

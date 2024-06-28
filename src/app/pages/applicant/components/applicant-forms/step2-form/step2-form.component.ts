@@ -61,6 +61,8 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
+
+// routes
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
 
 // models

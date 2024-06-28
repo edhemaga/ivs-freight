@@ -31,6 +31,9 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { ApplicantApplicationStringEnum } from '@pages/applicant/pages/applicant-application/enums/applicant-application-string.enum';
 
+// routes
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+
 // models
 import {
     EnumValue,
@@ -131,6 +134,8 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
     public stepFeedbackValues: any;
     public feedbackValuesToPatch: any;
     public isFeedbackValueUpdated: boolean = false;
+
+    public applicantSvgRoutes = ApplicantSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -428,10 +433,7 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
             this.formValuesToPatch = selectedWorkExperience;
             this.workExperienceArray = [];
         } else {
-            if (
-                this.selectedWorkExperienceIndex >= 0 &&
-                this.selectedWorkExperienceIndex !== undefined
-            ) {
+            if (this.selectedWorkExperienceIndex >= 0) {
                 this.workExperienceArray[
                     this.selectedWorkExperienceIndex
                 ].isEditingWorkExperience = false;
@@ -1082,8 +1084,6 @@ export class Step2Component implements OnInit, OnDestroy, AfterContentChecked {
                     this.lastWorkExperienceCard.currentEmployment,
                 isDrivingPosition:
                     this.lastWorkExperienceCard.isDrivingPosition,
-                //   cfrPart: this.lastWorkExperienceCard.cfrPart,
-                //   fmcsa: this.lastWorkExperienceCard.fmcsa,
                 reasonForLeaving:
                     this.reasonsForLeaving.find(
                         (item) =>
