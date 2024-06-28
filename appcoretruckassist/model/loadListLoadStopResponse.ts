@@ -9,18 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { LoadStopLoadListResponse } from './loadStopLoadListResponse';
 
 
-export interface RepairShopShortResponse { 
-    id?: number;
-    name?: string | null;
-    phone?: string | null;
-    phoneExt?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    longitude?: number | null;
-    latitude?: number | null;
-    pinned?: boolean;
+export interface LoadListLoadStopResponse { 
+    loadStops?: Array<LoadStopLoadListResponse> | null;
+    totalMiles?: number | null;
+    firstPickup?: { [key: string]: number; } | null;
+    completedPercentage?: number | null;
 }
 
