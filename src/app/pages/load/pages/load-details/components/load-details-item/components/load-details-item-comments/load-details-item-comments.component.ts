@@ -81,21 +81,24 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         const { comments } = load;
 
         this.comments = comments.map((comment) => {
+            const { companyUser, id, commentContent, createdAt, isEdited } =
+                comment;
+
             return {
                 companyUser: {
-                    id: comment.companyUser.id,
-                    name: comment.companyUser.fullName,
-                    avatarFile: this.companyUser.avatarFile,
+                    id: companyUser.id,
+                    name: companyUser.fullName,
+                    avatarFile: companyUser.avatarFile,
                 },
-                commentId: comment.id,
-                commentContent: comment.commentContent,
+                commentId: id,
+                commentContent,
                 commentDate:
                     MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
-                        comment.createdAt
+                        createdAt
                     ),
                 isCommenting: false,
-                isEdited: comment.isEdited,
-                isMe: comment.companyUser.id === this.companyUser.userId,
+                isEdited,
+                isMe: companyUser.id === this.companyUser.userId,
             };
         });
 
@@ -125,9 +128,8 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     public handleCommentActionEmit(commentData: CommentData): void {
         switch (commentData.btnType) {
             case LoadDetailsItemStringEnum.CANCEL:
-                if (!commentData.isEditCancel) {
+                if (!commentData.isEditCancel)
                     this.comments.splice(commentData.commentIndex, 1);
-                }
 
                 this.isCommenting = false;
 
@@ -138,11 +140,10 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                     commentContent: commentData.commentContent,
                     commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
                     isCommenting: false,
+                    isEdited: commentData.isEditConfirm,
                 };
 
                 this.editedCommentId = commentData.commentId;
-
-                commentData.isEditConfirm;
 
                 this.isCommenting = false;
 
@@ -155,7 +156,10 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                         commentContent
                     );
                 } else {
-                    this.createComment(commentContent);
+                    this.createComment(
+                        commentContent,
+                        commentData.commentIndex
+                    );
                 }
 
                 break;
@@ -205,7 +209,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         }
     }
 
-    private createComment(commentContent: string): void {
+    private createComment(commentContent: string, commentIndex: number): void {
         const comment = {
             entityTypeCommentId: 2,
             entityTypeId: this.load?.id,
@@ -215,7 +219,12 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         this.commentsService
             .createComment(comment)
             .pipe(takeUntil(this.destroy$))
-            .subscribe();
+            .subscribe((res) => {
+                this.comments[commentIndex] = {
+                    ...this.comments[commentIndex],
+                    commentId: res.id,
+                };
+            });
     }
 
     private updateCommentById(id: number, commentContent: string): void {
