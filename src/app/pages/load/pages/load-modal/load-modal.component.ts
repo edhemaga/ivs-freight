@@ -3767,12 +3767,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                next: (data) => {
+                    this.loadService
+                        .getLoadById(data.id)
+                        .subscribe((newLoad) => {
+                            this.loadService.addNewLoad(newLoad, false);
+                            this.modalService.setModalSpinner({
+                                action: null,
+                                status: true,
+                                close: true,
+                            });
+                        });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -3923,6 +3928,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
+                            this.loadService
+                                .getLoadById(newData.id)
+                                .subscribe((res) => {
+                                    this.loadService.updateLoadPartily(
+                                        res,
+                                        this.editData.selectedTab
+                                    );
+                                });
                             this.modalService.setModalSpinner({
                                 action: null,
                                 status: true,
@@ -4028,12 +4041,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .createLoadTemplate(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: LoadModalStringEnum.LOAD_TEMPLATE,
-                        status: true,
-                        close: true,
-                    });
+                next: (data) => {
+                    this.loadService
+                        .getLoadById(data.id)
+                        .subscribe((newLoad) => {
+                            this.loadService.addNewLoad(newLoad, true);
+                            this.modalService.setModalSpinner({
+                                action: LoadModalStringEnum.LOAD_TEMPLATE,
+                                status: true,
+                                close: true,
+                            });
+                        });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
