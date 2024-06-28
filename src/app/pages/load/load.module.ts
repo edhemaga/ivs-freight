@@ -24,6 +24,7 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -54,6 +55,7 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         FlipCardsPipe,
         CardValuePipe,
         FormatCurrencyPipe,
+        LoadStatusColorPipe,
 
         StoreModule.forFeature('loadCardData', loadCardModalReducer),
     ],

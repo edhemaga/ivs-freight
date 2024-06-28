@@ -35,7 +35,14 @@ import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/
     selector: 'app-load-card',
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
-    providers: [FormatCurrencyPipe, TimeFormatPipe, CardHelper],
+    providers: [
+        // Pipes
+        FormatCurrencyPipe,
+        TimeFormatPipe,
+
+        //Helpers
+        CardHelper,
+    ],
 })
 export class LoadCardComponent implements OnInit, OnDestroy {
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
