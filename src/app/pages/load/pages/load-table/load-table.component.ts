@@ -291,7 +291,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         break;
                     case LoadFilterStringEnum.STATUS_FILTER:
                         this.backLoadFilterQuery.status =
-                            res.queryParams?.[0] ?? null;
+                            res.queryParams ?? null;
 
                         this.loadBackFilter(this.backLoadFilterQuery);
 
@@ -424,7 +424,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res,
                         this.backLoadFilterQuery
                     );
-                    
+
                     if (searchEvent) {
                         if (searchEvent.action === TableStringEnum.API) {
                             this.loadBackFilter(searchEvent.query);
@@ -537,7 +537,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 hideActivationButton: true,
                 showTimeFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
                 showStatusFilter: this.selectedTab !== TableStringEnum.TEMPLATE,
-                showLtlFilter: true,
+                //showLtlFilter: true, - hide for now
                 showMoneyFilter: true,
                 showDispatcherFilter:
                     this.selectedTab !== TableStringEnum.TEMPLATE,

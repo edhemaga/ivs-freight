@@ -575,6 +575,7 @@ model/loadDriverInfo.ts
 model/loadItemUnit.ts
 model/loadListDto.ts
 model/loadListDtoPagination.ts
+model/loadListLoadStopResponse.ts
 model/loadListResponse.ts
 model/loadMinimalListResponse.ts
 model/loadMinimalResponse.ts
@@ -599,6 +600,7 @@ model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
+model/loadStopLoadListResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
