@@ -15,6 +15,7 @@ import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-
 import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active.store';
 import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
+import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
 
 // models
 import {
@@ -40,7 +41,6 @@ import {
     DeleteComment,
 } from '@shared/models/card-models/card-table-data.model';
 import { Load } from '@pages/load/models/load.model';
-import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
 
 @Injectable({
     providedIn: 'root',
@@ -249,7 +249,7 @@ export class LoadService {
         return this.loadService.apiLoadPut();
     }
 
-    public updateLoadStatus(loadId: number, loadStatus: LoadStatus) {
+    public updateLoadStatus(loadId: number, loadStatus: LoadStatus): Observable<CreateResponse> {
         return this.loadService.apiLoadStatusPut({
             id: loadId,
             status: loadStatus,
@@ -267,7 +267,7 @@ export class LoadService {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
-    public updateLoadPartily(data: LoadResponse, loadStatus: string) {
+    public updateLoadPartily(data: LoadResponse, loadStatus: string): void {
         const loadId = data.id;
 
         if (loadStatus === TableStringEnum.ACTIVE) {
@@ -284,7 +284,7 @@ export class LoadService {
         this.triggerModalAction();
     }
 
-    public addNewLoad(data: LoadResponse, isTemplate: boolean) {
+    public addNewLoad(data: LoadResponse, isTemplate: boolean): void {
         const loadCount = JSON.parse(
             localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
         );
@@ -309,7 +309,7 @@ export class LoadService {
         this.triggerModalAction();
     }
 
-    public triggerModalAction() {
+    public triggerModalAction(): void {
         this.modalAction.next(true);
     }
     public getLoadStatusFilter(
