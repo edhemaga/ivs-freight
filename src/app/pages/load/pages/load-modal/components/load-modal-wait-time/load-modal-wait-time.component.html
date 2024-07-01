@@ -36,15 +36,23 @@
                             <p
                                 class="m-0 ta-font-bold text-left d-flex align-items-center text-uppercase"
                                 [ngStyle]="
-                                    statusHistoryForm().at(index).get('status')
-                                        .value | loadStatusColor
+                                    getStatusName(index) | loadStatusColor
                                 "
                             >
-                                {{
-                                    statusHistoryForm().at(index).get('status')
-                                        .value
-                                }}
+                                {{ getStatus(index) }}
+
+                                <span
+                                    class="status-string__value"
+                                    [ngStyle]="
+                                        getStatusName(index)
+                                            | loadStatusColor : true
+                                    "
+                                    *ngIf="isStatusNumberAvailable(index)"
+                                >
+                                    {{ getStatusNumber(index) }}
+                                </span>
                             </p>
+
                             <div class="m-0 ta-font-bold">
                                 <app-ta-input
                                     formControlName="startDate"

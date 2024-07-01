@@ -76,6 +76,22 @@ export class LoadModalWaitTimeComponent implements OnInit {
         this.createFormFields();
     }
 
+    public getStatusName(index: number): string {
+        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS_NAME).value;
+      }
+    
+      public getStatus(index: number): string {
+        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS).value;
+      }
+    
+      public getStatusNumber(index: number): string {
+        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS_NUMBER).value;
+      }
+    
+      public isStatusNumberAvailable(index: number): boolean {
+        return !!this.getStatusNumber(index);
+      }
+
     private generateForm() {
         this.waitTimeForm = this.formBuilder.group({
             statusHistory: this.formBuilder.array([]),
@@ -127,9 +143,12 @@ export class LoadModalWaitTimeComponent implements OnInit {
             status.dateTimeTo
         );
         this.timeDifferences[index] = timeDifference;
+        const statusString = status.statusString.split(' ');
 
         return this.formBuilder.group({
-            status: [status.statusString],
+            statusName: [status.status.name],
+            status: [statusString[0]],
+            statusNumber: [statusString[1]],
             startDate: [startDate],
             startTime: [startTime],
             endDate: [endDate],
