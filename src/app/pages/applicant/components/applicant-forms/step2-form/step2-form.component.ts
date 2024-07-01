@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 
+import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
     ChangeDetectorRef,
@@ -20,6 +21,9 @@ import {
     UntypedFormGroup,
     Validators,
     UntypedFormArray,
+    FormsModule,
+    ReactiveFormsModule,
+    AbstractControl,
 } from '@angular/forms';
 
 import {
@@ -58,6 +62,9 @@ import { ApplicantQuery } from '@pages/applicant/state/applicant.query';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 
+// routes
+import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
+
 // models
 import { ApplicantQuestion } from '@pages/applicant/pages/applicant-application/models/applicant-question.model';
 import { WorkExpereience } from '@pages/applicant/pages/applicant-application/models/work-experience.model';
@@ -69,12 +76,49 @@ import {
     TruckTypeResponse,
     AddressEntity,
 } from 'appcoretruckassist/model/models';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// components
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
+import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputSwitchOnOffComponent } from '@shared/components/ta-input-switch-on-off/ta-input-switch-on-off.component';
+import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
+
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SharedModule } from '@shared/shared.module';
+
+// configs
+import { Step2FormConfig } from '@pages/applicant/components/applicant-forms/step2-form/config/step2-form.config';
 
 @Component({
     selector: 'app-step2-form',
     templateUrl: './step2-form.component.html',
     styleUrls: ['./step2-form.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AngularSvgIconModule,
+        SharedModule,
+
+        // components
+        TaInputComponent,
+        TaInputDropdownComponent,
+        TaInputAddressDropdownComponent,
+        TaCheckboxComponent,
+        TaInputSwitchOnOffComponent,
+        TaInputRadiobuttonsComponent,
+        ApplicantAddSaveBtnComponent,
+        TaAppTooltipV2Component,
+    ],
 })
 export class Step2FormComponent
     implements OnInit, OnChanges, OnDestroy, AfterViewInit
@@ -115,6 +159,7 @@ export class Step2FormComponent
     @Output() cardOpenAnnotationArrayValuesEmitter = new EventEmitter<any>();
     @Output() cancelFormReviewingEmitter = new EventEmitter<any>();
     @Output() radioRequiredNoteEmitter = new EventEmitter<any>();
+    @Output() onDeleteWorkExperienceClick = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -180,7 +225,7 @@ export class Step2FormComponent
         },
         {
             title: 'FMCSA Regulated',
-            formControlName: 'fmCSA',
+            formControlName: 'fmcsa',
             answerChoices: [
                 {
                     id: 3,
@@ -273,6 +318,8 @@ export class Step2FormComponent
     ];
     public isCardReviewedIncorrect: boolean = false;
 
+    public applicantSvgRoutes = ApplicantSvgRoutes;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -281,12 +328,97 @@ export class Step2FormComponent
         private changeDetectorRef: ChangeDetectorRef
     ) {}
 
+    get currentEmploymentFormControl(): AbstractControl {
+        return this.workExperienceForm.get('currentEmployment');
+    }
+
+    get employerInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get employerPhoneInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerPhoneInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get employerEmailInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerEmailInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get employerFaxInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerFaxInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get employerAddressInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerAddressInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get employerAddressUnitInputConfig(): ITaInput {
+        return Step2FormConfig.getEmployerAddressUnitInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get jobDescriptionInputConfig(): ITaInput {
+        return Step2FormConfig.getJobDescriptionInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get fromDateInputConfig(): ITaInput {
+        return Step2FormConfig.getFromDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
+    get toDateInputConfig(): ITaInput {
+        return Step2FormConfig.getToDateInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+            currentEmploymentFormControl: this.currentEmploymentFormControl,
+        });
+    }
+
+    get reasonForLeavingInputConfig(): ITaInput {
+        return Step2FormConfig.getReasonForLeavingInputConfig({
+            selectedMode: this.selectedMode,
+            isEditing: this.isEditing,
+            currentEmploymentFormControl: this.currentEmploymentFormControl,
+        });
+    }
+
+    get accountForPeriodInputConfig(): ITaInput {
+        return Step2FormConfig.getAccountForPeriodInputConfig({
+            selectedMode: this.selectedMode,
+            stepFeedbackValues: this.stepFeedbackValues,
+        });
+    }
+
     ngOnInit(): void {
         this.createForm();
 
         this.getDropdownLists();
 
         this.isDriverPosition();
+
+        this.listenCurrentEmployment();
     }
 
     ngAfterViewInit(): void {
@@ -425,6 +557,8 @@ export class Step2FormComponent
             accountForPeriod: [null],
 
             isDrivingPosition: [false],
+            currentEmployment: [false],
+
             classesOfEquipment: this.formBuilder.array([]),
 
             firstRowReview: [null],
@@ -476,7 +610,7 @@ export class Step2FormComponent
                         );
 
                         this.inputService.changeValidators(item.get('cfrPart'));
-                        this.inputService.changeValidators(item.get('fmCSA'));
+                        this.inputService.changeValidators(item.get('fmcsa'));
 
                         if (vehicleTypeId === 5) {
                             this.inputService.changeValidators(
@@ -521,10 +655,26 @@ export class Step2FormComponent
                             false
                         );
                         this.inputService.changeValidators(
-                            item.get('fmCSA'),
+                            item.get('fmcsa'),
                             false
                         );
                     });
+                }
+            });
+    }
+
+    private listenCurrentEmployment(): void {
+        this.currentEmploymentFormControl.valueChanges
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) {
+                    this.workExperienceForm.get('reasonForLeaving').disable();
+                    this.workExperienceForm.get('reasonForLeaving').reset();
+                    this.workExperienceForm.get('toDate').disable();
+                    this.workExperienceForm.get('toDate').reset();
+                } else {
+                    this.workExperienceForm.get('reasonForLeaving').enable();
+                    this.workExperienceForm.get('toDate').enable();
                 }
             });
     }
@@ -543,7 +693,7 @@ export class Step2FormComponent
                     trailerType: selectedEquipmentItem.trailerType,
                     trailerLength: selectedEquipmentItem.trailerLength,
                     cfrPart: selectedEquipmentItem.cfrPart,
-                    fmCSA: selectedEquipmentItem.fmCSA,
+                    fmcsa: selectedEquipmentItem.fmcsa,
                 });
 
                 this.selectedVehicleTypeArr[i] = this.vehicleType.find(
@@ -607,36 +757,10 @@ export class Step2FormComponent
                     );
                 }
             }
-
-            if (equipmentValue.length === 1) {
-                const classOfEquipmentItem = equipmentValue[0];
-
-                setTimeout(() => {
-                    if (classOfEquipmentItem.cfrPart) {
-                        this.cfrPartRadios[0].checked = true;
-                    } else {
-                        this.cfrPartRadios[1].checked = true;
-
-                        if (classOfEquipmentItem.cfrPart === null) {
-                            this.cfrPartRadios[0].checked = false;
-                            this.cfrPartRadios[1].checked = false;
-                        }
-                    }
-
-                    if (classOfEquipmentItem.fmCSA) {
-                        this.fmcsaRadios[0].checked = true;
-                    } else {
-                        this.fmcsaRadios[1].checked = true;
-
-                        if (classOfEquipmentItem.fmCSA === null) {
-                            this.fmcsaRadios[0].checked = false;
-                            this.fmcsaRadios[1].checked = false;
-                        }
-                    }
-                }, 50);
-            }
         } else {
-            this.classesOfEquipment.push(this.createClassOfEquipment());
+            if (!this.classesOfEquipment.controls.length) {
+                this.classesOfEquipment.push(this.createClassOfEquipment());
+            }
         }
     }
 
@@ -655,7 +779,7 @@ export class Step2FormComponent
             trailerType: [null, Validators.required],
             trailerLength: [null, Validators.required],
             cfrPart: [null, Validators.required],
-            fmCSA: [null, Validators.required],
+            fmcsa: [null, Validators.required],
         });
     }
 
@@ -674,7 +798,7 @@ export class Step2FormComponent
                     this.displaySwitchCfrPartRequiredStateArray[index] = true;
                 }
 
-                if (this.classesOfEquipment.at(index).get('fmCSA').invalid) {
+                if (this.classesOfEquipment.at(index).get('fmcsa').invalid) {
                     if (index === 0) {
                         return;
                     }
@@ -725,34 +849,6 @@ export class Step2FormComponent
 
         this.filteredTrailerTypeArr.splice(index, 1);
         this.filteredLengthTypeArr.splice(index, 1);
-
-        if (this.classesOfEquipment.controls.length === 1) {
-            const classOfEquipmentItem = this.classesOfEquipment.value[0];
-
-            setTimeout(() => {
-                if (classOfEquipmentItem.cfrPart) {
-                    this.cfrPartRadios[0].checked = true;
-                } else {
-                    this.cfrPartRadios[1].checked = true;
-
-                    if (classOfEquipmentItem.cfrPart === null) {
-                        this.cfrPartRadios[0].checked = false;
-                        this.cfrPartRadios[1].checked = false;
-                    }
-                }
-
-                if (classOfEquipmentItem.fmCSA) {
-                    this.fmcsaRadios[0].checked = true;
-                } else {
-                    this.fmcsaRadios[1].checked = true;
-
-                    if (classOfEquipmentItem.fmCSA === null) {
-                        this.fmcsaRadios[0].checked = false;
-                        this.fmcsaRadios[1].checked = false;
-                    }
-                }
-            }, 50);
-        }
     }
 
     public handleInputSelect(
@@ -767,7 +863,7 @@ export class Step2FormComponent
             'trailerLength',
             'employerAddress',
             'cfrPart',
-            'fmCSA',
+            'fmcsa',
         ];
 
         switch (action) {
@@ -1297,6 +1393,7 @@ export class Step2FormComponent
             reasonForLeaving: formValue?.reasonForLeaving,
             accountForPeriod: formValue?.accountForPeriod,
             isDrivingPosition: formValue?.isDrivingPosition,
+            currentEmployment: formValue?.currentEmployment,
         });
 
         this.selectedAddress = formValue?.employerAddress;
@@ -1399,6 +1496,7 @@ export class Step2FormComponent
             fifthRowReview,
             sixthRowReview,
             seventhRowReview,
+            classesOfEquipment,
             ...workExperienceForm
         } = this.workExperienceForm.value;
 
@@ -1412,6 +1510,20 @@ export class Step2FormComponent
             employerAddress: selectedAddress,
             employerAddressUnit,
             isEditingWorkExperience: false,
+            classesOfEquipment: classesOfEquipment.map((classOfEquipment) => {
+                return {
+                    ...classOfEquipment,
+                    vehicleTypeLogoName: this.vehicleType.find(
+                        (item) => item.name === classOfEquipment.vehicleType
+                    ).logoName,
+                    trailerTypeLogoName: classOfEquipment.trailerType
+                        ? this.trailerType.find(
+                              (item) =>
+                                  item.name === classOfEquipment.trailerType
+                          ).logoName
+                        : null,
+                };
+            }),
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -1454,6 +1566,7 @@ export class Step2FormComponent
             trailerLength,
             employerAddress,
             employerAddressUnit,
+            classesOfEquipment,
             firstRowReview,
             secondRowReview,
             thirdRowReview,
@@ -1476,6 +1589,20 @@ export class Step2FormComponent
                 : this.editingCardAddress,
             employerAddressUnit,
             isEditingWorkExperience: false,
+            classesOfEquipment: classesOfEquipment.map((classOfEquipment) => {
+                return {
+                    ...classOfEquipment,
+                    vehicleTypeLogoName: this.vehicleType.find(
+                        (item) => item.name === classOfEquipment.vehicleType
+                    ).logoName,
+                    trailerTypeLogoName: classOfEquipment.trailerType
+                        ? this.trailerType.find(
+                              (item) =>
+                                  item.name === classOfEquipment.trailerType
+                          ).logoName
+                        : null,
+                };
+            }),
         };
 
         this.saveFormEditingEmitter.emit(saveData);
@@ -1485,6 +1612,10 @@ export class Step2FormComponent
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+    }
+
+    public onDeleteWorkExperience(): void {
+        this.onDeleteWorkExperienceClick.emit(true);
     }
 
     ngOnDestroy(): void {

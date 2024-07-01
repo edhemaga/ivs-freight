@@ -285,6 +285,13 @@
         }
     }
 
+    &.medium-14 {
+        .ta-checkbox-label {
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+
     &.label-black {
         .ta-checkbox-label {
             color: #2f2f2f;

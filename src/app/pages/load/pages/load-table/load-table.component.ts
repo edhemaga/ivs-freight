@@ -1,4 +1,10 @@
-import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    AfterViewInit,
+    ChangeDetectorRef,
+} from '@angular/core';
 import { Observable, Subject, Subscription, takeUntil, tap } from 'rxjs';
 
 // Modals
@@ -133,6 +139,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private cardsModalService: CardsModalConfigService,
         private loadCardsModalService: LoadCardModalService,
 
+        private cdRef: ChangeDetectorRef,
+
         //store
         private store: Store
     ) {}
@@ -160,6 +168,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.onDropdownActions();
 
+        this.watchForLoadChanges();
+        
         this.getLoadStatusFilter();
 
         this.getLoadDispatcherFilter();
@@ -169,6 +179,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
+    }
+
+    private watchForLoadChanges(): void {
+        this.loadServices.modalAction$.subscribe((action) => {
+            this.sendLoadData();
+        });
     }
 
     private pendingTabCardsConfig(): void {
@@ -710,6 +726,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const td = this.tableData.find((t) => t.field === this.selectedTab);
         this.setLoadData(td);
         this.updateCardView();
+        this.cdRef.detectChanges();
     }
 
     private getGridColumns(activeTab: string, configType: string): void {
@@ -1235,10 +1252,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.confiramtionService.confirmationData$.subscribe((response) => {
                 if (response.type === TableStringEnum.DELETE) {
                     this.loadServices
-                        .deleteLoadById(event.id, loadTab)
+                        .deleteLoadById(event.id, this.selectedTab)
                         .pipe(takeUntil(this.destroy$))
-
-                        .subscribe();
+                        .subscribe(() => this.sendLoadData());
                 }
             });
         } else if (event.type === TableStringEnum.EDIT) {
@@ -1252,6 +1268,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                                 ...load,
                             },
                             type: event.type,
+                            selectedTab: this.selectedTab,
                         };
 
                         this.modalService.openModal(

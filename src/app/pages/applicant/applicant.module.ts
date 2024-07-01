@@ -22,27 +22,7 @@ import { ApplicantSignaturePadComponent } from '@pages/applicant/components/appl
 import { ApplicantWelcomeScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-welcome-screen/applicant-welcome-screen.component';
 import { ApplicantEndScreenComponent } from '@pages/applicant/pages/applicant/components/applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
-import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { ApplicantReviewFeedbackComponent } from '@pages/applicant/components/applicant-review-feedback/applicant-review-feedback.component';
-import { ApplicantDeleteBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-delete-btn/applicant-delete-btn.component';
-
-import { Step1Component } from '@pages/applicant/pages/applicant-application/components/step1/step1.component';
-import { Step2Component } from '@pages/applicant/pages/applicant-application/components/step2/step2.component';
-import { Step3Component } from '@pages/applicant/pages/applicant-application/components/step3/step3.component';
-import { Step4Component } from '@pages/applicant/pages/applicant-application/components/step4/step4.component';
-import { Step5Component } from '@pages/applicant/pages/applicant-application/components/step5/step5.component';
-import { Step6Component } from '@pages/applicant/pages/applicant-application/components/step6/step6.component';
-import { Step7Component } from '@pages/applicant/pages/applicant-application/components/step7/step7.component';
-import { Step8Component } from '@pages/applicant/pages/applicant-application/components/step8/step8.component';
-import { Step9Component } from '@pages/applicant/pages/applicant-application/components/step9/step9.component';
-import { Step10Component } from '@pages/applicant/pages/applicant-application/components/step10/step10.component';
-import { Step11Component } from '@pages/applicant/pages/applicant-application/components/step11/step11.component';
-
-import { Step6FormComponent } from '@pages/applicant/components/applicant-forms/step6-form/step6-form.component';
-import { Step5FormComponent } from '@pages/applicant/components/applicant-forms/step5-form/step5-form.component';
-import { Step4FormComponent } from '@pages/applicant/components/applicant-forms/step4-form/step4-form.component';
-import { Step3FormComponent } from '@pages/applicant/components/applicant-forms/step3-form/step3-form.component';
-import { Step2FormComponent } from '@pages/applicant/components/applicant-forms/step2-form/step2-form.component';
 
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -66,12 +46,6 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         ApplicantWelcomeScreenComponent,
         ApplicantEndScreenComponent,
         ApplicantReviewFeedbackComponent,
-
-        Step2Component,
-        Step3Component,
-
-        Step3FormComponent,
-        Step2FormComponent,
     ],
     imports: [
         /* MODULES */
