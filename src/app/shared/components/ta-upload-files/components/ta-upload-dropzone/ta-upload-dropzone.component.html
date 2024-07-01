@@ -26,11 +26,12 @@
         (click)="dropZoneClose()"
     ></svg-icon>
     <label
-        for="pdf"
+        [for]="'dropZone' + dropZoneIndex"
         class="ta-upload-dropzone-label"
         [class.required]="isRequired && showRequired && !textChangeOverModal"
         [ngClass]="{
-            small: size === 'medium' && filesLength > 1 && modalSize === 'small',
+            small:
+                size === 'medium' && filesLength > 1 && modalSize === 'small',
             'ta-upload-dropzone-column': dropzoneColumn
         }"
     >
@@ -38,7 +39,9 @@
             class="ta-upload-dropzone-area"
             [class.expand]="_dropZoneConfig.globalDropZone"
             [src]="_dropZoneConfig.dropZoneSvg"
-            [svgStyle]="dropzoneColumn ? { 'width.px': 80, 'height.px': 80 } : {}"
+            [svgStyle]="
+                dropzoneColumn ? { 'width.px': 80, 'height.px': 80 } : {}
+            "
         ></svg-icon>
         <div
             class="ta-upload-dropzone-text"
@@ -48,7 +51,8 @@
             <span
                 *ngIf="_dropZoneConfig.dropZoneType === 'files'"
                 [ngClass]="{
-                    'ta-upload-dropzone-text-big': _dropZoneConfig.globalDropZone
+                    'ta-upload-dropzone-text-big':
+                        _dropZoneConfig.globalDropZone
                 }"
                 >{{
                     filesLength > 1 && size == 'medium'
@@ -65,7 +69,8 @@
             <span
                 *ngIf="_dropZoneConfig.dropZoneType === 'media'"
                 [ngClass]="{
-                    'ta-upload-dropzone-text-big': _dropZoneConfig.globalDropZone
+                    'ta-upload-dropzone-text-big':
+                        _dropZoneConfig.globalDropZone
                 }"
             >
                 DRAG MEDIA HERE
@@ -74,13 +79,14 @@
             <span
                 *ngIf="_dropZoneConfig.dropZoneType === 'image'"
                 [ngClass]="{
-                    'ta-upload-dropzone-text-big': _dropZoneConfig.globalDropZone
+                    'ta-upload-dropzone-text-big':
+                        _dropZoneConfig.globalDropZone
                 }"
-            >{{
-                filesLength > 1 && size === 'medium'
-                    ? 'DRAG IMAGE'
-                    : 'DRAG IMAGE HERE'
-            }}
+                >{{
+                    filesLength > 1 && size === 'medium'
+                        ? 'DRAG IMAGE'
+                        : 'DRAG IMAGE HERE'
+                }}
             </span>
             <span
                 *ngIf="!_dropZoneConfig.globalDropZone"
@@ -90,7 +96,7 @@
         </div>
     </label>
     <input
-        id="pdf"
+        [id]="'dropZone' + dropZoneIndex"
         #dropZone
         type="file"
         [accept]="_dropZoneConfig.dropZoneAvailableFiles"
@@ -105,7 +111,7 @@
         src="assets/svg/common/ic_x.svg"
         (click)="unSupporetedType = false"
     ></svg-icon>
-    <label for="pdf" class="ta-upload-dropzone-label">
+    <label [for]="'dropZone' + dropZoneIndex" class="ta-upload-dropzone-label">
         <div class="ta-upload-dropzone-text">
             <span class="ta-upload-dropzone-text-big"
                 >UNSUPPORTED FILE TYPE</span

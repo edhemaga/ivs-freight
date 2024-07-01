@@ -613,6 +613,16 @@
                                 ></app-load-modal-stop-items>
                             </app-ta-custom-card>
                         </div>
+
+                        <ng-container *ngIf="pickupStatusHistory.length">
+                            <app-load-modal-wait-time
+                                [areFieldsDisabled]="isLoadClosed"
+                                [statusHistory]="pickupStatusHistory"
+                                (formChanged)="
+                                    pickupStatusHistoryChange($event, 'pickup')
+                                "
+                            ></app-load-modal-wait-time>
+                        </ng-container>
                     </app-load-modal-stop>
 
                     <!-- Extra Stops -->
@@ -996,6 +1006,26 @@
                                             ></app-load-modal-stop-items>
                                         </app-ta-custom-card>
                                     </div>
+                                    <ng-container
+                                        *ngIf="
+                                            extraStopStatusHistory[indx] &&
+                                            extraStopStatusHistory[indx].length
+                                        "
+                                    >
+                                        <app-load-modal-wait-time
+                                            [areFieldsDisabled]="isLoadClosed"
+                                            [statusHistory]="
+                                                extraStopStatusHistory[indx]
+                                            "
+                                            (formChanged)="
+                                                pickupStatusHistoryChange(
+                                                    $event,
+                                                    'extra-stop',
+                                                    indx
+                                                )
+                                            "
+                                        ></app-load-modal-wait-time>
+                                    </ng-container>
                                 </app-load-modal-stop>
                             </div>
                         </ng-container>
@@ -1223,6 +1253,19 @@
                                 ></app-load-modal-stop-items>
                             </app-ta-custom-card>
                         </div>
+
+                        <ng-container *ngIf="deliveryStatusHistory.length">
+                            <app-load-modal-wait-time
+                                [areFieldsDisabled]="isLoadClosed"
+                                [statusHistory]="deliveryStatusHistory"
+                                (formChanged)="
+                                    pickupStatusHistoryChange(
+                                        $event,
+                                        'delivery'
+                                    )
+                                "
+                            ></app-load-modal-wait-time>
+                        </ng-container>
                     </app-load-modal-stop>
 
                     <!-- Stops Footer -->

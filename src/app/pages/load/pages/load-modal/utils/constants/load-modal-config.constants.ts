@@ -259,7 +259,7 @@ export class LoadModalConfig {
         dropdownWidthClass: 'w-col-208',
         readOnly: true,
     };
- 
+
     static getInvoiceDate(isDisabled: boolean): ITaInput {
         return {
             name: 'datepicker',
@@ -513,7 +513,8 @@ export class LoadModalConfig {
             priceSeparator: true,
             priceSeparatorLimitation: 6,
             placeholderIconRightSide: 'dollar',
-            placeholderIconColor:  additional.get('name').value === 'Advance' ? 'green' : 'blue',
+            placeholderIconColor:
+                additional.get('name').value === 'Advance' ? 'green' : 'blue',
             inputCursorOnRightSide: true,
             removeInput: true,
             isRequired: true,
@@ -529,10 +530,10 @@ export class LoadModalConfig {
         label: 'Status',
         isDropdown: true,
         dropdownWidthClass: 'w-col-132 dropdown-status',
-        statusStyle: true
+        statusStyle: true,
     };
 
-    static DRIVE_RATE_INPUT_CONFIG : ITaInput = {
+    static DRIVE_RATE_INPUT_CONFIG: ITaInput = {
         name: 'price-separator',
         type: 'text',
         label: 'Driver Rate',
@@ -544,8 +545,8 @@ export class LoadModalConfig {
         placeholderIconColor: 'orange',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
-        hideRequiredCheck: true
-    }
+        hideRequiredCheck: true,
+    };
 
     static ADJUSTED_RATE_INPUT_CONFIG: ITaInput = {
         name: 'price-separator',
@@ -559,8 +560,8 @@ export class LoadModalConfig {
         placeholderIconColor: 'purple',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
-        hideRequiredCheck: true
-    }
+        hideRequiredCheck: true,
+    };
 
     static REVISED_RATE_INPUT_CONFIG: ITaInput = {
         name: 'price-separator',
@@ -574,8 +575,8 @@ export class LoadModalConfig {
         placeholderIconColor: 'gray',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
-        hideRequiredCheck: true
-    }
+        hideRequiredCheck: true,
+    };
 
     static TONU_RATE_INPUT_CONFIG: ITaInput = {
         name: 'price-separator',
@@ -589,6 +590,54 @@ export class LoadModalConfig {
         placeholderIconColor: 'red',
         inputCursorOnRightSide: true,
         hideErrorMessage: true,
-        hideRequiredCheck: true
+        hideRequiredCheck: true,
+    };
+
+    static getWaitTimeStartDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'Start Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeStartTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'Start time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeEndDateConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'End Date',
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
+    }
+
+    static getWaitTimeEndTimeConfig(isDisabled: boolean): ITaInput {
+        return {
+            name: 'timepicker',
+            type: 'text',
+            label: 'End time',
+            isFromDate: true,
+            isDropdown: true,
+            isRequired: true,
+            labelInInput: true,
+            isDisabled: isDisabled,
+        };
     }
 }

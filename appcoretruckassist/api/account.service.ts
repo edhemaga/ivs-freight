@@ -136,15 +136,16 @@ export class AccountService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiAccountAvatarCodeGet(code: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AvatarResponse>;
-    public apiAccountAvatarCodeGet(code: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AvatarResponse>>;
-    public apiAccountAvatarCodeGet(code: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AvatarResponse>>;
-    public apiAccountAvatarCodeGet(code: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-        if (code === null || code === undefined) {
-            throw new Error('Required parameter code was null or undefined when calling apiAccountAvatarCodeGet.');
-        }
+    public apiAccountAvatarGet(code?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<AvatarResponse>;
+    public apiAccountAvatarGet(code?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<AvatarResponse>>;
+    public apiAccountAvatarGet(code?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<AvatarResponse>>;
+    public apiAccountAvatarGet(code?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (code !== undefined && code !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>code, 'Code');
+        }
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -192,7 +193,7 @@ export class AccountService {
             }
         }
 
-        let localVarPath = `/api/account/avatar/${this.configuration.encodeParam({name: "code", value: code, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
+        let localVarPath = `/api/account/avatar`;
         return this.httpClient.request<AvatarResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,

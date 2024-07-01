@@ -26,12 +26,14 @@ export class TaSearchV2Component implements OnChanges {
 
     @Input() placeHolderText: string;
     @Input() clearSearchValue?: boolean = false;
+    @Input() isDetailsSearchLayout?: boolean = false;
 
     @Output() searchValueEmitter = new EventEmitter<string>();
 
     public isValueConfirmed: boolean = false;
     public isInputFocused: boolean = false;
     public isDisplayingButtons: boolean = false;
+    public isDetailsSearchLayoutValueValid: boolean = false;
 
     constructor() {}
 
@@ -47,15 +49,29 @@ export class TaSearchV2Component implements OnChanges {
     public handleSearchValue(event: Event): void {
         const searchValue = (event.target as HTMLInputElement).value;
 
-        if (searchValue) {
+        if (!this.isDetailsSearchLayout) {
+            if (searchValue) {
+                this.isDisplayingButtons = true;
+
+                return;
+            }
+
+            this.isDisplayingButtons = false;
+
+            this.searchValueEmitter.emit(null);
+        } else {
             this.isDisplayingButtons = true;
 
-            return;
+            if (searchValue.length >= 2) {
+                this.isDetailsSearchLayoutValueValid = true;
+
+                this.searchValueEmitter.emit(searchValue);
+            } else {
+                this.isDetailsSearchLayoutValueValid = false;
+
+                this.searchValueEmitter.emit(null);
+            }
         }
-
-        this.isDisplayingButtons = false;
-
-        this.searchValueEmitter.emit(null);
     }
 
     public handleSearchFocus(focused: boolean): void {
@@ -64,6 +80,9 @@ export class TaSearchV2Component implements OnChanges {
         if (this.isInputFocused && this.searchInput.nativeElement.value) {
             this.isValueConfirmed = false;
         }
+
+        if (!this.isInputFocused && this.searchInput.nativeElement.value)
+            this.isValueConfirmed = true;
     }
 
     public handleConfirmClick(): void {
@@ -73,13 +92,13 @@ export class TaSearchV2Component implements OnChanges {
     }
 
     public handleClearClick(): void {
-        if (this.searchInput.nativeElement.value) {
+        if (this.searchInput.nativeElement.value)
             this.searchInput.nativeElement.value = null;
-        }
 
-        if (this.isValueConfirmed) {
-            this.isValueConfirmed = false;
-        }
+        if (this.isValueConfirmed) this.isValueConfirmed = false;
+
+        if (this.isDetailsSearchLayout)
+            this.isDetailsSearchLayoutValueValid = false;
 
         this.searchInput.nativeElement.focus();
 

@@ -23,6 +23,7 @@ export interface DetailsConfig {
     isMapDisplayed?: boolean;
     hasMultipleDetailsSelectDropdown?: boolean;
     multipleDetailsSelectDropdown?: MultipleSelectDetailsDropdownItem[];
+    isSearchBtn?: boolean;
     data?:
         | DriverResponse
         | CdlResponse

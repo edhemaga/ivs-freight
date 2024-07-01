@@ -94,7 +94,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     @Input() isMe?: boolean = false;
     @Input() isEditButtonDisabled?: boolean = false;
 
-    @Input() isDeatilsCommentLayout?: boolean = false;
+    @Input() isDetailsCommentLayout?: boolean = false;
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() closeDropdown = new EventEmitter<boolean>();
@@ -315,6 +315,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     this.isEditing = false;
                 }
+
+                console.log('this.isEdited', this.isEdited);
 
                 const dateAndTimeNow =
                     MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
