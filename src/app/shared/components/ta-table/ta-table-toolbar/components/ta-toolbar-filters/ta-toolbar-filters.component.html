@@ -96,7 +96,7 @@
         [dataArray]="this.activeTableData.deactivatedUserArray"
         (setFilter)="onSpecialFilter($event, 'deactivatedUserArray')"
         [selectedFilter]="
-            this.activeTableData.deactivatedUserArray.selectedFilter
+            this.activeTableData?.deactivatedUserArray?.selectedFilter
         "
     ></app-ta-special-filter>
 
@@ -173,7 +173,7 @@
         [dataArray]="this.activeTableData.driverArhivedArray"
         (setFilter)="onSpecialFilter($event, 'driverArhivedArray')"
         [selectedFilter]="
-            this.activeTableData.driverArhivedArray.selectedFilter
+            this.activeTableData?.driverArhivedArray?.selectedFilter
         "
     ></app-ta-special-filter>
 
@@ -398,7 +398,7 @@
         [filterTitle]="'Banned'"
         [dataArray]="this.activeTableData.bannedArray"
         (setFilter)="onSpecialFilter($event, 'ban')"
-        [selectedFilter]="this.activeTableData.bannedArray.selectedFilter"
+        [selectedFilter]="this.activeTableData?.bannedArray?.selectedFilter"
     ></app-ta-special-filter>
 
     <app-ta-special-filter
