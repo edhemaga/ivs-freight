@@ -841,6 +841,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         } = data;
 
         return {
+            ...data,
             id,
             isSelected: false,
             loadInvoice: {
