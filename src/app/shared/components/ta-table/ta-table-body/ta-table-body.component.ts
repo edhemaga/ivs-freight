@@ -51,6 +51,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -71,7 +72,7 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { TableDescriptionTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-description-text.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
-import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -90,7 +91,6 @@ import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/t
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
 import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/constants/load-table-stops.constants';
-import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 @Titles()
 @Component({
