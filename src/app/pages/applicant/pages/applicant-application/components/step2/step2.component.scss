@@ -39,7 +39,7 @@
         p,
         h5 {
             font-size: 14px;
-            line-height: 22px;
+            line-height: 18px;
 
             &::-moz-selection {
                 color: $ta-black-2;
@@ -53,7 +53,8 @@
         }
 
         h5 {
-            margin-bottom: 22px !important;
+            color: $bw6-2;
+            margin-bottom: 12px !important;
         }
     }
 
@@ -77,8 +78,8 @@
             margin-bottom: 4px;
             padding-left: 10px;
             display: grid;
-            grid-template-columns: 180px 182px 100px;
-            grid-gap: 22px;
+            grid-template-columns: 26px 250px 180px 132px;
+            grid-gap: 6px;
 
             .employer-box,
             .job-description-box,
@@ -111,14 +112,23 @@
                 width: 100%;
                 cursor: pointer;
                 display: grid;
-                grid-template-columns: 180px 182px 100px;
-                grid-column-gap: 22px;
+                grid-template-columns: 26px 250px 180px 132px;
+                grid-column-gap: 6px;
+            }
+
+            .index-box {
+                p {
+                    color: $ta-blue-13;
+                    line-height: 18px;
+                    font-size: 14px;
+                }
             }
 
             .employer-box,
             .date-box,
             .job-description-box,
             .driving-position-box,
+            .not-driving-position-box,
             .icon-box {
                 p {
                     line-height: 14px;
@@ -176,21 +186,46 @@
                     }
                 }
 
+                &.not-driving-position-box {
+                    p {
+                        color: $bw5;
+
+                        &::-moz-selection {
+                            color: $bw5;
+                            background: rgb(48, 116, 211, 0.2);
+                        }
+
+                        &::selection {
+                            color: $bw5;
+                            background: rgb(48, 116, 211, 0.2);
+                        }
+                    }
+                }
+
                 &.icon-box {
                     .truck-icon,
                     .trailer-icon {
                         line-height: 16px;
 
-                        &.truck-icon {
-                            transform: rotateY(200deg);
+                        svg {
+                            path {
+                                fill: $bw5;
+                            }
                         }
                     }
 
-                    .equipment-number {
-                        color: $bw5;
-                        font-size: 11px;
-                        line-height: 12px;
-                        margin-left: 6px !important;
+                    .number-box {
+                        background-color: $bw5;
+                        padding: 1px 5px;
+                        border-radius: 20px;
+                        margin-left: 6px;
+                        min-width: 24px;
+
+                        .equipment-number {
+                            color: $white;
+                            font-size: 11px;
+                            line-height: 14px;
+                        }
                     }
                 }
             }
@@ -202,7 +237,33 @@
     }
 
     .work-experience-group {
-        margin-top: 19px;
+        margin-bottom: 20px;
+    }
+}
+
+.work-experience-btn-container {
+    margin: 22px auto 32px auto;
+    width: 616px;
+
+    p {
+        line-height: 18px;
+        font-size: 14px;
+    }
+
+    .work-experience-title {
+        color: $bw6-2;
+        font-size: 14px;
+        height: 18px;
+
+        &::-moz-selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
+
+        &::selection {
+            color: $ta-black;
+            background: rgb(66, 66, 66, 0.2);
+        }
     }
 }
 

@@ -251,7 +251,6 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
             certifyViolations,
             trafficViolationItems,
         } = stepValues;
-
         this.trafficViolationsForm
             .get('noViolationsForPastTwelveMonths')
             .patchValue(noViolationsForPastTwelveMonths);
@@ -1348,8 +1347,8 @@ export class Step5Component implements OnInit, OnDestroy, AfterContentChecked {
                 this.violationsArray[
                     this.selectedViolationIndex
                 ].isEditingViolation = false;
+                this.violationsArray.splice(this.selectedViolationIndex, 1);
             }
-            this.violationsArray.splice(this.selectedViolationIndex, 1);
 
             this.formValuesToPatch = {
                 date: null,

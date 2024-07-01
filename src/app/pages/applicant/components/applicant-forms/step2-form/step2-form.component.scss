@@ -1,7 +1,7 @@
 @import 'src/theme/variables.scss';
 
 .work-experience-border-container {
-    border: 1px solid #2f2f2f;
+    border: 1px solid $ta-border-grey;
     border-radius: 2px;
     padding: 4px 4px 12px 4px;
 }
@@ -26,6 +26,67 @@
             background: rgb(255, 255, 255, 0.2);
         }
     }
+    
+    .icon-delete-container {
+        margin-right: 8px;
+        margin-left: 4px;
+        background: transparent;
+        cursor: pointer;
+
+        .delete-icon {
+            svg {
+                path {
+                    transition: fill 0.3s ease-in-out;
+                    fill: $bw5;
+                }
+            }
+        }
+
+        &:hover {
+            .delete-icon {
+                svg {
+                    path {
+                        transition: fill 0.3s ease-in-out;
+                        fill: $white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.add-driving-postion {
+    &.show-pointer {
+        cursor: pointer;
+    }
+
+    svg {
+        width: 18px;
+        height: 18px;
+        path {
+            fill: $ta-blue-13;
+        }
+    }
+
+    &.disabled {
+        svg {
+            width: 18px;
+            height: 18px;
+            path {
+                fill: $ta-light-grey-6;
+            }
+
+            &:hover {
+                path {
+                    fill: $ta-light-grey-6;
+                }
+            }
+        }
+
+        &.show-pointer {
+            cursor: default;
+        }
+    }
 }
 
 .step-form {
@@ -42,7 +103,7 @@
     }
 
     .details-title-box {
-        padding-left: 6px;
+        padding-left: 2px;
         margin-bottom: 28px;
 
         p {
@@ -83,7 +144,7 @@
     }
 
     .address-unit-group {
-        width: 123px;
+        width: 100px;
         margin-right: 0 !important;
         margin-bottom: 22px !important;
     }
@@ -91,6 +152,12 @@
     .job-details-box {
         padding-top: 8px;
         border-top: 1px solid $bw-9;
+
+
+    }
+
+    .job-description-group {
+        width: 426px;
     }
 
     .date-group {
@@ -110,6 +177,7 @@
         border-top: 1px solid $bw-9;
         border-bottom: 1px solid $bw-9;
         padding: 8px 0;
+        margin-bottom: 12px;
     }
 
     .class-of-equipment-container {
@@ -117,17 +185,19 @@
             .cards-title-box {
                 width: 100%;
                 margin-bottom: 4px;
-                padding-left: 10px;
+                padding-left: 6px;
                 display: grid;
-                grid-template-columns: 208px 218px 49px;
-                grid-gap: 24px;
+                grid-template-columns: 26px 230px 220px 120px;
+                grid-gap: 4px;
 
+                .hashtag-box,
                 .vehicle-box,
                 .trailer-box,
                 .length-box {
                     p {
-                        color: $ta-black-2;
+                        color: $bw5;
                         font-size: 11px;
+                        text-transform: uppercase;
 
                         -webkit-user-select: none !important;
                         -moz-user-select: none !important;
@@ -139,6 +209,12 @@
                         }
                     }
                 }
+
+                .vehicle-box,
+                .trailer-box,
+                .length-box {
+                    margin-left: 6px;
+                }
             }
 
             .class-of-equipment-card {
@@ -146,7 +222,7 @@
                 height: 69px;
                 border-radius: 2px;
                 margin-bottom: 4px;
-                padding: 4px 10px 8px 10px;
+                padding: 4px 6px 8px 6px;
                 background: $bw2;
                 cursor: pointer;
                 transition: background 0.2s ease-in-out;
@@ -154,10 +230,12 @@
                 &:hover {
                     background: $ta-light-grey;
 
-                    .input-container .delete-btn-group {
-                        opacity: 1;
-                        visibility: visible;
+                    .input-container .delete-index .delete-btn-group {
                         display: flex;
+                    }
+
+                    .input-container .delete-index .index-box {
+                        display: none;
                     }
                 }
 
@@ -197,51 +275,49 @@
                     border-bottom: 1px solid $bw-9;
                     padding-bottom: 4px;
                     transition: border 0.2s ease-in-out;
+                    display: grid;
+                    grid-template-columns: 26px 230px 220px 120px;
+                    grid-gap: 4px;
 
                     .card-vehicle-type-group {
-                        width: 220px;
-                        margin-right: 12px;
+                    }
+
+                    .index-box {
+                        p {
+                            color: $bw5;
+                            line-height: 18px;
+                            font-size: 14px;
+                        }
                     }
 
                     .card-trailer-type-group {
-                        width: 230px;
-                        margin-right: 12px;
                     }
 
                     .card-length-group {
                         width: 100px;
                     }
 
-                    .delete-btn-group {
-                        margin-left: 12px;
-                        opacity: 0;
-                        visibility: hidden;
-                        display: none;
-                        transition: opacity 0.3s ease-in-out,
-                            visibility 0.3s ease-in-out;
+                    .delete-index {
+                        .delete-btn-group {
+                            display: none;
 
-                        .delete-icon {
-                            svg {
-                                path {
-                                    fill: $bw5;
-                                }
-                            }
-
-                            &.valid {
+                            .delete-icon {
                                 svg {
                                     path {
-                                        fill: $ta-blue-7;
+                                        fill: $bw5;
                                     }
                                 }
                             }
+                        }
 
-                            /* &.invalid {
-                                svg {
-                                    path {
-                                        fill: $ta-blue-7;
-                                    }
-                                }
-                            } */
+                        .index-box {
+                            display: flex;
+
+                            p {
+                                color: $bw5;
+                                line-height: 18px;
+                                font-size: 14px;
+                            }
                         }
                     }
                 }
@@ -250,7 +326,7 @@
                     padding: 8px 0 0 6px;
                     display: grid;
                     grid-template-columns: 210px 179px;
-                    grid-gap: 22px;
+                    grid-gap: 48px;
                     position: relative;
 
                     .required-container {
@@ -372,6 +448,31 @@
                         width: 100%;
                     }
                 }
+            }
+        }
+    }
+
+    .work-experience-btn-container {
+        width: 616px;
+
+        p {
+            line-height: 18px;
+            font-size: 14px;
+        }
+
+        .work-experience-title {
+            color: $bw6-2;
+            font-size: 14px;
+            height: 18px;
+
+            &::-moz-selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
+            }
+
+            &::selection {
+                color: $ta-black;
+                background: rgb(66, 66, 66, 0.2);
             }
         }
     }
