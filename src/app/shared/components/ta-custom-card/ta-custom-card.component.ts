@@ -105,6 +105,7 @@ export class TaCustomCardComponent implements OnInit {
         this._isCardOpen = value;
     }
     @Input() hasHistoryButton: boolean = false;
+    @Input() showFinishReordering : boolean = false;
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
     @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
@@ -183,6 +184,13 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
+                case 'reordering':
+                    this.onActionEvent.emit({
+                        check: true,
+                        action: 'reordering',
+                    });
+    
+                    break;
             default:
                 break;
         }

@@ -135,9 +135,8 @@ import {
 const DragConfig = {
     dragStartThreshold: 0,
     pointerDirectionChangeThreshold: 5,
-    zIndex: 10000
-  };
-  
+    zIndex: 10000,
+};
 
 @Component({
     selector: 'app-load-modal',
@@ -177,7 +176,10 @@ const DragConfig = {
         LoadTimeTypePipe,
     ],
     animations: [fadeInAnimation],
-    providers: [FinancialCalculationPipe, { provide: CDK_DRAG_CONFIG, useValue: DragConfig }],
+    providers: [
+        FinancialCalculationPipe,
+        { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
+    ],
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
@@ -387,6 +389,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public deliveryStatusHistory: LoadStatusHistoryResponse[] = [];
     public extraStopStatusHistory: LoadStatusHistoryResponse[][] = [];
     public isDragAndDropActive: boolean = false;
+    public reorderingStarted: boolean;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -2537,7 +2540,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             timeType: [null],
             timeFrom: [null, Validators.required],
             timeTo: [null, Validators.required],
-            arive: [null],
+            arrive: [null],
             depart: [null],
             longitude: [null],
             latitude: [null],
@@ -3099,6 +3102,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     },
                     error: () => {},
                 });
+        }
+    }
+
+    public onExtraStopAction(data: { action: string }): void {
+        if (data.action === LoadModalStringEnum.REORDERING) {
+            this.reorderingStarted = false;
+        } else {
+            this.createNewExtraStop();
         }
     }
 
@@ -4437,8 +4448,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 break;
         }
     }
+
+    public shouldDisableDrag(extraStop: UntypedFormArray): boolean {
+        return this.isStepFinished(extraStop)  || this.isDragAndDropActive || this.loadExtraStops().controls.length < 2;
+    }
+
+    public isStepFinished(extraStop: UntypedFormArray): boolean {
+        return extraStop.value.arrive !== null;
+    }
     public drop(event: CdkDragDrop<string[]>): void {
         // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        this.reorderingStarted = true;
+
         moveItemInArray(
             this.loadExtraStops().controls,
             event.previousIndex,
@@ -4501,7 +4522,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
 
         // Prevent opening or closing tab
-        setTimeout(() => this.isDragAndDropActive = false, 4500);
+        setTimeout(() => (this.isDragAndDropActive = false), 250);
     }
 
     public dragStarted(): void {

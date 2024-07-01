@@ -60,6 +60,7 @@ export class LoadModalStopComponent {
     @Input() animationMarginParams = LoadModalConstants.ANIMATION_MARGIN_PARAMS;
     @Input() isDestinationTab = false;
     @Input() isDragAndDropActive = false;
+    @Input() stopFinished = false;
     
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
@@ -68,7 +69,6 @@ export class LoadModalStopComponent {
         new EventEmitter<void>();
 
     public toggleStop(event: Event): void {
-        console.log(this.isDragAndDropActive);
         if (!this.disabledCard) {
             event.preventDefault();
             event.stopPropagation();

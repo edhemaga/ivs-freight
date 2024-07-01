@@ -211,6 +211,8 @@ html body app-ta-modal .ta-custom-card .ta-card-body.scroll-x-axis {
 }
 
 .cdk-drag-preview {
+    background-color: $white !important;
+    
     .load-stop-counter-container {
         display: none !important;
     }

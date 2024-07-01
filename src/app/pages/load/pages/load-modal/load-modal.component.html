@@ -3,7 +3,7 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid"
+    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid && !reorderingStarted"
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -382,7 +382,8 @@
                         marginTop: '10px',
                         marginBottom: '12px'
                     }"
-                    (onActionEvent)="createNewExtraStop()"
+                    (onActionEvent)="onExtraStopAction($event)"
+                    [showFinishReordering]="reorderingStarted"
                 >
                     <!-- Stops Header -->
 
@@ -400,7 +401,7 @@
                     <!-- Pickup Stop  -->
 
                     <app-load-modal-stop
-                        [firstOrLast]="true"
+                        [firstOrLast]="true" 
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
                         [isDelivery]="false"
                         [shipper]="selectedPickupShipper?.name"
@@ -639,12 +640,13 @@
                                     trackBy: trackByIdentity
                                 "
                                 cdkDrag
+                                [cdkDragDisabled]="shouldDisableDrag(extraStop)"
                             >
                             <div class="dragdrop-custom-placeholder" *cdkDragPlaceholder></div>
                                 <div [formGroupName]="indx">
                                     <app-load-modal-stop
                                         *ngIf="loadExtraStops().controls.length"
-                                        [isDraging]="indx === dragingIndex"
+                                        [stopFinished]="isStepFinished(extraStop)"
                                         [firstOrLast]="false"
                                         [stopNumber]="indx + 2"
                                         [isDelivery]="
@@ -1066,7 +1068,7 @@
                     <app-load-modal-stop
                         [firstOrLast]="true"
                         [stopNumber]="loadForm.get('deliveryStopOrder').value"
-                        [isDelivery]="true"
+                        [stopFinished]="false"
                         [shipper]="selectedDeliveryShipper?.name"
                         [shipperAddress]="selectedDeliveryShipper?.address"
                         [dateRange]="
@@ -1092,6 +1094,7 @@
                         [isDestinationTab]="true"
                         [disabledCard]="!selectedPickupShipper"
                         [isCardOpen]="isActiveDeliveryStop"
+                        [isDelivery]="true"
                         [state]="
                             loadForm.get('deliveryShipper').valid &&
                             loadForm.get('deliveryDateFrom').valid &&

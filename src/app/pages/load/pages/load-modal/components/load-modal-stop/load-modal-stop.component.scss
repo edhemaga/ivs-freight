@@ -22,8 +22,20 @@
             background: $ta-green;
             transition: background 0.2s ease-in-out;
 
+            &.finished-mode {
+                background: $ta-green-7;
+            }
+
             &.delivery-mode {
                 background: $ta-red;
+
+                &.finished-mode {
+                    background: $ta-red-16;
+
+                    svg path {
+                        fill: $ta-red-10;
+                    }
+                }
             }
 
             .load-stop-counter-container {
@@ -164,7 +176,8 @@
                 background-color: $ta-red-10 !important;
             }
 
-            p, span {
+            p,
+            span {
                 color: $white !important;
             }
             .load-stop-header-content {
@@ -224,15 +237,15 @@
                 }
             }
         }
-    
+
         &.destination-disabled {
             background-color: $ta-light-grey-5;
 
-            .load-stop-header-bar-title{
+            .load-stop-header-bar-title {
                 color: $ta-light-grey-2 !important;
             }
 
-            .load-stop-header-badge{
+            .load-stop-header-badge {
                 background-color: $ta-red-20;
             }
         }

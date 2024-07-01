@@ -27,6 +27,7 @@
         height: 26px;
         cursor: pointer;
         user-select: none;
+        max-width: 616px;
 
         .header-content {
             display: flex;
@@ -524,4 +525,13 @@
             }
         }
     }
+}
+
+.reodering-button {
+    border-radius: 2px;
+    border: 0;
+    font-size: 11px;
+    padding: 3px 9px;
+    background: $bw2;
+    color: $ta-blue-13;
 }
