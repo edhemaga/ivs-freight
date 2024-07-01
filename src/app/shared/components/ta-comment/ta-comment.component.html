@@ -257,32 +257,8 @@
                             class="d-flex justify-content-between title-svg-holder"
                         >
                             <div class="d-flex align-items-center creds-holder">
-                                <ng-container *ngIf="loggedUserCommented">
-                                    <span
-                                        class="text-white ta-font-semi-bold"
-                                        (click)="
-                                            toogleComment(
-                                                commentCardsDataDropdown
-                                            )
-                                        "
-                                        [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
-                                                abbreviateFullName(
-                                                    commentCardsDataDropdown
-                                                        .companyUser.fullName
-                                                )
-                                            )
-                                        "
-                                    ></span>
-                                </ng-container>
-
                                 <ng-container
-                                    *ngIf="
-                                        !checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
+                                    *ngIf="loggedUserCommented; else notLogged"
                                 >
                                     <span
                                         class="text-white ta-font-semi-bold"
@@ -292,24 +268,37 @@
                                             )
                                         "
                                         [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
+                                            abbreviateFullName(
                                                 commentCardsDataDropdown
                                                     .companyUser.fullName
                                             )
+                                                | taCommentHighlistComponentPipe
+                                                    : commentHighlight
                                         "
                                     ></span>
                                 </ng-container>
 
+                                <ng-template #notLogged>
+                                    <ng-container *ngIf="!loggedUserCommented">
+                                        <span
+                                            class="text-white ta-font-semi-bold"
+                                            (click)="
+                                                toogleComment(
+                                                    commentCardsDataDropdown
+                                                )
+                                            "
+                                            [innerHTML]="
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
+                                                    | taCommentHighlistComponentPipe
+                                                        : commentHighlight
+                                            "
+                                        ></span>
+                                    </ng-container>
+                                </ng-template>
                                 <!-- if owner of the card -->
 
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span class="card-user-me ta-font-bold"
                                         >(Me)</span
                                     >
@@ -345,14 +334,7 @@
                             </div>
 
                             <div class="user-icons d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="
-                                        checkIfLoggedUserCommented(
-                                            commentCardsDataDropdown.companyUser
-                                                .id
-                                        )
-                                    "
-                                >
+                                <ng-container *ngIf="loggedUserCommented">
                                     <span
                                         ngbTooltip
                                         mainTooltip="Edit"
@@ -472,9 +454,9 @@
                             commentCardsDataDropdown.isOpen ? 'true' : 'false'
                         "
                         [innerHTML]="
-                            higlitsPartOfCommentSearchValue(
-                                commentCardsDataDropdown.commentContent
-                            )
+                            commentCardsDataDropdown.commentContent
+                                | taCommentHighlistComponentPipe
+                                    : commentHighlight
                         "
                     ></span>
                 </ng-container>
@@ -532,9 +514,9 @@
                             <span
                                 class="title ta-font-semi-bold"
                                 [innerHTML]="
-                                    higlitsPartOfCommentSearchValue(
-                                        commentCardsDataDropdown.fullName
-                                    )
+                                    commentCardsDataDropdown.fullName
+                                        | taCommentHighlistComponentPipe
+                                            : commentHighlight
                                 "
                             ></span>
 

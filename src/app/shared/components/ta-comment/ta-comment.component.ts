@@ -54,6 +54,7 @@ import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
+import { TaCommentHighlistComponentPipe } from './pipes/ta-comment-higlits-comment.pipe';
 
 @Component({
     selector: 'app-ta-comment',
@@ -71,7 +72,7 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
 
         // pipes
         SafeHtmlPipe,
-
+        TaCommentHighlistComponentPipe,
         // components
         TaAppTooltipV2Component,
     ],

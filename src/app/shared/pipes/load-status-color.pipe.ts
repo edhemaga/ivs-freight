@@ -9,6 +9,7 @@ export class LoadStatusColorPipe implements PipeTransform {
         status: string,
         isBadge?: boolean
     ): { color: string; backgroundColor?: string } {
+        status = status.replace(/\s+/g, '');
         const statusGreyColorCondition = status === 'Booked';
         const statusDarkGreyColorCondition = status === 'Unassigned';
         const statusDarkGrey2ColorCondition = ['Hold', 'Revised'].includes(

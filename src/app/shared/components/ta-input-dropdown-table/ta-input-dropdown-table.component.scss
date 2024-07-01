@@ -145,7 +145,7 @@
 
     .scroll-input-drodpwon {
         max-height: 270px;
-        overflow-y: scroll;
+        overflow: scroll !important;
 
         &::-webkit-scrollbar {
             width: 2px !important;
@@ -465,11 +465,30 @@
 
         .comments-holder {
             max-height: 394px;
-            overflow-y: scroll;
+            overflow-y: scroll !important;
+            .no-comments-container {
+                width: 252px;
+                height: 78px;
+                padding: 15px 0px 15px 0px;
+                gap: 10px;
+                opacity: 0px;
+                background: $ta-black;
+                p {
+                    font-family: Montserrat;
+                    font-size: 20px;
+                    font-weight: 800;
+                    line-height: 24.38px;
+                    text-align: center;
+                    color: $bw6-2;
+                }
+            }
         }
     }
 }
-
+.overflow-unset {
+    overflow-y: unset !important; // or use initial, unset, etc.
+    overflow: unset !important;
+}
 // contacts
 .contacts-button {
     &.contacts-dropdown-opened {
@@ -510,7 +529,7 @@
 .contacts-dropdown-container {
     .contact-items {
         max-height: 306px;
-        overflow: scroll;
+        overflow: scroll !important;
 
         .contact-item {
             margin-bottom: 4px;

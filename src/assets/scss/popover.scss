@@ -34,7 +34,7 @@
                     align-items: center;
 
                     &:hover {
-                        background: #1d1d1d;
+                        background: $ta-black-3;
                         border-radius: 1px;
 
                         transition: background 0.2s;
@@ -42,7 +42,7 @@
                         .regular {
                             svg {
                                 path {
-                                    fill: #dadada;
+                                    fill: $bw-9;
 
                                     transition: fill 0.2s;
                                 }
@@ -141,12 +141,12 @@
                         align-items: center;
                         font-weight: 400;
                         font-size: 14px;
-                        color: #cccccc;
+                        color: $ta-light-grey-6;
                         margin-bottom: 4px;
                         padding: 0 6px;
 
                         &:hover {
-                            background: #1d1d1d;
+                            background: $ta-black-3;
                             border-radius: 2px;
 
                             transition: 0.25s;
@@ -188,7 +188,7 @@
                     .table-list-dropdown-border {
                         width: 100%;
                         height: 1px;
-                        background: #aaaaaa20;
+                        background: $ta-light-grey-10;
                         border-radius: 1px;
                     }
                 }
@@ -236,10 +236,78 @@
         }
     }
 }
+.status-node {
+    background-color: #2c2c2c;
+    color: #d3d3d3;
+    text-align: center;
+    width: 120px;
+    padding: 4px;
+    gap: 4px;
+    border-radius: 3px 0px 0px 0px;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+.status-name {
+    font-size: 18px;
+    color: #a6a6ff;
+    cursor: pointer;
+}
+
+.status-next {
+    padding: 2px 6px 2px 6px;
+}
+
+.status-next-item {
+    color: #f0f0f0;
+    font-family: Montserrat;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: left;
+    height: 26px;
+    padding: 6px;
+    gap: 4px;
+    border-radius: 2px 0px 0px 0px;
+}
+
+.status-previous {
+    border-top: 1px solid #4d4d4d;
+    padding: 2px 6px 2px 6px;
+}
+
+.status-previous p {
+    font-family: Montserrat;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: left;
+    color: #aaaaaa;
+    padding: 6px;
+}
+
+.status-previous-item {
+    font-family: Montserrat;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 14px;
+    text-align: left;
+    height: 26px;
+    padding: 6px;
+    gap: 4px;
+    border-radius: 2px 0px 0px 0px;
+}
+
+.status-previous-icon {
+    font-size: 16px;
+    color: #d3d3d3;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
 
 // Table Status Popup
 .table-status-popover {
-    background-color: unset !important;
     margin-left: -10px;
 
     .status-dropdown {
@@ -436,7 +504,7 @@
                 justify-content: unset !important;
 
                 &:hover {
-                    background: #aaaaaa20;
+                    background: $ta-light-grey-10;
                     transition: 0.25s;
                 }
 
@@ -490,7 +558,7 @@
                         &:hover {
                             svg {
                                 path {
-                                    fill: #dadada;
+                                    fill: $bw-9;
                                     transition: 0.25s;
                                 }
                             }
@@ -546,7 +614,7 @@
                 }
 
                 .text {
-                    color: #6c6c6c !important;
+                    color: $bw6-2 !important;
                 }
             }
 
@@ -562,7 +630,7 @@
                 .options-border,
                 .option-border {
                     height: 1px;
-                    background: #aaaaaa20;
+                    background: $ta-light-grey-10;
                     border-radius: 1px;
                 }
             }
@@ -616,13 +684,13 @@
                             .columns-options-label {
                                 width: 14px;
                                 height: 14px;
-                                background-color: #6c6c6c;
+                                background-color: $bw6-2;
                                 margin-bottom: 0;
                                 border-radius: 1px;
                                 cursor: pointer;
 
                                 &:hover {
-                                    background-color: #b7b7b7;
+                                    background-color: $bw4;
                                 }
                             }
 
@@ -634,7 +702,7 @@
                                 transition: background-color 0.25s;
 
                                 &:hover {
-                                    background-color: #5673aa;
+                                    background-color: $light-blue;
                                 }
                             }
 
@@ -647,7 +715,7 @@
                                 transition: background-color 0.25s;
 
                                 &:hover {
-                                    background-color: #5673aa;
+                                    background-color: $light-blue;
                                 }
                             }
                         }
@@ -699,13 +767,13 @@
                         border-radius: 2px;
 
                         &:hover {
-                            background: #aaaaaa20;
+                            background: $ta-light-grey-10;
                             transition: 0.25s;
                         }
                     }
 
                     .group-columns-active {
-                        background: #aaaaaa20;
+                        background: $ta-light-grey-10;
 
                         .group-columns-title {
                             .group-columns-arrow {
@@ -752,7 +820,7 @@
                             }
 
                             &:hover {
-                                background: #aaaaaa20;
+                                background: $ta-light-grey-10;
                                 transition: 0.25s;
                             }
                         }
@@ -773,7 +841,7 @@
                                 border-radius: 2px;
 
                                 &:hover {
-                                    background: #aaaaaa20;
+                                    background: $ta-light-grey-10;
                                     transition: 0.25s;
                                 }
                             }
@@ -828,12 +896,12 @@
                 padding: 0 4px;
 
                 &:hover {
-                    background: #f3f3f3;
+                    background: $ta-gray-01;
                     transition: 0.25s;
 
                     .text,
                     .count {
-                        color: #3c3c3c;
+                        color: $ta-light-grey-3;
                         transition: 0.25s;
                     }
                 }
@@ -841,7 +909,7 @@
                 .text,
                 .count {
                     font-size: 14px;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
 
                 .text {
@@ -860,7 +928,139 @@
         }
     }
 }
+.table-stops-popover {
+    .popover-body {
+        .stops-titles {
+            width: 100%;
+            height: 28px;
+            background: $ta-black-2;
+            border-radius: 2px;
+            margin-bottom: 2px;
+            margin-top: -34px;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            color: $ta-light-grey-6;
+            .number-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-right: 10px;
+                width: 22px;
+                padding: 2px 4px 2px 4px;
+            }
+            .details {
+                text-align: left;
+                width: 215px;
+            }
+        }
+        .stops-container {
+            background: $ta-black-2;
+            color: $white;
+            width: 306px;
+            max-height: 308px;
 
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
+            height: fit-content;
+
+            padding: 4px;
+            border-radius: 10px;
+            position: relative;
+
+            .items-container {
+                background: $ta-black-2;
+                max-height: 270px;
+                overflow-y: auto;
+            }
+            .item {
+                height: 50px;
+                padding: 2px 2px 0 2px;
+                position: relative;
+                &:hover {
+                    background: $ta-black;
+                }
+            }
+
+            .item:last-child {
+                border-bottom: none;
+            }
+
+            .number-container {
+                height: 50px;
+                flex-direction: column;
+                margin-right: 10px;
+                width: 22px;
+                padding: 2px 4px 2px 4px;
+            }
+            .delivery {
+                color: $ta-red-13 !important;
+            }
+            .number {
+                color: #00ffcc;
+                font-family: Montserrat;
+                font-size: 14px;
+                font-weight: 700;
+                line-height: 18px;
+                text-align: center;
+            }
+
+            .line {
+                height: 100%;
+                width: 2px;
+                background: $bw-9;
+                opacity: 20%;
+            }
+
+            .details {
+                flex: 1;
+                font-family: Montserrat;
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 14px;
+                text-align: left;
+            }
+
+            .location {
+                color: #00ffcc;
+                font-weight: bold;
+                font-family: Montserrat;
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 14px;
+                text-align: left;
+            }
+
+            .time {
+                font-size: 0.9em;
+                color: $ta-light-grey-6;
+            }
+
+            .mileage {
+                font-size: 1em;
+                font-weight: bold;
+                color: $ta-light-grey-6;
+            }
+
+            .total {
+                font-weight: bold;
+                border: 1px solid $ta-black;
+                background: $ta-black-2;
+                div {
+                    padding: 0 6px 0 6px;
+                }
+            }
+
+            .total span {
+                font-family: Montserrat;
+                font-size: 11px;
+                font-weight: 400;
+                line-height: 14px;
+                text-align: left;
+            }
+        }
+    }
+}
 // Table Body Description Popover
 .table-description-popover {
     .popover-body {
@@ -888,8 +1088,6 @@
             }
             .description-popover-item {
                 height: 28px;
-                display: flex;
-                align-items: center;
                 padding: 0px 4px 0px 0px;
                 gap: 4px;
                 border-radius: 2px 0px 0px 0px;
@@ -930,9 +1128,6 @@
                 line-height: 14px;
             }
             .title-endorsment {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 25px;
                 height: 18px;
                 gap: 0px;
@@ -1511,17 +1706,17 @@
                     .action-svg {
                         svg {
                             path {
-                                fill: #536bc2;
+                                fill: $ta-blue;
 
                                 &#Path_10766 {
-                                    fill: #fff !important;
+                                    fill: $white !important;
                                 }
                             }
                         }
                     }
 
                     .dropdown-content-text {
-                        color: #536bc2 !important;
+                        color: $ta-blue !important;
                     }
                 }
 
@@ -1536,7 +1731,7 @@
                             transition: 0.25s;
 
                             &#Path_10766 {
-                                fill: #fff !important;
+                                fill: $white !important;
                             }
                         }
 
@@ -1547,7 +1742,7 @@
                 }
 
                 .dropdown-content-text {
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
             }
         }
@@ -1573,7 +1768,7 @@
         .details-dropdown,
         .table-dropdown {
             width: 112px;
-            background: #424242;
+            background: $ta-black;
 
             .table-dropdown-content {
                 position: relative;
@@ -1590,7 +1785,7 @@
                     }
 
                     .dropdown-content-text {
-                        color: #cccccc !important;
+                        color: $ta-light-grey-6 !important;
                     }
                 }
 
@@ -1609,7 +1804,7 @@
                 }
 
                 .dropdown-content-text {
-                    color: #cccccc;
+                    color: $ta-light-grey-6;
                 }
 
                 .option-disabled-tooltip {
@@ -1621,11 +1816,11 @@
                     height: 18px;
                     margin-left: 12px;
 
-                    background-color: #424242;
+                    background-color: $ta-black;
                     font-size: 11px;
                     line-height: 18px;
                     font-weight: 700;
-                    color: #fff;
+                    color: $white;
                     text-align: center;
 
                     border-radius: 2px;
@@ -1642,13 +1837,13 @@
                     .action-svg {
                         svg {
                             path {
-                                fill: #6c6c6c !important;
+                                fill: $bw6-2 !important;
                             }
                         }
                     }
 
                     .dropdown-content-text {
-                        color: #6c6c6c !important;
+                        color: $bw6-2 !important;
                     }
                 }
 
@@ -1657,7 +1852,7 @@
                         .action-svg {
                             svg {
                                 path {
-                                    fill: #e67374 !important;
+                                    fill: $ta-red-22 !important;
                                 }
                             }
                         }
@@ -1666,7 +1861,7 @@
                     .action-svg {
                         svg {
                             path {
-                                fill: #e67374;
+                                fill: $ta-red-22;
                             }
                         }
                     }
@@ -1724,7 +1919,7 @@
             width: 300px;
             padding: 8px;
 
-            background: #fff;
+            background: $white;
 
             border-radius: 3px;
             box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
@@ -1733,7 +1928,7 @@
                 width: 100%;
                 height: 2px;
 
-                background-color: #f3f3f3;
+                background-color: $ta-gray-01;
                 border-radius: 1px;
             }
 
@@ -1748,7 +1943,7 @@
                     font-size: 14px;
                     font-weight: 900;
                     line-height: 18px;
-                    color: #6c6c6c;
+                    color: $bw6-2;
                 }
 
                 .close-svg {
@@ -1763,7 +1958,7 @@
 
                         svg {
                             path {
-                                fill: #6c6c6c;
+                                fill: $bw6-2;
                             }
                         }
                     }
@@ -1826,7 +2021,7 @@
                         padding-left: 6px;
 
                         font-size: 11px;
-                        color: #6c6c6c;
+                        color: $bw6-2;
                         font-weight: 600;
 
                         .input-required {
@@ -1837,7 +2032,7 @@
                     .map-settings-input {
                         width: 100%;
                         height: 26px;
-                        background-color: #f3f3f3;
+                        background-color: $ta-gray-01;
                         border: none;
                         padding-left: 6px;
 
@@ -1846,7 +2041,7 @@
                         margin-bottom: 22px;
 
                         font-size: 14px;
-                        color: #6c6c6c;
+                        color: $bw6-2;
                         line-height: 18px;
                     }
                 }
@@ -1874,31 +2069,31 @@
                         width: 132px;
                         height: 32px;
 
-                        background-color: #f3f3f3;
+                        background-color: $ta-gray-01;
                         border-radius: 2px;
                         cursor: pointer;
                         pointer-events: none;
 
                         &:hover {
-                            background-color: #f3f3f3;
+                            background-color: $ta-gray-01;
 
                             .map-settings-button-text {
-                                color: #6c6c6c;
+                                color: $bw6-2;
                             }
                         }
 
                         &.modal-save-btn {
-                            background-color: #6d82c7;
+                            background-color: $ta-light-blue;
                             color: $white;
                             pointer-events: all;
                             transition: all 0.3s ease-in-out;
 
                             &:hover {
-                                background-color: #536bc2;
+                                background-color: $ta-blue;
                             }
 
                             .map-settings-button-text {
-                                color: #fff;
+                                color: $white;
                             }
                         }
 
@@ -1907,8 +2102,8 @@
                             cursor: pointer;
 
                             &:hover {
-                                color: #6c6c6c;
-                                background-color: #eeeeee;
+                                color: $bw6-2;
+                                background-color: $bw2;
                             }
                         }
 
@@ -2051,7 +2246,7 @@
 .hos-ngb-popover {
     .hos-container {
         width: 352px;
-        background-color: #fff;
+        background-color: $white;
         border-radius: 3px;
         box-shadow: 0 0 4px rgb(0 0 0 / 15%);
         padding: 25px 12px 5px 12px;
@@ -2060,7 +2255,7 @@
             position: relative;
             display: flex;
             margin: 0 5px;
-            border-top: 2px solid #dadada;
+            border-top: 2px solid $bw-9;
 
             .hos-header-letters {
                 position: absolute;
@@ -2072,7 +2267,7 @@
                 div {
                     position: relative;
                     font-size: 12px;
-                    color: #919191;
+                    color: $bw5;
                     font-weight: 600;
 
                     &:first-child {
@@ -2090,7 +2285,7 @@
                 span {
                     display: flex;
                     height: 6px;
-                    border-right: 1px solid #dadada;
+                    border-right: 1px solid $bw-9;
                 }
             }
 
@@ -2135,7 +2330,7 @@
                                 fill: $ta-light-grey-2;
                             }
                             path {
-                                fill: #fff;
+                                fill: $white;
                             }
                         }
                     }
@@ -2147,7 +2342,7 @@
                                     fill: $ta-review-green;
                                 }
                                 path {
-                                    fill: #fff;
+                                    fill: $white;
                                 }
                             }
                         }
@@ -2212,7 +2407,7 @@
 
                         font-size: 12px;
                         font-weight: bold;
-                        color: #919191;
+                        color: $bw5;
                         text-align: center;
 
                         .remove_hos {
@@ -2283,7 +2478,7 @@
                 height: 26px;
                 font-size: 11px;
                 font-weight: 900;
-                background-color: #f3f3f3;
+                background-color: $ta-gray-01;
                 text-align: center;
                 border-radius: 2px;
                 cursor: pointer;
@@ -2299,7 +2494,7 @@
                 }
 
                 &:hover {
-                    background-color: #eeeeee;
+                    background-color: $bw2;
                 }
             }
         }
@@ -2318,7 +2513,7 @@
     width: 160px;
     padding: 2px;
     margin-left: 12px;
-    background: #fff;
+    background: $white;
     border-radius: 3px;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
 
@@ -2332,7 +2527,7 @@
         border-radius: 2px;
 
         &:hover {
-            background: #f3f3f3;
+            background: $ta-gray-01;
             cursor: pointer;
         }
 
