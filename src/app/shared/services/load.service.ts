@@ -83,7 +83,7 @@ export class LoadService {
     public getLoadList(
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
-        status?: number,
+        status?: number[],
         dispatcherIds?: Array<number>,
         dispatcherId?: number,
         dispatchId?: number,
@@ -113,7 +113,7 @@ export class LoadService {
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
-            [status],
+            status,
             dispatcherIds,
             dispatcherId,
             dispatchId,
