@@ -1563,7 +1563,6 @@ table.truckassist-table-body-style {
                                 line-height: 14px;
                                 font-size: 11px;
                                 font-weight: 900;
-                                color: #508f91;
                             }
                             &:hover {
                                 background: $dark-2 !important;
@@ -3205,19 +3204,6 @@ table.truckassist-table-body-style {
     100% {
         background: $white;
     }
-}
-.Dispatched {
-    color: #92b1f5 !important;
-}
-.Assigned {
-    color: #50ac25 !important;
-}
-
-.Unassigned {
-    color: #cccccc !important;
-}
-.Booked {
-    color: #919191 !important;
 }
 // Update Animation
 .update-animation {

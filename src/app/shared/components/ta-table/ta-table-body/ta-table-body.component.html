@@ -207,7 +207,13 @@
                                                 )
                                             "
                                         >
-                                            <div class="status">
+                                            <div
+                                                class="status"
+                                                [ngStyle]="
+                                                    row[column.field].status
+                                                        | loadStatusColor
+                                                "
+                                            >
                                                 {{ row[column.field].status }}
                                             </div>
                                             <div class="status-time">
@@ -2656,7 +2662,13 @@
                                                 )
                                             "
                                         >
-                                            <div class="status">
+                                            <div
+                                                class="status"
+                                                [ngStyle]="
+                                                    row[column.field].status
+                                                        | loadStatusColor
+                                                "
+                                            >
                                                 {{ row[column.field].status }}
                                             </div>
                                             <div class="status-time">
@@ -5671,7 +5683,11 @@
                         trackBy: trackStatusDetails
                     "
                 >
-                    <p [ngClass]="item" class="status-next-item">
+                    <p
+                        [ngClass]="item"
+                        class="status-next-item"
+                        [ngStyle]="item | loadStatusColor"
+                    >
                         {{ item.toUpperCase() }}
                     </p>
                 </ng-container>
@@ -5681,13 +5697,18 @@
         <ng-container *ngIf="statusDetails.previous">
             <div *ngIf="statusDetails.previous" class="status-previous">
                 <p>Or back to</p>
-                <p
-                    class="status-previous-item"
-                    [ngClass]="statusDetails.previous"
-                >
-                    {{ statusDetails.previous.toUpperCase() }}
-                </p>
-                <span class="status-previous-icon">↩</span>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p
+                        class="status-previous-item"
+                        [ngStyle]="statusDetails.previous | loadStatusColor"
+                    >
+                        {{ statusDetails.previous.toUpperCase() }}
+                    </p>
+                    <img
+                        alt="status-previous-icon"
+                        src="/assets/svg/truckassist-table/back_status.svg"
+                    />
+                </div>
             </div>
         </ng-container>
     </div>

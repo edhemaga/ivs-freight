@@ -136,6 +136,13 @@
                     >
                         <div
                             class="d-flex flex-column justify-content-center th-title-double"
+                            [ngStyle]="{
+                                'width.px':
+                                    column.resizable &&
+                                    !tableHeadRowsData?.locked
+                                        ? column.width - 55
+                                        : column.width - 20
+                            }"
                             (click)="
                                 handleTableHeadRowsActionClick(column, 'sort')
                             "
@@ -191,10 +198,7 @@
                                     column.resizable &&
                                     !tableHeadRowsData?.locked
                                         ? column.width - 55
-                                        : column.width - 20,
-                                'min-width.px': tableHeadRowsData?.resizing
-                                    ? column.width
-                                    : 'unset'
+                                        : column.width - 20
                             }"
                             [ngClass]="{
                                 'sort-active':
@@ -233,7 +237,15 @@
                         else heading
                     "
                 >
-                    <div class="icons">
+                    <div
+                        class="icons"
+                        [ngStyle]="{
+                            'width.px':
+                                column.resizable && !tableHeadRowsData?.locked
+                                    ? column.width - 55
+                                    : column.width - 20
+                        }"
+                    >
                         <svg-icon
                             [svgStyle]="{
                                 'width.px': column.headIconStyle.width,
@@ -265,10 +277,7 @@
                             'width.px':
                                 column.resizable && !tableHeadRowsData?.locked
                                     ? column.width - 55
-                                    : column.width - 20,
-                            'min-width.px': tableHeadRowsData?.resizing
-                                ? column.width
-                                : 'unset'
+                                    : column.width - 20
                         }"
                         [ngClass]="{
                             'sort-active':

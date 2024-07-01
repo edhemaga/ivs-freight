@@ -16,21 +16,39 @@ export class LoadTableStatusConstants {
             Booked: { previous: null, next: ['Assigned'] },
             Assigned: {
                 previous: 'Booked',
-                next: ['Dispatched', 'Unassigned', 'Canceled'],
+                next: ['Dispatched', 'Unassigned', 'Cancelled'],
             },
             Dispatched: { previous: 'Assigned', next: ['Unassigned'] },
-            Unassigned: { previous: 'Assigned', next: ['Canceled'] },
-            Canceled: { previous: 'Unassigned', next: [] },
+            Unassigned: { previous: 'Assigned', next: ['Cancelled'] },
+            Cancelled: { previous: 'Unassigned', next: [] },
         },
         active: {
             Booked: { previous: null, next: ['Assigned'] },
             Assigned: {
                 previous: 'Booked',
-                next: ['Dispatched', 'Unassigned', 'Canceled'],
+                next: ['Dispatched', 'Unassigned', 'Cancelled'],
             },
             Dispatched: { previous: 'Assigned', next: ['Unassigned'] },
-            Unassigned: { previous: 'Dispatched', next: ['Canceled'] },
-            Canceled: { previous: 'Unassigned', next: [] },
+            Unassigned: { previous: 'Dispatched', next: ['Cancelled'] },
+            ArrivedPickup: {
+                previous: 'Dispatched',
+                next: ['Checked In Pickup', 'Loading'],
+            },
+            CheckedInPickup: { previous: 'Arrived Pickup', next: ['Loading'] },
+            Loading: { previous: 'Checked In Pickup', next: ['Loaded'] },
+            Loaded: { previous: 'Loading', next: ['Loaded'] },
+            ArrivedDelivery: {
+                previous: 'Loaded',
+                next: ['Checked In Delivery', 'Offloading'],
+            },
+            CheckedInDelivery: {
+                previous: 'Arrived Delivery',
+                next: ['Offloading'],
+            },
+            Offloading: {
+                previous: 'Checked In Delivery',
+                next: ['Delivered'],
+            },
         },
     };
 

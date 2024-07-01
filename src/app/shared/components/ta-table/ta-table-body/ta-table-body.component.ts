@@ -90,6 +90,7 @@ import { RepairDescriptionPopoverConstants } from '@shared/components/ta-table/t
 import { TaStateImageTextComponent } from '@shared/components/ta-state-image-text/ta-state-image-text.component';
 import { LoadTableStatusConstants } from '@pages/load/pages/load-table/utils/constants/load-table.constants';
 import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/constants/load-table-stops.constants';
+import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 @Titles()
 @Component({
@@ -128,6 +129,7 @@ import { LoadTableStopsConstants } from '@pages/load/pages/load-table/utils/cons
         ContactPhoneEmailIconPipe,
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
+        LoadStatusColorPipe,
     ],
     providers: [
         {

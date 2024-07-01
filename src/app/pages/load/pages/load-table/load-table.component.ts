@@ -29,6 +29,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { FilterOptionsLoad } from '@pages/load/pages/load-table/models/filter-options-load.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { LoadListResponse } from 'appcoretruckassist';
+import { LoadModel } from '@pages/load/pages/load-table/models/load.model';
 
 // Queries
 import { LoadActiveQuery } from '@pages/load/state/load-active-state/load-active.query';
@@ -77,7 +78,6 @@ import {
 // Utils
 import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
-import type { LoadModel } from './models/load.model';
 
 @Component({
     selector: 'app-load-table',
@@ -797,11 +797,11 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private mapLoadData(data: any) /* : LoadModel */ {
+    private mapLoadData(data: LoadModel) /* : LoadModel */ {
         let commentsWithAvatarColor;
         if (data.comments) {
             commentsWithAvatarColor = Object.values(data?.comments).map(
-                (comment: any) => {
+                (comment) => {
                     this.mapingIndex++;
                     return {
                         ...comment,
@@ -887,7 +887,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textCommodity: loadDetails?.generalCommodityName,
             textWeight: loadDetails?.weight,
             tableTrailerColor: this.setTrailerTooltipColor(
-                loadDetails?.trailerType?.name
+                loadRequirements?.trailerType?.name
             ),
             tableTrailerName: loadRequirements?.trailerType?.name,
             tableTruckColor: this.setTruckTooltipColor(
@@ -1005,8 +1005,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ? TableStringEnum.DOLLAR_SIGN +
                   this.thousandSeparator.transform(advancePay)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textPayTerms: broker?.payTerm?.name
-                ? broker.payTerm?.name
+            textPayTerms: billing?.payTermName
+                ? billing.payTermName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             textDriver:
                 data?.dispatch?.driver?.firstName &&
