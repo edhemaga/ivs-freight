@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { TableHeadTitleStringEnum } from '../enums/table-head-title-string.enum';
 
 @Pipe({ name: 'tableDoubleHead', standalone: true })
 export class TableDoubleHeadPipe implements PipeTransform {
@@ -8,69 +9,74 @@ export class TableDoubleHeadPipe implements PipeTransform {
 
         if (isOuterCondition) {
             const contactsTableColumnsCondition =
-                gridNameTitle === 'Contact' &&
-                (tableHeadTitle === 'PRIMARY ' || tableHeadTitle === 'PRIMARY');
+                gridNameTitle === TableHeadTitleStringEnum.CONTACTS &&
+                (tableHeadTitle === TableHeadTitleStringEnum.PRIMARY ||
+                    tableHeadTitle === TableHeadTitleStringEnum.PRIMARY_2);
 
             const pmTableColumnsCondition =
-                gridNameTitle === 'PM' && tableHeadTitle === 'REPAIR SHOP';
+                gridNameTitle === TableHeadTitleStringEnum.PM &&
+                tableHeadTitle === TableHeadTitleStringEnum.REPAIR_SHOP;
 
             const driverTableColumnsCondition =
-                gridNameTitle === 'Driver' &&
-                (tableHeadTitle === 'TYPE ' ||
-                    tableHeadTitle === 'NAME ' ||
-                    tableHeadTitle === 'NUMBER ' ||
-                    tableHeadTitle === 'NUMBER' ||
-                    tableHeadTitle === 'ISSUED' ||
-                    tableHeadTitle === 'GENERAL' ||
-                    tableHeadTitle === 'TRUCK' ||
-                    tableHeadTitle === 'NAME  ' ||
-                    tableHeadTitle === 'TERM ' ||
+                gridNameTitle === TableHeadTitleStringEnum.DRIVER &&
+                (tableHeadTitle === TableHeadTitleStringEnum.TYPE ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NAME ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.ISSUED ||
+                    tableHeadTitle === TableHeadTitleStringEnum.GENERAL ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TRUCK_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NAME_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TERM_2 ||
                     index === 12);
 
             const truckTableColumnsCondition =
-                gridNameTitle === 'Truck' &&
-                (tableHeadTitle === ' NAME' ||
-                    tableHeadTitle === 'Registration Detail ' ||
-                    tableHeadTitle === 'FHWA Inspection ' ||
-                    tableHeadTitle === 'DRIVER' ||
-                    tableHeadTitle === 'GROSS' ||
-                    tableHeadTitle === 'TERM' ||
-                    tableHeadTitle === 'NUMBER  ' ||
-                    tableHeadTitle === ' NUMBER' ||
-                    tableHeadTitle === 'PRICE' ||
-                    tableHeadTitle === 'TYPE ' ||
-                    tableHeadTitle === 'TRANSPONDER' ||
-                    tableHeadTitle === 'FRONT' ||
-                    tableHeadTitle === ' MODEL' ||
-                    tableHeadTitle === 'MODEL ');
+                gridNameTitle === TableHeadTitleStringEnum.TRUCK &&
+                (tableHeadTitle === TableHeadTitleStringEnum.NAME_3 ||
+                    tableHeadTitle ===
+                        TableHeadTitleStringEnum.REGISTRATION_DETAIL ||
+                    tableHeadTitle ===
+                        TableHeadTitleStringEnum.FHWA_INSPECTION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.DRIVER_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.GROSS ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TERM ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_3 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_4 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.PRICE ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TYPE ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TRANSPONDER ||
+                    tableHeadTitle === TableHeadTitleStringEnum.FRONT ||
+                    tableHeadTitle === TableHeadTitleStringEnum.MODEL ||
+                    tableHeadTitle === TableHeadTitleStringEnum.MODEL_2);
 
             const trailerTableColumnsCondition =
-                gridNameTitle === 'Trailer' &&
-                (tableHeadTitle === 'EMPTY' ||
-                    tableHeadTitle === 'FHWA Inspection ' ||
-                    tableHeadTitle === 'DRIVER' ||
-                    tableHeadTitle === 'NUMBER  ' ||
-                    tableHeadTitle === ' NUMBER' ||
-                    tableHeadTitle === 'PRICE' ||
-                    tableHeadTitle === 'TYPE ' ||
-                    tableHeadTitle === 'TERM');
+                gridNameTitle === TableHeadTitleStringEnum.TRAILER &&
+                (tableHeadTitle === TableHeadTitleStringEnum.EMPTY ||
+                    tableHeadTitle ===
+                        TableHeadTitleStringEnum.FHWA_INSPECTION ||
+                    tableHeadTitle === TableHeadTitleStringEnum.DRIVER_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_3 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_4 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.PRICE ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TYPE_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TERM);
             const repairTableColumnsCondition =
-                gridNameTitle === 'Repair' &&
-                (tableHeadTitle === 'NAME   ' ||
-                    tableHeadTitle === 'NUMBER   ' ||
-                    tableHeadTitle === 'DESCRIPTION');
+                gridNameTitle === TableHeadTitleStringEnum.REPAIR &&
+                (tableHeadTitle === TableHeadTitleStringEnum.NAME_4 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.NUMBER_5 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION);
             const brokerTableColumnsCondition =
-                gridNameTitle === 'Customer' &&
-                (tableHeadTitle === 'PHYSICAL' ||
-                    tableHeadTitle === 'CREDIT LIMIT');
+                gridNameTitle === TableHeadTitleStringEnum.CUSTOMER &&
+                (tableHeadTitle === TableHeadTitleStringEnum.PHYSICAL ||
+                    tableHeadTitle === TableHeadTitleStringEnum.CREDIT_LIMIT);
 
             const loadTableColumnsCondition =
-                gridNameTitle === 'load' &&
-                (tableHeadTitle === 'BUSSINESS NAME   ' ||
-                    tableHeadTitle === 'DRIVER' ||
-                    tableHeadTitle === ' TRUCK ' ||
-                    tableHeadTitle === ' LOADED ' ||
-                    tableHeadTitle === ' RATE ');
+                gridNameTitle === TableHeadTitleStringEnum.LOAD &&
+                (tableHeadTitle === TableHeadTitleStringEnum.BUSSINESS_NAME ||
+                    tableHeadTitle === TableHeadTitleStringEnum.DRIVER_2 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.TRUCK_3 ||
+                    tableHeadTitle === TableHeadTitleStringEnum.LOADED ||
+                    tableHeadTitle === TableHeadTitleStringEnum.RATE);
             if (
                 contactsTableColumnsCondition ||
                 pmTableColumnsCondition ||
@@ -87,70 +93,75 @@ export class TableDoubleHeadPipe implements PipeTransform {
             return;
         } else {
             const contactsTableColumnsCondition =
-                gridNameTitle !== 'Contact' ||
-                (tableHeadTitle !== 'PRIMARY ' && tableHeadTitle !== 'PRIMARY');
+                gridNameTitle !== TableHeadTitleStringEnum.CONTACTS ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.PRIMARY &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.PRIMARY_2);
 
             const pmTableColumnsCondition =
-                gridNameTitle !== 'PM' || tableHeadTitle !== 'REPAIR SHOP';
+                gridNameTitle !== TableHeadTitleStringEnum.PM ||
+                tableHeadTitle !== TableHeadTitleStringEnum.REPAIR_SHOP;
 
             const driverTableColumnsCondition =
-                gridNameTitle !== 'Driver' ||
-                (tableHeadTitle !== 'TYPE ' &&
-                    tableHeadTitle !== 'NAME ' &&
-                    tableHeadTitle !== 'NUMBER ' &&
-                    tableHeadTitle !== 'NUMBER' &&
-                    tableHeadTitle !== 'ISSUED' &&
-                    tableHeadTitle !== 'GENERAL' &&
-                    tableHeadTitle !== 'TRUCK' &&
-                    tableHeadTitle !== 'NAME  ' &&
-                    tableHeadTitle !== 'TERM ' &&
+                gridNameTitle !== TableHeadTitleStringEnum.DRIVER ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.TYPE_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NAME &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.ISSUED &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.GENERAL &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TRUCK_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NAME_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TERM_2 &&
                     index !== 12);
 
             const repairTableColumnsCondition =
-                gridNameTitle !== 'Repair' ||
-                (tableHeadTitle !== 'NAME   ' &&
-                    tableHeadTitle !== 'NUMBER   ' &&
-                    tableHeadTitle !== 'DESCRIPTION');
+                gridNameTitle !== TableHeadTitleStringEnum.REPAIR ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.NAME_4 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_5 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.DESCRIPTION);
 
             const brokerTableColumnsCondition =
-                gridNameTitle !== 'Customer' ||
-                (tableHeadTitle !== 'PHYSICAL' &&
-                    tableHeadTitle !== 'CREDIT LIMIT');
+                gridNameTitle !== TableHeadTitleStringEnum.CUSTOMER ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.PHYSICAL &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.CREDIT_LIMIT);
 
             const truckTableColumnsCondition =
-                gridNameTitle !== 'Truck' ||
-                (tableHeadTitle !== ' NAME' &&
-                    tableHeadTitle !== 'Registration Detail ' &&
-                    tableHeadTitle !== 'FHWA Inspection ' &&
-                    tableHeadTitle !== 'DRIVER' &&
-                    tableHeadTitle !== 'GROSS' &&
-                    tableHeadTitle !== 'TERM' &&
-                    tableHeadTitle !== 'NUMBER  ' &&
-                    tableHeadTitle !== 'PRICE' &&
-                    tableHeadTitle !== ' NUMBER' &&
-                    tableHeadTitle !== 'TYPE ' &&
-                    tableHeadTitle !== 'TRANSPONDER' &&
-                    tableHeadTitle !== 'FRONT' &&
-                    tableHeadTitle !== ' MODEL' &&
-                    tableHeadTitle !== 'MODEL ');
+                gridNameTitle !== TableHeadTitleStringEnum.TRUCK_2 ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.NAME_3 &&
+                    tableHeadTitle !==
+                        TableHeadTitleStringEnum.REGISTRATION_DETAIL &&
+                    tableHeadTitle !==
+                        TableHeadTitleStringEnum.FHWA_INSPECTION &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.DRIVER_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.GROSS &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TERM &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_3 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.PRICE &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_4 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TYPE_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TRANSPONDER &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.FRONT &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.MODEL &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.MODEL_2);
             const TrailerTableColumnsCondition =
-                gridNameTitle !== 'Trailer' ||
-                (tableHeadTitle !== 'EMPTY' &&
-                    tableHeadTitle !== 'FHWA Inspection ' &&
-                    tableHeadTitle !== 'DRIVER' &&
-                    tableHeadTitle !== 'NUMBER  ' &&
-                    tableHeadTitle !== 'PRICE' &&
-                    tableHeadTitle !== ' NUMBER' &&
-                    tableHeadTitle !== 'TYPE ' &&
-                    tableHeadTitle !== 'TERM');
+                gridNameTitle !== TableHeadTitleStringEnum.TRAILER ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.EMPTY &&
+                    tableHeadTitle !==
+                        TableHeadTitleStringEnum.FHWA_INSPECTION &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.DRIVER_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_3 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.PRICE &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.NUMBER_4 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TYPE_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TERM);
 
             const LoadTableColumnsCondition =
-                gridNameTitle !== 'load' ||
-                (tableHeadTitle !== 'BUSSINESS NAME   ' &&
-                    tableHeadTitle !== 'DRIVER' &&
-                    tableHeadTitle !== ' TRUCK ' &&
-                    tableHeadTitle !== ' LOADED ' &&
-                    tableHeadTitle !== ' RATE ');
+                gridNameTitle !== TableHeadTitleStringEnum.LOAD ||
+                (tableHeadTitle !== TableHeadTitleStringEnum.BUSSINESS_NAME &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.DRIVER_2 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.TRUCK_3 &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.LOADED &&
+                    tableHeadTitle !== TableHeadTitleStringEnum.RATE);
 
             return (
                 contactsTableColumnsCondition &&

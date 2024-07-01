@@ -54,6 +54,7 @@ import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
+import { TaCommentHighlistComponentPipe } from './pipes/ta-comment-higlits-comment.pipe';
 
 @Component({
     selector: 'app-ta-comment',
@@ -71,7 +72,7 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
 
         // pipes
         SafeHtmlPipe,
-
+        TaCommentHighlistComponentPipe,
         // components
         TaAppTooltipV2Component,
     ],
@@ -128,10 +129,11 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         private modalService: ModalService,
         private confirmationService: ConfirmationService,
         private taInputDropdownTableService: TaInputDropdownTableService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
-        this.commentAvatar = this.commentData?.companyUser?.avatarFile?.url ?? null;
+        this.commentAvatar =
+            this.commentData?.companyUser?.avatarFile?.url ?? null;
 
         this.commentData?.commentContent && this.patchCommentData();
 
@@ -202,7 +204,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.editingCardComment = false;
                     this.commentCardsDataDropdown.commentContent = editComment;
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 
@@ -233,7 +235,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                         next: () => {
                             this.loadService.removeComment(comment);
                         },
-                        error: () => { },
+                        error: () => {},
                     });
         });
     }

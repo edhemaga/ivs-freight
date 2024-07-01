@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root',
 })
-export class LoadTableStatusConstant {
+export class LoadTableStatusConstants {
     private statusFlow: {
         pending: {
             [key: string]: { previous: string | null; next: string[] };

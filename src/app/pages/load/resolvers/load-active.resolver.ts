@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
@@ -23,8 +23,8 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
     ) {}
 
     resolve(): Observable<any> {
-        return forkJoin([
-            this.loadService.getLoadList(
+        return this.loadService
+            .getLoadList(
                 null,
                 2,
                 null,
@@ -53,21 +53,21 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
                 null,
                 null,
                 null
-            ),
-        ]).pipe(
-            tap(([loadPagination]) => {
-                localStorage.setItem(
-                    'loadTableCount',
-                    JSON.stringify({
-                        pendingCount: loadPagination.pendingCount,
-                        activeCount: loadPagination.activeCount,
-                        closedCount: loadPagination.closedCount,
-                        templateCount: loadPagination.templateCount,
-                    })
-                );
+            )
+            .pipe(
+                tap((loadPagination) => {
+                    localStorage.setItem(
+                        'loadTableCount',
+                        JSON.stringify({
+                            pendingCount: loadPagination.pendingCount,
+                            activeCount: loadPagination.activeCount,
+                            closedCount: loadPagination.closedCount,
+                            templateCount: loadPagination.templateCount,
+                        })
+                    );
 
-                this.loadActiveStore.set(loadPagination.pagination.data);
-            })
-        );
+                    this.loadActiveStore.set(loadPagination.pagination.data);
+                })
+            );
     }
 }

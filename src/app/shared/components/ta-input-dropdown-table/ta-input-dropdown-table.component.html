@@ -509,7 +509,7 @@
             </div>
 
             <!-- Input Search -->
-            <ng-container *ngIf="commmentsData.comments.length">
+            <ng-container *ngIf="commmentsData.comments.length || showFilter">
                 <div class="input-holder">
                     <input
                         [placeholder]="searchPlaceholder"

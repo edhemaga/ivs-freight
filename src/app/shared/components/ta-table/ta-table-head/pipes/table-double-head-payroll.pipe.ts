@@ -1,10 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+//enums
+import { TableHeadTitleStringEnum } from '../enums/table-head-title-string.enum';
+
 @Pipe({ name: 'tableDoubleHeadPayroll', standalone: true })
 export class TableDoubleHeadPayrollPipe implements PipeTransform {
     transform(tableHeadTitle: string): string {
         const match = tableHeadTitle.match(/(.*) \((.*)\)/);
-        if (tableHeadTitle === 'PICKUP DELIVERY') {
+        if (tableHeadTitle === TableHeadTitleStringEnum.PICKUP_DELIVERY) {
             return `<p>PICKUP </p>
           <p>DELIVERY </p>`;
         }

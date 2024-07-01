@@ -84,7 +84,8 @@ import { ContactsData } from '@shared/components/ta-input-dropdown-table/models/
     styleUrls: ['./ta-input-dropdown-table.component.scss'],
 })
 export class TaInputDropdownTableComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() set data(value: CardDetails) {
         this._data = value;
         this.filteredData = { ...value };
@@ -126,13 +127,13 @@ export class TaInputDropdownTableComponent
     public contactsData: ContactsData;
     public contactsDataBeforeSearch: ContactsData;
     public isContactCardOpenArray: boolean[] = [];
-
+    public showFilter: boolean = false;
     constructor(
         private router: Router,
         private detailsDataService: DetailsDataService,
         private cdr: ChangeDetectorRef,
         private sanitizer: DomSanitizer
-    ) { }
+    ) {}
 
     ngOnInit() {
         if (this.checkForLoggedUser)
@@ -194,6 +195,7 @@ export class TaInputDropdownTableComponent
 
     public filterArrayCommentsRating(event: KeyboardEvent, type: string): void {
         if (event.target instanceof HTMLInputElement) {
+            this.showFilter = true;
             const searchParam = event.target.value.toLowerCase();
 
             // Check if the user has typed at least 2 characters

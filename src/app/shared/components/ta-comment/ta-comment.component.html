@@ -260,25 +260,18 @@
                                             )
                                         "
                                         [innerHTML]="
-                                            higlitsPartOfCommentSearchValue(
-                                                abbreviateFullName(
-                                                    commentCardsDataDropdown
-                                                        .companyUser.fullName
-                                                )
+                                            abbreviateFullName(
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
                                             )
+                                                | taCommentHighlistComponentPipe
+                                                    : commentHighlight
                                         "
                                     ></span>
                                 </ng-container>
 
                                 <ng-template #notLogged>
-                                    <ng-container
-                                        *ngIf="
-                                            !checkIfLoggedUserCommented(
-                                                commentCardsDataDropdown
-                                                    .companyUser.id
-                                            )
-                                        "
-                                    >
+                                    <ng-container *ngIf="!loggedUserCommented">
                                         <span
                                             class="text-white ta-font-semi-bold"
                                             (click)="
@@ -287,10 +280,10 @@
                                                 )
                                             "
                                             [innerHTML]="
-                                                higlitsPartOfCommentSearchValue(
-                                                    commentCardsDataDropdown
-                                                        .companyUser.fullName
-                                                )
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
+                                                    | taCommentHighlistComponentPipe
+                                                        : commentHighlight
                                             "
                                         ></span>
                                     </ng-container>
@@ -453,9 +446,9 @@
                             commentCardsDataDropdown.isOpen ? 'true' : 'false'
                         "
                         [innerHTML]="
-                            higlitsPartOfCommentSearchValue(
-                                commentCardsDataDropdown.commentContent
-                            )
+                            commentCardsDataDropdown.commentContent
+                                | taCommentHighlistComponentPipe
+                                    : commentHighlight
                         "
                     ></span>
                 </ng-container>
@@ -513,9 +506,9 @@
                             <span
                                 class="title ta-font-semi-bold"
                                 [innerHTML]="
-                                    higlitsPartOfCommentSearchValue(
-                                        commentCardsDataDropdown.fullName
-                                    )
+                                    commentCardsDataDropdown.fullName
+                                        | taCommentHighlistComponentPipe
+                                            : commentHighlight
                                 "
                             ></span>
 

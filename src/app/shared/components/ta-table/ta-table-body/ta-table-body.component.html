@@ -2643,9 +2643,8 @@
                                             tooltipTextAlign="center"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
-                                                'min-width.px': column?.minWidth
-                                                    ? column.minWidth
-                                                    : 'unset'
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
                                             class="status-containers"
                                             (click)="
@@ -2675,9 +2674,8 @@
                                             class="td-content set-left"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
-                                                'min-width.px': column?.minWidth
-                                                    ? column.minWidth
-                                                    : 'unset',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset',
                                                 margin: '0px 4px 0px -4px'
                                             }"
                                         >
@@ -2899,9 +2897,8 @@
                                         *ngIf="column.ngTemplate === 'avatar'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
+                                            'min-width.px':
+                                                column?.minWidth ?? 'unset'
                                         }"
                                         class="td-content"
                                     >
@@ -2911,33 +2908,41 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                            <div
-                                                class="avatar-img"
-                                                *ngIf="row.avatarImg"
+                                            <ng-container
+                                                *ngIf="
+                                                    row.avatarImg;
+                                                    else showAvatarImage
+                                                "
                                             >
-                                                <img
-                                                    alt="avatar"
-                                                    [src]="row.avatarImg"
-                                                />
-                                            </div>
-
-                                            <div
-                                                class="avatar-no-img"
-                                                *ngIf="!row.avatarImg"
-                                                [ngStyle]="{
-                                                    'background-color': row
-                                                        .avatarColor?.background
-                                                        ? row.avatarColor
-                                                              .background
-                                                        : 'unset',
-                                                    color: row.avatarColor
-                                                        ?.color
-                                                        ? row.avatarColor.color
-                                                        : 'unset'
-                                                }"
-                                            >
-                                                {{ row.textDriverShortName }}
-                                            </div>
+                                                <div class="avatar-img">
+                                                    <img
+                                                        alt="avatar"
+                                                        [src]="row.avatarImg"
+                                                    />
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #showAvatarImage>
+                                                <div
+                                                    class="avatar-no-img"
+                                                    [ngStyle]="{
+                                                        'background-color': row
+                                                            .avatarColor
+                                                            ?.background
+                                                            ? row.avatarColor
+                                                                  .background
+                                                            : 'unset',
+                                                        color: row.avatarColor
+                                                            ?.color
+                                                            ? row.avatarColor
+                                                                  .color
+                                                            : 'unset'
+                                                    }"
+                                                >
+                                                    {{
+                                                        row.textDriverShortName
+                                                    }}
+                                                </div>
+                                            </ng-template>
 
                                             <img
                                                 class="avatar-owner"
@@ -2972,40 +2977,39 @@
                                         "
                                         [ngStyle]="{
                                             width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
+                                            'min-width.px':
+                                                column?.minWidth ?? 'unset'
                                         }"
                                         class="td-content"
                                     >
-                                        <div class="avatar-assign-container">
+                                        <ng-container *ngIf="row.avatarImg">
                                             <div
-                                                class="avatar-assign-img"
-                                                *ngIf="row.avatarImg"
+                                                class="avatar-assign-container d-flex justify-content-center align-items-center"
                                             >
-                                                <img
-                                                    alt="avatar"
-                                                    [src]="row.avatarImg"
-                                                />
-                                            </div>
+                                                <div class="avatar-assign-img">
+                                                    <img
+                                                        alt="avatar"
+                                                        [src]="row.avatarImg"
+                                                    />
+                                                </div>
 
-                                            <div
-                                                class="avatar-assign-text"
-                                                [ngStyle]="{
-                                                    'background-color': row
-                                                        .avatarColor?.background
-                                                        ? row.avatarColor
-                                                              .background
-                                                        : 'unset',
-                                                    color: row.avatarColor
-                                                        ?.color
-                                                        ? row.avatarColor.color
-                                                        : 'unset'
-                                                }"
-                                            >
-                                                {{ row.tableDriver }}
+                                                <div
+                                                    class="avatar-assign-text"
+                                                    [ngStyle]="{
+                                                        'background-color':
+                                                            row.avatarColor
+                                                                ?.background ??
+                                                            'unset',
+                                                        color:
+                                                            row.avatarColor
+                                                                ?.color ??
+                                                            'unset'
+                                                    }"
+                                                >
+                                                    {{ row.tableDriver }}
+                                                </div>
                                             </div>
-                                        </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- USER STATUS COLUMN -->
@@ -5609,10 +5613,12 @@
                 }"
             >
                 <div
-                    class="description-popover-item"
+                    class="description-popover-item d-flex align-items-center"
                     *ngFor="let item of data; let i = index"
                 >
-                    <div class="title-endorsment">
+                    <div
+                        class="title-endorsment d-flex justify-content-center align-items-center"
+                    >
                         {{ item.code }}
                     </div>
                     <div class="white-line">-</div>
@@ -5659,7 +5665,12 @@
     <div class="status-node">
         <ng-container *ngIf="statusDetails.next.length">
             <div class="status-next">
-                <ng-container *ngFor="let item of statusDetails.next">
+                <ng-container
+                    *ngFor="
+                        let item of statusDetails.next;
+                        trackBy: trackStatusDetails
+                    "
+                >
                     <p [ngClass]="item" class="status-next-item">
                         {{ item.toUpperCase() }}
                     </p>
@@ -5699,47 +5710,53 @@
         }"
     >
         <div class="items-container">
-            <div
-                *ngFor="let key of getStopKeys(); let i = index"
-                class="item"
-                [ngClass]="{ 'wait-time': i === 1 }"
+            <ng-container
+                *ngFor="
+                    let key of getStopKeys();
+                    let i = index;
+                    trackBy: trackStops
+                "
             >
-                <div class="number-container">
-                    <div
-                        class="number"
-                        [class.delivery]="
-                            stops[key].stopType.name === 'Delivery'
-                        "
-                    >
-                        {{ stops[key].stopOrder }}
+                <div
+                    class="item d-flex justify-content-center align-items-center"
+                    [ngClass]="{ 'wait-time': i === 1 }"
+                >
+                    <div class="number-container d-flex align-items-center">
+                        <div
+                            class="number"
+                            [class.delivery]="
+                                stops[key].stopType.name === 'Delivery'
+                            "
+                        >
+                            {{ stops[key].stopOrder }}
+                        </div>
+                        <ng-container *ngIf="i < getStopKeys().length - 1">
+                            <div class="line"></div>
+                        </ng-container>
                     </div>
-                    <div
-                        class="line"
-                        *ngIf="i < getStopKeys().length - 1"
-                    ></div>
+                    <div class="details">
+                        <div
+                            class="location"
+                            [class.delivery]="
+                                stops[key].stopType.name === 'Delivery'
+                            "
+                        >
+                            {{ stops[key].shipper.address.city }},
+                            {{ stops[key].shipper.address.stateShortName }}
+                        </div>
+                        <div class="time">
+                            {{ stops[key].dateFrom | date : 'dd/MM/yy' }} |
+                            {{ stops[key].timeFrom }} -
+                            {{ stops[key].timeTo || 'Open' }}
+                        </div>
+                        <div>{{ stops[key].shipper.businessName }}</div>
+                    </div>
+                    <div class="mileage">+{{ stops[key].legMiles }}</div>
                 </div>
-                <div class="details">
-                    <div
-                        class="location"
-                        [class.delivery]="
-                            stops[key].stopType.name === 'Delivery'
-                        "
-                    >
-                        {{ stops[key].shipper.address.city }},
-                        {{ stops[key].shipper.address.stateShortName }}
-                    </div>
-                    <div class="time">
-                        {{ stops[key].dateFrom | date : 'dd/MM/yy' }} |
-                        {{ stops[key].timeFrom }} -
-                        {{ stops[key].timeTo || 'Open' }}
-                    </div>
-                    <div>{{ stops[key].shipper.businessName }}</div>
-                </div>
-                <div class="mileage">+{{ stops[key].legMiles }}</div>
-            </div>
+            </ng-container>
         </div>
 
-        <div class="total d-flex">
+        <div class="total d-flex justify-content-between align-items-center">
             <div class="d-flex flex-column">
                 <span>First pickup in</span>
                 <span><strong>3 days 15 hours</strong></span>
