@@ -124,6 +124,20 @@ import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+import {
+    CDK_DRAG_CONFIG,
+    CdkDragDrop,
+    DragDropModule,
+    moveItemInArray,
+} from '@angular/cdk/drag-drop';
+
+// Modal config
+const DragConfig = {
+    dragStartThreshold: 0,
+    pointerDirectionChangeThreshold: 5,
+    zIndex: 10000
+  };
+  
 
 @Component({
     selector: 'app-load-modal',
@@ -136,6 +150,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbModule,
+        DragDropModule,
 
         // components
         TaAppTooltipV2Component,
@@ -162,7 +177,7 @@ import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-route
         LoadTimeTypePipe,
     ],
     animations: [fadeInAnimation],
-    providers: [FinancialCalculationPipe],
+    providers: [FinancialCalculationPipe, { provide: CDK_DRAG_CONFIG, useValue: DragConfig }],
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     @ViewChild('originElement') originElement: ElementRef;
@@ -371,6 +386,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public pickupStatusHistory: LoadStatusHistoryResponse[] = [];
     public deliveryStatusHistory: LoadStatusHistoryResponse[] = [];
     public extraStopStatusHistory: LoadStatusHistoryResponse[][] = [];
+    public isDragAndDropActive: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -1982,6 +1998,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         action: string,
         indx?: number
     ): void {
+        if (this.isDragAndDropActive) return;
         switch (action) {
             case LoadModalStringEnum.FIRST_PICKUP:
                 this.isActivePickupStop = event;
@@ -4419,6 +4436,76 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.deliveryStatusHistory = newHistory;
                 break;
         }
+    }
+    public drop(event: CdkDragDrop<string[]>): void {
+        // Trebamo ručno reorderati sve šta se koristi u stepovima, trebalo bi ovo refaktorirati da se čita iz form controlsa
+        moveItemInArray(
+            this.loadExtraStops().controls,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.selectExtraStopType,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.selectedExtraStopShipper,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.selectedExtraStopShipperContact,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.typeOfExtraStops,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.loadExtraStopsShipperInputConfig,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.stopTimeTabsExtraStops,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.loadExtraStopsShipperContactsInputConfig,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.selectedExtraStopTime,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.extraStopItems,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.extraStopStatusHistory,
+            event.previousIndex,
+            event.currentIndex
+        );
+        moveItemInArray(
+            this.loadExtraStopsDateRange as [],
+            event.previousIndex,
+            event.currentIndex
+        );
+
+        // Prevent opening or closing tab
+        setTimeout(() => this.isDragAndDropActive = false, 4500);
+    }
+
+    public dragStarted(): void {
+        this.isDragAndDropActive = true;
     }
     ngOnDestroy(): void {
         this.destroy$.next();

@@ -158,8 +158,15 @@
         }
 
         &.origin-destination-no-filled {
-            background: $bw2;
+            background: $ta-red-14;
 
+            .load-stop-header-badge {
+                background-color: $ta-red-10 !important;
+            }
+
+            p, span {
+                color: $white !important;
+            }
             .load-stop-header-content {
                 .origin-destination-no-filled-container {
                     p {
@@ -251,7 +258,7 @@
 
     &.valid {
         .load-stop-header-bar {
-            background: $ta-blue-16 !important;
+            background: $ta-blue-16;
         }
 
         .load-stop-header-remove-btn {
