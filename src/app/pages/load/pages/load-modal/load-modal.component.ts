@@ -2844,26 +2844,30 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return stops;
     }
     private remapStopWaitTime(): LoadStatusHistoryResponse[] {
-        const waitTime = this.pickupStatusHistory.concat(
-            ...this.extraStopStatusHistory,
-            ...this.deliveryStatusHistory
-        );
+        if (this.isLoadClosed) {
+            const waitTime = this.pickupStatusHistory.concat(
+                ...this.extraStopStatusHistory,
+                ...this.deliveryStatusHistory
+            );
 
-        // This is patched value from form
-        waitTime.forEach((time: LoadModalWaitTimeFormField) => {
-            time.dateTimeFrom =
-                MethodsCalculationsHelper.combineDateAndTimeToBackend(
-                    time.startDate,
-                    time.startTime
-                );
-            time.dateTimeTo =
-                MethodsCalculationsHelper.combineDateAndTimeToBackend(
-                    time.endDate,
-                    time.endTime
-                );
-        });
+            // This is patched value from form
+            waitTime.forEach((time: LoadModalWaitTimeFormField) => {
+                time.dateTimeFrom =
+                    MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                        time.startDate,
+                        time.startTime
+                    );
+                time.dateTimeTo =
+                    MethodsCalculationsHelper.combineDateAndTimeToBackend(
+                        time.endDate,
+                        time.endTime
+                    );
+            });
 
-        return waitTime;
+            return waitTime;
+        }
+
+        return [];
     }
 
     public drawStopOnMap(): void {
@@ -3763,12 +3767,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .createLoad(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                next: (data) => {
+                    this.loadService
+                        .getLoadInsideListById(data.id)
+                        .subscribe((newLoad) => {
+                            this.loadService.addNewLoad(newLoad, false);
+                            this.modalService.setModalSpinner({
+                                action: null,
+                                status: true,
+                                close: true,
+                            });
+                        });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -3919,6 +3928,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: () => {
+                            this.loadService
+                                .getLoadInsideListById(newData.id)
+                                .subscribe((res) => {
+                                    this.loadService.updateLoadPartily(
+                                        res,
+                                        this.editData.selectedTab
+                                    );
+                                });
                             this.modalService.setModalSpinner({
                                 action: null,
                                 status: true,
@@ -4024,12 +4041,17 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .createLoadTemplate(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: LoadModalStringEnum.LOAD_TEMPLATE,
-                        status: true,
-                        close: true,
-                    });
+                next: (data) => {
+                    this.loadService
+                        .getLoadInsideListById(data.id)
+                        .subscribe((newLoad) => {
+                            this.loadService.addNewLoad(newLoad, true);
+                            this.modalService.setModalSpinner({
+                                action: LoadModalStringEnum.LOAD_TEMPLATE,
+                                status: true,
+                                close: true,
+                            });
+                        });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({

@@ -189,4 +189,7 @@ export enum LoadModalStringEnum {
     WAIT_TIME_START_TIME = 'startTime',
     WAIT_TIME_END_DATE = 'endDate',
     WAIT_TIME_END_TIME = 'endTime',
+    WAIT_TIME_STATUS_NAME = 'statusName',
+    WAIT_TIME_STATUS= 'status',
+    WAIT_TIME_STATUS_NUMBER = 'statusNumber',
 }
