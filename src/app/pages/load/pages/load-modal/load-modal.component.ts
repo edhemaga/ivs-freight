@@ -3559,8 +3559,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 return {
                                     ...item,
                                     logoName: LoadModalStringEnum.HAZARDOUS_SVG,
-                                    folder: LoadModalStringEnum.COMMON,
-                                    subFolder: LoadModalStringEnum.LOAD,
+                                    folder: LoadModalStringEnum.COMMON
                                 };
                             }
                             return { ...item };

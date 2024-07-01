@@ -177,7 +177,7 @@ export enum LoadModalStringEnum {
     AGE_UNPAID = 'ageUnpaid',
     DAYS_TO_PAY = 'daysToPay',
     STATUS = 'status',
-    ARIVE = 'arive',
+    ARIVE = 'arrive',
     DEPART = 'depart',
     TONU = 'tonuRate',
     REVISED = 'revisedRate',
