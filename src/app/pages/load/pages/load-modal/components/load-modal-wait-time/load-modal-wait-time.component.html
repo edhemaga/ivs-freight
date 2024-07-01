@@ -41,16 +41,19 @@
                             >
                                 {{ getStatus(index) }}
 
-                                <span
-                                    class="status-string__value"
-                                    [ngStyle]="
-                                        getStatusName(index)
-                                            | loadStatusColor : true
-                                    "
+                                <ng-container
                                     *ngIf="isStatusNumberAvailable(index)"
                                 >
-                                    {{ getStatusNumber(index) }}
-                                </span>
+                                    <span
+                                        class="status-string__value"
+                                        [ngStyle]="
+                                            getStatusName(index)
+                                                | loadStatusColor : true
+                                        "
+                                    >
+                                        {{ getStatusNumber(index) }}
+                                    </span>
+                                </ng-container>
                             </p>
 
                             <div class="m-0 ta-font-bold">
