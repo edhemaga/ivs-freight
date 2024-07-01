@@ -3769,7 +3769,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe({
                 next: (data) => {
                     this.loadService
-                        .getLoadById(data.id)
+                        .getLoadInsideListById(data.id)
                         .subscribe((newLoad) => {
                             this.loadService.addNewLoad(newLoad, false);
                             this.modalService.setModalSpinner({
@@ -3929,7 +3929,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .subscribe({
                         next: () => {
                             this.loadService
-                                .getLoadById(newData.id)
+                                .getLoadInsideListById(newData.id)
                                 .subscribe((res) => {
                                     this.loadService.updateLoadPartily(
                                         res,
@@ -4043,7 +4043,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .subscribe({
                 next: (data) => {
                     this.loadService
-                        .getLoadById(data.id)
+                        .getLoadInsideListById(data.id)
                         .subscribe((newLoad) => {
                             this.loadService.addNewLoad(newLoad, true);
                             this.modalService.setModalSpinner({

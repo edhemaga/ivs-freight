@@ -113,12 +113,13 @@ export class LoadService {
         return this.loadService.apiLoadListGet(
             loadType,
             statusType,
-            status,
+            [status],
             dispatcherIds,
             dispatcherId,
             dispatchId,
             brokerId,
             shipperId,
+            null,
             dateFrom,
             dateTo,
             revenueFrom,
@@ -220,6 +221,10 @@ export class LoadService {
         return this.loadService.apiLoadIdGet(id);
     }
 
+    public getLoadInsideListById(id: number): Observable<LoadListResponse> {
+        return this.loadService.apiLoadListGet(null, null, null, null, null, null, null, null, id);
+    }
+
     public autocompleteLoadByDescription(
         description: string
     ): Observable<LoadStopItemAutocompleteDescriptionResponse> {
@@ -249,7 +254,10 @@ export class LoadService {
         return this.loadService.apiLoadPut();
     }
 
-    public updateLoadStatus(loadId: number, loadStatus: LoadStatus): Observable<CreateResponse> {
+    public updateLoadStatus(
+        loadId: number,
+        loadStatus: LoadStatus
+    ): Observable<CreateResponse> {
         return this.loadService.apiLoadStatusPut({
             id: loadId,
             status: loadStatus,
@@ -267,7 +275,8 @@ export class LoadService {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
-    public updateLoadPartily(data: LoadResponse, loadStatus: string): void {
+    public updateLoadPartily(loadResponse: LoadListResponse, loadStatus: string): void {
+        const data = loadResponse.pagination.data[0];
         const loadId = data.id;
 
         if (loadStatus === TableStringEnum.ACTIVE) {
@@ -284,16 +293,16 @@ export class LoadService {
         this.triggerModalAction();
     }
 
-    public addNewLoad(data: LoadResponse, isTemplate: boolean): void {
+    public addNewLoad(data: LoadListResponse, isTemplate: boolean): void {
         const loadCount = JSON.parse(
             localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
         );
 
         if (isTemplate) {
-            this.loadTemplateStore.add(data);
+            this.loadTemplateStore.add(data.pagination.data[0]);
             loadCount.template++;
         } else {
-            this.loadPendingStore.add(data);
+            this.loadPendingStore.add(data.pagination.data[0]);
             loadCount.pendingCount++;
         }
 

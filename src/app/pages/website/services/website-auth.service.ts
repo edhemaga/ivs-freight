@@ -198,7 +198,7 @@ export class WebsiteAuthService {
     }
 
     public getAccountAvatarImage(data: string): Observable<AvatarResponse> {
-        return this.accountService.apiAccountAvatarCodeGet(data).pipe(
+        return this.accountService.apiAccountAvatarGet(data).pipe(
             tap((res: AvatarResponse) => {
                 // this.websiteActionsService.setAvatarImageSubject(res.avatar?.url)
             })
