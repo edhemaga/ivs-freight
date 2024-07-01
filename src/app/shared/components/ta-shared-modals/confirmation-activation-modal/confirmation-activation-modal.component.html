@@ -1,28 +1,15 @@
-<app-ta-modal
-    [modalTitle]="editData?.type | confirmationModalTitle : editData?.subType"
-    [customClass]="'modal-container-XS'"
-    [bottomDivider]="true"
-    [headerSvg]="
+<app-ta-modal [modalTitle]="editData?.type | confirmationModalTitle : editData?.subType" [customClass]="'modal-container-XS'" [bottomDivider]="true" [headerSvg]="
         editData?.type.includes('deactivate')
             ? 'info2'
             : editData?.type.includes('activate')
             ? 'hire'
             : editData?.type
-    "
-    [isCloseIconRemoved]="true"
-    [showCounter]="editData?.array"
-    [confirmationData]="editData"
-    (confirmationAction)="onModalAction($event)"
->
-    <div
-        origin
-        class="d-flex flex-column justify-content-center confirmation-activation"
-    >
+    " [isCloseIconRemoved]="true" [showCounter]="editData?.array" [confirmationData]="editData" (confirmationAction)="onModalAction($event)">
+    <div origin class="d-flex flex-column justify-content-center confirmation-activation">
         <!-- Icon -->
 
         <div class="confirmation-activation-icon">
-            <svg-icon
-                [src]="
+            <svg-icon [src]="
                     editData?.type.includes('activate') ||
                     editData?.type.includes('deactivate')
                         ? 'assets/svg/common/confirmation/ic_confirmation_modal_button_' +
@@ -31,57 +18,39 @@
                         : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
                           editData?.type +
                           '.svg'
-                "
-            ></svg-icon>
+                "></svg-icon>
         </div>
 
         <!-- Body -->
 
-        <div
-            class="d-flex flex-column justify-content-center confirmation-activation-body"
-        >
+        <div class="d-flex flex-column justify-content-center confirmation-activation-body">
             <div class="d-flex flex-row">
                 <!-- Title -->
 
-                <div
-                    class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
-                >
+                <div class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2">
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
-                        <ng-container
-                            *ngIf="
+                        <ng-container *ngIf="
                                 editData?.template === 'Driver';
                                 else regularTemplate
-                            "
-                        >
+                            ">
                             <div class="d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="
-                                        editData?.data?.avatarFile?.url;
+                                <ng-container *ngIf="
+                                        editData?.data?.avatarImg;
                                         else noImage
-                                    "
-                                >
-                                    <img
-                                        class="avatar"
-                                        [src]="editData?.data?.avatarFile?.url"
-                                    />
+                                    ">
+                                    <img class="avatar" [src]="editData?.data?.avatarImg" />
                                 </ng-container>
 
                                 <ng-template #noImage>
-                                    <div
-                                        class="d-flex align-items-center justify-content-center no-avatar"
-                                        [ngStyle]="{
+                                    <div class="d-flex align-items-center justify-content-center no-avatar" [ngStyle]="{
                                             background:
                                                 editData?.data?.avatarColor
                                                     ?.background
-                                        }"
-                                    >
-                                        <p
-                                            class="m-0 ta-font-extra-bold"
-                                            [ngStyle]="{
+                                        }">
+                                        <p class="m-0 ta-font-extra-bold" [ngStyle]="{
                                                 color: editData?.data
                                                     ?.avatarColor?.color
-                                            }"
-                                        >
+                                            }">
                                             {{ editData?.data?.textShortName }}
                                         </p>
                                     </div>
@@ -92,27 +61,17 @@
                                         <p class="title-text m-0 ta-font-bold">
                                             {{ editData?.data?.name }}
                                         </p>
-                                        <ng-container
-                                            *ngIf="
+                                        <ng-container *ngIf="
                                                 editData?.type === 'activate'
-                                            "
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
+                                            ">
+                                            <svg-icon class="d-flex ms-1" [src]="
                                                     confirmationImageRoutes.confirmationDeactivationSvg
-                                                "
-                                            ></svg-icon>
+                                                "></svg-icon>
                                         </ng-container>
                                     </div>
 
-                                    <p
-                                        class="second-title-text m-0 ta-font-medium"
-                                    >
-                                        {{
-                                            editData?.data?.dateOfBirth
-                                                | formatDateP
-                                        }}
+                                    <p class="second-title-text m-0 ta-font-medium">
+                                        {{ editData?.data?.dateOfBirth | formatDateP }}
                                     </p>
                                 </div>
                             </div>
@@ -120,52 +79,35 @@
 
                         <ng-template #regularTemplate>
                             <div class="d-flex align-items-center w-100 gap-1">
-                                <ng-container
-                                    *ngIf="
+                                <ng-container *ngIf="
                                         editData?.svg &&
                                         editData?.data?.avatarFile?.url
-                                    "
-                                >
-                                    <svg-icon
-                                        class="confirmation-svg"
-                                        [src]="editData?.data?.avatarFile?.url"
-                                    ></svg-icon>
+                                    ">
+                                    <svg-icon class="confirmation-svg" [src]="editData?.data?.avatarFile?.url"></svg-icon>
                                 </ng-container>
 
                                 <div class="d-flex flex-column">
                                     <div class="d-flex align-items-center">
-                                        <div
-                                            class="m-0 ta-font-bold"
-                                            [class.limit-text]="
+                                        <div class="m-0 ta-font-bold" [class.limit-text]="
                                                 editData.template !== 'truck' &&
                                                 editData.template !== 'trailer'
-                                            "
-                                            [class.shorter-text]="
+                                            " [class.shorter-text]="
                                                 editData?.type === 'open'
-                                            "
-                                        >
+                                            ">
                                             {{ editData.modalTitle }}
                                         </div>
 
-                                        <ng-container
-                                            *ngIf="editData?.type === 'open'"
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
+                                        <ng-container *ngIf="editData?.type === 'open'">
+                                            <svg-icon class="d-flex ms-1" [src]="
                                                     confirmationImageRoutes.confirmationCloseBrokerSvg
-                                                "
-                                            ></svg-icon
-                                        ></ng-container>
+                                                "></svg-icon>
+                                        </ng-container>
                                     </div>
 
-                                    <div
-                                        class="m-0 text-2"
-                                        [class.limit-text]="
+                                    <div class="m-0 text-2" [class.limit-text]="
                                             editData.template !== 'truck' &&
                                             editData.template !== 'trailer'
-                                        "
-                                    >
+                                        ">
                                         {{ editData.modalSecondTitle }}
                                     </div>
                                 </div>
@@ -175,39 +117,24 @@
                 </div>
 
                 <ng-template #arrayTemplate>
-                    <ng-container
-                        *ngFor="let item of editData.array; trackBy: identity"
-                    >
-                        <ng-container
-                            *ngIf="
+                    <ng-container *ngFor="let item of editData.array; trackBy: identity">
+                        <ng-container *ngIf="
                                 editData?.template === 'Driver';
                                 else regularTemplate
-                            "
-                        >
+                            ">
                             <div class="d-flex align-items-center">
-                                <ng-container
-                                    *ngIf="item?.avatarImg; else noImage"
-                                >
-                                    <img
-                                        class="avatar"
-                                        [src]="item.avatarImg"
-                                    />
+                                <ng-container *ngIf="item?.avatarImg; else noImage">
+                                    <img class="avatar" [src]="item.avatarImg" />
                                 </ng-container>
 
                                 <ng-template #noImage>
-                                    <div
-                                        class="d-flex align-items-center justify-content-center no-avatar"
-                                        [ngStyle]="{
+                                    <div class="d-flex align-items-center justify-content-center no-avatar" [ngStyle]="{
                                             background:
                                                 item?.avatarColor?.background
-                                        }"
-                                    >
-                                        <p
-                                            class="m-0 ta-font-extra-bold"
-                                            [ngStyle]="{
+                                        }">
+                                        <p class="m-0 ta-font-extra-bold" [ngStyle]="{
                                                 color: item?.avatarColor?.color
-                                            }"
-                                        >
+                                            }">
                                             {{ item?.textShortName }}
                                         </p>
                                     </div>
@@ -218,24 +145,17 @@
                                         <p class="title-text m-0 ta-font-bold">
                                             {{ item?.name }}
                                         </p>
-                                        <ng-container
-                                            *ngIf="
+                                        <ng-container *ngIf="
                                                 editData?.type ===
                                                 'activate-multiple'
-                                            "
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
+                                            ">
+                                            <svg-icon class="d-flex ms-1" [src]="
                                                     confirmationImageRoutes.confirmationDeactivationSvg
-                                                "
-                                            ></svg-icon>
+                                                "></svg-icon>
                                         </ng-container>
                                     </div>
 
-                                    <p
-                                        class="second-title-text m-0 ta-font-medium"
-                                    >
+                                    <p class="second-title-text m-0 ta-font-medium">
                                         {{ item?.dateOfBirth | formatDateP }}
                                     </p>
                                 </div>
@@ -244,53 +164,36 @@
 
                         <ng-template #regularTemplate>
                             <div class="d-flex align-items-center w-100 gap-1">
-                                <ng-container
-                                    *ngIf="
+                                <ng-container *ngIf="
                                         editData?.svg &&
                                         item?.data?.avatarFile?.url
-                                    "
-                                >
-                                    <svg-icon
-                                        class="confirmation-svg"
-                                        [src]="item?.data?.avatarFile?.url"
-                                    ></svg-icon>
+                                    ">
+                                    <svg-icon class="confirmation-svg" [src]="item?.data?.avatarFile?.url"></svg-icon>
                                 </ng-container>
 
                                 <div class="d-flex flex-column">
                                     <div class="d-flex align-items-center">
-                                        <div
-                                            class="m-0 ta-font-bold"
-                                            [class.limit-text]="
+                                        <div class="m-0 ta-font-bold" [class.limit-text]="
                                                 editData?.template !==
                                                     'truck' &&
                                                 editData?.template !== 'trailer'
-                                            "
-                                            [class.shorter-text]="
+                                            " [class.shorter-text]="
                                                 editData?.type === 'open'
-                                            "
-                                        >
+                                            ">
                                             {{ item?.modalTitle }}
                                         </div>
 
-                                        <ng-container
-                                            *ngIf="editData?.type === 'open'"
-                                        >
-                                            <svg-icon
-                                                class="d-flex ms-1"
-                                                [src]="
+                                        <ng-container *ngIf="editData?.type === 'open'">
+                                            <svg-icon class="d-flex ms-1" [src]="
                                                     confirmationImageRoutes.confirmationCloseBrokerSvg
-                                                "
-                                            ></svg-icon
-                                        ></ng-container>
+                                                "></svg-icon>
+                                        </ng-container>
                                     </div>
 
-                                    <div
-                                        class="m-0 text-2"
-                                        [class.limit-text]="
+                                    <div class="m-0 text-2" [class.limit-text]="
                                             editData.template !== 'truck' &&
                                             editData.template !== 'trailer'
-                                        "
-                                    >
+                                        ">
                                         {{ item?.modalSecondTitle }}
                                     </div>
                                 </div>
@@ -302,21 +205,10 @@
 
             <!-- Subtitle -->
 
-            <div
-                class="d-flex align-items-center confirmation-activation-body-subtitle"
-            >
+            <div class="d-flex align-items-center confirmation-activation-body-subtitle">
                 <p class="m-0 ta-font-medium">
-                    Are you sure you want to
-                    {{
-                        editData?.type === 'deactivate' ||
-                        editData?.type === 'deactivate-multiple'
-                            ? 'deactivate'
-                            : editData?.type === 'activate' ||
-                              editData?.type === 'activate-multiple'
-                            ? 'activate'
-                            : editData?.type
-                    }}
-                    selected {{ editData.tableType }}?
+                    Are you sure you want to {{ editData?.type === 'deactivate' || editData?.type === 'deactivate-multiple' ? 'deactivate' : editData?.type === 'activate' || editData?.type === 'activate-multiple' ? 'activate' : editData?.type }} selected {{ editData.tableType
+                    }}?
                 </p>
             </div>
         </div>
