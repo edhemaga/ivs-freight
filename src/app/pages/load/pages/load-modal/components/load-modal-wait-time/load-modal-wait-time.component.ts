@@ -77,20 +77,26 @@ export class LoadModalWaitTimeComponent implements OnInit {
     }
 
     public getStatusName(index: number): string {
-        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS_NAME).value;
-      }
-    
-      public getStatus(index: number): string {
-        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS).value;
-      }
-    
-      public getStatusNumber(index: number): string {
-        return this.statusHistoryForm().at(index).get(LoadModalStringEnum.WAIT_TIME_STATUS_NUMBER).value;
-      }
-    
-      public isStatusNumberAvailable(index: number): boolean {
+        return this.statusHistoryForm()
+            .at(index)
+            .get(LoadModalStringEnum.WAIT_TIME_STATUS_NAME).value;
+    }
+
+    public getStatus(index: number): string {
+        return this.statusHistoryForm()
+            .at(index)
+            .get(LoadModalStringEnum.WAIT_TIME_STATUS).value;
+    }
+
+    public getStatusNumber(index: number): string {
+        return this.statusHistoryForm()
+            .at(index)
+            .get(LoadModalStringEnum.WAIT_TIME_STATUS_NUMBER).value;
+    }
+
+    public isStatusNumberAvailable(index: number): boolean {
         return !!this.getStatusNumber(index);
-      }
+    }
 
     private generateForm() {
         this.waitTimeForm = this.formBuilder.group({
