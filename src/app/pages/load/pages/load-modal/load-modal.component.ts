@@ -385,6 +385,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public isDragAndDropActive: boolean = false;
     public reorderingStarted: boolean;
     public reorderingSaveError: boolean = false;
+    private originalStatus: string;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -481,7 +482,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public getDispatcherInputConfig(): ITaInput {
         return LoadModalConfig.getDispatcherInputConfig(
-            this.selectedDispatcher?.logoName || this.selectedDispatcher?.avatarFile?.url,
+            this.selectedDispatcher?.logoName ||
+                this.selectedDispatcher?.avatarFile?.url,
             this.selectedDispatcher?.name
         );
     }
@@ -3406,6 +3408,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ),
                     ];
 
+                    this.originalStatus = (this.editData?.data as LoadResponse).status.statusString;
+
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
                             item?.name ===
@@ -3976,7 +3980,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         .subscribe((res) => {
                                             this.loadService.updateLoadPartily(
                                                 res,
-                                                this.editData.selectedTab
+                                                this.originalStatus
                                             );
                                         });
                                     this.modalService.setModalSpinner({
