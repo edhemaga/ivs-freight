@@ -1405,6 +1405,7 @@
                         marginBottom: '22px'
                     }"
                     (action)="onFinancialAction($event)"
+                    [disablePaymentAction]="!paymentTypesDropdownList.length"
                 >
                     <div class="load-financial-container">
                         <div class="load-financial-billing">
@@ -1559,7 +1560,7 @@
                                 </div>
                             </div>
 
-                            <ng-container *ngIf="showPaymentArray">
+                            <ng-container *ngIf="showPaymentArray && paymentTypesDropdownList.length">
                                 <app-ta-input-dropdown
                                     formControlName="paymentDropdown"
                                     [inputConfig]="

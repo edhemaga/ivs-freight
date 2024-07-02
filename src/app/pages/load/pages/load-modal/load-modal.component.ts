@@ -375,7 +375,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public totalLegMinutes: number = null;
     public totalLegCost: number = null;
     public paymentMethodsDropdownList: EnumValue[];
-    public paymentTypesDropdownList: EnumValue[];
+    public paymentTypesDropdownList: EnumValue[] = [];
     public orginalPaymentTypesDropdownList: EnumValue[];
     public showRevisedRate: boolean;
     public showTonuRate: boolean;
@@ -2063,11 +2063,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.loadForm
                 .get(LoadModalStringEnum.PAYMENT_DROPDOWN)
                 .patchValue(null);
+            this.updatePaymentsList();
         }
     }
 
     public removePaymentBilling(index: number) {
         this.additionalPayments().removeAt(index);
+        this.updatePaymentsList();
     }
 
     public createAdditionPaymentBilling(
@@ -2220,21 +2222,35 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     break;
                 case LoadModalStringEnum.PAYMENT:
-                    this.paymentTypesDropdownList =
-                        this.orginalPaymentTypesDropdownList.filter(
-                            (item) =>
-                                !this.additionalPayments().value.find(
-                                    (value: LoadAdditionalPayment) =>
-                                        item.id === value.paymentType
-                                )
-                        );
-                    if (this.paymentTypesDropdownList.length)
-                        this.showPaymentArray = true;
+                    this.updatePaymentsList();
+                    this.showPaymentArray = true;
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private updatePaymentsList(): void {
+          const isPaidInFull = !!this.additionalPayments().value.find(
+            (value: LoadAdditionalPayment) => value.paymentType === LoadModalConstants.PAID_IN_FULL
+        );
+        const isAdvancePay = !!this.additionalPayments().value.find(
+            (value: LoadAdditionalPayment) => value.paymentType === LoadModalConstants.ADVANCE_PAY
+        );
+
+        let list = this.paymentTypesDropdownList;
+
+        if (isPaidInFull) {
+            list = [];
+        } else if (isAdvancePay) {
+            list = this.orginalPaymentTypesDropdownList.filter(
+                (payments) =>
+                    payments.id !== LoadModalConstants.ADVANCE_PAY
+            );
+        }
+
+        this.paymentTypesDropdownList = list;
     }
 
     public trackBillingPayment(): void {
@@ -2330,27 +2346,30 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.additionalPayments()
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value: LoadAdditionalPayment[]) => {
-                const paidInFull =
-                    value.find(
-                        (val) =>
-                            val.paymentType ===
-                            LoadModalPaymentEnum.PAID_IN_FULL
-                    )?.pay ?? 0;
-                const shortPaid =
-                    value.find(
-                        (val) =>
-                            val.paymentType === LoadModalPaymentEnum.SHORT_PAID
-                    )?.pay ?? 0;
-                const advance =
-                    value.find(
-                        (val) =>
-                            val.paymentType ===
-                            LoadModalPaymentEnum.ADVANCE_PAYMENT
-                    )?.pay ?? 0;
+                const paymentTotals = value.reduce(
+                    (acc, val) => {
+                        switch (val.paymentType) {
+                            case LoadModalPaymentEnum.PAID_IN_FULL:
+                                acc.paidInFull += val.pay;
+                                break;
+                            case LoadModalPaymentEnum.SHORT_PAID:
+                                acc.shortPaid += val.pay;
+                                break;
+                            case LoadModalPaymentEnum.ADVANCE_PAYMENT:
+                                acc.advance += val.pay;
+                                break;
+                            default:
+                                break;
+                        }
+                        return acc;
+                    },
+                    { paidInFull: 0, shortPaid: 0, advance: 0 }
+                );
+
                 this.loadModalPayment = {
-                    paidInFull,
-                    shortPaid,
-                    advance,
+                    paidInFull: paymentTotals.paidInFull,
+                    shortPaid: paymentTotals.shortPaid,
+                    advance: paymentTotals.advance,
                 };
             });
 
@@ -3408,7 +3427,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         ),
                     ];
 
-                    this.originalStatus = (this.editData?.data as LoadResponse).status.statusString;
+                    this.originalStatus = (
+                        this.editData?.data as LoadResponse
+                    ).status.statusString;
 
                     let initialDispatcher = this.labelsDispatcher.find(
                         (item) =>
