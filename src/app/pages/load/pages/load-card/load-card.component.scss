@@ -99,7 +99,6 @@
 }
 
 .card-separate-container {
-    margin-top: 3px;
     gap: 4px;
 
     &::-moz-selection {
@@ -118,13 +117,4 @@
     font-size: 11px;
     line-height: 14px;
     font-weight: 500;
-}
-
-.driver-avatar-svg {
-    width: 18px;
-    height: 20px;
-    border-radius: 2px;
-
-    object-fit: fill;
-    -o-object-fit: fill;
 }
