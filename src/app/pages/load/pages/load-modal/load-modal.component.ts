@@ -2783,8 +2783,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 arrive: arrive,
                 depart: depart,
                 legMiles: pickuplegMiles,
-                legHours: pickuplegHours,
-                legMinutes: pickuplegMinutes,
+                legHours: pickuplegHours ?? 0,
+                legMinutes: pickuplegMinutes ?? 0,
                 items: this.remapStopItems(this.pickupStopItems),
             });
         }
@@ -2817,8 +2817,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
-                    legHours: item.get(LoadModalStringEnum.LEG_HOURS).value,
-                    legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value,
+                    legHours: item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
+                    legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
                     items: this.remapStopItems(this.extraStopItems[index]),
                 });
             });
@@ -2854,8 +2854,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 arrive: null,
                 depart: null,
                 legMiles: deliverylegMiles,
-                legHours: deliverylegHours,
-                legMinutes: deliverylegMinutes,
+                legHours: deliverylegHours ?? 0,
+                legMinutes: deliverylegMinutes ?? 0,
                 items: this.remapStopItems(this.deliveryStopItems),
             });
         }
@@ -3953,31 +3953,44 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             )
             .subscribe((res) => {
                 this.loadService
-                    .updateLoad(newData)
-                    .pipe(takeUntil(this.destroy$))
-                    .subscribe({
-                        next: () => {
-                            this.loadService
-                                .getLoadInsideListById(newData.id)
-                                .subscribe((res) => {
-                                    this.loadService.updateLoadPartily(
-                                        res,
-                                        this.editData.selectedTab
-                                    );
-                                });
-                            this.modalService.setModalSpinner({
-                                action: null,
-                                status: true,
-                                close: true,
+                    .getLoadById(this.editData.data.id)
+                    .subscribe((response) => {
+                        // After statuse change we get times for stops that needs to send to backend
+                        // together with status history
+                        newData.stops.forEach((stop, index) => {
+                            stop.arrive = response.stops[index].arrive;
+                            stop.depart = response.stops[index].depart;
+                        });
+
+                        if (this.isLoadClosed)
+                            newData.statusHistory = response.statusHistory;
+                        this.loadService
+                            .updateLoad(newData)
+                            .pipe(takeUntil(this.destroy$))
+                            .subscribe({
+                                next: () => {
+                                    this.loadService
+                                        .getLoadInsideListById(newData.id)
+                                        .subscribe((res) => {
+                                            this.loadService.updateLoadPartily(
+                                                res,
+                                                this.editData.selectedTab
+                                            );
+                                        });
+                                    this.modalService.setModalSpinner({
+                                        action: null,
+                                        status: true,
+                                        close: true,
+                                    });
+                                },
+                                error: () => {
+                                    this.modalService.setModalSpinner({
+                                        action: null,
+                                        status: false,
+                                        close: false,
+                                    });
+                                },
                             });
-                        },
-                        error: () => {
-                            this.modalService.setModalSpinner({
-                                action: null,
-                                status: false,
-                                close: false,
-                            });
-                        },
                     });
             });
     }
