@@ -57,7 +57,6 @@ import { HoverSvgDirective } from '@shared/directives/hover-svg.directive';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { CalendarDateTimePickerService } from '@shared/services/calendar-datetime-picker.service';
 import { FormService } from '@shared/services/form.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 
 // components
 import { TaCustomDatetimePickersComponent } from '@shared/components/ta-custom-datetime-pickers/ta-custom-datetime-pickers.component';
@@ -251,7 +250,6 @@ export class TaInputComponent
         private thousandSeparatorPipe: ThousandSeparatorPipe,
         private refChange: ChangeDetectorRef,
         private formService: FormService,
-        public imageBase64Service: ImageBase64Service,
         private cdRef: ChangeDetectorRef
     ) {
         this.superControl.valueAccessor = this;

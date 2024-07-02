@@ -35,10 +35,10 @@
                             ">
                             <div class="d-flex align-items-center">
                                 <ng-container *ngIf="
-                                        editData?.data?.avatarImg;
+                                        editData?.data?.avatarFile?.url;
                                         else noImage
                                     ">
-                                    <img class="avatar" [src]="editData?.data?.avatarImg" />
+                                    <img class="avatar" [src]="editData?.data?.avatarFile?.url" />
                                 </ng-container>
 
                                 <ng-template #noImage>
