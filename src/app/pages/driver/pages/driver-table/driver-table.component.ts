@@ -616,6 +616,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     TableStringEnum.APPLICANT,
                     applicantsData as DriverResponse[]
                 ),
+                inactive: true,
             },
             {
                 title: TableStringEnum.ACTIVE,
