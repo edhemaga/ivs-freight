@@ -3956,7 +3956,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     .getLoadById(this.editData.data.id)
                     .subscribe((response) => {
                         // After statuse change we get times for stops that needs to send to backend
-                        // togather with status history
+                        // together with status history
                         newData.stops.forEach((stop, index) => {
                             stop.arrive = response.stops[index].arrive;
                             stop.depart = response.stops[index].depart;
