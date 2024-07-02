@@ -31,6 +31,13 @@ import {
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
 
+import {
+    CDK_DRAG_CONFIG,
+    CdkDragDrop,
+    DragDropModule,
+    moveItemInArray,
+} from '@angular/cdk/drag-drop';
+
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -75,6 +82,7 @@ import { LoadTimeTypePipe } from '@pages/load/pages/load-modal/pipes/load-time-t
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants/load-modal-config.constants';
 import { LoadStopItems } from '@pages/load/pages/load-modal/utils/constants/load-stop-items.constants';
+import { LoadModalDragAndDrop } from '@pages/load/pages/load-modal/utils/constants/load-modal-draganddrop-config';
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums/load-modal-string.enum';
@@ -124,19 +132,6 @@ import { LoadModalWaitTimeFormField } from '@pages/load/pages/load-modal/models/
 
 // Svg Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
-import {
-    CDK_DRAG_CONFIG,
-    CdkDragDrop,
-    DragDropModule,
-    moveItemInArray,
-} from '@angular/cdk/drag-drop';
-
-// Modal config
-const DragConfig = {
-    dragStartThreshold: 0,
-    pointerDirectionChangeThreshold: 5,
-    zIndex: 10000,
-};
 
 @Component({
     selector: 'app-load-modal',
@@ -178,7 +173,7 @@ const DragConfig = {
     animations: [fadeInAnimation],
     providers: [
         FinancialCalculationPipe,
-        { provide: CDK_DRAG_CONFIG, useValue: DragConfig },
+        { provide: CDK_DRAG_CONFIG, useValue: LoadModalDragAndDrop.Config },
     ],
 })
 export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
@@ -3113,9 +3108,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.reorderingStarted = false;
             this.reorderingSaveError = false;
-        } else {
-            this.createNewExtraStop();
-        }
+        } else this.createNewExtraStop();
     }
 
     public createNewStopItemsRow(type: string, extraStopId?: number): void {
@@ -4545,9 +4538,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public runFormValidation(): void {
         this.loadForm.markAsTouched();
-        if (this.reorderingStarted) {
-            this.reorderingSaveError = true;
-        }
+        if (this.reorderingStarted) this.reorderingSaveError = true;
     }
 
     ngOnDestroy(): void {

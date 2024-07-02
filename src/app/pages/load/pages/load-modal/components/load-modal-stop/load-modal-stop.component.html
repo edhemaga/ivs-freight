@@ -26,7 +26,7 @@
 
                 <ng-container *ngIf="stopFinished">
                     <svg-icon
-                        [src]="'assets/svg/common/ic_checkmark.svg'"
+                        [src]="loadModalSvgRoutes.checkmark"
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
                 </ng-container>
@@ -43,13 +43,13 @@
                 >
                     <svg-icon
                         class="load-stop-drag-icon"
-                        [src]="'assets/svg/common/ic_draging.svg'"
+                        [src]="loadModalSvgRoutes.draging"
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
 
                     <svg-icon
                         class="load-delete-drag-icon"
-                        [src]="'assets/svg/common/load/ic_load_stop_delete.svg'"
+                        [src]="loadModalSvgRoutes.delete"
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
                 </div>

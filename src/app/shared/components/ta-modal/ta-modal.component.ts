@@ -306,9 +306,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
     }
 
     public onAction(action: string) {
-        if (!this.isModalValid && this.enableClickWhileFormInvalid) {
+        if (!this.isModalValid && this.enableClickWhileFormInvalid)
             this.runFormValidation.emit(true);
-        }
 
         switch (action) {
             case 'save': {

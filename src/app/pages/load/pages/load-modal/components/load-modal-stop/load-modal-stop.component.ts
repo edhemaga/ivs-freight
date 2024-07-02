@@ -22,6 +22,8 @@ import { collapseAnimation } from '@pages/load/pages/load-modal/utils/animations
 import { LoadStatusStringEnum } from '@pages/load/pages/load-modal/components/load-modal-stop/enums/load-status-string.enum';
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants/load-modal.constants';
 
+// Svg Routes
+import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
 @Component({
     selector: 'app-load-modal-stop',
     templateUrl: './load-modal-stop.component.html',
@@ -61,7 +63,7 @@ export class LoadModalStopComponent {
     @Input() isDestinationTab = false;
     @Input() isDragAndDropActive = false;
     @Input() stopFinished = false;
-    
+    public loadModalSvgRoutes = LoadModalSvgRoutes;
     @Output('toggle') toggleEvent: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
