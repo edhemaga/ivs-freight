@@ -411,9 +411,8 @@ export class Step4Component implements OnInit, OnDestroy, AfterContentChecked {
                 this.accidentArray[
                     this.selectedAccidentIndex
                 ].isEditingAccident = false;
+                this.accidentArray.splice(this.selectedAccidentIndex, 1);
             }
-
-            this.accidentArray.splice(this.selectedAccidentIndex, 1);
 
             this.formValuesToPatch = {
                 location: null,

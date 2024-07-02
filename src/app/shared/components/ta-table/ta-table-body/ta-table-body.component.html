@@ -201,11 +201,19 @@
                                             (click)="
                                                 toggleStatusDropdown(
                                                     ngbStatus,
-                                                    row
+                                                    row,
+                                                    row[column.field].status,
+                                                    row[column.field].tab
                                                 )
                                             "
                                         >
-                                            <div class="status">
+                                            <div
+                                                class="status"
+                                                [ngStyle]="
+                                                    row[column.field].status
+                                                        | loadStatusColor
+                                                "
+                                            >
                                                 {{ row[column.field].status }}
                                             </div>
                                             <div class="status-time">
@@ -2632,18 +2640,35 @@
                                         triggers="manual"
                                     >
                                         <div
-                                            class="status-container"
+                                            ngbTooltip
+                                            mainContent
+                                            [mainTooltip]="'Change Status'"
+                                            position="bottom"
+                                            [tooltipBackground]="'#424242'"
+                                            tooltipColor="'#ffff'"
+                                            tooltipTextAlign="center"
                                             [ngStyle]="{
-                                                width: column.width - 20 + 'px'
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset'
                                             }"
+                                            class="status-containers"
                                             (click)="
                                                 toggleStatusDropdown(
                                                     ngbStatus,
-                                                    row
+                                                    row,
+                                                    row[column.field].status,
+                                                    row[column.field].tab
                                                 )
                                             "
                                         >
-                                            <div class="status">
+                                            <div
+                                                class="status"
+                                                [ngStyle]="
+                                                    row[column.field].status
+                                                        | loadStatusColor
+                                                "
+                                            >
                                                 {{ row[column.field].status }}
                                             </div>
                                             <div class="status-time">
@@ -2661,9 +2686,8 @@
                                             class="td-content set-left"
                                             [ngStyle]="{
                                                 width: column.width + 'px',
-                                                'min-width.px': column?.minWidth
-                                                    ? column.minWidth
-                                                    : 'unset',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset',
                                                 margin: '0px 4px 0px -4px'
                                             }"
                                         >
@@ -2714,54 +2738,86 @@
                                                 ? column.minWidth
                                                 : 'unset'
                                         }"
+                                        #ngbStatus="ngbPopover"
+                                        [autoClose]="true"
+                                        [ngbPopover]="stopsPopover"
+                                        [placement]="'bottom-left'"
+                                        container="body"
+                                        popoverClass="table-stops-popover"
+                                        triggers="manual"
+                                        (click)="
+                                            toggleStopsDropdown(
+                                                ngbStatus,
+                                                column.width
+                                            )
+                                        "
                                     >
                                         <div
-                                            class="pickup-delivery-counter"
-                                            [ngClass]="{
-                                                'pickup-count':
-                                                    column.pickupDeliveryType ===
-                                                        'pickup' &&
-                                                    row[column.field].count !==
-                                                        'S',
-                                                'delivery-count':
-                                                    column.pickupDeliveryType ===
-                                                        'delivery' &&
-                                                    row[column.field].count !==
-                                                        'S',
-                                                'special-count':
-                                                    row[column.field].count ===
-                                                    'S'
-                                            }"
+                                            ngbTooltip
+                                            [mainTooltip]="'Show Stops'"
+                                            tooltipBackground="#424242"
+                                            position="bottom"
+                                            class="d-flex align-items-center"
                                         >
-                                            {{ row[column.field].count }}
-                                        </div>
+                                            <ng-container
+                                                *ngFor="
+                                                    let rowField of row[
+                                                        column.field
+                                                    ]
+                                                "
+                                            >
+                                                <div
+                                                    class="pickup-delivery-counter"
+                                                    [ngClass]="{
+                                                        'pickup-count':
+                                                            !rowField.delivery &&
+                                                            row.count !== 'S',
+                                                        'delivery-count':
+                                                            rowField.delivery &&
+                                                            rowField.count !==
+                                                                'S',
+                                                        'special-count':
+                                                            rowField.count ===
+                                                            'S'
+                                                    }"
+                                                >
+                                                    {{ rowField.count }}
+                                                </div>
 
-                                        <div
-                                            class="pickup-delivery-location-container"
-                                        >
-                                            <div
-                                                class="location"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 28 + 'px'
-                                                }"
-                                            >
-                                                {{ row[column.field].location }}
-                                            </div>
-                                            <div
-                                                class="date-time-container"
-                                                [ngStyle]="{
-                                                    width:
-                                                        column.width - 30 + 'px'
-                                                }"
-                                            >
-                                                <div class="date">
-                                                    {{ row[column.field].date }}
+                                                <div
+                                                    class="pickup-delivery-location-container"
+                                                >
+                                                    <div
+                                                        class="location"
+                                                        [ngStyle]="{
+                                                            width:
+                                                                column.width /
+                                                                    2 -
+                                                                28 +
+                                                                'px'
+                                                        }"
+                                                    >
+                                                        {{ rowField.location }}
+                                                    </div>
+                                                    <div
+                                                        class="date-time-container"
+                                                        [ngStyle]="{
+                                                            width:
+                                                                column.width /
+                                                                    2 -
+                                                                30 +
+                                                                'px'
+                                                        }"
+                                                    >
+                                                        <div class="date">
+                                                            {{ rowField.date }}
+                                                        </div>
+                                                        <div class="time">
+                                                            {{ rowField.time }}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="time">
-                                                    {{ row[column.field].time }}
-                                                </div>
-                                            </div>
+                                            </ng-container>
                                         </div>
                                     </div>
 
@@ -2848,13 +2904,13 @@
                                     </div>
 
                                     <!-- AVATAR COLUMN -->
+
                                     <div
                                         *ngIf="column.ngTemplate === 'avatar'"
                                         [ngStyle]="{
                                             width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset'
+                                            'min-width.px':
+                                                column?.minWidth ?? 'unset'
                                         }"
                                         class="td-content"
                                     >
@@ -2864,33 +2920,41 @@
                                                 'avatar-is-owner': row.isOwner
                                             }"
                                         >
-                                            <div
-                                                class="avatar-img"
-                                                *ngIf="row.avatarImg"
+                                            <ng-container
+                                                *ngIf="
+                                                    row.avatarImg;
+                                                    else showAvatarImage
+                                                "
                                             >
-                                                <img
-                                                    alt="avatar"
-                                                    [src]="row.avatarImg"
-                                                />
-                                            </div>
-
-                                            <div
-                                                class="avatar-no-img"
-                                                *ngIf="!row.avatarImg"
-                                                [ngStyle]="{
-                                                    'background-color': row
-                                                        .avatarColor?.background
-                                                        ? row.avatarColor
-                                                              .background
-                                                        : 'unset',
-                                                    color: row.avatarColor
-                                                        ?.color
-                                                        ? row.avatarColor.color
-                                                        : 'unset'
-                                                }"
-                                            >
-                                                {{ row.textDriverShortName }}
-                                            </div>
+                                                <div class="avatar-img">
+                                                    <img
+                                                        alt="avatar"
+                                                        [src]="row.avatarImg"
+                                                    />
+                                                </div>
+                                            </ng-container>
+                                            <ng-template #showAvatarImage>
+                                                <div
+                                                    class="avatar-no-img"
+                                                    [ngStyle]="{
+                                                        'background-color': row
+                                                            .avatarColor
+                                                            ?.background
+                                                            ? row.avatarColor
+                                                                  .background
+                                                            : 'unset',
+                                                        color: row.avatarColor
+                                                            ?.color
+                                                            ? row.avatarColor
+                                                                  .color
+                                                            : 'unset'
+                                                    }"
+                                                >
+                                                    {{
+                                                        row.textDriverShortName
+                                                    }}
+                                                </div>
+                                            </ng-template>
 
                                             <img
                                                 class="avatar-owner"
@@ -2916,6 +2980,48 @@
                                                     : ''
                                             "
                                         ></span>
+                                    </div>
+
+                                    <div
+                                        *ngIf="
+                                            column.ngTemplate ===
+                                            'avatar-assign'
+                                        "
+                                        [ngStyle]="{
+                                            width: column.width + 'px',
+                                            'min-width.px':
+                                                column?.minWidth ?? 'unset'
+                                        }"
+                                        class="td-content"
+                                    >
+                                        <ng-container *ngIf="row.avatarImg">
+                                            <div
+                                                class="avatar-assign-container d-flex justify-content-center align-items-center"
+                                            >
+                                                <div class="avatar-assign-img">
+                                                    <img
+                                                        alt="avatar"
+                                                        [src]="row.avatarImg"
+                                                    />
+                                                </div>
+
+                                                <div
+                                                    class="avatar-assign-text"
+                                                    [ngStyle]="{
+                                                        'background-color':
+                                                            row.avatarColor
+                                                                ?.background ??
+                                                            'unset',
+                                                        color:
+                                                            row.avatarColor
+                                                                ?.color ??
+                                                            'unset'
+                                                    }"
+                                                >
+                                                    {{ row.tableDriver }}
+                                                </div>
+                                            </div>
+                                        </ng-container>
                                     </div>
 
                                     <!-- USER STATUS COLUMN -->
@@ -4054,36 +4160,40 @@
                                                 : 'unset'
                                         }"
                                     >
-                                        <div
-                                            ngbTooltip
-                                            class="truckassist-icon"
-                                            mainContent
-                                            [mainTooltip]="
-                                                row[column.tooltipTitle]
-                                            "
-                                            position="bottom"
-                                            [tooltipBackground]="
-                                                row[column.tooltipColor]
-                                            "
-                                            tooltipColor="#ffff"
-                                            tooltipTextAlign="center"
-                                        >
-                                            <svg-icon
-                                                [class]="row[column.classField]"
-                                                [src]="
-                                                    column.svgUrl +
-                                                    row[column.field]
+                                        <ng-container *ngIf="row[column.field]">
+                                            <div
+                                                ngbTooltip
+                                                class="truckassist-icon"
+                                                mainContent
+                                                [mainTooltip]="
+                                                    row[column.tooltipTitle]
                                                 "
-                                                [svgStyle]="{
-                                                    'width.px':
-                                                        column.svgDimensions
-                                                            .width,
-                                                    'height.px':
-                                                        column.svgDimensions
-                                                            .height
-                                                }"
-                                            ></svg-icon>
-                                        </div>
+                                                position="bottom"
+                                                [tooltipBackground]="
+                                                    row[column.tooltipColor]
+                                                "
+                                                tooltipColor="#ffff"
+                                                tooltipTextAlign="center"
+                                            >
+                                                <svg-icon
+                                                    [class]="
+                                                        row[column.classField]
+                                                    "
+                                                    [src]="
+                                                        column.svgUrl +
+                                                        row[column.field]
+                                                    "
+                                                    [svgStyle]="{
+                                                        'width.px':
+                                                            column.svgDimensions
+                                                                .width,
+                                                        'height.px':
+                                                            column.svgDimensions
+                                                                .height
+                                                    }"
+                                                ></svg-icon>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                     <ng-container
                                         *ngIf="
@@ -5515,10 +5625,12 @@
                 }"
             >
                 <div
-                    class="description-popover-item"
+                    class="description-popover-item d-flex align-items-center"
                     *ngFor="let item of data; let i = index"
                 >
-                    <div class="title-endorsment">
+                    <div
+                        class="title-endorsment d-flex justify-content-center align-items-center"
+                    >
                         {{ item.code }}
                     </div>
                     <div class="white-line">-</div>
@@ -5561,18 +5673,122 @@
 </ng-template>
 
 <!-- STATUS -->
-<ng-template #statusPopover let-data="data">
-    <div class="status-dropdown">
-        <div
-            class="status-title"
-            [ngClass]="{ 'status-active': i === 1 }"
-            *ngFor="let item of [{}, {}, {}, {}]; let i = index"
-        >
-            Active
+<ng-template #statusPopover>
+    <div class="status-node">
+        <ng-container *ngIf="statusDetails.next.length">
+            <div class="status-next">
+                <ng-container
+                    *ngFor="
+                        let item of statusDetails.next;
+                        trackBy: trackStatusDetails
+                    "
+                >
+                    <p
+                        [ngClass]="item"
+                        class="status-next-item"
+                        [ngStyle]="item | loadStatusColor"
+                    >
+                        {{ item.toUpperCase() }}
+                    </p>
+                </ng-container>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="statusDetails.previous">
+            <div *ngIf="statusDetails.previous" class="status-previous">
+                <p>Or back to</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p
+                        class="status-previous-item"
+                        [ngStyle]="statusDetails.previous | loadStatusColor"
+                    >
+                        {{ statusDetails.previous.toUpperCase() }}
+                    </p>
+                    <img
+                        alt="status-previous-icon"
+                        src="/assets/svg/truckassist-table/back_status.svg"
+                    />
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+<ng-template #stopsPopover>
+    <div
+        class="stops-titles"
+        [ngStyle]="{
+            width: widthPopover + 'px'
+        }"
+    >
+        <div class="number-container">#</div>
+        <div class="details">STOP DETAILS</div>
+        <div class="mileage">LEG mi</div>
+    </div>
+    <div
+        class="stops-container"
+        [ngStyle]="{
+            width: widthPopover + 'px'
+        }"
+    >
+        <div class="items-container">
+            <ng-container
+                *ngFor="
+                    let key of getStopKeys();
+                    let i = index;
+                    trackBy: trackStops
+                "
+            >
+                <div
+                    class="item d-flex justify-content-center align-items-center"
+                    [ngClass]="{ 'wait-time': i === 1 }"
+                >
+                    <div class="number-container d-flex align-items-center">
+                        <div
+                            class="number"
+                            [class.delivery]="
+                                stops[key].stopType.name === 'Delivery'
+                            "
+                        >
+                            {{ stops[key].stopOrder }}
+                        </div>
+                        <ng-container *ngIf="i < getStopKeys().length - 1">
+                            <div class="line"></div>
+                        </ng-container>
+                    </div>
+                    <div class="details">
+                        <div
+                            class="location"
+                            [class.delivery]="
+                                stops[key].stopType.name === 'Delivery'
+                            "
+                        >
+                            {{ stops[key].shipper.address.city }},
+                            {{ stops[key].shipper.address.stateShortName }}
+                        </div>
+                        <div class="time">
+                            {{ stops[key].dateFrom | date : 'dd/MM/yy' }} |
+                            {{ stops[key].timeFrom }} -
+                            {{ stops[key].timeTo || 'Open' }}
+                        </div>
+                        <div>{{ stops[key].shipper.businessName }}</div>
+                    </div>
+                    <div class="mileage">+{{ stops[key].legMiles }}</div>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="total d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column">
+                <span>First pickup in</span>
+                <span><strong>3 days 15 hours</strong></span>
+            </div>
+            <div class="d-flex flex-column">
+                <span>Total</span>
+                <span><strong>2,037.1 mi</strong></span>
+            </div>
         </div>
     </div>
 </ng-template>
-
 <!-- INVOICE AGING POPOVER -->
 <ng-template #invoiceAgingPopover let-data="data">
     <div class="invoice-aging-dropdown">

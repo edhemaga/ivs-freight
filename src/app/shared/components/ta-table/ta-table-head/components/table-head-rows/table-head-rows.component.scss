@@ -71,7 +71,10 @@
         &.space-left {
             margin-left: 10px !important;
         }
-
+        .pickup-delivery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
         // selected rows count
         .selected-rows-count {
             cursor: pointer;

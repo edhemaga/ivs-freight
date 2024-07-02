@@ -1,22 +1,27 @@
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { LoadBroker } from '@shared/models/load-broker.model';
-import { FileResponse } from 'appcoretruckassist';
+import {
+    FileResponse,
+    LoadBrokerInfo,
+    LoadListDto,
+    LoadStatusResponse,
+} from 'appcoretruckassist';
 
-export interface LoadModel {
+export interface LoadModel extends LoadListDto {
     isSelected: boolean;
     id: number;
     type: Type;
     loadNumber: string;
     loadInvoice: LoadInvoice;
     statusType: StatusType;
-    status: Status;
-    lastStatusPassed: LastStatusPassed;
+    status?: LoadStatusResponse;
+    lastStatusPassed?: { [key: string]: number } | null;
     dispatcher: Dispatcher;
     company: Company;
     dateCreated: string;
     dispatch: Dispatch;
-    broker: Broker;
+    broker: LoadBrokerInfo;
     brokerContact: BrokerContact;
     referenceNumber: string;
     generalCommodity: GeneralCommodity;

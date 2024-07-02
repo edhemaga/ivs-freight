@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { TableHeadTitleStringEnum } from '../enums/table-head-title-string.enum';
 1;
 @Pipe({ name: 'tableDoubleHeadText', standalone: true })
 export class TableDoubleHeadTextPipe implements PipeTransform {
@@ -6,70 +7,78 @@ export class TableDoubleHeadTextPipe implements PipeTransform {
         const { tableHeadTitle, index } = column;
         const { gridNameTitle } = tableData;
 
-        return tableHeadTitle === 'PRIMARY '
-            ? 'PHONE'
-            : tableHeadTitle === 'PRIMARY'
-            ? 'EMAIL'
-            : tableHeadTitle === 'REPAIR SHOP'
-            ? 'MVR'
-            : tableHeadTitle === 'TYPE '
-            ? 'OWNER'
-            : tableHeadTitle === 'NAME '
-            ? 'BANK'
-            : tableHeadTitle === 'NUMBER '
-            ? 'FUEL CARD'
-            : tableHeadTitle === 'NUMBER'
-            ? 'CDL'
-            : tableHeadTitle === 'ISSUED'
-            ? 'TEST'
-            : tableHeadTitle === 'GENERAL'
-            ? 'NOTIFICATION'
-            : tableHeadTitle === 'TRUCK'
-            ? 'ASSIGNED'
-            : tableHeadTitle === 'NAME  '
-            ? 'EMERGENCY CONTACT'
-            : tableHeadTitle === ' NAME'
-            ? 'OWNER'
-            : tableHeadTitle === 'Registration Detail '
-            ? 'LICENCE'
-            : tableHeadTitle === 'FHWA Inspection '
-            ? 'FHWA'
-            : tableHeadTitle === 'DRIVER'
-            ? 'ASSIGNED'
-            : tableHeadTitle === 'GROSS'
-            ? 'WEIGHT'
-            : tableHeadTitle === 'TERM'
-            ? 'FHWA'
-            : tableHeadTitle === 'NUMBER  '
-            ? 'LICENCE'
-            : tableHeadTitle === ' NUMBER'
-            ? 'TITLE'
-            : tableHeadTitle === 'PRICE'
-            ? 'PURCHASE'
-            : tableHeadTitle === 'TYPE '
-            ? 'FUEL'
-            : tableHeadTitle === 'TRANSPONDER'
-            ? 'TOLL DEVICE'
-            : tableHeadTitle === 'FRONT'
-            ? 'WHEEL COMP'
-            : tableHeadTitle === ' MODEL'
-            ? 'TRANSMISSION'
-            : tableHeadTitle === 'MODEL '
-            ? 'ENGINE'
-            : tableHeadTitle === 'NAME   '
-            ? 'REPAIR SHOP'
-            : tableHeadTitle === 'NUMBER   '
-            ? 'UNIT'
-            : tableHeadTitle === 'DESCRIPTION'
-            ? 'ITEM'
-            : tableHeadTitle === 'PHYSICAL'
-            ? 'ADDRESS'
-            : tableHeadTitle === 'CREDIT LIMIT'
-            ? 'BILLING'
-            : tableHeadTitle === 'EMPTY'
-            ? 'WEIGHT'
-            : gridNameTitle === 'Driver' && index === 12
-            ? 'PAY'
-            : 'MVR';
+        return tableHeadTitle === TableHeadTitleStringEnum.PRIMARY
+            ? TableHeadTitleStringEnum.PHONE
+            : tableHeadTitle === TableHeadTitleStringEnum.PRIMARY_2
+            ? TableHeadTitleStringEnum.EMAIL
+            : tableHeadTitle === TableHeadTitleStringEnum.REPAIR_SHOP
+            ? TableHeadTitleStringEnum.MVR
+            : tableHeadTitle === TableHeadTitleStringEnum.TYPE
+            ? TableHeadTitleStringEnum.OWNER
+            : tableHeadTitle === TableHeadTitleStringEnum.NAME
+            ? TableHeadTitleStringEnum.BANK
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER
+            ? TableHeadTitleStringEnum.FUEL_CARD
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER_2
+            ? TableHeadTitleStringEnum.CDL
+            : tableHeadTitle === TableHeadTitleStringEnum.ISSUED
+            ? TableHeadTitleStringEnum.TEST
+            : tableHeadTitle === TableHeadTitleStringEnum.GENERAL
+            ? TableHeadTitleStringEnum.NOTIFICATION
+            : tableHeadTitle === TableHeadTitleStringEnum.TRUCK_2
+            ? TableHeadTitleStringEnum.ASSIGNED
+            : tableHeadTitle === TableHeadTitleStringEnum.NAME_2
+            ? TableHeadTitleStringEnum.EMERGENCY_CONTACT
+            : tableHeadTitle === TableHeadTitleStringEnum.NAME_3
+            ? TableHeadTitleStringEnum.OWNER
+            : tableHeadTitle === TableHeadTitleStringEnum.REGISTRATION_DETAIL
+            ? TableHeadTitleStringEnum.LICENCE
+            : tableHeadTitle === TableHeadTitleStringEnum.FHWA_INSPECTION
+            ? TableHeadTitleStringEnum.FHWA
+            : tableHeadTitle === TableHeadTitleStringEnum.DRIVER_2
+            ? TableHeadTitleStringEnum.ASSIGNED
+            : tableHeadTitle === TableHeadTitleStringEnum.GROSS
+            ? TableHeadTitleStringEnum.WEIGHT
+            : tableHeadTitle === TableHeadTitleStringEnum.TERM
+            ? TableHeadTitleStringEnum.FHWA
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER_3
+            ? TableHeadTitleStringEnum.LICENCE
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER_4
+            ? TableHeadTitleStringEnum.TITLE
+            : tableHeadTitle === TableHeadTitleStringEnum.PRICE
+            ? TableHeadTitleStringEnum.PURCHASE
+            : tableHeadTitle === TableHeadTitleStringEnum.TYPE_2
+            ? TableHeadTitleStringEnum.FUEL
+            : tableHeadTitle === TableHeadTitleStringEnum.TRANSPONDER
+            ? TableHeadTitleStringEnum.TOLL_DEVICE
+            : tableHeadTitle === TableHeadTitleStringEnum.FRONT
+            ? TableHeadTitleStringEnum.WHEEL_COMP
+            : tableHeadTitle === TableHeadTitleStringEnum.MODEL
+            ? TableHeadTitleStringEnum.TRANSMISSION
+            : tableHeadTitle === TableHeadTitleStringEnum.MODEL_2
+            ? TableHeadTitleStringEnum.ENGINE
+            : tableHeadTitle === TableHeadTitleStringEnum.NAME_4
+            ? TableHeadTitleStringEnum.REPAIR_SHOP
+            : tableHeadTitle === TableHeadTitleStringEnum.NUMBER_5
+            ? TableHeadTitleStringEnum.UNIT
+            : tableHeadTitle === TableHeadTitleStringEnum.DESCRIPTION
+            ? TableHeadTitleStringEnum.ITEM
+            : tableHeadTitle === TableHeadTitleStringEnum.PHYSICAL
+            ? TableHeadTitleStringEnum.ADDRESS
+            : tableHeadTitle === TableHeadTitleStringEnum.CREDIT_LIMIT
+            ? TableHeadTitleStringEnum.BILLING
+            : tableHeadTitle === TableHeadTitleStringEnum.EMPTY
+            ? TableHeadTitleStringEnum.WEIGHT
+            : gridNameTitle === TableHeadTitleStringEnum.DRIVER && index === 12
+            ? TableHeadTitleStringEnum.PAY
+            : tableHeadTitle === TableHeadTitleStringEnum.BUSSINESS_NAME
+            ? TableHeadTitleStringEnum.BROKER
+            : tableHeadTitle === TableHeadTitleStringEnum.TRUCK_3
+            ? TableHeadTitleStringEnum.REQUIREM
+            : tableHeadTitle === TableHeadTitleStringEnum.LOADED
+            ? TableHeadTitleStringEnum.MILES
+            : tableHeadTitle === TableHeadTitleStringEnum.RATE
+            ? TableHeadTitleStringEnum.BILLING
+            : TableHeadTitleStringEnum.MVR;
     }
 }

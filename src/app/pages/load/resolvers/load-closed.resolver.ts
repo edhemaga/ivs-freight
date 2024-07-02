@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import { forkJoin, Observable, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -22,11 +22,10 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
         private loadClosedStore: LoadClosedStore,
         private tableService: TruckassistTableService
     ) {}
-
     resolve(): Observable<any> {
-        return forkJoin([
-            this.loadService.getLoadList(
-                undefined,
+        return this.loadService
+            .getLoadList(
+                null,
                 3,
                 undefined,
                 undefined,
@@ -38,36 +37,31 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
                 undefined,
                 undefined,
                 undefined,
-                1, // hotfix
                 1,
-                25
-            ),
-            this.tableService.getTableConfig(2),
-        ]).pipe(
-            tap(([loadPagination, tableConfig]) => {
-                if (loadPagination) {
-                    localStorage.setItem(
-                        'loadTableCount',
-                        JSON.stringify({
-                            pendingCount: loadPagination.pendingCount,
-                            activeCount: loadPagination.activeCount,
-                            closedCount: loadPagination.closedCount,
-                            templateCount: loadPagination.templateCount,
-                        })
-                    );
-                }
+                1,
+                25,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
+            .pipe(
+                tap((loadPagination) => {
+                    if (loadPagination) {
+                        localStorage.setItem(
+                            'loadTableCount',
+                            JSON.stringify({
+                                pendingCount: loadPagination.pendingCount,
+                                activeCount: loadPagination.activeCount,
+                                closedCount: loadPagination.closedCount,
+                                templateCount: loadPagination.templateCount,
+                            })
+                        );
+                    }
 
-                if (tableConfig) {
-                    const config = JSON.parse(tableConfig.config);
-
-                    localStorage.setItem(
-                        `table-${tableConfig.tableType}-Configuration`,
-                        JSON.stringify(config)
-                    );
-                }
-
-                this.loadClosedStore.set(loadPagination?.pagination?.data);
-            })
-        );
+                    this.loadClosedStore.set(loadPagination?.pagination?.data);
+                })
+            );
     }
 }
