@@ -21,7 +21,7 @@ export class TrailerCardsModalData {
             selected: true,
         },
         {
-            title: 'Lenght',
+            title: 'Length',
             key: 'trailerLength',
             secondKey: 'name',
             selected: true,
@@ -87,7 +87,7 @@ export class TrailerCardsModalData {
             thirdKey: 'name',
         },
         {
-            title: 'Lenght',
+            title: 'Length',
             key: 'trailerLength',
             secondKey: 'name',
         },
@@ -115,7 +115,7 @@ export class TrailerCardsModalData {
             ],
         },
         {
-            title: 'Axie',
+            title: 'Axle',
             key: 'axles',
         },
         {
