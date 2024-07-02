@@ -1,3 +1,37 @@
-<div>
+<div class="chat-container">
+
+    <div class="toolbar-container d-flex align-items-center">
+        <!-- TITLE -->
+        <div class="list-name d-flex justify-content-center align-items-center ta-font-black">
+            {{ title | uppercase }}
+        </div>
+        <!-- TABS -->
+        <div class="tab-wrapper d-flex align-items-center">
+            <ng-container *ngFor="let tab of tabs; let ind = index;">
+                <div class="tab-container d-flex" [ngClass]="{
+                                'tab-inactive': selectedTab !== tab.name,
+                                'tab-active': selectedTab === tab.name
+                            }" (click)="onSelectTab(tab)">
+                    <div class="tab d-flex align-items-center">
+                        <div class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold">
+                            {{ tab.name }}
+                        </div>
+                        <div class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold">
+                            {{ tab.count }}
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+        <div class="table-actions"></div>
+    </div>
+
+    <!--Drivers-->
+    <!-- <app-chat-user-list [userType]="'driver'" [chatData]="drivers">
+    </app-chat-user-list> -->
+
+    <!--Company users-->
+    <!-- <app-chat-user-list [userType]="'company'" [chatData]="companyUsers">
+    </app-chat-user-list> -->
 
 </div>

@@ -1,1 +1,5 @@
-<p>chat-user-list works!</p>
+<div>
+    <ng-container *ngFor="let chat of chatData; let ind = index;">
+        {{chat.companyUser.fullName}}
+    </ng-container>
+</div>

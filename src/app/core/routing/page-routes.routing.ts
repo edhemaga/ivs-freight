@@ -171,7 +171,9 @@ export class PageRoutes {
         },
         {
             path: 'chat',
-            component: TaUnderConstructionComponent,
+            loadChildren: () => import('@pages/chat/chat.module').then(
+                (m) => m.ChatModule
+            ),
             canActivate: [AuthGuard, CompanySettingsGuard],
             data: { title: 'Chat' },
         },

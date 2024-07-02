@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
+// Models
+import { CompanyUserChat } from '@pages/chat/models/company-user-chat.model';
 
 @Component({
   selector: 'app-chat-user-list',
@@ -7,9 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatUserListComponent implements OnInit {
 
+  //TODO change any type
+  @Input() chatData: CompanyUserChat[];
+  @Input() userType: string;
+
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }
