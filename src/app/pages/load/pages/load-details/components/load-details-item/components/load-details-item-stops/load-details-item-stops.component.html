@@ -358,12 +358,13 @@
                         class="d-flex flex-column justify-content-center align-items-end stop-box"
                     >
                         <p class="m-0 ta-font-medium">
-                            {{ stop?.legMiles }} mi
+                            {{ stop?.legMiles ? stop?.legMiles + 'mi' : '' }}
                         </p>
 
                         <span class="ta-font-medium">
-                            ≈ {{ stop?.legHours ? stop?.legHours + 'h' : '' }}
-                            {{ stop?.legMinutes }}m
+                            {{ stop?.legHours || stop?.legMinutes ? '≈' : '' }}
+                            {{ stop?.legHours ? stop?.legHours + 'h' : '' }}
+                            {{ stop?.legMinutes ? stop?.legMinutes + 'm' : '' }}
                         </span>
                     </div>
                 </ng-container>

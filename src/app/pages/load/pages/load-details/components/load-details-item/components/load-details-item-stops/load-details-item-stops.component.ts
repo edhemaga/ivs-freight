@@ -125,6 +125,7 @@ export class LoadDetailsItemStopsComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes?.load?.currentValue) {
+            console.log('load stops', this.load.stops);
             this.getConstantData();
 
             this.getLoadStopRoutes();
