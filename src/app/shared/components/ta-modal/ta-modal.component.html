@@ -568,6 +568,12 @@
                                 class="d-flex align-items-center justify-content-center ta-font-bold modal-save-btn"
                                 [ngClass]="{ valid: isModalValid }"
                                 type="button"
+                                [ngStyle]="{
+                                    'pointer-events':
+                                        enableClickWhileFormInvalid
+                                            ? 'all'
+                                            : 'none'
+                                }"
                             >
                                 {{
                                     profileUpdateText

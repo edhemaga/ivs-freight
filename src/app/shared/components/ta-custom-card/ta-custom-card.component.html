@@ -172,7 +172,13 @@
                 </div>
             </ng-container>
 
-            <ng-container *ngIf="hasActionSvg && !disableMultipleReviews && !showFinishReordering">
+            <ng-container
+                *ngIf="
+                    hasActionSvg &&
+                    !disableMultipleReviews &&
+                    !showFinishReordering
+                "
+            >
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
@@ -233,7 +239,13 @@
             </ng-container>
 
             <ng-container *ngIf="showFinishReordering">
-               <button class="reodering-button ta-font-bold" (click)="onAction($event, 'reordering')">FINISH REORDERING</button>
+                <button
+                    class="reodering-button ta-font-bold"
+                    (click)="onAction($event, 'reordering')"
+                    [ngClass]="{ error: reorderingSaveError }"
+                >
+                    FINISH REORDERING
+                </button>
             </ng-container>
 
             <!-- Edit & Delete Actions -->

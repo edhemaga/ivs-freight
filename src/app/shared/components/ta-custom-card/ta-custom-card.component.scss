@@ -534,10 +534,19 @@
     padding: 3px 9px;
     background: $bw2;
     color: $ta-blue-13;
-    transition: .3s;
+    transition: 0.3s;
 
     &:hover {
         color: $white;
         background-color: $ta-blue-15;
+    }
+
+    &.error {
+        color: $ta-red-11;
+
+        &:hover {
+            color: $white;
+            background-color: $ta-red-11;
+        }
     }
 }

@@ -382,7 +382,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public paymentMethodsDropdownList: EnumValue[];
     public paymentTypesDropdownList: EnumValue[];
     public orginalPaymentTypesDropdownList: EnumValue[];
-    public isRequirementVisible: boolean = false;
     public showRevisedRate: boolean;
     public showTonuRate: boolean;
     public pickupStatusHistory: LoadStatusHistoryResponse[] = [];
@@ -390,6 +389,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public extraStopStatusHistory: LoadStatusHistoryResponse[][] = [];
     public isDragAndDropActive: boolean = false;
     public reorderingStarted: boolean;
+    public reorderingSaveError: boolean = false;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
@@ -559,6 +559,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get isLoadClosed(): boolean {
         return this.selectedStatus.name === LoadModalStringEnum.STATUS_CLOSED;
+    }
+
+    public get isRequirementVisible(): boolean {
+        return !!(this.selectedTrailerReq || this.selectedTruckReq);
     }
 
     public trackByIdentity(_, index: number): number {
@@ -3108,6 +3112,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public onExtraStopAction(data: { action: string }): void {
         if (data.action === LoadModalStringEnum.REORDERING) {
             this.reorderingStarted = false;
+            this.reorderingSaveError = false;
         } else {
             this.createNewExtraStop();
         }
@@ -3559,7 +3564,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 return {
                                     ...item,
                                     logoName: LoadModalStringEnum.HAZARDOUS_SVG,
-                                    folder: LoadModalStringEnum.COMMON
+                                    folder: LoadModalStringEnum.COMMON,
                                 };
                             }
                             return { ...item };
@@ -3597,7 +3602,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.labelsYear = res.years.map((item, index) => {
                         return {
                             id: index + 1,
-                            name: item.toString(),
+                            name: `${item.toString()}+`,
                         };
                     });
 
@@ -3756,7 +3761,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 trailerLengthId: this.selectedTrailerLength
                     ? this.selectedTrailerLength.id
                     : null,
-                year: this.selectedYear ? this.selectedYear.name : null,
+                year: this.selectedYear
+                    ? Number(this.selectedYear.name.toString().replace('+', ''))
+                    : null,
                 liftgate: liftgate,
                 driverMessage: driverMessage,
             },
@@ -3890,7 +3897,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 trailerLengthId: this.selectedTrailerLength
                     ? this.selectedTrailerLength.id
                     : null,
-                year: this.selectedYear ? this.selectedYear.name : null,
+                year: this.selectedYear
+                    ? this.selectedYear.name.toString().replace('+', '')
+                    : null,
                 liftgate: liftgate,
                 driverMessage: driverMessage,
             },
@@ -4035,7 +4044,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 trailerLengthId: this.selectedTrailerLength
                     ? this.selectedTrailerLength.id
                     : null,
-                year: this.selectedYear ? this.selectedYear.name : null,
+                year: this.selectedYear
+                    ? Number(this.selectedYear.name.toString().replace('+', ''))
+                    : null,
                 liftgate: liftgate,
                 driverMessage: driverMessage,
             },
@@ -4298,7 +4309,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectedTruckReq = loadRequirements?.truckType?.truckType;
         this.selectedTrailerReq = loadRequirements?.trailerType?.trailerType;
         this.selectedYear = this.labelsYear.find(
-            (year) => year.name == loadRequirements?.year
+            (year) => year.name == `${loadRequirements?.year.toString()}+`
         );
         additionalBillingRates.forEach((rate) => {
             if (rate.rate) {
@@ -4449,7 +4460,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public shouldDisableDrag(extraStop: UntypedFormArray): boolean {
-        return this.isStepFinished(extraStop)  || this.isDragAndDropActive || this.loadExtraStops().controls.length < 2;
+        return (
+            this.isStepFinished(extraStop) ||
+            this.isDragAndDropActive ||
+            this.loadExtraStops().controls.length < 2
+        );
     }
 
     public isStepFinished(extraStop: UntypedFormArray): boolean {
@@ -4527,6 +4542,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public dragStarted(): void {
         this.isDragAndDropActive = true;
     }
+
+    public runFormValidation(): void {
+        this.loadForm.markAsTouched();
+        if (this.reorderingStarted) {
+            this.reorderingSaveError = true;
+        }
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

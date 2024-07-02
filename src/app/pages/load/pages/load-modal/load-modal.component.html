@@ -3,7 +3,12 @@
     [editData]="editData"
     [editName]="isConvertedToTemplate ? null : loadNumber"
     [specificCaseModalName]="true"
-    [isModalValid]="loadForm.valid && isFormDirty && isEachStopItemsRowValid && !reorderingStarted"
+    [isModalValid]="
+        loadForm.valid &&
+        isFormDirty &&
+        isEachStopItemsRowValid &&
+        !reorderingStarted
+    "
     [customClass]="loadModalSize"
     [partClass]="'load-modal-origin-part'"
     [isVisibleHazardous]="isHazardousPicked"
@@ -14,6 +19,8 @@
     [saveAndAddNew]="true"
     (additionalPartVisibility)="additionalPartVisibility($event)"
     (action)="onModalAction($event)"
+    [enableClickWhileFormInvalid]="true"
+    (runFormValidation)="runFormValidation()"
 >
     <!-- Origin Tab -->
 
@@ -384,6 +391,7 @@
                     }"
                     (onActionEvent)="onExtraStopAction($event)"
                     [showFinishReordering]="reorderingStarted"
+                    [reorderingSaveError]="reorderingSaveError"
                 >
                     <!-- Stops Header -->
 
@@ -401,7 +409,7 @@
                     <!-- Pickup Stop  -->
 
                     <app-load-modal-stop
-                        [firstOrLast]="true" 
+                        [firstOrLast]="true"
                         [stopNumber]="loadForm.get('pickupStopOrder').value"
                         [isDelivery]="false"
                         [shipper]="selectedPickupShipper?.name"
@@ -627,11 +635,7 @@
                     </app-load-modal-stop>
 
                     <!-- Extra Stops -->
-                    <div
-                        class="teo"
-                        cdkDropList
-                        (cdkDropListDropped)="drop($event)" 
-                    >
+                    <div cdkDropList (cdkDropListDropped)="drop($event)">
                         <div formArrayName="extraStops">
                             <div
                                 *ngFor="
@@ -642,11 +646,16 @@
                                 cdkDrag
                                 [cdkDragDisabled]="shouldDisableDrag(extraStop)"
                             >
-                            <div class="dragdrop-custom-placeholder" *cdkDragPlaceholder></div>
+                                <div
+                                    class="dragdrop-custom-placeholder"
+                                    *cdkDragPlaceholder
+                                ></div>
                                 <div [formGroupName]="indx">
                                     <app-load-modal-stop
                                         *ngIf="loadExtraStops().controls.length"
-                                        [stopFinished]="isStepFinished(extraStop)"
+                                        [stopFinished]="
+                                            isStepFinished(extraStop)
+                                        "
                                         [firstOrLast]="false"
                                         [stopNumber]="indx + 2"
                                         [isDelivery]="
@@ -656,7 +665,9 @@
                                                 ? true
                                                 : false
                                         "
-                                        [isDragAndDropActive]="isDragAndDropActive"
+                                        [isDragAndDropActive]="
+                                            isDragAndDropActive
+                                        "
                                         [shipper]="
                                             selectedExtraStopShipper[indx]?.name
                                         "
@@ -699,7 +710,8 @@
                                         [isCardOpen]="
                                             loadExtraStops()
                                                 .at(indx)
-                                                .get('openClose').value && !isDragAndDropActive
+                                                .get('openClose').value &&
+                                            !isDragAndDropActive
                                         "
                                         [state]="
                                             loadExtraStops()

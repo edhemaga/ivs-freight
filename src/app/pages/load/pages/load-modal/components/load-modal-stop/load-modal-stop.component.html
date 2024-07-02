@@ -4,10 +4,9 @@
         [ngClass]="{
             'first-or-last': firstOrLast && isCardOpen,
             'not-first-or-last': !firstOrLast,
-            'origin-destination-no-filled': !shipper || !state,
             'not-active-stop': !isCardOpen,
             'destination-disabled': isDestinationTab && disabledCard,
-            'stop-finished': stopFinished 
+            'stop-finished': stopFinished
         }"
         (click)="toggleStop($event)"
     >
@@ -26,10 +25,10 @@
                 </ng-container>
 
                 <ng-container *ngIf="stopFinished">
-                        <svg-icon
-                            [src]="'assets/svg/common/ic_checkmark.svg'"
-                            [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
-                        ></svg-icon>
+                    <svg-icon
+                        [src]="'assets/svg/common/ic_checkmark.svg'"
+                        [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+                    ></svg-icon>
                 </ng-container>
             </div>
 
