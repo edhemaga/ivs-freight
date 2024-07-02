@@ -28,3 +28,16 @@
         }
     }
 }
+
+.status-string__value {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-size: 11px;
+    height: 14px;
+    width: 14px;
+    font-weight: 600;
+    padding-top: 1px;
+    border-radius: 2px;
+}

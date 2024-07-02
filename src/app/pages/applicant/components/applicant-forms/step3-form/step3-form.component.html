@@ -1,39 +1,41 @@
 <div [ngClass]="{ 'accident-border-container': isEditing }">
     <ng-container *ngIf="isEditing">
         <div class="d-flex align-items-center accident-header">
-            <p class="m-0 ta-font-medium">CDL LICENCE</p>
+            <div
+                class="d-flex justify-content-center align-items-center icon-delete-container"
+                ngbTooltip
+                mainTooltip="Delete CDL"
+                tooltipBackground="#424242"
+                position="top"
+                (click)="onDeleteCdl()"
+            >
+                <svg-icon
+                    class="delete-icon"
+                    [src]="applicantSvgRoutes.trashIcon"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                ></svg-icon>
+            </div>
+            <p class="m-0 ta-font-medium required-label">CDL</p>
         </div>
     </ng-container>
+
+
 
     <div class="d-flex flex-column step-form" [formGroup]="licenseForm">
         <!-- LICENCE COUNTRY -->
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="group license-group"
                 [ngStyle]="{
-                    width: isEditing ? '358px' : '370px',
                     'margin-right': isEditing ? '8px' : '12px'
                 }"
             >
                 <app-ta-input
                     formControlName="licenseNumber"
-                    [inputConfig]="{
-                        name: 'License',
-                        type: 'text',
-                        label: 'License #',
-                        isRequired: true,
-                        textTransform: 'uppercase',
-                        autoFocus: selectedMode === 'APPLICANT_MODE',
-                        isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            (selectedMode === 'FEEDBACK_MODE' &&
-                                stepFeedbackValues?.isLicenseValid),
-                        incorrectInput: selectedMode === 'REVIEW_MODE'
-                    }"
+                    [inputConfig]="licenseNumberInputConfig"
                     [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 10)"
                 ></app-ta-input>
@@ -42,15 +44,7 @@
             <div class="group country-group">
                 <app-ta-input-dropdown
                     formControlName="country"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Country',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-234',
-                        isDisabled: selectedMode !== 'APPLICANT_MODE'
-                    }"
+                    [inputConfig]="countryInputConfig"
                     [activeItem]="selectedCountryType"
                     [options]="countryTypes"
                     (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
@@ -93,31 +87,16 @@
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="group state-group"
                 [ngStyle]="{
-                    width: isEditing ? '238px' : '246px',
                     'margin-right': isEditing ? '8px' : '12px'
                 }"
             >
                 <app-ta-input-dropdown
                     formControlName="state"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'State',
-                        isRequired: true,
-                        isDisabled:
-                            (selectedMode === 'APPLICANT_MODE' &&
-                                !licenseForm.get('country').value) ||
-                            selectedMode !== 'APPLICANT_MODE',
-                        isDropdown: true,
-                        dropdownWidthClass: isEditing
-                            ? 'w-col-238'
-                            : 'w-col-246'
-                    }"
+                    [inputConfig]="stateInputConfig"
                     [activeItem]="selectedStateType"
                     [options]="stateTypes"
                     (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
@@ -130,38 +109,29 @@
             >
                 <app-ta-input-dropdown
                     formControlName="classType"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Class',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-174',
-                        isDisabled: selectedMode !== 'APPLICANT_MODE'
-                    }"
+                    [inputConfig]="classTypeInputConfig"
                     [activeItem]="selectedClassType"
                     [options]="classTypes"
                     (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
                 ></app-ta-input-dropdown>
             </div>
 
+            <div 
+                class="group issue-date-group"
+                [ngStyle]="{ 'margin-right': isEditing ? '8px' : '12px' }"
+            >
+                <app-ta-input
+                    formControlName="issueDate"
+                    [inputConfig]="issueDateInputConfig"
+                    [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
+                    (incorrectEvent)="incorrectInput($event, 2, 11)"
+                ></app-ta-input>
+            </div>
+
             <div class="group exp-date-group">
                 <app-ta-input
                     formControlName="expDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Exp. Date',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass',
-                        isDisabled:
-                            selectedMode === 'REVIEW_MODE' ||
-                            (selectedMode === 'FEEDBACK_MODE' &&
-                                stepFeedbackValues?.isExpDateValid),
-                        incorrectInput: selectedMode === 'REVIEW_MODE'
-                    }"
+                    [inputConfig]="expDateInputConfig"
                     [incorrectValue]="openAnnotationArray[11].lineInputs[2]"
                     (incorrectEvent)="incorrectInput($event, 2, 11)"
                 ></app-ta-input>
@@ -202,30 +172,15 @@
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="restrictions-group"
-                [ngStyle]="{
-                    width: isEditing ? '600px' : '616px',
-                    'margin-bottom': isEditing ? '23px' : '32px'
-                }"
             >
                 <app-ta-input-dropdown
                     formControlName="restrictions"
                     [template]="'multiselect'"
                     [multiselectTemplate]="'multiselect-3-columns'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Restrictions',
-                        isDropdown: true,
-                        multiselectDropdown: true,
-                        dropdownWidthClass: isEditing
-                            ? 'w-col-600'
-                            : 'w-col-616',
-                        isDisabled: selectedMode !== 'APPLICANT_MODE'
-                    }"
+                    [inputConfig]="restrictionsInputConfig"
                     [options]="restrictionsList"
                     [preloadMultiselectItems]="selectedRestrictions"
                     (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
@@ -237,27 +192,15 @@
 
         <div
             class="d-flex line-container"
-            [ngStyle]="{ padding: isEditing ? '0 4px 0 4px' : 0 }"
         >
             <div
                 class="endorsments-group"
-                [ngStyle]="{ width: isEditing ? '600px' : '616px' }"
             >
                 <app-ta-input-dropdown
                     formControlName="endorsments"
                     [template]="'multiselect'"
                     [multiselectTemplate]="'multiselect-3-columns'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Endorsments',
-                        isDropdown: true,
-                        multiselectDropdown: true,
-                        dropdownWidthClass: isEditing
-                            ? 'w-col-600'
-                            : 'w-col-616',
-                        isDisabled: selectedMode !== 'APPLICANT_MODE'
-                    }"
+                    [inputConfig]="endorsmentsInputConfig"
                     [options]="endorsmentsList"
                     [preloadMultiselectItems]="selectedEndorsments"
                     (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
@@ -266,93 +209,97 @@
         </div>
 
         <!-- FILES SECTION -->
+        <div class="divider"></div>
 
-        <ng-container *ngIf="!isEditing">
-            <div class="d-flex flex-column align-items-center files-section">
-                <h4
-                    class="m-0 text-center ta-font-regular"
-                    [ngStyle]="{
-                        color:
-                            selectedMode === 'FEEDBACK_MODE'
-                                ? '#919191'
-                                : '#2F2F2F'
-                    }"
-                >
-                    Your identification document will help us to validate your
-                    identity.<br />
-                    <span class="ta-font-bold">
-                        To confirm you are you, please upload digital photo of
-                        the<br />front & back side of your SSN.
+        <div class="d-flex flex-column align-items-center files-section">
+            <!-- FILES CONTAINER -->
+
+            <div class="d-flex flex-column files-container">
+                <div class="d-flex aling-items-center header-content">
+                    <!-- Name -->
+        
+                    <span class="header-text ta-font-extra-bold">
+                        CDL Card
                     </span>
-                </h4>
-
-                <!-- FILES CONTAINER -->
-
-                <div class="d-flex flex-column files-container">
-                    <div class="d-flex align-items-center files-header">
-                        <div
-                            class="d-flex align-items-center justify-content-center counter-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold">
-                                {{ documents.length }}
-                            </p>
-                        </div>
-                        <div
-                            class="d-flex align-items-center document-title-container"
-                        >
-                            <p class="m-0 ta-font-extra-bold documents-title">
-                                Documents
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="line-container">
-                        <app-ta-upload-files
-                            [files]="documents"
-                            [size]="'medium'"
-                            [showDropzone]="selectedMode === 'APPLICANT_MODE'"
-                            [isRequired]="true"
-                            [showRequired]="displayDocumentsRequiredNote"
-                            [isReview]="selectedMode === 'REVIEW_MODE'"
-                            [reviewMode]="
-                                selectedMode === 'REVIEW_MODE' && 'REVIEW_MODE'
-                            "
-                            (onFileEvent)="onFilesAction($event)"
-                        ></app-ta-upload-files>
-
-                        <!-- REVIEW AND FEEDBACK -->
-
-                        <!--  <div
-                            class="review-feedback-container"
-                            *ngIf="
-                                selectedMode === 'REVIEW_MODE' ||
-                                selectedMode === 'FEEDBACK_MODE'
-                            "
-                        >
-                            <app-applicant-review-feedback
-                                formControlName="firstRowReview"
-                                [displayAnnotationButton]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationButton
-                                "
-                                [displayAnnotationTextArea]="
-                                    openAnnotationArray[0]
-                                        .displayAnnotationTextArea
-                                "
-                                [lineIndex]="0"
-                                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                                [feedbackText]="
-                                    'Check the routing number one more time (one number missing)!!!'
-                                "
-                                (annotationBtnClickEvent)="
-                                    getAnnotationBtnClickValue($event)
-                                "
-                            ></app-applicant-review-feedback>
-                        </div> -->
+        
+                    <!-- Counter -->
+        
+                    <app-ta-counter
+                        [count]="documents.length"
+                        [countBackground]="'#6C6C6C'"
+                        [countColor]="'#ffffff'"
+                        [countHeight]="'18px'"
+                        [countWidth]="'18px'"
+                        [countBorderRadius]="'50%'"
+                        [marginLeft]="'4px'"
+                    ></app-ta-counter>
+        
+                    <!-- Sub Text -->
+        
+                    <div class="d-flex align-items-center subtext-container">
+                        <p class="m-0 ta-font-medium">
+                            Please upload a photo of the front & back side of your CDL for identity verification.
+                        </p>
                     </div>
                 </div>
+
+                <div class="line-container">
+                    <app-ta-upload-files
+                        [files]="documents"
+                        [size]="'medium'"
+                        [showDropzone]="
+                            selectedMode === 'APPLICANT_MODE'
+                        "
+                        [isRequired]="!documents.length"
+                        [showRequired]="displayDocumentsRequiredNote"
+                        [isReview]="selectedMode === 'REVIEW_MODE'"
+                        [reviewMode]="
+                            selectedMode === 'REVIEW_MODE' &&
+                            'REVIEW_MODE'
+                        "
+                        [dropZoneConfig]="{
+                            dropZoneType: 'image',
+                            dropZoneSvg: applicantSvgRoutes.dragImageDropzoneIcon,
+                            dropZoneAvailableFiles:
+                                'application/pdf, image/png, image/jpeg, image/jpg',
+                            multiple: true,
+                            globalDropZone: false
+                        }"
+                        (onFileEvent)="onFilesAction($event)"
+                    ></app-ta-upload-files>
+
+                    <!-- REVIEW AND FEEDBACK -->
+
+                    <!--  <div
+                        class="review-feedback-container"
+                        *ngIf="
+                            selectedMode === 'REVIEW_MODE' ||
+                            selectedMode === 'FEEDBACK_MODE'
+                        "
+                    >
+                        <app-applicant-review-feedback
+                            formControlName="firstRowReview"
+                            [displayAnnotationButton]="
+                                openAnnotationArray[0]
+                                    .displayAnnotationButton
+                            "
+                            [displayAnnotationTextArea]="
+                                openAnnotationArray[0]
+                                    .displayAnnotationTextArea
+                            "
+                            [lineIndex]="0"
+                            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                            [feedbackText]="
+                                'Check the routing number one more time (one number missing)!!!'
+                            "
+                            (annotationBtnClickEvent)="
+                                getAnnotationBtnClickValue($event)
+                            "
+                        ></app-applicant-review-feedback>
+                    </div> -->
+                </div>
             </div>
-        </ng-container>
+        </div>
 
         <!-- BTN -->
 
@@ -368,7 +315,7 @@
                 *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
             >
                 <div
-                    class="d-flex flex-column justify-content-center align-items-center"
+                    class="d-flex justify-content-between align-items-center license-btn-container"
                 >
                     <h4 class="m-0 text-center ta-font-bold add-license-title">
                         List any additional license(s) held in past 3 years
@@ -376,6 +323,7 @@
 
                     <app-applicant-add-save-btn
                         [addBtn]="true"
+                        [sizeSmall]="true"
                         [btnText]="'Add License'"
                         [disabledValue]="licenseForm.invalid"
                         (clickValueEmitter)="onGetBtnClickValue($event)"

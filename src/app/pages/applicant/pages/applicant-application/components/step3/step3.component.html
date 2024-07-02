@@ -11,8 +11,8 @@
             }"
         >
             No person who operates a commercial motor vehicle shall at any time
-            have more than<br />one driver’s license (49 CFR 383.21). I certify
-            that I do not have more than one motor<br />
+            have more than one driver’s license (49 CFR 383.21). I certify
+            that I do not have more than one motor
             vehicle license, the information for which is listed below.
         </p>
     </div>
@@ -25,6 +25,10 @@
             [formGroup]="licenseForm"
         >
             <div class="align-items-center title-container">
+                <div class="align-items-center d-flex justify-content-center licence-details-box">
+                    <p class="m-0 ta-font-bold">#</p>
+                </div>
+
                 <div class="align-items-center licence-details-box">
                     <p class="m-0 ta-font-bold">LICENCE DETAILS</p>
                 </div>
@@ -57,6 +61,13 @@
                                     : onEditLicense(i)
                             "
                         >
+                            <div
+                                class="d-flex flex-column justify-content-center align-items-center index-box"
+                            >
+                                <p class="m-0 ta-font-bold">
+                                    {{ i+1 }}
+                                </p>
+                            </div>
                             <div
                                 class="d-flex flex-column justify-content-center"
                             >
@@ -105,20 +116,21 @@
 
                                 <div class="d-flex align-items-center date-box">
                                     <p class="m-0 ta-font-medium">
-                                        {{ license.expDate }}
+                                        {{ license.issueDate }} - {{ license.expDate }}
                                     </p>
                                 </div>
                             </div>
 
                             <div class="d-flex flex-column h-100">
-                                <ng-container
-                                    *ngIf="license.restrictionsCode.length"
+                                <div
+                                    class="d-flex align-items-center restrictions-box"
                                 >
-                                    <div
-                                        class="d-flex align-items-center restrictions-box"
-                                    >
-                                        <p
-                                            class="m-0 ta-font-semi-bold d-inline-block text-truncate"
+                                    <p class="m-0 ta-font-bold restrictions-text">
+                                        Restrictions:
+                                    </p>
+                                    <ng-container *ngIf="license.restrictionsCode.length else none">
+                                        <p 
+                                            class="m-0 ta-font-medium details-text"
                                             style="max-width: 184px"
                                             ngbTooltip
                                             [mainTooltip]="
@@ -127,22 +139,21 @@
                                             tooltipBackground="#2F2F2F"
                                             position="bottom-left"
                                         >
-                                            Restrictions:
-                                            <span class="ta-font-regular">
-                                                {{ license.restrictionsCode }}
-                                            </span>
+                                            {{ license.restrictionsCode }}
                                         </p>
-                                    </div>
-                                </ng-container>
+                                    </ng-container>
+                                </div>
+                                
+                                <div
+                                    class="d-flex align-items-center endorsments-box"
 
-                                <ng-container
-                                    *ngIf="license.endorsmentsCode.length"
                                 >
-                                    <div
-                                        class="d-flex align-items-center endorsments-box"
-                                    >
-                                        <p
-                                            class="m-0 ta-font-semi-bold d-inline-block text-truncate"
+                                    <p class="m-0 ta-font-bold endorsments-text">
+                                        Endorsments:
+                                    </p>
+                                    <ng-container *ngIf="license.endorsmentsCode.length else none">
+                                        <p 
+                                            class="m-0 ta-font-medium details-text"
                                             style="max-width: 184px"
                                             ngbTooltip
                                             [mainTooltip]="
@@ -151,13 +162,17 @@
                                             tooltipBackground="#2F2F2F"
                                             position="bottom-left"
                                         >
-                                            Endorsments:
-                                            <span class="ta-font-regular">
-                                                {{ license.endorsmentsCode }}
-                                            </span>
+                                            {{ license?.endorsmentsCode }}
                                         </p>
-                                    </div>
-                                </ng-container>
+                                    </ng-container>
+                                </div>
+                                
+
+                                <ng-template #none>
+                                    <p class="m-0 ta-font-medium none-text">
+                                        None
+                                    </p>
+                                </ng-template>
                             </div>
                         </div>
 
@@ -224,6 +239,7 @@
                             (cardOpenAnnotationArrayValuesEmitter)="
                                 onGetCardOpenAnnotationArrayValues($event)
                             "
+                            (onDeleteCdlClick)="onDeleteCdl($event)"
                         ></app-step3-form>
                     </div>
                 </ng-container>
@@ -264,14 +280,23 @@
                 (openAnnotationArrayValuesEmitter)="
                     onGetOpenAnnotationArrayValues($event)
                 "
+                (onDeleteCdlClick)="onDeleteCdl($event)"
             ></app-step3-form>
         </ng-container>
 
         <ng-container *ngIf="displayButtonInsteadOfForm">
-            <div class="d-flex justify-content-center align-items-center">
+            <div
+                class="d-flex justify-content-between align-items-center license-btn-container"
+            >
+                <h4 class="m-0 text-center ta-font-bold add-license-title">
+                    List any additional license(s) held in past 3 years
+                </h4>
+
                 <app-applicant-add-save-btn
                     [addBtn]="true"
-                    [btnText]="'Add Licence'"
+                    [sizeSmall]="true"
+                    [btnText]="'Add License'"
+                    [disabledValue]="licenseForm.invalid"
                     (clickValueEmitter)="onGetBtnClickValue($event)"
                 ></app-applicant-add-save-btn>
             </div>
@@ -292,7 +317,7 @@
                 }"
                 [formGroup]="permitForm"
             >
-                <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex justify-content-between">
                     <div class="d-flex flex-column permit-title-box">
                         <p
                             class="m-0 ta-font-regular"
@@ -335,21 +360,7 @@
                         <div class="w-100">
                             <app-ta-input
                                 formControlName="permitExplain"
-                                [inputConfig]="{
-                                    name: 'Explain',
-                                    type: 'text',
-                                    label: 'Please explain',
-                                    isRequired: true,
-                                    textTransform: 'capitalize',
-                                    placeholder: 'Please explain',
-                                    placeholderInsteadOfLabel: true,
-                                    isDisabled:
-                                        selectedMode === 'REVIEW_MODE' ||
-                                        (selectedMode === 'FEEDBACK_MODE' &&
-                                            stepFeedbackValues?.isCdlDeniedExplanationValid),
-                                    incorrectInput:
-                                        selectedMode === 'REVIEW_MODE'
-                                }"
+                                [inputConfig]="permitExplainInputConfig"
                                 [incorrectValue]="
                                     openAnnotationArray[14].lineInputs[0]
                                 "

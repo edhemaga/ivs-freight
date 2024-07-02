@@ -15,6 +15,7 @@ import { LoadMinimalListStore } from '@pages/load/state/load-details-state/load-
 import { LoadActiveStore } from '@pages/load/state/load-active-state/load-active.store';
 import { LoadPendingStore } from '@pages/load/state/load-pending-state/load-pending.store';
 import { LoadClosedStore } from '@pages/load/state/load-closed-state/load-closed.store';
+import { LoadTemplateStore } from '@pages/load/state/load-template-state/load-template.store';
 
 // models
 import {
@@ -47,6 +48,8 @@ import { Load } from '@pages/load/models/load.model';
 export class LoadService {
     private newComment: Subject<Comment> = new Subject<Comment>();
     public data$: Observable<Comment> = this.newComment.asObservable();
+    private modalAction: Subject<boolean> = new Subject<null>();
+    public modalAction$: Observable<boolean> = this.modalAction.asObservable();
 
     private deleteComment: Subject<DeleteComment> =
         new Subject<DeleteComment>();
@@ -64,7 +67,8 @@ export class LoadService {
         private loadMinimalListStore: LoadMinimalListStore,
         private loadActiveStore: LoadActiveStore,
         private loadPendingStore: LoadPendingStore,
-        private loadClosedStore: LoadClosedStore
+        private loadClosedStore: LoadClosedStore,
+        private loadTemplateStore: LoadTemplateStore
     ) {}
 
     public addData(data: Comment): void {
@@ -79,7 +83,7 @@ export class LoadService {
     public getLoadList(
         loadType?: number,
         statusType?: number, // statusType -> 1 - pending, 2 - active, 3 - closed
-        status?: number,
+        status?: number[],
         dispatcherIds?: Array<number>,
         dispatcherId?: number,
         dispatchId?: number,
@@ -115,6 +119,7 @@ export class LoadService {
             dispatchId,
             brokerId,
             shipperId,
+            null,
             dateFrom,
             dateTo,
             revenueFrom,
@@ -216,6 +221,10 @@ export class LoadService {
         return this.loadService.apiLoadIdGet(id);
     }
 
+    public getLoadInsideListById(id: number): Observable<LoadListResponse> {
+        return this.loadService.apiLoadListGet(null, null, null, null, null, null, null, null, id);
+    }
+
     public autocompleteLoadByDescription(
         description: string
     ): Observable<LoadStopItemAutocompleteDescriptionResponse> {
@@ -225,7 +234,9 @@ export class LoadService {
     }
 
     // modal operations
-    public getLoadDropdowns(loadEditId?: number): Observable<LoadModalResponse> {
+    public getLoadDropdowns(
+        loadEditId?: number
+    ): Observable<LoadModalResponse> {
         return this.loadService.apiLoadModalGet(loadEditId);
     }
 
@@ -243,8 +254,14 @@ export class LoadService {
         return this.loadService.apiLoadPut();
     }
 
-    public updateLoadStatus(loadId: number, loadStatus: LoadStatus) {
-        return this.loadService.apiLoadStatusPut({id: loadId, status: loadStatus});
+    public updateLoadStatus(
+        loadId: number,
+        loadStatus: LoadStatus
+    ): Observable<CreateResponse> {
+        return this.loadService.apiLoadStatusPut({
+            id: loadId,
+            status: loadStatus,
+        });
     }
 
     // modal operations - template
@@ -258,6 +275,52 @@ export class LoadService {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
+    public updateLoadPartily(loadResponse: LoadListResponse, loadStatus: string): void {
+        const data = loadResponse.pagination.data[0];
+        const loadId = data.id;
+
+        if (loadStatus === TableStringEnum.ACTIVE) {
+            this.loadActiveStore.remove(({ id }) => id === loadId);
+            this.loadActiveStore.add(data);
+        } else if (loadStatus === TableStringEnum.CLOSED) {
+            this.loadClosedStore.remove(({ id }) => id === loadId);
+            this.loadClosedStore.add(data);
+        } else if (loadStatus === TableStringEnum.PENDING) {
+            this.loadPendingStore.remove(({ id }) => id === loadId);
+            this.loadPendingStore.add(data);
+        }
+
+        this.triggerModalAction();
+    }
+
+    public addNewLoad(data: LoadListResponse, isTemplate: boolean): void {
+        const loadCount = JSON.parse(
+            localStorage.getItem(TableStringEnum.LOAD_TABLE_COUNT)
+        );
+
+        if (isTemplate) {
+            this.loadTemplateStore.add(data.pagination.data[0]);
+            loadCount.template++;
+        } else {
+            this.loadPendingStore.add(data.pagination.data[0]);
+            loadCount.pendingCount++;
+        }
+
+        localStorage.setItem(
+            TableStringEnum.LOAD_TABLE_COUNT,
+            JSON.stringify({
+                activeCount: loadCount.activeCount,
+                closedCount: loadCount.closedCount,
+                pendingCount: loadCount.pendingCount,
+                templateCount: loadCount.templateCount,
+            })
+        );
+        this.triggerModalAction();
+    }
+
+    public triggerModalAction(): void {
+        this.modalAction.next(true);
+    }
     public getLoadStatusFilter(
         loadStatusType?: LoadStatusType
     ): Observable<DispatcherFilterResponse[]> {
