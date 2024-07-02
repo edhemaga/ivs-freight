@@ -2051,7 +2051,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     pay: null,
                     paymentType: null,
                     displayPaymentType: null,
-                    payType: event.id,
+                    payType: null,
                     payDate: event?.billingValue,
                     paymentMethod: event.id,
                     name: event.name,
@@ -2080,7 +2080,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay: [null],
             payType: [null],
             payDate: [data?.payDate ? data.payDate : null],
-            paymentType: [data.paymentMethod ?? null],
+            paymentType: [data.payType?.id || data.paymentMethod || null],
             paymentMethod: [data.paymentMethod ?? null],
             displayPaymentType: [data.displayPaymentType],
         });
@@ -4423,7 +4423,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     paymentType: pay.paymentType.id,
                     paymentMethod: pay.paymentMethod.id,
                     name: pay.paymentType.name,
-                    displayPaymentType: pay.paymentType.name,
+                    displayPaymentType: pay.paymentMethod.name,
                 })
             );
         });
