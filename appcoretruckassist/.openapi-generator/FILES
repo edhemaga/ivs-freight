@@ -180,6 +180,9 @@ model/archiveMultipleApplicationsCommand.ts
 model/assignGpsDevicesToCompanyCommand.ts
 model/assignGpsDevicesToTrailerCommand.ts
 model/assignGpsDevicesToTruckCommand.ts
+model/assignedLoadListResponse.ts
+model/assignedLoadResponse.ts
+model/assignedLoadStopResponse.ts
 model/authorizationFeedbackResponse.ts
 model/autocompleteSearchLayer.ts
 model/avatarResponse.ts
@@ -770,6 +773,7 @@ model/registrationResponse.ts
 model/removeApplicantFromFavouriteCommand.ts
 model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
+model/reorderDispatchLoadsCommand.ts
 model/reorderDispatchesCommand.ts
 model/repairAutocompleteDescriptionResponse.ts
 model/repairByStateListResponse.ts
