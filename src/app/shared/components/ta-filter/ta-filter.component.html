@@ -201,8 +201,10 @@
                                 : 'Sort Text'
                         }}
                         <svg-icon
-                            class="ms-1"
+                            class="sort-arrow ms-1"
+                            [class.rotate]="!isAscendingSortOrder"
                             src="/assets/svg/common/sortArrow_filter.svg"
+                            [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
                         ></svg-icon>
                     </div>
                 </ng-container>
@@ -329,7 +331,7 @@
             </ng-container>
 
             <ng-template #marginTemplate>
-                <div class="mb-2"></div>
+                <div class="mb-1"></div>
             </ng-template>
 
             <div class="selected-user-holder" *ngIf="type != 'stateFilter'">
@@ -341,23 +343,23 @@
                     (click)="removeFromSelectedUser(item, indx)"
                 >
                     <div class="user-profile-img" *ngIf="type == 'userFilter'">
-                        <app-ta-profile-images
-                            *ngIf="!item.avatar"
-                            [indx]="indx"
-                            [size]="'small'"
-                            [type]="'user'"
-                            [name]="item.name"
-                        ></app-ta-profile-images>
-                        <div
-                            class="user_avatar"
-                            *ngIf="item.avatar"
-                            [ngStyle]="
-                                item.avatar && {
-                                    'background-image':
-                                        'url(' + item.avatar + ')'
-                                }
-                            "
-                        ></div>
+                        <ng-container *ngIf="!item.avatar; else avatarTemplate">
+                            <app-ta-profile-images
+                                [indx]="indx"
+                                [size]="'small'"
+                                [type]="'user'"
+                                [name]="item.name"
+                            ></app-ta-profile-images>
+                        </ng-container>
+
+                        <ng-template #avatarTemplate>
+                            <div
+                                class="user_avatar"
+                                style.background-image="url('{{
+                                    item.avatar.url
+                                }}')"
+                            ></div>
+                        </ng-template>
                     </div>
                     <div
                         class="user-profile-img"
@@ -583,56 +585,67 @@
                 ></div>
             </div>
             <div
-                *ngIf="selectedUser.length > 0"
+                *ngIf="selectedUser.length > 0 && unselectedVisibleCount"
                 class="border-filter border-thrird-margin"
             ></div>
             <div class="user-holder" *ngIf="type == 'userFilter'">
-                <div
-                    *ngFor="let item of unselectedUser; let indx = index"
-                    class="user-frame-holder"
+                <ng-container
+                    *ngFor="
+                        let item of unselectedUser;
+                        let indx = index;
+                        trackBy: trackByIdentity
+                    "
                 >
-                    <div
-                        [@inOutAnimation]="'in'"
-                        [@showAnimation]="!!activeFilter"
-                        *ngIf="!item.hidden && !item.isSelected"
-                        (click)="addToSelectedUser(item, indx)"
-                        class="user-main-holder"
-                    >
-                        <div class="user-profile-img">
-                            <app-ta-profile-images
-                                *ngIf="!item.avatar"
-                                [indx]="indx"
-                                [size]="'small'"
-                                [type]="'user'"
-                                [name]="item.name"
-                            >
-                            </app-ta-profile-images>
+                    <div class="user-frame-holder">
+                        <ng-container *ngIf="!item.hidden && !item.isSelected">
                             <div
-                                class="user_avatar"
-                                *ngIf="item.avatar"
-                                [ngStyle]="
-                                    item.avatar && {
-                                        'background-image':
-                                            'url(' + item.avatar + ')'
-                                    }
-                                "
-                            ></div>
-                        </div>
-                        <div class="user-frame">
-                            <div class="selected-name-text">
-                                <span> {{ item.name }} </span>
-                            </div>
+                                [@inOutAnimation]="'in'"
+                                [@showAnimation]="!!activeFilter"
+                                (click)="addToSelectedUser(item, indx)"
+                                class="user-main-holder"
+                            >
+                                <div class="user-profile-img">
+                                    <ng-container
+                                        *ngIf="
+                                            !item.avatar;
+                                            else avatarTemplate
+                                        "
+                                    >
+                                        <app-ta-profile-images
+                                            [indx]="indx"
+                                            [size]="'small'"
+                                            [type]="'user'"
+                                            [name]="item.name"
+                                        >
+                                        </app-ta-profile-images>
+                                    </ng-container>
 
-                            <ng-container *ngIf="item?.count">
-                                <span
-                                    class="count-holder align-items-center justify-content-center"
-                                >
-                                    {{ item.count }}
-                                </span>
-                            </ng-container>
-                        </div>
+                                    <ng-template #avatarTemplate>
+                                        <div
+                                            class="user_avatar"
+                                            style.background-image="url('{{
+                                                item.avatar.url
+                                            }}')"
+                                        ></div>
+                                    </ng-template>
+                                </div>
+                                <div class="user-frame">
+                                    <div class="selected-name-text">
+                                        <span> {{ item.name }} </span>
+                                    </div>
+
+                                    <ng-container *ngIf="item?.count">
+                                        <span
+                                            class="count-holder align-items-center justify-content-center"
+                                        >
+                                            {{ item.count }}
+                                        </span>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
                     </div>
-                </div>
+                </ng-container>
             </div>
             <div class="user-holder" *ngIf="type == 'departmentFilter'">
                 <div
@@ -703,44 +716,51 @@
             </div>
             <div class="user-holder" *ngIf="type == 'statusFilter'">
                 <div class="status-data-main-holder">
-                    <div
+                    <ng-container
                         *ngFor="
                             let item of loadStatusOptionsArray;
-                            let indx = index
+                            let indx = index;
+                            trackBy: trackByIdentity
                         "
-                        class="user-frame-holder"
                     >
-                        <div
-                            [@showAnimation]="!!activeFilter"
-                            [@inOutAnimation]="'in'"
-                            *ngIf="!item.hidden && !item.isSelected"
-                            (click)="addToSelectedUser(item, indx)"
-                            class="user-main-holder"
-                        >
-                            <div class="user-profile-img">
+                        <div class="user-frame-holder">
+                            <ng-container
+                                *ngIf="!item.hidden && !item.isSelected"
+                            >
                                 <div
-                                    class="status-circle"
-                                    [ngStyle]="
-                                        loadStatusEnum[item.id]
-                                            | filterLoadStatusColor
-                                    "
-                                ></div>
-                            </div>
-                            <div class="user-frame">
-                                <div class="selected-name-text text-uppercase">
-                                    <span> {{ item.name }} </span>
-                                </div>
+                                    [@showAnimation]="!!activeFilter"
+                                    [@inOutAnimation]="'in'"
+                                    (click)="addToSelectedUser(item, indx)"
+                                    class="user-main-holder"
+                                >
+                                    <div class="user-profile-img">
+                                        <div
+                                            class="status-circle"
+                                            [ngStyle]="
+                                                loadStatusEnum[item.id]
+                                                    | filterLoadStatusColor
+                                            "
+                                        ></div>
+                                    </div>
+                                    <div class="user-frame">
+                                        <div
+                                            class="selected-name-text text-uppercase"
+                                        >
+                                            <span> {{ item.name }} </span>
+                                        </div>
 
-                                <ng-container *ngIf="item?.count">
-                                    <span
-                                        class="count-holder align-items-center justify-content-center"
-                                    >
-                                        {{ item.count }}
-                                    </span>
-                                </ng-container>
-                            </div>
+                                        <ng-container *ngIf="item?.count">
+                                            <span
+                                                class="count-holder align-items-center justify-content-center"
+                                            >
+                                                {{ item.count }}
+                                            </span>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </ng-container>
                         </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
             <ng-container *ngIf="type === 'pmFilter' && pmFilterArray?.length">
