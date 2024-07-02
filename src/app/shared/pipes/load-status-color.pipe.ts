@@ -9,6 +9,7 @@ export class LoadStatusColorPipe implements PipeTransform {
         status: string,
         isBadge?: boolean
     ): { color: string; backgroundColor?: string } {
+        status = status.replace(/\s+/g, '');
         const statusGreyColorCondition = status === 'Booked';
         const statusDarkGreyColorCondition = status === 'Unassigned';
         const statusDarkGrey2ColorCondition = ['Hold', 'Revised'].includes(
@@ -17,6 +18,7 @@ export class LoadStatusColorPipe implements PipeTransform {
         const statusGreenColorCondition = status === 'Assigned';
         const statusBlueColorCondition = status === 'Dispatched';
         const statusTurquoiseColorCondition = [
+            'Arrived',
             'ArrivedPickup',
             'CheckedInPickup',
             'Loading',
@@ -26,6 +28,7 @@ export class LoadStatusColorPipe implements PipeTransform {
             'ArrivedDelivery',
             'CheckedInDelivery',
             'Offloading',
+            'Checked-In',
         ].includes(status);
         const statusDarkRedColorCondition = status === 'Offloaded';
         const statusDarkRed2ColorCondition = status === 'Cancelled';
