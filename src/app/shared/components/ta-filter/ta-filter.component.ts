@@ -1021,7 +1021,7 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         mainArray[indx].isSelected = true;
 
         this.unselectedVisibleCount = mainArray.filter(
-            (item) => !item.isSelected
+            (item2) => !item2.isSelected
         )?.length;
 
         if (this.type === ToolbarFilterStringEnum.STATE_FILTER) {
@@ -1051,43 +1051,43 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         const mainArray = this.getMainArray(subType);
 
-        mainArray.map((item) => {
+        mainArray.map((item2) => {
             if (
                 this.type === ToolbarFilterStringEnum.TRUCK_FILTER ||
                 this.type === ToolbarFilterStringEnum.TRAILER_FILTER
             ) {
                 if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
                     if (this.isRepairFilter) {
-                        if (item.truckNumber === item.truckNumber) {
-                            item.isSelected = false;
+                        if (item2.truckNumber === item.truckNumber) {
+                            item2.isSelected = false;
                         }
                     } else {
-                        if (item.truckType.id === item?.truckType.id) {
-                            item.isSelected = false;
+                        if (item2.truckType.id === item?.truckType.id) {
+                            item2.isSelected = false;
                         }
                     }
                 } else if (
                     this.type === ToolbarFilterStringEnum.TRAILER_FILTER
                 ) {
                     if (this.isRepairFilter) {
-                        if (item.trailerNumber === item.trailerNumber) {
-                            item.isSelected = false;
+                        if (item2.trailerNumber === item.trailerNumber) {
+                            item2.isSelected = false;
                         }
                     } else {
-                        if (item.id === id) {
-                            item.isSelected = false;
+                        if (item2.id === id) {
+                            item2.isSelected = false;
                         }
                     }
                 }
             } else {
-                if (item.id === id) {
-                    item.isSelected = false;
+                if (item2.id === id) {
+                    item2.isSelected = false;
                 }
             }
         });
 
         this.unselectedVisibleCount = mainArray.filter(
-            (item) => !item.isSelected
+            (item2) => !item2.isSelected
         )?.length;
 
         this.checkFilterActiveValue();
