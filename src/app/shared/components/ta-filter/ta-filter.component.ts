@@ -354,7 +354,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             rangeFrom: '0',
             rangeTo:
                 this.type === ToolbarFilterStringEnum.PAY_FILTER ||
-                (this.type === ToolbarFilterStringEnum.MONEY_FILTER && this.isRepairFilter)
+                (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                    this.isRepairFilter)
                     ? '20,000'
                     : '5,000',
         });
@@ -436,7 +437,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
         if (
             this.type === ToolbarFilterStringEnum.PAY_FILTER ||
-            (this.type === ToolbarFilterStringEnum.MONEY_FILTER && this.isRepairFilter)
+            (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                this.isRepairFilter)
         ) {
             this.maxValueRange = '20,000';
             this.maxValueSet = '20,000';
@@ -697,7 +699,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.STATUS_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATUS_FILTER
+                    ) {
                         this.loadStatusOptionsArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -709,7 +713,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRUCK_FILTER
+                    ) {
                         this.truckArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -721,7 +727,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER
+                    ) {
                         this.fuelStopArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -733,7 +741,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.TRAILER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                    ) {
                         this.trailerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -745,7 +755,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.BROKER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.BROKER_FILTER
+                    ) {
                         this.brokerArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -757,7 +769,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                             }
                             return item;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.DRIVER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.DRIVER_FILTER
+                    ) {
                         this.driverArray.map((item) => {
                             item.hidden = true;
                             if (
@@ -801,27 +815,39 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         this.unselectedUser.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.STATUS_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.STATUS_FILTER
+                    ) {
                         this.loadStatusOptionsArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.TRUCK_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRUCK_FILTER
+                    ) {
                         this.truckArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.TRAILER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                    ) {
                         this.trailerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.FUEL_STOP_FILTER
+                    ) {
                         this.fuelStopArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.BROKER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.BROKER_FILTER
+                    ) {
                         this.brokerArray.map((item) => {
                             item.hidden = false;
                         });
-                    } else if (this.type === ToolbarFilterStringEnum.DRIVER_FILTER) {
+                    } else if (
+                        this.type === ToolbarFilterStringEnum.DRIVER_FILTER
+                    ) {
                         this.driverArray.map((item) => {
                             item.hidden = false;
                         });
@@ -857,7 +883,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
 
                         this.truckTypeArray = newData;
                     }
-                } else if (this.type === ToolbarFilterStringEnum.TRAILER_TYPE_FILTER) {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_TYPE_FILTER
+                ) {
                     if (res?.animation === 'trailer-type-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -866,7 +894,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                         this.trailerTypeArray = newData;
                     }
-                } else if (this.type === ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER) {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.CATEGORY_REPAIR_FILTER
+                ) {
                     if (res?.animation === 'repair-category-update') {
                         const newData = res.data.map((type: any) => {
                             type['icon'] =
@@ -875,7 +905,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         });
                         this.categoryRepairArray = newData;
                     }
-                } else if (this.type === ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER) {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.CATEGORY_FUEL_FILTER
+                ) {
                     if (res?.animation === 'fuel-category-update') {
                         this.categoryFuelArray = res.data;
                     }
@@ -898,7 +930,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         this.usaStates = usaArray;
                         this.canadaStates = canadaArray;
                     }
-                } else if (this.type === ToolbarFilterStringEnum.DEPARTMENT_FILTER) {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.DEPARTMENT_FILTER
+                ) {
                     if (res?.animation === 'department-data-update') {
                         this.departmentArray = res.data;
                     }
@@ -975,7 +1009,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                         }
                         this.truckArray = newData;
                     }
-                } else if (this.type === ToolbarFilterStringEnum.TRAILER_FILTER) {
+                } else if (
+                    this.type === ToolbarFilterStringEnum.TRAILER_FILTER
+                ) {
                     if (res?.animation === 'trailer-list-update') {
                         let newData;
                         if (this.isRepairFilter) {
@@ -1099,7 +1135,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
         if (mod) this.hoverClose = false;
 
         const element = event.target;
-        if (!element.classList.contains(ToolbarFilterStringEnum.ACTIVE) && !mod) false;
+        if (!element.classList.contains(ToolbarFilterStringEnum.ACTIVE) && !mod)
+            false;
 
         if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue =
@@ -1519,7 +1556,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     usaArray: this.filterUsaActiveArray,
                     canadaArray: this.filterCanadaActiveArray,
                 };
-            } else if (this.type === ToolbarFilterStringEnum.MONEY_FILTER && !this.isRepairFilter) {
+            } else if (
+                this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                !this.isRepairFilter
+            ) {
                 if (this.subType === 'all') {
                     this.multiFromFirstFromActive = (
                         ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
@@ -1610,7 +1650,8 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             } else if (
                 this.type === ToolbarFilterStringEnum.MILES_FILTER ||
                 this.type === ToolbarFilterStringEnum.PAY_FILTER ||
-                (this.type === ToolbarFilterStringEnum.MONEY_FILTER && this.isRepairFilter)
+                (this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+                    this.isRepairFilter)
             ) {
                 this.maxValueSet = this.rangeForm.get('rangeTo')?.value;
                 this.minValueSet = this.rangeForm.get('rangeFrom')?.value;
@@ -1702,6 +1743,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     case ToolbarFilterStringEnum.USER_FILTER:
                         mainArray = this.unselectedUser;
                         break;
+                    case ToolbarFilterStringEnum.STATUS_FILTER:
+                        mainArray = this.loadStatusOptionsArray;
+                        break;
                 }
 
                 mainArray.map((item) => {
@@ -1712,7 +1756,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                if (this.type === ToolbarFilterStringEnum.PM_FILTER || this.isRepairFilter) {
+                if (
+                    this.type === ToolbarFilterStringEnum.PM_FILTER ||
+                    this.isRepairFilter
+                ) {
                     this.filterActiveArray.map((data) => {
                         selectedUsersIdArray.push(data.name);
                     });
@@ -1732,9 +1779,9 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 }
 
                 queryParams = selectedUsersIdArray;
-                subType = this.toDoSubType
-                    ? this.toDoSubType
-                    : ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER.toString();
+                subType =
+                    this.toDoSubType ??
+                    ToolbarFilterStringEnum.EMPTY_STRING_PLACEHOLDER.toString();
             }
 
             const data = {
@@ -1974,7 +2021,10 @@ export class TaFilterComponent implements OnInit, OnDestroy {
             });
         } else if (this.type === ToolbarFilterStringEnum.TIME_FILTER) {
             this.selectedTimeValue = this.filterActiveTime;
-        } else if (this.type === ToolbarFilterStringEnum.MONEY_FILTER && !this.isRepairFilter) {
+        } else if (
+            this.type === ToolbarFilterStringEnum.MONEY_FILTER &&
+            !this.isRepairFilter
+        ) {
             if (this.subType != 'all') {
                 const setFromValue =
                     this.singleFromActive != 'null' && this.singleFromActive

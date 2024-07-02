@@ -348,11 +348,11 @@
             &.sort-text {
                 justify-content: flex-end !important;
                 border-radius: 1px;
-                transition: all 0.2s linear;
+                transition: background 0.2s ease-in-out;
 
                 .sort-arrow {
                     transform: rotate(0deg);
-                    transition: all 0.2s;
+                    transition: transform 0.2s;
 
                     &.rotate {
                         transform: rotate(180deg);
