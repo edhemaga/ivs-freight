@@ -4426,8 +4426,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.isVisiblePayment = !!pays.length;
 
-        this.pickupDateRange = pickupStop.dateTo ? true : false;
-        this.deliveryDateRange = deliveryStop.dateTo ? true : false;
+        this.pickupDateRange = !!pickupStop.dateTo;
+        this.deliveryDateRange = !!deliveryStop.dateTo;
 
         this.isHazardousPicked =
             generalCommodity?.name.toLowerCase() ===
