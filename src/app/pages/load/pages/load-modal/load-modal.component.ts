@@ -481,7 +481,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public getDispatcherInputConfig(): ITaInput {
         return LoadModalConfig.getDispatcherInputConfig(
-            this.selectedDispatcher?.logoName,
+            this.selectedDispatcher?.logoName || this.selectedDispatcher?.avatarFile?.url,
             this.selectedDispatcher?.name
         );
     }
@@ -2817,8 +2817,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
-                    legHours: item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
-                    legMinutes: item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
+                    legHours:
+                        item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
+                    legMinutes:
+                        item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
                     items: this.remapStopItems(this.extraStopItems[index]),
                 });
             });
@@ -4121,7 +4123,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             advancePay,
             note,
             files,
-            stops,
             loadedMiles,
             totalMiles,
             totalTimeHours,
@@ -4137,6 +4138,21 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             tonuRate,
             revisedRate,
         } = loadModalData;
+
+        // Remove deadhead
+        const stops = loadModalData.stops.filter((stop) => stop.id !== 0);
+        stops.forEach((stop, index) => {
+            if (index === 0) {
+                this.pickupStatusHistory = stop.statusHistory;
+                this.pickupStopItems = [stop.items];
+            } else if (index !== stops.length - 1) {
+                this.extraStopItems[index - 1] = [stop.items];
+                this.extraStopStatusHistory[index - 1] = stop.statusHistory;
+            } else {
+                this.deliveryStopItems = [stop.items];
+                this.deliveryStatusHistory = stop.statusHistory;
+            }
+        });
 
         const loadRequirements = {
             truckType: loadModalData.dispatch?.truck,
@@ -4297,78 +4313,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             LoadModalStringEnum.SUSPENSION
         );
 
-        // tabs
-        this.onTabChange(type, LoadModalStringEnum.FTL_LTL);
-        this.onTabChange(
-            pickupStop.timeType,
-            LoadModalStringEnum.STOP_TIME_PICKUP
-        );
-        this.onTabChange(
-            deliveryStop.timeType,
-            LoadModalStringEnum.STOP_TIME_DELIVERY
-        );
-
-        // selected
-        this.selectedCompany = company;
-        this.selectedDispatcher = editedDispatcher;
-        this.selectedGeneralCommodity = generalCommodity;
-        this.selectedTruckReq = loadRequirements?.truckType?.truckType;
-        this.selectedTrailerReq = loadRequirements?.trailerType?.trailerType;
-        this.selectedYear = this.labelsYear.find(
-            (year) => year.name == `${loadRequirements?.year.toString()}+`
-        );
-        additionalBillingRates.forEach((rate) => {
-            if (rate.rate) {
-                this.additionalBillings().push(
-                    this.createAdditionaBilling({
-                        id: rate.id,
-                        name: rate.additionalBillingType.name,
-                        billingValue: rate.rate,
-                    })
-                );
-            }
-        });
-
-        this.isEachStopItemsRowValid = true;
-
-        pays.forEach((pay) => {
-            this.additionalPayments().push(
-                this.createAdditionPaymentBilling({
-                    id: pay.id,
-                    pay: pay.pay,
-                    payType: pay.paymentType,
-                    payDate: pay.payDate,
-                    paymentType: pay.paymentType.id,
-                    paymentMethod: pay.paymentMethod.id,
-                    name: pay.paymentType.name,
-                    displayPaymentType: pay.paymentType.name,
-                })
-            );
-        });
-
-        this.isVisiblePayment = !!pays.length;
-
-        this.pickupDateRange = pickupStop.dateTo ? true : false;
-        this.deliveryDateRange = deliveryStop.dateTo ? true : false;
-
-        this.isHazardousPicked =
-            generalCommodity?.name.toLowerCase() ===
-            LoadModalStringEnum.HAZARDOUS;
-        if (!this.isHazardousPicked) this.isHazardousVisible = false;
-
-        stops.forEach((stop, index) => {
-            if (index === 0) {
-                this.pickupStatusHistory = stop.statusHistory;
-                this.pickupStopItems = [stop.items];
-            } else if (index !== stops.length - 1) {
-                this.extraStopItems[index - 1] = [stop.items];
-                this.extraStopStatusHistory[index - 1] = stop.statusHistory;
-            } else {
-                this.deliveryStopItems = [stop.items];
-                this.deliveryStatusHistory = stop.statusHistory;
-            }
-        });
-
         // extra stops
         if (editedStops.length) {
             editedStops.forEach((extraStop, index) => {
@@ -4431,7 +4375,64 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             });
         }
+        // tabs
+        this.onTabChange(type, LoadModalStringEnum.FTL_LTL);
+        this.onTabChange(
+            pickupStop.timeType,
+            LoadModalStringEnum.STOP_TIME_PICKUP
+        );
+        this.onTabChange(
+            deliveryStop.timeType,
+            LoadModalStringEnum.STOP_TIME_DELIVERY
+        );
 
+        // selected
+        this.selectedCompany = company;
+        this.selectedDispatcher = editedDispatcher;
+        this.selectedGeneralCommodity = generalCommodity;
+        this.selectedTruckReq = loadRequirements?.truckType?.truckType;
+        this.selectedTrailerReq = loadRequirements?.trailerType?.trailerType;
+        this.selectedYear = this.labelsYear.find(
+            (year) => year.name == `${loadRequirements?.year?.toString()}+`
+        );
+        additionalBillingRates.forEach((rate) => {
+            if (rate.rate) {
+                this.additionalBillings().push(
+                    this.createAdditionaBilling({
+                        id: rate.id,
+                        name: rate.additionalBillingType.name,
+                        billingValue: rate.rate,
+                    })
+                );
+            }
+        });
+
+        this.isEachStopItemsRowValid = true;
+
+        pays.forEach((pay) => {
+            this.additionalPayments().push(
+                this.createAdditionPaymentBilling({
+                    id: pay.id,
+                    pay: pay.pay,
+                    payType: pay.paymentType,
+                    payDate: pay.payDate,
+                    paymentType: pay.paymentType.id,
+                    paymentMethod: pay.paymentMethod.id,
+                    name: pay.paymentType.name,
+                    displayPaymentType: pay.paymentType.name,
+                })
+            );
+        });
+
+        this.isVisiblePayment = !!pays.length;
+
+        this.pickupDateRange = !!pickupStop.dateTo;
+        this.deliveryDateRange = !!deliveryStop.dateTo;
+
+        this.isHazardousPicked =
+            generalCommodity?.name.toLowerCase() ===
+            LoadModalStringEnum.HAZARDOUS;
+        if (!this.isHazardousPicked) this.isHazardousVisible = false;
         /* 
         this.isVisiblePayment = !!advancePay;
         this.selectedTemplate = loadTemplateId;
