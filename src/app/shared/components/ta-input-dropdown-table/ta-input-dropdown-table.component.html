@@ -12,7 +12,9 @@
         [ngClass]="ownerDropdown.isOpen() ? 'owner-dropdown-opened' : ''"
     >
         <div class="fleet-holder d-flex">
-            <div class="ta-font-semi-bold d-flex fleet align-items-center owner-holder">
+            <div
+                class="ta-font-semi-bold d-flex fleet align-items-center owner-holder"
+            >
                 <svg-icon
                     class="d-flex justify-content-center svg-holder"
                     [src]="'assets/svg/common/dropdown-truck.svg'"
@@ -31,7 +33,9 @@
                 </span>
             </div>
 
-            <div class="ta-font-semi-bold d-flex fleet align-items-center owner-holder">
+            <div
+                class="ta-font-semi-bold d-flex fleet align-items-center owner-holder"
+            >
                 <svg-icon
                     class="d-flex justify-content-center svg-holder"
                     [src]="'assets/svg/common/dropdown-trailer.svg'"
@@ -56,21 +60,21 @@
 <!------------------------------------------------- COMMENTS DROPDOWN ----------------------------------------------------------------->
 <ng-container *ngIf="type === 'comment'">
     <div
-        class="comment-button"
+        class="comment-button overflow-unset"
         [ngClass]="commentsDropdown.isOpen() ? 'comments-dropdown-opened' : ''"
     >
         <div
             [ngbPopover]="dropdownComments"
             #commentsDropdown="ngbPopover"
             [autoClose]="'outside'"
-            [placement]="['bottom-left', 'bottom-right']"
+            [placement]="'bottom-right'"
             popoverClass="table-dropdown-popover"
             triggers="manual"
             class="comments-popover d-flex align-items-center justify-content-center"
             (click)="toggleDropdownComments(commentsDropdown, filteredData)"
         >
             <span class="comment-number ta-font-semi-bold">{{
-                _data?.commentsCount
+                _data?.comments?.length
             }}</span>
             <svg-icon
                 [src]="svg"
@@ -473,7 +477,7 @@
 
 <!------------------------------------------------- COMMENTS DROPDOWN ----------------------------------------------------------------->
 <ng-template #dropdownComments let-commmentsData="commentData">
-    <div class="table-list-dropdown comments-width">
+    <div class="table-list-dropdown comments-width overflow-unset">
         <div class="table-inner">
             <!-- Head of dropdown -->
 
@@ -489,7 +493,7 @@
                         class="total-number-fleet count d-flex align-items-center"
                     >
                         <span class="counter ta-font-extra-bold text-white">
-                            {{ _data?.commentsCount }}
+                            {{ _data?.comments.length }}
                         </span>
                     </span>
                 </div>
@@ -505,19 +509,20 @@
             </div>
 
             <!-- Input Search -->
-            <div class="input-holder">
-                <input
-                    [placeholder]="searchPlaceholder"
-                    (keyup)="filterArrayCommentsRating($event, 'comments')"
-                    class="input-search"
-                    spellcheck="false"
-                />
-                <svg-icon
-                    class="search-icon"
-                    [src]="'assets/svg/common/ic_search.svg'"
-                ></svg-icon>
-            </div>
-
+            <ng-container *ngIf="commmentsData.comments.length || showFilter">
+                <div class="input-holder">
+                    <input
+                        [placeholder]="searchPlaceholder"
+                        (keyup)="filterArrayCommentsRating($event, 'comments')"
+                        class="input-search"
+                        spellcheck="false"
+                    />
+                    <svg-icon
+                        class="search-icon"
+                        [src]="'assets/svg/common/ic_search.svg'"
+                    ></svg-icon>
+                </div>
+            </ng-container>
             <!-- Add new comment button -->
             <app-ta-new-comment
                 [commmentsData]="commmentsData"
@@ -526,19 +531,28 @@
             <!-- Display comments -->
             <div class="comments-holder">
                 <ng-container
-                    *ngFor="
-                        let comment of commmentsData.comments;
-                        let i = id;
-                        trackBy: trackByIdentity
-                    "
+                    *ngIf="commmentsData.comments.length; else noComments"
                 >
-                    <app-ta-comment
-                        [commentCardsDataDropdown]="comment"
-                        [commentHighlight]="lattersToHighlight"
-                        [commentsCardId]="commmentsData.id"
-                        (closeDropdown)="closeDropdownFromComment($event)"
-                    ></app-ta-comment>
+                    <ng-container
+                        *ngFor="
+                            let comment of commmentsData.comments;
+                            let i = id;
+                            trackBy: trackByIdentity
+                        "
+                    >
+                        <app-ta-comment
+                            [commentCardsDataDropdown]="comment"
+                            [commentHighlight]="lattersToHighlight"
+                            [commentsCardId]="commmentsData.id"
+                            (closeDropdown)="closeDropdownFromComment($event)"
+                        ></app-ta-comment>
+                    </ng-container>
                 </ng-container>
+                <ng-template #noComments>
+                    <div class="no-comments-container">
+                        <p>Subtle Illustration Empty State</p>
+                    </div>
+                </ng-template>
             </div>
         </div>
     </div>

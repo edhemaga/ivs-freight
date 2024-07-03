@@ -7,6 +7,7 @@ export interface License {
     stateShort?: string;
     classType?: string;
     expDate?: string;
+    issueDate?: string;
     endorsments?: any;
     restrictions?: any;
     restrictionsCode?: string[];
@@ -15,4 +16,7 @@ export interface License {
     licenseReview?: any;
     license?: string;
     name?: string;
+    files?: any;
+    documents?: any;
+    filesForDeleteIds?: number[]
 }

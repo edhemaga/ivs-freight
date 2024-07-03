@@ -60,7 +60,6 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
-import { TrailerBodyResponse } from '@pages/trailer/pages/trailer-table/models/trailer-body-response.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 
@@ -592,6 +591,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             reeferUnit,
             registrationExpirationDays,
             updatedAt,
+            deactivatedAt,
             registrationPercentage,
             registrationState,
             status,
@@ -642,6 +642,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     ? assignedTo?.driver?.lastName
                     : TableStringEnum.EMPTY_STRING_PLACEHOLDER
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            tableDriverAvatar: assignedTo?.driver?.avatarFile?.url,
             tableTruck: assignedTo?.truck?.truckNumber,
             tableTruckType: assignedTo?.truck?.truckType?.name,
             tableOwner: owner?.name,
@@ -661,6 +662,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             tableLicencePlateDetailNumber: licensePlate,
             tableLicencePlateDetailST: registrationState?.stateShortName,
+            tableLicencePlateDetailState: registrationState?.stateName,
             tableLicencePlateDetailExpiration: {
                 expirationDays: registrationExpirationDays
                     ? registrationExpirationDays
@@ -693,6 +695,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             tableFHWAInspectionIssues: fhwaInspection,
             tableTitleNumber: title?.number,
             tableTitleST: title?.state?.stateShortName,
+            tableTitleState: title?.state?.stateName,
             tableTitlePurchase: title?.purchaseDate
                 ? this.datePipe.transform(
                       title?.purchaseDate,
@@ -728,7 +731,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                       TableStringEnum.DATE_FORMAT
                   )
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-
+            tableDeactivated: deactivatedAt ? this.datePipe.transform(
+                updatedAt,
+                TableStringEnum.DATE_FORMAT
+            ) : null,
             tableAttachments: files ? files : [],
             fileCount: fileCount,
             tableDropdownContent: {

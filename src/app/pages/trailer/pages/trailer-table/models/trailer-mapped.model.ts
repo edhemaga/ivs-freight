@@ -17,6 +17,7 @@ export interface TrailerMapped extends TraillerData {
     colorName: string;
     tabelLength: string;
     tableDriver: string;
+    tableDriverAvatar: string;
     tableTruck: string;
     tableTruckType: string;
     tableOwner: string;
@@ -44,6 +45,8 @@ export interface TrailerMapped extends TraillerData {
     };
     tableTitleNumber: string;
     tableTitleST: string;
+    tableTitleState: string;
+    tableLicencePlateDetailState: string;
     tableTitlePurchase: string;
     tableTitleIssued: string;
     tablePurchaseDate: string;
@@ -51,6 +54,7 @@ export interface TrailerMapped extends TraillerData {
     tableTerminated: string;
     tableAdded: string;
     tableEdited: string;
+    deactivatedAt: string;
     tableAttachments: number | undefined[];
     fileCount: number | undefined;
     tableDropdownContent: {

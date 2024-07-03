@@ -20,7 +20,7 @@ export enum ApplicantApplicationStringEnum {
     FelonyExplain = 'felonyExplain',
     MisdemeanorExplain = 'misdemeanorExplain',
     DrunkDrivingExplain = 'drunkDrivingExplain',
-    HaveWorkExperience = 'haveWorkExperience',
+    NoWorkExperience = 'noWorkExperience',
     HasIncorrectValue = 'hasIncorrectValue', 
     From = 'from',
     To = 'to',
