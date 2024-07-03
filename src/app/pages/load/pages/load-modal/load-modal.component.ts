@@ -696,7 +696,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .subscribe(
                     (isFormChange: boolean) => (this.isFormDirty = isFormChange)
                 );
-        }, 2000);
+        }, 1000);
     }
 
     private getCompanyUser(): void {
@@ -1397,7 +1397,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .patchValue(null);
         }
 
-        const isAdjustedRate = !!this.selectedDispatches?.driver?.owner; 
+        const isAdjustedRate = !!this.selectedDispatches?.driver?.owner;
 
         this.inputService.changeValidators(
             this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
@@ -2757,6 +2757,28 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return _pickupStopItems;
     }
 
+    private mapLegTime(
+        pickuplegHours: number,
+        pickuplegMinutes: number,
+        pickuplegMiles: number
+    ): {
+        legHours: number;
+        legMinutes: number;
+        legMiles: number
+    } {
+        let legHours = pickuplegHours ?? 0;
+        let legMinutes = pickuplegMinutes ?? 0;
+
+        if (legHours === 0 && legMinutes === 0) {
+            legMinutes = 1;
+        }
+        return {
+            legHours,
+            legMinutes,
+            legMiles: pickuplegMiles ?? 0.2
+        };
+    }
+
     private premmapedStops(): LoadStopCommand[] {
         const stops: LoadStopCommand[] = [];
 
@@ -2785,6 +2807,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // pickup
         if (this.selectedPickupShipper) {
+            const {legHours, legMinutes, legMiles} = this.mapLegTime(pickuplegHours, pickuplegMinutes, pickuplegMiles);
             stops.push({
                 id: null,
                 stopType: pickupStop,
@@ -2812,9 +2835,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeTo: pickupTimeTo,
                 arrive: arrive,
                 depart: depart,
-                legMiles: pickuplegMiles,
-                legHours: pickuplegHours ?? 0,
-                legMinutes: pickuplegMinutes ?? 0,
+                legMiles,
+                legHours,
+                legMinutes,
                 items: this.remapStopItems(this.pickupStopItems),
             });
         }
@@ -2822,6 +2845,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // extra Stops
         if (this.loadExtraStops().length) {
             this.loadExtraStops().controls.forEach((item, index) => {
+                const {legHours, legMinutes, legMiles} = this.mapLegTime(item.get(LoadModalStringEnum.LEG_HOURS).value, item.get(LoadModalStringEnum.LEG_MINUTES).value , item.get(LoadModalStringEnum.LEG_MILES).value);
                 stops.push({
                     id: null,
                     stopType: item.get(LoadModalStringEnum.STOP_TYPE).value,
@@ -2846,11 +2870,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
-                    legMiles: item.get(LoadModalStringEnum.LEG_MILES).value,
-                    legHours:
-                        item.get(LoadModalStringEnum.LEG_HOURS).value ?? 0,
-                    legMinutes:
-                        item.get(LoadModalStringEnum.LEG_MINUTES).value ?? 0,
+                    legMiles,
+                    legHours,
+                    legMinutes,
                     items: this.remapStopItems(this.extraStopItems[index]),
                 });
             });
@@ -2858,6 +2880,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // delivery
         if (this.selectedDeliveryShipper) {
+            const {legHours, legMinutes, legMiles} = this.mapLegTime(deliverylegHours, deliverylegMinutes, deliverylegMiles);
             stops.push({
                 id: null,
                 stopType: deliveryStop,
@@ -2885,9 +2908,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeTo: deliveryTimeTo,
                 arrive: null,
                 depart: null,
-                legMiles: deliverylegMiles,
-                legHours: deliverylegHours ?? 0,
-                legMinutes: deliverylegMinutes ?? 0,
+                legMiles,
+                legHours,
+                legMinutes,
                 items: this.remapStopItems(this.deliveryStopItems),
             });
         }

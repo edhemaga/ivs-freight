@@ -1,7 +1,8 @@
 <div
     [className]="
-        className + ' d-flex justify-content-center align-items-center'
+        justifyStart ? 'justify-content-start' : 'justify-content-center'
     "
+    [className]="className + ' d-flex align-items-center'"
 >
     <span
         *ngFor="let value of displayString; let index = index"
@@ -12,7 +13,12 @@
                 ? (status.valueForRequest | loadStatusColor : true)
                 : {}
         "
-        [class]="'load-status load-status-' + className + '-' + value.toLowerCase()"
+        [class]="
+            'text-uppercase ta-font-bold load-status load-status-' +
+            className +
+            '-' +
+            value.toLowerCase()
+        "
         [ngClass]="{
             'load-status-badge': value.length === 1,
             'mr-1': value.length === 1 && index === 0,

@@ -26,6 +26,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 })
 export class LoadStatusStringComponent implements OnInit, OnChanges {
     @Input() status: SelectedStatus;
+    @Input() justifyStart: boolean;
     public displayString: string[] = [];
     public className: string;
     constructor() {}
