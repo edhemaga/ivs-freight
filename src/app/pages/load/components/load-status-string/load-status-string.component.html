@@ -1,0 +1,24 @@
+<div
+    [className]="
+        className + ' d-flex justify-content-center align-items-center'
+    "
+>
+    <span
+        *ngFor="let value of displayString; let index = index"
+        [ngStyle]="
+            value.length > 1
+                ? (status.valueForRequest | loadStatusColor)
+                : value.length === 1 && index === displayString.length - 1
+                ? (status.valueForRequest | loadStatusColor : true)
+                : {}
+        "
+        [class]="'load-status load-status-' + value.toLowerCase()"
+        [ngClass]="{
+            'load-status-badge': value.length === 1,
+            'mr-1': value.length === 1 && index === 0,
+            'ml-1': value.length === 1 && index === displayString.length - 1
+        }"
+    >
+        {{ value }}
+    </span>
+</div>

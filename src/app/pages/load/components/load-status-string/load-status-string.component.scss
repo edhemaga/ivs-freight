@@ -1,0 +1,31 @@
+@import '/src/theme/variables.scss';
+
+.load-status {
+    font-size: 11px;
+    
+    &-r {
+        background-color: $ta-orange-1;
+        color: $white;
+    }
+
+    &-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        font-size: 11px;
+        height: 14px;
+        width: 14px;
+        font-weight: 600;
+        padding-top: 1px;
+        border-radius: 2px;
+    }
+}
+
+.mr-1 {
+    margin-right: 0.25rem;
+}
+
+.ml-1 {
+    margin-left: 0.25rem;
+}
