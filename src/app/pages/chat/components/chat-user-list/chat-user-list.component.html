@@ -1,5 +1,11 @@
 <div>
-    <ng-container *ngFor="let chat of chatData; let ind = index;">
-        {{chat.companyUser.fullName}}
-    </ng-container>
+    <ng-template *ngIf="chatData.length > 0; else noData">
+        <ng-container *ngFor="let chat of chatData; let ind = index;">
+            {{chat.companyUser.fullName}}
+        </ng-container>
+
+    </ng-template>
+    <ng-template #noData>
+        <app-chat-no-data></app-chat-no-data>
+    </ng-template>
 </div>

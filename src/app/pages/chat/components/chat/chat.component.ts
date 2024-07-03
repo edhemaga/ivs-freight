@@ -21,6 +21,7 @@ export class ChatComponent implements OnInit {
   companyUsers!: CompanyUser[];
   drivers!: CompanyUser[];
 
+  //TODO move to separate file
   // Tab and header ribbon configuration
   tabs: ChatTab[] = [
     {

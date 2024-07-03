@@ -14,13 +14,17 @@ import { ChatService } from "./services/chat.service";
 import { UserResolver } from "./resolvers/user.resolver";
 import { CommonModule } from "@angular/common";
 import { AngularSvgIconModule } from "angular-svg-icon";
+import { ChatNoDataComponent } from "./components/shared/chat-no-data/chat-no-data.component";
 
 @NgModule({
     declarations: [
         ChatComponent,
         ChatUserListComponent,
         ChatMessagesComponent,
-        ChatMessageComponent
+        ChatMessageComponent,
+
+        // Shared
+        ChatNoDataComponent
     ],
     imports: [
         CommonModule,
@@ -28,10 +32,10 @@ import { AngularSvgIconModule } from "angular-svg-icon";
         AngularSvgIconModule
     ],
     providers: [
-        //Resolvers
+        // Resolvers
         UserResolver,
 
-        //Services
+        // Services
         ChatService
     ]
 })
