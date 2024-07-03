@@ -1107,8 +1107,7 @@
                     <!-- Percentage is not driver owner -->
                     <span
                         *ngIf="
-                            _options[0].name !== 'No Results' &&
-                            !option.driver?.owner &&
+                            _options[0].name !== 'No Results' && 
                             option?.payType
                         "
                         [ngClass]="{

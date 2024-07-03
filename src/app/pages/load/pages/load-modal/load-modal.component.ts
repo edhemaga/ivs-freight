@@ -685,18 +685,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             totalHours: [0],
             totalMinutes: [0],
         });
+    }
 
-        this.formService.checkFormChange(this.loadForm);
+    private watchFormChanges() {
+        setTimeout(() => {
+            this.formService.checkFormChange(this.loadForm);
 
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
-            );
-
-        // if(this.isPendingStatus) {
-        //     this.loadForm.get('invoicedDate').setValidators(Validators.required);
-        // }
+            this.formService.formValueChange$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(
+                    (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+                );
+        }, 2000);
     }
 
     private getCompanyUser(): void {
@@ -1396,6 +1396,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 .get(LoadModalStringEnum.PICKUP_LEG_MILES)
                 .patchValue(null);
         }
+
+        const isAdjustedRate = !!this.selectedDispatches?.driver?.owner; 
+
+        this.inputService.changeValidators(
+            this.loadForm.get(LoadModalStringEnum.ADJUSTED_RATE),
+            isAdjustedRate
+        );
     }
 
     private onSelectDropdownBroker(event): void {
@@ -3122,6 +3129,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             this.totalLegHours = res.totalHours;
                             this.totalLegMinutes = res.totalMinutes;
                             this.totalLegCost = res.totalCost;
+
+                            this.watchFormChanges();
                         }
                     },
                     error: () => {},
@@ -3695,10 +3704,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.originalAdditionalBillingTypes =
                         this.additionalBillingTypes;
 
-                    if (this.editData)
+                    if (this.editData) {
                         this.populateLoadModalData(
                             this.editData.data as LoadResponse
                         );
+                    } else {
+                        this.watchFormChanges();
+                    }
 
                     // stop items
                     this.stopItemDropdownLists = {

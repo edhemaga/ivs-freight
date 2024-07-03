@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnChanges,
+    OnInit
+} from '@angular/core';
 
 // Models
 import { SelectedStatus } from '@pages/load/pages/load-modal/models/load-modal-status.model';
@@ -13,20 +18,28 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
     styleUrls: ['./load-status-string.component.scss'],
     standalone: true,
     imports: [
-      CommonModule,
+        CommonModule,
 
-      // Pipes
-      LoadStatusColorPipe
+        // Pipes
+        LoadStatusColorPipe,
     ],
 })
-export class LoadStatusStringComponent implements OnInit {
+export class LoadStatusStringComponent implements OnInit, OnChanges {
     @Input() status: SelectedStatus;
     public displayString: string[] = [];
     public className: string;
     constructor() {}
 
     ngOnInit(): void {
-      this.displayString = this.status.name.split(' ');
-      this.className = this.status.valueForRequest.toLowerCase();
+        this.generateDisplayString();
+    }
+
+    ngOnChanges() {
+        this.generateDisplayString();
+    }
+
+    private generateDisplayString(): void {
+        this.displayString = this.status.name.split(' ');
+        this.className = this.status.valueForRequest.toLowerCase();
     }
 }
