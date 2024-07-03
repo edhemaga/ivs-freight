@@ -1,29 +1,86 @@
 <div class="chat-container">
-
     <div class="toolbar-container d-flex align-items-center">
         <!-- TITLE -->
-        <div class="list-name d-flex justify-content-center align-items-center ta-font-black">
+        <div
+            class="list-name d-flex justify-content-center align-items-center ta-font-black"
+        >
             {{ title | uppercase }}
         </div>
         <!-- TABS -->
         <div class="tab-wrapper d-flex align-items-center">
-            <ng-container *ngFor="let tab of tabs; let ind = index;">
-                <div class="tab-container d-flex" [ngClass]="{
-                                'tab-inactive': selectedTab !== tab.name,
-                                'tab-active': selectedTab === tab.name
-                            }" (click)="onSelectTab(tab)">
+            <ng-container *ngFor="let tab of tabs; let ind = index">
+                <div
+                    class="tab-container d-flex"
+                    [ngClass]="{
+                        'tab-inactive': selectedTab !== tab.name,
+                        'tab-active': selectedTab === tab.name
+                    }"
+                    (click)="onSelectTab(tab)"
+                >
                     <div class="tab d-flex align-items-center">
-                        <div class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold">
+                        <div
+                            class="tab-title d-flex justify-content-center align-items-center ta-font-extra-bold"
+                        >
                             {{ tab.name }}
                         </div>
-                        <div class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold">
+                        <div
+                            class="data-count d-flex justify-content-center align-items-center ta-font-extra-bold"
+                        >
                             {{ tab.count }}
                         </div>
                     </div>
                 </div>
             </ng-container>
         </div>
-        <div class="table-actions"></div>
+        <div
+            class="border-container d-flex justify-content-center align-items-center"
+        >
+            <div class="border"></div>
+        </div>
+        <div
+            class="table-actions d-flex justify-content-end align-items-center"
+        >
+            <div
+                popoverClass="toolbar-options-popover"
+                triggers="manual"
+                class="action-div active-options d-flex align-items-center"
+                mainTooltip="Tooltip"
+                position="bottom"
+            >
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+                ></svg-icon>
+            </div>
+            <div
+                class="border-container d-flex justify-content-center align-items-center"
+            >
+                <div class="border"></div>
+            </div>
+            <div
+                popoverClass="toolbar-options-popover"
+                triggers="manual"
+                class="action-div active-options d-flex align-items-center"
+                mainTooltip="Tooltip"
+                position="bottom"
+            >
+                <svg-icon
+                    class="d-flex justify-content-center align-items-center"
+                    [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+                    [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+                ></svg-icon>
+            </div>
+            <div
+                class="modal2 d-flex justify-content-center align-items-center"
+            >
+                <div class="new-chat">
+                    <svg-icon
+                        [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+                    ></svg-icon>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--Drivers-->
@@ -33,5 +90,4 @@
     <!--Company users-->
     <!-- <app-chat-user-list [userType]="'company'" [chatData]="companyUsers">
     </app-chat-user-list> -->
-
 </div>

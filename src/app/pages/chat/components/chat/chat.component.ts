@@ -61,9 +61,13 @@ export class ChatComponent implements OnInit {
     })
   }
 
-  public onSelectTab(item: ChatTab) {
+  public onSelectTab(item: ChatTab): void {
     this.selectedTab = item.name;
     //TODO Set in localstorage 
+  }
+
+  onToolBarAction(action: string): void {
+
   }
 
 }

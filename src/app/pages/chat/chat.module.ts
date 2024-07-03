@@ -13,6 +13,7 @@ import { ChatService } from "./services/chat.service";
 // Resolvers
 import { UserResolver } from "./resolvers/user.resolver";
 import { CommonModule } from "@angular/common";
+import { AngularSvgIconModule } from "angular-svg-icon";
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { CommonModule } from "@angular/common";
     imports: [
         CommonModule,
         ChatRoutingModule,
+        AngularSvgIconModule
     ],
     providers: [
         //Resolvers
