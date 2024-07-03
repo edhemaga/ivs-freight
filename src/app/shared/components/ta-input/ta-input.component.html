@@ -450,8 +450,9 @@
                             _inputConfig.commands.thirdCommand.name
                         )
                     "
-                ></svg-icon></div
-        ></ng-container>
+                ></svg-icon>
+            </div>
+        </ng-container>
     </div>
 
     <!-- Input Placeholder Icon -->
@@ -896,9 +897,7 @@
             !_inputConfig?.dropdownImageInput?.nameInitialsInsteadUrl
         "
         class="dropdown-selected-image name-initials-instead-url"
-        [src]="
-           _inputConfig?.dropdownImageInput?.url
-        "
+        [src]="_inputConfig?.dropdownImageInput?.url"
         [alt]="'Input Image'"
     />
     <div
